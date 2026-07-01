@@ -1191,10 +1191,14 @@ async function vfyAnalyze(){
     if(!r.ok){
       var errBody=null;
       try{errBody=await r.json();}catch(e){}
-      throw new Error((errBody&&errBody.error)?errBody.error:('HTTP '+r.status));
+      var errMsg='HTTP '+r.status;
+      if(errBody&&errBody.error){
+        errMsg=(typeof errBody.error==='string')?errBody.error:(errBody.error.message||JSON.stringify(errBody.error));
+      }
+      throw new Error(errMsg);
     }
     var d=await r.json();
-    if(d.error) throw new Error(d.error.message||JSON.stringify(d.error));
+    if(d.error) throw new Error((typeof d.error==='string')?d.error:(d.error.message||JSON.stringify(d.error)));
     var out=d.content.map(function(c){return c.text||'';}).join('').trim();
 
     function sec(key,nextKey){
