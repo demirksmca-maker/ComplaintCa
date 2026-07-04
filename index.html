@@ -2225,6 +2225,7 @@ function renderCyberPhotos(){
 }
 
 function doSubmitCyber(){
+  if(!JSON.parse(localStorage.getItem('cc_session')||'null')){alert('Siber suç bildirimi için lütfen giriş yapın veya ücretsiz hesap oluşturun.');showTab('track');switchAuthTab('signup');return;}
   var desc=document.getElementById('cy-desc').value.trim();
   if(!desc){
     document.getElementById('cy-desc').style.borderColor='#c8102e';
