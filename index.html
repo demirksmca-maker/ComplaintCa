@@ -3267,23 +3267,7 @@ document.addEventListener('click',function(e){
   }
 });
 
-// ── INTRO ANIMATION ──
-(function(){
-  // Show intro overlay, hide land temporarily
-  var intro=document.getElementById('site-intro');
-  var land=document.getElementById('pg-land');
-  if(intro) intro.style.display='flex';
-  if(land) land.style.display='none';
-
-  var text=document.getElementById('intro-text');
-  setTimeout(function(){ if(text) text.classList.add('show'); }, 200);
-
-  setTimeout(function(){
-    if(land){ land.style.display='block'; }
-    V.init();
-    if(intro) intro.style.display='none';
-  }, 2400);
-})();
+V.init();
 </script>
 
 <script type="module">
