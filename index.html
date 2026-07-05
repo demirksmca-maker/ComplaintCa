@@ -2087,7 +2087,9 @@ let _isAnon=true,_selTgt='',_selPri='medium',_photos=[],_ctype='notice';
 let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 
 function showTab(tab){
-  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){alert('Şikayet oluşturmak için lütfen giriş yapın veya ücretsiz hesap oluşturun.');tab='track';setTimeout(function(){switchAuthTab('signup');},0);}
+  showTab(tab){
+  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);}
+  document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-feed').style.display=tab==='feed'?'':'none';
   document.getElementById('view-track').style.display=tab==='track'?'':'none';
