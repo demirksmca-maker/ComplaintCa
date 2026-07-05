@@ -3617,6 +3617,39 @@ function mvEmail(email,name){
   window.location.href='mailto:'+email+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
 }
 </script>
+<style>
+#authModalOverlay{display:none;position:fixed;inset:0;background:rgba(4,7,15,.6);z-index:9999;align-items:center;justify-content:center;padding:20px;font-family:Georgia,serif}
+#authModalOverlay.open{display:flex}
+.authCard{width:100%;max-width:340px;background:rgba(9,22,44,.92);border:1px solid rgba(201,168,118,.28);border-radius:16px;padding:30px 26px 26px;box-shadow:0 30px 60px rgba(0,0,0,.5);color:#e8e4da;text-align:center;position:relative}
+.authClose{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#9aa4b8;font-size:15px;cursor:pointer}
+.authFlag{font-size:32px;margin-bottom:12px}
+.authTitle{font-weight:700;font-size:23px;color:#e0c290;margin-bottom:12px}
+.authText{font-size:15.5px;line-height:1.55;color:#a9b2c4;margin-bottom:22px}
+.authActions{display:flex;gap:10px}
+.authBtn{flex:1;font-family:Inter,sans-serif;font-size:14px;font-weight:500;padding:11px 0;border-radius:9px;cursor:pointer;border:none}
+.authCancel{background:rgba(255,255,255,.06);color:#c7cede;border:1px solid rgba(255,255,255,.18)}
+.authOk{background:#5fb3a8;color:#062824;font-weight:600}
+</style>
+
+<div id="authModalOverlay">
+  <div class="authCard">
+    <button class="authClose" onclick="closeAuthModal()">✕</button>
+    <div class="authFlag">🇨🇦</div>
+    <div class="authTitle">We Care About You</div>
+    <div class="authText">We want your complaint to stay safe. Please sign in or create a free account to continue.</div>
+    <div class="authActions">
+      <button class="authBtn authCancel" onclick="closeAuthModal()">Cancel</button>
+      <button class="authBtn authOk" onclick="goToLogin()">Sign In</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LOGIN_URL="/login";
+function showAuthModal(){document.getElementById('authModalOverlay').classList.add('open')}
+function closeAuthModal(){document.getElementById('authModalOverlay').classList.remove('open')}
+function goToLogin(){window.location.href=LOGIN_URL}
+</script>
 </body>
 </html>
 <!-- cf deploy trigger -->
