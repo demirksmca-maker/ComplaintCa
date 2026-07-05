@@ -3649,7 +3649,7 @@ function mvEmail(email,name){
 const LOGIN_URL="/login";
 function showAuthModal(){document.getElementById('authModalOverlay').classList.add('open')}
 function closeAuthModal(){document.getElementById('authModalOverlay').classList.remove('open')}
-function goToLogin(){window.location.href=LOGIN_URL}
+function goToLogin(){closeAuthModal();document.getElementById('view-track').style.display='';switchAuthTab('signup');}
 </script>
 </body>
 </html>
