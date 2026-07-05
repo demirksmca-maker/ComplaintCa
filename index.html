@@ -2087,8 +2087,7 @@ let _isAnon=true,_selTgt='',_selPri='medium',_photos=[],_ctype='notice';
 let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 
 function showTab(tab){
-  showTab(tab){
-  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);}
+  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';...
   document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-feed').style.display=tab==='feed'?'':'none';
