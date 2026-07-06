@@ -3291,6 +3291,7 @@ try{
   };
   window._fbSave=async function(c){return await addDoc(collection(db,'complaints'),c);};
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
+  window._fbMyComplaints=async function(email){const q=query(collection(db,'complaints'),where('email','==',email),limit(20));const s=await getDocs(q);var arr=[];s.forEach(function(d){arr.push(d.data());});return arr;};
   window._fbDelete=async function(ref,email){
     const q=query(collection(db,'complaints'),where('ref','==',ref),where('email','==',email),limit(1));
     const s=await getDocs(q);
@@ -3680,14 +3681,15 @@ function goToLogin(){closeAuthModal();document.getElementById('view-track').styl
 </div>
 
 <script>
-function openMemberPanel(name, email){
+async function openMemberPanel(name, email){
   document.getElementById('mp-name').textContent=name;
   document.getElementById('mp-email').textContent=email;
   document.getElementById('mp-profile-name').textContent=name;
   document.getElementById('mp-profile-email').textContent=email;
   document.getElementById('mp-avatar').textContent=(name||'?').charAt(0).toUpperCase();
 
-  var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;});
+  var myComplaints=[];
+try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
   document.getElementById('mp-stat-total').textContent=myComplaints.length;
 
   var list=document.getElementById('mp-complaint-list');
