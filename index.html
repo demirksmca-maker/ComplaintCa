@@ -3197,6 +3197,7 @@ async function doGoogleSignIn(){
       localStorage.setItem('cc_users',JSON.stringify(users));
     }
     localStorage.setItem('cc_session',JSON.stringify({name:googleUser.name,email:googleUser.email}));
+    openMemberPanel(googleUser.name, googleUser.email);
     if(st){st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';st.textContent='Welcome, '+googleUser.name+'!';}
     var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===googleUser.email;});
     var uc=document.getElementById('user-complaints');
