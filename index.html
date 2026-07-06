@@ -3256,8 +3256,8 @@ function selectLangDD(code,label,el){
   }
   var m=document.getElementById('lang-dd-menu');
   if(m) m.classList.remove('open');
-  V.lang(code,null);
-  try{if(['en','tr','fr'].indexOf(code)>-1){_aLang=code;}}catch(e){}
+V.lang(code,null);
+  try{if(['en','tr','fr','zh','es','ar','pa'].indexOf(code)>-1){_aLang=code;}}catch(e){}
 }
 document.addEventListener('click',function(e){
   var dd=document.getElementById('lang-dd');
