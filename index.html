@@ -2038,12 +2038,12 @@ let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 
 function showTab(tab){
   if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);}
+  if(tab==='new'){var _s=JSON.parse(localStorage.getItem('cc_session')||'null');if(_s){var _e=document.getElementById('inp-email');var _n=document.getElementById('inp-name');if(_e&&!_e.value)_e.value=_s.email||'';if(_n&&!_n.value)_n.value=_s.name||'';}}
   document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-feed').style.display=tab==='feed'?'':'none';
   document.getElementById('view-track').style.display=tab==='track'?'':'none';
   document.getElementById('view-lawyer').style.display=tab==='lawyer'?'':'none';
   document.getElementById('view-cyber').style.display=tab==='cyber'?'':'none';
-  document.getElementById('view-verify').style.display=tab==='verify'?'':'none';
   var lp=document.getElementById('view-lawyerpanel');
   if(lp) lp.style.display=tab==='lawyerpanel'?'':'none';
   if(lp) lp.style.display=tab==='lawyerpanel'?'':'none';
