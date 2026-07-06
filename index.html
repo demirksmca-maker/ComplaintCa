@@ -3311,7 +3311,7 @@ try{
   window._fbReady=true;
 
   // ── LIVE FEED ──
-  const feedQ=query(collection(db,'complaints'),orderBy('date','desc'),limit(20));
+  const feedQ=query(collection(db,'complaints'),where('anonymous','==',true),orderBy('date','desc'),limit(20));
   onSnapshot(feedQ,function(snapshot){
     var catColors={noise:'#3b82f6',property:'#f97316',billing:'#8b5cf6',disc:'#c8102e',garbage:'#16a34a',safety:'#d97706',harassment:'#c8102e',wages:'#16a34a',general:'#1a4fa0'};
     var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
