@@ -3077,12 +3077,12 @@ function _aSetStatus(s){
 async function _aAskClaude(userMsg){
   _aHistory.push({role:'user',content:userMsg});
   _aSetStatus('thinking');
-  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. Keep responses SHORT (2-3 sentences). Ask one question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
-  try{
+  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
+    try{
     const res=await fetch('/api/claude-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({max_tokens:500,system:sys,messages:_aHistory})
+      body:JSON.stringify({max_tokens:300,system:sys,messages:_aHistory})
     });
     const d=await res.json();
     if(d.error) throw new Error(d.error.message);
