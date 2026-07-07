@@ -2320,7 +2320,7 @@ async function suggestCategoryAI(){
   var sys='You are a classifier for a Canadian complaint platform. Given a complaint description, pick the single best matching GROUP and CATEGORY from this exact list (use the exact lowercase codes, never invent new ones):\n'+validList+'\n\nAlso pick a PRIORITY: low, medium, or high (high = safety risk, legal deadline risk, or serious harm; low = minor annoyance).\n\nRespond ONLY with strict JSON, no other text: {"group":"...","category":"...","priority":"..."}';
 
   try{
-    var r=await fetch('/.netlify/functions/claude-proxy',{
+    var r=await fetch('/api/claude-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({max_tokens:150,system:sys,messages:[{role:'user',content:desc}]})
