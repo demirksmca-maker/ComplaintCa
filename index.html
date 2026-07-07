@@ -2498,7 +2498,7 @@ async function runAI(){
 
   async function callClaude(){
     try{
-      var r=await fetch('/.netlify/functions/claude-proxy',{
+      var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:800,system:sys,messages:[{role:'user',content:msg}]})
