@@ -2513,7 +2513,7 @@ async function runAI(){
     if(!claudeOut) return null;
     var judgePrompt='You are Asya, a senior Canadian legal AI. Claude Sonnet has analyzed a complaint. Review the analysis, verify the legal citations are real and accurate Canadian law, correct any errors, and produce ONE final definitive response in EXACT format:\n\nCOMPLAINT:\n[Best formal rewrite — 1-2 sentences]\n\nLAW:\n[Most specific Canadian Act + section. If uncertain, write "Requires specific legal counsel"]\n\nSANCTIONS:\n[Most precise penalty/remedy — one line]\n\nRESPONSE_DEADLINE:\n[Most accurate deadline with citation — one line'+(isAnon?'; if the submission is anonymous, this MUST say "Not applicable — anonymous submissions are not entitled to a mandated response"':'')+']\n\nEMAIL_DRAFT:\n[Strongest email — 3-4 sentences max'+(isAnon?'. This is an ANONYMOUS ADVISORY NOTICE, not a formal complaint — no demand, no deadline, no escalation threat, sign as "Anonymous Notice — Ref: [REF]"':'')+']\n\nRespond ONLY in '+lang+'. Be decisive and accurate.\n\nClaude analysis:\n'+claudeOut;
     try{
-      var r=await fetch('/.netlify/functions/claude-proxy',{
+      var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:800,system:judgePrompt,messages:[{role:'user',content:'Produce the final verified verdict now.'}]})
