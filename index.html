@@ -1311,7 +1311,37 @@ function renderLwResults() {
     html += '<span style="background:'+bc+';color:white;font-size:.58rem;font-weight:700;padding:3px 8px;border-radius:20px;white-space:nowrap;font-family:Cinzel,serif;letter-spacing:.5px">'+lw.badge+'</span>';
     html += '</div>';
     html += '<div style="font-size:.75rem;color:var(--sub);line-height:1.55;margin-bottom:10px">'+lw.note+'</div>';
-    billing: {
+    html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+    if (lw.phone) html += '<a href="tel:'+lw.phone+'" style="display:flex;align-items:center;gap:5px;background:var(--ice);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:.75rem;font-weight:600;color:var(--blue);text-decoration:none">📞 '+lw.phone+'</a>';
+    if (lw.url) html += '<a href="'+lw.url+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--blue),var(--navy));border-radius:8px;padding:7px 14px;font-size:.75rem;font-weight:700;color:white;text-decoration:none;font-family:Cinzel,serif;letter-spacing:.5px">'+V.t('lw_visit')+' →</a>';
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+// ── AUTHORITY DATABASE ──
+const AUTHORITIES = {
+  noise: {
+    toronto:    [{name:'311 Toronto — Noise Team', email:'311@toronto.ca', phone:'311', note:'Available 6am–2am daily'}],
+    scarborough:[{name:'311 Toronto — East District', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'}],
+    mississauga:[{name:'City of Mississauga Bylaw', email:'311@mississauga.ca', phone:'905-615-4311', note:'Online: mississauga.ca/311'}],
+    brampton:   [{name:'Brampton Bylaw Services', email:'bylawservices@brampton.ca', phone:'905-458-3424', note:'bylawservices@brampton.ca'}],
+    bc:         [{name:'Vancouver 311', email:'contactus@vancouver.ca', phone:'311', note:'City of Vancouver'}],
+    alberta:    [{name:'City of Calgary 311', email:'311@calgary.ca', phone:'311', note:'403-268-2489'}],
+    quebec:     [{name:'Ville de Montréal 311', email:'communications@montreal.ca', phone:'311', note:'514-872-0311'}],
+    default:    [{name:'Municipal Bylaw Office', email:'311@toronto.ca', phone:'311', note:'Contact your local 311'}]
+  },
+  property: {
+    toronto:    [{name:'RentSafeTO', email:'311@toronto.ca', phone:'311', note:'Apartment building standards'},{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'All Ontario'}],
+    scarborough:[{name:'RentSafeTO (Toronto)', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    mississauga:[{name:'Mississauga Property Standards', email:'propertystandards@mississauga.ca', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    brampton:   [{name:'Brampton Property Standards', email:'bylaw.enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    bc:         [{name:'Residential Tenancy Branch BC', email:'rtbinfo@gov.bc.ca', phone:'1-800-665-8779', note:''}],
+    alberta:    [{name:'RTDRS Alberta', email:'rtdrs@gov.ab.ca', phone:'780-644-3000', note:'Under $100,000'}],
+    quebec:     [{name:'Tribunal administratif du logement', email:'informations@tal.gouv.qc.ca', phone:'1-800-683-2245', note:''}],
+    default:    [{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Ontario'},{name:'Rental Housing Enforcement Unit', email:'rheu@ontario.ca', phone:'1-888-772-9277', note:'RTA Offences'}]
+  },
+  billing: {
     default:    [{name:'FCAC — Banking', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banks & credit cards', deadline:'Bank must respond within 56 days', deadlineDays:56},{name:'OBSI — Banking Ombudsman', email:'ombudsman@obsi.ca', phone:'1-888-451-4519', note:'Escalate if unresolved after 56 days', deadline:'Free & independent review'},{name:'CCTS — Telecom', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario businesses'},{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas'}],
     bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banking'}],
     alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}],
