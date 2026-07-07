@@ -1024,6 +1024,7 @@ textarea{resize:vertical;min-height:90px}
         <button class="vfy-action-btn" id="vfy-legal-action-btn" onclick="createLegalPetition(_vfyFile?_vfyFile.name:'belge', 'resmi.kurum@canada.ca')">
           <span id="vfy-action-lbl">Bilgi Edinme Hakkı Kanunu Kapsamında Kuruma Teyit Sor</span>
         </button>
+        <button class="vfy-action-btn" id="vfy-transfer-btn" style="background-color:#1a4fa0;margin-top:8px" onclick="transferToComplaint()">📋 Bu bulguyu şikayet formuna aktar</button>
       </div>
     </div>
 
@@ -1058,6 +1059,17 @@ function vfyHandleFile(inp){
   vfyLoadFile(f);
 }
 // Asya & Claude AI tarafından hazırlanan yasal dilekçe oluşturucu
+function transferToComplaint(){
+  if(!_vfyLastAnalysis){alert('Önce bir belge analiz edin.');return;}
+  goApp('new');
+  var d=document.getElementById('inp-desc');
+  if(d){
+    d.value=(_vfyLastAnalysis.verdict||'')+(_vfyLastAnalysis.detail?' — '+_vfyLastAnalysis.detail:'');
+    updateCC();
+    resetCat();
+    catAIDebounce();
+  }
+  }
 var _vfyLastAnalysis=null;
 
 async function createLegalPetition(documentType, institutionName) {
