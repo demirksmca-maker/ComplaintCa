@@ -1140,7 +1140,7 @@ async function vfyAnalyze(){
     var timeoutId=setTimeout(function(){controller.abort();},30000); // 30sn zaman aşımı
     var r;
     try{
-      r=await fetch('/.netlify/functions/claude-proxy',{
+      r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:500,system:sys,messages:[{role:'user',content:[block,{type:'text',text:'Analyze this document/screenshot.'}]}]}),
@@ -2325,7 +2325,7 @@ async function suggestCategoryAI(){
   var sys='You are a classifier for a Canadian complaint platform. Given a complaint description, pick the single best matching GROUP and CATEGORY from this exact list (use the exact lowercase codes, never invent new ones):\n'+validList+'\n\nAlso pick a PRIORITY: low, medium, or high (high = safety risk, legal deadline risk, or serious harm; low = minor annoyance).\n\nRespond ONLY with strict JSON, no other text: {"group":"...","category":"...","priority":"..."}';
 
   try{
-    var r=await fetch('/.netlify/functions/claude-proxy',{
+    var r=await fetch('/api/claude-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({max_tokens:150,system:sys,messages:[{role:'user',content:desc}]})
@@ -2503,7 +2503,7 @@ async function runAI(){
 
   async function callClaude(){
     try{
-      var r=await fetch('/.netlify/functions/claude-proxy',{
+      var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:800,system:sys,messages:[{role:'user',content:msg}]})
@@ -2518,7 +2518,7 @@ async function runAI(){
     if(!claudeOut) return null;
     var judgePrompt='You are Asya, a senior Canadian legal AI. Claude Sonnet has analyzed a complaint. Review the analysis, verify the legal citations are real and accurate Canadian law, correct any errors, and produce ONE final definitive response in EXACT format:\n\nCOMPLAINT:\n[Best formal rewrite — 1-2 sentences]\n\nLAW:\n[Most specific Canadian Act + section. If uncertain, write "Requires specific legal counsel"]\n\nSANCTIONS:\n[Most precise penalty/remedy — one line]\n\nRESPONSE_DEADLINE:\n[Most accurate deadline with citation — one line'+(isAnon?'; if the submission is anonymous, this MUST say "Not applicable — anonymous submissions are not entitled to a mandated response"':'')+']\n\nEMAIL_DRAFT:\n[Strongest email — 3-4 sentences max'+(isAnon?'. This is an ANONYMOUS ADVISORY NOTICE, not a formal complaint — no demand, no deadline, no escalation threat, sign as "Anonymous Notice — Ref: [REF]"':'')+']\n\nRespond ONLY in '+lang+'. Be decisive and accurate.\n\nClaude analysis:\n'+claudeOut;
     try{
-      var r=await fetch('/.netlify/functions/claude-proxy',{
+      var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:800,system:judgePrompt,messages:[{role:'user',content:'Produce the final verified verdict now.'}]})
@@ -3082,12 +3082,12 @@ function _aSetStatus(s){
 async function _aAskClaude(userMsg){
   _aHistory.push({role:'user',content:userMsg});
   _aSetStatus('thinking');
-  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. Keep responses SHORT (2-3 sentences). Ask one question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
-  try{
-    const res=await fetch('/.netlify/functions/claude-proxy',{
+  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
+    try{
+    const res=await fetch('/api/claude-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({max_tokens:500,system:sys,messages:_aHistory})
+      body:JSON.stringify({max_tokens:300,system:sys,messages:_aHistory})
     });
     const d=await res.json();
     if(d.error) throw new Error(d.error.message);
@@ -3113,7 +3113,7 @@ function _aShowApply(text){
   btn.style.cssText='margin:4px 0 8px;background:#16a34a;color:white;border:none;border-radius:10px;padding:10px;font-size:.82rem;font-weight:700;cursor:pointer;align-self:flex-start';
   btn.onclick=()=>{
     const d=document.getElementById('inp-desc');
-    if(d){d.value=text;updateCC();}
+    if(d){d.value=text;updateCC();resetCat();catAIDebounce();}
     btn.textContent='✓ Applied!';btn.style.background='#94a3b8';btn.disabled=true;
   };
   chat.appendChild(btn);chat.scrollTop=chat.scrollHeight;
