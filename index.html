@@ -1076,7 +1076,7 @@ async function createLegalPetition(documentType, institutionName) {
     var subject = documentType ? ('Access to Information Request — '+documentType) : 'Access to Information Request';
     var body;
     try{
-      var r=await fetch('/.netlify/functions/claude-proxy',{
+      var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:500,system:sys,messages:[{role:'user',content:'Draft the letter now.'}]})
