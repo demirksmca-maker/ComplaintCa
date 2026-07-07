@@ -2563,7 +2563,7 @@ async function runAI(){
 // ── SEND EMAIL VIA BREVO (sunucu tarafı proxy üzerinden) ──
 async function sendBrevoEmail(toEmail, toName, subject, body, replyTo){
   try{
-    var res = await fetch('/.netlify/functions/send-email', {
+    var res = await fetch('/api/send-email', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ toEmail: toEmail, toName: toName, subject: subject, body: body, replyTo: replyTo || undefined })
