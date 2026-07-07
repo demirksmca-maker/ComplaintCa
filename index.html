@@ -3079,7 +3079,7 @@ async function _aAskClaude(userMsg){
   _aSetStatus('thinking');
   const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. Keep responses SHORT (2-3 sentences). Ask one question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
   try{
-    const res=await fetch('/.netlify/functions/claude-proxy',{
+    const res=await fetch('/api/claude-proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({max_tokens:500,system:sys,messages:_aHistory})
