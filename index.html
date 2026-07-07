@@ -1140,7 +1140,7 @@ async function vfyAnalyze(){
     var timeoutId=setTimeout(function(){controller.abort();},30000); // 30sn zaman aşımı
     var r;
     try{
-      r=await fetch('/.netlify/functions/claude-proxy',{
+      r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({max_tokens:500,system:sys,messages:[{role:'user',content:[block,{type:'text',text:'Analyze this document/screenshot.'}]}]}),
