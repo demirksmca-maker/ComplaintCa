@@ -1087,7 +1087,7 @@ async function createLegalPetition(documentType, institutionName) {
 
     var subject = documentType ? ('Access to Information Request — '+documentType) : 'Access to Information Request';
     var body;
-    try{
+  try{
       var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
