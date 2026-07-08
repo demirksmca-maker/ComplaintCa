@@ -2603,14 +2603,18 @@ async function runAI(){
 
 // ── SEND EMAIL VIA BREVO (sunucu tarafı proxy üzerinden) ──
 async function sendBrevoEmail(toEmail, toName, subject, body, replyTo){
-  try{
-    var res = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ toEmail: toEmail, toName: toName, subject: subject, body: body, replyTo: replyTo || undefined })
-    });
-    return res.ok;
-  }catch(e){ return false; }
+  for(var attempt=1;attempt<=2;attempt++){
+    try{
+      var res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ toEmail: toEmail, toName: toName, subject: subject, body: body, replyTo: replyTo || undefined })
+      });
+      if(res.ok) return true;
+    }catch(e){}
+    if(attempt<2) await new Promise(function(r){setTimeout(r,1000);});
+  }
+  return false;
 }
 
 async function sendComplaintEmail(complaint, authorityEmail, authorityName, emailDraft){
