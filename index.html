@@ -3237,7 +3237,7 @@ async function doGoogleSignIn(){
     if(btn) btn.style.opacity='1';
   }
 }
-  function doLogin(){
+  async function doLogin(){
   var email=document.getElementById('li-email').value.trim();
   var pass=document.getElementById('li-pass').value;
   var st=document.getElementById('login-status');
