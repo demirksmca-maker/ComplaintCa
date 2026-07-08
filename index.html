@@ -3463,10 +3463,13 @@ if('serviceWorker' in navigator){
     </div>
     <div style="padding:16px 18px;flex:1;overflow-y:auto">
       <label id="mv-addr-lbl" style="font-size:.78rem;font-weight:600;color:var(--navy);display:block;margin-bottom:6px">Adresiniz (Address)</label>
-      <div style="display:flex;gap:8px">
-        <input type="text" id="mv-postal" placeholder="örn. 123 Queen St W, Toronto, ON" style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:.95rem;outline:none;margin-bottom:0" onkeydown="if(event.key==='Enter')mvSearch()">
-        <button onclick="mvSearch()" id="mv-go" style="background:linear-gradient(135deg,#1a4fa0,#0f2952);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:700;font-size:.85rem;cursor:pointer;font-family:Cinzel,serif;letter-spacing:.5px">Bul</button>
-      </div>
+     <div style="display:flex;gap:8px">
+            <div style="position:relative;flex:1">
+              <input type="text" id="mv-postal" placeholder="örn. 123 Queen St W, Toronto, ON" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:.95rem;outline:none;margin-bottom:0" oninput="_mvLocDebounce()" onkeydown="if(event.key==='Enter')mvSearch()">
+              <div class="loc-dropdown" id="mv-dropdown"></div>
+            </div>
+            <button onclick="mvSearch()" id="mv-go" style="background:linear-gradient(135deg,#1a4fa0,#0f2952);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:700;font-size:.85rem;cursor:pointer;font-family:Cinzel,serif;letter-spacing:.5px">Bul</button>
+          </div>
       <div id="mv-hint" style="font-size:.68rem;color:var(--muted);margin-top:6px">Cadde, şehir ve eyaleti yazın. Federal (MP) ve eyalet (MPP/MLA) temsilcileriniz listelenir.</div>
       <div id="mv-results" style="margin-top:16px"></div>
     </div>
@@ -3475,6 +3478,30 @@ if('serviceWorker' in navigator){
 
 <script>
 var _mvRef='';
+  function _mvLocDebounce(){clearTimeout(window._mvLocTimer);window._mvLocTimer=setTimeout(_mvLocSearch,500);}
+function _mvLocSearch(){
+  var val=document.getElementById('mv-postal').value.trim();
+  var dd=document.getElementById('mv-dropdown');
+  if(val.length<3){if(dd)dd.style.display='none';return;}
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val+' Canada')+'&format=json&limit=5&addressdetails=1')
+    .then(function(r){return r.json();}).then(function(results){
+      if(!dd) return;
+      if(!results||!results.length){dd.style.display='none';return;}
+      dd.innerHTML='';
+      results.forEach(function(r){
+        var parts=r.display_name.split(',');
+        var item=document.createElement('div');
+        item.className='loc-item';
+        item.innerHTML='<strong>'+parts[0].trim()+'</strong><span>'+parts.slice(1,3).join(',').trim()+'</span>';
+        item.onclick=function(){
+          document.getElementById('mv-postal').value=r.display_name;
+          dd.style.display='none';
+        };
+        dd.appendChild(item);
+      });
+      dd.style.display='block';
+    }).catch(function(){});
+}
 function mvOpen(ref){
   _mvRef=ref||'';
   document.getElementById('mv-modal').style.display='flex';
