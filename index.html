@@ -1187,6 +1187,7 @@ async function vfyAnalyze(){
 
     document.getElementById('vfy-text').innerHTML='<b style="color:'+color+'">'+(verdict||risk)+'</b>'+(detail?'<br><br>'+detail:'')+(advice?'<br><br><i>'+V.t('vfy_advice')+' '+advice+'</i>':'');
     actionBtn.style.display=safe?'none':'block';
+    document.getElementById('vfy-transfer-btn').style.display=safe?'none':'block';
   }catch(e){
     _vfyLastAnalysis=null;
     var isTimeout=e&&(e.name==='AbortError');
