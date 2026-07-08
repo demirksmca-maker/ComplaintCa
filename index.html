@@ -2993,7 +2993,7 @@ function statusLabel(s){return V.t({received:'sr',review:'sv',resolved:'so',reje
 function renderCard(c){
   const date=new Date(c.date).toLocaleDateString();
   const tl=(c.timeline||[]).map(function(item,i,arr){return '<div class="tli"><div class="tldot '+(i===arr.length-1?'cur':'done')+'"></div><div class="tlt"><div class="tll">'+V.t({received:'tr_r',review:'tr_v',resolved:'tr_o',rejected:'tr_j'}[item.status]||'tr_r')+'</div><div class="tld">'+new Date(item.date).toLocaleDateString()+'</div></div></div>';}).join('');
-  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+c.title+'</div><div class="smeta">'+date+' · '+(c.targetName||c.target||'—')+'</div></div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div></div>';
+  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+escHtml(c.title)+'</div><div class="smeta">'+date+' · '+escHtml(c.targetName||c.target||'—')+'</div></div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div></div>';
 }
 function renderRecent(){
   const el=document.getElementById('trk-recent');
