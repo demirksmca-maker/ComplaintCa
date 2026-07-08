@@ -45,6 +45,12 @@ body{font-family:'Inter',sans-serif;background:#0f2952;color:#0f172a;-webkit-fon
 }
 
 /* ── VERIFY (DOCUMENT VERIFICATION) ── */
+  .loc-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--border);border-radius:10px;max-height:220px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(15,41,82,.15)}
+.loc-item{padding:11px 13px;cursor:pointer;border-bottom:1px solid var(--border);font-size:.82rem}
+.loc-item:last-child{border-bottom:none}
+.loc-item:hover{background:var(--off)}
+.loc-item strong{display:block;color:var(--text);font-weight:600}
+.loc-item span{display:block;color:var(--muted);font-size:.72rem;margin-top:1px}
 .vfy-container{background-color:#0B1D3A;color:#FFFFFF;font-family:'Inter',sans-serif;border-radius:12px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid rgba(212,175,55,.2);padding:24px 18px}
 .vfy-header h2{font-family:'Cinzel',serif;color:#D4AF37;border-bottom:2px solid #C8102E;padding-bottom:15px;margin-bottom:10px;font-size:1.05rem}
 .vfy-header p{color:#A0AABF;font-size:.85em;line-height:1.5}
