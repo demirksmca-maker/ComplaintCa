@@ -2663,6 +2663,11 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   return {admin: adminSent, institution: instSent};
 }
 
+function escHtml(s){
+  var d=document.createElement('div');
+  d.textContent=s==null?'':String(s);
+  return d.innerHTML;
+}
 function genRef(){return'VC-'+new Date().getFullYear()+'-'+Math.random().toString(36).toUpperCase().substring(2,7);}
 async function doSubmit(){
   // Gönderim sıklığı sınırı (anti-istismar) — aynı cihazdan ardışık gönderimi yavaşlatır
