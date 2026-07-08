@@ -2014,9 +2014,9 @@ const V = (function(){
       if(el) el.placeholder=t(key);
     });
     ['public-complaint-feed','trk-complaint-feed'].forEach(function(id){
-      var pcf=document.getElementById(id);
-      if(pcf && pcf.querySelector('.empty')) pcf.querySelector('.empty').textContent=t('feed_loading');
-    });
+        var pcf=document.getElementById(id);
+        if(pcf && pcf.querySelector('.empty')) pcf.querySelector('.empty').textContent=t('feed_loading');
+      });
   }
   return {
     lang(l,btn){
