@@ -3015,7 +3015,7 @@ function _locSearch(){
   const val=document.getElementById('inp-loc').value.trim();
   const dd=document.getElementById('loc-dropdown');
   if(val.length<3){if(dd)dd.style.display='none';return;}
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val+' Canada')+'&format=json&limit=5&addressdetails=1')
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
     .then(r=>r.json()).then(results=>{
       if(!dd) return;
       if(!results||!results.length){dd.style.display='none';return;}
@@ -3490,7 +3490,7 @@ function _mvLocSearch(){
   var val=document.getElementById('mv-postal').value.trim();
   var dd=document.getElementById('mv-dropdown');
   if(val.length<3){if(dd)dd.style.display='none';return;}
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val+' Canada')+'&format=json&limit=5&addressdetails=1')
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
     .then(function(r){return r.json();}).then(function(results){
       if(!dd) return;
       if(!results||!results.length){dd.style.display='none';return;}
