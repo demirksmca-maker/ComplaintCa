@@ -3670,7 +3670,8 @@ if('serviceWorker' in navigator){
 
 <script>
 var _mvRef='';
-  function _mvLocDebounce(){clearTimeout(window._mvLocTimer);window._mvLocTimer=setTimeout(_mvLocSearch,500);}
+var _mvSelectedCoord=null;
+  function _mvLocDebounce(){_mvSelectedCoord=null;clearTimeout(window._mvLocTimer);window._mvLocTimer=setTimeout(_mvLocSearch,500);}
 function _mvLocSearch(){
   var val=document.getElementById('mv-postal').value.trim();
   var dd=document.getElementById('mv-dropdown');
@@ -3687,6 +3688,7 @@ function _mvLocSearch(){
         item.innerHTML='<strong>'+escHtml(parts[0].trim())+'</strong><span>'+escHtml(parts.slice(1,3).join(',').trim())+'</span>';
         item.onclick=function(){
           document.getElementById('mv-postal').value=r.display_name;
+          _mvSelectedCoord={lat:r.lat,lng:r.lon,addr:r.display_name};
           dd.style.display='none';
         };
         dd.appendChild(item);
@@ -3714,11 +3716,20 @@ function mvSearch(){
   btn.disabled=true;btn.textContent='...';
   box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching1')+'</div>';
 
-  // 1) Adresi koordinata çevir (Nominatim / OpenStreetMap)
-  var q=addr;
-  if(q.toLowerCase().indexOf('canada')===-1)q=q+', Canada';
-  fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
-    .then(function(r){return r.json();})
+  // Eğer kullanıcı öneri listesinden bir adres seçtiyse, o adresin zaten bilinen
+  // koordinatlarını kullan — metni yeniden geocode etmek farklı/yanlış bir sonuca
+  // eşleşebilir (aynı sokak adı başka bir şehirde de olabilir).
+  var geoPromise;
+  if(_mvSelectedCoord && _mvSelectedCoord.addr===addr){
+    geoPromise=Promise.resolve([{lat:_mvSelectedCoord.lat,lon:_mvSelectedCoord.lng}]);
+  }else{
+    var q=addr;
+    if(q.toLowerCase().indexOf('canada')===-1)q=q+', Canada';
+    geoPromise=fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json();});
+  }
+
+  geoPromise
     .then(function(geo){
       if(!geo||!geo.length)throw new Error('geocode');
       var lat=geo[0].lat,lng=geo[0].lon;
