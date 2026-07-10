@@ -754,7 +754,7 @@ textarea{resize:vertical;min-height:90px}
         <input type="hidden" id="inp-tname" value="">
         <div class="card">
           <div class="ct"><div class="ci">II</div><span id="a-cat">Category</span></div>
-          <select id="inp-cat" style="display:none"></select>
+          <input type="hidden" id="inp-cat">
           <!-- GROUP GRID -->
           <div class="group-grid" id="group-grid">
             <div class="group-card" onclick="selGroup('municipal',this)"><div class="g-icon">🏙️</div><div class="g-lbl">Municipality</div></div>
@@ -1858,7 +1858,7 @@ const V = (function(){
       hs:"Submit complaints to municipalities, businesses, or landlords across Canada.",
       c1:"File a Complaint",c2:"Track My Complaint",
       t1:"Anonymous",t2:"AI Routing",t3:"3 Languages",t4:"Live Tracking",
-      hub_kicker:"Six Paths to Justice",hub_file_d:"Turn your voice into a formal complaint.",hub_lawyer_t:"Free Lawyer &amp; Civil Society",hub_lawyer_d:"Law Society referrals and independent non-profit help.",hub_mv_d:"Locate your representative by address.",hub_cyber_t:"Cyber Crime Report",hub_cyber_d:"Report harassment, threats, and identity theft.",hub_verify_t:"Verify a Document",hub_verify_d:"Get an AI risk check on a suspicious email or file.",hub_guides_t:"Guides",hub_guides_d:"Find the right authority by province and topic.",
+      hub_kicker:"Six Paths to Justice",hub_file_d:"Turn your voice into a formal complaint.",hub_lawyer_t:"Free Lawyer &amp; Civil Society",hub_lawyer_d:"AI-matched lawyer &amp; NGO, ready-to-send drafts.",hub_mv_d:"Locate your representative by address.",hub_cyber_t:"Cyber Crime Report",hub_cyber_d:"Report harassment, threats, and identity theft.",hub_verify_t:"Verify a Document",hub_verify_d:"Get an AI risk check on a suspicious email or file.",hub_guides_t:"Guides",hub_guides_d:"Find the right authority by province and topic.",
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
@@ -1936,7 +1936,7 @@ const V = (function(){
       hs:"Kanada genelinde belediyelere, işletmelere veya ev sahiplerine şikayet iletin.",
       c1:"Şikayet Gönder",c2:"Şikayetimi Takip Et",
       t1:"Anonim",t2:"Yapay Zeka",t3:"3 Dil",t4:"Canlı Takip",
-      hub_kicker:"Adalete Giden Altı Yol",hub_file_d:"Sesini resmi bir şikayete dönüştür.",hub_lawyer_t:"Ücretsiz Avukat &amp; STK",hub_lawyer_d:"Baro yönlendirmesi ve bağımsız sivil toplum destekleri.",hub_mv_d:"Adresine göre temsilcini bul.",hub_cyber_t:"Cyber Şikayet",hub_cyber_d:"Taciz, tehdit ve kimlik hırsızlığını bildir.",hub_verify_t:"Şüpheli Belge Sorgula",hub_verify_d:"Şüpheli e-posta ya da belgeyi yapay zekaya doğrulat.",hub_guides_t:"Rehber",hub_guides_d:"Eyalete ve konuya göre doğru kurumu öğren.",
+      hub_kicker:"Adalete Giden Altı Yol",hub_file_d:"Sesini resmi bir şikayete dönüştür.",hub_lawyer_t:"Ücretsiz Avukat &amp; STK",hub_lawyer_d:"Yapay zekayla eşleşen avukat &amp; STK, gönderime hazır taslaklar.",hub_mv_d:"Adresine göre temsilcini bul.",hub_cyber_t:"Cyber Şikayet",hub_cyber_d:"Taciz, tehdit ve kimlik hırsızlığını bildir.",hub_verify_t:"Şüpheli Belge Sorgula",hub_verify_d:"Şüpheli e-posta ya da belgeyi yapay zekaya doğrulat.",hub_guides_t:"Rehber",hub_guides_d:"Eyalete ve konuya göre doğru kurumu öğren.",
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
@@ -2014,7 +2014,7 @@ const V = (function(){
       hs:"Soumettez des plaintes aux municipalités, entreprises ou propriétaires partout au Canada.",
       c1:"Déposer une plainte",c2:"Suivre ma plainte",
       t1:"Anonyme",t2:"IA",t3:"3 Langues",t4:"Suivi en direct",
-      hub_kicker:"Six Chemins Vers la Justice",hub_file_d:"Transformez votre voix en plainte officielle.",hub_lawyer_t:"Avocat Gratuit &amp; Société Civile",hub_lawyer_d:"Références du Barreau et aide d'organismes indépendants.",hub_mv_d:"Trouvez votre représentant par adresse.",hub_cyber_t:"Signalement Cybercriminalité",hub_cyber_d:"Signalez harcèlement, menaces et usurpation d'identité.",hub_verify_t:"Vérifier un Document",hub_verify_d:"Faites vérifier un e-mail ou fichier suspect par l'IA.",hub_guides_t:"Guides",hub_guides_d:"Trouvez la bonne autorité par province et sujet.",
+      hub_kicker:"Six Chemins Vers la Justice",hub_file_d:"Transformez votre voix en plainte officielle.",hub_lawyer_t:"Avocat Gratuit &amp; Société Civile",hub_lawyer_d:"Avocat et ONG assortis par IA, brouillons prêts à envoyer.",hub_mv_d:"Trouvez votre représentant par adresse.",hub_cyber_t:"Signalement Cybercriminalité",hub_cyber_d:"Signalez harcèlement, menaces et usurpation d'identité.",hub_verify_t:"Vérifier un Document",hub_verify_d:"Faites vérifier un e-mail ou fichier suspect par l'IA.",hub_guides_t:"Guides",hub_guides_d:"Trouvez la bonne autorité par province et sujet.",
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
@@ -2055,7 +2055,7 @@ const V = (function(){
       hs:"向加拿大各地的市政机构、企业或房东提交投诉。",
       c1:"提交投诉",c2:"追踪我的投诉",
       t1:"匿名",t2:"AI路由",t3:"多语言",t4:"实时追踪",
-      hub_kicker:"通往正义的六条路径",hub_file_d:"把你的声音变成正式投诉。",hub_lawyer_t:"免费律师与民间组织",hub_lawyer_d:"律师公会转介及独立民间组织援助。",hub_mv_d:"按地址查找你的代表。",hub_cyber_t:"网络犯罪举报",hub_cyber_d:"举报骚扰、威胁和身份盗窃。",hub_verify_t:"核查可疑文件",hub_verify_d:"让AI检查可疑邮件或文件的风险。",hub_guides_t:"指南",hub_guides_d:"按省份和主题查找正确机构。",
+      hub_kicker:"通往正义的六条路径",hub_file_d:"把你的声音变成正式投诉。",hub_lawyer_t:"免费律师与民间组织",hub_lawyer_d:"AI匹配律师与民间组织，附现成邮件草稿。",hub_mv_d:"按地址查找你的代表。",hub_cyber_t:"网络犯罪举报",hub_cyber_d:"举报骚扰、威胁和身份盗窃。",hub_verify_t:"核查可疑文件",hub_verify_d:"让AI检查可疑邮件或文件的风险。",hub_guides_t:"指南",hub_guides_d:"按省份和主题查找正确机构。",
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
@@ -2096,7 +2096,7 @@ const V = (function(){
       hs:"Plataforma segura y rápida para realizar sus denuncias en Canadá.",
       c1:"Comenzar Queja",c2:"Rastrear mi queja",
       t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
-      hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Referencias del Colegio de Abogados y ayuda de ONG independientes.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Guías",hub_guides_d:"Encuentra la autoridad correcta por provincia y tema.",
+      hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Abogado y ONG emparejados por IA, borradores listos para enviar.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Guías",hub_guides_d:"Encuentra la autoridad correcta por provincia y tema.",
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
@@ -2137,7 +2137,7 @@ const V = (function(){
       hs:"قدّم شكاوى إلى البلديات والشركات وأصحاب العقارات في جميع أنحاء كندا.",
       c1:"تقديم شكوى",c2:"تتبع شكواي",
       t1:"مجهول",t2:"ذكاء اصطناعي",t3:"لغات",t4:"تتبع مباشر",
-      hub_kicker:"ستة طرق نحو العدالة",hub_file_d:"حوّل صوتك إلى شكوى رسمية.",hub_lawyer_t:"محامٍ مجاني ومنظمات المجتمع المدني",hub_lawyer_d:"إحالات نقابة المحامين ودعم من منظمات مستقلة.",hub_mv_d:"حدد ممثلك حسب العنوان.",hub_cyber_t:"بلاغ جريمة إلكترونية",hub_cyber_d:"أبلغ عن التحرش والتهديدات وسرقة الهوية.",hub_verify_t:"التحقق من مستند",hub_verify_d:"احصل على فحص مخاطر بالذكاء الاصطناعي لبريد أو ملف مشبوه.",hub_guides_t:"أدلة",hub_guides_d:"اعثر على الجهة المختصة حسب المقاطعة والموضوع.",
+      hub_kicker:"ستة طرق نحو العدالة",hub_file_d:"حوّل صوتك إلى شكوى رسمية.",hub_lawyer_t:"محامٍ مجاني ومنظمات المجتمع المدني",hub_lawyer_d:"محامٍ ومنظمة يُطابقهما الذكاء الاصطناعي، مع مسودات جاهزة للإرسال.",hub_mv_d:"حدد ممثلك حسب العنوان.",hub_cyber_t:"بلاغ جريمة إلكترونية",hub_cyber_d:"أبلغ عن التحرش والتهديدات وسرقة الهوية.",hub_verify_t:"التحقق من مستند",hub_verify_d:"احصل على فحص مخاطر بالذكاء الاصطناعي لبريد أو ملف مشبوه.",hub_guides_t:"أدلة",hub_guides_d:"اعثر على الجهة المختصة حسب المقاطعة والموضوع.",
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
@@ -2178,7 +2178,7 @@ const V = (function(){
       hs:"ਕੈਨੇਡਾ ਭਰ ਵਿੱਚ ਮਿਉਂਸਪੈਲਿਟੀਆਂ, ਕਾਰੋਬਾਰਾਂ ਜਾਂ ਮਕਾਨ ਮਾਲਕਾਂ ਵਿਰੁੱਧ ਸ਼ਿਕਾਇਤ ਕਰੋ।",
       c1:"ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰੋ",c2:"ਮੇਰੀ ਸ਼ਿਕਾਇਤ ਟਰੈਕ ਕਰੋ",
       t1:"ਗੁਮਨਾਮ",t2:"AI",t3:"ਭਾਸ਼ਾਵਾਂ",t4:"ਲਾਈਵ ਟਰੈਕਿੰਗ",
-      hub_kicker:"ਨਿਆਂ ਵੱਲ ਛੇ ਰਸਤੇ",hub_file_d:"ਆਪਣੀ ਆਵਾਜ਼ ਨੂੰ ਰਸਮੀ ਸ਼ਿਕਾਇਤ ਵਿੱਚ ਬਦਲੋ।",hub_lawyer_t:"ਮੁਫ਼ਤ ਵਕੀਲ ਅਤੇ ਸਿਵਲ ਸੁਸਾਇਟੀ",hub_lawyer_d:"ਲਾਅ ਸੁਸਾਇਟੀ ਰੈਫਰਲ ਅਤੇ ਸੁਤੰਤਰ ਸੰਸਥਾਵਾਂ ਦੀ ਮਦਦ।",hub_mv_d:"ਪਤੇ ਦੇ ਆਧਾਰ 'ਤੇ ਆਪਣਾ ਨੁਮਾਇੰਦਾ ਲੱਭੋ।",hub_cyber_t:"ਸਾਈਬਰ ਕ੍ਰਾਈਮ ਰਿਪੋਰਟ",hub_cyber_d:"ਪਰੇਸ਼ਾਨੀ, ਧਮਕੀਆਂ ਅਤੇ ਪਛਾਣ ਚੋਰੀ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।",hub_verify_t:"ਦਸਤਾਵੇਜ਼ ਦੀ ਜਾਂਚ ਕਰੋ",hub_verify_d:"ਸ਼ੱਕੀ ਈਮੇਲ ਜਾਂ ਫਾਈਲ ਦੀ AI ਜਾਂਚ ਕਰਵਾਓ।",hub_guides_t:"ਗਾਈਡਾਂ",hub_guides_d:"ਸੂਬੇ ਅਤੇ ਵਿਸ਼ੇ ਅਨੁਸਾਰ ਸਹੀ ਅਥਾਰਟੀ ਲੱਭੋ।",
+      hub_kicker:"ਨਿਆਂ ਵੱਲ ਛੇ ਰਸਤੇ",hub_file_d:"ਆਪਣੀ ਆਵਾਜ਼ ਨੂੰ ਰਸਮੀ ਸ਼ਿਕਾਇਤ ਵਿੱਚ ਬਦਲੋ।",hub_lawyer_t:"ਮੁਫ਼ਤ ਵਕੀਲ ਅਤੇ ਸਿਵਲ ਸੁਸਾਇਟੀ",hub_lawyer_d:"AI ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਵਕੀਲ ਅਤੇ NGO, ਭੇਜਣ ਲਈ ਤਿਆਰ ਡਰਾਫਟ।",hub_mv_d:"ਪਤੇ ਦੇ ਆਧਾਰ 'ਤੇ ਆਪਣਾ ਨੁਮਾਇੰਦਾ ਲੱਭੋ।",hub_cyber_t:"ਸਾਈਬਰ ਕ੍ਰਾਈਮ ਰਿਪੋਰਟ",hub_cyber_d:"ਪਰੇਸ਼ਾਨੀ, ਧਮਕੀਆਂ ਅਤੇ ਪਛਾਣ ਚੋਰੀ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।",hub_verify_t:"ਦਸਤਾਵੇਜ਼ ਦੀ ਜਾਂਚ ਕਰੋ",hub_verify_d:"ਸ਼ੱਕੀ ਈਮੇਲ ਜਾਂ ਫਾਈਲ ਦੀ AI ਜਾਂਚ ਕਰਵਾਓ।",hub_guides_t:"ਗਾਈਡਾਂ",hub_guides_d:"ਸੂਬੇ ਅਤੇ ਵਿਸ਼ੇ ਅਨੁਸਾਰ ਸਹੀ ਅਥਾਰਟੀ ਲੱਭੋ।",
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
@@ -3385,6 +3385,7 @@ async function doSubmit(){
 
   // Serious-case → specialist lawyer suggestion
   showLawyerSuggestion(cat, _selPri, c.location);
+  prepareLegalOutreach(c);
 
   // Show sync status under ref number
   var syncNote=document.getElementById('sync-note');
@@ -3424,6 +3425,76 @@ function showLawyerSuggestion(category,priority,location){
   var refDisp=document.getElementById('ref-disp');
   if(refDisp && refDisp.parentNode) refDisp.parentNode.insertBefore(box, refDisp.nextSibling);
 }
+
+// ── "Yasal Hak Talep Et" seçildiğinde: eşleşen avukat + STK için otomatik tanıtım maili taslağı ──
+function _guessProvinceFull(location){
+  var loc=(location||'').toLowerCase();
+  if(loc.includes('vancouver')||loc.includes('burnaby')||loc.includes('surrey')||loc.includes('victoria')||loc.includes('british columbia')||/\bbc\b/.test(loc)) return 'bc';
+  if(loc.includes('calgary')||loc.includes('edmonton')||loc.includes('alberta')) return 'ab';
+  if(loc.includes('quebec')||loc.includes('québec')||loc.includes('montreal')||loc.includes('montréal')) return 'qc';
+  if(loc.includes('winnipeg')||loc.includes('manitoba')) return 'mb';
+  if(loc.includes('regina')||loc.includes('saskatoon')||loc.includes('saskatchewan')) return 'sk';
+  return 'on';
+}
+
+async function draftOutreachEmail(c,contact,role){
+  var sys='You are Asya, drafting a short, polite introduction email on behalf of a Canadian complainant to a '+(role==='lawyer'?'lawyer referral service':'non-profit legal aid organization')+' called "'+contact.name+'". In 2-3 sentences, summarize the situation below, ask if they can help or offer a consultation, and reference the case number. Under 100 words. No markdown, no subject line. Sign off with "[Your Name]" as a placeholder. Respond ONLY in English.\n\nCase reference: '+c.ref+'\nCategory: '+(c.category||'general')+'\nSituation: '+c.desc;
+  try{
+    var raw=await _aiClassify(sys,'Draft the introduction email now.');
+    return raw?raw.trim():null;
+  }catch(e){return null;}
+}
+
+async function prepareLegalOutreach(c){
+  if(c.ctype!=='legal') return;
+  var area=CATEGORY_TO_LW_AREA[c.category];
+  if(!area) return;
+  var prov=_guessProvinceFull(c.location);
+  var list=(LAWYERS[prov]&&LAWYERS[prov][area])||[];
+  if(!list.length) return;
+  var lawyerMatch=list[0];
+  var ngoMatch=list.find(function(l){return l.badge==='FREE';})||list.find(function(l){return l.badge==='LEGAL AID';})||list[1];
+
+  var box=document.createElement('div');
+  box.id='legal-outreach-box';
+  box.style.cssText='margin-top:14px;padding:16px;border-radius:12px;background:var(--ice);border:1.5px solid var(--border)';
+  box.innerHTML='<div style="font-family:Cinzel,serif;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;color:var(--blue)">🤝 Matched For You</div><div style="font-size:.78rem;color:var(--sub);margin-bottom:10px">Asya is drafting an introduction for each — copy it and reach out yourself.</div><div id="legal-outreach-cards"><div style="text-align:center;padding:14px 0"><span class="spin"></span></div></div>';
+  var refDisp=document.getElementById('ref-disp');
+  if(refDisp && refDisp.parentNode) refDisp.parentNode.insertBefore(box, refDisp.nextSibling);
+
+  var targets=[{contact:lawyerMatch,role:'lawyer'}];
+  if(ngoMatch && ngoMatch!==lawyerMatch) targets.push({contact:ngoMatch,role:'ngo'});
+
+  var cardsHtml='';
+  for(var i=0;i<targets.length;i++){
+    var t=targets[i];
+    var draft=await draftOutreachEmail(c,t.contact,t.role);
+    var safeName=escHtml(t.contact.name);
+    var safeUrl2=safeUrl(t.contact.url);
+    cardsHtml+='<div style="background:white;border-radius:10px;padding:12px;margin-top:'+(i>0?'10px':'0')+';border:1px solid var(--border)">'+
+      '<div style="font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:6px">'+safeName+'</div>'+
+      (draft?'<div id="outreach-text-'+i+'" style="font-size:.75rem;color:var(--text);line-height:1.6;background:var(--off);border-radius:8px;padding:10px;margin-bottom:8px;white-space:pre-wrap">'+escHtml(draft)+'</div>':
+        '<div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Draft unavailable right now — you can still reach out directly.</div>')+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+        (draft?'<button onclick="_copyOutreach('+i+',this)" style="background:var(--blue);color:white;border:none;border-radius:8px;padding:8px 14px;font-size:.72rem;font-weight:700;cursor:pointer">📋 Copy</button>':'')+
+        (t.contact.phone?'<a href="tel:'+t.contact.phone+'" style="display:flex;align-items:center;background:var(--ice);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.72rem;font-weight:600;color:var(--blue);text-decoration:none">📞 '+t.contact.phone+'</a>':'')+
+        (safeUrl2?'<a href="'+safeUrl2+'" target="_blank" rel="noopener" style="display:flex;align-items:center;background:var(--ice);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.72rem;font-weight:600;color:var(--blue);text-decoration:none">Visit →</a>':'')+
+      '</div>'+
+    '</div>';
+  }
+  var cardsBox=document.getElementById('legal-outreach-cards');
+  if(cardsBox) cardsBox.innerHTML=cardsHtml;
+}
+function _copyOutreach(i,btn){
+  var el=document.getElementById('outreach-text-'+i);
+  if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(function(){
+    var orig=btn.textContent;
+    btn.textContent='✅ Copied!';
+    setTimeout(function(){btn.textContent=orig;},2000);
+  });
+}
+
 function goToLawyer(prov,area){
   goApp('lawyer');
   setTimeout(function(){
