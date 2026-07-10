@@ -47,7 +47,7 @@ service cloud.firestore {
 
   function isValidNewComplaint(d) {
     return d.keys().hasAll(['ref', 'title', 'desc', 'category', 'status', 'date', 'timeline'])
-      && d.ref is string && d.ref.matches('^VC-[0-9]{4}-[A-Z0-9]{6}$')
+      && d.ref is string && d.ref.matches('^(VC|CY)-[0-9]{4}-[A-Z0-9]{6}$')
       && d.title is string && d.title.size() > 0 && d.title.size() <= 200
       && d.desc is string && d.desc.size() > 0 && d.desc.size() <= 5000
       && d.category is string
