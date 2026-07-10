@@ -70,11 +70,15 @@
 <meta property="og:description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered, anonymous, fully documented.">
 <meta property="og:url" content="https://www.complaintca.ca/">
 <meta property="og:locale" content="en_CA">
+<meta property="og:image" content="https://www.complaintca.ca/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 
 <!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ComplaintCA — Canada's Complaint Platform">
 <meta name="twitter:description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered, anonymous, fully documented.">
+<meta name="twitter:image" content="https://www.complaintca.ca/og-image.png">
 
 <link rel="manifest" href="/manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2763,7 +2767,14 @@ function escHtml(s){
 }
 function escAttr(s){return escHtml(s).replace(/"/g,'&quot;');}
 function safeUrl(u){return u&&/^https?:\/\//i.test(u)?u:'';}
-function genRef(){return'VC-'+new Date().getFullYear()+'-'+Math.random().toString(36).toUpperCase().substring(2,7);}
+function genRef(){
+  var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I to avoid ambiguity
+  var arr=new Uint8Array(6);
+  crypto.getRandomValues(arr);
+  var s='';
+  for(var i=0;i<arr.length;i++) s+=chars[arr[i]%chars.length];
+  return 'VC-'+new Date().getFullYear()+'-'+s;
+}
 async function doSubmit(){
   // Gönderim sıklığı sınırı (anti-istismar) — aynı cihazdan ardışık gönderimi yavaşlatır
   var COOLDOWN_MS=5*60*1000;
@@ -3352,15 +3363,28 @@ function switchAuthTab(tab){
     }
   });
 }
-async function hashPass(pass,saltHex){
-  var enc=new TextEncoder();
-  var buf=await crypto.subtle.digest('SHA-256',enc.encode(saltHex+':'+pass));
-  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+function _renderMyComplaints(email){
+  var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;});
+  var uc=document.getElementById('user-complaints');
+  var ul=document.getElementById('user-complaint-list');
+  if(uc&&ul){
+    uc.style.display='block';
+    ul.innerHTML=myComplaints.length
+      ? myComplaints.map(function(c){return renderCard(c);}).join('')
+      : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
+  }
 }
-function genSalt(){
-  var arr=new Uint8Array(16);
-  crypto.getRandomValues(arr);
-  return Array.from(arr).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+function _authErrorMessage(e){
+  switch(e&&e.code){
+    case 'auth/email-already-in-use': return 'Email already registered.';
+    case 'auth/weak-password': return 'Password must be at least 6 characters.';
+    case 'auth/invalid-email': return 'Invalid email address.';
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential': return 'Email or password incorrect.';
+    case 'auth/too-many-requests': return 'Too many attempts. Please wait and try again.';
+    default: return 'Something went wrong. Please try again.';
+  }
 }
 async function doSignup(){
   var name=document.getElementById('su-name').value.trim();
@@ -3369,21 +3393,21 @@ async function doSignup(){
   var st=document.getElementById('signup-status');
   if(!name||!email||!pass){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
   if(pass.length<6){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Password must be at least 6 characters.';return;}
-  var users=JSON.parse(localStorage.getItem('cc_users')||'[]');
-  if(users.find(function(u){return u.email===email;})){
-    st.style.display='block';st.style.background='#fef3c7';st.style.color='#d97706';
-    st.textContent='Email already registered.';
-    setTimeout(function(){switchAuthTab('login');},1500);return;
+  if(!window._fbSignUp){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Sign-up is still loading, please try again in a moment.';return;}
+  try{
+    var user=await window._fbSignUp(name,email,pass);
+    st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';
+    st.textContent='Account created! Welcome, '+user.name+'.';
+    openMemberPanel(user.name,user.email);
+    _renderMyComplaints(user.email);
+  }catch(e){
+    var msg=_authErrorMessage(e);
+    st.style.display='block';
+    st.style.background=e&&e.code==='auth/email-already-in-use'?'#fef3c7':'#fee2e2';
+    st.style.color=e&&e.code==='auth/email-already-in-use'?'#d97706':'#c8102e';
+    st.textContent=msg;
+    if(e&&e.code==='auth/email-already-in-use') setTimeout(function(){switchAuthTab('login');},1500);
   }
-  var salt=genSalt();
-  var passHash=await hashPass(pass,salt);
-  var user={name:name,email:email,salt:salt,passHash:passHash,complaints:[],joined:new Date().toISOString()};
-  users.push(user);
-  localStorage.setItem('cc_users',JSON.stringify(users));
-  localStorage.setItem('cc_session',JSON.stringify({name:name,email:email}));
-  st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';
-  st.textContent='Account created! Welcome, '+name+'.';
-  setTimeout(function(){switchAuthTab('login');doLogin();},1200);
 }
 async function doGoogleSignIn(){
   var st=document.getElementById('login-status');
@@ -3395,59 +3419,29 @@ async function doGoogleSignIn(){
   try{
     if(btn) btn.style.opacity='0.6';
     var googleUser=await window._fbGoogleSignIn();
-    var users=JSON.parse(localStorage.getItem('cc_users')||'[]');
-    if(!users.find(function(u){return u.email===googleUser.email;})){
-      users.push({name:googleUser.name,email:googleUser.email,pass:null,provider:'google',complaints:[],joined:new Date().toISOString()});
-      localStorage.setItem('cc_users',JSON.stringify(users));
-    }
-    localStorage.setItem('cc_session',JSON.stringify({name:googleUser.name,email:googleUser.email}));
     openMemberPanel(googleUser.name, googleUser.email);
     if(st){st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';st.textContent='Welcome, '+googleUser.name+'!';}
-    var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===googleUser.email;});
-    var uc=document.getElementById('user-complaints');
-    var ul=document.getElementById('user-complaint-list');
-    if(uc&&ul){
-      if(myComplaints.length){
-        uc.style.display='block';
-        ul.innerHTML=myComplaints.map(function(c){return renderCard(c);}).join('');
-      } else {
-        uc.style.display='block';
-        ul.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-      }
-    }
+    _renderMyComplaints(googleUser.email);
   }catch(e){
     if(st){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Google sign-in failed. Please try again.';}
   }finally{
     if(btn) btn.style.opacity='1';
   }
 }
-  async function doLogin(){
+async function doLogin(){
   var email=document.getElementById('li-email').value.trim();
   var pass=document.getElementById('li-pass').value;
   var st=document.getElementById('login-status');
   if(!email||!pass){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
-  var users=JSON.parse(localStorage.getItem('cc_users')||'[]');
-  var candidate=users.find(function(u){return u.email===email;});
-  var user=null;
-  if(candidate&&candidate.salt&&candidate.passHash&&await hashPass(pass,candidate.salt)===candidate.passHash){
-    user=candidate;
-  }
-  if(!user){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Email or password incorrect.';return;}
-  localStorage.setItem('cc_session',JSON.stringify({name:user.name,email:user.email}));
-  st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';
-  st.textContent='Welcome back, '+user.name+'!';
-  // Show user complaints
-  var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;});
-  var uc=document.getElementById('user-complaints');
-  var ul=document.getElementById('user-complaint-list');
-  if(uc&&ul){
-    if(myComplaints.length){
-      uc.style.display='block';
-      ul.innerHTML=myComplaints.map(function(c){return renderCard(c);}).join('');
-    } else {
-      uc.style.display='block';
-      ul.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-    }
+  if(!window._fbSignIn){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Sign-in is still loading, please try again in a moment.';return;}
+  try{
+    var user=await window._fbSignIn(email,pass);
+    st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';
+    st.textContent='Welcome back, '+user.name+'!';
+    _renderMyComplaints(user.email);
+  }catch(e){
+    st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';
+    st.textContent=_authErrorMessage(e);
   }
 }
 
@@ -3486,7 +3480,7 @@ document.addEventListener('DOMContentLoaded',function(){V.init();});
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-  import{getAuth,GoogleAuthProvider,signInWithPopup}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 try{
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
@@ -3497,6 +3491,23 @@ try{
     const result=await signInWithPopup(authInst,provider);
     return {name:result.user.displayName||result.user.email,email:result.user.email};
   };
+  window._fbSignUp=async function(name,email,pass){
+    const cred=await createUserWithEmailAndPassword(authInst,email,pass);
+    await updateProfile(cred.user,{displayName:name});
+    return {name:name,email:cred.user.email};
+  };
+  window._fbSignIn=async function(email,pass){
+    const cred=await signInWithEmailAndPassword(authInst,email,pass);
+    return {name:cred.user.displayName||cred.user.email,email:cred.user.email};
+  };
+  window._fbSignOut=async function(){await signOut(authInst);};
+  onAuthStateChanged(authInst,function(user){
+    if(user){
+      localStorage.setItem('cc_session',JSON.stringify({name:user.displayName||user.email,email:user.email}));
+    }else{
+      localStorage.removeItem('cc_session');
+    }
+  });
   window._fbSave=async function(c){return await addDoc(collection(db,'complaints'),c);};
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
   window._fbMyComplaints=async function(email){const q=query(collection(db,'complaints'),where('email','==',email),limit(20));const s=await getDocs(q);var arr=[];s.forEach(function(d){arr.push(d.data());});return arr;};
@@ -3970,7 +3981,8 @@ function mpShowView(name, el){
   document.getElementById('mp-view-'+name).classList.add('active');
   el.classList.add('active');
 }
-function doLogout(){
+async function doLogout(){
+  try{if(window._fbSignOut) await window._fbSignOut();}catch(e){}
   localStorage.removeItem('cc_session');
   closeMemberPanel();
   location.reload();
