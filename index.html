@@ -3078,7 +3078,7 @@ const ASYA_T={
   tr:{greeting:"Merhaba! Ben Asya. Ne olduğunu anlat, şikayetini birlikte hazırlayalım.",tap:"Konuşmak için dokun",type_ph:"Mesajınızı yazın...",thinking:"Düşünüyorum...",listening:"Dinliyorum..."},
   fr:{greeting:"Bonjour! Je suis Asya. Dites-moi ce qui s'est passé.",tap:"Appuyez pour parler",type_ph:"Tapez votre message...",thinking:"Je réfléchis...",listening:"J'écoute..."}
 };
-let _aLang='en',_aHistory=[],_aListening=false,_aSpeaking=false,_aRec=null,_aVoiceOn=false;
+let _aLang='en',_aHistory=[],_aListening=false,_aSpeaking=false,_aMediaRecorder=null,_aAudioChunks=[],_aMicStream=null,_aVoiceOn=false;
 var VOICE_LOCALES={en:'en-US',tr:'tr-TR',fr:'fr-FR',zh:'zh-CN',es:'es-ES',ar:'ar-SA',pa:'pa-IN'};
 function _aT(k){return(ASYA_T[_aLang]||ASYA_T.en)[k]||k;}
 function _aSpeak(text){
@@ -3146,18 +3146,67 @@ function _aShowApply(text){
   };
   chat.appendChild(btn);chat.scrollTop=chat.scrollHeight;
 }
-function _aListen(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){alert('Microphone not supported. Please type.');return;}
-  if(_aListening){if(_aRec)_aRec.stop();_aListening=false;_aSetStatus('idle');return;}
+function _aBlobToBase64(blob){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onloadend=function(){
+      var result=reader.result;
+      var idx=result.indexOf(',');
+      resolve(idx>-1?result.slice(idx+1):result);
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(blob);
+  });
+}
+async function _aListen(){
+  if(_aListening){
+    if(_aMediaRecorder&&_aMediaRecorder.state!=='inactive') _aMediaRecorder.stop();
+    return;
+  }
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){
+    alert('Microphone not supported. Please type.');
+    return;
+  }
   if(_aSpeaking){window.speechSynthesis.cancel();_aSpeaking=false;}
-  _aRec=new SR();
-  _aRec.lang=VOICE_LOCALES[_aLang]||'en-US';
-  _aRec.onstart=()=>{_aListening=true;_aSetStatus('listening');};
-  _aRec.onresult=e=>{const t=e.results[0][0].transcript;_aListening=false;_aSetStatus('idle');_aHandleInput(t);};
-  _aRec.onerror=()=>{_aListening=false;_aSetStatus('idle');};
-  _aRec.onend=()=>{if(_aListening){_aListening=false;_aSetStatus('idle');}};
-  _aRec.start();
+  try{
+    _aMicStream=await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(e){
+    alert('Microphone permission denied.');
+    return;
+  }
+  _aAudioChunks=[];
+  var mimeType=(typeof MediaRecorder.isTypeSupported==='function'&&MediaRecorder.isTypeSupported('audio/webm'))?'audio/webm':'';
+  _aMediaRecorder=mimeType?new MediaRecorder(_aMicStream,{mimeType:mimeType}):new MediaRecorder(_aMicStream);
+  _aMediaRecorder.ondataavailable=function(e){if(e.data&&e.data.size>0)_aAudioChunks.push(e.data);};
+  _aMediaRecorder.onstop=async function(){
+    _aListening=false;
+    _aMicStream.getTracks().forEach(function(t){t.stop();});
+    if(!_aAudioChunks.length){_aSetStatus('idle');return;}
+    _aSetStatus('thinking');
+    try{
+      var blob=new Blob(_aAudioChunks,{type:_aMediaRecorder.mimeType||'audio/webm'});
+      var base64=await _aBlobToBase64(blob);
+      var r=await fetch('/api/groq-transcribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({audio:base64,mimeType:blob.type})
+      });
+      var d=await r.json();
+      if(d.error) throw new Error(d.error.message||'transcription failed');
+      var text=(d.text||'').trim();
+      _aSetStatus('idle');
+      if(text) _aHandleInput(text);
+    }catch(e){
+      _aSetStatus('idle');
+      _aAddMsg('asya','Sorry, I could not understand the audio. Please try typing instead.');
+    }
+  };
+  _aMediaRecorder.start();
+  _aListening=true;
+  _aSetStatus('listening');
+  setTimeout(function(){
+    if(_aListening&&_aMediaRecorder&&_aMediaRecorder.state!=='inactive') _aMediaRecorder.stop();
+  },30000);
 }
 function _aSendText(){
   const inp=document.getElementById('a-text');
