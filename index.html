@@ -955,6 +955,7 @@ textarea{resize:vertical;min-height:90px}
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
       </div>
 
       <!-- STEP I: CRIME TYPE -->
@@ -1040,8 +1041,26 @@ textarea{resize:vertical;min-height:90px}
         <label id="cy-offender-lbl">Offender's username / profile URL</label>
         <input type="text" id="cy-offender" placeholder="@username or https://..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px">
         <label id="cy-desc-lbl">What happened?</label>
-        <textarea id="cy-desc" placeholder="Describe the incident..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:90px;margin-bottom:12px;transition:border-color .2s"></textarea>
+        <textarea id="cy-desc" oninput="cyDescDebounce()" placeholder="Describe the incident..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s"></textarea>
+        <div id="cy-safety-banner" style="display:none;margin-top:12px;background:#fee2e2;border:1.5px solid #c8102e;border-radius:10px;padding:12px 14px">
+          <div style="font-size:.8rem;font-weight:700;color:#c8102e;margin-bottom:4px">🚨 If you're in immediate danger, call 911 now</div>
+          <div style="font-size:.72rem;color:#7f1d1d;line-height:1.5;margin-bottom:8px">Asya flagged language suggesting immediate physical risk. ComplaintCA is not monitored in real time — police can respond right away.</div>
+          <a href="tel:911" style="display:inline-block;background:#c8102e;color:white;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;text-decoration:none">📞 Call 911</a>
+        </div>
+        <div id="cy-ai-hint" style="display:none;margin-top:10px;font-size:.7rem;color:var(--muted)">🤖 Asya is reading for urgency and safety signals…</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="cyGoStep(3)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
+        <button onclick="cyGoStep(5)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
+      </div>
+
+      <!-- STEP V: URGENCY & CONTACT -->
+      <div id="cy-step-5" style="display:none">
+      <div class="card">
+        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">V</div><span id="cy-s5-title">Urgency &amp; Your Info</span></div>
         <label id="cy-urg-lbl">Urgency</label>
+        <div id="cy-urg-ai-note" style="display:none;font-size:.68rem;color:#1a4fa0;margin-bottom:6px">🤖 Asya suggested this based on your description — change it if it's wrong.</div>
         <div style="display:flex;gap:8px;margin-bottom:12px">
           <div class="cy-urg" onclick="selCyUrg(this,'low')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;background:white;color:var(--sub);transition:all .2s" id="cy-urg-low">Low</div>
           <div class="cy-urg" onclick="selCyUrg(this,'medium')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--yellow);background:#fef9c3;font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;color:#92400e;transition:all .2s" id="cy-urg-med">Medium</div>
@@ -1063,7 +1082,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
         <div id="cy-note" style="display:none;margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.76rem;line-height:1.5"></div>
       </div>
-      <button onclick="cyGoStep(3)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;margin-bottom:12px" id="cy-back-3-btn">← Back</button>
+      <button onclick="cyGoStep(4)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;margin-bottom:12px" id="cy-back-4-btn">← Back</button>
 
       <!-- AUTHORITIES -->
       <div id="cy-auth-box" style="background:linear-gradient(135deg,#fff5f7,#fff0f2);border:1.5px solid rgba(200,16,46,.2);border-radius:11px;padding:14px;margin-bottom:12px">
@@ -2301,7 +2320,7 @@ function updateCyberLaw(el){
 }
 
 function cyGoStep(n){
-  for(var i=1;i<=4;i++){
+  for(var i=1;i<=5;i++){
     var s=document.getElementById('cy-step-'+i);
     if(s) s.style.display=(i===n)?'block':'none';
   }
@@ -2311,14 +2330,46 @@ function cyGoStep(n){
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-var _cyUrgency='medium';
-function selCyUrg(el,level){
+var _cyUrgency='medium',_cyUrgencyTouched=false;
+function selCyUrg(el,level,fromAI){
   _cyUrgency=level;
+  if(!fromAI) _cyUrgencyTouched=true;
   document.querySelectorAll('.cy-urg').forEach(function(b){
     b.style.borderColor='var(--border)';b.style.background='white';b.style.color='var(--sub)';
   });
   if(level==='high'){el.style.borderColor='#c8102e';el.style.background='#fee2e2';el.style.color='#c8102e';}
   else{el.style.borderColor='var(--yellow)';el.style.background='#fef9c3';el.style.color='#92400e';}
+  document.getElementById('cy-urg-ai-note').style.display=(fromAI)?'block':'none';
+}
+
+var _cyDescTimer=null,_cyDescLast='';
+function cyDescDebounce(){
+  clearTimeout(_cyDescTimer);
+  _cyDescTimer=setTimeout(cySuggestSafety,1000);
+}
+async function cySuggestSafety(){
+  var desc=document.getElementById('cy-desc').value.trim();
+  if(desc.length<20 || desc===_cyDescLast) return;
+  _cyDescLast=desc;
+  var hint=document.getElementById('cy-ai-hint');
+  hint.style.display='block';
+  var sys='You are a safety triage classifier for a Canadian cyber crime reporting tool. Given an incident description, respond ONLY with strict JSON, no other text: {"urgency":"low|medium|high","immediateDanger":true|false}. immediateDanger must be true ONLY if the text describes explicit imminent physical danger (e.g. an active threat with means/opportunity, someone en route to the person\'s location, a weapon, a child in danger) — not for general harassment, insults, or past/online-only threats.';
+  try{
+    var raw=await _aiClassify(sys,desc);
+    hint.style.display='none';
+    if(!raw) return;
+    var m=raw.match(/\{[\s\S]*\}/);
+    if(!m) return;
+    var parsed=JSON.parse(m[0]);
+    if(desc!==document.getElementById('cy-desc').value.trim()) return; // kullanıcı yazmaya devam etmiş olabilir
+    if(parsed.immediateDanger){
+      document.getElementById('cy-safety-banner').style.display='block';
+    }
+    if(['low','medium','high'].indexOf(parsed.urgency)>-1 && !_cyUrgencyTouched){
+      var btn=parsed.urgency==='high'?document.getElementById('cy-urg-hi-btn'):(parsed.urgency==='low'?document.getElementById('cy-urg-low'):document.getElementById('cy-urg-med'));
+      selCyUrg(btn,parsed.urgency,true);
+    }
+  }catch(e){hint.style.display='none';}
 }
 function toggleCyAnon(){
   var tog=document.getElementById('cy-anon-tog');
@@ -2423,7 +2474,9 @@ function resetCyberForm(){
   document.getElementById('cy-anon-tog').classList.add('on');
   document.getElementById('cy-id-fields').style.display='none';
   document.querySelectorAll('.cy-plat.cyp-sel').forEach(function(e){e.classList.remove('cyp-sel');});
+  _cyUrgencyTouched=false;_cyDescLast='';
   selCyUrg(document.getElementById('cy-urg-med'),'medium');
+  document.getElementById('cy-safety-banner').style.display='none';
   var firstCrime=document.querySelector('.cy-crime');
   if(firstCrime) selCyberCrime(firstCrime);
   document.getElementById('cy-success').style.display='none';
