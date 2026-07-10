@@ -2106,11 +2106,11 @@ async function loadPublicFeed(){
   var html=items.map(function(c){
     var color=catColors[c.category]||catColors.default;
     var ago=c.date?timeAgo(c.date):'';
-    var title=c.anonymous?c.title:'['+V.t('t1')+']';
-    var loc=c.location?c.location.split(',')[0]:'Canada';
+    var title=escHtml(c.anonymous?c.title:'['+V.t('t1')+']');
+    var loc=escHtml(c.location?c.location.split(',')[0]:'Canada');
     var catRaw=c.category||'general';
     var catK=catKeyMap[catRaw];
-    var cat=catK?V.t(catK):(catRaw.charAt(0).toUpperCase()+catRaw.slice(1));
+    var cat=escHtml(catK?V.t(catK):(catRaw.charAt(0).toUpperCase()+catRaw.slice(1)));
     return '<div style="padding:10px 0;border-bottom:1px solid var(--off);display:flex;gap:10px;align-items:flex-start">'+
       '<div style="width:8px;height:8px;border-radius:50%;background:'+color+';flex-shrink:0;margin-top:5px"></div>'+
       '<div style="flex:1;min-width:0">'+
@@ -3194,7 +3194,17 @@ function switchAuthTab(tab){
     }
   });
 }
-function doSignup(){
+async function hashPass(pass,saltHex){
+  var enc=new TextEncoder();
+  var buf=await crypto.subtle.digest('SHA-256',enc.encode(saltHex+':'+pass));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+}
+function genSalt(){
+  var arr=new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+}
+async function doSignup(){
   var name=document.getElementById('su-name').value.trim();
   var email=document.getElementById('su-email').value.trim();
   var pass=document.getElementById('su-pass').value;
@@ -3207,7 +3217,9 @@ function doSignup(){
     st.textContent='Email already registered.';
     setTimeout(function(){switchAuthTab('login');},1500);return;
   }
-  var user={name:name,email:email,pass:btoa(pass),complaints:[],joined:new Date().toISOString()};
+  var salt=genSalt();
+  var passHash=await hashPass(pass,salt);
+  var user={name:name,email:email,salt:salt,passHash:passHash,complaints:[],joined:new Date().toISOString()};
   users.push(user);
   localStorage.setItem('cc_users',JSON.stringify(users));
   localStorage.setItem('cc_session',JSON.stringify({name:name,email:email}));
@@ -3257,7 +3269,11 @@ async function doGoogleSignIn(){
   var st=document.getElementById('login-status');
   if(!email||!pass){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
   var users=JSON.parse(localStorage.getItem('cc_users')||'[]');
-  var user=users.find(function(u){return u.email===email&&u.pass===btoa(pass);});
+  var candidate=users.find(function(u){return u.email===email;});
+  var user=null;
+  if(candidate&&candidate.salt&&candidate.passHash&&await hashPass(pass,candidate.salt)===candidate.passHash){
+    user=candidate;
+  }
   if(!user){st.style.display='block';st.style.background='#fee2e2';st.style.color='#c8102e';st.textContent='Email or password incorrect.';return;}
   localStorage.setItem('cc_session',JSON.stringify({name:user.name,email:user.email}));
   st.style.display='block';st.style.background='#dcfce7';st.style.color='#16a34a';
@@ -3363,10 +3379,10 @@ try{
         var d=doc.data();
         var color=catColors[d.category]||'#1a4fa0';
         var ago=d.date?window._timeAgo(d.date):'';
-        var title=d.title||(d.desc?d.desc.substring(0,45)+'…':d.content?d.content.substring(0,45)+'…':V.t('feed_default_title'));
-        var loc=d.location?d.location.split(',')[0]:'Canada';
-        var cat=catLabel(d.category||'general');
-        var desc=d.desc||d.content||'';
+        var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':d.content?d.content.substring(0,45)+'…':V.t('feed_default_title')));
+        var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
+        var cat=escHtml(catLabel(d.category||'general'));
+        var desc=escHtml(d.desc||d.content||'');
         var uid='fc-'+i;
         html+='<div style="background:white;border-radius:12px;border:1px solid #dbeafe;margin-bottom:10px;overflow:hidden">'+
           '<div onclick="toggleFeedCard(\''+uid+'\')" style="padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer">'+
@@ -3404,10 +3420,10 @@ try{
       items.forEach(function(d){
         var pri=priBadge[d.priority]||priBadge.medium;
         var ago=d.date?window._timeAgo(d.date):'';
-        var title=d.title||(d.desc?d.desc.substring(0,45)+'…':V.t('feed_default_title'));
-        var loc=d.location?d.location.split(',')[0]:'Canada';
-        var cat=catLabel(d.category||'general');
-        var desc=d.desc?(d.desc.length>140?d.desc.substring(0,140)+'…':d.desc):'';
+        var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':V.t('feed_default_title')));
+        var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
+        var cat=escHtml(catLabel(d.category||'general'));
+        var desc=escHtml(d.desc?(d.desc.length>140?d.desc.substring(0,140)+'…':d.desc):'');
         html+='<div class="lex-card">'+
           '<div class="lex-tags">'+
             '<span class="lex-cat">'+cat+'</span>'+
