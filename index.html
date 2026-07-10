@@ -886,6 +886,14 @@ textarea{resize:vertical;min-height:90px}
         <div id="lw-sub" style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6">Official referral services by province. Licensed, verified Canadian lawyers.</div>
       </div>
 
+      <!-- STEP PROGRESS -->
+      <div style="display:flex;gap:6px;margin-bottom:14px" id="lw-progress">
+        <div class="lw-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--blue)"></div>
+        <div class="lw-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+        <div class="lw-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+      </div>
+
+      <div id="lw-step-1">
       <div class="card" style="margin-bottom:16px">
         <div class="ct"><div class="ci" style="background:rgba(201,168,76,.12);color:#a8882e;border-color:rgba(201,168,76,.25)">I</div><span id="lw-step1-title">Province</span></div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px" id="lw-provs">
@@ -897,7 +905,10 @@ textarea{resize:vertical;min-height:90px}
           <div class="lw-prov" data-prov="sk" onclick="selLwProv('sk',this)" style="border:1.5px solid var(--border);background:white;border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;transition:all .2s">Saskatchewan</div>
         </div>
       </div>
+      <button onclick="lwGoStep(2)" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
 
+      <div id="lw-step-2" style="display:none">
       <div class="card" style="margin-bottom:16px">
         <div class="ct"><div class="ci" style="background:rgba(201,168,76,.12);color:#a8882e;border-color:rgba(201,168,76,.25)">II</div><span id="lw-step2-title">Practice Area</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px" id="lw-areas">
@@ -909,7 +920,13 @@ textarea{resize:vertical;min-height:90px}
           <div class="lw-area" data-area="family" onclick="selLwArea('family',this)" style="border:1.5px solid var(--border);background:white;border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">👨‍👩‍👧</span><div><div id="ar-family-t" style="font-size:.7rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif">Family Law</div><div id="ar-family-s" style="font-size:.62rem;color:var(--muted)">Divorce, custody</div></div></div>
         </div>
       </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="lwGoStep(1)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
+        <button onclick="lwGoStep(3)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
+      </div>
 
+      <div id="lw-step-3" style="display:none">
       <div id="lw-results"></div>
 
       <div style="margin-top:16px;background:linear-gradient(135deg,#0f2952,#1a4fa0);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goApp('lawyerpanel')">
@@ -918,6 +935,8 @@ textarea{resize:vertical;min-height:90px}
           <div style="font-family:Cinzel,serif;font-size:.8rem;font-weight:700;color:white" id="lw-panel-cta-t">Are you a lawyer?</div>
           <div style="font-size:.7rem;color:rgba(255,255,255,.65)" id="lw-panel-cta-s">Browse the open case feed →</div>
         </div>
+      </div>
+      <button onclick="lwGoStep(2)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;margin-top:12px">← Back</button>
       </div>
     </div>
 
@@ -1419,6 +1438,17 @@ var LAWYERS = {
     family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   }
 };
+
+function lwGoStep(n){
+  for(var i=1;i<=3;i++){
+    var s=document.getElementById('lw-step-'+i);
+    if(s) s.style.display=(i===n)?'block':'none';
+  }
+  var dots=document.querySelectorAll('#lw-progress .lw-prog-dot');
+  dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
+  var box=document.getElementById('view-lawyer');
+  if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 function selLwProv(prov, el) {
   _lwProv = prov;
@@ -3314,6 +3344,7 @@ function goToLawyer(prov,area){
     var areaEl=document.querySelector('.lw-area[data-area="'+area+'"]');
     if(provEl) selLwProv(prov,provEl);
     if(areaEl) selLwArea(area,areaEl);
+    lwGoStep(3); // eyalet+alan zaten seçili geldi, adım 1-2'yi atla
   },150);
 }
 function resetForm(){
