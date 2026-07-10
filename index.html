@@ -949,7 +949,16 @@ textarea{resize:vertical;min-height:90px}
         </div>
       </div>
 
+      <!-- STEP PROGRESS -->
+      <div style="display:flex;gap:6px;margin-bottom:14px" id="cy-progress">
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:#c8102e"></div>
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+      </div>
+
       <!-- STEP I: CRIME TYPE -->
+      <div id="cy-step-1">
       <div class="card">
         <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">I</div><span id="cy-s1-title">What type of offence?</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -979,8 +988,11 @@ textarea{resize:vertical;min-height:90px}
           </div>
         </div>
       </div>
+      <button onclick="cyGoStep(2)" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
 
       <!-- STEP II: PLATFORM -->
+      <div id="cy-step-2" style="display:none">
       <div class="card">
         <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">II</div><span id="cy-s2-title">Where did it happen?</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:7px">
@@ -995,8 +1007,14 @@ textarea{resize:vertical;min-height:90px}
           <div class="cy-plat" data-platform="Other" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:white;transition:all .18s">📌 <span id="cy-other-lbl">Other</span></div>
         </div>
       </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="cyGoStep(1)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
+        <button onclick="cyGoStep(3)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
+      </div>
 
       <!-- STEP III: EVIDENCE -->
+      <div id="cy-step-3" style="display:none">
       <div class="card">
         <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">III</div><span id="cy-s3-title">Upload Evidence</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px" id="cy-thumb-grid"></div>
@@ -1009,8 +1027,14 @@ textarea{resize:vertical;min-height:90px}
         <input type="file" id="cy-file-input" accept="image/*,video/*" multiple style="display:none" onchange="addCyberPhotos(this)">
         <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Include offender's username, profile URL, and timestamps in screenshots.</div>
       </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="cyGoStep(2)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
+        <button onclick="cyGoStep(4)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+      </div>
+      </div>
 
       <!-- STEP IV: DESCRIBE -->
+      <div id="cy-step-4" style="display:none">
       <div class="card">
         <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">IV</div><span id="cy-s4-title">Describe the Incident</span></div>
         <label id="cy-offender-lbl">Offender's username / profile URL</label>
@@ -1039,6 +1063,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
         <div id="cy-note" style="display:none;margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.76rem;line-height:1.5"></div>
       </div>
+      <button onclick="cyGoStep(3)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;margin-bottom:12px" id="cy-back-3-btn">← Back</button>
 
       <!-- AUTHORITIES -->
       <div id="cy-auth-box" style="background:linear-gradient(135deg,#fff5f7,#fff0f2);border:1.5px solid rgba(200,16,46,.2);border-radius:11px;padding:14px;margin-bottom:12px">
@@ -1075,6 +1100,7 @@ textarea{resize:vertical;min-height:90px}
         <div style="background:var(--ice);border:1.5px solid var(--border);border-radius:10px;padding:14px 20px;display:inline-block;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--blue);letter-spacing:2px;margin-bottom:20px" id="cy-ref-disp"></div>
         <br>
         <button onclick="resetCyberForm()" style="background:var(--ice);color:var(--blue);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 24px;font-size:.88rem;font-weight:600;cursor:pointer" id="cy-another-btn">Submit Another</button>
+      </div>
       </div>
 
     </div>
@@ -2274,6 +2300,17 @@ function updateCyberLaw(el){
   }).join('');
 }
 
+function cyGoStep(n){
+  for(var i=1;i<=4;i++){
+    var s=document.getElementById('cy-step-'+i);
+    if(s) s.style.display=(i===n)?'block':'none';
+  }
+  var dots=document.querySelectorAll('#cy-progress .cy-prog-dot');
+  dots.forEach(function(d,i){d.style.background=(i<n)?'#c8102e':'var(--off)';});
+  var box=document.getElementById('view-cyber');
+  if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 var _cyUrgency='medium';
 function selCyUrg(el,level){
   _cyUrgency=level;
@@ -2391,6 +2428,7 @@ function resetCyberForm(){
   if(firstCrime) selCyberCrime(firstCrime);
   document.getElementById('cy-success').style.display='none';
   document.getElementById('cy-sub-btn').style.display='block';
+  cyGoStep(1);
 }
 function toggleLegal(tog){
   tog.classList.toggle('on');
