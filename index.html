@@ -220,10 +220,10 @@ body{font-family:'Inter',sans-serif;background:#0f2952;color:#0f172a;-webkit-fon
 #tab-lawyer.active{color:#c9a84c!important;border-bottom-color:#c9a84c!important}
 #tab-cyber.active{color:#c8102e!important;border-bottom-color:#c8102e!important}
 @keyframes cpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(200,16,46,.5)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(200,16,46,0)}}
-.cy-plat.cyp-sel{border-color:#c8102e!important;background:#c8102e!important;color:white!important}
-.cy-crime.sel{border-color:#c8102e!important;background:linear-gradient(160deg,#fff0f2,#fff8f9)!important}
-.cy-crime.sel div:first-child{background:rgba(200,16,46,.12)!important}
-#cy-dropzone:hover{border-color:#f87171;background:#fff5f7}
+.cy-plat.cyp-sel{border-color:var(--blue)!important;background:var(--blue)!important;color:white!important}
+.cy-crime.sel{border-color:var(--blue)!important;background:linear-gradient(160deg,#e8f0fe,#f4f8ff)!important}
+.cy-crime.sel div:first-child{background:rgba(26,79,160,.12)!important}
+#cy-dropzone:hover{border-color:#93c5fd;background:#f0f7ff}
 .amain{max-width:680px;margin:0 auto;padding:74px 16px 100px;min-height:calc(100vh - 58px)}
 .card{background:white;border-radius:var(--radius);box-shadow:var(--shsm);border:1px solid var(--border);padding:20px;margin-bottom:16px}
 .ct{font-family:'Cinzel',serif;font-size:.85rem;font-weight:600;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:.5px}
@@ -939,22 +939,15 @@ textarea{resize:vertical;min-height:90px}
     <!-- CYBER CRIME VIEW -->
     <div id="view-cyber" style="display:none">
       <!-- BANNER -->
-      <div style="background:linear-gradient(135deg,#1a0a0e 0%,#2d0f17 40%,#0f1a2e 100%);border-radius:14px;padding:22px 18px;margin-bottom:16px;position:relative;overflow:hidden">
-        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(200,16,46,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,16,46,.04) 1px,transparent 1px);background-size:32px 32px;pointer-events:none"></div>
-        <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(200,16,46,.15) 0%,transparent 70%);pointer-events:none"></div>
-        <div style="position:relative;z-index:1">
-          <div style="font-family:'Cinzel',serif;font-size:.62rem;font-weight:700;color:rgba(200,16,46,.9);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-            <span style="width:6px;height:6px;border-radius:50%;background:#c8102e;display:inline-block;animation:cpulse 1.5s ease-in-out infinite"></span>
-            ONLINE OFFENCE REPORTING
-          </div>
+      <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:14px;padding:22px 18px;margin-bottom:16px">
+        <div style="font-family:'Cinzel',serif;font-size:.62rem;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">ONLINE OFFENCE REPORTING</div>
           <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:white;margin-bottom:6px">Report a Cyber Crime</div>
-          <div style="font-size:.73rem;color:rgba(255,255,255,.55);line-height:1.65" id="cy-banner-sub">Report harassment, threats, and identity theft. Upload your evidence — we route to relevant Canadian authorities.</div>
-        </div>
+          <div style="font-size:.73rem;color:rgba(255,255,255,.7);line-height:1.65" id="cy-banner-sub">Report harassment, threats, and identity theft. Upload your evidence — we'll email you a reference number and the right Canadian authority to contact.</div>
       </div>
 
       <!-- STEP PROGRESS -->
       <div style="display:flex;gap:6px;margin-bottom:14px" id="cy-progress">
-        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:#c8102e"></div>
+        <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--blue)"></div>
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         <div class="cy-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
@@ -964,31 +957,31 @@ textarea{resize:vertical;min-height:90px}
       <!-- STEP I: CRIME TYPE -->
       <div id="cy-step-1">
       <div class="card">
-        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">I</div><span id="cy-s1-title">What type of offence?</span></div>
+        <div class="ct"><div class="ci">I</div><span id="cy-s1-title">What type of offence?</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div class="cy-crime sel" data-label="Harassment" onclick="selCyberCrime(this)" style="border:1.5px solid #c8102e;background:linear-gradient(160deg,#fff0f2,#fff8f9);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(200,16,46,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">😡</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:#c8102e;font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c1-t">Harassment</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c1-s">Abusive messages</div></div>
+          <div class="cy-crime sel" data-label="Harassment" onclick="selCyberCrime(this)" style="border:1.5px solid var(--blue);background:linear-gradient(160deg,#e8f0fe,#f4f8ff);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(26,79,160,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">😡</div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--blue);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c1-t">Harassment</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c1-s">Abusive messages</div></div>
           </div>
           <div class="cy-crime" data-label="Threats" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:white;border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🔪</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c2-t">Threats</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c2-s">Physical / death threats</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c2-t">Threats</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c2-s">Physical / death threats</div></div>
           </div>
           <div class="cy-crime" data-label="Stalking" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:white;border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">👁️</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c3-t">Stalking</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c3-s">Persistent tracking, messages</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c3-t">Stalking</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c3-s">Persistent tracking, messages</div></div>
           </div>
           <div class="cy-crime" data-label="Unauthorized Images" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:white;border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📸</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c4-t">Unauthorized Images</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c4-s">Photo/video sharing</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c4-s">Photo/video sharing</div></div>
           </div>
           <div class="cy-crime" data-label="Fake Profile" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:white;border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🎭</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c5-t">Fake Profile</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c5-s">Impersonation, deepfake</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c5-s">Impersonation, deepfake</div></div>
           </div>
           <div class="cy-crime" data-label="Fraud" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:white;border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">💳</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" id="cy-c6-t">Fraud</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c6-s">Scam, phishing</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--navy);font-family:'Cinzel',serif;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c6-t">Fraud</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c6-s">Scam, phishing</div></div>
           </div>
         </div>
       </div>
@@ -998,7 +991,7 @@ textarea{resize:vertical;min-height:90px}
       <!-- STEP II: PLATFORM -->
       <div id="cy-step-2" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">II</div><span id="cy-s2-title">Where did it happen?</span></div>
+        <div class="ct"><div class="ci">II</div><span id="cy-s2-title">Where did it happen?</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:7px">
           <div class="cy-plat" data-platform="Facebook" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:white;transition:all .18s">📘 Facebook</div>
           <div class="cy-plat" data-platform="Instagram" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:white;transition:all .18s">📸 Instagram</div>
@@ -1020,13 +1013,13 @@ textarea{resize:vertical;min-height:90px}
       <!-- STEP III: EVIDENCE -->
       <div id="cy-step-3" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">III</div><span id="cy-s3-title">Upload Evidence</span></div>
+        <div class="ct"><div class="ci">III</div><span id="cy-s3-title">Upload Evidence</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px" id="cy-thumb-grid"></div>
         <label style="border:2px dashed var(--border);border-radius:11px;padding:20px;text-align:center;cursor:pointer;display:block;transition:all .2s;background:white" id="cy-dropzone" onclick="document.getElementById('cy-file-input').click()">
           <div style="font-size:1.8rem;margin-bottom:8px">📁</div>
           <div style="font-family:'Cinzel',serif;font-size:.75rem;font-weight:700;color:var(--navy);margin-bottom:4px" id="cy-drop-title">Drop screenshots here</div>
           <div style="font-size:.68rem;color:var(--muted);line-height:1.55" id="cy-drop-sub">PNG, JPG, MP4 · Max 10 files<br>Screen recordings also accepted</div>
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.2);border-radius:20px;padding:4px 10px;font-size:.62rem;font-weight:700;color:#c8102e;font-family:'Cinzel',serif;letter-spacing:.5px;margin-top:8px">🔒 <span id="cy-enc-lbl">ENCRYPTED UPLOAD</span></div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:4px 10px;font-size:.62rem;font-weight:700;color:var(--dark-gold);font-family:'Cinzel',serif;letter-spacing:.5px;margin-top:8px">🔒 <span id="cy-enc-lbl">ENCRYPTED UPLOAD</span></div>
         </label>
         <input type="file" id="cy-file-input" accept="image/*,video/*" multiple style="display:none" onchange="addCyberPhotos(this)">
         <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Include offender's username, profile URL, and timestamps in screenshots.</div>
@@ -1045,7 +1038,7 @@ textarea{resize:vertical;min-height:90px}
       <!-- STEP IV: DESCRIBE -->
       <div id="cy-step-4" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">IV</div><span id="cy-s4-title">Describe the Incident</span></div>
+        <div class="ct"><div class="ci">IV</div><span id="cy-s4-title">Describe the Incident</span></div>
         <label id="cy-offender-lbl">Offender's username / profile URL</label>
         <input type="text" id="cy-offender" placeholder="@username or https://..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px">
         <label id="cy-desc-lbl">What happened?</label>
@@ -1066,7 +1059,7 @@ textarea{resize:vertical;min-height:90px}
       <!-- STEP V: URGENCY & CONTACT -->
       <div id="cy-step-5" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci" style="background:rgba(200,16,46,.1);color:#c8102e;border:1px solid rgba(200,16,46,.2)">V</div><span id="cy-s5-title">Urgency &amp; Your Info</span></div>
+        <div class="ct"><div class="ci">V</div><span id="cy-s5-title">Urgency &amp; Your Info</span></div>
         <label id="cy-urg-lbl">Urgency</label>
         <div id="cy-urg-ai-note" style="display:none;font-size:.68rem;color:#1a4fa0;margin-bottom:6px">🤖 Asya suggested this based on your description — change it if it's wrong.</div>
         <div style="display:flex;gap:8px;margin-bottom:12px">
@@ -1093,27 +1086,27 @@ textarea{resize:vertical;min-height:90px}
       <button onclick="cyGoStep(4)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;margin-bottom:12px" id="cy-back-4-btn">← Back</button>
 
       <!-- AUTHORITIES -->
-      <div id="cy-auth-box" style="background:linear-gradient(135deg,#fff5f7,#fff0f2);border:1.5px solid rgba(200,16,46,.2);border-radius:11px;padding:14px;margin-bottom:12px">
-        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:#c8102e;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px" id="cy-auth-title">🏛️ Relevant Authorities &amp; Law</div>
+      <div id="cy-auth-box" style="background:var(--off);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:12px">
+        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:var(--navy);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px" id="cy-auth-title">🏛️ Relevant Authorities &amp; Law</div>
         <div id="cy-law-pills" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.18);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:#c8102e;line-height:1.4">⚖️ Criminal Code s.264 — Criminal Harassment</div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.18);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:#c8102e;line-height:1.4">⚖️ Canadian Human Rights Act s.13 — Hate Speech</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:var(--ice);border:1px solid rgba(26,79,160,.15);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:var(--blue);line-height:1.4">⚖️ Criminal Code s.264 — Criminal Harassment</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:var(--ice);border:1px solid rgba(26,79,160,.15);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:var(--blue);line-height:1.4">⚖️ Canadian Human Rights Act s.13 — Hate Speech</div>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(200,16,46,.1)">
-          <div style="width:8px;height:8px;border-radius:50%;background:#c8102e;flex-shrink:0;margin-top:4px"></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px"></div>
           <div><div style="font-size:.78rem;font-weight:600;color:var(--navy)">RCMP — National Cybercrime Coordination Unit (NC3)</div><div style="font-size:.68rem;color:var(--muted);margin-top:1px">cybercrime.gc.ca · 1-800-387-0020</div></div>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(200,16,46,.1)">
-          <div style="width:8px;height:8px;border-radius:50%;background:#c8102e;flex-shrink:0;margin-top:4px"></div>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px"></div>
           <div><div style="font-size:.78rem;font-weight:600;color:var(--navy)">Canadian Anti-Fraud Centre</div><div style="font-size:.68rem;color:var(--muted);margin-top:1px">antifraudcentre-centreantifraude.ca · 1-888-495-8501</div></div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0">
-          <div style="width:8px;height:8px;border-radius:50%;background:#c8102e;flex-shrink:0;margin-top:4px"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px"></div>
           <div><div style="font-size:.78rem;font-weight:600;color:var(--navy)">Ontario Provincial Police — Cyber Unit</div><div style="font-size:.68rem;color:var(--muted);margin-top:1px">opp.ca/cybercrime · Ontario residents</div></div>
         </div>
       </div>
 
-      <div style="font-size:.73rem;color:#7f1d1d;background:#fff5f7;border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.55;border-left:3px solid #c8102e" id="cy-warning">
+      <div style="font-size:.72rem;color:var(--sub);background:var(--off);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.55" id="cy-warning">
         ⚠️ Submitting false reports is a criminal offence. Evidence you upload will only be shared with the relevant Canadian authority. We do not contact the offender directly.
       </div>
 
@@ -2300,11 +2293,15 @@ function selCyberCrime(el){
     c.style.border='1.5px solid var(--border)';
     c.style.background='white';
     c.querySelector('div').style.background='var(--off)';
+    var t=c.querySelector('.cy-crime-title');
+    if(t) t.style.color='var(--navy)';
   });
   el.classList.add('sel');
-  el.style.border='1.5px solid #c8102e';
-  el.style.background='linear-gradient(160deg,#fff0f2,#fff8f9)';
-  el.querySelector('div').style.background='rgba(200,16,46,.12)';
+  el.style.border='1.5px solid var(--blue)';
+  el.style.background='linear-gradient(160deg,#e8f0fe,#f4f8ff)';
+  el.querySelector('div').style.background='rgba(26,79,160,.12)';
+  var selTitle=el.querySelector('.cy-crime-title');
+  if(selTitle) selTitle.style.color='var(--blue)';
   updateCyberLaw(el);
 }
 
@@ -2326,7 +2323,7 @@ function updateCyberLaw(el){
   var box=document.getElementById('cy-law-pills');
   if(!box) return;
   box.innerHTML=laws.split('\n').map(function(l){
-    return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(200,16,46,.07);border:1px solid rgba(200,16,46,.18);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:#c8102e;line-height:1.4">'+l+'</div>';
+    return '<div style="display:inline-flex;align-items:center;gap:6px;background:var(--ice);border:1px solid rgba(26,79,160,.15);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:var(--blue);line-height:1.4">'+l+'</div>';
   }).join('');
 }
 
@@ -2336,7 +2333,7 @@ function cyGoStep(n){
     if(s) s.style.display=(i===n)?'block':'none';
   }
   var dots=document.querySelectorAll('#cy-progress .cy-prog-dot');
-  dots.forEach(function(d,i){d.style.background=(i<n)?'#c8102e':'var(--off)';});
+  dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
   var box=document.getElementById('view-cyber');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
 }
