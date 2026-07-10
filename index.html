@@ -1729,7 +1729,7 @@ const V = (function(){
       su_title:"Create Account",su_name:"Full Name",su_email:"Email",su_pass:"Password",su_min:"Min. 6 characters",su_btn:"Create Free Account",su_free:"Free forever · No credit card needed",
       my_complaints:"My Complaints",
       mv_card_t:"Reach Your Representative",mv_card_s:"If your complaint wasn't resolved, you can escalate it to your local MP / MPP for pressure.",mv_card_btn:"🔎 Find Representative",
-      feed_card_t:"Recent Complaints (Live Feed)",feed_loading:"Loading...",feed_none:"No complaints yet.",feed_error:"Feed could not be loaded.",feed_footer:"Last 20 complaints · Live updating",feed_default_title:"Complaint",
+      feed_card_t:"Recent Complaints (Live Feed)",feed_loading:"Loading...",feed_none:"No complaints yet.",feed_none_sub:"Be the first — file a complaint and it will appear here in real time.",feed_error:"Feed could not be loaded.",feed_footer:"Last 20 complaints · Live updating",feed_default_title:"Complaint",
       mv_title:"Find Your Representative",mv_sub:"Find your representative by address",
       mv_addr_lbl:"Your Address",mv_addr_ph:"e.g. 123 Queen St W, Toronto, ON",mv_go:"Find",
       mv_hint:"Enter street, city and province. Federal (MP) and provincial (MPP/MLA) representatives will be listed.",
@@ -1806,7 +1806,7 @@ const V = (function(){
       su_title:"Hesap Oluştur",su_name:"Ad Soyad",su_email:"E-posta",su_pass:"Şifre",su_min:"En az 6 karakter",su_btn:"Ücretsiz Hesap Oluştur",su_free:"Sonsuza dek ücretsiz · Kredi kartı gerekmez",
       my_complaints:"Şikayetlerim",
       mv_card_t:"Temsilcinize Ulaşın",mv_card_s:"Şikayetiniz çözülmediyse, bölgenizin milletvekiline (MP / MPP) ileterek baskı oluşturabilirsiniz.",mv_card_btn:"🔎 Milletvekili Bul",
-      feed_card_t:"Son Şikayetler (Canlı Akış)",feed_loading:"Yükleniyor...",feed_none:"Henüz şikayet bulunmuyor.",feed_error:"Akış yüklenemedi.",feed_footer:"Son 20 şikayet · Canlı güncelleniyor",feed_default_title:"Şikayet",
+      feed_card_t:"Son Şikayetler (Canlı Akış)",feed_loading:"Yükleniyor...",feed_none:"Henüz şikayet bulunmuyor.",feed_none_sub:"İlk şikayeti sen gönder — anında burada, canlı olarak görünsün.",feed_error:"Akış yüklenemedi.",feed_footer:"Son 20 şikayet · Canlı güncelleniyor",feed_default_title:"Şikayet",
       mv_title:"Milletvekili Bul",mv_sub:"Adresinizle temsilcinizi bulun",
       mv_addr_lbl:"Adresiniz",mv_addr_ph:"örn. 123 Queen St W, Toronto, ON",mv_go:"Bul",
       mv_hint:"Cadde, şehir ve eyaleti yazın. Federal (MP) ve eyalet (MPP/MLA) temsilcileriniz listelenir.",
@@ -2177,7 +2177,16 @@ async function loadPublicFeed(){
   var all=JSON.parse(localStorage.getItem('vc_comp')||'[]');
   items=all.slice(0,10);
 
-  if(!items.length){boxes.forEach(function(b){b.innerHTML='<div class="empty">'+V.t('feed_none')+'</div>';});return;}
+  if(!items.length){
+    var emptyHtml='<div style="text-align:center;padding:40px 20px">'+
+      '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🗂️</div>'+
+      '<div style="color:#e2e8f0;font-size:.92rem;font-weight:700;margin-bottom:6px">'+V.t('feed_none')+'</div>'+
+      '<div style="color:#94a3b8;font-size:.8rem;line-height:1.6;max-width:32ch;margin:0 auto 18px">'+V.t('feed_none_sub')+'</div>'+
+      '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px">'+V.t('feed_new_btn')+'</button>'+
+    '</div>';
+    boxes.forEach(function(b){b.innerHTML=emptyHtml;});
+    return;
+  }
   var catColors={noise:'#3b82f6',property:'#f97316',billing:'#8b5cf6',disc:'#c8102e',garbage:'#16a34a',safety:'#d97706',harassment:'#c8102e',wages:'#16a34a',default:'#1a4fa0'};
   var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
   var html=items.map(function(c){
@@ -3523,7 +3532,12 @@ try{
     }
 
     function renderFeedHTML(snapshot){
-      if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:#94a3b8;font-size:.82rem">'+V.t('feed_none')+'</div>';
+      if(snapshot.empty) return '<div style="text-align:center;padding:40px 20px">'+
+        '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🗂️</div>'+
+        '<div style="color:#e2e8f0;font-size:.92rem;font-weight:700;margin-bottom:6px">'+V.t('feed_none')+'</div>'+
+        '<div style="color:#94a3b8;font-size:.8rem;line-height:1.6;max-width:32ch;margin:0 auto 18px">'+V.t('feed_none_sub')+'</div>'+
+        '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px">'+V.t('feed_new_btn')+'</button>'+
+      '</div>';
       var html='';
       var i=0;
       snapshot.forEach(function(doc){
