@@ -932,7 +932,7 @@ textarea{resize:vertical;min-height:90px}
       <div id="lawyer-panel-feed"></div>
       <div class="lex-partner">
         <div class="lex-partner-text" id="lwp-partner-text">Want full contact details on these cases? Partner Lawyer access is available for a flat monthly fee — unrelated to case outcome.</div>
-        <a href="mailto:kasimdemirca@gmail.com?subject=Partner%20Lawyer%20Access" class="lex-btn" id="lwp-partner-btn">Become a Partner Lawyer</a>
+        <a href="mailto:complaintcaca@gmail.com?subject=Partner%20Lawyer%20Access" class="lex-btn" id="lwp-partner-btn">Become a Partner Lawyer</a>
       </div>
     </div>
 
@@ -1123,8 +1123,9 @@ textarea{resize:vertical;min-height:90px}
       <div id="cy-success" style="display:none;text-align:center;padding:40px 20px">
         <div style="font-size:3rem;margin-bottom:16px">🛡️</div>
         <div style="font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:8px" id="cy-suc-title">Report Submitted</div>
-        <div style="font-size:.83rem;color:var(--sub);margin-bottom:20px" id="cy-suc-sub">Your cyber crime report has been received. We will route it to the relevant Canadian authority.</div>
+        <div style="font-size:.83rem;color:var(--sub);margin-bottom:20px" id="cy-suc-sub">Your cyber crime report has been received. Contact the relevant Canadian authority below to file an official report — we're not able to do that on your behalf.</div>
         <div style="background:var(--ice);border:1.5px solid var(--border);border-radius:10px;padding:14px 20px;display:inline-block;font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--blue);letter-spacing:2px;margin-bottom:20px" id="cy-ref-disp"></div>
+        <div id="cy-email-status" style="display:none;font-size:.72rem;color:var(--muted);margin-bottom:16px"></div>
         <br>
         <button onclick="resetCyberForm()" style="background:var(--ice);color:var(--blue);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 24px;font-size:.88rem;font-weight:600;cursor:pointer" id="cy-another-btn">Submit Another</button>
       </div>
@@ -1741,7 +1742,7 @@ const V = (function(){
     en:{
       ey:"Canada's Complaint Platform",
       nw:"File",tr:"Track",lw:"Lawyer",cy:"Cyber",fd:"Feed",
-      cy_sub:"Report harassment, threats, and identity theft. Upload your evidence — we route to relevant Canadian authorities.",
+      cy_sub:"Report harassment, threats, and identity theft. Upload your evidence — we'll email you a reference number and the right Canadian authority to contact.",
       cy_s1:"What type of offence?",cy_s2:"Where did it happen?",cy_s3:"Upload Evidence",cy_s4:"Describe the Incident",
       cy_c1t:"Harassment",cy_c1s:"Abusive messages",cy_c2t:"Threats",cy_c2s:"Physical / death threats",
       cy_c3t:"Stalking",cy_c3s:"Persistent tracking, messages",cy_c4t:"Unauthorized Images",cy_c4s:"Photo/video sharing",
@@ -1752,7 +1753,7 @@ const V = (function(){
       cy_low:"Low",cy_med:"Medium",cy_hi:"High",
       cy_anon:"Anonymous report",cy_anons:"Your identity will not be shared",
       cy_auth:"🏛️ Relevant Canadian Authorities",cy_warn:"⚠️ Submitting false reports is a criminal offence. Evidence you upload will only be shared with the relevant Canadian authority. We do not contact the offender directly.",
-      cy_sbtn:"Submit Cyber Crime Report",cy_suct:"Report Submitted",cy_sucs:"Your cyber crime report has been received. We will route it to the relevant Canadian authority.",cy_anoth:"Submit Another",
+      cy_sbtn:"Submit Cyber Crime Report",cy_suct:"Report Submitted",cy_sucs:"Your cyber crime report has been received. Contact the relevant Canadian authority below to file an official report — we're not able to do that on your behalf.",cy_anoth:"Submit Another",
       ht:"Your Complaint.\u003cbr\u003e\u003cem\u003eHeard. Tracked. Resolved.\u003c/em\u003e",
       hs:"Submit complaints to municipalities, businesses, or landlords across Canada.",
       c1:"File a Complaint",c2:"Track My Complaint",
@@ -1818,7 +1819,7 @@ const V = (function(){
     tr:{
       ey:"Kanada Resmi Şikayet Platformu",
       nw:"Dosya",tr:"Takip",lw:"Avukat",cy:"Siber",fd:"Akış",
-      cy_sub:"Hakaret, tehdit ve kimlik hırsızlığını bildirin. Kanıtlarınızı yükleyin — ilgili Kanada kurumlarına yönlendiriyoruz.",
+      cy_sub:"Hakaret, tehdit ve kimlik hırsızlığını bildirin. Kanıtlarınızı yükleyin — size bir referans numarası ve başvurmanız gereken Kanada kurumunu e-posta ile göndereceğiz.",
       cy_s1:"Suç türü nedir?",cy_s2:"Nerede gerçekleşti?",cy_s3:"Kanıt Yükle",cy_s4:"Olayı Açıkla",
       cy_c1t:"Hakaret / Küfür",cy_c1s:"Aşağılayıcı mesaj",cy_c2t:"Tehdit",cy_c2s:"Fiziksel / ölüm tehdidi",
       cy_c3t:"Taciz / Stalking",cy_c3s:"Sürekli takip, mesaj",cy_c4t:"İzinsiz Görsel",cy_c4s:"Fotoğraf/video paylaşımı",
@@ -1829,7 +1830,7 @@ const V = (function(){
       cy_low:"Düşük",cy_med:"Orta",cy_hi:"Yüksek",
       cy_anon:"Anonim rapor",cy_anons:"Kimliğiniz paylaşılmayacak",
       cy_auth:"🏛️ İlgili Kanada Makamları",cy_warn:"⚠️ Asılsız rapor göndermek suçtur. Yüklediğiniz kanıtlar yalnızca ilgili Kanada makamıyla paylaşılır. Faile doğrudan ulaşmıyoruz.",
-      cy_sbtn:"Siber Suç Raporunu Gönder",cy_suct:"Rapor Gönderildi",cy_sucs:"Siber suç raporunuz alındı. İlgili Kanada makamına yönlendireceğiz.",cy_anoth:"Yeni Rapor",
+      cy_sbtn:"Siber Suç Raporunu Gönder",cy_suct:"Rapor Gönderildi",cy_sucs:"Siber suç raporunuz alındı. Resmi bir başvuru için aşağıdaki ilgili Kanada kurumuyla bizzat iletişime geçmeniz gerekiyor — bunu sizin adınıza yapamıyoruz.",cy_anoth:"Yeni Rapor",
       ht:"Şikayetiniz.\u003cbr\u003e\u003cem\u003eDuyuldu. Takip edildi. Çözüldü.\u003c/em\u003e",
       hs:"Kanada genelinde belediyelere, işletmelere veya ev sahiplerine şikayet iletin.",
       c1:"Şikayet Gönder",c2:"Şikayetimi Takip Et",
@@ -1935,7 +1936,7 @@ const V = (function(){
     zh:{
       ey:"加拿大官方投诉平台",
       nw:"投诉",tr:"追踪",lw:"律师",cy:"网络",fd:"动态",
-      cy_sub:"举报骚扰、威胁和身份盗窃。上传证据 — 我们将转交相关加拿大机构。",
+      cy_sub:"举报骚扰、威胁和身份盗窃。上传证据 — 我们会通过邮件发给您参考编号和应联系的加拿大机构。",
       cy_s1:"犯罪类型？",cy_s2:"发生在哪里？",cy_s3:"上传证据",cy_s4:"描述事件",
       cy_c1t:"骚扰",cy_c1s:"侮辱性消息",cy_c2t:"威胁",cy_c2s:"人身/死亡威胁",
       cy_c3t:"跟踪",cy_c3s:"持续跟踪、骚扰",cy_c4t:"未授权图像",cy_c4s:"照片/视频分享",
@@ -2572,12 +2573,39 @@ function doSubmitCyber(){
   _complaints.unshift(c);
   try{localStorage.setItem('vc_comp',JSON.stringify(_complaints));}catch(e){}
   if(window._fbSave){window._fbSave(c).catch(function(){});}
+  sendCyberConfirmationEmail(c);
   setTimeout(function(){
     btn.disabled=false;btn.innerHTML='🛡️ Submit Cyber Crime Report';
     document.getElementById('cy-sub-btn').style.display='none';
     document.getElementById('cy-success').style.display='block';
     document.getElementById('cy-ref-disp').textContent=ref;
   },900);
+}
+
+// Kullanıcının kendi e-postasına makbuz gönderir — polise otomatik iletildiği
+// iddiası YOK, sadece referans + hangi kuruma bizzat başvurması gerektiği bilgisi.
+async function sendCyberConfirmationEmail(c){
+  var body='Hi,\n\nYour cyber crime report has been received by ComplaintCA.\n\n'+
+    'Reference: '+c.ref+'\n'+
+    'Type: '+c.crimeType+(c.platforms.length?' — '+c.platforms.join(', '):'')+'\n'+
+    'Urgency: '+c.priority+'\n\n'+
+    'ComplaintCA is not a police service and cannot file this report with an authority on your behalf. To make it official, please contact:\n\n'+
+    '- RCMP — National Cybercrime Coordination Unit (NC3): cybercrime.gc.ca · 1-800-387-0020\n'+
+    '- Canadian Anti-Fraud Centre: antifraudcentre-centreantifraude.ca · 1-888-495-8501\n'+
+    '- Ontario Provincial Police — Cyber Unit: opp.ca/cybercrime (Ontario residents)\n\n'+
+    (c.priority==='high'?'If you are in immediate danger, call 911 now.\n\n':'')+
+    'Keep this reference number — you can check its status anytime under "Track" on ComplaintCA.\n\n'+
+    'ComplaintCA (complaintca.ca)';
+  var sent=await sendBrevoEmail(c.email,c.name||'',  'Your ComplaintCA Reference — '+c.ref, body);
+  var status=document.getElementById('cy-email-status');
+  if(status){
+    status.style.display='block';
+    status.textContent=sent?('📧 A copy was emailed to '+c.email+'.'):'';
+  }
+  if(c.priority==='high'){
+    var adminBody='High-urgency cyber crime report received.\n\nReference: '+c.ref+'\nType: '+c.crimeType+'\nAnonymous: '+(c.anonymous?'yes':'no — '+c.email)+'\n\n'+c.desc;
+    sendBrevoEmail('complaintcaca@gmail.com','ComplaintCA Admin','[🔴 High Priority] Cyber Crime Report — '+c.ref,adminBody).catch(function(){});
+  }
 }
 
 function resetCyberForm(){
@@ -3041,7 +3069,7 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
       footer;
 
     adminSent = await sendBrevoEmail(
-      'kasimdemirca@gmail.com',
+      'complaintcaca@gmail.com',
       'ComplaintCA Admin',
       '[🔴 Yüksek Öncelik] Yeni Şikayet — '+ref,
       adminBody

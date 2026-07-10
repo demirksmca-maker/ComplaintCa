@@ -21,6 +21,7 @@ the browser's `localStorage` and in a public Firebase/Firestore project).
 | API rate limiting (`api/claude-proxy.js`, `api/groq-proxy.js`, `api/groq-transcribe.js`) | In-memory `Map`, reset on cold start, not shared across concurrent instances. | Shared `api/_rateLimit.js` uses **Upstash Redis** (via `UPSTASH_REDIS_REST_URL`/`UPSTASH_REDIS_REST_TOKEN`) when configured, so limits actually hold across instances; falls back to the previous in-memory behavior if those env vars aren't set, so it degrades gracefully rather than breaking. |
 | Account system | Hand-rolled `localStorage` user table (`cc_users`), no server-side verification. | Migrated to Firebase Authentication (email/password + the existing Google sign-in, both already using the Firebase Auth SDK). `cc_session` in `localStorage` is now just a UI convenience cache kept in sync via `onAuthStateChanged`, not the source of truth. |
 | Firestore access control | No `firestore.rules` in the repo — access control lived entirely in the Firebase Console, unreviewable here. | Added `firestore.rules` (see below — **must be deployed manually**, this repo can't do that for you). |
+| Outbound email (`api/send-email.js`) | The frontend already called `/api/send-email`, but the file never existed — every "automatic" institution/admin email silently 404'd and fell back to a `mailto:` link, with no indication anything was wrong. | Added the missing endpoint (Brevo API, rate-limited via `api/_rateLimit.js`). Email body is HTML-escaped before being wrapped in the branded template to prevent HTML injection into the rendered email. Sender is fixed to `ComplaintCA <complaintcaca@gmail.com>`; `replyTo` is only ever set to the complainant's own address, never exposed to the institution for anonymous submissions. |
 
 New helpers added: `escHtml()` (existing), `escAttr()` (HTML-attribute-safe escaping), `safeUrl()` (http/https scheme allowlist).
 
@@ -99,3 +100,8 @@ below.
 4. If non-anonymous complaint privacy matters, revisit the Firestore
    read model (auth-gated reads, or split public/private documents) —
    the "known limitations" section above has the specifics.
+5. Set `BREVO_API_KEY` in the Vercel dashboard (Settings → Environment
+   Variables) and verify `complaintcaca@gmail.com` as a sender in Brevo —
+   `api/send-email.js` returns a clean 503 without it, so nothing breaks,
+   but no confirmation/institution emails go out until it's set. This
+   repo can't do that step for you.
