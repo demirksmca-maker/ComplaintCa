@@ -762,6 +762,7 @@ textarea{resize:vertical;min-height:90px}
             Sunduğum bilgilerin doğruluğunu kabul eder, asılsız bildirim yapmadığımı taahhüt ederim. Platform yalnızca yer sağlayıcı bir aracıdır; doğabilecek tüm hukuki ve cezai sorumluluk tamamen şahsıma aittir.
           </div>
         </div>
+        <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
         <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Submit Complaint</button>
       </div>
       <div class="scs" id="scs-screen">
@@ -2818,6 +2819,27 @@ async function doSubmit(){
     }
   }
 
+  // ── YASAL HAK TALEBİ: AVUKATLARIN ULAŞABİLMESİ İÇİN KİMLİK GEREKİR ──
+  if(_ctype==='legal'){
+    _isAnon=false;
+    var lgName=document.getElementById('inp-name');
+    if(!lgName || !lgName.value.trim()){
+      var noteL=document.getElementById('a-note');
+      if(noteL){
+        noteL.style.background='#fee2e2';noteL.style.borderColor='#c8102e';noteL.style.color='#c8102e';
+        noteL.textContent=(_aLang==='tr')
+          ? '⚠ Yasal hak talebi için adınız zorunludur (anonim gönderilemez) — avukatların size ulaşabilmesi gerekir.'
+          : (_aLang==='fr')
+          ? '⚠ Votre nom est requis pour faire valoir un droit légal (envoi anonyme impossible) — les avocats doivent pouvoir vous contacter.'
+          : '⚠ Your name is required to assert legal rights (cannot be sent anonymously) — lawyers need to be able to reach you.';
+        noteL.scrollIntoView({behavior:'smooth',block:'center'});
+        setTimeout(function(){noteL.style.background='';noteL.style.borderColor='';noteL.style.color='';noteL.textContent=V.t('not');},4500);
+      }
+      if(lgName) lgName.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+  }
+
   btn.disabled=true;btn.innerHTML='<span class="spin"></span>Submitting...';
   try{localStorage.setItem('vc_last_submit',Date.now().toString());}catch(e){}
 
@@ -2830,6 +2852,7 @@ async function doSubmit(){
     anonymous:_isAnon,
     name:_isAnon?null:document.getElementById('inp-name').value.trim(),
     email:emailVal,
+    ctype:_ctype,isLegal:_ctype==='legal',
     photoCount:_photos.length,status:'received',date:now,
     timeline:[{status:'received',date:now}]
   };
@@ -3557,14 +3580,19 @@ try{
       inner+='<div style="text-align:center;padding:8px 0;font-size:.68rem;color:var(--muted)">'+V.t('feed_footer')+'</div>';
       tbox.innerHTML=inner;
     }
-
-    var lpbox=document.getElementById('lawyer-panel-feed');
-    if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(snapshot);
   },function(err){
     var fbox=document.getElementById('public-complaint-feed');
     if(fbox) fbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
     var tbox=document.getElementById('trk-complaint-feed');
     if(tbox) tbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
+  });
+
+  // ── AVUKAT PANELİ: sadece "Yasal Hak" olarak işaretlenmiş şikayetler ──
+  const legalFeedQ=query(collection(db,'complaints'),where('isLegal','==',true),orderBy('date','desc'),limit(20));
+  onSnapshot(legalFeedQ,function(snapshot){
+    var lpbox=document.getElementById('lawyer-panel-feed');
+    if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(snapshot);
+  },function(err){
     var lpbox=document.getElementById('lawyer-panel-feed');
     if(lpbox) lpbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
   });
