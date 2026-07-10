@@ -1027,6 +1027,8 @@ textarea{resize:vertical;min-height:90px}
         </label>
         <input type="file" id="cy-file-input" accept="image/*,video/*" multiple style="display:none" onchange="addCyberPhotos(this)">
         <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Include offender's username, profile URL, and timestamps in screenshots.</div>
+        <div id="cy-evidence-checklist" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--off)"></div>
+        <div id="cy-evidence-quote" style="display:none;margin-top:12px;background:#f0f7ff;border:1px solid #93c5fd;border-radius:10px;padding:12px"></div>
       </div>
       <div style="display:flex;gap:8px">
         <button onclick="cyGoStep(2)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
@@ -2342,6 +2344,11 @@ function selCyUrg(el,level,fromAI){
   document.getElementById('cy-urg-ai-note').style.display=(fromAI)?'block':'none';
 }
 
+function cyFlagDanger(){
+  var b=document.getElementById('cy-safety-banner');
+  if(b) b.style.display='block';
+}
+
 var _cyDescTimer=null,_cyDescLast='';
 function cyDescDebounce(){
   clearTimeout(_cyDescTimer);
@@ -2362,9 +2369,7 @@ async function cySuggestSafety(){
     if(!m) return;
     var parsed=JSON.parse(m[0]);
     if(desc!==document.getElementById('cy-desc').value.trim()) return; // kullanıcı yazmaya devam etmiş olabilir
-    if(parsed.immediateDanger){
-      document.getElementById('cy-safety-banner').style.display='block';
-    }
+    if(parsed.immediateDanger) cyFlagDanger();
     if(['low','medium','high'].indexOf(parsed.urgency)>-1 && !_cyUrgencyTouched){
       var btn=parsed.urgency==='high'?document.getElementById('cy-urg-hi-btn'):(parsed.urgency==='low'?document.getElementById('cy-urg-low'):document.getElementById('cy-urg-med'));
       selCyUrg(btn,parsed.urgency,true);
@@ -2381,20 +2386,98 @@ function addCyberPhotos(inp){
   var files=Array.from(inp.files);
   files.slice(0,10-_cyPhotos.length).forEach(function(f){
     var r=new FileReader();
-    r.onload=function(e){_cyPhotos.push({data:e.target.result,name:f.name});renderCyberPhotos();};
+    r.onload=function(e){
+      _cyPhotos.push({data:e.target.result,name:f.name,type:f.type});
+      renderCyberPhotos();
+      analyzeCyberEvidence(_cyPhotos.length-1);
+    };
     r.readAsDataURL(f);
   });
   inp.value='';
 }
 
-function removeCyberPhoto(i){_cyPhotos.splice(i,1);renderCyberPhotos();}
+function removeCyberPhoto(i){_cyPhotos.splice(i,1);renderCyberPhotos();cyUpdateEvidenceChecklist();}
 
 function renderCyberPhotos(){
   var g=document.getElementById('cy-thumb-grid');
   if(!g) return;
   g.innerHTML=_cyPhotos.map(function(p,i){
-    return '<div style="position:relative;width:68px;height:68px"><img src="'+p.data+'" style="width:68px;height:68px;border-radius:9px;object-fit:cover;border:2px solid var(--border)"><button onclick="removeCyberPhoto('+i+')" style="position:absolute;top:-6px;right:-6px;background:#c8102e;color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.2)">✕</button></div>';
+    var isVideo=p.type&&p.type.indexOf('video/')===0;
+    var capText=isVideo?'Video':(p.analysis?escHtml(p.analysis.caption||''):'🤖 Analyzing…');
+    return '<div style="width:84px">'+
+      '<div style="position:relative;width:84px;height:84px">'+
+        '<img src="'+p.data+'" style="width:84px;height:84px;border-radius:9px;object-fit:cover;border:2px solid var(--border)">'+
+        '<button onclick="removeCyberPhoto('+i+')" style="position:absolute;top:-6px;right:-6px;background:#c8102e;color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.2)">✕</button>'+
+      '</div>'+
+      '<div style="font-size:.6rem;color:var(--muted);line-height:1.3;margin-top:4px;max-height:2.6em;overflow:hidden">'+capText+'</div>'+
+    '</div>';
   }).join('');
+}
+
+async function analyzeCyberEvidence(i){
+  var photo=_cyPhotos[i];
+  if(!photo || (photo.type&&photo.type.indexOf('video/')===0)) return;
+  var base64=(photo.data.split(',')[1]||'');
+  var mediaType=(photo.data.match(/^data:([^;]+);/)||[])[1]||'image/jpeg';
+  if(!base64) return;
+  var sys='You are Asya, assisting with a Canadian cyber crime report. Look at this uploaded screenshot and respond ONLY with strict JSON, no other text: {"caption":"one short factual sentence describing what the screenshot shows","platform":"Facebook|Instagram|WhatsApp|X / Twitter|TikTok|Email|SMS|Gaming|Other|Unknown","extractedQuote":"the single most concerning message visible, verbatim, or empty string if none","timestampVisible":true|false,"usernameVisible":true|false,"messageVisible":true|false,"dangerSignal":true|false}. dangerSignal must be true ONLY if the image shows an explicit imminent physical threat (a weapon, an address disclosed together with a threat, a stated intent to come to the person\'s location) — not for ordinary harassment or insults.';
+  try{
+    var r=await fetch('/api/claude-proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({max_tokens:300,system:sys,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mediaType,data:base64}},{type:'text',text:'Analyze this screenshot.'}]}]})
+    });
+    var d=await r.json();
+    if(d.error||!d.content) return;
+    var raw=d.content.map(function(c){return c.text||'';}).join('').trim();
+    var m=raw.match(/\{[\s\S]*\}/);
+    if(!m) return;
+    var parsed=JSON.parse(m[0]);
+    if(!_cyPhotos[i]) return; // bu arada silinmiş olabilir
+    _cyPhotos[i].analysis=parsed;
+    renderCyberPhotos();
+    cyUpdateEvidenceChecklist();
+    if(parsed.dangerSignal) cyFlagDanger();
+    if(parsed.platform && parsed.platform!=='Unknown' && !document.querySelector('.cy-plat.cyp-sel')){
+      var platEl=document.querySelector('.cy-plat[data-platform="'+parsed.platform+'"]');
+      if(platEl) platEl.classList.add('cyp-sel');
+    }
+    if(parsed.extractedQuote && parsed.extractedQuote.trim()){
+      cyShowQuoteSuggestion(parsed.extractedQuote.trim());
+    }
+  }catch(e){/* sessizce vazgeç — kullanıcı elle devam edebilir */}
+}
+
+function cyUpdateEvidenceChecklist(){
+  var box=document.getElementById('cy-evidence-checklist');
+  if(!box) return;
+  var analyzed=_cyPhotos.filter(function(p){return p.analysis;});
+  if(!analyzed.length){box.style.display='none';return;}
+  box.style.display='block';
+  function has(k){return analyzed.some(function(p){return p.analysis[k];});}
+  function row(ok,label){return '<div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:'+(ok?'#16a34a':'#92400e')+';padding:2px 0">'+(ok?'✅':'⚠️')+' '+label+'</div>';}
+  box.innerHTML=
+    '<div style="font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🤖 Asya — Evidence Check</div>'+
+    row(has('timestampVisible'),'Timestamp visible')+
+    row(has('usernameVisible'),'Username / profile visible')+
+    row(has('messageVisible'),'Message content visible');
+}
+
+var _cyPendingQuote='';
+function cyShowQuoteSuggestion(quote){
+  _cyPendingQuote=quote;
+  var box=document.getElementById('cy-evidence-quote');
+  if(!box) return;
+  box.style.display='block';
+  box.innerHTML='<div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">🤖 Asya found this in your screenshot:</div>'+
+    '<div style="font-size:.78rem;color:var(--navy);font-style:italic;margin-bottom:8px">“'+escHtml(quote)+'”</div>'+
+    '<button onclick="cyInsertQuote()" style="background:#1a4fa0;color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.72rem;font-weight:700;cursor:pointer">+ Add to description</button>';
+}
+function cyInsertQuote(){
+  var d=document.getElementById('cy-desc');
+  d.value=(d.value.trim()?d.value.trim()+'\n\n':'')+'Message received: "'+_cyPendingQuote+'"';
+  cyDescDebounce();
+  document.getElementById('cy-evidence-quote').style.display='none';
 }
 
 function _cyShowNote(msg){
@@ -2474,9 +2557,11 @@ function resetCyberForm(){
   document.getElementById('cy-anon-tog').classList.add('on');
   document.getElementById('cy-id-fields').style.display='none';
   document.querySelectorAll('.cy-plat.cyp-sel').forEach(function(e){e.classList.remove('cyp-sel');});
-  _cyUrgencyTouched=false;_cyDescLast='';
+  _cyUrgencyTouched=false;_cyDescLast='';_cyPendingQuote='';
   selCyUrg(document.getElementById('cy-urg-med'),'medium');
   document.getElementById('cy-safety-banner').style.display='none';
+  document.getElementById('cy-evidence-checklist').style.display='none';
+  document.getElementById('cy-evidence-quote').style.display='none';
   var firstCrime=document.querySelector('.cy-crime');
   if(firstCrime) selCyberCrime(firstCrime);
   document.getElementById('cy-success').style.display='none';
