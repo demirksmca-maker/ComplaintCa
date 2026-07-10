@@ -465,8 +465,8 @@ textarea{resize:vertical;min-height:90px}
 }
 /* ── LEX: LAWYER PANEL ROMAN THEME ── */
 #view-lawyerpanel{
-  --lex-marble:#f7f5ef; --lex-marble-dk:#ece7dc; --lex-ink:#221f1a;
-  --lex-red:#8f2a24; --lex-bronze:#8a6d3f; --lex-muted:#7a7061;
+  --lex-marble:#161310; --lex-marble-dk:#0e0c0a; --lex-card:#231f18; --lex-ink:#ece4d3;
+  --lex-red:#c85c50; --lex-bronze:#c5a05f; --lex-muted:#a89a86;
   background:var(--lex-marble); margin:0 -16px; padding:16px; border-radius:0;
   font-family:'EB Garamond',serif;
 }
@@ -488,16 +488,16 @@ textarea{resize:vertical;min-height:90px}
 }
 #view-lawyerpanel .lex-rule{width:34px;height:1px;background:var(--lex-bronze);margin:16px auto 0}
 #view-lawyerpanel .lex-card{
-  background:#fff; border:1px solid var(--lex-marble-dk); border-radius:2px;
+  background:var(--lex-card); border:1px solid var(--lex-marble-dk); border-radius:2px;
   padding:16px 18px; margin-bottom:10px;
 }
 #view-lawyerpanel .lex-tags{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font-family:'Cinzel',serif;text-transform:uppercase;}
 #view-lawyerpanel .lex-cat{font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--lex-red);border:1px solid var(--lex-red);border-radius:2px;padding:2px 8px}
 #view-lawyerpanel .lex-loc,#view-lawyerpanel .lex-ago{font-family:'EB Garamond',serif;font-size:.72rem;color:var(--lex-muted)}
 #view-lawyerpanel .lex-ctitle{font-family:'Cinzel',serif;text-transform:uppercase;font-weight:400;font-size:.9rem;color:var(--lex-ink);margin-bottom:6px}
-#view-lawyerpanel .lex-desc{font-family:'EB Garamond',serif;font-size:.85rem;color:#3a352c;line-height:1.6;margin-bottom:10px}
+#view-lawyerpanel .lex-desc{font-family:'EB Garamond',serif;font-size:.85rem;color:var(--lex-ink);line-height:1.6;margin-bottom:10px}
 #view-lawyerpanel .lex-locked{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--lex-bronze);border-top:1px solid var(--lex-marble-dk);padding-top:8px}
-#view-lawyerpanel .lex-partner{border:1px solid var(--lex-bronze);border-radius:2px;padding:20px;text-align:center;margin-top:14px;background:#fff}
+#view-lawyerpanel .lex-partner{border:1px solid var(--lex-bronze);border-radius:2px;padding:20px;text-align:center;margin-top:14px;background:var(--lex-card)}
 #view-lawyerpanel .lex-partner-text{font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;color:var(--lex-muted);line-height:1.65;margin-bottom:16px}
 #view-lawyerpanel .lex-btn{
   display:inline-block;background:var(--lex-ink);color:var(--lex-marble);
@@ -4146,7 +4146,7 @@ try{
     }
 
     function renderLawyerPanelHTML(snapshot){
-      if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:#7a7061;font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
+      if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--lex-muted);font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
       var priWeight={high:0,medium:1,low:2};
       var priBadge={high:'🔴',medium:'🟡',low:'🟢'};
       var items=[];
