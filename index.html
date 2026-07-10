@@ -1558,6 +1558,7 @@ function lwGoStep(n){
   dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
   var box=document.getElementById('view-lawyer');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+  if(!_suppressNavPush) _pushNav({tab:'lawyer',step:n});
 }
 
 function newGoStep(n){
@@ -1569,6 +1570,7 @@ function newGoStep(n){
   dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
   var box=document.getElementById('view-new');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+  if(!_suppressNavPush) _pushNav({tab:'new',step:n});
 }
 
 function selLwProv(prov, el) {
@@ -2329,11 +2331,44 @@ const V = (function(){
 })();
 
 // ── NAVIGATION ──
+// ── BACK/FORWARD NAVIGATION ──
+// This is a single index.html that swaps views with display:none/block, so
+// without this, the phone/browser back button has nothing to "go back" to
+// within the app — it just leaves the site entirely, losing whatever step
+// the user was on. This mirrors the current tab (and wizard step, for the
+// multi-step File/Cyber/Lawyer flows) into history.state, and a popstate
+// listener restores the previous one instead of exiting.
+var _suppressNavPush=false;
+function _pushNav(state){
+  if(_suppressNavPush) return;
+  history.pushState(state,'');
+}
+window.addEventListener('popstate',function(e){
+  _suppressNavPush=true;
+  try{
+    var s=e.state;
+    if(!s||!s.tab){
+      goHome();
+    }else{
+      goApp(s.tab);
+      if(s.step){
+        if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
+        else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
+        else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
+      }
+    }
+  }finally{
+    _suppressNavPush=false;
+  }
+});
+document.addEventListener('DOMContentLoaded',function(){history.replaceState(null,'');});
+
 function goHome(){
   document.getElementById('pg-land').style.display='block';
   document.getElementById('pg-app').style.display='none';
   document.getElementById('back-btn').classList.remove('show');
   window.scrollTo(0,0);
+  if(!_suppressNavPush) _pushNav(null);
 }
 function goApp(tab){
   document.getElementById('pg-land').style.display='none';
@@ -2371,6 +2406,11 @@ function showTab(tab){
   if(active) active.classList.add('active');
   if(tab==='track'||tab==='feed'||tab==='lawyerpanel'){renderRecent();loadPublicFeed();}
   if(tab==='lawyer'){_lwProv='on';_lwArea='tenant';renderLwResults();}
+  if(!_suppressNavPush){
+    var _navState={tab:tab};
+    if(tab==='new'||tab==='cyber'||tab==='lawyer') _navState.step=1;
+    _pushNav(_navState);
+  }
 }
 
 async function loadPublicFeed(){
@@ -2497,6 +2537,7 @@ function cyGoStep(n){
   dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
   var box=document.getElementById('view-cyber');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+  if(!_suppressNavPush) _pushNav({tab:'cyber',step:n});
 }
 
 var _cyUrgency='medium',_cyUrgencyTouched=false;
