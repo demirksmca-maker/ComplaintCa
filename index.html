@@ -1030,12 +1030,15 @@ textarea{resize:vertical;min-height:90px}
         </label>
         <input type="file" id="cy-file-input" accept="image/*,video/*" multiple style="display:none" onchange="addCyberPhotos(this)">
         <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Include offender's username, profile URL, and timestamps in screenshots.</div>
-        <div id="cy-evidence-checklist" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--off)"></div>
-        <div id="cy-evidence-quote" style="display:none;margin-top:12px;background:#f0f7ff;border:1px solid #93c5fd;border-radius:10px;padding:12px"></div>
+        <div id="cy-evidence-findings" style="display:none;margin-top:12px;background:linear-gradient(135deg,#f0f7ff,#f8fbff);border:1.5px solid #93c5fd;border-radius:10px;padding:14px">
+          <div style="font-size:.62rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🤖 Asya — Evidence Findings</div>
+          <div id="cy-evidence-checklist"></div>
+          <div id="cy-evidence-quote" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(147,197,253,.5)"></div>
+        </div>
       </div>
       <div style="display:flex;gap:8px">
         <button onclick="cyGoStep(2)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer">← Back</button>
-        <button onclick="cyGoStep(4)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
+        <button onclick="cyGoStep(4)" id="cy-next-3-btn" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;cursor:pointer;letter-spacing:.5px">Next →</button>
       </div>
       </div>
 
@@ -2401,6 +2404,23 @@ function addCyberPhotos(inp){
   inp.value='';
 }
 
+var _cyAnalyzingCount=0;
+function cyUpdateNextBtn3(){
+  var btn=document.getElementById('cy-next-3-btn');
+  if(!btn) return;
+  if(_cyAnalyzingCount>0){
+    btn.disabled=true;
+    btn.style.opacity='.6';
+    btn.style.cursor='default';
+    btn.innerHTML='<span class="spin"></span> Asya is analyzing your evidence…';
+  }else{
+    btn.disabled=false;
+    btn.style.opacity='1';
+    btn.style.cursor='pointer';
+    btn.innerHTML='Next →';
+  }
+}
+
 function removeCyberPhoto(i){_cyPhotos.splice(i,1);renderCyberPhotos();cyUpdateEvidenceChecklist();}
 
 function renderCyberPhotos(){
@@ -2426,6 +2446,8 @@ async function analyzeCyberEvidence(i){
   var mediaType=(photo.data.match(/^data:([^;]+);/)||[])[1]||'image/jpeg';
   if(!base64) return;
   var sys='You are Asya, assisting with a Canadian cyber crime report. Look at this uploaded screenshot and respond ONLY with strict JSON, no other text: {"caption":"one short factual sentence describing what the screenshot shows","platform":"Facebook|Instagram|WhatsApp|X / Twitter|TikTok|Email|SMS|Gaming|Other|Unknown","extractedQuote":"the single most concerning message visible, verbatim, or empty string if none","timestampVisible":true|false,"usernameVisible":true|false,"messageVisible":true|false,"dangerSignal":true|false}. dangerSignal must be true ONLY if the image shows an explicit imminent physical threat (a weapon, an address disclosed together with a threat, a stated intent to come to the person\'s location) — not for ordinary harassment or insults.';
+  _cyAnalyzingCount++;
+  cyUpdateNextBtn3();
   try{
     var r=await fetch('/api/claude-proxy',{
       method:'POST',
@@ -2451,18 +2473,22 @@ async function analyzeCyberEvidence(i){
       cyShowQuoteSuggestion(parsed.extractedQuote.trim());
     }
   }catch(e){/* sessizce vazgeç — kullanıcı elle devam edebilir */}
+  finally{
+    _cyAnalyzingCount--;
+    cyUpdateNextBtn3();
+  }
 }
 
 function cyUpdateEvidenceChecklist(){
+  var wrap=document.getElementById('cy-evidence-findings');
   var box=document.getElementById('cy-evidence-checklist');
-  if(!box) return;
+  if(!wrap||!box) return;
   var analyzed=_cyPhotos.filter(function(p){return p.analysis;});
-  if(!analyzed.length){box.style.display='none';return;}
-  box.style.display='block';
+  if(!analyzed.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
   function has(k){return analyzed.some(function(p){return p.analysis[k];});}
   function row(ok,label){return '<div style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:'+(ok?'#16a34a':'#92400e')+';padding:2px 0">'+(ok?'✅':'⚠️')+' '+label+'</div>';}
   box.innerHTML=
-    '<div style="font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">🤖 Asya — Evidence Check</div>'+
     row(has('timestampVisible'),'Timestamp visible')+
     row(has('usernameVisible'),'Username / profile visible')+
     row(has('messageVisible'),'Message content visible');
@@ -2471,10 +2497,12 @@ function cyUpdateEvidenceChecklist(){
 var _cyPendingQuote='';
 function cyShowQuoteSuggestion(quote){
   _cyPendingQuote=quote;
+  var wrap=document.getElementById('cy-evidence-findings');
   var box=document.getElementById('cy-evidence-quote');
   if(!box) return;
+  if(wrap) wrap.style.display='block';
   box.style.display='block';
-  box.innerHTML='<div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">🤖 Asya found this in your screenshot:</div>'+
+  box.innerHTML='<div style="font-size:.7rem;color:var(--muted);margin-bottom:6px">Asya found this in your screenshot:</div>'+
     '<div style="font-size:.78rem;color:var(--navy);font-style:italic;margin-bottom:8px">“'+escHtml(quote)+'”</div>'+
     '<button onclick="cyInsertQuote()" style="background:#1a4fa0;color:white;border:none;border-radius:8px;padding:7px 14px;font-size:.72rem;font-weight:700;cursor:pointer">+ Add to description</button>';
 }
@@ -2562,11 +2590,12 @@ function resetCyberForm(){
   document.getElementById('cy-anon-tog').classList.add('on');
   document.getElementById('cy-id-fields').style.display='none';
   document.querySelectorAll('.cy-plat.cyp-sel').forEach(function(e){e.classList.remove('cyp-sel');});
-  _cyUrgencyTouched=false;_cyDescLast='';_cyPendingQuote='';
+  _cyUrgencyTouched=false;_cyDescLast='';_cyPendingQuote='';_cyAnalyzingCount=0;
   selCyUrg(document.getElementById('cy-urg-med'),'medium');
   document.getElementById('cy-safety-banner').style.display='none';
-  document.getElementById('cy-evidence-checklist').style.display='none';
+  document.getElementById('cy-evidence-findings').style.display='none';
   document.getElementById('cy-evidence-quote').style.display='none';
+  cyUpdateNextBtn3();
   var firstCrime=document.querySelector('.cy-crime');
   if(firstCrime) selCyberCrime(firstCrime);
   document.getElementById('cy-success').style.display='none';
