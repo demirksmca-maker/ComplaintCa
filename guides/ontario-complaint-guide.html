@@ -203,13 +203,49 @@ footer{
         <div class="asya-sub">ComplaintCA AI Assistant</div>
       </div>
     </div>
-    <div class="asya-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
+    <div class="asya-msg" id="asya-guide-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
     <div class="asya-input-row">
-      <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product...">
-      <button class="asya-send" onclick="location.href='https://www.complaintca.ca'">→</button>
+      <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
+      <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
     </div>
-    <div class="asya-note">Demo view — on the live site, Asya replies in real time</div>
   </div>
+
+  <script>
+  function escGuideHtml(s){
+    var d=document.createElement('div');
+    d.textContent=s==null?'':String(s);
+    return d.innerHTML;
+  }
+  async function askAsyaGuide(){
+    var input=document.getElementById('asya-guide-input');
+    var msg=document.getElementById('asya-guide-msg');
+    var btn=document.getElementById('asya-guide-send');
+    var text=input.value.trim();
+    if(!text) return;
+    btn.disabled=true;
+    msg.textContent='Thinking...';
+    try{
+      var r=await fetch('/api/claude-proxy',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          max_tokens:200,
+          system:'You are Asya, the ComplaintCA assistant. The user describes a problem they want to complain about in Ontario/Canada. In 2-3 short sentences, tell them which authority or path fits (e.g. Consumer Protection Ontario, their MP, Landlord and Tenant Board, the Ombudsman, police/Canadian Anti-Fraud Centre for cyber crime, etc.) and that ComplaintCA can draft and send the complaint for them. Be concrete and concise, no preamble.',
+          messages:[{role:'user',content:text}]
+        })
+      });
+      var d=await r.json();
+      if(d.error) throw new Error(d.error.message||'error');
+      var out=(d.content||[]).map(function(c){return c.text||'';}).join('').trim();
+      msg.innerHTML=escGuideHtml(out||"I couldn't find a clear answer — try ComplaintCA directly, it'll ask the right questions.")+
+        '<br><br><a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
+    }catch(e){
+      msg.innerHTML='Asya is unavailable right now. <a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
+    }finally{
+      btn.disabled=false;
+    }
+  }
+  </script>
 
   <div class="cta">
     <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
