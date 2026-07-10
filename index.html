@@ -104,16 +104,52 @@ body{font-family:'Inter',sans-serif;background:#0f2952;color:#0f172a;-webkit-fon
 .loc-item:hover{background:var(--off)}
 .loc-item strong{display:block;color:var(--text);font-weight:600}
 .loc-item span{display:block;color:var(--muted);font-size:.72rem;margin-top:1px}
-.vfy-container{background-color:#0B1D3A;color:#FFFFFF;font-family:'Inter',sans-serif;border-radius:12px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid rgba(212,175,55,.2);padding:24px 18px}
-.vfy-header h2{font-family:'Cinzel',serif;color:#D4AF37;border-bottom:2px solid #C8102E;padding-bottom:15px;margin-bottom:10px;font-size:1.05rem}
-.vfy-header p{color:#A0AABF;font-size:.85em;line-height:1.5}
-.vfy-dropzone{border:2px dashed #D4AF37;background:rgba(212,168,55,.05);padding:40px 16px;text-align:center;border-radius:8px;cursor:pointer;transition:all .3s ease;margin:24px 0}
-.vfy-dropzone:hover{background:rgba(212,168,55,.15)}
-.vfy-dropzone h3{margin:0 0 10px 0;color:#FFFFFF;font-size:.95rem}
-.vfy-ai-status{background:rgba(255,255,255,.05);padding:18px;border-radius:8px;font-size:.9em;display:none;border-left:4px solid #D4AF37;margin-bottom:20px}
+#view-verify{position:relative}
+#view-verify::before{
+  content:'';position:absolute;inset:-40px -20px;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(480px 280px at 15% 0%,rgba(212,175,55,.16),transparent 65%),
+    radial-gradient(420px 320px at 100% 30%,rgba(200,16,46,.12),transparent 60%),
+    radial-gradient(600px 400px at 50% 100%,rgba(160,180,220,.08),transparent 65%);
+  filter:blur(6px);
+}
+.vfy-container{
+  position:relative;z-index:1;
+  background:linear-gradient(160deg,rgba(22,45,84,.82),rgba(9,23,48,.9));
+  color:#FFFFFF;font-family:'Inter',sans-serif;border-radius:18px;width:100%;
+  box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+  border:1px solid rgba(212,175,55,.3);padding:28px 20px;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+.vfy-header h2{
+  font-family:'Cinzel',serif;font-weight:700;letter-spacing:1px;font-size:1.08rem;
+  background:linear-gradient(135deg,#f5e49a,#D4AF37 45%,#a8842e);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  padding-bottom:14px;margin-bottom:10px;
+  border-bottom:none;position:relative;
+}
+.vfy-header h2::after{
+  content:'';display:block;position:absolute;left:0;bottom:0;height:2px;width:64px;
+  background:linear-gradient(90deg,#C8102E,rgba(200,16,46,.15));border-radius:2px;
+}
+.vfy-header p{color:#A6B2CC;font-size:.85em;line-height:1.6}
+.vfy-dropzone{
+  border:1.5px solid rgba(212,175,55,.4);background:rgba(212,168,55,.05);
+  padding:36px 16px;text-align:center;border-radius:16px;cursor:pointer;
+  transition:all .3s ease;margin:24px 0;position:relative;
+  animation:vfyGlow 3.2s ease-in-out infinite;
+}
+.vfy-dropzone:hover{background:rgba(212,168,55,.13);border-color:rgba(212,175,55,.7)}
+@keyframes vfyGlow{
+  0%,100%{box-shadow:0 0 0 rgba(212,175,55,0)}
+  50%{box-shadow:0 0 26px rgba(212,175,55,.22)}
+}
+.vfy-drop-icon{width:44px;height:44px;margin:0 auto 12px;display:block}
+.vfy-dropzone h3{margin:0 0 8px 0;color:#FFFFFF;font-size:.95rem;font-weight:600;letter-spacing:.2px}
+.vfy-ai-status{background:rgba(255,255,255,.05);padding:18px;border-radius:12px;font-size:.9em;display:none;border-left:3px solid #D4AF37;margin-bottom:20px;backdrop-filter:blur(6px)}
 .vfy-ai-title{color:#D4AF37;font-family:'Cinzel',serif;font-weight:bold;font-size:1.05em;margin-bottom:10px}
-.vfy-action-btn{background-color:#C8102E;color:white;border:none;padding:14px 22px;font-family:'Inter',sans-serif;font-weight:bold;font-size:.92em;border-radius:6px;cursor:pointer;width:100%;display:none;transition:background-color .3s}
-.vfy-action-btn:hover{background-color:#A00D24}
+.vfy-action-btn{background:linear-gradient(135deg,#d4183a,#a00d24);color:white;border:none;padding:14px 22px;font-family:'Inter',sans-serif;font-weight:bold;font-size:.92em;border-radius:10px;cursor:pointer;width:100%;display:none;transition:filter .2s,transform .2s;box-shadow:0 6px 20px rgba(200,16,46,.25)}
+.vfy-action-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
 
 /* ── INTRO ── */
 #site-intro{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px}
@@ -1072,7 +1108,25 @@ textarea{resize:vertical;min-height:90px}
 
         <div class="vfy-dropzone" id="vfy-dropzone" onclick="vfyTriggerFileSelect()" ondragover="vfyDragOver(event)" ondragleave="vfyDragLeave(event)" ondrop="vfyDrop(event)">
           <div id="vfy-dropzone-inner">
-            <div style="font-size:1.8rem;margin-bottom:8px">📁</div>
+            <svg class="vfy-drop-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="vfyIconGold" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f5e49a"/>
+                  <stop offset="55%" stop-color="#D4AF37"/>
+                  <stop offset="100%" stop-color="#a8842e"/>
+                </linearGradient>
+                <linearGradient id="vfyIconSilver" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f1f3f7"/>
+                  <stop offset="100%" stop-color="#a9b2c3"/>
+                </linearGradient>
+              </defs>
+              <rect x="9" y="4" width="22" height="30" rx="3" fill="none" stroke="url(#vfyIconSilver)" stroke-width="2"/>
+              <line x1="14" y1="12" x2="26" y2="12" stroke="url(#vfyIconSilver)" stroke-width="1.6"/>
+              <line x1="14" y1="18" x2="26" y2="18" stroke="url(#vfyIconSilver)" stroke-width="1.6"/>
+              <line x1="14" y1="24" x2="21" y2="24" stroke="url(#vfyIconSilver)" stroke-width="1.6"/>
+              <circle cx="30" cy="30" r="9" fill="rgba(212,175,55,.08)" stroke="url(#vfyIconGold)" stroke-width="2.4"/>
+              <line x1="36.5" y1="36.5" x2="43" y2="43" stroke="url(#vfyIconGold)" stroke-width="2.6" stroke-linecap="round"/>
+            </svg>
             <h3 id="vfy-drop-title">Belgeyi Buraya Sürükleyin veya Seçin</h3>
             <p style="color:#A0AABF;font-size:.85em" id="vfy-drop-sub">PNG, JPG veya PDF · Analiz Claude AI ile yapılır</p>
           </div>
