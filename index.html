@@ -2486,7 +2486,7 @@ async function runAI(){
   var orig=btn.textContent;
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';
 
-  var lang=_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English';
+  var lang=VFY_LANG_NAMES[_aLang]||'English';
   var today=new Date().toLocaleDateString('en-CA');
 
   var isLegal=_ctype==='legal';
@@ -3079,13 +3079,14 @@ const ASYA_T={
   fr:{greeting:"Bonjour! Je suis Asya. Dites-moi ce qui s'est passé.",tap:"Appuyez pour parler",type_ph:"Tapez votre message...",thinking:"Je réfléchis...",listening:"J'écoute..."}
 };
 let _aLang='en',_aHistory=[],_aListening=false,_aSpeaking=false,_aRec=null,_aVoiceOn=false;
+var VOICE_LOCALES={en:'en-US',tr:'tr-TR',fr:'fr-FR',zh:'zh-CN',es:'es-ES',ar:'ar-SA',pa:'pa-IN'};
 function _aT(k){return(ASYA_T[_aLang]||ASYA_T.en)[k]||k;}
 function _aSpeak(text){
   if(!_aVoiceOn) return;
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();_aSpeaking=true;
   const u=new SpeechSynthesisUtterance(text);
-  u.lang=_aLang==='tr'?'tr-TR':_aLang==='fr'?'fr-FR':'en-US';
+  u.lang=VOICE_LOCALES[_aLang]||'en-US';
   u.onend=()=>{_aSpeaking=false;};u.onerror=()=>{_aSpeaking=false;};
   window.speechSynthesis.speak(u);
 }
@@ -3109,7 +3110,7 @@ function _aSetStatus(s){
 async function _aAskClaude(userMsg){
   _aHistory.push({role:'user',content:userMsg});
   _aSetStatus('thinking');
-  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(_aLang==='tr'?'Turkish':_aLang==='fr'?'French':'English')+'. Always respond in this language. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
+  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(VFY_LANG_NAMES[_aLang]||'English')+'. Always respond in this language. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
     try{
     const res=await fetch('/api/claude-proxy',{
       method:'POST',
@@ -3151,7 +3152,7 @@ function _aListen(){
   if(_aListening){if(_aRec)_aRec.stop();_aListening=false;_aSetStatus('idle');return;}
   if(_aSpeaking){window.speechSynthesis.cancel();_aSpeaking=false;}
   _aRec=new SR();
-  _aRec.lang=_aLang==='tr'?'tr-TR':_aLang==='fr'?'fr-FR':'en-US';
+  _aRec.lang=VOICE_LOCALES[_aLang]||'en-US';
   _aRec.onstart=()=>{_aListening=true;_aSetStatus('listening');};
   _aRec.onresult=e=>{const t=e.results[0][0].transcript;_aListening=false;_aSetStatus('idle');_aHandleInput(t);};
   _aRec.onerror=()=>{_aListening=false;_aSetStatus('idle');};
