@@ -1667,8 +1667,9 @@ const V = (function(){
       mv_email_ref:"I am writing regarding a formal complaint I have filed (Reference:",
       mv_email_noref:"I am writing to bring a complaint to your attention as my elected representative.",
       mv_email_body:"[Please describe your issue here]",
-      mv_email_req:"As my constituent representative, I respectfully request your assistance in this matter.",
+      mv_email_req:"As your constituent, I respectfully request your assistance in this matter.",
       mv_email_sincerely:"Sincerely,",
+      mv_quote:"\"Justice is the source of all the other virtues.\"",
       hss:"File against municipalities, businesses or landlords — AI-powered, anonymous, fully documented.",
       l_mv_btn:"🏛️ Find My Representative",
       suc_save_note:"Save your reference number to track your complaint status in the <strong style=\"color:var(--navy)\">\"Track My Complaint\"</strong> section.",
@@ -1736,7 +1737,7 @@ const V = (function(){
       mv_err_short:"Lütfen tam adresinizi girin (cadde, şehir, eyalet).",
       mv_err_geocode:"Adres bulunamadı. Cadde, şehir ve eyaleti daha açık yazmayı deneyin.",
       mv_err_reps:"Temsilci bulunamadı. Adresi kontrol edip tekrar deneyin.",
-      mv_err_none:"Bu posta kodu için temsilci bulunamadı.",
+      mv_err_none:"Bu adres için temsilci bulunamadı.",
       mv_lvl_fed:"Federal · MP",mv_lvl_prov:"Eyalet · MPP/MLA",mv_lvl_local:"Yerel",
       mv_email_btn:"✉️ Şikayeti İlet",mv_profile:"Profil",
       mv_email_subj:"Şikayet Yükseltme",mv_email_dear:"Sayın",
@@ -1745,6 +1746,7 @@ const V = (function(){
       mv_email_body:"[Lütfen sorununuzu buraya açıklayın]",
       mv_email_req:"Seçmeniniz olarak, bu konuda yardımınızı saygıyla rica ederim.",
       mv_email_sincerely:"Saygılarımla,",
+      mv_quote:"\"Adalet, diğer tüm erdemlerin kaynağıdır.\"",
       hss:"Kanada genelinde belediyelere, işletmelere veya ev sahiplerine şikayet iletin — yapay zeka destekli, anonim, tam belgelenmiş.",
       l_mv_btn:"🏛️ Milletvekili Bul",
       suc_save_note:"Şikayet durumunuzu takip etmek için referans numaranızı <strong style=\"color:var(--navy)\">\"Şikayetimi Takip Et\"</strong> bölümünde saklayın.",
@@ -2007,7 +2009,7 @@ const V = (function(){
       'my-complaints-t':'my_complaints',
       'mv-card-t':'mv_card_t','mv-card-s':'mv_card_s','mv-card-btn':'mv_card_btn',
       'feed-card-t':'feed_card_t',
-      'mv-modal-title':'mv_title','mv-modal-sub':'mv_sub','mv-addr-lbl':'mv_addr_lbl','mv-go':'mv_go','mv-hint':'mv_hint',
+      'mv-modal-title':'mv_title','mv-modal-sub':'mv_sub','mv-addr-lbl':'mv_addr_lbl','mv-go':'mv_go','mv-hint':'mv_hint','mv-quote':'mv_quote',
       'l-hero-slogan-sub':'hss','l-mv-btn':'l_mv_btn','suc-save-note':'suc_save_note','suc-mv-btn':'suc_mv_btn',
       'feed-live-badge':'feed_live','feed-tab-title':'feed_tab_title','feed-tab-sub':'feed_tab_sub','feed-new-btn':'feed_new_btn'
     };
@@ -3465,11 +3467,11 @@ if('serviceWorker' in navigator){
       <button onclick="mvClose()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">✕</button>
     </div>
     <div style="background:linear-gradient(135deg,#13315e,#1a4fa0);padding:12px 18px;text-align:center;border-bottom:1px solid rgba(201,168,76,.25)">
-      <div style="font-family:Cinzel,serif;color:#fff;font-size:.82rem;font-style:italic;line-height:1.4">"Justice is the source of all the other virtues."</div>
+      <div id="mv-quote" style="font-family:Cinzel,serif;color:#fff;font-size:.82rem;font-style:italic;line-height:1.4">"Adalet, diğer tüm erdemlerin kaynağıdır."</div>
       <div style="font-family:Cinzel,serif;color:#c9a84c;font-size:.62rem;font-weight:600;letter-spacing:1.5px;margin-top:5px">— MARCUS AURELIUS</div>
     </div>
     <div style="padding:16px 18px;flex:1;overflow-y:auto">
-      <label id="mv-addr-lbl" style="font-size:.78rem;font-weight:600;color:var(--navy);display:block;margin-bottom:6px">Adresiniz (Address)</label>
+      <label id="mv-addr-lbl" style="font-size:.78rem;font-weight:600;color:var(--navy);display:block;margin-bottom:6px">Adresiniz</label>
      <div style="display:flex;gap:8px">
             <div style="position:relative;flex:1">
               <input type="text" id="mv-postal" placeholder="örn. 123 Queen St W, Toronto, ON" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:.95rem;outline:none;margin-bottom:0" oninput="_mvLocDebounce()" onkeydown="if(event.key==='Enter')mvSearch()">
