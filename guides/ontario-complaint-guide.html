@@ -117,36 +117,55 @@ footer{
   border-top:1px solid var(--border);letter-spacing:.5px;
 }
 
-.asya-box{
+.asya-feature{
   background:linear-gradient(160deg,#fff,var(--ice));
-  border:1px solid var(--border);border-radius:var(--radius);
-  padding:22px;margin-bottom:8px;
+  border:1.5px solid var(--gold);border-radius:20px;
+  padding:28px 22px 22px;margin:-34px 0 40px;position:relative;
+  box-shadow:0 14px 40px rgba(15,41,82,.18);
 }
-.asya-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.asya-avatar{
-  width:38px;height:38px;border-radius:50%;
+.asya-feature-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--navy);
+  font-family:'Cinzel',serif;font-size:.6rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;padding:5px 14px;border-radius:20px;
+  box-shadow:0 4px 12px rgba(201,168,76,.4);white-space:nowrap;
+}
+.asya-feature-inner{display:flex;gap:14px;align-items:flex-start}
+.asya-avatar-ring{
+  width:50px;height:50px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--navy),var(--blue));
-  color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:1rem;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;position:relative;
 }
-.asya-name{font-family:'Cinzel',serif;font-weight:700;font-size:.95rem;color:var(--navy)}
-.asya-sub{font-size:.72rem;color:var(--muted)}
-.asya-msg{
-  background:#fff;border:1px solid var(--border);border-radius:10px;
-  padding:12px 14px;font-size:.88rem;color:var(--sub);line-height:1.6;margin-bottom:14px;
+.asya-avatar-ring::before{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid var(--gold);opacity:.55;
+  animation:asyaPulse 2.4s ease-out infinite;
+}
+@keyframes asyaPulse{
+  0%{transform:scale(1);opacity:.55}
+  100%{transform:scale(1.4);opacity:0}
+}
+.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem}
+.asya-feature-body{flex:1;min-width:0}
+.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.92rem;margin-bottom:7px}
+.asya-bubble{
+  background:#fff;border:1px solid var(--border);border-radius:4px 14px 14px 14px;
+  padding:12px 14px;font-size:.87rem;color:var(--sub);line-height:1.6;margin-bottom:12px;
 }
 .asya-input-row{display:flex;gap:8px}
 .asya-input{
-  flex:1;border:1px solid var(--border);border-radius:8px;
-  padding:11px 14px;font-size:.88rem;font-family:'Inter',sans-serif;
-  background:#fff;color:var(--text);
+  flex:1;border:1.5px solid var(--border);border-radius:24px;
+  padding:11px 16px;font-size:.87rem;font-family:'Inter',sans-serif;
+  background:var(--off);color:var(--text);min-width:0;
 }
 .asya-input::placeholder{color:var(--muted)}
+.asya-input:focus{outline:none;border-color:var(--gold);background:#fff}
 .asya-send{
-  background:var(--gold);border:none;border-radius:8px;color:var(--navy);
-  font-weight:700;width:42px;font-size:1rem;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--dark-gold));
+  border:none;border-radius:50%;color:var(--navy);
+  font-weight:700;width:42px;height:42px;flex-shrink:0;font-size:1rem;cursor:pointer;
+  box-shadow:0 4px 12px rgba(201,168,76,.4);
 }
-.asya-note{font-size:.7rem;color:var(--muted);text-align:center;margin-top:10px;font-style:italic}
 </style>
 </head>
 <body>
@@ -159,54 +178,18 @@ footer{
 <main>
   <p class="lede">Where you file depends on what happened. This guide sorts the most common complaint types in Ontario by the authority responsible — and shows where ComplaintCA fits in to help you get there faster, in your own language.</p>
 
-  <h2>Find Your Path</h2>
-
-  <div class="path-card">
-    <h3>Consumer &amp; business disputes</h3>
-    <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
-    <a class="official" href="https://www.ontario.ca/page/consumer-protection" target="_blank" rel="noopener">Consumer Protection Ontario — 1-800-889-9768 →</a>
-  </div>
-
-  <div class="path-card">
-    <h3>Municipal &amp; city services (Toronto)</h3>
-    <p>Unresolved issue with a City of Toronto department — waste collection, permits, bylaw enforcement.</p>
-    <a class="official" href="https://www.ombudsmantoronto.ca/" target="_blank" rel="noopener">Ombudsman Toronto →</a>
-  </div>
-
-  <div class="path-card">
-    <h3>Federal services &amp; your MP</h3>
-    <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
-  </div>
-
-  <div class="path-card">
-    <h3>Cyber crime &amp; online fraud</h3>
-    <p>Scams, phishing, identity theft, online harassment.</p>
-    <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
-  </div>
-
-  <div class="path-card">
-    <h3>Legal disputes needing representation</h3>
-    <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
-  </div>
-
-  <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace Consumer Protection Ontario, the Ombudsman, or your MP's office — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
-
-  <h2>Ask Asya</h2>
-  <div class="asya-box">
-    <div class="asya-head">
-      <div class="asya-avatar">A</div>
-      <div>
-        <div class="asya-name">Asya</div>
-        <div class="asya-sub">ComplaintCA AI Assistant</div>
+  <div class="asya-feature">
+    <div class="asya-feature-badge">✨ AI-Powered · Instant Answer</div>
+    <div class="asya-feature-inner">
+      <div class="asya-avatar-ring"><span>A</span></div>
+      <div class="asya-feature-body">
+        <div class="asya-feature-name">Ask Asya — skip the guide</div>
+        <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
+        <div class="asya-input-row">
+          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
+          <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
+        </div>
       </div>
-    </div>
-    <div class="asya-msg" id="asya-guide-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
-    <div class="asya-input-row">
-      <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
-      <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
     </div>
   </div>
 
@@ -246,6 +229,41 @@ footer{
     }
   }
   </script>
+
+  <h2>Find Your Path</h2>
+
+  <div class="path-card">
+    <h3>Consumer &amp; business disputes</h3>
+    <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
+    <a class="official" href="https://www.ontario.ca/page/consumer-protection" target="_blank" rel="noopener">Consumer Protection Ontario — 1-800-889-9768 →</a>
+  </div>
+
+  <div class="path-card">
+    <h3>Municipal &amp; city services (Toronto)</h3>
+    <p>Unresolved issue with a City of Toronto department — waste collection, permits, bylaw enforcement.</p>
+    <a class="official" href="https://www.ombudsmantoronto.ca/" target="_blank" rel="noopener">Ombudsman Toronto →</a>
+  </div>
+
+  <div class="path-card">
+    <h3>Federal services &amp; your MP</h3>
+    <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
+    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
+  </div>
+
+  <div class="path-card">
+    <h3>Cyber crime &amp; online fraud</h3>
+    <p>Scams, phishing, identity theft, online harassment.</p>
+    <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
+  </div>
+
+  <div class="path-card">
+    <h3>Legal disputes needing representation</h3>
+    <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
+    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
+  </div>
+
+  <h2>Where ComplaintCA Fits</h2>
+  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace Consumer Protection Ontario, the Ombudsman, or your MP's office — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
 
   <div class="cta">
     <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
