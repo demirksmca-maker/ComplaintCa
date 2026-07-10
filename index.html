@@ -2429,14 +2429,8 @@ async function suggestCategoryAI(){
   var sys='You are a classifier for a Canadian complaint platform. Given a complaint description, pick the single best matching GROUP and CATEGORY from this exact list (use the exact lowercase codes, never invent new ones):\n'+validList+'\n\nAlso pick a PRIORITY: low, medium, or high (high = safety risk, legal deadline risk, or serious harm; low = minor annoyance).\n\nRespond ONLY with strict JSON, no other text: {"group":"...","category":"...","priority":"..."}';
 
   try{
-    var r=await fetch('/api/claude-proxy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({max_tokens:150,system:sys,messages:[{role:'user',content:desc}]})
-    });
-    var d=await r.json();
-    if(d.error) return;
-    var raw=d.content.map(function(c){return c.text||'';}).join('').trim();
+    var raw=await _aiClassify(sys,desc);
+    if(!raw) return;
     var jsonMatch=raw.match(/\{[\s\S]*\}/);
     if(!jsonMatch) return;
     var parsed=JSON.parse(jsonMatch[0]);
@@ -2447,6 +2441,30 @@ async function suggestCategoryAI(){
     if(_catGroup) return; // beklerken kullanıcı elle seçmiş olabilir
     renderCatSuggestion(parsed.group,validCat,parsed.priority);
   }catch(e){/* sessizce vazgeç, kullanıcı zaten elle seçebilir */}
+}
+// Basit/yüksek hacimli sınıflandırma işleri: önce ücretsiz Groq, başarısız olursa Claude'a düş.
+async function _aiClassify(sys,userMsg){
+  try{
+    var r=await fetch('/api/groq-proxy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'llama-3.1-8b-instant',max_tokens:150,messages:[{role:'system',content:sys},{role:'user',content:userMsg}]})
+    });
+    var d=await r.json();
+    if(d.error||!d.choices) throw new Error('groq failed');
+    return (d.choices[0].message.content||'').trim();
+  }catch(e){
+    try{
+      var r2=await fetch('/api/claude-proxy',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({max_tokens:150,system:sys,messages:[{role:'user',content:userMsg}]})
+      });
+      var d2=await r2.json();
+      if(d2.error) return null;
+      return d2.content.map(function(c){return c.text||'';}).join('').trim();
+    }catch(e2){return null;}
+  }
 }
 function renderCatSuggestion(group,sub,priority){
   var old=document.getElementById('cat-ai-suggest');
@@ -3229,14 +3247,27 @@ async function _aAskClaude(userMsg){
   _aSetStatus('thinking');
   const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Detect the language the user is writing in from their most recent message (it may be English, Turkish, French, Chinese, Spanish, Arabic, Punjabi, or any other language) and ALWAYS reply in that same language, regardless of any other language setting. If the user switches language mid-conversation, switch with them. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
     try{
-    const res=await fetch('/api/claude-proxy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({max_tokens:300,system:sys,messages:_aHistory})
-    });
-    const d=await res.json();
-    if(d.error) throw new Error(d.error.message);
-    const reply=d.content.map(c=>c.text||'').join('');
+    // Günlük sohbet: önce ücretsiz Groq, başarısız olursa Claude'a düş.
+    let reply;
+    try{
+      const res=await fetch('/api/groq-proxy',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:300,messages:[{role:'system',content:sys}].concat(_aHistory)})
+      });
+      const d=await res.json();
+      if(d.error||!d.choices) throw new Error('groq failed');
+      reply=(d.choices[0].message.content||'').trim();
+    }catch(e){
+      const res2=await fetch('/api/claude-proxy',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({max_tokens:300,system:sys,messages:_aHistory})
+      });
+      const d2=await res2.json();
+      if(d2.error) throw new Error(d2.error.message);
+      reply=d2.content.map(c=>c.text||'').join('');
+    }
     _aHistory.push({role:'assistant',content:reply});
     _aSetStatus('idle');return reply;
   }catch(e){_aSetStatus('idle');return 'Sorry, an error occurred.';}
