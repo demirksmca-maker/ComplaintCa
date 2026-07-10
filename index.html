@@ -3976,22 +3976,22 @@ async function doSignup(){
     if(e&&e.code==='auth/email-already-in-use') setTimeout(function(){switchAuthTab('login');},1500);
   }
 }
-async function doGoogleSignIn(){
-  var st=document.getElementById('login-status');
-  var btn=document.getElementById('google-si-btn');
+async function doGoogleSignIn(btn){
+  var isSignup=btn&&btn.id==='google-su-btn';
+  var st=document.getElementById(isSignup?'signup-status':'login-status');
   if(!window._fbGoogleSignIn){
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in is still loading, please try again in a moment.';}
     return;
   }
   try{
     if(btn) btn.style.opacity='0.6';
-    var googleUser=await window._fbGoogleSignIn();
-    openMemberPanel(googleUser.name, googleUser.email);
-    if(st){st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';st.textContent='Welcome, '+googleUser.name+'!';}
-    _renderMyComplaints(googleUser.email);
+    // Redirects the whole page to Google's consent screen (more reliable than a
+    // popup on mobile browsers, which routinely block or silently kill popups).
+    // Execution doesn't continue past this — the result is picked up by
+    // getRedirectResult() on next page load, see the Firebase init block below.
+    await window._fbGoogleSignIn();
   }catch(e){
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed. Please try again.';}
-  }finally{
     if(btn) btn.style.opacity='1';
   }
 }
@@ -4047,7 +4047,7 @@ document.addEventListener('DOMContentLoaded',function(){V.init();});
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-  import{getAuth,GoogleAuthProvider,signInWithPopup,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 try{
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
@@ -4055,9 +4055,17 @@ try{
   const authInst=getAuth(app);
   window._fbGoogleSignIn=async function(){
     const provider=new GoogleAuthProvider();
-    const result=await signInWithPopup(authInst,provider);
-    return {name:result.user.displayName||result.user.email,email:result.user.email};
+    await signInWithRedirect(authInst,provider);
   };
+  getRedirectResult(authInst).then(function(result){
+    if(!result||!result.user) return;
+    var googleUser={name:result.user.displayName||result.user.email,email:result.user.email};
+    if(typeof openMemberPanel==='function') openMemberPanel(googleUser.name,googleUser.email);
+    if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
+  }).catch(function(e){
+    var st=document.getElementById('login-status')||document.getElementById('signup-status');
+    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed. Please try again.';}
+  });
   window._fbSignUp=async function(name,email,pass){
     const cred=await createUserWithEmailAndPassword(authInst,email,pass);
     await updateProfile(cred.user,{displayName:name});
