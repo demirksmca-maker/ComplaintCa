@@ -2486,12 +2486,13 @@ async function runAI(){
   var orig=btn.textContent;
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';
 
-  var lang=VFY_LANG_NAMES[_aLang]||'English';
+  var langHint=VFY_LANG_NAMES[_aLang]||'English';
+  var lang='the same language as the complaint text below (it may be English, Turkish, French, Chinese, Spanish, Arabic, Punjabi, or another language; if truly ambiguous, default to '+langHint+')';
   var today=new Date().toLocaleDateString('en-CA');
 
   var isLegal=_ctype==='legal';
   var isAnon=!!_isAnon;
-  var sys='You are a strict Canadian legal assistant. Respond ONLY in '+lang+'.\n'+
+  var sys='You are a strict Canadian legal assistant. Detect the language the complaint text is written in and respond ONLY in '+lang+'.\n'+
     'CRITICAL RULES: DO NOT hallucinate laws. Rely ONLY on factual, verifiable Canadian federal or provincial legislation (e.g., RTA, PIPEDA, ESA, Criminal Code). If the specific legal section is unknown, state "Requires specific legal counsel" instead of inventing a statute. Base all assertions ONLY on the user\'s provided facts.\n'+
     (isAnon
       ? 'IMPORTANT — ANONYMOUS SUBMISSION: This complainant has chosen to remain anonymous. Most Canadian institutions cannot open a formal, identity-verified complaint file from an anonymous submission — it will typically be logged as an informational tip/advisory notice rather than a case requiring a mandated response. Do NOT state or imply a binding legal response deadline, and do NOT threaten "formal escalation." Frame everything as an advisory notice for the institution\'s awareness and internal record, not a formal demand.\n'
@@ -2532,7 +2533,7 @@ async function runAI(){
 
   async function callAsyaVerdict(claudeOut){
     if(!claudeOut) return null;
-    var judgePrompt='You are Asya, a senior Canadian legal AI. Claude Sonnet has analyzed a complaint. Review the analysis, verify the legal citations are real and accurate Canadian law, correct any errors, and produce ONE final definitive response in EXACT format:\n\nCOMPLAINT:\n[Best formal rewrite — 1-2 sentences]\n\nLAW:\n[Most specific Canadian Act + section. If uncertain, write "Requires specific legal counsel"]\n\nSANCTIONS:\n[Most precise penalty/remedy — one line]\n\nRESPONSE_DEADLINE:\n[Most accurate deadline with citation — one line'+(isAnon?'; if the submission is anonymous, this MUST say "Not applicable — anonymous submissions are not entitled to a mandated response"':'')+']\n\nEMAIL_DRAFT:\n[Strongest email — 3-4 sentences max'+(isAnon?'. This is an ANONYMOUS ADVISORY NOTICE, not a formal complaint — no demand, no deadline, no escalation threat, sign as "Anonymous Notice — Ref: [REF]"':'')+']\n\nRespond ONLY in '+lang+'. Be decisive and accurate.\n\nClaude analysis:\n'+claudeOut;
+    var judgePrompt='You are Asya, a senior Canadian legal AI. Claude Sonnet has analyzed a complaint. Review the analysis, verify the legal citations are real and accurate Canadian law, correct any errors, and produce ONE final definitive response in EXACT format:\n\nCOMPLAINT:\n[Best formal rewrite — 1-2 sentences]\n\nLAW:\n[Most specific Canadian Act + section. If uncertain, write "Requires specific legal counsel"]\n\nSANCTIONS:\n[Most precise penalty/remedy — one line]\n\nRESPONSE_DEADLINE:\n[Most accurate deadline with citation — one line'+(isAnon?'; if the submission is anonymous, this MUST say "Not applicable — anonymous submissions are not entitled to a mandated response"':'')+']\n\nEMAIL_DRAFT:\n[Strongest email — 3-4 sentences max'+(isAnon?'. This is an ANONYMOUS ADVISORY NOTICE, not a formal complaint — no demand, no deadline, no escalation threat, sign as "Anonymous Notice — Ref: [REF]"':'')+']\n\nRespond in the SAME language as the Claude analysis below (do not translate it). Be decisive and accurate.\n\nClaude analysis:\n'+claudeOut;
     try{
       var r=await fetch('/api/claude-proxy',{
         method:'POST',
@@ -3110,7 +3111,7 @@ function _aSetStatus(s){
 async function _aAskClaude(userMsg){
   _aHistory.push({role:'user',content:userMsg});
   _aSetStatus('thinking');
-  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Language: '+(VFY_LANG_NAMES[_aLang]||'English')+'. Always respond in this language. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
+  const sys='You are Asya, a warm and friendly AI assistant for ComplaintCA Canada. Detect the language the user is writing in from their most recent message (it may be English, Turkish, French, Chinese, Spanish, Arabic, Punjabi, or any other language) and ALWAYS reply in that same language, regardless of any other language setting. If the user switches language mid-conversation, switch with them. Help users with complaints. CRITICAL: Your replies MUST be maximum 2 short sentences, under 40 words total. Never write paragraphs or lists. Ask ONE short question at a time. When you have enough info, write a formal complaint starting with COMPLAINT: on its own line, then suggest the right Canadian authority (LTB, CRTC, FCAC, etc.) with their email.';
     try{
     const res=await fetch('/api/claude-proxy',{
       method:'POST',
