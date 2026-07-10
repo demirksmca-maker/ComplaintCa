@@ -67,6 +67,23 @@ below.
   real payment gate or auth tier distinguishing a "Partner Lawyer" from
   any other visitor of the Lawyer Panel. Explicitly out of scope for this
   round of fixes.
+- **Lawyer Panel now requires sign-in, but not lawyer verification.**
+  `firestore.rules` requires `request.auth != null` to read `isLegal==true`
+  complaints, and `showTab('lawyerpanel')` gates the tab behind the same
+  login check already used for filing a new complaint — this stops
+  anonymous/public browsing of legal-track cases, which is a real,
+  server-enforced improvement (not just hiding a tab in the UI). It does
+  **not** verify the signed-in account actually belongs to a lawyer; any
+  registered user can view the feed once logged in. Real lawyer
+  verification would need a separate vetting/role system — out of scope
+  here, same as Partner Lawyer payment above. Also note: as the Firebase
+  project owner, you can always read this data from the Firebase Console
+  regardless of these rules — that's a policy commitment, not something
+  client-side or rules-file code can technically prevent. The only way to
+  make "even the platform owner can't read this" cryptographically true is
+  end-to-end encryption scoped to the user + their matched lawyer, which is
+  a materially bigger undertaking (key management, recovery, etc.) and not
+  implemented here.
 
 ## Suggested next steps (not yet done)
 

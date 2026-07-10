@@ -23,14 +23,23 @@ rules_version = '2';
 // What these rules DO enforce: submissions must have the right shape and
 // types (no arbitrary extra fields, no forging a "resolved" status on
 // create), and updates can only ever change `status`/`timeline` — never
-// re-assign a complaint's ref, email, or content after the fact.
+// re-assign a complaint's ref, email, or content after the fact. They also
+// require a signed-in Firebase Auth user (any account, via the existing
+// email/password or Google sign-in) to read legal-track complaints
+// (isLegal==true) — this stops anonymous/public browsing of the Lawyer
+// Panel feed, but it does NOT verify the signed-in account actually belongs
+// to a real lawyer; that would need a separate vetting/role system and is
+// out of scope here (see SECURITY.md).
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
     match /complaints/{complaintId} {
 
-      allow read: if true;
+      // Legal-track complaints (isLegal==true) are meant to be seen only by
+      // signed-in users (the Lawyer Panel), not the general public feed —
+      // everything else keeps the same open read as before.
+      allow read: if resource.data.get('isLegal', false) != true || request.auth != null;
 
       allow create: if isValidNewComplaint(request.resource.data);
 
