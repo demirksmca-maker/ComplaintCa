@@ -3991,7 +3991,7 @@ async function doGoogleSignIn(btn){
     // getRedirectResult() on next page load, see the Firebase init block below.
     await window._fbGoogleSignIn();
   }catch(e){
-    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed. Please try again.';}
+    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
     if(btn) btn.style.opacity='1';
   }
 }
@@ -4064,7 +4064,7 @@ try{
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
   }).catch(function(e){
     var st=document.getElementById('login-status')||document.getElementById('signup-status');
-    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed. Please try again.';}
+    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
   });
   window._fbSignUp=async function(name,email,pass){
     const cred=await createUserWithEmailAndPassword(authInst,email,pass);
