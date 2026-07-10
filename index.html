@@ -727,6 +727,14 @@ textarea{resize:vertical;min-height:90px}
     </div>
     <div id="view-new">
       <div id="form-sec">
+        <div style="display:flex;gap:6px;margin-bottom:14px" id="new-progress">
+          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--blue)"></div>
+          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
+        </div>
+        <div id="new-step-1">
         <div class="card" style="padding:14px 16px">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:8px">
@@ -751,6 +759,10 @@ textarea{resize:vertical;min-height:90px}
             <input type="tel" id="inp-phone" placeholder="+1 (416) 000-0000" style="margin-bottom:0">
           </div>
         </div>
+        <button onclick="newGoStep(2)" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        </div>
+
+        <div id="new-step-2" style="display:none">
         <input type="hidden" id="inp-tname" value="">
         <div class="card">
           <div class="ct"><div class="ci">II</div><span id="a-cat">Category</span></div>
@@ -783,6 +795,13 @@ textarea{resize:vertical;min-height:90px}
             <div class="pbtn high" id="a-phigh" onclick="selPri('high',this)">🔴 High</div>
           </div>
         </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="newGoStep(1)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
+          <button onclick="newGoStep(3)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        </div>
+        </div>
+
+        <div id="new-step-3" style="display:none">
         <div class="card">
           <div class="ct"><div class="ci">III</div><span id="a-loc">Location</span></div>
           <div class="lbar">
@@ -803,6 +822,13 @@ textarea{resize:vertical;min-height:90px}
             </div>
           </div>
         </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="newGoStep(2)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
+          <button onclick="newGoStep(4)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        </div>
+        </div>
+
+        <div id="new-step-4" style="display:none">
         <div class="card" style="padding:14px 20px">
           <div class="ct" style="margin-bottom:10px"><div class="ci">IV</div><span id="a-media">Evidence</span></div>
           <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
@@ -813,6 +839,13 @@ textarea{resize:vertical;min-height:90px}
           </label>
           <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
         </div>
+        <div style="display:flex;gap:8px">
+          <button onclick="newGoStep(3)" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
+          <button onclick="newGoStep(5)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        </div>
+        </div>
+
+        <div id="new-step-5" style="display:none">
         <div class="card" style="padding:0;overflow:hidden">
           <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
             <div class="ct" style="margin-bottom:0"><div class="ci">V</div><span id="a-comp">Complaint</span></div>
@@ -841,8 +874,7 @@ textarea{resize:vertical;min-height:90px}
           </div>
           <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Improve with AI</button>
         </div>
-        
-        
+        <button onclick="newGoStep(4)" style="width:100%;background:white;color:var(--navy);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
@@ -859,6 +891,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
         <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
         <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Submit Complaint</button>
+        </div>
       </div>
       <div class="scs" id="scs-screen">
         <div class="sci">✅</div>
@@ -1524,6 +1557,17 @@ function lwGoStep(n){
   var dots=document.querySelectorAll('#lw-progress .lw-prog-dot');
   dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
   var box=document.getElementById('view-lawyer');
+  if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function newGoStep(n){
+  for(var i=1;i<=5;i++){
+    var s=document.getElementById('new-step-'+i);
+    if(s) s.style.display=(i===n)?'block':'none';
+  }
+  var dots=document.querySelectorAll('#new-progress .new-prog-dot');
+  dots.forEach(function(d,i){d.style.background=(i<n)?'var(--blue)':'var(--off)';});
+  var box=document.getElementById('view-new');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -2897,6 +2941,8 @@ function renderCatSuggestion(group,sub,priority){
     '</div>';
   var grid=document.getElementById('group-grid');
   if(grid && grid.parentNode) grid.parentNode.insertBefore(box,grid);
+  var step2=document.getElementById('new-step-2');
+  if(step2 && step2.style.display==='none') newGoStep(2);
 }
 function applyCatSuggestion(group,catVal,priority){
   dismissCatSuggestion();
@@ -3528,6 +3574,7 @@ function resetForm(){
   var tog=document.getElementById('anon-tog');if(tog)tog.classList.add('on');
   document.getElementById('id-fields').style.display='none';
   resetCat();
+  newGoStep(1);
   window.scrollTo(0,0);
 }
 async function doTrack(){
