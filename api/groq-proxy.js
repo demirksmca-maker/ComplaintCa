@@ -6,16 +6,15 @@ export default async function handler(req, res) {
   }
   try {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    if (await isRateLimited(ip, { limit: 10, windowMs: 60000, bucket: 'claude-proxy' })) {
+    if (await isRateLimited(ip, { limit: 10, windowMs: 60000, bucket: 'groq-proxy' })) {
       return res.status(429).json({ error: 'Çok fazla istek, biraz bekle.' });
     }
-    const body = { model: 'claude-sonnet-4-5-20250929', ...req.body };
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const body = { ...req.body };
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify(body)
     });
