@@ -187,7 +187,7 @@ body{font-family:'Inter',sans-serif;background:#0a1830;color:var(--text);-webkit
 
 
 /* ── HERO (Pulse: dark super-app dashboard) ── */
-.hero{height:100vh;height:100dvh;background:#0e1015;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:66px 20px 10px;position:relative;overflow-y:auto;width:100%;box-sizing:border-box}
+.hero{height:100vh;height:100dvh;background:#0e1015;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:66px 16px 16px;position:relative;overflow:hidden;width:100%;box-sizing:border-box}
 .hero::before{content:'';position:absolute;top:-8%;left:-15%;width:75%;height:38%;background:radial-gradient(circle,rgba(124,92,255,.18),transparent 70%);pointer-events:none}
 .hero-orb{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,168,.16) 0%,transparent 70%);bottom:-10%;right:-20%;top:auto;left:auto;transform:none;pointer-events:none}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:-apple-system,'Segoe UI',Inter,sans-serif;font-size:clamp(.62rem,1.6vh,.7rem);font-weight:600;color:#8991a3;letter-spacing:.02em;margin-bottom:8px}
@@ -215,8 +215,8 @@ body{font-family:'Inter',sans-serif;background:#0a1830;color:var(--text);-webkit
 
 /* ── HUB TILES (Pulse: super-app icon grid) ── */
 .hub-kicker{font-family:-apple-system,'Segoe UI',Inter,sans-serif;font-size:clamp(.6rem,1.4vh,.68rem);font-weight:700;letter-spacing:.04em;text-transform:none;color:#8991a3;margin:2px 0 10px;text-align:center}
-.hub-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:460px;margin:0 auto 14px;position:relative;z-index:1}
-.hub-tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:8px;text-align:left;text-decoration:none;padding:clamp(14px,3vh,18px) 14px;border-radius:16px;border:none;transition:all .2s;cursor:pointer;min-height:clamp(76px,13vh,98px);position:relative;overflow:hidden}
+.hub-tiles{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:10px;width:100%;max-width:460px;margin:6px auto 10px;flex:1 1 auto;min-height:0;position:relative;z-index:1}
+.hub-tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:8px;text-align:left;text-decoration:none;padding:clamp(12px,2.4vh,18px) 14px;border-radius:16px;border:none;transition:all .2s;cursor:pointer;min-height:0;position:relative;overflow:hidden}
 .hub-tile:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .hub-tile:nth-child(1){background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
 .hub-tile:nth-child(2){background:linear-gradient(155deg,#00c2a8,#008a76)}
