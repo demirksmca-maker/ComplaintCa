@@ -120,6 +120,32 @@ below.
   a materially bigger undertaking (key management, recovery, etc.) and not
   implemented here.
 
+## GitHub-side protections
+
+- **CodeQL** (`.github/workflows/codeql.yml`) — scans `api/*.js` and
+  `index.html`'s inline JS for known vulnerability patterns on every push
+  to `main`/the working branch, every PR, and weekly. Findings show up
+  under the repo's Security tab. No setup needed — runs automatically.
+- **Dependabot** (`.github/dependabot.yml`) — currently tracks only the
+  `github-actions` ecosystem (keeps `actions/checkout` etc. patched);
+  there's no `package.json` in this repo (API functions have zero npm
+  dependencies), so there's nothing else for it to scan yet. If that
+  changes, add an `npm` entry here too.
+- **Firestore rules auto-deploy** (`.github/workflows/firestore-rules-deploy.yml`)
+  — deploys `firestore.rules` automatically whenever it changes on `main`,
+  replacing the old manual "paste into Firebase Console" step above.
+  **Requires one manual step to activate:** Firebase Console → Project
+  Settings → Service Accounts → Generate new private key → paste the
+  entire JSON as a GitHub repo secret named `FIREBASE_SERVICE_ACCOUNT`
+  (Settings → Secrets and variables → Actions → New repository secret).
+  Until that secret exists, this workflow will fail (visible as a red X
+  in the Actions tab) if it's triggered — it does not affect the live
+  site either way, since Vercel deploys everything else independently.
+- **Not wired up (need your own account, can't be done from this repo):**
+  Sentry (production error monitoring) and an uptime monitor like
+  UptimeRobot both need you to sign up and get an API key/DSN yourself —
+  ask if you want help integrating either once you have one.
+
 ## Suggested next steps (not yet done)
 
 1. Deploy `firestore.rules` (see above) and confirm the app still works
