@@ -86,6 +86,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ComplaintCA">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
@@ -890,6 +891,7 @@ textarea{resize:vertical;min-height:90px}
           </div>
         </div>
         <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
+        <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="_tsTokenNew" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
         <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Submit Complaint</button>
         </div>
       </div>
@@ -1239,6 +1241,7 @@ textarea{resize:vertical;min-height:90px}
         ⚠️ Submitting false reports is a criminal offence. Evidence you upload will only be shared with the relevant Canadian authority. We do not contact the offender directly.
       </div>
 
+      <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="_tsTokenCyber" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
       <button onclick="doSubmitCyber()" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:15px;font-size:.88rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,16,46,.3);letter-spacing:1px" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Submit Cyber Crime Report</span></button>
 
       <!-- SUCCESS -->
@@ -2758,7 +2761,7 @@ function _cyShowNote(msg){
   setTimeout(function(){note.style.display='none';},4500);
 }
 
-function doSubmitCyber(){
+async function doSubmitCyber(){
   var desc=document.getElementById('cy-desc').value.trim();
   var emailVal=document.getElementById('cy-email').value.trim();
   var isAnon=document.getElementById('cy-anon-tog').classList.contains('on');
@@ -2780,6 +2783,11 @@ function doSubmitCyber(){
       _cyShowNote('⚠ Your name is required unless this report is anonymous.');
       return;
     }
+  }
+
+  if(!(await _verifyTurnstile('cyber'))){
+    _cyShowNote('⚠ Please complete the verification checkbox before submitting.');
+    return;
   }
 
   var crimeEl=document.querySelector('.cy-crime.sel');
@@ -3363,6 +3371,25 @@ function genRef(){
   for(var i=0;i<arr.length;i++) s+=chars[arr[i]%chars.length];
   return 'VC-'+new Date().getFullYear()+'-'+s;
 }
+
+// ── ANTI-BOT (Cloudflare Turnstile) ──
+// Widgets on the File and Cyber submit buttons call these on solve.
+// Ships with Cloudflare's public "always passes" test sitekey so the
+// widget renders and nothing breaks — swap data-sitekey for a real one
+// (dash.cloudflare.com → Turnstile, free) to get actual bot protection.
+var _tsToken={new:'',cyber:''};
+function _tsTokenNew(token){_tsToken.new=token;}
+function _tsTokenCyber(token){_tsToken.cyber=token;}
+async function _verifyTurnstile(which){
+  var token=_tsToken[which];
+  if(!token) return false;
+  try{
+    var r=await fetch('/api/verify-turnstile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token})});
+    var d=await r.json();
+    return !!d.success;
+  }catch(e){return false;} // ağ hatasında güvenli taraf: engelle
+}
+
 async function doSubmit(){
   // Gönderim sıklığı sınırı (anti-istismar) — aynı cihazdan ardışık gönderimi yavaşlatır
   var COOLDOWN_MS=5*60*1000;
@@ -3464,6 +3491,16 @@ async function doSubmit(){
       if(lgName) lgName.scrollIntoView({behavior:'smooth',block:'center'});
       return;
     }
+  }
+
+  if(!(await _verifyTurnstile('new'))){
+    var noteTs=document.getElementById('a-note');
+    if(noteTs){
+      noteTs.style.background='rgba(240,87,106,.16)';noteTs.style.borderColor='#c8102e';noteTs.style.color='#c8102e';
+      noteTs.textContent='⚠ Please complete the verification checkbox before submitting.';
+      noteTs.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    return;
   }
 
   btn.disabled=true;btn.innerHTML='<span class="spin"></span>Submitting...';
@@ -4157,9 +4194,21 @@ document.addEventListener('DOMContentLoaded',function(){V.init();});
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
   import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import{initializeAppCheck,ReCaptchaV3Provider}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app-check.js";
 try{
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
+
+  // ── App Check (bot/abuse protection for Firestore & Auth) ──
+  // Off by default (empty key = zero network calls, nothing changes).
+  // To turn on: Firebase Console -> App Check -> register this app with
+  // reCAPTCHA v3 (free), paste the site key below, then flip "Enforce"
+  // for Firestore/Auth in the same console once you see real traffic
+  // passing (enforcing before that would lock out legitimate users).
+  const APP_CHECK_SITE_KEY='';
+  if(APP_CHECK_SITE_KEY){
+    initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+  }
 
   const authInst=getAuth(app);
   window._fbGoogleSignIn=async function(){

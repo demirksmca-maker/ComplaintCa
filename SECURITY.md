@@ -22,8 +22,42 @@ the browser's `localStorage` and in a public Firebase/Firestore project).
 | Account system | Hand-rolled `localStorage` user table (`cc_users`), no server-side verification. | Migrated to Firebase Authentication (email/password + the existing Google sign-in, both already using the Firebase Auth SDK). `cc_session` in `localStorage` is now just a UI convenience cache kept in sync via `onAuthStateChanged`, not the source of truth. |
 | Firestore access control | No `firestore.rules` in the repo — access control lived entirely in the Firebase Console, unreviewable here. | Added `firestore.rules` (see below — **must be deployed manually**, this repo can't do that for you). |
 | Outbound email (`api/send-email.js`) | The frontend already called `/api/send-email`, but the file never existed — every "automatic" institution/admin email silently 404'd and fell back to a `mailto:` link, with no indication anything was wrong. | Added the missing endpoint (Brevo API, rate-limited via `api/_rateLimit.js`). Email body is HTML-escaped before being wrapped in the branded template to prevent HTML injection into the rendered email. Sender is fixed to `ComplaintCA <complaintcaca@gmail.com>`; `replyTo` is only ever set to the complainant's own address, never exposed to the institution for anonymous submissions. |
+| No bot/spam protection on submissions | Both submission forms (File a Complaint, Cyber Crime Report) could be scripted and hit repeatedly — only defense was the existing per-device cooldown/rate limiting, not real bot detection. | Added **Cloudflare Turnstile** (free, no card required) — a checkbox/challenge widget on both forms; `doSubmit()`/`doSubmitCyber()` block submission unless the token is verified server-side (`api/verify-turnstile.js`, calls Cloudflare's `siteverify`). See "Action required" below — ships with Cloudflare's public always-passes test key until a real one is configured. |
+| No protection against direct Firestore/Auth API abuse | Anyone with the Firebase config (visible in any browser's page source, by design) could call Firestore/Auth directly, bypassing the app entirely and its rate limits. | Added **Firebase App Check** wiring (reCAPTCHA v3 provider). Off by default (`APP_CHECK_SITE_KEY=''` — zero network calls, nothing changes) until configured. See "Action required" below. |
 
 New helpers added: `escHtml()` (existing), `escAttr()` (HTML-attribute-safe escaping), `safeUrl()` (http/https scheme allowlist).
+
+## Cloudflare Turnstile & Firebase App Check — action required
+
+Both ship in a safe default state (Turnstile with Cloudflare's public
+always-passes test key; App Check disabled entirely) so nothing breaks
+before you finish setup. Neither provides real protection until you do:
+
+**Turnstile (bot/spam protection on the two submission forms):**
+1. dash.cloudflare.com → Turnstile → Add a site → pick "Managed" → add
+   `complaintca.ca` (and your `.vercel.app` preview domain if you test
+   there).
+2. Copy the **Site Key** and replace `data-sitekey="1x00000000000000000000AA"`
+   in **both** `.cf-turnstile` widgets in `index.html` (one near `#sub-btn`,
+   one near `#cy-sub-btn`).
+3. Copy the **Secret Key** and set `TURNSTILE_SECRET_KEY` in Vercel
+   (Settings → Environment Variables), then redeploy.
+4. Without step 3, `api/verify-turnstile.js` fails open (submissions still
+   work, just unverified) — same graceful-degradation pattern as
+   `BREVO_API_KEY` below.
+
+**App Check (protects Firestore/Auth from direct API abuse):**
+1. Firebase Console → App Check → register the web app → provider
+   **reCAPTCHA v3** (free) → copy the site key.
+2. Paste it into `APP_CHECK_SITE_KEY` in `index.html`'s Firebase module
+   script (currently `''`).
+3. Deploy, then watch the App Check console in **"Unenforced" / monitoring
+   mode** for a while to confirm real user traffic is passing (not being
+   misclassified).
+4. Only once that looks healthy, manually flip **Enforce** for Firestore
+   and Authentication in the same console — enforcing too early, before
+   confirming real traffic passes, would lock out legitimate users. This
+   step can't be done from this repo.
 
 ## `firestore.rules` — action required
 
