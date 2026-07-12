@@ -4205,12 +4205,11 @@ try{
   const db=getFirestore(app);
 
   // ── App Check (bot/abuse protection for Firestore & Auth) ──
-  // Off by default (empty key = zero network calls, nothing changes).
-  // To turn on: Firebase Console -> App Check -> register this app with
-  // reCAPTCHA v3 (free), paste the site key below, then flip "Enforce"
-  // for Firestore/Auth in the same console once you see real traffic
-  // passing (enforcing before that would lock out legitimate users).
-  const APP_CHECK_SITE_KEY='';
+  // reCAPTCHA v3 site key registered in Firebase Console -> App Check.
+  // Still running in "unenforced" mode until Enforce is flipped on for
+  // Firestore/Auth in that same console (after confirming real traffic
+  // passes) — see SECURITY.md.
+  const APP_CHECK_SITE_KEY='6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi';
   if(APP_CHECK_SITE_KEY){
     initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
   }
