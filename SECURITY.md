@@ -23,17 +23,13 @@ the browser's `localStorage` and in a public Firebase/Firestore project).
 | Firestore access control | No `firestore.rules` in the repo — access control lived entirely in the Firebase Console, unreviewable here. | Added `firestore.rules` (see below — **must be deployed manually**, this repo can't do that for you). |
 | Outbound email (`api/send-email.js`) | The frontend already called `/api/send-email`, but the file never existed — every "automatic" institution/admin email silently 404'd and fell back to a `mailto:` link, with no indication anything was wrong. | Added the missing endpoint (Brevo API, rate-limited via `api/_rateLimit.js`). Email body is HTML-escaped before being wrapped in the branded template to prevent HTML injection into the rendered email. Sender is fixed to `ComplaintCA <complaintcaca@gmail.com>`; `replyTo` is only ever set to the complainant's own address, never exposed to the institution for anonymous submissions. |
 | No bot/spam protection on submissions | Both submission forms (File a Complaint, Cyber Crime Report) could be scripted and hit repeatedly — only defense was the existing per-device cooldown/rate limiting, not real bot detection. | Added **Cloudflare Turnstile** (free, no card required) — a checkbox/challenge widget on both forms; `doSubmit()`/`doSubmitCyber()` block submission unless the token is verified server-side (`api/verify-turnstile.js`, calls Cloudflare's `siteverify`). See "Action required" below — ships with Cloudflare's public always-passes test key until a real one is configured. |
-| No protection against direct Firestore/Auth API abuse | Anyone with the Firebase config (visible in any browser's page source, by design) could call Firestore/Auth directly, bypassing the app entirely and its rate limits. | Added **Firebase App Check** wiring (reCAPTCHA v3 provider). Off by default (`APP_CHECK_SITE_KEY=''` — zero network calls, nothing changes) until configured. See "Action required" below. |
+| No protection against direct Firestore/Auth API abuse | Anyone with the Firebase config (visible in any browser's page source, by design) could call Firestore/Auth directly, bypassing the app entirely and its rate limits. | Added **Firebase App Check** (reCAPTCHA v3 provider `6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi`), app registered and running in **unenforced/monitoring mode**. See "Action required" below for the last step (flipping Enforce on). |
 
 New helpers added: `escHtml()` (existing), `escAttr()` (HTML-attribute-safe escaping), `safeUrl()` (http/https scheme allowlist).
 
 ## Cloudflare Turnstile & Firebase App Check — action required
 
-Both ship in a safe default state (Turnstile with Cloudflare's public
-always-passes test key; App Check disabled entirely) so nothing breaks
-before you finish setup. Neither provides real protection until you do:
-
-**Turnstile (bot/spam protection on the two submission forms):**
+**Turnstile (bot/spam protection on the two submission forms) — still on the test key:**
 1. dash.cloudflare.com → Turnstile → Add a site → pick "Managed" → add
    `complaintca.ca` (and your `.vercel.app` preview domain if you test
    there).
@@ -46,18 +42,17 @@ before you finish setup. Neither provides real protection until you do:
    work, just unverified) — same graceful-degradation pattern as
    `BREVO_API_KEY` below.
 
-**App Check (protects Firestore/Auth from direct API abuse):**
-1. Firebase Console → App Check → register the web app → provider
-   **reCAPTCHA v3** (free) → copy the site key.
-2. Paste it into `APP_CHECK_SITE_KEY` in `index.html`'s Firebase module
-   script (currently `''`).
-3. Deploy, then watch the App Check console in **"Unenforced" / monitoring
-   mode** for a while to confirm real user traffic is passing (not being
-   misclassified).
-4. Only once that looks healthy, manually flip **Enforce** for Firestore
-   and Authentication in the same console — enforcing too early, before
-   confirming real traffic passes, would lock out legitimate users. This
-   step can't be done from this repo.
+**App Check (protects Firestore/Auth from direct API abuse) — registered, one step left:**
+The app is registered in Firebase Console → App Check with a real
+reCAPTCHA v3 site key, and is actively sending App Check tokens on every
+request. It is **not yet enforced** — Firestore/Auth still accept requests
+without a valid token, on purpose:
+1. Watch the App Check console in **"Unenforced" / monitoring mode** for a
+   while (a few days of real traffic is reasonable) to confirm legitimate
+   users are getting verified tokens, not being misclassified.
+2. Only once that looks healthy, manually flip **Enforce** for Firestore
+   and Authentication in that same console — enforcing too early would
+   lock out legitimate users. This step can't be done from this repo.
 
 ## `firestore.rules` — action required
 
