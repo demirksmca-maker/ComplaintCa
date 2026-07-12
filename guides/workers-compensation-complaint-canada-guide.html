@@ -206,57 +206,9 @@ footer{
   </div>
 
   <script>
-  function escGuideHtml(s){
-    var d=document.createElement('div');
-    d.textContent=s==null?'':String(s);
-    return d.innerHTML;
-  }
-  async function askAsyaGuide(){
-    var input=document.getElementById('asya-guide-input');
-    var msg=document.getElementById('asya-guide-msg');
-    var btn=document.getElementById('asya-guide-send');
-    var text=input.value.trim();
-    if(!text) return;
-    btn.disabled=true;
-    msg.textContent='Thinking...';
-    try{
-      var out;
-      try{
-        var r=await fetch('/api/groq-proxy',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            model:'llama-3.1-8b-instant',
-            max_tokens:220,
-            messages:[{role:'system',content:'You are Asya, the ComplaintCA assistant. The user describes a denied or disputed workers compensation claim somewhere in Canada. In 2-3 short sentences: if Ontario, tell them to file an Intent to Object with WSIB, then appeal to WSIAT (the independent tribunal) within 6 months of the final WSIB decision if still denied. If BC, tell them WorkSafeBC Review Division handles first review, then WCAT is the final appeal. For any other province, tell them every provincial workers compensation board has a similar internal-review-then-external-tribunal pattern and they should check their own board for exact deadlines, which are strict. Mention ComplaintCA can help draft the appeal letter. Be concrete and concise, no preamble. Do not invent deadlines for provinces other than Ontario and BC.'},{role:'user',content:text}]
-          })
-        });
-        var d=await r.json();
-        if(d.error||!d.choices) throw new Error('groq failed');
-        out=(d.choices[0].message.content||'').trim();
-      }catch(e0){
-        var r2=await fetch('/api/claude-proxy',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            max_tokens:220,
-            system:'You are Asya, the ComplaintCA assistant. The user describes a denied or disputed workers compensation claim somewhere in Canada. In 2-3 short sentences: if Ontario, tell them to file an Intent to Object with WSIB, then appeal to WSIAT (the independent tribunal) within 6 months of the final WSIB decision if still denied. If BC, tell them WorkSafeBC Review Division handles first review, then WCAT is the final appeal. For any other province, tell them every provincial workers compensation board has a similar internal-review-then-external-tribunal pattern and they should check their own board for exact deadlines, which are strict. Mention ComplaintCA can help draft the appeal letter. Be concrete and concise, no preamble. Do not invent deadlines for provinces other than Ontario and BC.',
-            messages:[{role:'user',content:text}]
-          })
-        });
-        var d2=await r2.json();
-        if(d2.error) throw new Error(d2.error.message||'error');
-        out=(d2.content||[]).map(function(c){return c.text||'';}).join('').trim();
-      }
-      msg.innerHTML=escGuideHtml(out||"I couldn't find a clear answer — try ComplaintCA directly, it'll ask the right questions.")+
-        '<br><br><a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
-    }catch(e){
-      msg.innerHTML='Asya is unavailable right now. <a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
-    }finally{
-      btn.disabled=false;
-    }
-  }
-  </script>
+window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a denied or disputed workers compensation claim somewhere in Canada. In 2-3 short sentences: if Ontario, tell them to file an Intent to Object with WSIB, then appeal to WSIAT (the independent tribunal) within 6 months of the final WSIB decision if still denied. If BC, tell them WorkSafeBC Review Division handles first review, then WCAT is the final appeal. For any other province, tell them every provincial workers compensation board has a similar internal-review-then-external-tribunal pattern and they should check their own board for exact deadlines, which are strict. Mention ComplaintCA can help draft the appeal letter. Be concrete and concise, no preamble. Do not invent deadlines for provinces other than Ontario and BC.";
+</script>
+<script src="/guides/asya-widget.js"></script>
 
   <h2>Ontario — WSIB</h2>
 

@@ -210,57 +210,9 @@ footer{
   </div>
 
   <script>
-  function escGuideHtml(s){
-    var d=document.createElement('div');
-    d.textContent=s==null?'':String(s);
-    return d.innerHTML;
-  }
-  async function askAsyaGuide(){
-    var input=document.getElementById('asya-guide-input');
-    var msg=document.getElementById('asya-guide-msg');
-    var btn=document.getElementById('asya-guide-send');
-    var text=input.value.trim();
-    if(!text) return;
-    btn.disabled=true;
-    msg.textContent='Thinking...';
-    try{
-      var out;
-      try{
-        var r=await fetch('/api/groq-proxy',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            model:'llama-3.1-8b-instant',
-            max_tokens:220,
-            messages:[{role:'system',content:'You are Asya, the ComplaintCA assistant. The user describes a problem in an Atlantic Canadian province (Nova Scotia, New Brunswick, Prince Edward Island, or Newfoundland and Labrador). In 2-3 short sentences, identify their province from context if possible and tell them which authority fits: NS consumer/tenancy issues go to Service Nova Scotia Public Enquiries; NB consumer issues go to FCNB and tenancy to the Tenant and Landlord Relations Office via Service New Brunswick; PEI consumer issues go to the Financial and Consumer Services Division and tenancy to the PEI Rental Office; NL consumer/tenancy issues go to the Consumer and Financial Services Division. Mention ComplaintCA can help draft the complaint. Be concrete and concise, no preamble. Do not invent phone numbers you are not certain of.'},{role:'user',content:text}]
-          })
-        });
-        var d=await r.json();
-        if(d.error||!d.choices) throw new Error('groq failed');
-        out=(d.choices[0].message.content||'').trim();
-      }catch(e0){
-        var r2=await fetch('/api/claude-proxy',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            max_tokens:220,
-            system:'You are Asya, the ComplaintCA assistant. The user describes a problem in an Atlantic Canadian province (Nova Scotia, New Brunswick, Prince Edward Island, or Newfoundland and Labrador). In 2-3 short sentences, identify their province from context if possible and tell them which authority fits: NS consumer/tenancy issues go to Service Nova Scotia Public Enquiries; NB consumer issues go to FCNB and tenancy to the Tenant and Landlord Relations Office via Service New Brunswick; PEI consumer issues go to the Financial and Consumer Services Division and tenancy to the PEI Rental Office; NL consumer/tenancy issues go to the Consumer and Financial Services Division. Mention ComplaintCA can help draft the complaint. Be concrete and concise, no preamble. Do not invent phone numbers you are not certain of.',
-            messages:[{role:'user',content:text}]
-          })
-        });
-        var d2=await r2.json();
-        if(d2.error) throw new Error(d2.error.message||'error');
-        out=(d2.content||[]).map(function(c){return c.text||'';}).join('').trim();
-      }
-      msg.innerHTML=escGuideHtml(out||"I couldn't find a clear answer — try ComplaintCA directly, it'll ask the right questions.")+
-        '<br><br><a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
-    }catch(e){
-      msg.innerHTML='Asya is unavailable right now. <a href="https://www.complaintca.ca" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">Continue on ComplaintCA →</a>';
-    }finally{
-      btn.disabled=false;
-    }
-  }
-  </script>
+window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem in an Atlantic Canadian province (Nova Scotia, New Brunswick, Prince Edward Island, or Newfoundland and Labrador). In 2-3 short sentences, identify their province from context if possible and tell them which authority fits: NS consumer/tenancy issues go to Service Nova Scotia Public Enquiries; NB consumer issues go to FCNB and tenancy to the Tenant and Landlord Relations Office via Service New Brunswick; PEI consumer issues go to the Financial and Consumer Services Division and tenancy to the PEI Rental Office; NL consumer/tenancy issues go to the Consumer and Financial Services Division. Mention ComplaintCA can help draft the complaint. Be concrete and concise, no preamble. Do not invent phone numbers you are not certain of.";
+</script>
+<script src="/guides/asya-widget.js"></script>
 
   <h2>Find Your Province</h2>
 

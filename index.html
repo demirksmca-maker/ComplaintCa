@@ -4192,7 +4192,26 @@ document.addEventListener('click',function(e){
   }
 });
 
-document.addEventListener('DOMContentLoaded',function(){V.init();});
+document.addEventListener('DOMContentLoaded',function(){V.init();_handleGuidePrefill();});
+
+// Guide pages (/guides/*.html) hand off a typed-out complaint via ?d=... —
+// land straight in the category step with it pre-filled and classified,
+// instead of losing what the person already wrote.
+function _handleGuidePrefill(){
+  try{
+    var params=new URLSearchParams(location.search);
+    var d=params.get('d');
+    if(!d) return;
+    history.replaceState(null,'',location.pathname);
+    goApp('new');
+    newGoStep(2);
+    var descEl=document.getElementById('inp-desc');
+    if(descEl){
+      descEl.value=d;
+      suggestCategoryAI();
+    }
+  }catch(e){}
+}
 </script>
 
 <script type="module">
