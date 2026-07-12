@@ -29,18 +29,16 @@ New helpers added: `escHtml()` (existing), `escAttr()` (HTML-attribute-safe esca
 
 ## Cloudflare Turnstile & Firebase App Check — action required
 
-**Turnstile (bot/spam protection on the two submission forms) — still on the test key:**
-1. dash.cloudflare.com → Turnstile → Add a site → pick "Managed" → add
-   `complaintca.ca` (and your `.vercel.app` preview domain if you test
-   there).
-2. Copy the **Site Key** and replace `data-sitekey="1x00000000000000000000AA"`
-   in **both** `.cf-turnstile` widgets in `index.html` (one near `#sub-btn`,
-   one near `#cy-sub-btn`).
-3. Copy the **Secret Key** and set `TURNSTILE_SECRET_KEY` in Vercel
-   (Settings → Environment Variables), then redeploy.
-4. Without step 3, `api/verify-turnstile.js` fails open (submissions still
-   work, just unverified) — same graceful-degradation pattern as
-   `BREVO_API_KEY` below.
+**Turnstile (bot/spam protection on the two submission forms) — real site key is live, one step left:**
+The widget is registered (`complaintca.ca`, Managed mode) and both
+`.cf-turnstile` widgets in `index.html` now use the real Site Key
+(`0x4AAAAAAD0YTkgBQCsboEB8`). The only remaining step:
+1. Vercel dashboard → Settings → Environment Variables → add
+   `TURNSTILE_SECRET_KEY` with the Secret Key from the Cloudflare
+   Turnstile widget page, then redeploy.
+2. Until that's set, `api/verify-turnstile.js` fails open (submissions
+   still work, just unverified server-side) — same graceful-degradation
+   pattern as `BREVO_API_KEY` below.
 
 **App Check (protects Firestore/Auth from direct API abuse) — registered, one step left:**
 The app is registered in Firebase Console → App Check with a real
