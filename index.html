@@ -753,7 +753,6 @@ textarea{resize:vertical;min-height:90px}
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
-          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         </div>
         <div id="new-step-1">
         <div class="card" style="padding:14px 16px">
@@ -780,51 +779,16 @@ textarea{resize:vertical;min-height:90px}
             <input type="tel" id="inp-phone" placeholder="+1 (416) 000-0000" style="margin-bottom:0">
           </div>
         </div>
-        <button onclick="newGoStep(2)" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        <button onclick="newValidateStep1()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
         </div>
+
+        <!-- Category + priority are decided automatically by AI from the description (step IV) -->
+        <input type="hidden" id="inp-cat">
+        <input type="hidden" id="inp-tname" value="">
 
         <div id="new-step-2" style="display:none">
-        <input type="hidden" id="inp-tname" value="">
         <div class="card">
-          <div class="ct"><div class="ci">II</div><span id="a-cat">Category</span></div>
-          <input type="hidden" id="inp-cat">
-          <!-- GROUP GRID -->
-          <div class="group-grid" id="group-grid">
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('municipal',this)"><div class="g-icon">🏙️</div><div class="g-lbl">Municipality</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('business',this)"><div class="g-icon">🏢</div><div class="g-lbl">Business</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('landlord',this)"><div class="g-icon">🏠</div><div class="g-lbl">Landlord</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('employer',this)"><div class="g-icon">💼</div><div class="g-lbl">Employer</div></div>
-            <div class="group-card rights" tabindex="0" role="button" onclick="selGroup('rights',this)"><div class="g-icon">⚖️</div><div class="g-lbl">Human Rights</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('government',this)"><div class="g-icon">🏛️</div><div class="g-lbl">Government</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('healthcare',this)"><div class="g-icon">🏥</div><div class="g-lbl">Healthcare</div></div>
-            <div class="group-card" tabindex="0" role="button" onclick="selGroup('other',this)"><div class="g-icon">📌</div><div class="g-lbl">Other</div></div>
-          </div>
-          <!-- SUB CATEGORIES -->
-          <div class="sub-wrap" id="sub-wrap">
-            <div class="sub-inner" id="sub-inner"></div>
-          </div>
-          <!-- RESULT STRIP -->
-          <div class="cat-result" id="cat-result">
-            <span id="cat-r-icon"></span>
-            <div style="flex:1"><div id="cat-r-group" style="font-size:.58rem;color:var(--muted);font-family:Cinzel,serif;letter-spacing:.5px;text-transform:uppercase"></div><div id="cat-r-cat" style="font-size:.8rem;font-weight:700;color:var(--text);font-family:Cinzel,serif;text-transform:uppercase;"></div></div>
-            <span onclick="resetCat()" style="font-size:.65rem;color:var(--blue);cursor:pointer;text-decoration:underline;font-weight:600">Change</span>
-          </div>
-          <label id="a-lpri">Priority</label>
-          <div class="prow">
-            <div class="pbtn low" tabindex="0" role="button" id="a-plow" onclick="selPri('low',this)">🟢 Low</div>
-            <div class="pbtn med on" tabindex="0" role="button" id="a-pmed" onclick="selPri('medium',this)">🟡 Medium</div>
-            <div class="pbtn high" tabindex="0" role="button" id="a-phigh" onclick="selPri('high',this)">🔴 High</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button onclick="newGoStep(1)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-          <button onclick="newGoStep(3)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
-        </div>
-        </div>
-
-        <div id="new-step-3" style="display:none">
-        <div class="card">
-          <div class="ct"><div class="ci">III</div><span id="a-loc">Location</span></div>
+          <div class="ct"><div class="ci">II</div><span id="a-loc">Location</span></div>
           <div class="lbar">
             <div class="loc-wrap">
               <input type="text" id="inp-loc" placeholder="Enter address..." oninput="_locDebounce()" autocomplete="off" style="margin-bottom:0">
@@ -844,14 +808,14 @@ textarea{resize:vertical;min-height:90px}
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button onclick="newGoStep(2)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-          <button onclick="newGoStep(4)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+          <button onclick="newGoStep(1)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
+          <button onclick="newGoStep(3)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
         </div>
         </div>
 
-        <div id="new-step-4" style="display:none">
+        <div id="new-step-3" style="display:none">
         <div class="card" style="padding:14px 20px">
-          <div class="ct" style="margin-bottom:10px"><div class="ci">IV</div><span id="a-media">Evidence</span></div>
+          <div class="ct" style="margin-bottom:10px"><div class="ci">III</div><span id="a-media">Evidence</span></div>
           <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
           <label style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px dashed var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:0;text-transform:none;font-size:.82rem;color:var(--sub);font-weight:500" onclick="document.getElementById('photo-input').click()">
             <span style="font-size:1.1rem">📎</span>
@@ -861,19 +825,21 @@ textarea{resize:vertical;min-height:90px}
           <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
         </div>
         <div style="display:flex;gap:8px">
-          <button onclick="newGoStep(3)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-          <button onclick="newGoStep(5)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+          <button onclick="newGoStep(2)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
+          <button onclick="newGoStep(4)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
         </div>
         </div>
 
-        <div id="new-step-5" style="display:none">
+        <div id="new-step-4" style="display:none">
         <div class="card" style="padding:0;overflow:hidden">
           <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-            <div class="ct" style="margin-bottom:0"><div class="ci">V</div><span id="a-comp">Complaint</span></div>
+            <div class="ct" style="margin-bottom:0"><div class="ci">IV</div><span id="a-comp">Complaint</span></div>
             <span id="char-cnt" style="font-size:.68rem;color:var(--muted);font-weight:500">0 / 1000</span>
           </div>
           <input type="text" id="inp-title" placeholder="Title..." style="border:none;border-bottom:1px solid var(--border);border-radius:0;padding:12px 16px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:0;background:var(--surface)">
           <textarea id="inp-desc" oninput="updateCC();catAIDebounce()" placeholder="Describe your complaint in detail..." style="border:none;border-radius:0;padding:12px 16px;min-height:110px;font-size:.85rem;margin-bottom:0;resize:none;background:var(--surface)"></textarea>
+          <!-- AI-DECIDED CATEGORY + PRIORITY (read-only, populated from description) -->
+          <div id="ai-cat-strip" style="display:none;margin:0 16px 12px"></div>
           <!-- COMPLAINT TYPE -->
           <div style="margin-bottom:14px">
             <label style="margin-bottom:8px">Complaint Type</label>
@@ -895,7 +861,7 @@ textarea{resize:vertical;min-height:90px}
           </div>
           <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Improve with AI</button>
         </div>
-        <button onclick="newGoStep(4)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
+        <button onclick="newGoStep(3)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
@@ -1348,6 +1314,7 @@ function vfyHandleFile(inp){
 function transferToComplaint(){
   if(!_vfyLastAnalysis){alert('Önce bir belge analiz edin.');return;}
   goApp('new');
+  newGoStep(4);
   var d=document.getElementById('inp-desc');
   if(d){
     d.value=(_vfyLastAnalysis.verdict||'')+(_vfyLastAnalysis.detail?' — '+_vfyLastAnalysis.detail:'');
@@ -1585,7 +1552,8 @@ function lwGoStep(n){
 }
 
 function newGoStep(n){
-  for(var i=1;i<=5;i++){
+  if(n>4)n=4;
+  for(var i=1;i<=4;i++){
     var s=document.getElementById('new-step-'+i);
     if(s) s.style.display=(i===n)?'block':'none';
   }
@@ -1594,6 +1562,24 @@ function newGoStep(n){
   var box=document.getElementById('view-new');
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
   if(!_suppressNavPush) _pushNav({tab:'new',step:n});
+}
+// Step 1'den ilerlemeden önce email zorunlu (anonim olsa bile — doğrulama için gerekli).
+function newValidateStep1(){
+  var emailEl=document.getElementById('inp-email');
+  var noteEl=document.getElementById('a-anon-email-note');
+  var email=(emailEl&&emailEl.value||'').trim();
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(emailEl){emailEl.style.borderColor='#c8102e';emailEl.focus();}
+    if(noteEl){
+      if(!noteEl.getAttribute('data-orig')) noteEl.setAttribute('data-orig',noteEl.textContent);
+      noteEl.style.color='#c8102e';noteEl.style.fontWeight='700';
+      noteEl.textContent=(_aLang==='tr')?'⚠ Devam etmek için geçerli bir e-posta girin (anonim olsa bile zorunlu).':(_aLang==='fr')?'⚠ Saisissez un e-mail valide pour continuer (obligatoire même en anonyme).':'⚠ Enter a valid email to continue (required even when anonymous).';
+      setTimeout(function(){noteEl.style.color='';noteEl.style.fontWeight='';noteEl.textContent=noteEl.getAttribute('data-orig')||'';if(emailEl)emailEl.style.borderColor='';},4000);
+    }
+    return;
+  }
+  if(emailEl) emailEl.style.borderColor='';
+  newGoStep(2);
 }
 
 function selLwProv(prov, el) {
@@ -2971,12 +2957,18 @@ function selSubCat(val,icon,label,isRights,el){
   }
 }
 function resetCat(){
-  document.querySelectorAll('#group-grid .group-card,.sub-chip').forEach(function(c){c.classList.remove('sel');});
-  document.getElementById('sub-wrap').classList.remove('open');
-  document.getElementById('cat-result').classList.remove('show','rr');
   _catGroup='';
+  _selPri='medium';
+  _catAILastText='';
   var sel=document.getElementById('inp-cat');
   if(sel) sel.value='';
+  var strip=document.getElementById('ai-cat-strip');
+  if(strip){strip.style.display='none';strip.innerHTML='';}
+  // AI yüksek öncelik nedeniyle kilitlediyse anonim toggle'ı geri aç.
+  var anonTog=document.getElementById('anon-tog');
+  if(anonTog && anonTog.getAttribute('data-locked')){
+    anonTog.style.opacity='';anonTog.style.pointerEvents='';anonTog.removeAttribute('data-locked');
+  }
 }
 
 // ── AI: OTOMATİK KATEGORİ / ÖNCELİK TESPİTİ ──
@@ -2986,10 +2978,10 @@ function catAIDebounce(){
   _catAITimer=setTimeout(suggestCategoryAI,1200);
 }
 async function suggestCategoryAI(){
-  var desc=document.getElementById('inp-desc').value.trim();
+  var descEl=document.getElementById('inp-desc');
+  var desc=(descEl&&descEl.value||'').trim();
   if(desc.length<25) return;
   if(desc===_catAILastText) return; // aynı metin için tekrar sorma
-  if(_catGroup) return; // kullanıcı zaten elle seçtiyse önerme
   _catAILastText=desc;
 
   var validList=Object.keys(CAT_SUBS).map(function(g){
@@ -3008,11 +3000,46 @@ async function suggestCategoryAI(){
     var validCat=CAT_SUBS[parsed.group].find(function(s){return s.v===parsed.category;});
     if(!validCat) return;
     if(['low','medium','high'].indexOf(parsed.priority)===-1) parsed.priority='medium';
-    // Güven düşükse tahmini dayatma — sessizce vazgeç, kullanıcı elle seçebilir.
+    // Güven düşükse dayatma — kategoriyi boş bırak, submit'te 'general'a düşer (kullanıcı zaten seçmiyor).
     if(typeof parsed.confidence==='number' && parsed.confidence<0.55) return;
-    if(_catGroup) return; // beklerken kullanıcı elle seçmiş olabilir
-    renderCatSuggestion(parsed.group,validCat,parsed.priority);
-  }catch(e){/* sessizce vazgeç, kullanıcı zaten elle seçebilir */}
+    _applyAIClass(parsed.group,validCat,parsed.priority);
+  }catch(e){/* sessizce vazgeç, kategori 'general'a düşer */}
+}
+// AI kararını sessizce uygular: state'i doldurur, ilgili kurumları gösterir, ikonlu şeridi çizer.
+function _applyAIClass(group,sub,priority){
+  _catGroup=group;
+  var inpCat=document.getElementById('inp-cat');
+  if(inpCat) inpCat.value=sub.v;
+  if(['low','medium','high'].indexOf(priority)===-1) priority='medium';
+  _selPri=priority;
+  // Yüksek öncelik (yasal/güvenlik ciddiyeti): anonim kapat & kilitle — submit'te ad zorunlu olur.
+  if(priority==='high'){
+    _isAnon=false;
+    var anonTog=document.getElementById('anon-tog');
+    var idFields=document.getElementById('id-fields');
+    if(anonTog){anonTog.classList.remove('on');anonTog.style.opacity='.45';anonTog.style.pointerEvents='none';anonTog.setAttribute('data-locked','1');}
+    if(idFields) idFields.style.display='block';
+  }
+  var locEl=document.getElementById('inp-loc');
+  showAuthorities(sub.v, locEl?locEl.value:'');
+  // İş yerinde taciz → travma-bilgili destek ekranı (mevcut güvenlik davranışı korunur).
+  if(group==='employer' && sub.v==='harassment'){ showSupportScreen(function(){ resetCat(); }); }
+  renderAICatStrip(group,sub,priority);
+}
+function renderAICatStrip(group,sub,priority){
+  var strip=document.getElementById('ai-cat-strip');
+  if(!strip) return;
+  var priMap={low:V.t('plo'),medium:V.t('pme'),high:V.t('phi')};
+  var priLabel=priMap[priority]||priority;
+  strip.style.display='block';
+  strip.innerHTML=
+    '<div style="background:linear-gradient(135deg,rgba(77,142,232,.10),rgba(77,142,232,.05));border:1.5px solid #93c5fd;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+      '<span style="font-size:1.35rem;flex-shrink:0">'+escHtml(sub.i)+'</span>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:.58rem;color:var(--muted);font-family:Cinzel,serif;letter-spacing:.5px;text-transform:uppercase">🤖 '+V.t('cat_ai_tag')+' · '+escHtml(CAT_GROUPS[group]||group)+'</div>'+
+        '<div style="font-size:.82rem;font-weight:700;color:var(--text)">'+escHtml(sub.l)+' · '+priLabel+'</div>'+
+      '</div>'+
+    '</div>';
 }
 // Basit/yüksek hacimli sınıflandırma işleri: önce ücretsiz Groq, başarısız olursa Claude'a düş.
 // opts.json=true → modelin JSON modunu zorlar (parse hatasını bitirir).
@@ -3994,6 +4021,7 @@ function _aShowApply(text){
   btn.textContent=_aLang==='tr'?'✓ Forma uygula':'✓ Apply to form';
   btn.style.cssText='margin:4px 0 8px;background:#16a34a;color:white;border:none;border-radius:10px;padding:10px;font-size:.82rem;font-weight:700;cursor:pointer;align-self:flex-start';
   btn.onclick=()=>{
+    goApp('new');newGoStep(4);
     const d=document.getElementById('inp-desc');
     if(d){d.value=text;updateCC();resetCat();catAIDebounce();}
     btn.textContent='✓ Applied!';btn.style.background='var(--muted)';btn.disabled=true;
@@ -4233,10 +4261,11 @@ function _handleGuidePrefill(){
     if(!d) return;
     history.replaceState(null,'',location.pathname);
     goApp('new');
-    newGoStep(2);
+    newGoStep(4);
     var descEl=document.getElementById('inp-desc');
     if(descEl){
       descEl.value=d;
+      if(typeof updateCC==='function') updateCC();
       suggestCategoryAI();
     }
   }catch(e){}
