@@ -179,7 +179,8 @@ body{font-family:'Inter',sans-serif;background:#0a1830;color:var(--text);-webkit
 
 
 .lang-dd{position:relative}
-.lang-dd-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .2s}
+.lang-dd-btn{background:transparent;border:1px solid transparent;border-radius:8px;padding:6px 8px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
+.lang-dd-btn:hover{background:rgba(255,255,255,.06)}
 .lang-dd-btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35)}
 .lang-dd-menu{position:absolute;top:calc(100% + 8px);right:0;background:#0c1f3d;border:1px solid rgba(255,255,255,.1);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.5);z-index:9999;min-width:150px;overflow:hidden;display:none;animation:ddOpen .18s ease}
 @keyframes ddOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
@@ -582,7 +583,7 @@ textarea{resize:vertical;min-height:90px}
   <ellipse cx="102" cy="49" rx="18" ry="5" fill="url(#lgV)" opacity="0.4"/>
   <path d="M88 48 Q102 44 118 48" stroke="#f5e49a" stroke-width="1" fill="none" opacity="0.3"/>
 </svg>
-      <span style="font-family:'Cinzel Decorative',serif;text-transform:uppercase;font-size:1rem;font-weight:700;color:#e8dcc8;letter-spacing:2px;line-height:1">Complaint<span style="color:#ff5a5a">CA</span></span>
+      <span style="font-family:'Cinzel Decorative',serif;text-transform:uppercase;font-size:1rem;font-weight:600;color:#e8dcc8;letter-spacing:3px;line-height:1">Complaint<span style="color:#ff5a5a">CA</span></span>
     </button>
     <div class="topbar-right">
       <button class="back-btn" id="back-btn" onclick="goHome()">← Home</button>
