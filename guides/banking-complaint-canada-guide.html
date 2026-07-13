@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>How to File a Complaint in Ontario: Complete 2026 Guide | ComplaintCA</title>
-<meta name="description" content="Not sure where to file your complaint in Ontario? This guide covers consumer issues, municipal services, healthcare, employment, and more — with direct links to the right authority, plus how ComplaintCA helps you get there faster.">
+<title>How to File a Banking Complaint in Canada: OBSI & FCAC Explained | ComplaintCA</title>
+<meta name="description" content="Problem with your bank — fraud, service, or a disputed charge? This guide covers the required first step (your bank's own process), when to bring in OBSI, and where FCAC actually fits — with direct links, plus how ComplaintCA helps you draft it.">
 <meta name="theme-color" content="#0f2952">
+<link rel="canonical" href="https://www.complaintca.ca/guides/banking-complaint-canada-guide.html">
 
 <script type="application/ld+json">
 {
@@ -15,28 +16,28 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Where do I file a consumer complaint in Ontario?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Consumer and business disputes in Ontario go to Consumer Protection Ontario, reachable online or by phone at 1-800-889-9768. ComplaintCA can help you draft and route the complaint correctly the first time." }
+      "name": "Can I go straight to OBSI with a banking complaint?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. You must first complain to your bank directly and let them go through their internal process, which can take up to 56 days. Only once that's exhausted, or the bank has given you a final written response you're not satisfied with, can you escalate to OBSI." }
     },
     {
       "@type": "Question",
-      "name": "Where do I complain about a municipal or city service in Toronto?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Municipal service complaints in Toronto are escalated to the Ombudsman Toronto if the city department itself does not resolve the issue. ComplaintCA's municipal complaint pathway walks you through this step by step." }
+      "name": "What does the FCAC do with my complaint?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Financial Consumer Agency of Canada oversees whether banks follow the rules, but it does not resolve individual complaints. For your specific dispute, the path is your bank first, then OBSI." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does OBSI cost anything?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — OBSI is a free, independent dispute resolution service, and banks and federal credit unions are required to participate." }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does OBSI take to decide?",
+      "acceptedAnswer": { "@type": "Answer", "text": "OBSI aims to issue a final written recommendation within 120 days of receiving all the information it needs about your complaint." }
     },
     {
       "@type": "Question",
       "name": "What is ComplaintCA?",
       "acceptedAnswer": { "@type": "Answer", "text": "ComplaintCA is a Canadian civic complaint platform that guides residents to the correct authority for their issue, offers AI-assisted complaint drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support." }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I complain to my Member of Parliament (MP) in Canada?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Every Canadian riding has an MP whose office handles constituent complaints about federal services. ComplaintCA's MP Finder locates your riding's representative and helps you draft a formal letter." }
-    },
-    {
-      "@type": "Question",
-      "name": "Where do I report cyber crime in Canada?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Cyber crime should be reported to the Canadian Anti-Fraud Centre and your local police service. ComplaintCA's Cyber Crime module helps you document and structure the report before submission." }
     }
   ]
 }
@@ -65,8 +66,8 @@ body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-s
   text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
 }
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:15ch;
+  font-family:'Cinzel',serif;font-size:1.45rem;font-weight:700;margin:0;
+  line-height:1.4;letter-spacing:.3px;max-width:19ch;
   text-wrap:balance;
 }
 
@@ -174,11 +175,11 @@ footer{
 
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Civic Guidance</div>
-  <h1>How to File a Complaint in Ontario</h1>
+  <h1>How to File a Banking Complaint in Canada</h1>
 </div>
 
 <main>
-  <p class="lede">Where you file depends on what happened. This guide sorts the most common complaint types in Ontario by the authority responsible — and shows where ComplaintCA fits in to help you get there faster, in your own language.</p>
+  <p class="lede">Fraud on your account, a disputed charge, or a bank that isn't responding? There's a set order to this — your bank first, then a free independent ombudsman if that doesn't work. This guide walks through the real process and shows where ComplaintCA fits in.</p>
 
   <div class="asya-feature">
     <div class="asya-feature-badge">✨ AI-Powered · Instant Answer</div>
@@ -186,9 +187,9 @@ footer{
       <div class="asya-avatar-ring"><span>A</span></div>
       <div class="asya-feature-body">
         <div class="asya-feature-name">Ask Asya — skip the guide</div>
-        <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
+        <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what happened with your bank, and I'll tell you the right first step.</div>
         <div class="asya-input-row">
-          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
+          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. My bank won't reverse a fraudulent charge on my account..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
           <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
         </div>
       </div>
@@ -196,71 +197,63 @@ footer{
   </div>
 
   <script>
-window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem they want to complain about in Ontario/Canada. In 2-3 short sentences, tell them which authority or path fits (e.g. Consumer Protection Ontario, their MP, Landlord and Tenant Board, the Ombudsman, police/Canadian Anti-Fraud Centre for cyber crime, etc.) and that ComplaintCA can draft and send the complaint for them. Be concrete and concise, no preamble.";
+window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem with a Canadian bank or investment firm (fraud, service, disputed charge, investment dispute). In 2-3 short sentences, remind them the required first step is a written complaint to the bank/firm itself, which can take up to 56 days to work through, and only after that (or a final response they are unhappy with) can they escalate to OBSI (Ombudsman for Banking Services and Investments), which is free. Clarify that FCAC oversees compliance but does not resolve individual complaints. Mention ComplaintCA can help draft the complaint. Be concrete and concise, no preamble. Do not invent statistics you are not certain of.";
 </script>
 <script src="/guides/asya-widget.js"></script>
 
   <h2>Find Your Path</h2>
 
   <div class="path-card">
-    <h3>Consumer &amp; business disputes</h3>
-    <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
-    <a class="official" href="https://www.ontario.ca/page/consumer-protection" target="_blank" rel="noopener">Consumer Protection Ontario — 1-800-889-9768 →</a>
+    <h3>Step 1 — Complain to your bank directly</h3>
+    <p>Start at your branch or the department involved, explain the issue clearly, and ask for a resolution. If unresolved, ask to escalate to the bank's dedicated complaint-handling department. Put it in writing so there's a timeline.</p>
+    <a class="official" href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC — How to File a Complaint With Your Bank →</a>
   </div>
 
   <div class="path-card">
-    <h3>Municipal &amp; city services (Toronto)</h3>
-    <p>Unresolved issue with a City of Toronto department — waste collection, permits, bylaw enforcement.</p>
-    <a class="official" href="https://www.ombudsmantoronto.ca/" target="_blank" rel="noopener">Ombudsman Toronto →</a>
+    <h3>Step 2 — Let the bank's process run (up to 56 days)</h3>
+    <p>Banks and federal credit unions have up to 56 days to deal with your complaint. You can escalate once that's exhausted, or once they give you a final written response you're not satisfied with — whichever comes first.</p>
   </div>
 
   <div class="path-card">
-    <h3>Federal services &amp; your MP</h3>
-    <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
+    <h3>Step 3 — Escalate to OBSI (free)</h3>
+    <p>The Ombudsman for Banking Services and Investments is an independent, free dispute resolution service. Banks and federal credit unions are required to participate. OBSI aims for a final written recommendation within 120 days of receiving everything it needs.</p>
+    <a class="official" href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI — How the Complaint Process Works →</a>
   </div>
 
   <div class="path-card">
-    <h3>Cyber crime &amp; online fraud</h3>
-    <p>Scams, phishing, identity theft, online harassment.</p>
-    <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
-  </div>
-
-  <div class="path-card">
-    <h3>Legal disputes needing representation</h3>
-    <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
+    <h3>What the FCAC actually does</h3>
+    <p>The Financial Consumer Agency of Canada oversees whether banks follow consumer-protection rules — it does not resolve individual disputes. For your own case, the path is your bank, then OBSI.</p>
   </div>
 
   <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace Consumer Protection Ontario, the Ombudsman, or your MP's office — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
+  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace your bank's complaint process or OBSI — it helps you draft a clear, factual written complaint to your bank (the required first step), in one of 7 supported languages, so you have a solid record if you need to escalate.</p>
 
   <div class="cta">
-    <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
+    <p>No need to read this whole guide — Asya can ask a few questions and draft your banking complaint in seconds.</p>
     <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
   </div>
 
   <h2>Frequently Asked</h2>
 
   <div class="faq-item">
-    <h3>Where do I file a consumer complaint in Ontario?</h3>
-    <p>Consumer Protection Ontario, online or at 1-800-889-9768.</p>
+    <h3>Can I go straight to OBSI?</h3>
+    <p>No — you must complain to your bank first and let their process run (up to 56 days) before OBSI can get involved.</p>
   </div>
   <div class="faq-item">
-    <h3>Where do I complain about a municipal service in Toronto?</h3>
-    <p>Start with the relevant city department; if unresolved, escalate to Ombudsman Toronto.</p>
+    <h3>What does the FCAC do with my complaint?</h3>
+    <p>It oversees whether banks follow the rules generally — it doesn't resolve individual complaints. That's what OBSI is for.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Does OBSI cost anything?</h3>
+    <p>No — it's free, and banks are required to participate.</p>
+  </div>
+  <div class="faq-item">
+    <h3>How long does OBSI take?</h3>
+    <p>It aims for a final written recommendation within 120 days of receiving all the information it needs.</p>
   </div>
   <div class="faq-item">
     <h3>What is ComplaintCA?</h3>
     <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How do I complain to my MP?</h3>
-    <p>Use ComplaintCA's MP Finder to locate your riding's representative and draft a formal letter.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Where do I report cyber crime in Canada?</h3>
-    <p>The Canadian Anti-Fraud Centre and your local police service. ComplaintCA's Cyber Crime module helps you document the report first.</p>
   </div>
   <div class="faq-item">
     <h3>I'm Deaf or hard of hearing — how do I call a phone-only authority?</h3>

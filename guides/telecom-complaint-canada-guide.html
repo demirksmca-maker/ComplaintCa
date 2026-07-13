@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
-<title>How to File a Complaint in Ontario: Complete 2026 Guide | ComplaintCA</title>
-<meta name="description" content="Not sure where to file your complaint in Ontario? This guide covers consumer issues, municipal services, healthcare, employment, and more — with direct links to the right authority, plus how ComplaintCA helps you get there faster.">
+<title>How to File a Telecom or TV Complaint in Canada: CCTS Explained | ComplaintCA</title>
+<meta name="description" content="Billing dispute with your phone, internet, or TV provider? This guide covers the required first step (your provider's own process), the free CCTS complaint process, and current complaint trends by provider — with direct links, plus how ComplaintCA helps you draft it.">
 <meta name="theme-color" content="#0f2952">
+<link rel="canonical" href="https://www.complaintca.ca/guides/telecom-complaint-canada-guide.html">
 
 <script type="application/ld+json">
 {
@@ -15,28 +16,23 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Where do I file a consumer complaint in Ontario?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Consumer and business disputes in Ontario go to Consumer Protection Ontario, reachable online or by phone at 1-800-889-9768. ComplaintCA can help you draft and route the complaint correctly the first time." }
+      "name": "Can I complain to the CCTS right away about my phone or internet provider?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. You need to have already tried to resolve the issue with your service provider directly. If that doesn't work, the CCTS is the free, independent next step." }
     },
     {
       "@type": "Question",
-      "name": "Where do I complain about a municipal or city service in Toronto?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Municipal service complaints in Toronto are escalated to the Ombudsman Toronto if the city department itself does not resolve the issue. ComplaintCA's municipal complaint pathway walks you through this step by step." }
+      "name": "Is the CCTS free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes — the CCTS provides free complaint resolution services to phone, internet, and TV consumers and small businesses across Canada." }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the CCTS do with my complaint?",
+      "acceptedAnswer": { "@type": "Answer", "text": "If it falls within their mandate, they send it to your provider and act as an independent third party, mediating between you and the provider to try to reach a resolution." }
     },
     {
       "@type": "Question",
       "name": "What is ComplaintCA?",
       "acceptedAnswer": { "@type": "Answer", "text": "ComplaintCA is a Canadian civic complaint platform that guides residents to the correct authority for their issue, offers AI-assisted complaint drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support." }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I complain to my Member of Parliament (MP) in Canada?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Every Canadian riding has an MP whose office handles constituent complaints about federal services. ComplaintCA's MP Finder locates your riding's representative and helps you draft a formal letter." }
-    },
-    {
-      "@type": "Question",
-      "name": "Where do I report cyber crime in Canada?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Cyber crime should be reported to the Canadian Anti-Fraud Centre and your local police service. ComplaintCA's Cyber Crime module helps you document and structure the report before submission." }
     }
   ]
 }
@@ -65,8 +61,8 @@ body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-s
   text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
 }
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:15ch;
+  font-family:'Cinzel',serif;font-size:1.45rem;font-weight:700;margin:0;
+  line-height:1.4;letter-spacing:.3px;max-width:19ch;
   text-wrap:balance;
 }
 
@@ -174,11 +170,11 @@ footer{
 
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Civic Guidance</div>
-  <h1>How to File a Complaint in Ontario</h1>
+  <h1>How to File a Telecom or TV Complaint in Canada</h1>
 </div>
 
 <main>
-  <p class="lede">Where you file depends on what happened. This guide sorts the most common complaint types in Ontario by the authority responsible — and shows where ComplaintCA fits in to help you get there faster, in your own language.</p>
+  <p class="lede">A billing dispute with your phone, internet, or TV provider that they won't fix? Telecom and TV complaints have been rising sharply across Canada, and there's a free, independent body built specifically for this. This guide walks through the real process and shows where ComplaintCA fits in.</p>
 
   <div class="asya-feature">
     <div class="asya-feature-badge">✨ AI-Powered · Instant Answer</div>
@@ -186,9 +182,9 @@ footer{
       <div class="asya-avatar-ring"><span>A</span></div>
       <div class="asya-feature-body">
         <div class="asya-feature-name">Ask Asya — skip the guide</div>
-        <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what's going on in a sentence or two, and I'll point you to the fastest path in 30 seconds — no need to read this whole guide.</div>
+        <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what happened with your provider, and I'll tell you the right first step.</div>
         <div class="asya-input-row">
-          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A company won't refund my product..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
+          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. My internet provider charged me for a plan I never signed up for..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
           <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
         </div>
       </div>
@@ -196,71 +192,58 @@ footer{
   </div>
 
   <script>
-window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem they want to complain about in Ontario/Canada. In 2-3 short sentences, tell them which authority or path fits (e.g. Consumer Protection Ontario, their MP, Landlord and Tenant Board, the Ombudsman, police/Canadian Anti-Fraud Centre for cyber crime, etc.) and that ComplaintCA can draft and send the complaint for them. Be concrete and concise, no preamble.";
+window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem with a Canadian phone, internet, or TV provider (billing, service, contract dispute). In 2-3 short sentences, remind them the required first step is trying to resolve it with the provider directly, and that if that fails, the CCTS (Commission for Complaints for Telecom-television Services) is a free, independent next step. Mention ComplaintCA can help draft the complaint to the provider. Be concrete and concise, no preamble. Do not invent statistics or make claims about any specific company you are not certain of.";
 </script>
 <script src="/guides/asya-widget.js"></script>
 
   <h2>Find Your Path</h2>
 
   <div class="path-card">
-    <h3>Consumer &amp; business disputes</h3>
-    <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
-    <a class="official" href="https://www.ontario.ca/page/consumer-protection" target="_blank" rel="noopener">Consumer Protection Ontario — 1-800-889-9768 →</a>
+    <h3>Step 1 — Try to resolve it with your provider first</h3>
+    <p>Contact your phone, internet, or TV company directly and give them a chance to fix it. The CCTS requires this before it will accept your case.</p>
   </div>
 
   <div class="path-card">
-    <h3>Municipal &amp; city services (Toronto)</h3>
-    <p>Unresolved issue with a City of Toronto department — waste collection, permits, bylaw enforcement.</p>
-    <a class="official" href="https://www.ombudsmantoronto.ca/" target="_blank" rel="noopener">Ombudsman Toronto →</a>
+    <h3>Step 2 — File with the CCTS (free)</h3>
+    <p>If your provider doesn't resolve it, the Commission for Complaints for Telecom-television Services offers free complaint resolution for individual consumers and small businesses. The online form takes about 15 minutes.</p>
+    <a class="official" href="https://www.ccts-cprst.ca/for-consumers/telecom-complaints/online-complaint-form/" target="_blank" rel="noopener">CCTS Online Complaint Form — 1-888-221-1687 →</a>
   </div>
 
   <div class="path-card">
-    <h3>Federal services &amp; your MP</h3>
-    <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
+    <h3>What happens after you file</h3>
+    <p>The CCTS reviews whether your complaint fits its mandate. If accepted, it sends your complaint to the provider and works as an independent third party, mediating between you and the provider to try to reach a resolution.</p>
   </div>
 
   <div class="path-card">
-    <h3>Cyber crime &amp; online fraud</h3>
-    <p>Scams, phishing, identity theft, online harassment.</p>
-    <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
-  </div>
-
-  <div class="path-card">
-    <h3>Legal disputes needing representation</h3>
-    <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
+    <h3>Billing disputes are the most common issue</h3>
+    <p>Billing-related complaints — incorrect charges, unexpected fees — have consistently been the top category of telecom and TV complaints in Canada in recent CCTS annual reports. If your issue is billing-related, you're far from alone, and there's an established process for it.</p>
   </div>
 
   <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace Consumer Protection Ontario, the Ombudsman, or your MP's office — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
+  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace the CCTS — it helps you draft a clear, factual complaint to your provider (the required first step), in one of 7 supported languages, so you have a solid record if you need to escalate to the CCTS.</p>
 
   <div class="cta">
-    <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
+    <p>No need to read this whole guide — Asya can ask a few questions and draft your telecom complaint in seconds.</p>
     <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
   </div>
 
   <h2>Frequently Asked</h2>
 
   <div class="faq-item">
-    <h3>Where do I file a consumer complaint in Ontario?</h3>
-    <p>Consumer Protection Ontario, online or at 1-800-889-9768.</p>
+    <h3>Can I complain to the CCTS right away?</h3>
+    <p>No — you need to have already tried to resolve it with your provider directly.</p>
   </div>
   <div class="faq-item">
-    <h3>Where do I complain about a municipal service in Toronto?</h3>
-    <p>Start with the relevant city department; if unresolved, escalate to Ombudsman Toronto.</p>
+    <h3>Is the CCTS free?</h3>
+    <p>Yes, for individual consumers and small businesses.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What does the CCTS do with my complaint?</h3>
+    <p>If it's within their mandate, they send it to your provider and mediate as an independent third party.</p>
   </div>
   <div class="faq-item">
     <h3>What is ComplaintCA?</h3>
     <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How do I complain to my MP?</h3>
-    <p>Use ComplaintCA's MP Finder to locate your riding's representative and draft a formal letter.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Where do I report cyber crime in Canada?</h3>
-    <p>The Canadian Anti-Fraud Centre and your local police service. ComplaintCA's Cyber Crime module helps you document the report first.</p>
   </div>
   <div class="faq-item">
     <h3>I'm Deaf or hard of hearing — how do I call a phone-only authority?</h3>

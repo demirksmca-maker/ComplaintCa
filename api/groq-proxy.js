@@ -1,18 +1,4 @@
-const rateLimitMap = new Map();
-const RATE_LIMIT = 10;
-const WINDOW_MS = 60000;
-
-function isRateLimited(ip) {
-  const now = Date.now();
-  const record = rateLimitMap.get(ip) || { count: 0, start: now };
-  if (now - record.start > WINDOW_MS) {
-    record.count = 0;
-    record.start = now;
-  }
-  record.count++;
-  rateLimitMap.set(ip, record);
-  return record.count > RATE_LIMIT;
-}
+import { isRateLimited } from './_rateLimit.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -20,7 +6,7 @@ export default async function handler(req, res) {
   }
   try {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-    if (isRateLimited(ip)) {
+    if (await isRateLimited(ip, { limit: 10, windowMs: 60000, bucket: 'groq-proxy' })) {
       return res.status(429).json({ error: 'Çok fazla istek, biraz bekle.' });
     }
     const body = { ...req.body };
