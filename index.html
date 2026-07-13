@@ -2996,14 +2996,17 @@ async function suggestCategoryAI(){
     var jsonMatch=raw.match(/\{[\s\S]*\}/);
     if(!jsonMatch) return;
     var parsed=JSON.parse(jsonMatch[0]);
-    if(!CAT_SUBS[parsed.group]) return;
-    var validCat=CAT_SUBS[parsed.group].find(function(s){return s.v===parsed.category;});
-    if(!validCat) return;
-    if(['low','medium','high'].indexOf(parsed.priority)===-1) parsed.priority='medium';
-    // Güven düşükse dayatma — kategoriyi boş bırak, submit'te 'general'a düşer (kullanıcı zaten seçmiyor).
-    if(typeof parsed.confidence==='number' && parsed.confidence<0.55) return;
-    _applyAIClass(parsed.group,validCat,parsed.priority);
-  }catch(e){/* sessizce vazgeç, kategori 'general'a düşer */}
+    var pri=(['low','medium','high'].indexOf(parsed.priority)>-1)?parsed.priority:'medium';
+    var validCat=CAT_SUBS[parsed.group] && CAT_SUBS[parsed.group].find(function(s){return s.v===parsed.category;});
+    var sureEnough=validCat && !(typeof parsed.confidence==='number' && parsed.confidence<0.55);
+    if(sureEnough){
+      _applyAIClass(parsed.group,validCat,pri);
+    }else{
+      // Emin değil → görünür 'Other' kategorisine düş (kullanıcı yine de bir kategori görür).
+      var oc=CAT_SUBS.other.find(function(s){return s.v==='other';});
+      _applyAIClass('other',oc,pri);
+    }
+  }catch(e){/* sessizce vazgeç */}
 }
 // AI kararını sessizce uygular: state'i doldurur, ilgili kurumları gösterir, ikonlu şeridi çizer.
 function _applyAIClass(group,sub,priority){
@@ -3036,7 +3039,7 @@ function renderAICatStrip(group,sub,priority){
     '<div style="background:linear-gradient(135deg,rgba(77,142,232,.10),rgba(77,142,232,.05));border:1.5px solid #93c5fd;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
       '<span style="font-size:1.35rem;flex-shrink:0">'+escHtml(sub.i)+'</span>'+
       '<div style="flex:1;min-width:0">'+
-        '<div style="font-size:.58rem;color:var(--muted);font-family:Cinzel,serif;letter-spacing:.5px;text-transform:uppercase">🤖 '+V.t('cat_ai_tag')+' · '+escHtml(CAT_GROUPS[group]||group)+'</div>'+
+        '<div style="font-size:.58rem;color:var(--muted);font-family:Cinzel,serif;letter-spacing:.5px;text-transform:uppercase">🤖 AI · '+escHtml(CAT_GROUPS[group]||'General')+'</div>'+
         '<div style="font-size:.82rem;font-weight:700;color:var(--text)">'+escHtml(sub.l)+' · '+priLabel+'</div>'+
       '</div>'+
     '</div>';
@@ -3291,7 +3294,7 @@ async function runAI(){
     var emailText=parseSection(full,'EMAIL_DRAFT','XXXEND');
 
     var descEl=document.getElementById('inp-desc');
-    if(descEl&&complaintText){descEl.value=complaintText;updateCC();}
+    if(descEl&&complaintText){descEl.value=complaintText;updateCC();suggestCategoryAI();}
     if(descEl){descEl.style.borderColor='#16a34a';setTimeout(function(){descEl.style.borderColor='';},2000);}
 
     var legalBox=document.getElementById('legal-box');
