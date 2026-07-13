@@ -4025,9 +4025,12 @@ function _aShowApply(text){
   btn.textContent=_aLang==='tr'?'✓ Forma uygula':'✓ Apply to form';
   btn.style.cssText='margin:4px 0 8px;background:#16a34a;color:white;border:none;border-radius:10px;padding:10px;font-size:.82rem;font-weight:700;cursor:pointer;align-self:flex-start';
   btn.onclick=()=>{
+    var modal=document.getElementById('a-modal');if(modal)modal.style.display='none';
     goApp('new');newGoStep(4);
     const d=document.getElementById('inp-desc');
-    if(d){d.value=text;updateCC();resetCat();catAIDebounce();}
+    if(d){d.value=text;updateCC();resetCat();catAIDebounce();
+      d.scrollIntoView({behavior:'smooth',block:'center'});
+    }
     btn.textContent='✓ Applied!';btn.style.background='var(--muted)';btn.disabled=true;
   };
   chat.appendChild(btn);chat.scrollTop=chat.scrollHeight;
