@@ -1964,8 +1964,8 @@ const V = (function(){
       mv_card_t:"Reach Your Representative",mv_card_s:"If your complaint wasn't resolved, you can escalate it to your local MP / MPP for pressure.",mv_card_btn:"🔎 Find Representative",
       feed_card_t:"Recent Complaints (Live Feed)",feed_loading:"Loading...",feed_none:"No complaints yet.",feed_none_sub:"Be the first — file a complaint and it will appear here in real time.",feed_error:"Feed could not be loaded.",feed_footer:"Last 20 complaints · Live updating",feed_default_title:"Complaint",
       mv_title:"Find Your Representative",mv_sub:"Find your representative by address",
-      mv_addr_lbl:"Your Address",mv_addr_ph:"e.g. 123 Queen St W, Toronto, ON",mv_go:"Find",
-      mv_hint:"Enter street, city and province. Federal (MP) and provincial (MPP/MLA) representatives will be listed.",
+      mv_addr_lbl:"Your Postal Code or Address",mv_addr_ph:"e.g. M5V 2T6  (best) — or a full street address",mv_go:"Find",
+      mv_hint:"A postal code (e.g. M5V 2T6) gives the most accurate result. A full street address also works. Federal (MP) and provincial (MPP/MLA) representatives will be listed.",
       mv_searching1:"🔎 Locating address...",mv_searching2:"🏛️ Searching representatives...",
       mv_err_short:"Please enter your full address (street, city, province).",
       mv_err_geocode:"Address not found. Try writing the street, city and province more clearly.",
@@ -2042,8 +2042,8 @@ const V = (function(){
       mv_card_t:"Temsilcinize Ulaşın",mv_card_s:"Şikayetiniz çözülmediyse, bölgenizin milletvekiline (MP / MPP) ileterek baskı oluşturabilirsiniz.",mv_card_btn:"🔎 Milletvekili Bul",
       feed_card_t:"Son Şikayetler (Canlı Akış)",feed_loading:"Yükleniyor...",feed_none:"Henüz şikayet bulunmuyor.",feed_none_sub:"İlk şikayeti sen gönder — anında burada, canlı olarak görünsün.",feed_error:"Akış yüklenemedi.",feed_footer:"Son 20 şikayet · Canlı güncelleniyor",feed_default_title:"Şikayet",
       mv_title:"Milletvekili Bul",mv_sub:"Adresinizle temsilcinizi bulun",
-      mv_addr_lbl:"Adresiniz",mv_addr_ph:"örn. 123 Queen St W, Toronto, ON",mv_go:"Bul",
-      mv_hint:"Cadde, şehir ve eyaleti yazın. Federal (MP) ve eyalet (MPP/MLA) temsilcileriniz listelenir.",
+      mv_addr_lbl:"Posta Kodunuz veya Adresiniz",mv_addr_ph:"örn. M5V 2T6  (en iyisi) — veya tam adres",mv_go:"Bul",
+      mv_hint:"Posta kodu (örn. M5V 2T6) en doğru sonucu verir. Tam adres de çalışır. Federal (MP) ve eyalet (MPP/MLA) temsilcileriniz listelenir.",
       mv_searching1:"🔎 Adres bulunuyor...",mv_searching2:"🏛️ Temsilciler aranıyor...",
       mv_err_short:"Lütfen tam adresinizi girin (cadde, şehir, eyalet).",
       mv_err_geocode:"Adres bulunamadı. Cadde, şehir ve eyaleti daha açık yazmayı deneyin.",
@@ -4550,6 +4550,8 @@ function _mvLocSearch(){
   var val=document.getElementById('mv-postal').value.trim();
   var dd=document.getElementById('mv-dropdown');
   if(val.length<3){if(dd)dd.style.display='none';return;}
+  // Posta kodu yazılıyorsa autocomplete'e gerek yok — "Bul" doğrudan posta kodunu kullanır.
+  if(_MV_PC_RE.test(val)){if(dd)dd.style.display='none';return;}
   fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
     .then(function(r){return r.json();}).then(function(results){
       if(!dd) return;
@@ -4581,45 +4583,62 @@ function mvOpen(ref){
 }
 function mvClose(){document.getElementById('mv-modal').style.display='none';}
 
+// Kanada posta kodu (A1A 1A1) — geçerli ilk harf kümesiyle
+var _MV_PC_RE=/([ABCEGHJ-NPRSTVXYabceghj-nprstvxy]\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z])\s?(\d[ABCEGHJ-NPRSTV-Zabceghj-nprstv-z]\d)/;
 function mvSearch(){
-  var addr=(document.getElementById('mv-postal').value||'').trim();
+  var raw=(document.getElementById('mv-postal').value||'').trim();
   var box=document.getElementById('mv-results');
-  if(addr.length<5){
+  var btn=document.getElementById('mv-go');
+  var pcMatch=raw.match(_MV_PC_RE);
+  if(!pcMatch && raw.length<5){
     box.innerHTML='<div style="padding:14px;background:rgba(240,87,106,.16);border:1px solid var(--red);border-radius:10px;font-size:.8rem;color:#ff8a97">'+V.t('mv_err_short')+'</div>';
     return;
   }
-  var btn=document.getElementById('mv-go');
   btn.disabled=true;btn.textContent='...';
-  box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching1')+'</div>';
+  box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching2')+'</div>';
 
-  // Eğer kullanıcı öneri listesinden bir adres seçtiyse, o adresin zaten bilinen
-  // koordinatlarını kullan — metni yeniden geocode etmek farklı/yanlış bir sonuca
-  // eşleşebilir (aynı sokak adı başka bir şehirde de olabilir).
-  var geoPromise;
-  if(_mvSelectedCoord && _mvSelectedCoord.addr===addr){
-    geoPromise=Promise.resolve([{lat:_mvSelectedCoord.lat,lon:_mvSelectedCoord.lng}]);
+  var repPromise;
+  if(pcMatch){
+    // GÜVENİLİR YOL: Posta kodu → temsilciler doğrudan (Kanada'ya özel Represent API,
+    // geocode adımı yok, dolayısıyla yanlış şehir eşleşmesi olmaz).
+    var pc=(pcMatch[1]+pcMatch[2]).toUpperCase();
+    repPromise=fetch('https://represent.opennorth.ca/postcodes/'+encodeURIComponent(pc)+'/')
+      .then(function(r){if(!r.ok)throw new Error('reps');return r.json();})
+      .then(function(data){
+        // concordance (posta kodunun gerçekte düştüğü seçim bölgeleri) en doğrusudur;
+        // yoksa centroid'e düş.
+        return (data.representatives_concordance&&data.representatives_concordance.length)
+          ?data.representatives_concordance
+          :(data.representatives_centroid||[]);
+      });
   }else{
-    var q=addr;
-    if(q.toLowerCase().indexOf('canada')===-1)q=q+', Canada';
-    geoPromise=fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
-      .then(function(r){return r.json();});
+    // Serbest metin adres: geocode → koordinat → temsilci.
+    // Kullanıcı öneri listesinden seçtiyse bilinen koordinatı kullan (yeniden geocode
+    // etmek aynı sokak adını başka şehirde bulabilir).
+    var geoPromise;
+    if(_mvSelectedCoord && _mvSelectedCoord.addr===raw){
+      geoPromise=Promise.resolve([{lat:_mvSelectedCoord.lat,lon:_mvSelectedCoord.lng}]);
+    }else{
+      box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching1')+'</div>';
+      var q=raw;
+      if(q.toLowerCase().indexOf('canada')===-1)q=q+', Canada';
+      geoPromise=fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
+        .then(function(r){return r.json();});
+    }
+    repPromise=geoPromise
+      .then(function(geo){
+        if(!geo||!geo.length)throw new Error('geocode');
+        box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching2')+'</div>';
+        return fetch('https://represent.opennorth.ca/representatives/?point='+geo[0].lat+','+geo[0].lon);
+      })
+      .then(function(r){if(!r.ok)throw new Error('reps');return r.json();})
+      .then(function(data){return data.objects||[];});
   }
 
-  geoPromise
-    .then(function(geo){
-      if(!geo||!geo.length)throw new Error('geocode');
-      var lat=geo[0].lat,lng=geo[0].lon;
-      box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching2')+'</div>';
-      // 2) Koordinattan temsilcileri bul (Represent API point)
-      return fetch('https://represent.opennorth.ca/representatives/?point='+lat+','+lng);
-    })
-    .then(function(r){
-      if(!r.ok)throw new Error('reps');
-      return r.json();
-    })
-    .then(function(data){
+  repPromise
+    .then(function(reps){
       btn.disabled=false;btn.textContent=V.t('mv_go');
-      mvRender(data.objects||[]);
+      mvRender(reps);
     })
     .catch(function(e){
       btn.disabled=false;btn.textContent=V.t('mv_go');
