@@ -4144,6 +4144,29 @@ function toggleTheme(){
   if(goingLight) html.setAttribute('data-theme','light'); else html.removeAttribute('data-theme');
   try{localStorage.setItem('cc_theme',goingLight?'light':'dark');}catch(e){}
   _updateThemeBtn();
+  _showThemeToast(goingLight);
+}
+// Kısa bir onay mesajı — sadece küçük simge değişince "hiçbir şey olmadı" hissi
+// vermesin diye. Ana ekranın koyu görseli bilerek her iki temada da aynı kalıyor;
+// bu toast, geçişin gerçekten olduğunu net şekilde gösterir.
+function _showThemeToast(isLight){
+  var old=document.getElementById('theme-toast');
+  if(old) old.remove();
+  var t=document.createElement('div');
+  t.id='theme-toast';
+  t.textContent=isLight?'☀️ Açık tema açıldı':'🌙 Koyu tema açıldı';
+  t.style.cssText='position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-8px);'+
+    'background:var(--navy);color:#fff;font-family:Cinzel,serif;font-weight:700;font-size:.78rem;'+
+    'letter-spacing:.5px;padding:10px 20px;border-radius:30px;box-shadow:0 8px 24px rgba(0,0,0,.35);'+
+    'z-index:20000;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;white-space:nowrap';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){
+    t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  });
+  setTimeout(function(){
+    t.style.opacity='0';t.style.transform='translateX(-50%) translateY(-8px)';
+    setTimeout(function(){t.remove();},300);
+  },1600);
 }
 function _updateThemeBtn(){
   var btn=document.getElementById('theme-toggle-btn');
