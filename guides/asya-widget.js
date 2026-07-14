@@ -7,8 +7,10 @@ async function askAsyaGuide(){
   var input=document.getElementById('asya-guide-input');
   var msg=document.getElementById('asya-guide-msg');
   var btn=document.getElementById('asya-guide-send');
+  if(btn.disabled) return; // already sending — ignore a repeat Enter/click
   var text=input.value.trim();
   if(!text) return;
+  input.value='';
   btn.disabled=true;
   msg.textContent='Thinking...';
   var sys=window._GUIDE_SYSTEM_PROMPT||'You are Asya, the ComplaintCA assistant. Answer the user\'s question about filing a complaint in Canada concisely, in 2-3 sentences, no preamble.';
