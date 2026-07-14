@@ -2402,10 +2402,23 @@ function goApp(tab){
 // ── APP STATE ──
 let _isAnon=true,_selTgt='',_selPri='medium',_photos=[],_ctype='notice';
 let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
+// Bir görünüm giriş gerektirdiği için kullanıcı auth ekranına yönlendirildiğinde
+// hangi sekmeye gitmek istediğini burada saklarız — giriş/kayıt başarılı olunca
+// (doldurduğu form dahil) otomatik olarak oraya geri döneriz.
+let _authRedirectTab=null;
 
 function showTab(tab){
-  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);}
-  if(tab==='lawyerpanel' && !JSON.parse(localStorage.getItem('cc_session')||'null')){showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
+  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){
+    _authRedirectTab='new';
+    // Google girişi tüm sayfayı yeniden yükler (bu JS değişkenlerini sıfırlar), o yüzden
+    // yazılmış açıklamayı da yedekleyip Google dönüşünde geri yüklüyoruz.
+    try{
+      var _descNow=(document.getElementById('inp-desc')||{}).value||'';
+      sessionStorage.setItem('cc_authpending',JSON.stringify({tab:'new',desc:_descNow}));
+    }catch(e){}
+    showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);
+  }
+  if(tab==='lawyerpanel' && !JSON.parse(localStorage.getItem('cc_session')||'null')){_authRedirectTab='lawyerpanel';showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
   if(tab==='lawyerpanel' && window._startLawyerPanelFeed) window._startLawyerPanelFeed();
   document.getElementById('view-verify').style.display=tab==='verify'?'':'none';
   if(tab==='new'){var _s=JSON.parse(localStorage.getItem('cc_session')||'null');if(_s){var _e=document.getElementById('inp-email');var _n=document.getElementById('inp-name');if(_e&&!_e.value)_e.value=_s.email||'';if(_n&&!_n.value)_n.value=_s.name||'';}}
@@ -4172,6 +4185,7 @@ async function doSignup(){
     st.textContent='Account created! Welcome, '+user.name+'.';
     openMemberPanel(user.name,user.email);
     _renderMyComplaints(user.email);
+    setTimeout(_continueAfterAuth,700);
   }catch(e){
     var msg=_authErrorMessage(e);
     st.style.display='block';
@@ -4211,6 +4225,7 @@ async function doLogin(){
     st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';
     st.textContent='Welcome back, '+user.name+'!';
     _renderMyComplaints(user.email);
+    setTimeout(_continueAfterAuth,700);
   }catch(e){
     st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';
     st.textContent=_authErrorMessage(e);
@@ -4308,6 +4323,7 @@ try{
     var googleUser={name:result.user.displayName||result.user.email,email:result.user.email};
     if(typeof openMemberPanel==='function') openMemberPanel(googleUser.name,googleUser.email);
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
+    if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
   }).catch(function(e){
     var st=document.getElementById('login-status')||document.getElementById('signup-status');
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
@@ -4774,7 +4790,34 @@ function mvEmail(email,name){
 <script>
 const LOGIN_URL="/login";
 function showAuthModal(){document.getElementById('authModalOverlay').classList.add('open')}
-function closeAuthModal(){document.getElementById('authModalOverlay').classList.remove('open')}
+function closeAuthModal(){document.getElementById('authModalOverlay').classList.remove('open');_authRedirectTab=null;}
+// Giriş/kayıt/Google girişi başarılı olduğunda çağrılır: kullanıcı aslında
+// hangi sekmeye gitmek istiyorduysa (örn. dolu bir şikayet formuyla "new")
+// oraya otomatik döner — form içeriği zaten DOM'da korunuyor.
+function _continueAfterAuth(){
+  if(_authRedirectTab){
+    var t=_authRedirectTab;_authRedirectTab=null;
+    try{sessionStorage.removeItem('cc_authpending');}catch(e){}
+    document.getElementById('authModalOverlay').classList.remove('open');
+    goApp(t);
+  }
+}
+// Google girişi (signInWithRedirect) sayfayı yeniden yükler — bu yüzden başarılı
+// dönüşte sessionStorage'daki bekleyen niyeti (hangi sekme + yazılmış açıklama) okuyup geri yükleriz.
+function _restoreAfterGoogleRedirect(){
+  try{
+    var pending=JSON.parse(sessionStorage.getItem('cc_authpending')||'null');
+    if(!pending) return;
+    sessionStorage.removeItem('cc_authpending');
+    document.getElementById('authModalOverlay').classList.remove('open');
+    goApp(pending.tab);
+    if(pending.tab==='new' && pending.desc){
+      newGoStep(4);
+      var d=document.getElementById('inp-desc');
+      if(d){d.value=pending.desc;if(typeof updateCC==='function')updateCC();if(typeof catAIDebounce==='function')catAIDebounce();}
+    }
+  }catch(e){}
+}
 function goToLogin(){closeAuthModal();document.getElementById('view-track').style.display='';switchAuthTab('signup');}
 </script> <!-- ================= ÜYE PANELİ (COMPLAINTCA) ================= -->
 <style>
