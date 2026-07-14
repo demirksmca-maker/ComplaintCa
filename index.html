@@ -1896,6 +1896,7 @@ const V = (function(){
   const T = {
     en:{
       ey:"Canada's Complaint Platform",
+      theme_light:"☀️ Light theme on",theme_dark:"🌙 Dark theme on",
       nw:"File",tr:"Track",lw:"Lawyer",cy:"Cyber",fd:"Feed",
       cy_sub:"Report harassment, threats, and identity theft. Upload your evidence — we'll email you a reference number and the right Canadian authority to contact.",
       cy_s1:"What type of offence?",cy_s2:"Where did it happen?",cy_s3:"Upload Evidence",cy_s4:"Describe the Incident",
@@ -1974,6 +1975,7 @@ const V = (function(){
     },
     tr:{
       ey:"Kanada Resmi Şikayet Platformu",
+      theme_light:"☀️ Açık tema açıldı",theme_dark:"🌙 Koyu tema açıldı",
       nw:"Dosya",tr:"Takip",lw:"Avukat",cy:"Siber",fd:"Akış",
       cy_sub:"Hakaret, tehdit ve kimlik hırsızlığını bildirin. Kanıtlarınızı yükleyin — size bir referans numarası ve başvurmanız gereken Kanada kurumunu e-posta ile göndereceğiz.",
       cy_s1:"Suç türü nedir?",cy_s2:"Nerede gerçekleşti?",cy_s3:"Kanıt Yükle",cy_s4:"Olayı Açıkla",
@@ -2052,6 +2054,7 @@ const V = (function(){
     },
     fr:{
       ey:"Plateforme officielle de plaintes au Canada",
+      theme_light:"☀️ Thème clair activé",theme_dark:"🌙 Thème sombre activé",
       nw:"Déposer",tr:"Suivre",lw:"Avocat",cy:"Cyber",fd:"Fil",
       cy_sub:"Signalez le harcèlement, les menaces et l'usurpation d'identité. Téléversez vos preuves.",
       cy_s1:"Type d'infraction?",cy_s2:"Où cela s'est-il passé?",cy_s3:"Téléverser des preuves",cy_s4:"Décrire l'incident",
@@ -2093,6 +2096,7 @@ const V = (function(){
     },
     zh:{
       ey:"加拿大官方投诉平台",
+      theme_light:"☀️ 已切换为浅色主题",theme_dark:"🌙 已切换为深色主题",
       nw:"投诉",tr:"追踪",lw:"律师",cy:"网络",fd:"动态",
       cy_sub:"举报骚扰、威胁和身份盗窃。上传证据 — 我们会通过邮件发给您参考编号和应联系的加拿大机构。",
       cy_s1:"犯罪类型？",cy_s2:"发生在哪里？",cy_s3:"上传证据",cy_s4:"描述事件",
@@ -2134,6 +2138,7 @@ const V = (function(){
     },
     es:{
       ey:"Plataforma Oficial de Quejas de Canadá",
+      theme_light:"☀️ Tema claro activado",theme_dark:"🌙 Tema oscuro activado",
       nw:"Presentar",tr:"Rastrear",lw:"Abogado",cy:"Cibercrim.",fd:"Feed",
       cy_sub:"Reporte acoso, amenazas y robo de identidad. Suba su evidencia.",
       cy_s1:"¿Tipo de delito?",cy_s2:"¿Dónde ocurrió?",cy_s3:"Subir evidencia",cy_s4:"Describir el incidente",
@@ -2175,6 +2180,7 @@ const V = (function(){
     },
     ar:{
       ey:"منصة الشكاوى الرسمية في كندا",
+      theme_light:"☀️ تم تفعيل الوضع الفاتح",theme_dark:"🌙 تم تفعيل الوضع الداكن",
       nw:"تقديم",tr:"تتبع",lw:"محامي",cy:"جرائم",fd:"بث",
       cy_sub:"أبلغ عن التحرش والتهديدات وسرقة الهوية. ارفع أدلتك.",
       cy_s1:"نوع الجريمة؟",cy_s2:"أين حدث؟",cy_s3:"رفع الأدلة",cy_s4:"وصف الحادثة",
@@ -2216,6 +2222,7 @@ const V = (function(){
     },
     pa:{
       ey:"ਕੈਨੇਡਾ ਦਾ ਅਧਿਕਾਰਤ ਸ਼ਿਕਾਇਤ ਪਲੇਟਫਾਰਮ",
+      theme_light:"☀️ ਹਲਕਾ ਥੀਮ ਚਾਲੂ",theme_dark:"🌙 ਗੂੜ੍ਹਾ ਥੀਮ ਚਾਲੂ",
       nw:"ਦਰਜ",tr:"ਟਰੈਕ",lw:"ਵਕੀਲ",cy:"ਸਾਈਬਰ",fd:"ਫੀਡ",
       cy_sub:"ਪਰੇਸ਼ਾਨੀ, ਧਮਕੀਆਂ ਅਤੇ ਪਛਾਣ ਚੋਰੀ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।",
       cy_s1:"ਅਪਰਾਧ ਦੀ ਕਿਸਮ?",cy_s2:"ਕਿੱਥੇ ਹੋਇਆ?",cy_s3:"ਸਬੂਤ ਅਪਲੋਡ ਕਰੋ",cy_s4:"ਘਟਨਾ ਦੱਸੋ",
@@ -4159,7 +4166,7 @@ function _showThemeToast(isLight){
   if(old) old.remove();
   var t=document.createElement('div');
   t.id='theme-toast';
-  t.textContent=isLight?'☀️ Açık tema açıldı':'🌙 Koyu tema açıldı';
+  t.textContent=V.t(isLight?'theme_light':'theme_dark');
   t.style.cssText='position:fixed;top:64px;left:50%;transform:translateX(-50%) translateY(-8px);'+
     'background:var(--navy);color:#fff;font-family:Cinzel,serif;font-weight:700;font-size:.78rem;'+
     'letter-spacing:.5px;padding:10px 20px;border-radius:30px;box-shadow:0 8px 24px rgba(0,0,0,.35);'+
