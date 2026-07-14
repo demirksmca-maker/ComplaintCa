@@ -281,11 +281,6 @@ textarea{resize:vertical;min-height:90px}
 .tog.on{background:var(--blue)}
 .tog::after{content:'';position:absolute;width:18px;height:18px;background:#eef2f9;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .tog.on::after{transform:translateX(20px)}
-.prow{display:flex;gap:8px;margin-bottom:14px}
-.pbtn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);font-size:.75rem;font-weight:600;cursor:pointer;text-align:center;background:var(--surface);transition:all .2s}
-.pbtn.low.on{background:rgba(47,208,122,.14);border-color:var(--green);color:var(--green)}
-.pbtn.med.on{background:rgba(231,185,85,.16);border-color:var(--yellow);color:var(--yellow)}
-.pbtn.high.on{background:rgba(240,87,106,.16);border-color:var(--red);color:var(--red)}
 .pup{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:14px;color:var(--sub);font-size:.83rem}
 .pup:hover{border-color:var(--light);background:var(--off)}
 .pgrid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
@@ -402,32 +397,6 @@ textarea{resize:vertical;min-height:90px}
 
 .ai-btn{background:rgba(201,168,76,.06);color:#c9a84c;border-color:rgba(201,168,76,.2)}
 
-/* ── CATEGORY 2-STEP ── */
-.step-label{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Cinzel',serif;margin-bottom:8px}
-.group-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
-.group-card{border:1.5px solid var(--border);border-radius:10px;padding:9px 4px 8px;cursor:pointer;text-align:center;background:var(--surface);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
-.group-card:hover{border-color:#93c5fd;background:rgba(77,142,232,.10);transform:translateY(-2px);box-shadow:0 3px 10px rgba(26,79,160,.1)}
-.group-card.sel{border-color:var(--blue);background:linear-gradient(160deg,rgba(77,142,232,.12),rgba(77,142,232,.08));box-shadow:0 0 0 3px rgba(26,79,160,.12)}
-.group-card.sel .g-lbl{color:var(--blue);font-weight:700}
-.group-card.sel::after{content:'✓';position:absolute;top:4px;right:5px;font-size:.52rem;color:var(--blue);font-weight:800}
-.group-card.rights{border-color:rgba(200,16,46,.18)}
-.group-card.rights:hover{border-color:#c8102e;background:rgba(240,87,106,.10)}
-.group-card.rights.sel{border-color:#c8102e;background:linear-gradient(160deg,#fff0f2,#fff8f9);box-shadow:0 0 0 3px rgba(200,16,46,.12)}
-.group-card.rights.sel .g-lbl{color:#c8102e}
-.group-card.rights.sel::after{color:#c8102e}
-.g-icon{font-size:1.15rem;line-height:1}
-.g-lbl{font-size:.57rem;font-weight:600;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.15px;line-height:1.25}
-.sub-wrap{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .28s ease;opacity:0}
-.sub-wrap.open{max-height:300px;opacity:1}
-.sub-inner{display:flex;flex-wrap:wrap;gap:6px;padding:2px 0 12px}
-.sub-chip{display:flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:20px;padding:6px 11px;cursor:pointer;font-size:.7rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s;white-space:nowrap}
-.sub-chip:hover{border-color:#93c5fd;background:rgba(77,142,232,.10);color:var(--blue)}
-.sub-chip.sel{border-color:var(--blue);background:var(--blue);color:white}
-.sub-chip.rc:hover{border-color:#c8102e;background:rgba(240,87,106,.10);color:#c8102e}
-.sub-chip.rc.sel{border-color:#c8102e;background:#c8102e;color:white}
-.cat-result{display:none;align-items:center;gap:8px;background:var(--ice);border:1.5px solid var(--border);border-radius:10px;padding:9px 13px;margin-bottom:12px}
-.cat-result.show{display:flex}
-.cat-result.rr{background:rgba(240,87,106,.10);border-color:rgba(200,16,46,.22)}
 
 
 
@@ -752,8 +721,6 @@ textarea{resize:vertical;min-height:90px}
         <div style="display:flex;gap:6px;margin-bottom:14px" id="new-progress">
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--blue)"></div>
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
-          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
-          <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         </div>
         <div id="new-step-1">
         <div class="card" style="padding:14px 16px">
@@ -780,61 +747,10 @@ textarea{resize:vertical;min-height:90px}
             <input type="tel" id="inp-phone" placeholder="+1 (416) 000-0000" style="margin-bottom:0">
           </div>
         </div>
-        <button onclick="newValidateStep1()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
-        </div>
 
-        <!-- Category + priority are decided automatically by AI from the description (step IV) -->
-        <input type="hidden" id="inp-cat">
-        <input type="hidden" id="inp-tname" value="">
-
-        <div id="new-step-2" style="display:none">
-        <div class="card">
-          <div class="ct"><div class="ci">II</div><span id="a-loc">Location</span></div>
-          <div class="lbar">
-            <div class="loc-wrap">
-              <input type="text" id="inp-loc" placeholder="Enter address..." oninput="_locDebounce()" autocomplete="off" style="margin-bottom:0">
-              <div class="loc-dropdown" id="loc-dropdown"></div>
-            </div>
-            <button class="lbtn" onclick="getLoc()" id="loc-btn">📡</button>
-          </div>
-          <div id="loc-st" style="font-size:.75rem;color:var(--muted);margin-top:-10px;margin-bottom:10px;display:none"></div>
-          <div id="map-preview"></div>
-          <div class="map-confirm" id="map-confirm">
-            <strong id="map-addr-txt"></strong>
-            <span>Is this the correct location?</span>
-            <div class="map-btns">
-              <button class="map-btn-ok" onclick="_mapConfirm()">✓ Yes</button>
-              <button class="map-btn-no" onclick="_mapClear()">✗ Clear</button>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button onclick="newGoStep(1)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-          <button onclick="newGoStep(3)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
-        </div>
-        </div>
-
-        <div id="new-step-3" style="display:none">
-        <div class="card" style="padding:14px 20px">
-          <div class="ct" style="margin-bottom:10px"><div class="ci">III</div><span id="a-media">Evidence</span></div>
-          <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
-          <label style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px dashed var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:0;text-transform:none;font-size:.82rem;color:var(--sub);font-weight:500" onclick="document.getElementById('photo-input').click()">
-            <span style="font-size:1.1rem">📎</span>
-            <span id="a-mlab">Add photos or videos</span>
-            <span id="photo-count" style="margin-left:auto;font-size:.72rem;color:var(--muted);font-weight:400">0 / 10</span>
-          </label>
-          <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
-        </div>
-        <div style="display:flex;gap:8px">
-          <button onclick="newGoStep(2)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-          <button onclick="newGoStep(4)" style="flex:2;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
-        </div>
-        </div>
-
-        <div id="new-step-4" style="display:none">
-        <div class="card" style="padding:0;overflow:hidden">
+        <div class="card" style="padding:0;overflow:hidden;margin-top:12px">
           <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-            <div class="ct" style="margin-bottom:0"><div class="ci">IV</div><span id="a-comp">Complaint</span></div>
+            <div class="ct" style="margin-bottom:0"><div class="ci">II</div><span id="a-comp">Complaint</span></div>
             <span id="char-cnt" style="font-size:.68rem;color:var(--muted);font-weight:500">0 / 1000</span>
           </div>
           <input type="text" id="inp-title" placeholder="Title..." style="border:none;border-bottom:1px solid var(--border);border-radius:0;padding:12px 16px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:0;background:var(--surface)">
@@ -862,7 +778,46 @@ textarea{resize:vertical;min-height:90px}
           </div>
           <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Improve with AI</button>
         </div>
-        <button onclick="newGoStep(3)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
+        <button onclick="newValidateStep1()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px;margin-top:12px">Next →</button>
+        </div>
+
+        <!-- Category + priority are decided automatically by AI from the description above -->
+        <input type="hidden" id="inp-cat">
+        <input type="hidden" id="inp-tname" value="">
+
+        <div id="new-step-2" style="display:none">
+        <div class="card">
+          <div class="ct"><div class="ci">III</div><span id="a-loc">Location</span></div>
+          <div class="lbar">
+            <div class="loc-wrap">
+              <input type="text" id="inp-loc" placeholder="Enter address..." oninput="_locDebounce()" autocomplete="off" style="margin-bottom:0">
+              <div class="loc-dropdown" id="loc-dropdown"></div>
+            </div>
+            <button class="lbtn" onclick="getLoc()" id="loc-btn">📡</button>
+          </div>
+          <div id="loc-st" style="font-size:.75rem;color:var(--muted);margin-top:-10px;margin-bottom:10px;display:none"></div>
+          <div id="map-preview"></div>
+          <div class="map-confirm" id="map-confirm">
+            <strong id="map-addr-txt"></strong>
+            <span>Is this the correct location?</span>
+            <div class="map-btns">
+              <button class="map-btn-ok" onclick="_mapConfirm()">✓ Yes</button>
+              <button class="map-btn-no" onclick="_mapClear()">✗ Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:14px 20px;margin-top:12px">
+          <div class="ct" style="margin-bottom:10px"><div class="ci">IV</div><span id="a-media">Evidence</span></div>
+          <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
+          <label style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px dashed var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:0;text-transform:none;font-size:.82rem;color:var(--sub);font-weight:500" onclick="document.getElementById('photo-input').click()">
+            <span style="font-size:1.1rem">📎</span>
+            <span id="a-mlab">Add photos or videos</span>
+            <span id="photo-count" style="margin-left:auto;font-size:.72rem;color:var(--muted);font-weight:400">0 / 10</span>
+          </label>
+          <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
+        </div>
+        <button onclick="newGoStep(1)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
@@ -1315,7 +1270,7 @@ function vfyHandleFile(inp){
 function transferToComplaint(){
   if(!_vfyLastAnalysis){alert('Önce bir belge analiz edin.');return;}
   goApp('new');
-  newGoStep(4);
+  newGoStep(1);
   var d=document.getElementById('inp-desc');
   if(d){
     d.value=(_vfyLastAnalysis.verdict||'')+(_vfyLastAnalysis.detail?' — '+_vfyLastAnalysis.detail:'');
@@ -1553,8 +1508,8 @@ function lwGoStep(n){
 }
 
 function newGoStep(n){
-  if(n>4)n=4;
-  for(var i=1;i<=4;i++){
+  if(n>2)n=2;
+  for(var i=1;i<=2;i++){
     var s=document.getElementById('new-step-'+i);
     if(s) s.style.display=(i===n)?'block':'none';
   }
@@ -1564,13 +1519,15 @@ function newGoStep(n){
   if(box) box.scrollIntoView({behavior:'smooth',block:'start'});
   if(!_suppressNavPush) _pushNav({tab:'new',step:n});
 }
-// Step 1'den ilerlemeden önce email zorunlu (anonim olsa bile — doğrulama için gerekli).
+// Sayfa 1'den ilerlemeden önce email + başlık + açıklama zorunlu (anonim olsa bile —
+// email doğrulama için, başlık/açıklama ise submit'te zaten zorunlu olduğundan
+// kullanıcı sayfa 2'ye geçtikten sonra bu eksikle karşılaşmasın diye burada da kontrol edilir).
 function newValidateStep1(){
   var emailEl=document.getElementById('inp-email');
   var noteEl=document.getElementById('a-anon-email-note');
   var email=(emailEl&&emailEl.value||'').trim();
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    if(emailEl){emailEl.style.borderColor='#c8102e';emailEl.focus();}
+    if(emailEl){emailEl.style.borderColor='#c8102e';emailEl.focus();emailEl.scrollIntoView({behavior:'smooth',block:'center'});}
     if(noteEl){
       if(!noteEl.getAttribute('data-orig')) noteEl.setAttribute('data-orig',noteEl.textContent);
       noteEl.style.color='#c8102e';noteEl.style.fontWeight='700';
@@ -1580,6 +1537,17 @@ function newValidateStep1(){
     return;
   }
   if(emailEl) emailEl.style.borderColor='';
+  var titleEl=document.getElementById('inp-title');
+  var descEl=document.getElementById('inp-desc');
+  var title=(titleEl&&titleEl.value||'').trim();
+  var desc=(descEl&&descEl.value||'').trim();
+  if(!title || !desc){
+    var missingEl=!title?titleEl:descEl;
+    if(missingEl){missingEl.style.borderColor='#c8102e';missingEl.scrollIntoView({behavior:'smooth',block:'center'});missingEl.focus();
+      setTimeout(function(){missingEl.style.borderColor='';},4000);
+    }
+    return;
+  }
   newGoStep(2);
 }
 
@@ -2931,45 +2899,6 @@ var CAT_SUBS={
   other:[{v:'education',i:'🏫',l:'Education'},{v:'privacy',i:'🔒',l:'Privacy / Data'},{v:'environment',i:'🌿',l:'Environment'},{v:'other',i:'📌',l:'Other'}]
 };
 var CAT_GROUPS={municipal:'Municipality',business:'Business',landlord:'Landlord',employer:'Employer',rights:'Human Rights',government:'Government',healthcare:'Healthcare',other:'Other'};
-function selGroup(group,el){
-  document.querySelectorAll('#group-grid .group-card').forEach(function(c){c.classList.remove('sel');});
-  el.classList.add('sel');
-  _catGroup=group;
-  var isRights=group==='rights';
-  var inner=document.getElementById('sub-inner');
-  inner.innerHTML='';
-  (CAT_SUBS[group]||[]).forEach(function(s){
-    var d=document.createElement('div');
-    d.className='sub-chip'+(s.r?' rc':'');
-    d.tabIndex=0;
-    d.setAttribute('role','button');
-    d.innerHTML='<span>'+s.i+'</span>'+s.l;
-    d.onclick=function(){selSubCat(s.v,s.i,s.l,!!s.r,d);};
-    inner.appendChild(d);
-  });
-  document.getElementById('sub-wrap').classList.add('open');
-  var res=document.getElementById('cat-result');
-  res.classList.remove('show','rr');
-  var sel=document.getElementById('inp-cat');
-  if(sel) sel.value='';
-}
-function selSubCat(val,icon,label,isRights,el){
-  document.querySelectorAll('.sub-chip').forEach(function(c){c.classList.remove('sel');});
-  el.classList.add('sel');
-  var sel=document.getElementById('inp-cat');
-  if(sel) sel.value=val;
-  document.getElementById('cat-r-icon').textContent=icon;
-  document.getElementById('cat-r-group').textContent=CAT_GROUPS[_catGroup]||'';
-  document.getElementById('cat-r-cat').textContent=label;
-  var res=document.getElementById('cat-result');
-  res.classList.add('show');
-  if(isRights) res.classList.add('rr'); else res.classList.remove('rr');
-  showAuthorities(val, document.getElementById('inp-loc').value);
-  // İş yerinde cinsel taciz seçilince destek sayfası ("Geri dön" → kategori sıfırlanır)
-  if(_catGroup==='employer' && val==='harassment'){
-    showSupportScreen(function(){ resetCat(); });
-  }
-}
 function resetCat(){
   _catGroup='';
   _selPri='medium';
@@ -3086,91 +3015,6 @@ async function _aiClassify(sys,userMsg,opts){
       if(d2.error) return null;
       return d2.content.map(function(c){return c.text||'';}).join('').trim();
     }catch(e2){return null;}
-  }
-}
-function renderCatSuggestion(group,sub,priority){
-  var old=document.getElementById('cat-ai-suggest');
-  if(old) old.remove();
-  var priLabel={low:'🟢 '+V.t('plo'),medium:'🟡 '+V.t('pme'),high:'🔴 '+V.t('phi')}[priority]||priority;
-  var box=document.createElement('div');
-  box.id='cat-ai-suggest';
-  box.style.cssText='background:linear-gradient(135deg,rgba(77,142,232,.10),rgba(77,142,232,.06));border:1.5px solid #93c5fd;border-radius:10px;padding:12px;margin-bottom:12px';
-  box.innerHTML=
-    '<div style="font-size:.68rem;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🤖 '+V.t('cat_ai_tag')+'</div>'+
-    '<div style="font-size:.8rem;color:var(--text);margin-bottom:10px">'+(CAT_GROUPS[group]||group)+' → '+sub.i+' '+sub.l+' · '+priLabel+'</div>'+
-    '<div style="display:flex;gap:8px">'+
-      '<button onclick="applyCatSuggestion(\''+group+'\',\''+sub.v+'\',\''+priority+'\')" style="flex:1;background:var(--blue);color:white;border:none;border-radius:8px;padding:9px;font-size:.76rem;font-weight:700;cursor:pointer">✓ '+V.t('cat_ai_apply')+'</button>'+
-      '<button onclick="dismissCatSuggestion()" style="flex:1;background:var(--surface);color:var(--sub);border:1.5px solid var(--border);border-radius:8px;padding:9px;font-size:.76rem;font-weight:600;cursor:pointer">'+V.t('cat_ai_dismiss')+'</button>'+
-    '</div>';
-  var grid=document.getElementById('group-grid');
-  if(grid && grid.parentNode) grid.parentNode.insertBefore(box,grid);
-  var step2=document.getElementById('new-step-2');
-  if(step2 && step2.style.display==='none') newGoStep(2);
-}
-function applyCatSuggestion(group,catVal,priority){
-  dismissCatSuggestion();
-  var groupEl=document.querySelector('.group-grid .group-card[onclick*="\''+group+'\'"]');
-  if(!groupEl) return;
-  selGroup(group,groupEl);
-  setTimeout(function(){
-    var idx=(CAT_SUBS[group]||[]).findIndex(function(s){return s.v===catVal;});
-    if(idx<0) return;
-    var chips=document.querySelectorAll('#sub-inner .sub-chip');
-    var chipEl=chips[idx];
-    var s=CAT_SUBS[group][idx];
-    if(chipEl) selSubCat(s.v,s.i,s.l,!!s.r,chipEl);
-    var priBtnId={low:'a-plow',medium:'a-pmed',high:'a-phigh'}[priority];
-    var priBtn=document.getElementById(priBtnId);
-    if(priBtn) selPri(priority,priBtn);
-  },50);
-}
-function dismissCatSuggestion(){
-  var old=document.getElementById('cat-ai-suggest');
-  if(old) old.remove();
-}
-function selPri(p,el){
-  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
-  el.classList.add('on');_selPri=p;
-  // Kirmizi (yuksek oncelik) secilince kullaniciyi bilgilendiren uyari notu goster.
-  var hiNote=document.getElementById('hi-pri-note');
-  if(p==='high'){
-    if(!hiNote){
-      hiNote=document.createElement('div');
-      hiNote.id='hi-pri-note';
-      hiNote.style.cssText='margin-top:10px;padding:10px 12px;background:rgba(240,87,106,.12);border:1.5px solid var(--red);border-radius:10px;font-size:.72rem;color:#ff8a97;line-height:1.5';
-      var pbar=el.parentNode;
-      if(pbar && pbar.parentNode) pbar.parentNode.insertBefore(hiNote,pbar.nextSibling);
-    }
-    hiNote.innerHTML=(_aLang==='tr')
-      ? '⚠️ <b>Yüksek öncelik:</b> Bu şikayet kuruma resmi ve acil bir bildirim olarak gider. Göndermeden önce bilgilerinizin doğruluğunu onaylamanız istenecek.'
-      : (_aLang==='fr')
-      ? '⚠️ <b>Priorité élevée :</b> cette plainte sera envoyée comme notification officielle et urgente. Une confirmation vous sera demandée avant l\'envoi.'
-      : '⚠️ <b>High priority:</b> this complaint is sent as a formal, urgent notification to the institution. You will be asked to confirm before sending.';
-    hiNote.style.display='block';
-  } else if(hiNote){
-    hiNote.style.display='none';
-  }
-  // Kirmizi (yuksek oncelik) -> anonim KAPAT ve KILITLE (yasal surec kimlik gerektirir).
-  // Yesil/sari -> anonim tekrar acilabilir.
-  var anonTog=document.getElementById('anon-tog');
-  var idFields=document.getElementById('id-fields');
-  if(p==='high'){
-    if(_isAnon){
-      _isAnon=false;
-      if(anonTog) anonTog.classList.remove('on');
-      if(idFields) idFields.style.display='block';
-    }
-    if(anonTog){
-      anonTog.style.opacity='.45';
-      anonTog.style.pointerEvents='none';
-      anonTog.setAttribute('data-locked','1');
-    }
-  } else {
-    if(anonTog){
-      anonTog.style.opacity='';
-      anonTog.style.pointerEvents='';
-      anonTog.removeAttribute('data-locked');
-    }
   }
 }
 function updateCC(){
@@ -3776,8 +3620,6 @@ function resetForm(){
   document.getElementById('inp-cat').value='';
   _photos=[];renderPhotos();updateCC();
   document.querySelectorAll('#tgt-grid .group-card').forEach(function(o){o.classList.remove('sel');});
-  document.querySelectorAll('.pbtn').forEach(function(b){b.classList.remove('on');});
-  var med=document.querySelector('.pbtn.med');if(med)med.classList.add('on');
   _selTgt='';_selPri='medium';_ctype='notice';
   document.querySelectorAll('.ctype-btn').forEach(function(b){b.classList.remove('active');});
   var defBtn=document.getElementById('ctype-notice');if(defBtn)defBtn.classList.add('active');
@@ -4039,7 +3881,7 @@ function _aShowApply(text){
   btn.style.cssText='margin:4px 0 8px;background:#16a34a;color:white;border:none;border-radius:10px;padding:10px;font-size:.82rem;font-weight:700;cursor:pointer;align-self:flex-start';
   btn.onclick=()=>{
     var modal=document.getElementById('a-modal');if(modal)modal.style.display='none';
-    goApp('new');newGoStep(4);
+    goApp('new');newGoStep(1);
     const d=document.getElementById('inp-desc');
     if(d){d.value=text;updateCC();resetCat();catAIDebounce();
       d.scrollIntoView({behavior:'smooth',block:'center'});
@@ -4283,7 +4125,7 @@ function _handleGuidePrefill(){
     if(!d) return;
     history.replaceState(null,'',location.pathname);
     goApp('new');
-    newGoStep(4);
+    newGoStep(1);
     var descEl=document.getElementById('inp-desc');
     if(descEl){
       descEl.value=d;
@@ -4812,7 +4654,7 @@ function _restoreAfterGoogleRedirect(){
     document.getElementById('authModalOverlay').classList.remove('open');
     goApp(pending.tab);
     if(pending.tab==='new' && pending.desc){
-      newGoStep(4);
+      newGoStep(1);
       var d=document.getElementById('inp-desc');
       if(d){d.value=pending.desc;if(typeof updateCC==='function')updateCC();if(typeof catAIDebounce==='function')catAIDebounce();}
     }
