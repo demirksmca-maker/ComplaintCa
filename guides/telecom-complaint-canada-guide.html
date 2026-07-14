@@ -116,43 +116,37 @@ footer{
 
 .asya-feature{
   background:linear-gradient(160deg,#fff,var(--ice));
-  border:1.5px solid var(--gold);border-radius:20px;
-  padding:28px 22px 22px;margin:-34px 0 40px;position:relative;
-  box-shadow:0 14px 40px rgba(15,41,82,.18);
+  border:1.5px solid var(--gold);border-radius:14px;
+  padding:14px 16px;margin:0 0 30px;position:relative;
+  box-shadow:0 3px 14px rgba(15,41,82,.12);
 }
-.asya-feature-badge{
-  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
-  background:var(--gold);color:var(--navy);
-  font-family:'Cinzel',serif;font-size:.6rem;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;padding:5px 14px;border-radius:20px;
-  box-shadow:0 4px 12px rgba(201,168,76,.4);white-space:nowrap;
-}
-.asya-feature-inner{display:flex;gap:14px;align-items:flex-start}
+.asya-feature-inner{display:flex;gap:10px;align-items:flex-start}
 .asya-avatar-ring{
-  width:50px;height:50px;border-radius:50%;flex-shrink:0;
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--navy),var(--blue));
   display:flex;align-items:center;justify-content:center;position:relative;
 }
 .asya-avatar-ring::before{
-  content:'';position:absolute;inset:-4px;border-radius:50%;
-  border:2px solid var(--gold);opacity:.55;
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  border:1.5px solid var(--gold);opacity:.55;
   animation:asyaPulse 2.4s ease-out infinite;
 }
 @keyframes asyaPulse{
   0%{transform:scale(1);opacity:.55}
   100%{transform:scale(1.4);opacity:0}
 }
-.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem}
+.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:.85rem}
 .asya-feature-body{flex:1;min-width:0}
-.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.92rem;margin-bottom:7px}
+.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.76rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.asya-feature-name .tag{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);padding:2px 7px;border-radius:9px}
 .asya-bubble{
-  background:#fff;border:1px solid var(--border);border-radius:4px 14px 14px 14px;
-  padding:12px 14px;font-size:.87rem;color:var(--sub);line-height:1.6;margin-bottom:12px;
+  background:#fff;border:1px solid var(--border);border-radius:4px 10px 10px 10px;
+  padding:7px 10px;font-size:.76rem;color:var(--sub);line-height:1.5;margin-bottom:8px;
 }
-.asya-input-row{display:flex;gap:8px}
+.asya-input-row{display:flex;gap:6px}
 .asya-input{
-  flex:1;border:1.5px solid var(--border);border-radius:24px;
-  padding:11px 16px;font-size:.87rem;font-family:'Inter',sans-serif;
+  flex:1;border:1.5px solid var(--border);border-radius:20px;
+  padding:8px 13px;font-size:.8rem;font-family:'Inter',sans-serif;
   background:var(--off);color:var(--text);min-width:0;
 }
 .asya-input::placeholder{color:var(--muted)}
@@ -160,8 +154,8 @@ footer{
 .asya-send{
   background:linear-gradient(135deg,var(--gold),var(--dark-gold));
   border:none;border-radius:50%;color:var(--navy);
-  font-weight:700;width:42px;height:42px;flex-shrink:0;font-size:1rem;cursor:pointer;
-  box-shadow:0 4px 12px rgba(201,168,76,.4);
+  font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
+  box-shadow:0 3px 10px rgba(201,168,76,.35);
 }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -177,11 +171,10 @@ footer{
   <p class="lede">A billing dispute with your phone, internet, or TV provider that they won't fix? Telecom and TV complaints have been rising sharply across Canada, and there's a free, independent body built specifically for this. This guide walks through the real process and shows where ComplaintCA fits in.</p>
 
   <div class="asya-feature">
-    <div class="asya-feature-badge">✨ AI-Powered · Instant Answer</div>
     <div class="asya-feature-inner">
       <div class="asya-avatar-ring"><span>A</span></div>
       <div class="asya-feature-body">
-        <div class="asya-feature-name">Ask Asya — skip the guide</div>
+        <div class="asya-feature-name">Ask Asya <span class="tag">AI</span></div>
         <div class="asya-bubble" id="asya-guide-msg">Hi! Tell me what happened with your provider, and I'll tell you the right first step.</div>
         <div class="asya-input-row">
           <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. My internet provider charged me for a plan I never signed up for..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
