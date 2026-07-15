@@ -3261,8 +3261,13 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   var subject = 'Formal Complaint — '+ref+' — '+complaint.title;
 
   // 1. Send formal email to INSTITUTION (asıl muhatap — öncelikli)
-  // Reply-To: SADECE anonim olmayan şikayetlerde kullanıcının e-postası —
-  // anonim şikayette email hiçbir şekilde kuruma görünmemeli (gizlilik sözü)
+  // Reply-To: her şikayette referansla etiketli tek bir toplama adresi
+  // (Gmail plus-addressing). Kurum "yanıtla" dediğinde cevap, referansı
+  // taşıyan bu adrese düşer → complaintcaca@gmail.com gelen kutusuna,
+  // hangi şikayete ait olduğu adresten belli olacak şekilde. Kullanıcının
+  // kendi e-postası kuruma hiçbir zaman Reply-To olarak verilmez (anonimde
+  // de, normalde de gizli kalır).
+  var replyAlias = 'complaintcaca+'+ref+'@gmail.com';
   var instSent = false;
   if(emailDraft && authorityEmail){
     var instBody = emailDraft + footer + privacyNotice;
@@ -3271,7 +3276,7 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
       authorityName,
       subject,
       instBody,
-      complaint.anonymous ? null : complaint.email
+      replyAlias
     );
   }
 
