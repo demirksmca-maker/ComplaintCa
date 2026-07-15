@@ -2849,6 +2849,7 @@ async function sendCyberConfirmationEmail(c){
     '- Ontario Provincial Police — Cyber Unit: opp.ca/cybercrime (Ontario residents)\n\n'+
     (c.priority==='high'?'If you are in immediate danger, call 911 now.\n\n':'')+
     'Keep this reference number — you can check its status anytime under "Track" on ComplaintCA.\n\n'+
+    'Your privacy: the details you submitted are stored only to let you track this report and are never shared without your consent. You can request deletion anytime.\n\n'+
     'ComplaintCA (complaintca.ca)';
   var sent=await sendBrevoEmail(c.email,c.name||'',  'Your ComplaintCA Reference — '+c.ref, body);
   var status=document.getElementById('cy-email-status');
@@ -3250,6 +3251,13 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
     ? ('Reference: '+ref+' | Filed anonymously via ComplaintCA')
     : ('Contact: '+(complaint.name||'—')+' <'+(complaint.email||'—')+'> | Reference: '+ref);
   var footer = '\n\n---\n'+contactLine+' | Date: '+date+'\nFiled via ComplaintCA (complaintca.ca)';
+  // Gizlilik-hakları notu — kuruma, şikayetçinin kişisel verisini yasaya uygun
+  // işlemesi gerektiğini hatırlatır. Uydurma yasa maddesi vermiyoruz; genel ve
+  // doğru bir ifade kullanıyoruz.
+  var privacyNotice = '\n\nPRIVACY NOTICE: The personal information in this complaint is provided solely to address this matter and should be handled in accordance with applicable Canadian privacy legislation. '
+    + (complaint.anonymous
+        ? 'The complainant has chosen to remain anonymous; no identifying contact information has been shared with you.'
+        : 'The complainant retains the right to access, correct, or request deletion of their personal information.');
   var subject = 'Formal Complaint — '+ref+' — '+complaint.title;
 
   // 1. Send formal email to INSTITUTION (asıl muhatap — öncelikli)
@@ -3257,7 +3265,7 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   // anonim şikayette email hiçbir şekilde kuruma görünmemeli (gizlilik sözü)
   var instSent = false;
   if(emailDraft && authorityEmail){
-    var instBody = emailDraft + footer;
+    var instBody = emailDraft + footer + privacyNotice;
     instSent = await sendBrevoEmail(
       authorityEmail,
       authorityName,
