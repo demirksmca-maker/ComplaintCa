@@ -2409,16 +2409,6 @@ let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 let _authRedirectTab=null;
 
 function showTab(tab){
-  if(tab==='new' && !JSON.parse(localStorage.getItem('cc_session')||'null')){
-    _authRedirectTab='new';
-    // Google girişi tüm sayfayı yeniden yükler (bu JS değişkenlerini sıfırlar), o yüzden
-    // yazılmış açıklamayı da yedekleyip Google dönüşünde geri yüklüyoruz.
-    try{
-      var _descNow=(document.getElementById('inp-desc')||{}).value||'';
-      sessionStorage.setItem('cc_authpending',JSON.stringify({tab:'new',desc:_descNow}));
-    }catch(e){}
-    showAuthModal();tab='track';setTimeout(function(){switchAuthTab('signup');},0);
-  }
   if(tab==='lawyerpanel' && !JSON.parse(localStorage.getItem('cc_session')||'null')){_authRedirectTab='lawyerpanel';showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
   if(tab==='lawyerpanel' && window._startLawyerPanelFeed) window._startLawyerPanelFeed();
   document.getElementById('view-verify').style.display=tab==='verify'?'':'none';
