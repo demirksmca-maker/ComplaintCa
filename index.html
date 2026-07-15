@@ -1966,7 +1966,7 @@ const V = (function(){
       l_mv_btn:"🏛️ Find My Representative",
       suc_save_note:"Save your reference number to track your complaint status in the <strong style=\"color:var(--text)\">\"Track My Complaint\"</strong> section.",
       suc_mv_btn:"🏛️ Forward to Representative",
-      feed_live:"LIVE FEED",feed_tab_title:"Recent Complaints",feed_tab_sub:"Real-time · Updating live",feed_new_btn:"+ File Complaint",feed_last10:"Showing last 10 complaints",
+      feed_live:"LIVE FEED",feed_tab_title:"Recent Complaints",feed_tab_sub:"Real-time · Updating live",feed_new_btn:"+ File Complaint",feed_last10:"Showing last 10 complaints",feed_private:"Complaints are kept private to protect the people who file them.",
       vfy_tab:"Verify",vfy_title:"Secure Document Verification Center",vfy_sub:"Upload your suspicious email or documents. Analysis happens on your device — no data is stored on the server.",
       vfy_drop_t:"Drag & Drop or Select a Document",vfy_drop_s:"PNG, JPG or PDF · Analysis powered by Claude AI",
       vfy_ai_title:"Asya & Claude AI Analysis Report",vfy_action_btn:"Request Confirmation from the Institution Under the Access to Information Act",
@@ -2045,7 +2045,7 @@ const V = (function(){
       l_mv_btn:"🏛️ Milletvekili Bul",
       suc_save_note:"Şikayet durumunuzu takip etmek için referans numaranızı <strong style=\"color:var(--text)\">\"Şikayetimi Takip Et\"</strong> bölümünde saklayın.",
       suc_mv_btn:"🏛️ Milletvekiline İlet",
-      feed_live:"CANLI AKIŞ",feed_tab_title:"Son Şikayetler",feed_tab_sub:"Gerçek zamanlı · Canlı güncelleniyor",feed_new_btn:"+ Şikayet Et",feed_last10:"Son 10 şikayet gösteriliyor",
+      feed_live:"CANLI AKIŞ",feed_tab_title:"Son Şikayetler",feed_tab_sub:"Gerçek zamanlı · Canlı güncelleniyor",feed_new_btn:"+ Şikayet Et",feed_last10:"Son 10 şikayet gösteriliyor",feed_private:"Şikayetler, bildiren kişileri korumak için gizli tutulur.",
       vfy_tab:"Doğrula",vfy_title:"Güvenli Belge Doğrulama Merkezi",vfy_sub:"Şüpheli e-posta veya belgelerinizi yükleyin. Analiz cihazınızda gerçekleşir, sunucuda hiçbir veri depolanmaz.",
       vfy_drop_t:"Belgeyi Buraya Sürükleyin veya Seçin",vfy_drop_s:"PNG, JPG veya PDF · Analiz Claude AI ile yapılır",
       vfy_ai_title:"Asya & Claude AI Analiz Raporu",vfy_action_btn:"Bilgi Edinme Hakkı Kanunu Kapsamında Kuruma Teyit Sor",
@@ -4368,16 +4368,18 @@ try{
       return html;
     }
 
-    // Feed tab (main, no footer needed) + Track tab widget (with footer)
+    // Şikayetler artık halka açık gösterilmiyor — bildirenlerin gizliliğini
+    // korumak için hem ana akış hem takip sekmesindeki liste kapatıldı, yerine
+    // kısa bir "gizli tutulur" mesajı konuyor. (Avukat paneli ayrı ve girişli.)
+    var privMsg='<div style="text-align:center;padding:40px 20px">'+
+      '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🔒</div>'+
+      '<div style="color:var(--text);font-size:.92rem;font-weight:700;margin-bottom:6px;max-width:34ch;margin-left:auto;margin-right:auto;line-height:1.5">'+V.t('feed_private')+'</div>'+
+      '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px;margin-top:14px">'+V.t('feed_new_btn')+'</button>'+
+    '</div>';
     var fbox=document.getElementById('public-complaint-feed');
-    if(fbox) fbox.innerHTML=renderFeedHTML(snapshot);
-
+    if(fbox) fbox.innerHTML=privMsg;
     var tbox=document.getElementById('trk-complaint-feed');
-    if(tbox){
-      var inner=renderFeedHTML(snapshot);
-      inner+='<div style="text-align:center;padding:8px 0;font-size:.68rem;color:var(--muted)">'+V.t('feed_footer')+'</div>';
-      tbox.innerHTML=inner;
-    }
+    if(tbox) tbox.innerHTML=privMsg;
   },function(err){
     var fbox=document.getElementById('public-complaint-feed');
     if(fbox) fbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
