@@ -847,16 +847,14 @@ textarea{resize:vertical;min-height:90px}
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
-              <div style="font-size:.82rem;color:var(--text);font-weight:600">TÜM YASAL SORUMLULUĞU KABUL EDİYORUM.</div>
+              <div id="legal-title-lbl" style="font-size:.82rem;color:var(--text);font-weight:600">I ACCEPT FULL LEGAL RESPONSIBILITY.</div>
               <div style="font-size:.72rem;color:var(--muted);margin-top:2px">
-                <span onclick="var d=document.getElementById('legal-details');d.style.display=(d.style.display==='none'?'block':'none');" style="color:var(--blue);text-decoration:underline;cursor:pointer">(Sözleşmeyi Gör)</span>
+                <span id="legal-see-lbl" onclick="var d=document.getElementById('legal-details');d.style.display=(d.style.display==='none'?'block':'none');" style="color:var(--blue);text-decoration:underline;cursor:pointer">(See Agreement)</span>
               </div>
             </div>
             <div class="tog" tabindex="0" role="button" id="legal-tog" onclick="toggleLegal(this)"></div>
           </div>
-          <div id="legal-details" style="display:none;margin-top:4px;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);font-size:.72rem;color:var(--sub);line-height:1.5;border-radius:8px">
-            Sunduğum bilgilerin doğruluğunu kabul eder, asılsız bildirim yapmadığımı taahhüt ederim. Platform yalnızca yer sağlayıcı bir aracıdır; doğabilecek tüm hukuki ve cezai sorumluluk tamamen şahsıma aittir.
-          </div>
+          <div id="legal-details" style="display:none;margin-top:4px;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);font-size:.72rem;color:var(--sub);line-height:1.5;border-radius:8px"></div>
         </div>
         <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenNew" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
@@ -1924,6 +1922,9 @@ const V = (function(){
       aib:"✨ Improve with AI",aiw:"Analyzing...",
       loc:"Location",med:"Evidence",mla:"Tap to add photos or videos",
       not:"By submitting, you confirm the information is accurate.",
+      legal_title:"I ACCEPT FULL LEGAL RESPONSIBILITY.",
+      legal_see:"(See Agreement)",
+      legal_body:"By submitting, I confirm the information I provide is accurate and that I am not filing a false or malicious report.<br><br>ComplaintCA is an intermediary platform, not a law firm. It provides tools and information — not legal advice or representation — and does not guarantee any outcome or resolution.<br><br>I understand my complaint is processed, including by automated and AI systems, solely to handle this matter. My personal information is never shared with a lawyer or any third party unless I explicitly choose to be contacted, and I may request deletion of my data at any time.<br><br>All legal and criminal responsibility arising from the content I submit is mine alone.",
       sub:"Submit Complaint",
       sut:"Complaint Submitted",sus:"Your complaint has been received.",sun:"Submit Another",
       tkt:"Track Your Complaint",tkb:"Track",tkr:"Recent Complaints",tke:"No complaints found.",
@@ -2003,6 +2004,9 @@ const V = (function(){
       aib:"✨ Yapay Zeka ile Geliştir",aiw:"Analiz ediliyor...",
       loc:"Konum",med:"Kanıt",mla:"Fotoğraf veya video ekleyin",
       not:"Gönderilerek bilgilerin doğru olduğunu onaylıyorsunuz.",
+      legal_title:"TÜM YASAL SORUMLULUĞU KABUL EDİYORUM.",
+      legal_see:"(Sözleşmeyi Gör)",
+      legal_body:"Gönderdiğim bilgilerin doğru olduğunu ve asılsız ya da kötü niyetli bir bildirim yapmadığımı kabul ederim.<br><br>ComplaintCA bir hukuk bürosu değil, aracı bir platformdur. Hukuki danışmanlık veya temsil değil, yalnızca araç ve bilgi sunar; herhangi bir sonuç ya da çözüm garanti etmez.<br><br>Şikayetimin, yalnızca bu meseleyi ele almak için otomatik ve yapay zeka sistemleri dahil işlendiğini anlıyorum. Kişisel bilgilerim, açıkça iletişim kurulmasını seçmediğim sürece hiçbir avukat veya üçüncü tarafla paylaşılmaz; verilerimin silinmesini istediğim zaman talep edebilirim.<br><br>Sunduğum içerikten doğabilecek tüm hukuki ve cezai sorumluluk tamamen bana aittir.",
       sub:"Şikayeti Gönder",
       sut:"Şikayet Gönderildi",sus:"Şikayetiniz alındı.",sun:"Yeni Şikayet",
       tkt:"Şikayetinizi Takip Edin",tkb:"Sorgula",tkr:"Son Şikayetler",tke:"Şikayet bulunamadı.",
@@ -2296,6 +2300,7 @@ const V = (function(){
       'a-comp':'cmp','a-ltitle':'ltl','a-ldesc':'ldc',
       'a-loc':'loc','a-media':'med','a-mlab':'mla',
       'a-note':'not','sub-btn':'sub','ai-btn':'aib',
+      'legal-title-lbl':'legal_title','legal-see-lbl':'legal_see','legal-details':'legal_body',
       'a-suct':'sut','a-sucs':'sus','a-sucn':'sun',
       'a-trkt':'tkt','a-trkb':'tkb',
       'lw-eyebrow':'lw_eyebrow','lw-title':'lw_title','lw-sub':'lw_sub',
