@@ -3699,10 +3699,15 @@ function renderDeadlineWarning(c){
   var remaining=withDeadline.deadlineDays-daysElapsed;
   if(remaining>14) return ''; // henüz uyarı gerekmiyor
   var urgent=remaining<=0;
+  // Yükseltme, süreyi tutan kuruma DEĞİL, bir üst mercie (ombudsman/escalation) gitmeli.
+  // Notunda "escalate" geçen veya süreli kurumdan farklı ilk kurumu seç; yoksa yine onu göster.
+  var escalateAuth=auths.find(function(a){return a!==withDeadline && /scalat/i.test(a.note||'');})
+    || auths.find(function(a){return a!==withDeadline;})
+    || withDeadline;
   return '<div style="margin-top:10px;padding:12px;border-radius:10px;background:'+(urgent?'rgba(240,87,106,.16)':'rgba(231,185,85,.16)')+';border:1.5px solid '+(urgent?'var(--red)':'var(--yellow)')+'">'+
     '<div style="font-size:.78rem;font-weight:700;color:'+(urgent?'#c8102e':'#f0cf8a')+'">'+
     (urgent?('⚠ '+V.t('deadline_passed')):('⏱ '+V.t('deadline_soon').replace('{n}',remaining)))+
-    '</div><div style="font-size:.72rem;color:'+(urgent?'#c8102e':'#f0cf8a')+';margin-top:4px">'+V.t('deadline_escalate').replace('{name}',withDeadline.name)+'</div></div>';
+    '</div><div style="font-size:.72rem;color:'+(urgent?'#c8102e':'#f0cf8a')+';margin-top:4px">'+V.t('deadline_escalate').replace('{name}',escalateAuth.name)+'</div></div>';
 }
 function renderManageBox(c){
   var safeRef=c.ref.replace(/[^A-Z0-9-]/g,'');
