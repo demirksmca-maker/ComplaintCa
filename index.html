@@ -4334,7 +4334,14 @@ try{
   window._fbReady=true;
 
   // ── LIVE FEED ──
-  const feedQ=query(collection(db,'complaints'),where('anonymous','==',true),orderBy('date','desc'),limit(20));
+  // GÜVENLİK: Halka açık akış artık şikayet göstermiyor (gizli mesaj basıyor).
+  // Eskiden bu sorgu TÜM anonim şikayetleri (isim/e-posta değil ama başlık,
+  // açıklama, konum) her ziyaretçinin tarayıcısına akıtıyordu — ekranda gizli
+  // olsa bile ağ üstünden gidiyordu. Sorguyu eşleşmeyen bir referansa çevirdik:
+  // callback yine bir kez çalışıp gizli mesajı basıyor, ama hiçbir şikayet
+  // verisi tarayıcıya indirilmiyor. (Veritabanı seviyesindeki tam koruma için
+  // Firestore okuma kuralı + referans-takibini sunucuya taşımak gerekir — ayrı iş.)
+  const feedQ=query(collection(db,'complaints'),where('ref','==','__public_feed_disabled__'),limit(1));
   onSnapshot(feedQ,function(snapshot){
     var catColors={noise:'#3b82f6',property:'#f97316',billing:'#8b5cf6',disc:'#c8102e',garbage:'#16a34a',safety:'#d97706',harassment:'#c8102e',wages:'#16a34a',general:'#1a4fa0'};
     var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
