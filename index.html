@@ -1924,6 +1924,8 @@ const V = (function(){
       not:"By submitting, you confirm the information is accurate.",
       notify_subj:"Your complaint status was updated — {ref}",
       notify_body:"Hi,\n\nThe status of your complaint {ref} is now: {status}.\n\nYou can check the full timeline anytime under \"Track\" on ComplaintCA.\n\nComplaintCA (complaintca.ca)",
+      conf_subj:"Your ComplaintCA reference — {ref}",
+      conf_body:"Hi,\n\nYour complaint has been received by ComplaintCA.\n\nReference: {ref}\nSubject: {title}\n\nKeep this reference number — you can check the status anytime under \"Track\" on ComplaintCA, and we'll email you whenever the status changes.\n\nComplaintCA (complaintca.ca)",
       legal_title:"I ACCEPT FULL LEGAL RESPONSIBILITY.",
       legal_see:"(See Agreement)",
       legal_body:"By submitting, I confirm the information I provide is accurate and that I am not filing a false or malicious report.<br><br>ComplaintCA is an intermediary platform, not a law firm. It provides tools and information — not legal advice or representation — and does not guarantee any outcome or resolution.<br><br>I understand my complaint is processed, including by automated and AI systems, solely to handle this matter. My personal information is never shared with a lawyer or any third party unless I explicitly choose to be contacted, and I may request deletion of my data at any time.<br><br>All legal and criminal responsibility arising from the content I submit is mine alone.",
@@ -2008,6 +2010,8 @@ const V = (function(){
       not:"Gönderilerek bilgilerin doğru olduğunu onaylıyorsunuz.",
       notify_subj:"Şikayetinizin durumu güncellendi — {ref}",
       notify_body:"Merhaba,\n\n{ref} numaralı şikayetinizin durumu şimdi: {status}.\n\nTüm süreci istediğin zaman ComplaintCA'da \"Takip\" bölümünden görebilirsin.\n\nComplaintCA (complaintca.ca)",
+      conf_subj:"ComplaintCA referansınız — {ref}",
+      conf_body:"Merhaba,\n\nŞikayetiniz ComplaintCA tarafından alındı.\n\nReferans: {ref}\nKonu: {title}\n\nBu referans numarasını saklayın — durumu istediğiniz zaman ComplaintCA'da \"Takip\" bölümünden görebilir, durum değiştiğinde e-posta alırsınız.\n\nComplaintCA (complaintca.ca)",
       legal_title:"TÜM YASAL SORUMLULUĞU KABUL EDİYORUM.",
       legal_see:"(Sözleşmeyi Gör)",
       legal_body:"Gönderdiğim bilgilerin doğru olduğunu ve asılsız ya da kötü niyetli bir bildirim yapmadığımı kabul ederim.<br><br>ComplaintCA bir hukuk bürosu değil, aracı bir platformdur. Hukuki danışmanlık veya temsil değil, yalnızca araç ve bilgi sunar; herhangi bir sonuç ya da çözüm garanti etmez.<br><br>Şikayetimin, yalnızca bu meseleyi ele almak için otomatik ve yapay zeka sistemleri dahil işlendiğini anlıyorum. Kişisel bilgilerim, açıkça iletişim kurulmasını seçmediğim sürece hiçbir avukat veya üçüncü tarafla paylaşılmaz; verilerimin silinmesini istediğim zaman talep edebilirim.<br><br>Sunduğum içerikten doğabilecek tüm hukuki ve cezai sorumluluk tamamen bana aittir.",
@@ -3491,6 +3495,16 @@ async function doSubmit(){
         if(attempt<3) await new Promise(function(r){setTimeout(r,800*attempt);});
       }
     }
+  }
+
+  // 2b. Onay e-postası — kişiye referans numarasını gönder (siberde vardı, artık normalde de).
+  //     E-posta anonimde bile alınıyor (doğrulama için); bu yüzden her gönderimde çalışır.
+  if(c.email){
+    try{
+      var _cSubj=V.t('conf_subj').replace('{ref}',c.ref);
+      var _cBody=V.t('conf_body').replace('{ref}',c.ref).replace('{title}',c.title||'');
+      sendBrevoEmail(c.email,c.name||'',_cSubj,_cBody).catch(function(){});
+    }catch(e){}
   }
 
   // 3. Send emails (non-blocking)
