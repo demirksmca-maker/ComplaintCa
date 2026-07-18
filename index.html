@@ -4339,7 +4339,15 @@ try{
   // and initializeAppCheck here, verify reCAPTCHA works on mobile, THEN flip
   // enforcement on in the Firebase console. Site key: 6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi
   const authInst=getAuth(app);
+  var _googleHandled=false;
   function _handleGoogleUser(user){
+    if(_googleHandled) return;              // run once per load, no matter which signal fires first
+    _googleHandled=true;
+    try{ sessionStorage.removeItem('cc_pending_google'); }catch(e){}
+    // Clear any leftover "Google sign-in failed" message — the sign-in succeeded.
+    ['login-status','signup-status'].forEach(function(id){
+      var s=document.getElementById(id); if(s){ s.style.display='none'; s.textContent=''; }
+    });
     var googleUser={name:user.displayName||user.email,email:user.email};
     if(typeof openMemberPanel==='function') openMemberPanel(googleUser.name,googleUser.email);
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
@@ -4354,6 +4362,9 @@ try{
                 (navigator.maxTouchPoints>1&&/Mac|Win|Linux/.test(navigator.platform||'')===false);
   window._fbGoogleSignIn=async function(){
     const provider=new GoogleAuthProvider();
+    // Mark that a Google sign-in is in flight so onAuthStateChanged can open the
+    // member panel on completion even if getRedirectResult throws a spurious error.
+    try{ sessionStorage.setItem('cc_pending_google','1'); }catch(e){}
     if(_isMobile){
       await signInWithRedirect(authInst,provider); // navigates away; result picked up by getRedirectResult on reload
       return;
@@ -4380,6 +4391,10 @@ try{
     if(!result||!result.user) return;
     _handleGoogleUser(result.user);
   }).catch(function(e){
+    // On some mobile browsers getRedirectResult throws auth/internal-error even
+    // though the sign-in actually succeeded — in that case a user IS present, so
+    // suppress the scary error and let onAuthStateChanged open the panel.
+    if(authInst.currentUser){ return; }
     var st=document.getElementById('login-status')||document.getElementById('signup-status');
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
   });
@@ -4396,6 +4411,13 @@ try{
   onAuthStateChanged(authInst,function(user){
     if(user){
       localStorage.setItem('cc_session',JSON.stringify({name:user.displayName||user.email,email:user.email}));
+      // If this fired as the completion of a Google sign-in we started (flag set
+      // just before the redirect/popup), drive the post-login UI from here — the
+      // reliable signal — instead of depending on getRedirectResult, which can
+      // throw on mobile even when auth succeeded.
+      var pendingGoogle=false;
+      try{ pendingGoogle=sessionStorage.getItem('cc_pending_google')==='1'; }catch(e){}
+      if(pendingGoogle) _handleGoogleUser(user);
     }else{
       localStorage.removeItem('cc_session');
     }
