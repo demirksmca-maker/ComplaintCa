@@ -4448,6 +4448,11 @@ try{
       var s=document.getElementById(id); if(s){ s.style.display='none'; s.textContent=''; }
     });
     var googleUser={name:user.displayName||user.email,email:user.email};
+    // Write cc_session synchronously — don't wait for the separate
+    // onAuthStateChanged listener, which can still be pending when we get here,
+    // leaving _applyAuthUI() below reading an empty session and showing the
+    // guest form right after a successful Google sign-in.
+    try{ localStorage.setItem('cc_session',JSON.stringify(googleUser)); }catch(e){}
     // Land on the inline signed-in view (Track > Sign In), which IS the user
     // panel now — no separate overlay to open.
     try{ if(typeof goApp==='function') goApp('track'); if(typeof switchAuthTab==='function') switchAuthTab('login'); }catch(e){}
