@@ -18,8 +18,10 @@
 </script>
 <script>(function(){try{if(localStorage.getItem('cc_theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <!-- Google Identity Services: native Google sign-in that works without third-party
-     storage (unlike Firebase's popup/redirect). Used with signInWithCredential. -->
-<script src="https://accounts.google.com/gsi/client" async></script>
+     storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
+     onerror flags when the script is blocked (ad-blocker / privacy filter) so the
+     UI can say so instead of hanging on "still loading". -->
+<script src="https://accounts.google.com/gsi/client" async onerror="window._gisLoadFailed=true"></script>
 <title>ComplaintCA — Canada's Complaint Platform</title>
 <meta name="description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered, anonymous, fully documented. Track your complaint, find a lawyer, report cyber crime, and verify suspicious documents.">
 <meta name="robots" content="index, follow">
@@ -4138,9 +4140,16 @@ async function doGoogleSignIn(btn){
     }
     if(st) st.style.display='none';
   }
-  // Wait briefly for the Google Identity Services library to finish loading.
-  for(var i=0;i<40 && !(window.google&&window.google.accounts&&window.google.accounts.id);i++){
+  // Wait for the Google Identity Services library to finish loading (up to ~12s),
+  // bailing out early if the browser blocked the script.
+  for(var i=0;i<80 && !(window.google&&window.google.accounts&&window.google.accounts.id) && !window._gisLoadFailed;i++){
     await new Promise(function(r){setTimeout(r,150);});
+  }
+  if(window._gisLoadFailed || !(window.google&&window.google.accounts&&window.google.accounts.id)){
+    if(btn) btn.style.opacity='1';
+    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';
+      st.textContent='Google sign-in couldn’t load — an ad-blocker or privacy filter is likely blocking accounts.google.com. Turn it off for this site, or sign in with email instead.';}
+    return;
   }
   try{
     if(btn) btn.style.opacity='0.6';
