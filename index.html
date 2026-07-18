@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#0f2952">
+<script>
+// Canonical-domain guard. Google sign-in (Firebase authorized domains, the
+// same-origin authDomain proxy) only works on complaintca.ca — NOT on Vercel's
+// *.vercel.app hostnames. If the app is opened on a vercel.app host (e.g. an
+// old installed PWA/shortcut), bounce to the real domain, preserving the path.
+(function(){try{
+  if(/\.vercel\.app$/i.test(location.hostname)){
+    location.replace('https://www.complaintca.ca'+location.pathname+location.search+location.hash);
+  }
+}catch(e){}})();
+</script>
 <script>(function(){try{if(localStorage.getItem('cc_theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <title>ComplaintCA — Canada's Complaint Platform</title>
 <meta name="description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered, anonymous, fully documented. Track your complaint, find a lawyer, report cyber crime, and verify suspicious documents.">
