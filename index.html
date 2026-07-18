@@ -4686,7 +4686,18 @@ try{
   // açıyor, o yüzden bu dinleyici ancak oturum varken kurulur (aksi halde
   // permission-denied ile hemen sonlanır ve giriş sonrası kendini yenilemez).
   var _lawyerFeedStarted=false;
+  // Reflects partner status right away — independent of whether the case data
+  // itself loads. Being a Partner Lawyer is about who's signed in, not whether
+  // Firestore happened to return results, so this must never wait on onSnapshot.
+  function _updatePartnerBadge(){
+    var isPartner=_isPartnerLawyer();
+    var badge=document.getElementById('lwp-partner-badge');
+    if(badge) badge.style.display=isPartner?'inline-flex':'none';
+    var partnerBox=document.getElementById('lwp-partner-box');
+    if(partnerBox) partnerBox.style.display=isPartner?'none':'';
+  }
   window._startLawyerPanelFeed=function(){
+    _updatePartnerBadge();
     if(_lawyerFeedStarted) return;
     _lawyerFeedStarted=true;
     var legalFeedQ=query(collection(db,'complaints'),where('isLegal','==',true),orderBy('date','desc'),limit(20));
@@ -4696,14 +4707,11 @@ try{
       var ledger=document.getElementById('lwp-ledger');
       var ledgerN=document.getElementById('lwp-ledger-n');
       if(ledger&&ledgerN){ ledgerN.textContent=snapshot.size; ledger.style.display=snapshot.empty?'none':'flex'; }
-      var isPartner=_isPartnerLawyer();
-      var badge=document.getElementById('lwp-partner-badge');
-      if(badge) badge.style.display=isPartner?'inline-flex':'none';
-      var partnerBox=document.getElementById('lwp-partner-box');
-      if(partnerBox) partnerBox.style.display=isPartner?'none':'';
+      _updatePartnerBadge();
     },function(err){
       var lpbox=document.getElementById('lawyer-panel-feed');
       if(lpbox) lpbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
+      _updatePartnerBadge(); // still reflect partner status even if the case data failed to load
     });
   };
 
