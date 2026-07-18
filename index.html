@@ -933,14 +933,23 @@ textarea{resize:vertical;min-height:90px}
 
       <!-- SIGN IN -->
       <div id="auth-panel-login" style="display:none">
-        <!-- Shown when the user IS signed in — compact account row. -->
-        <div id="login-signedin" style="display:none;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:16px">
-          <div style="width:36px;height:36px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#f5e49a,#c9a84c);display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-weight:700;color:#1a1400" id="li-signedin-avatar">?</div>
-          <div style="min-width:0;flex:1">
-            <div id="li-signedin-name" style="font-weight:700;color:var(--text);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
-            <div id="li-signedin-email" style="font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+        <!-- Shown when the user IS signed in — compact account row + a tiny
+             reference search (replaces the separate "Reference No." tab, which
+             is hidden while signed in — see _applyAuthUI). -->
+        <div id="login-signedin" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px">
+            <div style="width:36px;height:36px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#f5e49a,#c9a84c);display:flex;align-items:center;justify-content:center;font-family:Cinzel,serif;font-weight:700;color:#1a1400" id="li-signedin-avatar">?</div>
+            <div style="min-width:0;flex:1">
+              <div id="li-signedin-name" style="font-weight:700;color:var(--text);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+              <div id="li-signedin-email" style="font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+            </div>
+            <button onclick="doLogout()" id="li-logout-btn" style="flex-shrink:0;background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 12px;font-size:.72rem;font-weight:600;cursor:pointer">Çıkış</button>
           </div>
-          <button onclick="doLogout()" id="li-logout-btn" style="flex-shrink:0;background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 12px;font-size:.72rem;font-weight:600;cursor:pointer">Çıkış</button>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <input type="text" id="hs-trk-inp" placeholder="VC-2025-XXXXX" style="margin-bottom:0;flex:1;text-transform:uppercase;font-size:.8rem;padding:9px 12px">
+            <button onclick="doTrack('hs-trk-inp','hs-trk-result')" style="flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:0 14px;font-size:.78rem;font-weight:600;cursor:pointer">🔍</button>
+          </div>
+          <div id="hs-trk-result"></div>
         </div>
         <!-- Shown when the user is NOT signed in (the login form + Google). -->
         <div id="login-guest-block">
@@ -2476,6 +2485,10 @@ function showTab(tab){
   });
   var active=document.getElementById('tab-'+tab);
   if(active) active.classList.add('active');
+  if(tab==='track'){
+    var _sess=null; try{ _sess=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
+    if(_sess&&_sess.email) switchAuthTab('login'); // signed-in users land on Hesabım, not Reference No.
+  }
   if(tab==='track'||tab==='feed'||tab==='lawyerpanel'){renderRecent();loadPublicFeed();}
   if(tab==='lawyer'){_lwProv='on';_lwArea='tenant';renderLwResults();}
   if(!_suppressNavPush){
@@ -3722,9 +3735,9 @@ function resetForm(){
   newGoStep(1);
   window.scrollTo(0,0);
 }
-async function doTrack(){
-  const ref=document.getElementById('trk-inp').value.trim().toUpperCase();
-  const out=document.getElementById('trk-result');
+async function doTrack(inputId,outputId){
+  const ref=document.getElementById(inputId||'trk-inp').value.trim().toUpperCase();
+  const out=document.getElementById(outputId||'trk-result');
   out.innerHTML='<div class="empty">⏳ Searching...</div>';
   let found=null;
   if(window._fbTrack){try{found=await window._fbTrack(ref);}catch(e){}}
@@ -4103,21 +4116,26 @@ function _applyAuthUI(){
   var signed=document.getElementById('login-signedin');
   var uc=document.getElementById('user-complaints');
   var tabBtn=document.getElementById('auth-tab-login');
+  var refTabBtn=document.getElementById('auth-tab-ref');
   if(s&&s.email){
     if(guest) guest.style.display='none';
     if(signed){
-      signed.style.display='flex';
+      signed.style.display='';
       var n=document.getElementById('li-signedin-name'); if(n) n.textContent=s.name||s.email;
       var em=document.getElementById('li-signedin-email'); if(em) em.textContent=s.email;
       var av=document.getElementById('li-signedin-avatar'); if(av) av.textContent=(s.name||s.email||'?').charAt(0).toUpperCase();
     }
     if(tabBtn) tabBtn.textContent='Hesabım';   // signed in → this tab is the account/panel
+    // Signed-in users get one clean tab (Hesabım) with a mini reference search
+    // built in — the separate "Reference No." tab would be redundant clutter.
+    if(refTabBtn) refTabBtn.style.display='none';
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(s.email);
   }else{
     if(guest) guest.style.display='';
     if(signed) signed.style.display='none';
     if(uc) uc.style.display='none';
     if(tabBtn) tabBtn.textContent='Sign In';
+    if(refTabBtn) refTabBtn.style.display='';
   }
 }
 window._applyAuthUI=_applyAuthUI;
