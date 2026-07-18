@@ -2463,10 +2463,21 @@ let _authRedirectTab=null;
 function showTab(tab){
   // "feed" (nav tab, labelled Havuz) and "lawyerpanel" (reached via the lawyer-
   // referral CTA) both show the same Case Pool view — sign-in required either way.
-  if((tab==='lawyerpanel'||tab==='feed') && !JSON.parse(localStorage.getItem('cc_session')||'null')){_authRedirectTab=tab;showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
-  if((tab==='lawyerpanel'||tab==='feed') && window._startLawyerPanelFeed) window._startLawyerPanelFeed();
+  // Wrapped defensively: if ANYTHING here throws (bad localStorage JSON, a
+  // Firestore SDK hiccup, a missing element), it must NEVER stop the rest of
+  // showTab from running — otherwise the tab looks unresponsive (native tap
+  // highlight fires, but the view never actually switches).
+  try{
+    if((tab==='lawyerpanel'||tab==='feed') && !JSON.parse(localStorage.getItem('cc_session')||'null')){_authRedirectTab=tab;showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
+    if((tab==='lawyerpanel'||tab==='feed') && window._startLawyerPanelFeed) window._startLawyerPanelFeed();
+  }catch(e){
+    console.error('Pool tab setup failed (continuing to show the view anyway):',e);
+    // Self-heal: a corrupt cc_session value would keep throwing on every
+    // future click too (looking permanently "stuck"), so clear it once.
+    try{ JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e2){ try{ localStorage.removeItem('cc_session'); }catch(e3){} }
+  }
   document.getElementById('view-verify').style.display=tab==='verify'?'':'none';
-  if(tab==='new'){var _s=JSON.parse(localStorage.getItem('cc_session')||'null');if(_s){var _e=document.getElementById('inp-email');var _n=document.getElementById('inp-name');if(_e&&!_e.value)_e.value=_s.email||'';if(_n&&!_n.value)_n.value=_s.name||'';}}
+  if(tab==='new'){var _s=null;try{_s=JSON.parse(localStorage.getItem('cc_session')||'null');}catch(e){}if(_s){var _e=document.getElementById('inp-email');var _n=document.getElementById('inp-name');if(_e&&!_e.value)_e.value=_s.email||'';if(_n&&!_n.value)_n.value=_s.name||'';}}
   document.getElementById('view-new').style.display=tab==='new'?'':'none';
   document.getElementById('view-track').style.display=tab==='track'?'':'none';
   document.getElementById('view-lawyer').style.display=tab==='lawyer'?'':'none';
