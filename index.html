@@ -4354,33 +4354,29 @@ try{
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
   }
-  // Mobile browsers block/kill popups and often throw auth/internal-error when
-  // a popup is attempted, so on mobile we go straight to a full-page redirect.
-  // Desktop keeps the popup (nicer UX, immediate errors) with a redirect
-  // fallback for any popup-specific failure.
-  var _isMobile=/Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent||'')||
-                (navigator.maxTouchPoints>1&&/Mac|Win|Linux/.test(navigator.platform||'')===false);
+  // Use signInWithPopup on ALL devices — including mobile. signInWithRedirect
+  // fails in storage-partitioned browsers (modern mobile Chrome/Safari) with
+  // "missing initial state", because the state saved before the redirect is no
+  // longer readable on return. Firebase's own guidance for that scenario is to
+  // use the popup flow, which keeps everything in one browsing context. This
+  // works now that authDomain is same-origin (complaintca.ca via the reverse
+  // proxy) and the SDK is self-hosted — the conditions that previously made the
+  // popup throw internal-error are gone. Redirect stays only as a last resort
+  // for the rare browser that can't open a popup at all.
   window._fbGoogleSignIn=async function(){
     const provider=new GoogleAuthProvider();
     // Mark that a Google sign-in is in flight so onAuthStateChanged can open the
-    // member panel on completion even if getRedirectResult throws a spurious error.
+    // member panel on completion even if the promise path throws a spurious error.
     try{ sessionStorage.setItem('cc_pending_google','1'); }catch(e){}
-    if(_isMobile){
-      await signInWithRedirect(authInst,provider); // navigates away; result picked up by getRedirectResult on reload
-      return;
-    }
     try{
       const result=await signInWithPopup(authInst,provider);
       if(result&&result.user) _handleGoogleUser(result.user);
       return;
     }catch(e){
       var code=e&&e.code||'';
-      // Any popup-usability failure → retry via redirect. (Popup-closed is the
-      // one case we don't retry, since the user actively dismissed it.)
-      if(code==='auth/popup-closed-by-user') throw e;
-      if(code==='auth/popup-blocked'||code==='auth/cancelled-popup-request'||
-         code==='auth/operation-not-supported-in-this-environment'||
-         code==='auth/internal-error'||code==='auth/web-storage-unsupported'){
+      if(code==='auth/popup-closed-by-user'||code==='auth/cancelled-popup-request') throw e; // user dismissed it
+      // Only fall back to redirect when a popup genuinely can't be opened.
+      if(code==='auth/popup-blocked'||code==='auth/operation-not-supported-in-this-environment'){
         await signInWithRedirect(authInst,provider);
         return;
       }
