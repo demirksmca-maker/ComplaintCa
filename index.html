@@ -4131,13 +4131,22 @@ async function doGoogleSignIn(btn){
   }
   try{
     if(btn) btn.style.opacity='0.6';
-    // Redirects the whole page to Google's consent screen (more reliable than a
-    // popup on mobile browsers, which routinely block or silently kill popups).
-    // Execution doesn't continue past this — the result is picked up by
-    // getRedirectResult() on next page load, see the Firebase init block below.
+    if(st){st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Opening Google sign-in…';}
+    // Tries a popup first; on mobile browsers that block popups it falls back to
+    // a full-page redirect (in which case execution stops here and the result is
+    // picked up by getRedirectResult() on reload). On popup success it returns
+    // and _handleGoogleUser has already opened the member panel.
     await window._fbGoogleSignIn();
+    if(st) st.style.display='none';
+    if(btn) btn.style.opacity='1';
   }catch(e){
-    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
+    var code=e&&e.code||'';
+    var msg=code==='auth/unauthorized-domain'
+      ? 'This site is not yet authorized for Google sign-in. (Add this domain in Firebase → Authentication → Settings → Authorized domains.)'
+      : code==='auth/popup-closed-by-user'
+      ? 'Sign-in window was closed before finishing.'
+      : 'Google sign-in failed: '+(code||e&&e.message||'unknown error');
+    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent=msg;}
     if(btn) btn.style.opacity='1';
   }
 }
@@ -4291,7 +4300,7 @@ function _waitForAuthReady(timeoutMs){
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-  import{getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import{getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
   import{initializeAppCheck,ReCaptchaV3Provider}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app-check.js";
 try{
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
@@ -4308,16 +4317,39 @@ try{
   }
 
   const authInst=getAuth(app);
-  window._fbGoogleSignIn=async function(){
-    const provider=new GoogleAuthProvider();
-    await signInWithRedirect(authInst,provider);
-  };
-  getRedirectResult(authInst).then(function(result){
-    if(!result||!result.user) return;
-    var googleUser={name:result.user.displayName||result.user.email,email:result.user.email};
+  function _handleGoogleUser(user){
+    var googleUser={name:user.displayName||user.email,email:user.email};
     if(typeof openMemberPanel==='function') openMemberPanel(googleUser.name,googleUser.email);
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
+    if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
+  }
+  // Popup first (returns a clear result and surfaces real errors immediately);
+  // only fall back to a full-page redirect when the popup can't run — e.g. a
+  // mobile browser that blocks or kills popups. This makes silent "nothing
+  // happens" failures impossible: either we sign in, redirect, or show why.
+  window._fbGoogleSignIn=async function(){
+    const provider=new GoogleAuthProvider();
+    try{
+      const result=await signInWithPopup(authInst,provider);
+      if(result&&result.user) _handleGoogleUser(result.user);
+      return;
+    }catch(e){
+      var code=e&&e.code||'';
+      // These mean "popup isn't usable here" — retry via redirect.
+      if(code==='auth/popup-blocked'||code==='auth/cancelled-popup-request'||
+         code==='auth/operation-not-supported-in-this-environment'||
+         code==='auth/popup-closed-by-user'){
+        if(code==='auth/popup-closed-by-user') throw e; // user actively closed it — don't loop
+        await signInWithRedirect(authInst,provider);
+        return;
+      }
+      throw e; // real error (e.g. auth/unauthorized-domain) — let caller show it
+    }
+  };
+  getRedirectResult(authInst).then(function(result){
+    if(!result||!result.user) return;
+    _handleGoogleUser(result.user);
   }).catch(function(e){
     var st=document.getElementById('login-status')||document.getElementById('signup-status');
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
