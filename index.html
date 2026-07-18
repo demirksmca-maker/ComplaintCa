@@ -4326,14 +4326,13 @@ function _authNotReadyReason(){
 // networks that couldn't reliably reach gstatic. Rebuild: see vendor/README.
 import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
 try{
-  // Serve Firebase Auth's helper (/__/auth/*) from our OWN domain via the Vercel
-  // reverse-proxy (see vercel.json rewrites), so the OAuth iframe/handler is
-  // same-origin with the app. This avoids the cross-domain third-party-storage
-  // blocking that broke Google sign-in on mobile browsers. Fall back to the
-  // default firebaseapp.com domain on previews/localhost where the proxy isn't set.
-  var _fbAuthDomain=(location.hostname==='complaintca.ca'||location.hostname==='www.complaintca.ca')
-    ? location.hostname : 'ajan-d6070.firebaseapp.com';
-  const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:_fbAuthDomain,projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
+  // Standard Firebase auth domain. We use signInWithPopup (below), which is
+  // Firebase's recommended flow for storage-partitioned mobile browsers and
+  // works with the default authDomain — no reverse proxy needed. (A custom
+  // same-origin authDomain via Vercel rewrite was tried but the external
+  // rewrite forwarded the wrong Host to the Firebase handler, breaking the
+  // OAuth postMessage handshake with auth/internal-error.)
+  const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
 
   // ── App Check (bot/abuse protection for Firestore & Auth) ──
@@ -4394,17 +4393,15 @@ try{
       throw e; // genuine config error (e.g. auth/unauthorized-domain) — surface it
     }
   };
+  // We sign in with popup, not redirect — but a returning user may still carry
+  // leftover pending-redirect state from earlier attempts. Process it if it
+  // yields a user; otherwise stay silent. Never surface getRedirectResult errors
+  // in the UI: they are stale-state/storage-partition noise (internal-error,
+  // missing initial state) that the user can't act on and that scared people
+  // into thinking sign-in was broken. onAuthStateChanged drives the real UI.
   getRedirectResult(authInst).then(function(result){
-    if(!result||!result.user) return;
-    _handleGoogleUser(result.user);
-  }).catch(function(e){
-    // On some mobile browsers getRedirectResult throws auth/internal-error even
-    // though the sign-in actually succeeded — in that case a user IS present, so
-    // suppress the scary error and let onAuthStateChanged open the panel.
-    if(authInst.currentUser){ return; }
-    var st=document.getElementById('login-status')||document.getElementById('signup-status');
-    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
-  });
+    if(result&&result.user) _handleGoogleUser(result.user);
+  }).catch(function(e){ console.warn('getRedirectResult (ignored):',e&&(e.code||e.message)); });
   window._fbSignUp=async function(name,email,pass){
     const cred=await createUserWithEmailAndPassword(authInst,email,pass);
     await updateProfile(cred.user,{displayName:name});

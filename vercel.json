@@ -1,8 +1,6 @@
 {
   "rewrites": [
-    { "source": "/.netlify/functions/claude-proxy", "destination": "/api/claude-proxy" },
-    { "source": "/__/auth/:path*", "destination": "https://ajan-d6070.firebaseapp.com/__/auth/:path*" },
-    { "source": "/__/firebase/:path*", "destination": "https://ajan-d6070.firebaseapp.com/__/firebase/:path*" }
+    { "source": "/.netlify/functions/claude-proxy", "destination": "/api/claude-proxy" }
   ],
   "headers": [
     {
