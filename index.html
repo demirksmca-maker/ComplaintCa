@@ -5081,7 +5081,9 @@ function goToLogin(){closeAuthModal();document.getElementById('view-track').styl
 </div>
 
 <script>
+var _mpName='', _mpEmail='';
 async function openMemberPanel(name, email){
+  _mpName=name; _mpEmail=email;
   document.getElementById('mp-name').textContent=name;
   document.getElementById('mp-email').textContent=email;
   document.getElementById('mp-profile-name').textContent=name;
@@ -5101,11 +5103,22 @@ async function openMemberPanel(name, email){
   document.getElementById('mp-stat-total').textContent=myComplaints.length;
   if(list){
     if(myComplaints.length){
-      list.innerHTML=myComplaints.map(function(c){return renderCard(c);}).join('');
+      list.innerHTML=myComplaints.map(function(c){
+        return '<div style="margin-bottom:14px">'+renderCard(c)+
+          '<button onclick="_deleteMyComplaint(\''+c.ref+'\')" style="width:100%;margin-top:6px;background:rgba(240,87,106,.12);color:var(--red);border:1px solid rgba(240,87,106,.3);border-radius:8px;padding:9px;font-size:.72rem;font-weight:600;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer">🗑 Sil</button></div>';
+      }).join('');
     }else{
       list.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
     }
   }
+}
+// Lets a signed-in user delete their own complaint (ref + their email must match,
+// enforced server-side by _fbDelete). Confirms first, then reloads the panel.
+async function _deleteMyComplaint(ref){
+  if(!confirm('Şikayet '+ref+' silinsin mi? Bu işlem geri alınamaz.')) return;
+  try{ if(window._fbDelete){ await window._fbDelete(ref,_mpEmail); } }catch(e){}
+  try{ _complaints=_complaints.filter(function(c){return c.ref!==ref;}); localStorage.setItem('vc_comp',JSON.stringify(_complaints)); }catch(e){}
+  openMemberPanel(_mpName,_mpEmail); // reload list + count
 }
 function closeMemberPanel(){
   document.getElementById('mp-overlay').classList.remove('show');
