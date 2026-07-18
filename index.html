@@ -4095,7 +4095,12 @@ async function doSignup(){
   var st=document.getElementById('signup-status');
   if(!name||!email||!pass){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
   if(pass.length<6){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Password must be at least 6 characters.';return;}
-  if(!window._fbSignUp){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-up is still loading, please try again in a moment.';return;}
+  if(!window._fbSignUp){
+    st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';
+    var ready=await _waitForAuthReady(8000);
+    if(!ready||!window._fbSignUp){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-up is still loading, please try again in a moment.';return;}
+    st.style.display='none';
+  }
   try{
     var user=await window._fbSignUp(name,email,pass);
     st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';
@@ -4116,8 +4121,13 @@ async function doGoogleSignIn(btn){
   var isSignup=btn&&btn.id==='google-su-btn';
   var st=document.getElementById(isSignup?'signup-status':'login-status');
   if(!window._fbGoogleSignIn){
-    if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in is still loading, please try again in a moment.';}
-    return;
+    if(st){st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';}
+    var ready=await _waitForAuthReady(8000);
+    if(!ready||!window._fbGoogleSignIn){
+      if(st){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in is still loading, please try again in a moment.';}
+      return;
+    }
+    if(st) st.style.display='none';
   }
   try{
     if(btn) btn.style.opacity='0.6';
@@ -4136,7 +4146,12 @@ async function doLogin(){
   var pass=document.getElementById('li-pass').value;
   var st=document.getElementById('login-status');
   if(!email||!pass){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
-  if(!window._fbSignIn){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-in is still loading, please try again in a moment.';return;}
+  if(!window._fbSignIn){
+    st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';
+    var ready=await _waitForAuthReady(8000);
+    if(!ready||!window._fbSignIn){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-in is still loading, please try again in a moment.';return;}
+    st.style.display='none';
+  }
   try{
     var user=await window._fbSignIn(email,pass);
     st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';
@@ -4262,6 +4277,17 @@ function _handleGuidePrefill(){
 }
 </script>
 
+<script>
+window._fbReadyPromise=new Promise(function(resolve,reject){window.__fbResolveReady=resolve;window.__fbRejectReady=reject;});
+function _waitForAuthReady(timeoutMs){
+  if(window._fbGoogleSignIn) return Promise.resolve(true);
+  return Promise.race([
+    window._fbReadyPromise.then(function(){return true;}).catch(function(){return false;}),
+    new Promise(function(resolve){setTimeout(function(){resolve(false);},timeoutMs);})
+  ]);
+}
+</script>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
@@ -4334,6 +4360,7 @@ try{
     return true;
   };
   window._fbReady=true;
+  if(window.__fbResolveReady) window.__fbResolveReady();
 
   // ── LIVE FEED ──
   // GÜVENLİK: Halka açık akış artık şikayet göstermiyor (gizli mesaj basıyor).
@@ -4464,6 +4491,7 @@ try{
 
 }catch(e){
   window._fbReady=false;
+  if(window.__fbRejectReady) window.__fbRejectReady(e);
   console.warn('Firebase init failed:',e);
 }
 </script>
