@@ -939,7 +939,6 @@ textarea{resize:vertical;min-height:90px}
           <div class="ct"><div class="ci">👤</div><span id="li-si-title">Signed in</span></div>
           <div id="li-signedin-name" style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:2px"></div>
           <div id="li-signedin-email" style="font-size:.8rem;color:var(--muted);margin-bottom:14px"></div>
-          <button onclick="_openMyPanel()" class="sbtn" id="li-open-panel" style="margin-bottom:8px">My Panel</button>
           <button onclick="doLogout()" id="li-logout-btn" style="width:100%;background:rgba(240,87,106,.14);color:var(--red);border:1px solid rgba(240,87,106,.3);border-radius:8px;padding:11px;font-size:.8rem;font-weight:600;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer">Sign Out</button>
         </div>
         <!-- Shown when the user is NOT signed in (the login form + Google). -->
@@ -4110,21 +4109,28 @@ function _applyAuthUI(){
     if(uc) uc.style.display='none';
   }
 }
-function _openMyPanel(){
-  var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
-  if(s&&s.email&&typeof openMemberPanel==='function') openMemberPanel(s.name||s.email,s.email);
-}
 window._applyAuthUI=_applyAuthUI;
-function _renderMyComplaints(email){
-  var myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;});
+// A complaint card + a Delete button, used everywhere the signed-in user sees
+// their own complaints (inline Sign In tab AND the member overlay).
+function _complaintCardWithDelete(c){
+  return '<div style="margin-bottom:14px">'+renderCard(c)+
+    '<button onclick="_deleteMyComplaint(\''+c.ref+'\')" style="width:100%;margin-top:6px;background:rgba(240,87,106,.12);color:var(--red);border:1px solid rgba(240,87,106,.3);border-radius:8px;padding:9px;font-size:.72rem;font-weight:600;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer">🗑 Sil</button></div>';
+}
+// Loads the signed-in user's complaints from Firestore (the source of truth —
+// not just the local device), so the inline list matches the overlay panel.
+async function _renderMyComplaints(email){
   var uc=document.getElementById('user-complaints');
   var ul=document.getElementById('user-complaint-list');
-  if(uc&&ul){
-    uc.style.display='block';
-    ul.innerHTML=myComplaints.length
-      ? myComplaints.map(function(c){return renderCard(c);}).join('')
-      : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-  }
+  if(!uc||!ul) return;
+  _mpEmail=email;
+  uc.style.display='block';
+  ul.innerHTML='<div class="empty" style="padding:20px">Loading…</div>';
+  var myComplaints=[];
+  try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
+  if(!myComplaints.length){ myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;}); }
+  ul.innerHTML=myComplaints.length
+    ? myComplaints.map(_complaintCardWithDelete).join('')
+    : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
 }
 function _authErrorMessage(e){
   switch(e&&e.code){
@@ -4413,8 +4419,10 @@ try{
       var s=document.getElementById(id); if(s){ s.style.display='none'; s.textContent=''; }
     });
     var googleUser={name:user.displayName||user.email,email:user.email};
-    if(typeof openMemberPanel==='function') openMemberPanel(googleUser.name,googleUser.email);
-    if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
+    // Land on the inline signed-in view (Track > Sign In), which IS the user
+    // panel now — no separate overlay to open.
+    try{ if(typeof goApp==='function') goApp('track'); if(typeof switchAuthTab==='function') switchAuthTab('login'); }catch(e){}
+    if(typeof _applyAuthUI==='function') _applyAuthUI();
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
   }
@@ -5102,23 +5110,18 @@ async function openMemberPanel(name, email){
   try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
   document.getElementById('mp-stat-total').textContent=myComplaints.length;
   if(list){
-    if(myComplaints.length){
-      list.innerHTML=myComplaints.map(function(c){
-        return '<div style="margin-bottom:14px">'+renderCard(c)+
-          '<button onclick="_deleteMyComplaint(\''+c.ref+'\')" style="width:100%;margin-top:6px;background:rgba(240,87,106,.12);color:var(--red);border:1px solid rgba(240,87,106,.3);border-radius:8px;padding:9px;font-size:.72rem;font-weight:600;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;cursor:pointer">🗑 Sil</button></div>';
-      }).join('');
-    }else{
-      list.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-    }
+    list.innerHTML=myComplaints.length
+      ? myComplaints.map(_complaintCardWithDelete).join('')
+      : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
   }
 }
 // Lets a signed-in user delete their own complaint (ref + their email must match,
-// enforced server-side by _fbDelete). Confirms first, then reloads the panel.
+// enforced server-side by _fbDelete). Confirms first, then refreshes the list.
 async function _deleteMyComplaint(ref){
   if(!confirm('Şikayet '+ref+' silinsin mi? Bu işlem geri alınamaz.')) return;
   try{ if(window._fbDelete){ await window._fbDelete(ref,_mpEmail); } }catch(e){}
   try{ _complaints=_complaints.filter(function(c){return c.ref!==ref;}); localStorage.setItem('vc_comp',JSON.stringify(_complaints)); }catch(e){}
-  openMemberPanel(_mpName,_mpEmail); // reload list + count
+  if(typeof _renderMyComplaints==='function') _renderMyComplaints(_mpEmail); // refresh inline list
 }
 function closeMemberPanel(){
   document.getElementById('mp-overlay').classList.remove('show');
