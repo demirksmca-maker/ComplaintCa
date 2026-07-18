@@ -4331,27 +4331,34 @@ try{
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
   }
-  // Popup first (returns a clear result and surfaces real errors immediately);
-  // only fall back to a full-page redirect when the popup can't run — e.g. a
-  // mobile browser that blocks or kills popups. This makes silent "nothing
-  // happens" failures impossible: either we sign in, redirect, or show why.
+  // Mobile browsers block/kill popups and often throw auth/internal-error when
+  // a popup is attempted, so on mobile we go straight to a full-page redirect.
+  // Desktop keeps the popup (nicer UX, immediate errors) with a redirect
+  // fallback for any popup-specific failure.
+  var _isMobile=/Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent||'')||
+                (navigator.maxTouchPoints>1&&/Mac|Win|Linux/.test(navigator.platform||'')===false);
   window._fbGoogleSignIn=async function(){
     const provider=new GoogleAuthProvider();
+    if(_isMobile){
+      await signInWithRedirect(authInst,provider); // navigates away; result picked up by getRedirectResult on reload
+      return;
+    }
     try{
       const result=await signInWithPopup(authInst,provider);
       if(result&&result.user) _handleGoogleUser(result.user);
       return;
     }catch(e){
       var code=e&&e.code||'';
-      // These mean "popup isn't usable here" — retry via redirect.
+      // Any popup-usability failure → retry via redirect. (Popup-closed is the
+      // one case we don't retry, since the user actively dismissed it.)
+      if(code==='auth/popup-closed-by-user') throw e;
       if(code==='auth/popup-blocked'||code==='auth/cancelled-popup-request'||
          code==='auth/operation-not-supported-in-this-environment'||
-         code==='auth/popup-closed-by-user'){
-        if(code==='auth/popup-closed-by-user') throw e; // user actively closed it — don't loop
+         code==='auth/internal-error'||code==='auth/web-storage-unsupported'){
         await signInWithRedirect(authInst,provider);
         return;
       }
-      throw e; // real error (e.g. auth/unauthorized-domain) — let caller show it
+      throw e; // genuine config error (e.g. auth/unauthorized-domain) — surface it
     }
   };
   getRedirectResult(authInst).then(function(result){
