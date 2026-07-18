@@ -4317,7 +4317,6 @@ function _authNotReadyReason(){
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
   import{getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-  import{initializeAppCheck,ReCaptchaV3Provider}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app-check.js";
 try{
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
@@ -4327,18 +4326,14 @@ try{
   // Still running in "unenforced" mode until Enforce is flipped on for
   // Firestore/Auth in that same console (after confirming real traffic
   // passes) — see SECURITY.md.
-  // Isolated in its own try/catch: if reCAPTCHA/App Check fails to init (which
-  // happens on some mobile browsers), it must NOT take down the rest of the
-  // Firebase setup — otherwise sign-in functions never get defined and the UI
-  // is stuck on "still loading". App Check is enforced server-side by rules, so
-  // a client-side init failure here degrades gracefully.
-  const APP_CHECK_SITE_KEY='6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi';
-  if(APP_CHECK_SITE_KEY){
-    try{
-      initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
-    }catch(ace){console.warn('App Check init failed (non-fatal):',ace);}
-  }
-
+  // App Check (reCAPTCHA v3) is intentionally NOT initialized on the client
+  // right now: it is in "Monitoring" (un-enforced) mode server-side, and on
+  // mobile browsers the reCAPTCHA load both slowed Firebase startup (causing
+  // "did not finish loading" timeouts) and interfered with the auth network
+  // request (auth/network-request-failed). Removing it is a no-op for security
+  // while un-enforced. To re-enable later: re-add the firebase-app-check import
+  // and initializeAppCheck here, verify reCAPTCHA works on mobile, THEN flip
+  // enforcement on in the Firebase console. Site key: 6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi
   const authInst=getAuth(app);
   function _handleGoogleUser(user){
     var googleUser={name:user.displayName||user.email,email:user.email};
