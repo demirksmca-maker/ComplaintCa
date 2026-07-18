@@ -4311,9 +4311,16 @@ try{
   // Still running in "unenforced" mode until Enforce is flipped on for
   // Firestore/Auth in that same console (after confirming real traffic
   // passes) — see SECURITY.md.
+  // Isolated in its own try/catch: if reCAPTCHA/App Check fails to init (which
+  // happens on some mobile browsers), it must NOT take down the rest of the
+  // Firebase setup — otherwise sign-in functions never get defined and the UI
+  // is stuck on "still loading". App Check is enforced server-side by rules, so
+  // a client-side init failure here degrades gracefully.
   const APP_CHECK_SITE_KEY='6LdM308tAAAAAOlsX4BXsKu96LamCZkpjq0VwAAi';
   if(APP_CHECK_SITE_KEY){
-    initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+    try{
+      initializeAppCheck(app,{provider:new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),isTokenAutoRefreshEnabled:true});
+    }catch(ace){console.warn('App Check init failed (non-fatal):',ace);}
   }
 
   const authInst=getAuth(app);
