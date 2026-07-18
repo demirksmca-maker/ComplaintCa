@@ -4888,7 +4888,7 @@ function _restoreAfterGoogleRedirect(){
 function goToLogin(){closeAuthModal();document.getElementById('view-track').style.display='';switchAuthTab('signup');}
 </script> <!-- ================= ÜYE PANELİ (COMPLAINTCA) ================= -->
 <style>
-.mp-overlay{display:none;position:fixed;inset:0;background:#eef2f9;z-index:99999;overflow-y:auto}
+.mp-overlay{display:none;position:fixed;inset:0;background:var(--page-bg,#eef2f9);z-index:99999;overflow-y:auto}
 .mp-overlay.show{display:block}
 .mp-header{background:linear-gradient(160deg,#0f2952 0%,#163a7a 55%,#1a4fa0 100%);padding:20px 20px 60px;color:#fff;position:relative}
 .mp-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;z-index:2}
@@ -4988,18 +4988,24 @@ async function openMemberPanel(name, email){
   document.getElementById('mp-profile-email').textContent=email;
   document.getElementById('mp-avatar').textContent=(name||'?').charAt(0).toUpperCase();
 
-  var myComplaints=[];
-try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
-  document.getElementById('mp-stat-total').textContent=myComplaints.length;
-
+  // Show the panel IMMEDIATELY — never block on the Firestore query. Otherwise a
+  // slow/hanging network request after Google sign-in leaves the user staring at
+  // a frozen screen with no panel. Complaints load in the background and fill in.
   var list=document.getElementById('mp-complaint-list');
-  if(myComplaints.length){
-    list.innerHTML=myComplaints.map(function(c){return renderCard(c);}).join('');
-  }else{
-    list.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-  }
-
+  document.getElementById('mp-stat-total').textContent='…';
+  if(list) list.innerHTML='<div class="empty" style="padding:20px">Loading…</div>';
   document.getElementById('mp-overlay').classList.add('show');
+
+  var myComplaints=[];
+  try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
+  document.getElementById('mp-stat-total').textContent=myComplaints.length;
+  if(list){
+    if(myComplaints.length){
+      list.innerHTML=myComplaints.map(function(c){return renderCard(c);}).join('');
+    }else{
+      list.innerHTML='<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
+    }
+  }
 }
 function closeMemberPanel(){
   document.getElementById('mp-overlay').classList.remove('show');
