@@ -4424,14 +4424,11 @@ function _authNotReadyReason(){
 // of gstatic.com. This removes the external CDN from the critical path — the
 // cause of intermittent "Firebase did not finish loading" timeouts on mobile
 // networks that couldn't reliably reach gstatic. Rebuild: see vendor/README.
-import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithCredential,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
+import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithCredential,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
 try{
-  // Standard Firebase auth domain. We use signInWithPopup (below), which is
-  // Firebase's recommended flow for storage-partitioned mobile browsers and
-  // works with the default authDomain — no reverse proxy needed. (A custom
-  // same-origin authDomain via Vercel rewrite was tried but the external
-  // rewrite forwarded the wrong Host to the Firebase handler, breaking the
-  // OAuth postMessage handshake with auth/internal-error.)
+  // Standard Firebase auth domain. Google sign-in goes through Google Identity
+  // Services + signInWithCredential (see _fbGoogleSignIn below) — no popup,
+  // redirect, or reverse proxy involved, so the default authDomain is fine.
   const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
 
@@ -4468,11 +4465,10 @@ try{
     // panel now — no separate overlay to open.
     try{ if(typeof goApp==='function') goApp('track'); if(typeof switchAuthTab==='function') switchAuthTab('login'); }catch(e){}
     if(typeof _applyAuthUI==='function') _applyAuthUI();
-    if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
   }
   // Google sign-in via Google Identity Services (GIS) + signInWithCredential.
-  // Firebase's own signInWithPopup/signInWithRedirect both need cross-origin
+  // Firebase's own signInWithPopup/signInWithRedirect both needed cross-origin
   // storage on the firebaseapp.com auth domain, which storage-partitioned mobile
   // browsers block → auth/internal-error / "missing initial state". GIS is
   // Google's library built for the no-third-party-cookie world: it returns a
@@ -4519,15 +4515,6 @@ try{
     document.getElementById('gis-cancel').onclick=function(){ov.remove();};
     google.accounts.id.renderButton(document.getElementById('gis-btn'),{theme:'filled_blue',size:'large',text:'continue_with',shape:'pill'});
   }
-  // We sign in with popup, not redirect — but a returning user may still carry
-  // leftover pending-redirect state from earlier attempts. Process it if it
-  // yields a user; otherwise stay silent. Never surface getRedirectResult errors
-  // in the UI: they are stale-state/storage-partition noise (internal-error,
-  // missing initial state) that the user can't act on and that scared people
-  // into thinking sign-in was broken. onAuthStateChanged drives the real UI.
-  getRedirectResult(authInst).then(function(result){
-    if(result&&result.user) _handleGoogleUser(result.user);
-  }).catch(function(e){ console.warn('getRedirectResult (ignored):',e&&(e.code||e.message)); });
   window._fbSignUp=async function(name,email,pass){
     const cred=await createUserWithEmailAndPassword(authInst,email,pass);
     await updateProfile(cred.user,{displayName:name});
@@ -5057,144 +5044,10 @@ function _continueAfterAuth(){
     goApp(t);
   }
 }
-// Google girişi (signInWithRedirect) sayfayı yeniden yükler — bu yüzden başarılı
-// dönüşte sessionStorage'daki bekleyen niyeti (hangi sekme + yazılmış açıklama) okuyup geri yükleriz.
-function _restoreAfterGoogleRedirect(){
-  try{
-    var pending=JSON.parse(sessionStorage.getItem('cc_authpending')||'null');
-    if(!pending) return;
-    sessionStorage.removeItem('cc_authpending');
-    document.getElementById('authModalOverlay').classList.remove('open');
-    goApp(pending.tab);
-    if(pending.tab==='new' && pending.desc){
-      newGoStep(1);
-      var d=document.getElementById('inp-desc');
-      if(d){d.value=pending.desc;if(typeof updateCC==='function')updateCC();if(typeof catAIDebounce==='function')catAIDebounce();}
-    }
-  }catch(e){}
-}
 function goToLogin(){closeAuthModal();document.getElementById('view-track').style.display='';switchAuthTab('signup');}
-</script> <!-- ================= ÜYE PANELİ (COMPLAINTCA) ================= -->
-<style>
-.mp-overlay{display:none;position:fixed;inset:0;background:var(--page-bg,#eef2f9);z-index:99999;overflow-y:auto}
-.mp-overlay.show{display:block}
-.mp-header{background:linear-gradient(160deg,#0f2952 0%,#163a7a 55%,#1a4fa0 100%);padding:20px 20px 60px;color:#fff;position:relative}
-.mp-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;z-index:2}
-.mp-brand{font-family:'Cinzel',serif;text-transform:uppercase;font-weight:700;font-size:1rem;letter-spacing:1px}
-.mp-brand span{color:#c8102e}
-.mp-profile-row{display:flex;align-items:center;gap:16px;margin-top:22px}
-.mp-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#f5e49a,#c9a84c,#8a6020);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;text-transform:uppercase;font-weight:700;font-size:1.4rem;color:#1a1400;border:2px solid rgba(255,255,255,.4);flex-shrink:0}
-.mp-name{font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.05rem;font-weight:600;margin-bottom:2px}
-.mp-email{font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;color:rgba(255,255,255,.75)}
-.mp-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:rgba(201,168,76,.18);border:1px solid rgba(201,168,76,.5);color:#c9a84c;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px}
-.mp-tabs{display:flex;background:var(--surface);margin:-30px 16px 0;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.3);position:relative;z-index:2;overflow:hidden}
-.mp-tab{flex:1;text-align:center;padding:14px 6px;cursor:pointer;font-family:'Cinzel',serif;text-transform:uppercase;font-size:.68rem;letter-spacing:.5px;color:var(--sub);border-bottom:3px solid transparent}
-.mp-tab.active{color:var(--text);border-bottom-color:#c9a84c;background:rgba(201,168,76,.06)}
-.mp-body{padding:22px 16px 40px;max-width:640px;margin:0 auto}
-.mp-view{display:none}
-.mp-view.active{display:block}
-.mp-card{background:var(--surface);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.25);border:1px solid var(--border)}
-.mp-card-title{font-family:'Cinzel',serif;text-transform:uppercase;font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.mp-card-icon{width:26px;height:26px;background:rgba(201,168,76,.12);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.72rem;border:1px solid rgba(201,168,76,.25)}
-.mp-field{margin-bottom:14px}
-.mp-field label{display:block;font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
-.mp-field-value{font-size:.92rem;padding:10px 12px;background:var(--surface-2);border-radius:8px;border:1px solid rgba(77,142,232,.16)}
-.mp-stat-row{display:flex;gap:10px;margin-top:16px}
-.mp-stat{flex:1;text-align:center;background:linear-gradient(135deg,#0f2952,#1a4fa0);border-radius:10px;padding:14px 8px;color:#fff}
-.mp-stat-num{font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.3rem;font-weight:700;color:#c9a84c}
-.mp-stat-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.7);margin-top:2px}
-.mp-settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid rgba(77,142,232,.16)}
-.mp-settings-row:last-child{border-bottom:none}
-.mp-toggle{width:42px;height:24px;background:rgba(77,142,232,.16);border-radius:20px;position:relative;cursor:pointer;flex-shrink:0}
-.mp-toggle.on{background:#16a34a}
-.mp-toggle::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;background:#eef2f9;border-radius:50%;transition:left .2s}
-.mp-toggle.on::after{left:20px}
-.mp-btn-danger{width:100%;background:rgba(240,87,106,.16);color:var(--red);font-family:'Cinzel',serif;font-weight:600;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding:12px;border-radius:8px;border:1px solid rgba(220,38,38,.3);cursor:pointer;margin-top:6px}
-.mp-btn-primary{width:100%;background:linear-gradient(135deg,#0f2952,#1a4fa0);color:#fff;font-family:'Cinzel',serif;font-weight:600;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding:13px;border-radius:8px;border:none;cursor:pointer;margin-bottom:8px}
-</style>
-
-<div class="mp-overlay" id="mp-overlay">
-  <div class="mp-header">
-    <button class="mp-close" onclick="closeMemberPanel()">✕</button>
-    <div class="mp-brand">COMPLAINT<span>CA</span> — Üye Paneli</div>
-    <div class="mp-profile-row">
-      <div class="mp-avatar" id="mp-avatar">?</div>
-      <div>
-        <div class="mp-name" id="mp-name">—</div>
-        <div class="mp-email" id="mp-email">—</div>
-        <div class="mp-badge">✓ Doğrulanmış Hesap</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="mp-tabs">
-    <div class="mp-tab active" tabindex="0" role="button" onclick="mpShowView('profile', this)">Profil</div>
-    <div class="mp-tab" tabindex="0" role="button" onclick="mpShowView('complaints', this)">Şikayetlerim</div>
-    <div class="mp-tab" tabindex="0" role="button" onclick="mpShowView('settings', this)">Ayarlar</div>
-  </div>
-
-  <div class="mp-body">
-    <div class="mp-view active" id="mp-view-profile">
-      <div class="mp-card">
-        <div class="mp-card-title"><span class="mp-card-icon">👤</span>Hesap Bilgileri</div>
-        <div class="mp-field"><label>Ad Soyad</label><div class="mp-field-value" id="mp-profile-name">—</div></div>
-        <div class="mp-field"><label>E-posta</label><div class="mp-field-value" id="mp-profile-email">—</div></div>
-      </div>
-      <div class="mp-stat-row">
-        <div class="mp-stat"><div class="mp-stat-num" id="mp-stat-total">0</div><div class="mp-stat-label">Toplam Şikayet</div></div>
-      </div>
-    </div>
-
-    <div class="mp-view" id="mp-view-complaints">
-      <div class="mp-card">
-        <div class="mp-card-title"><span class="mp-card-icon">📋</span>Şikayetlerim</div>
-        <div id="mp-complaint-list"></div>
-      </div>
-    </div>
-
-    <div class="mp-view" id="mp-view-settings">
-      <div class="mp-card">
-        <div class="mp-card-title"><span class="mp-card-icon">🔔</span>Bildirimler</div>
-        <div class="mp-settings-row">
-          <div><div style="font-size:.85rem;font-weight:500">E-posta bildirimleri</div><div style="font-size:.72rem;color:var(--muted);margin-top:2px">Şikayet durumu değiştiğinde bilgilendir</div></div>
-          <div class="mp-toggle on" tabindex="0" role="button" onclick="this.classList.toggle('on')"></div>
-        </div>
-      </div>
-      <div class="mp-card">
-        <div class="mp-card-title"><span class="mp-card-icon">⚠️</span>Hesap İşlemleri</div>
-        <button class="mp-btn-primary" onclick="doLogout()">Çıkış Yap</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+</script>
 <script>
-var _mpName='', _mpEmail='';
-async function openMemberPanel(name, email){
-  _mpName=name; _mpEmail=email;
-  document.getElementById('mp-name').textContent=name;
-  document.getElementById('mp-email').textContent=email;
-  document.getElementById('mp-profile-name').textContent=name;
-  document.getElementById('mp-profile-email').textContent=email;
-  document.getElementById('mp-avatar').textContent=(name||'?').charAt(0).toUpperCase();
-
-  // Show the panel IMMEDIATELY — never block on the Firestore query. Otherwise a
-  // slow/hanging network request after Google sign-in leaves the user staring at
-  // a frozen screen with no panel. Complaints load in the background and fill in.
-  var list=document.getElementById('mp-complaint-list');
-  document.getElementById('mp-stat-total').textContent='…';
-  if(list) list.innerHTML='<div class="empty" style="padding:20px">Loading…</div>';
-  document.getElementById('mp-overlay').classList.add('show');
-
-  var myComplaints=[];
-  try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
-  document.getElementById('mp-stat-total').textContent=myComplaints.length;
-  if(list){
-    list.innerHTML=myComplaints.length
-      ? myComplaints.map(_complaintCardWithDelete).join('')
-      : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
-  }
-}
+var _mpEmail='';
 // Lets a signed-in user delete their own complaint (ref + their email must match,
 // enforced server-side by _fbDelete). Confirms first, then refreshes the list.
 async function _deleteMyComplaint(ref){
@@ -5203,24 +5056,12 @@ async function _deleteMyComplaint(ref){
   try{ _complaints=_complaints.filter(function(c){return c.ref!==ref;}); localStorage.setItem('vc_comp',JSON.stringify(_complaints)); }catch(e){}
   if(typeof _renderMyComplaints==='function') _renderMyComplaints(_mpEmail); // refresh inline list
 }
-function closeMemberPanel(){
-  document.getElementById('mp-overlay').classList.remove('show');
-  if(typeof _applyAuthUI==='function') _applyAuthUI(); // reflect signed-in state in the Sign In tab
-}
-function mpShowView(name, el){
-  document.querySelectorAll('.mp-view').forEach(function(v){v.classList.remove('active');});
-  document.querySelectorAll('.mp-tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById('mp-view-'+name).classList.add('active');
-  el.classList.add('active');
-}
 async function doLogout(){
   try{if(window._fbSignOut) await window._fbSignOut();}catch(e){}
   localStorage.removeItem('cc_session');
-  closeMemberPanel();
   location.reload();
 }
 </script>
-<!-- ================= /ÜYE PANELİ ================= -->
 </body>
 </html>
 <!-- cf deploy trigger -->
