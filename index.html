@@ -4097,8 +4097,8 @@ async function doSignup(){
   if(pass.length<6){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Password must be at least 6 characters.';return;}
   if(!window._fbSignUp){
     st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';
-    var ready=await _waitForAuthReady(8000);
-    if(!ready||!window._fbSignUp){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-up is still loading, please try again in a moment.';return;}
+    var ready=await _waitForAuthReady(20000);
+    if(!ready||!window._fbSignUp){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-up unavailable: '+_authNotReadyReason();return;}
     st.style.display='none';
   }
   try{
@@ -4122,9 +4122,9 @@ async function doGoogleSignIn(btn){
   var st=document.getElementById(isSignup?'signup-status':'login-status');
   if(!window._fbGoogleSignIn){
     if(st){st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';}
-    var ready=await _waitForAuthReady(8000);
+    var ready=await _waitForAuthReady(20000);
     if(!ready||!window._fbGoogleSignIn){
-      if(st){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in is still loading, please try again in a moment.';}
+      if(st){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in unavailable: '+_authNotReadyReason();}
       return;
     }
     if(st) st.style.display='none';
@@ -4157,8 +4157,8 @@ async function doLogin(){
   if(!email||!pass){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Please fill in all fields.';return;}
   if(!window._fbSignIn){
     st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Connecting…';
-    var ready=await _waitForAuthReady(8000);
-    if(!ready||!window._fbSignIn){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-in is still loading, please try again in a moment.';return;}
+    var ready=await _waitForAuthReady(20000);
+    if(!ready||!window._fbSignIn){st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Sign-in unavailable: '+_authNotReadyReason();return;}
     st.style.display='none';
   }
   try{
@@ -4288,12 +4288,28 @@ function _handleGuidePrefill(){
 
 <script>
 window._fbReadyPromise=new Promise(function(resolve,reject){window.__fbResolveReady=resolve;window.__fbRejectReady=reject;});
+window._fbInitError=null;
+// Capture failures of the Firebase ES modules themselves (blocked/failed to
+// load from gstatic), which happen BEFORE the module body runs, so its own
+// try/catch can't see them. This turns a mysterious "still loading" into a
+// concrete diagnosis.
+window.addEventListener('error',function(ev){
+  try{
+    var f=ev&&(ev.filename||'');
+    if(f&&/gstatic\.com\/firebasejs/.test(f)) window._fbInitError='module blocked/failed: '+f.split('/').pop();
+  }catch(_){}
+},true);
 function _waitForAuthReady(timeoutMs){
   if(window._fbGoogleSignIn) return Promise.resolve(true);
   return Promise.race([
     window._fbReadyPromise.then(function(){return true;}).catch(function(){return false;}),
     new Promise(function(resolve){setTimeout(function(){resolve(false);},timeoutMs);})
   ]);
+}
+// Human-readable reason to show the user when auth never became ready.
+function _authNotReadyReason(){
+  if(window._fbInitError) return window._fbInitError;
+  return 'timed out — Firebase did not finish loading (slow network or a blocked script).';
 }
 </script>
 
@@ -4537,6 +4553,7 @@ try{
 
 }catch(e){
   window._fbReady=false;
+  window._fbInitError='init error: '+((e&&(e.code||e.message))||'unknown');
   if(window.__fbRejectReady) window.__fbRejectReady(e);
   console.warn('Firebase init failed:',e);
 }
