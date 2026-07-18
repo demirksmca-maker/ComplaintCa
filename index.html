@@ -17,6 +17,9 @@
 }catch(e){}})();
 </script>
 <script>(function(){try{if(localStorage.getItem('cc_theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<!-- Google Identity Services: native Google sign-in that works without third-party
+     storage (unlike Firebase's popup/redirect). Used with signInWithCredential. -->
+<script src="https://accounts.google.com/gsi/client" async></script>
 <title>ComplaintCA — Canada's Complaint Platform</title>
 <meta name="description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered, anonymous, fully documented. Track your complaint, find a lawyer, report cyber crime, and verify suspicious documents.">
 <meta name="robots" content="index, follow">
@@ -4135,22 +4138,25 @@ async function doGoogleSignIn(btn){
     }
     if(st) st.style.display='none';
   }
+  // Wait briefly for the Google Identity Services library to finish loading.
+  for(var i=0;i<40 && !(window.google&&window.google.accounts&&window.google.accounts.id);i++){
+    await new Promise(function(r){setTimeout(r,150);});
+  }
   try{
     if(btn) btn.style.opacity='0.6';
     if(st){st.style.display='block';st.style.background='rgba(77,142,232,.14)';st.style.color='var(--text)';st.textContent='Opening Google sign-in…';}
-    // Tries a popup first; on mobile browsers that block popups it falls back to
-    // a full-page redirect (in which case execution stops here and the result is
-    // picked up by getRedirectResult() on reload). On popup success it returns
-    // and _handleGoogleUser has already opened the member panel.
+    // GIS shows Google's native account chooser; _handleGoogleUser opens the panel on success.
     await window._fbGoogleSignIn();
     if(st) st.style.display='none';
     if(btn) btn.style.opacity='1';
   }catch(e){
     var code=e&&e.code||'';
-    var msg=code==='auth/unauthorized-domain'
-      ? 'This site is not yet authorized for Google sign-in. (Add this domain in Firebase → Authentication → Settings → Authorized domains.)'
-      : code==='auth/popup-closed-by-user'
-      ? 'Sign-in window was closed before finishing.'
+    var msg=(code==='gis-not-loaded')
+      ? 'Google sign-in is still loading — please try again in a moment.'
+      : (code==='no-credential')
+      ? 'Sign-in was cancelled before finishing.'
+      : (code==='auth/unauthorized-domain')
+      ? 'This site is not yet authorized for Google sign-in.'
       : 'Google sign-in failed: '+(code||e&&e.message||'unknown error');
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent=msg;}
     if(btn) btn.style.opacity='1';
@@ -4324,7 +4330,7 @@ function _authNotReadyReason(){
 // of gstatic.com. This removes the external CDN from the critical path — the
 // cause of intermittent "Firebase did not finish loading" timeouts on mobile
 // networks that couldn't reliably reach gstatic. Rebuild: see vendor/README.
-import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
+import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithCredential,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
 try{
   // Standard Firebase auth domain. We use signInWithPopup (below), which is
   // Firebase's recommended flow for storage-partitioned mobile browsers and
@@ -4364,35 +4370,54 @@ try{
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
   }
-  // Use signInWithPopup on ALL devices — including mobile. signInWithRedirect
-  // fails in storage-partitioned browsers (modern mobile Chrome/Safari) with
-  // "missing initial state", because the state saved before the redirect is no
-  // longer readable on return. Firebase's own guidance for that scenario is to
-  // use the popup flow, which keeps everything in one browsing context. This
-  // works now that authDomain is same-origin (complaintca.ca via the reverse
-  // proxy) and the SDK is self-hosted — the conditions that previously made the
-  // popup throw internal-error are gone. Redirect stays only as a last resort
-  // for the rare browser that can't open a popup at all.
+  // Google sign-in via Google Identity Services (GIS) + signInWithCredential.
+  // Firebase's own signInWithPopup/signInWithRedirect both need cross-origin
+  // storage on the firebaseapp.com auth domain, which storage-partitioned mobile
+  // browsers block → auth/internal-error / "missing initial state". GIS is
+  // Google's library built for the no-third-party-cookie world: it returns a
+  // Google ID token in a callback (no popup/redirect/iframe state), which we
+  // exchange for a Firebase session with signInWithCredential. Works everywhere.
+  var _GIS_CLIENT_ID='515187402821-01fqrf4o13uj2mbja0a8ggdhooh6droq.apps.googleusercontent.com';
   window._fbGoogleSignIn=async function(){
-    const provider=new GoogleAuthProvider();
-    // Mark that a Google sign-in is in flight so onAuthStateChanged can open the
-    // member panel on completion even if the promise path throws a spurious error.
-    try{ sessionStorage.setItem('cc_pending_google','1'); }catch(e){}
-    try{
-      const result=await signInWithPopup(authInst,provider);
-      if(result&&result.user) _handleGoogleUser(result.user);
-      return;
-    }catch(e){
-      var code=e&&e.code||'';
-      if(code==='auth/popup-closed-by-user'||code==='auth/cancelled-popup-request') throw e; // user dismissed it
-      // Only fall back to redirect when a popup genuinely can't be opened.
-      if(code==='auth/popup-blocked'||code==='auth/operation-not-supported-in-this-environment'){
-        await signInWithRedirect(authInst,provider);
-        return;
-      }
-      throw e; // genuine config error (e.g. auth/unauthorized-domain) — surface it
+    if(!(window.google&&google.accounts&&google.accounts.id)){
+      throw {code:'gis-not-loaded'};   // caller shows a friendly "try again" message
     }
+    return new Promise(function(resolve,reject){
+      try{
+        google.accounts.id.initialize({
+          client_id:_GIS_CLIENT_ID,
+          callback:function(resp){
+            if(!resp||!resp.credential){ reject({code:'no-credential'}); return; }
+            var cred=GoogleAuthProvider.credential(resp.credential);
+            signInWithCredential(authInst,cred).then(function(result){
+              _handleGoogleUser(result.user); resolve();
+            }).catch(reject);
+          }
+        });
+        // Show Google's native account chooser (FedCM where available). If it
+        // can't be displayed (e.g. dismissed/cooldown), fall back to a rendered
+        // button so the user is never stuck.
+        google.accounts.id.prompt(function(n){
+          if(n && (n.isNotDisplayed && n.isNotDisplayed() || n.isSkippedMoment && n.isSkippedMoment())){
+            _gisRenderFallbackButton();
+          }
+        });
+      }catch(e){ reject(e); }
+    });
   };
+  // Fallback: render GIS's own button into a small overlay when One Tap won't show.
+  function _gisRenderFallbackButton(){
+    var id='gis-fallback';
+    if(document.getElementById(id)) return;
+    var ov=document.createElement('div'); ov.id=id;
+    ov.style.cssText='position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:24px';
+    var box=document.createElement('div');
+    box.style.cssText='background:#fff;border-radius:14px;padding:22px;max-width:340px;text-align:center;font-family:Inter,sans-serif';
+    box.innerHTML='<div style="font-weight:700;color:#0f2952;margin-bottom:14px">Continue with Google</div><div id="gis-btn" style="display:flex;justify-content:center"></div><div style="margin-top:14px"><button id="gis-cancel" style="background:none;border:none;color:#777;font-size:.85rem;cursor:pointer">Cancel</button></div>';
+    ov.appendChild(box); document.body.appendChild(ov);
+    document.getElementById('gis-cancel').onclick=function(){ov.remove();};
+    google.accounts.id.renderButton(document.getElementById('gis-btn'),{theme:'filled_blue',size:'large',text:'continue_with',shape:'pill'});
+  }
   // We sign in with popup, not redirect — but a returning user may still carry
   // leftover pending-redirect state from earlier attempts. Process it if it
   // yields a user; otherwise stay silent. Never surface getRedirectResult errors
