@@ -2456,15 +2456,9 @@ async function loadPublicFeed(){
   if(!boxes.length) return;
   boxes.forEach(function(b){b.innerHTML='<div class="empty">'+V.t('feed_loading')+'</div>';});
   var items=[];
-  // Firebase'den çek
-  if(window._fbReady){
-    try{
-      var mod=await import('https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js');
-      var app=await import('https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js');
-      // already initialized, use existing db
-      // Fallback: localStorage'dan al
-    }catch(e){}
-  }
+  // (Removed dead gstatic dynamic-imports here — they loaded modules but never
+  // used them. The live feed reads from localStorage below; the real Firestore
+  // listeners live in the bundled module block.)
   // localStorage'dan al (her zaman çalışır)
   var all=JSON.parse(localStorage.getItem('vc_comp')||'[]');
   items=all.slice(0,10);
@@ -4314,9 +4308,11 @@ function _authNotReadyReason(){
 </script>
 
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-  import{getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+// Firebase SDK is self-hosted (bundled) and served from our own domain instead
+// of gstatic.com. This removes the external CDN from the critical path — the
+// cause of intermittent "Firebase did not finish loading" timeouts on mobile
+// networks that couldn't reliably reach gstatic. Rebuild: see vendor/README.
+import{initializeApp,getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc,getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"/vendor/firebase-bundle.js";
 try{
   // Serve Firebase Auth's helper (/__/auth/*) from our OWN domain via the Vercel
   // reverse-proxy (see vercel.json rewrites), so the OAuth iframe/handler is
