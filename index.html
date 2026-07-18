@@ -530,6 +530,8 @@ textarea{resize:vertical;min-height:90px}
 #view-lawyerpanel .lex-ctitle{font-family:'Cinzel',serif;text-transform:uppercase;font-weight:400;font-size:.9rem;color:var(--lex-ink);margin-bottom:6px}
 #view-lawyerpanel .lex-desc{font-family:'EB Garamond',serif;font-size:.85rem;color:var(--lex-ink);line-height:1.6;margin-bottom:10px}
 #view-lawyerpanel .lex-locked{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--lex-bronze);border-top:1px solid var(--lex-marble-dk);padding-top:8px}
+#view-lawyerpanel .lex-unlocked{font-family:'EB Garamond',serif;font-size:.78rem;color:var(--lex-ink);border-top:1px solid var(--lex-marble-dk);padding-top:8px}
+#view-lawyerpanel .lex-partner-badge{display:inline-flex;align-items:center;gap:5px;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--lex-marble);background:var(--lex-bronze);border-radius:2px;padding:4px 10px;margin-top:10px}
 #view-lawyerpanel .lex-partner{border:1px solid var(--lex-bronze);border-radius:2px;padding:20px;text-align:center;margin-top:14px;background:var(--lex-card)}
 #view-lawyerpanel .lex-partner-text{font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;color:var(--lex-muted);line-height:1.65;margin-bottom:16px}
 #view-lawyerpanel .lex-btn{
@@ -1057,13 +1059,14 @@ textarea{resize:vertical;min-height:90px}
         <div class="lex-eyebrow" id="lwp-eyebrow">⚖️ FOR LEGAL PROFESSIONALS</div>
         <div class="lex-title" id="lwp-title">Open Case Feed</div>
         <div class="lex-sub" id="lwp-sub">Browse anonymized complaints in real time. Full contact details are available to Partner Lawyers.</div>
+        <div class="lex-partner-badge" id="lwp-partner-badge" style="display:none">✓ Partner Avukat</div>
         <div class="lex-rule"></div>
       </div>
       <div class="lex-ledger" id="lwp-ledger" style="display:none">
         <div><div class="n" id="lwp-ledger-n">0</div><div class="l" id="lwp-ledger-l">Open Cases</div></div>
       </div>
       <div id="lawyer-panel-feed"></div>
-      <div class="lex-partner">
+      <div class="lex-partner" id="lwp-partner-box">
         <div class="lex-partner-text" id="lwp-partner-text">Want full contact details on these cases? Partner Lawyer access is available for a flat monthly fee — unrelated to case outcome.</div>
         <a href="mailto:complaintcaca@gmail.com?subject=Partner%20Lawyer%20Access" class="lex-btn" id="lwp-partner-btn">Become a Partner Lawyer</a>
       </div>
@@ -4606,8 +4609,18 @@ try{
       return html;
     }
 
+    // Manually-verified Partner Lawyers (checked against each province's public
+    // bar registry before being added here — see chat/plan notes). This is the
+    // lightweight MVP stand-in for a real verification flow: no new backend, no
+    // account flag — just an allowlist we extend by hand as lawyers are verified.
+    var PARTNER_LAWYER_EMAILS=['kasimdemirca@gmail.com'];
+    function _isPartnerLawyer(){
+      var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
+      return !!(s&&s.email&&PARTNER_LAWYER_EMAILS.indexOf(s.email.toLowerCase())!==-1);
+    }
     function renderLawyerPanelHTML(snapshot){
       if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--lex-muted);font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
+      var partner=_isPartnerLawyer();
       var priWeight={high:0,medium:1,low:2};
       var priBadge={high:'🔴',medium:'🟡',low:'🟢'};
       var items=[];
@@ -4626,6 +4639,14 @@ try{
         var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
         var cat=escHtml(catLabel(d.category||'general'));
         var desc=escHtml(d.desc?(d.desc.length>140?d.desc.substring(0,140)+'…':d.desc):'');
+        var contactLine;
+        if(partner && !d.anonymous && d.email){
+          var nm=escHtml(d.name||'—');
+          var em=escHtml(d.email);
+          contactLine='<div class="lex-unlocked">✓ '+nm+' · <a href="mailto:'+em+'" style="color:inherit">'+em+'</a></div>';
+        }else{
+          contactLine='<div class="lex-locked">🔒 '+V.t('lwp_locked')+'</div>';
+        }
         html+='<div class="lex-card">'+
           '<div class="lex-tags">'+
             '<span class="lex-cat">'+cat+'</span>'+
@@ -4635,7 +4656,7 @@ try{
           '</div>'+
           '<div class="lex-ctitle">'+title+'</div>'+
           (desc?'<div class="lex-desc">'+desc+'</div>':'')+
-          '<div class="lex-locked">🔒 '+V.t('lwp_locked')+'</div>'+
+          contactLine+
         '</div>';
       });
       return html;
@@ -4675,6 +4696,11 @@ try{
       var ledger=document.getElementById('lwp-ledger');
       var ledgerN=document.getElementById('lwp-ledger-n');
       if(ledger&&ledgerN){ ledgerN.textContent=snapshot.size; ledger.style.display=snapshot.empty?'none':'flex'; }
+      var isPartner=_isPartnerLawyer();
+      var badge=document.getElementById('lwp-partner-badge');
+      if(badge) badge.style.display=isPartner?'inline-flex':'none';
+      var partnerBox=document.getElementById('lwp-partner-box');
+      if(partnerBox) partnerBox.style.display=isPartner?'none':'';
     },function(err){
       var lpbox=document.getElementById('lawyer-panel-feed');
       if(lpbox) lpbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
