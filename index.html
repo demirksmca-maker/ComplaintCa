@@ -4631,59 +4631,6 @@ try{
       return html;
     }
 
-    // Manually-verified Partner Lawyers (checked against each province's public
-    // bar registry before being added here — see chat/plan notes). This is the
-    // lightweight MVP stand-in for a real verification flow: no new backend, no
-    // account flag — just an allowlist we extend by hand as lawyers are verified.
-    var PARTNER_LAWYER_EMAILS=['kasimdemirca@gmail.com'];
-    function _isPartnerLawyer(){
-      var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
-      return !!(s&&s.email&&PARTNER_LAWYER_EMAILS.indexOf(s.email.toLowerCase())!==-1);
-    }
-    function renderLawyerPanelHTML(snapshot){
-      if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--lex-muted);font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
-      var partner=_isPartnerLawyer();
-      var priWeight={high:0,medium:1,low:2};
-      var priBadge={high:'🔴',medium:'🟡',low:'🟢'};
-      var items=[];
-      snapshot.forEach(function(doc){ items.push(doc.data()); });
-      items.sort(function(a,b){
-        var pa=priWeight[a.priority]!==undefined?priWeight[a.priority]:1;
-        var pb=priWeight[b.priority]!==undefined?priWeight[b.priority]:1;
-        if(pa!==pb) return pa-pb;
-        return (new Date(b.date||0))-(new Date(a.date||0));
-      });
-      var html='';
-      items.forEach(function(d){
-        var pri=priBadge[d.priority]||priBadge.medium;
-        var ago=d.date?window._timeAgo(d.date):'';
-        var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':V.t('feed_default_title')));
-        var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
-        var cat=escHtml(catLabel(d.category||'general'));
-        var desc=escHtml(d.desc?(d.desc.length>140?d.desc.substring(0,140)+'…':d.desc):'');
-        var contactLine;
-        if(partner && !d.anonymous && d.email){
-          var nm=escHtml(d.name||'—');
-          var em=escHtml(d.email);
-          contactLine='<div class="lex-unlocked">✓ '+nm+' · <a href="mailto:'+em+'" style="color:inherit">'+em+'</a></div>';
-        }else{
-          contactLine='<div class="lex-locked">🔒 '+V.t('lwp_locked')+'</div>';
-        }
-        html+='<div class="lex-card">'+
-          '<div class="lex-tags">'+
-            '<span class="lex-cat">'+cat+'</span>'+
-            '<span>'+pri+'</span>'+
-            '<span class="lex-loc">'+loc+'</span>'+
-            '<span class="lex-ago">'+ago+'</span>'+
-          '</div>'+
-          '<div class="lex-ctitle">'+title+'</div>'+
-          (desc?'<div class="lex-desc">'+desc+'</div>':'')+
-          contactLine+
-        '</div>';
-      });
-      return html;
-    }
-
     // Şikayetler artık halka açık gösterilmiyor — bildirenlerin gizliliğini
     // korumak için hem ana akış hem takip sekmesindeki liste kapatıldı, yerine
     // kısa bir "gizli tutulur" mesajı konuyor. (Avukat paneli ayrı ve girişli.)
@@ -4702,6 +4649,60 @@ try{
     var tbox=document.getElementById('trk-complaint-feed');
     if(tbox) tbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
   });
+
+  // Manually-verified Partner Lawyers (checked against each province's public
+  // bar registry before being added here — see chat/plan notes). This is the
+  // lightweight MVP stand-in for a real verification flow: no new backend, no
+  // account flag — just an allowlist we extend by hand as lawyers are verified.
+  var PARTNER_LAWYER_EMAILS=['kasimdemirca@gmail.com'];
+  function _isPartnerLawyer(){
+    var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
+    return !!(s&&s.email&&PARTNER_LAWYER_EMAILS.indexOf(s.email.toLowerCase())!==-1);
+  }
+  function renderLawyerPanelHTML(snapshot){
+    if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--lex-muted);font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
+    var partner=_isPartnerLawyer();
+    var priWeight={high:0,medium:1,low:2};
+    var priBadge={high:'🔴',medium:'🟡',low:'🟢'};
+    var items=[];
+    snapshot.forEach(function(doc){ items.push(doc.data()); });
+    items.sort(function(a,b){
+      var pa=priWeight[a.priority]!==undefined?priWeight[a.priority]:1;
+      var pb=priWeight[b.priority]!==undefined?priWeight[b.priority]:1;
+      if(pa!==pb) return pa-pb;
+      return (new Date(b.date||0))-(new Date(a.date||0));
+    });
+    var html='';
+    items.forEach(function(d){
+      var pri=priBadge[d.priority]||priBadge.medium;
+      var ago=d.date?window._timeAgo(d.date):'';
+      var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':V.t('feed_default_title')));
+      var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
+      var cat=escHtml(catLabel(d.category||'general'));
+      var desc=escHtml(d.desc?(d.desc.length>140?d.desc.substring(0,140)+'…':d.desc):'');
+      var contactLine;
+      if(partner && !d.anonymous && d.email){
+        var nm=escHtml(d.name||'—');
+        var em=escHtml(d.email);
+        contactLine='<div class="lex-unlocked">✓ '+nm+' · <a href="mailto:'+em+'" style="color:inherit">'+em+'</a></div>';
+      }else{
+        contactLine='<div class="lex-locked">🔒 '+V.t('lwp_locked')+'</div>';
+      }
+      html+='<div class="lex-card">'+
+        '<div class="lex-tags">'+
+          '<span class="lex-cat">'+cat+'</span>'+
+          '<span>'+pri+'</span>'+
+          '<span class="lex-loc">'+loc+'</span>'+
+          '<span class="lex-ago">'+ago+'</span>'+
+        '</div>'+
+        '<div class="lex-ctitle">'+title+'</div>'+
+        (desc?'<div class="lex-desc">'+desc+'</div>':'')+
+        contactLine+
+      '</div>';
+    });
+    return html;
+  }
+
 
   // ── AVUKAT PANELİ: sadece "Yasal Hak" olarak işaretlenmiş şikayetler ──
   // Firestore kuralları isLegal==true belgelerini sadece giriş yapmış kullanıcılara
