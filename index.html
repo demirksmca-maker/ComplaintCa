@@ -4318,7 +4318,14 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-ap
 import{getFirestore,collection,addDoc,query,where,getDocs,limit,orderBy,onSnapshot,deleteDoc,doc,updateDoc}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
   import{getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup,getRedirectResult,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 try{
-  const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:"ajan-d6070.firebaseapp.com",projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
+  // Serve Firebase Auth's helper (/__/auth/*) from our OWN domain via the Vercel
+  // reverse-proxy (see vercel.json rewrites), so the OAuth iframe/handler is
+  // same-origin with the app. This avoids the cross-domain third-party-storage
+  // blocking that broke Google sign-in on mobile browsers. Fall back to the
+  // default firebaseapp.com domain on previews/localhost where the proxy isn't set.
+  var _fbAuthDomain=(location.hostname==='complaintca.ca'||location.hostname==='www.complaintca.ca')
+    ? location.hostname : 'ajan-d6070.firebaseapp.com';
+  const app=initializeApp({apiKey:"AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g",authDomain:_fbAuthDomain,projectId:"ajan-d6070",storageBucket:"ajan-d6070.firebasestorage.app",messagingSenderId:"515187402821",appId:"1:515187402821:web:7e30467e03fd54d4a1db2c"});
   const db=getFirestore(app);
 
   // ── App Check (bot/abuse protection for Firestore & Auth) ──
