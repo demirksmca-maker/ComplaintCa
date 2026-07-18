@@ -4182,9 +4182,10 @@ async function doSignup(){
   }
   try{
     var user=await window._fbSignUp(name,email,pass);
+    try{ localStorage.setItem('cc_session',JSON.stringify({name:user.name,email:user.email})); }catch(e){}
+    if(typeof _applyAuthUI==='function') _applyAuthUI();
     st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';
     st.textContent='Account created! Welcome, '+user.name+'.';
-    openMemberPanel(user.name,user.email);
     _renderMyComplaints(user.email);
     setTimeout(_continueAfterAuth,700);
   }catch(e){
@@ -4252,6 +4253,11 @@ async function doLogin(){
   }
   try{
     var user=await window._fbSignIn(email,pass);
+    // Write cc_session synchronously here — don't rely solely on the async
+    // onAuthStateChanged listener, which can fire after a user has already
+    // clicked elsewhere (e.g. Pool), making them look signed-out for a moment.
+    try{ localStorage.setItem('cc_session',JSON.stringify({name:user.name,email:user.email})); }catch(e){}
+    if(typeof _applyAuthUI==='function') _applyAuthUI();
     st.style.display='block';st.style.background='rgba(47,208,122,.14)';st.style.color='#16a34a';
     st.textContent='Welcome back, '+user.name+'!';
     _renderMyComplaints(user.email);
