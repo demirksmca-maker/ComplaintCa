@@ -1,0 +1,8 @@
+{
+  "name": "twa-build",
+  "private": true,
+  "description": "CI-only helper to build the signed Android App Bundle for the ComplaintCA TWA. Not part of the website build.",
+  "dependencies": {
+    "@bubblewrap/cli": "1.24.1"
+  }
+}
