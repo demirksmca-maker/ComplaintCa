@@ -2473,7 +2473,16 @@ function showTab(tab){
   // highlight fires, but the view never actually switches).
   try{
     if((tab==='lawyerpanel'||tab==='feed') && !JSON.parse(localStorage.getItem('cc_session')||'null')){_authRedirectTab=tab;showAuthModal();tab='track';setTimeout(function(){switchAuthTab('login');},0);}
-    if((tab==='lawyerpanel'||tab==='feed') && window._startLawyerPanelFeed) window._startLawyerPanelFeed();
+    if(tab==='lawyerpanel'||tab==='feed'){
+      if(window._startLawyerPanelFeed){
+        window._startLawyerPanelFeed();
+      }else if(window._fbReadyPromise){
+        // Firebase module hasn't finished loading yet (e.g. tapped Pool right
+        // after page load, before the async module init completed) — wait for
+        // it instead of silently doing nothing forever.
+        window._fbReadyPromise.then(function(){ if(window._startLawyerPanelFeed) window._startLawyerPanelFeed(); }).catch(function(){});
+      }
+    }
   }catch(e){
     console.error('Pool tab setup failed (continuing to show the view anyway):',e);
     // Self-heal: a corrupt cc_session value would keep throwing on every
