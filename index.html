@@ -3076,7 +3076,7 @@ function renderAICatStrip(group,sub,priority){
   var priMap={low:V.t('plo'),medium:V.t('pme'),high:V.t('phi')};
   var priLabel=priMap[priority]||priority;
   strip.style.display='block';
-  strip.innerHTML=
+  var html=
     '<div style="background:linear-gradient(135deg,rgba(77,142,232,.10),rgba(77,142,232,.05));border:1.5px solid #93c5fd;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
       '<span style="font-size:1.35rem;flex-shrink:0">'+escHtml(sub.i)+'</span>'+
       '<div style="flex:1;min-width:0">'+
@@ -3084,6 +3084,20 @@ function renderAICatStrip(group,sub,priority){
         '<div style="font-size:.82rem;font-weight:700;color:var(--text)">'+escHtml(sub.l)+' · '+priLabel+'</div>'+
       '</div>'+
     '</div>';
+  // Priority is already computed above at zero extra AI cost — piggyback on it
+  // for an immediate nudge instead of waiting on the separate "Improve with AI"
+  // pass. Red for high, gold for medium; skipped once already Assert Legal Rights.
+  if((priority==='high'||priority==='medium') && _ctype!=='legal'){
+    var hi=priority==='high';
+    var col=hi?'#c8102e':'#c9a84c';
+    var bg=hi?'rgba(200,16,46,.12)':'rgba(201,168,76,.14)';
+    html+='<div style="margin-top:8px;background:'+bg+';border:1.5px solid '+col+';border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+      '<span style="font-size:1.1rem;flex-shrink:0">'+(hi?'🔴':'🟡')+'</span>'+
+      '<div style="flex:1;min-width:0;font-size:.76rem;color:var(--text);font-weight:600;line-height:1.4">'+(hi?'This looks serious — you may have a legal claim.':'This may qualify as a legal-rights matter.')+'</div>'+
+      '<button onclick="var b=document.getElementById(\'ctype-legal\');if(b)b.click();this.closest(\'div\').style.display=\'none\'" style="flex-shrink:0;background:'+col+';color:'+(hi?'#fff':'#1a1400')+';border:none;border-radius:8px;padding:7px 10px;font-size:.68rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap">⚖️ Legal Rights</button>'+
+    '</div>';
+  }
+  strip.innerHTML=html;
 }
 // Basit/yüksek hacimli sınıflandırma işleri: önce ücretsiz Groq, başarısız olursa Claude'a düş.
 // opts.json=true → modelin JSON modunu zorlar (parse hatasını bitirir).
