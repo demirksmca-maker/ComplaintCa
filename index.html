@@ -4722,6 +4722,17 @@ try{
     if(tbox) tbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
   });
 
+  // catLabel was previously only defined inside the (disabled) public feed's
+  // onSnapshot closure above, out of reach for renderLawyerPanelHTML below —
+  // calling it threw a ReferenceError the instant there was a real case to
+  // render, silently aborting the Pool's innerHTML update (blank tab, no
+  // error shown). Defined here too so the Pool can actually reach it.
+  var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
+  function catLabel(cat){
+    var k=catKeyMap[cat];
+    return k?V.t(k):(cat?cat.charAt(0).toUpperCase()+cat.slice(1):'');
+  }
+
   // Manually-verified Partner Lawyers (checked against each province's public
   // bar registry before being added here — see chat/plan notes). This is the
   // lightweight MVP stand-in for a real verification flow: no new backend, no
