@@ -4121,12 +4121,19 @@ async function doGoogleSignIn(btn){
   }
   try{
     if(btn) btn.style.opacity='0.6';
+    // signInWithRedirect reloads the page, wiping _authRedirectTab and any
+    // in-progress complaint text — persist them so _restoreAfterGoogleRedirect
+    // can actually resume where the user left off (this used to only be read,
+    // never written, so the restore never fired).
+    var descEl=document.getElementById('inp-desc');
+    try{sessionStorage.setItem('cc_authpending',JSON.stringify({tab:_authRedirectTab||'track',desc:descEl?descEl.value:''}));}catch(e){}
     // Redirects the whole page to Google's consent screen (more reliable than a
     // popup on mobile browsers, which routinely block or silently kill popups).
     // Execution doesn't continue past this — the result is picked up by
     // getRedirectResult() on next page load, see the Firebase init block below.
     await window._fbGoogleSignIn();
   }catch(e){
+    try{sessionStorage.removeItem('cc_authpending');}catch(e2){}
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
     if(btn) btn.style.opacity='1';
   }
@@ -4293,6 +4300,11 @@ try{
     if(typeof _renderMyComplaints==='function') _renderMyComplaints(googleUser.email);
     if(typeof _restoreAfterGoogleRedirect==='function') setTimeout(_restoreAfterGoogleRedirect,300);
   }).catch(function(e){
+    try{sessionStorage.removeItem('cc_authpending');}catch(e2){}
+    // Land on the login panel so this message is actually visible — the page
+    // just reloaded from the Google redirect, so it's back on the landing view.
+    if(typeof goApp==='function') goApp('track');
+    if(typeof switchAuthTab==='function') switchAuthTab('login');
     var st=document.getElementById('login-status')||document.getElementById('signup-status');
     if(st){st.style.display='block';st.style.background='rgba(240,87,106,.16)';st.style.color='#c8102e';st.textContent='Google sign-in failed: '+(e&&(e.code||e.message)||'unknown error');}
   });
