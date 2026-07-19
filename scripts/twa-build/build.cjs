@@ -83,6 +83,13 @@ async function main() {
 
   fs.mkdirSync(ANDROID_DIR, { recursive: true });
 
+  // GitHub's runner image preinstalls an Android SDK and sets ANDROID_SDK_ROOT
+  // to it globally. Gradle refuses to build when ANDROID_HOME and
+  // ANDROID_SDK_ROOT point at two different SDKs — drop the runner's so only
+  // our downloaded one (via ANDROID_HOME, set below) is in play.
+  delete process.env.ANDROID_SDK_ROOT;
+  process.env.ANDROID_HOME = SDK_DIR;
+
   const prompt = new AutoPrompt();
   const log = new core.ConsoleLog('build-twa');
   const config = new core.Config(process.env.JAVA_HOME, SDK_DIR);
