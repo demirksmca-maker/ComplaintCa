@@ -1,0 +1,7 @@
+# Android signing key & TWA/bubblewrap build output — never commit these
+android.keystore
+*.keystore
+*.jks
+android/
+*.apk
+*.aab
