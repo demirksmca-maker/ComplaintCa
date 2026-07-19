@@ -3309,6 +3309,22 @@ async function sendBrevoEmail(toEmail, toName, subject, body, replyTo){
   return false;
 }
 
+// Plain templated email used when the user filed without running the optional
+// "Ask Asya" AI step — no AI wording, just the raw complaint facts.
+function _basicComplaintEmail(c, authorityName){
+  var body = c.anonymous
+    ? 'This is an anonymous advisory notice submitted via ComplaintCA regarding the following matter, for your awareness and possible review:\n\n'
+    : 'I am writing to formally file a complaint with '+(authorityName||'your office')+' through ComplaintCA.\n\n';
+  body += 'Subject: '+c.title+'\nCategory: '+c.category+'\n';
+  if(c.location) body += 'Location: '+c.location+'\n';
+  body += '\nDetails:\n'+c.desc+'\n\n';
+  body += c.anonymous
+    ? 'This notice is submitted anonymously; no identifying contact information has been shared.'
+    : 'I request this matter be reviewed and ask that you respond with next steps or an expected resolution timeline.';
+  body += '\n\n'+(c.anonymous?'Anonymous Notice':'Complainant')+' — Ref: '+c.ref;
+  return body;
+}
+
 async function sendComplaintEmail(complaint, authorityEmail, authorityName, emailDraft){
   var ref = complaint.ref;
   var date = new Date().toLocaleDateString('en-CA');
@@ -3560,12 +3576,14 @@ async function doSubmit(){
     }catch(e){}
   }
 
-  // 3. Send emails (non-blocking)
+  // 3. Send emails (non-blocking). If the user skipped the optional "Ask Asya"
+  // AI step, there's no email-draft-text box — fall back to a plain templated
+  // email so the institution still gets notified either way.
   var emailDraftEl=document.getElementById('email-draft-text');
-  var emailDraft=emailDraftEl?emailDraftEl.innerText:null;
   var auths=getAuthorities(c.category,c.location);
+  var emailDraft=emailDraftEl?emailDraftEl.innerText:_basicComplaintEmail(c,(auths&&auths[0])?auths[0].name:'');
   var emailStatus=document.getElementById('email-status');
-  if(auths&&auths.length&&emailDraft){
+  if(auths&&auths.length){
     var auth=auths[0];
     sendComplaintEmail(c,auth.email,auth.name,emailDraft).then(function(result){
       if(!emailStatus) return;
