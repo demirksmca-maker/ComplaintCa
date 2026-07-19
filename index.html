@@ -3915,7 +3915,8 @@ function renderCard(c){
     }
     return '<div class="tli"><div class="tldot '+(i===lastStatusIdx?'cur':'done')+'"></div><div class="tlt"><div class="tll">'+V.t({received:'tr_r',review:'tr_v',resolved:'tr_o',rejected:'tr_j'}[item.status]||'tr_r')+'</div><div class="tld">'+new Date(item.date).toLocaleDateString()+'</div></div></div>';
   }).join('');
-  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+escHtml(c.title)+'</div><div class="smeta">'+date+' · '+escHtml(c.targetName||c.target||'—')+'</div></div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div></div>';
+  var legalPill=c.isLegal?'<span style="display:inline-block;margin-top:4px;font-size:.62rem;font-weight:700;letter-spacing:.5px;color:#c9a84c;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.4);border-radius:20px;padding:2px 8px">⚖️ Legal Track — Case Pool</span>':'';
+  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+escHtml(c.title)+'</div><div class="smeta">'+date+' · '+escHtml(c.targetName||c.target||'—')+'</div>'+legalPill+'</div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div></div>';
 }
 function renderRecent(){
   const el=document.getElementById('trk-recent');
