@@ -44,15 +44,31 @@ function run(cmd, env) {
   execSync(cmd, { env, stdio: 'inherit', shell: '/bin/bash' });
 }
 
+// Two guesses at the zip's internal layout have both been wrong (this
+// sandbox can't download the real zip to check directly — dl.google.com is
+// blocked here even though it's reachable from GitHub Actions). Stop
+// guessing: search the extracted tree for the real path instead.
+function findSdkManager(dir) {
+  try {
+    return execSync(`find "${dir}" -type f -name sdkmanager 2>/dev/null | head -1`, { encoding: 'utf8' }).trim() || null;
+  } catch (e) { return null; }
+}
+
 async function ensureAndroidSdk(prompt) {
   fs.mkdirSync(SDK_DIR, { recursive: true });
-  // The commandlinetools zip's own top-level folder is "cmdline-tools" — it
-  // extracts to SDK_DIR/cmdline-tools/bin/sdkmanager, not SDK_DIR/bin/sdkmanager.
-  const sdkManagerPath = path.join(SDK_DIR, 'cmdline-tools', 'bin', 'sdkmanager');
-  if (!fs.existsSync(sdkManagerPath)) {
+  let sdkManagerPath = findSdkManager(SDK_DIR);
+  if (!sdkManagerPath) {
     const installer = new AndroidSdkToolsInstaller(process, prompt);
     await installer.install(SDK_DIR);
+    sdkManagerPath = findSdkManager(SDK_DIR);
   }
+  if (!sdkManagerPath) {
+    console.error('sdkmanager not found anywhere under', SDK_DIR, '— full tree:');
+    run(`find "${SDK_DIR}" -maxdepth 5`);
+    throw new Error('Could not locate sdkmanager after installing the Android SDK');
+  }
+  console.log('Using sdkmanager at', sdkManagerPath);
+  fs.chmodSync(sdkManagerPath, 0o755);
   const env = { ...process.env, ANDROID_HOME: SDK_DIR };
   run(`yes | "${sdkManagerPath}" --sdk_root="${SDK_DIR}" --licenses`, env);
   run(`"${sdkManagerPath}" --sdk_root="${SDK_DIR}" "platform-tools" "platforms;android-36"`, env);
