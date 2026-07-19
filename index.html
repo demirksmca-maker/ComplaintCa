@@ -3240,7 +3240,9 @@ async function runAI(){
     function parseSection(text,key,nextKey){
       var regex=new RegExp(key+':\\s*([\\s\\S]*?)(?='+nextKey+':|$)','i');
       var m=text.match(regex);
-      return m?m[1].trim():'';
+      // Modeller ara sıra markdown kalınlaştırma (**) ekliyor; biz düz metin
+      // gösterdiğimiz için çıplak yıldızlar kalıyor — burada temizliyoruz.
+      return m?m[1].replace(/\*\*/g,'').trim():'';
     }
     var complaintText=parseSection(full,'COMPLAINT','LAW');
     var lawText=parseSection(full,'LAW','SANCTIONS');
