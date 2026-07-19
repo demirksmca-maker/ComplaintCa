@@ -5,7 +5,7 @@
       "namespace": "android_app",
       "package_name": "ca.complaintca.app",
       "sha256_cert_fingerprints": [
-        "REPLACE_WITH_SHA256_FINGERPRINT_FROM_ANDROID_KEYSTORE"
+        "95:73:3E:FA:26:7A:8A:5A:28:4D:E5:96:F7:F4:9F:02:02:70:83:B5:E1:32:24:4A:C9:19:6D:1B:A5:A8:7E:0C"
       ]
     }
   }

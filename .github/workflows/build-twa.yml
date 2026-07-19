@@ -1,0 +1,41 @@
+name: Build Android App Bundle (TWA)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install build script dependencies
+        working-directory: scripts/twa-build
+        run: npm install
+
+      - name: Build signed AAB
+        working-directory: scripts/twa-build
+        run: node build.cjs
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.BUBBLEWRAP_KEYSTORE_PASSWORD }}
+          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.BUBBLEWRAP_KEY_PASSWORD }}
+
+      - name: Upload signed AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: complaintca-release-aab
+          path: android-twa/app-release-bundle.aab
+          retention-days: 30

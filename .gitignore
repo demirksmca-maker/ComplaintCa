@@ -3,5 +3,8 @@ android.keystore
 *.keystore
 *.jks
 android/
+android-twa/
+.android-sdk/
 *.apk
 *.aab
+scripts/twa-build/node_modules/
