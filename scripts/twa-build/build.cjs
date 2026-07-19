@@ -46,7 +46,9 @@ function run(cmd, env) {
 
 async function ensureAndroidSdk(prompt) {
   fs.mkdirSync(SDK_DIR, { recursive: true });
-  const sdkManagerPath = path.join(SDK_DIR, 'bin', 'sdkmanager');
+  // The commandlinetools zip's own top-level folder is "cmdline-tools" — it
+  // extracts to SDK_DIR/cmdline-tools/bin/sdkmanager, not SDK_DIR/bin/sdkmanager.
+  const sdkManagerPath = path.join(SDK_DIR, 'cmdline-tools', 'bin', 'sdkmanager');
   if (!fs.existsSync(sdkManagerPath)) {
     const installer = new AndroidSdkToolsInstaller(process, prompt);
     await installer.install(SDK_DIR);
