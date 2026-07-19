@@ -3191,7 +3191,8 @@ async function runAI(){
       : isLegal
         ? 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual incident, applicable law, demand. End with: "Failure to respond by [deadline] will result in formal escalation." Sign as: Complainant — Ref: [REF]]'
         : 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual issue, expected resolution, response deadline. Firm but professional. Sign as: Complainant — Ref: [REF]]'
-    );
+    )+
+    '\n\nCASE_POOL_SUGGEST:\n[Answer YES or NO only. YES only if the facts describe a genuine legal-rights violation with a specific applicable law AND a realistic remedy/compensation claim a lawyer could pursue on this person\'s behalf (e.g. wrongful termination, unpaid wages, tenant rights violation, discrimination, personal injury, breach of contract with damages). NO for routine administrative/service complaints with no real legal claim (noise, garbage, minor service issues, general dissatisfaction).]';
 
   var facts=_verifiedFactsFor(cat);
   var factsBlock=(facts && (facts.authorities||facts.deadline))
@@ -3247,7 +3248,8 @@ async function runAI(){
     var deadlineText=parseSection(full,'RESPONSE_DEADLINE','EMAIL_DRAFT');
     // Grounding: elimizde doğrulanmış gerçek süre varsa modelin ürettiğini değil onu göster.
     if(facts && facts.deadline && !isAnon) deadlineText=facts.deadline;
-    var emailText=parseSection(full,'EMAIL_DRAFT','XXXEND');
+    var emailText=parseSection(full,'EMAIL_DRAFT','CASE_POOL_SUGGEST');
+    var poolSuggest=parseSection(full,'CASE_POOL_SUGGEST','XXXEND');
 
     var descEl=document.getElementById('inp-desc');
     if(descEl&&complaintText){descEl.value=complaintText;updateCC();suggestCategoryAI();}
@@ -3284,6 +3286,16 @@ async function runAI(){
       html+='<div style="font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;font-family:Cinzel,serif">✉ Draft Complaint Email</div>';
       html+='<div id="email-draft-text" style="font-size:.78rem;color:var(--text);line-height:1.75;white-space:pre-wrap;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-family:Inter,sans-serif">'+emailText+'</div>';
       html+='<button onclick="var t=document.getElementById(\'email-draft-text\');if(t){navigator.clipboard.writeText(t.innerText).then(function(){});this.textContent=\'✓ Copied!\';var s=this;setTimeout(function(){s.textContent=\'📋 Copy Email\';},2000)}" style="margin-top:10px;width:100%;background:linear-gradient(135deg,#0f2952,#1a4fa0);color:white;border:none;border-radius:9px;padding:11px;font-size:.75rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:1px">📋 COPY EMAIL</button>';
+      html+='</div>';
+    }
+
+    // Asya's Case Pool recommendation — only worth showing if this isn't
+    // already marked Assert Legal Rights (no point suggesting what's already on).
+    if(!isLegal && /^\s*yes/i.test(poolSuggest)){
+      html+='<div style="padding:14px 16px;background:rgba(201,168,76,.1);border-top:1px solid var(--border)">';
+      html+='<div style="font-size:.78rem;color:var(--text);font-weight:600;margin-bottom:4px">⚖️ Asya thinks this may be a legal-rights case</div>';
+      html+='<div style="font-size:.74rem;color:var(--sub);line-height:1.5;margin-bottom:10px">Based on the facts, a lawyer may be able to pursue this on your behalf. Switch to "Assert Legal Rights" to send it to the Case Pool.</div>';
+      html+='<button onclick="var b=document.getElementById(\'ctype-legal\');if(b)b.click();this.textContent=\'✓ Switched\';this.disabled=true" style="width:100%;background:linear-gradient(135deg,#c9a84c,#8a7248);color:#1a1400;border:none;border-radius:9px;padding:10px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px">⚖️ Send to Case Pool</button>';
       html+='</div>';
     }
 
