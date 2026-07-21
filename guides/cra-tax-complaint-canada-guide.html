@@ -170,6 +170,20 @@ footer{
   font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
   box-shadow:0 3px 10px rgba(201,168,76,.35);
 }
+
+.updated-line{
+  font-family:'Inter',sans-serif;font-size:.68rem;color:rgba(255,255,255,.6);
+  letter-spacing:.3px;margin-top:10px;
+}
+.trust-box{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px 24px;margin:40px 0 0;text-align:left;
+}
+.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--sub);line-height:1.6}
+.trust-box p:last-child{margin-bottom:0}
+.trust-sources{margin:0 0 14px;padding-left:20px}
+.trust-sources li{font-size:.86rem;color:var(--sub);margin-bottom:6px;line-height:1.5}
+.trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -178,6 +192,7 @@ footer{
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Civic Guidance</div>
   <h1>CRA Problems: Two Different Processes</h1>
+  <div class="updated-line">Last updated: July 21, 2026 &middot; Reviewed against official sources</div>
 </div>
 
 <main>
@@ -267,9 +282,19 @@ window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user d
     <p>Use <a href="https://www.canadavrs.ca/" target="_blank" rel="noopener" style="color:var(--blue)">Canada VRS</a> (free sign-language video relay, available 24/7) or dial 711 for a text-based relay operator — both let you place a real phone call to any number listed on this page.</p>
   </div>
 
+
+  <div class="trust-box">
+    <h2 style="margin-top:0">Sources &amp; Verification</h2>
+    <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
+    <ul class="trust-sources">
+    <li><a href="https://www.canada.ca/en/taxpayers-ombudsperson/services/submit-complaint.html" target="_blank" rel="noopener">Office of the Taxpayers' Ombudsperson</a></li>
+    <li><a href="https://www.canada.ca/en/revenue-agency/services/about-canada-revenue-agency-cra/complaints-disputes/file-objection-cppei-appeal-minister.html" target="_blank" rel="noopener">File an Objection</a></li>
+    </ul>
+    <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
+  </div>
 </main>
 
-<footer>ComplaintCA · complaintca.ca</footer>
+<footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 
 </body>
 </html>

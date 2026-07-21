@@ -13,122 +13,128 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://www.complaintca.ca/about.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://www.complaintca.ca/guides/ontario-complaint-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/british-columbia-complaint-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/landlord-tenant-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/cyber-crime-reporting-canada-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/alberta-complaint-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/quebec-complaint-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/human-rights-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/employment-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/healthcare-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/airline-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/banking-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/telecom-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/insurance-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/immigration-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/manitoba-complaint-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/saskatchewan-complaint-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/atlantic-canada-complaint-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/cra-tax-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/canada-post-complaint-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/guides/workers-compensation-complaint-canada-guide.html</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
