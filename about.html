@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <title>About ComplaintCA | Who We Are</title>
-<meta name="description" content="ComplaintCA is a Canadian civic complaint platform. Learn who maintains it, how information is verified, and what ComplaintCA is not.">
+<meta name="description" content="ComplaintCA is an independent Canadian civic platform: our mission, vision, and independence — no advertising, no sponsorship, no political affiliation.">
 <meta name="theme-color" content="#0f2952">
 <link rel="canonical" href="https://www.complaintca.ca/about.html">
 
@@ -13,74 +13,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root{
-  --navy:#0f2952;--blue:#1a4fa0;--mid:#2563c0;--light:#3b82f6;
-  --ice:#e8f0fe;--white:#fff;--off:#f4f7ff;--text:#0f172a;
-  --sub:#475569;--muted:#5a6b80;--border:#dbeafe;
-  --gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
-  --radius:12px;
+  --navy:#0f2952;--blue:#1a4fa0;--ink:#0f172a;--sub:#475569;--muted:#6b7a90;
+  --off:#f6f4ee;--line:#d8cead;--gold:#a8802e;--gold-bright:#c9a84c;
+  --radius:4px;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+body{margin:0;background:var(--off);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.7}
 
 .hero{
-  background:linear-gradient(160deg,var(--navy) 0%,#163a7a 55%,var(--blue) 100%);
-  color:#fff;padding:52px 24px 44px;text-align:center;
-  display:flex;flex-direction:column;align-items:center;
+  background:radial-gradient(120% 140% at 50% -10%, #1a3d78 0%, var(--navy) 45%, #081a3a 100%);
+  color:#fff;padding:64px 24px 48px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;position:relative;
+}
+.seal{
+  width:64px;height:64px;border-radius:50%;border:1.5px solid var(--gold-bright);
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:22px;
+  background:rgba(201,168,76,.08);
 }
 .hero .eyebrow{
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
+  font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:4px;
+  text-transform:uppercase;color:var(--gold-bright);margin:0 0 16px;font-weight:600;
 }
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:18ch;
-  text-wrap:balance;
+  font-family:'Cinzel',serif;font-size:1.65rem;font-weight:700;margin:0;
+  line-height:1.4;letter-spacing:.3px;max-width:16ch;text-wrap:balance;
 }
+.hero .rule{width:44px;height:1.5px;background:var(--gold-bright);margin:20px 0 14px;opacity:.7}
 .updated-line{
-  font-family:'Inter',sans-serif;font-size:.68rem;color:rgba(255,255,255,.6);
-  letter-spacing:.3px;margin-top:10px;
+  font-family:'Inter',sans-serif;font-size:.68rem;color:rgba(255,255,255,.55);letter-spacing:.3px;
 }
 
-main{max-width:640px;margin:0 auto;padding:40px 24px 64px}
+main{max-width:620px;margin:0 auto;padding:52px 24px 70px}
 
 .lede{
-  font-size:1rem;color:var(--sub);border-left:3px solid var(--gold);
-  padding:2px 0 2px 18px;margin:0 0 40px;text-align:left;
+  font-size:1.05rem;color:var(--ink);margin:0 0 52px;text-align:left;font-weight:400;
 }
+.lede b{color:var(--navy);font-weight:700}
 
-h2{
-  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--blue);text-align:left;
-  border-top:1px solid var(--border);padding-top:12px;margin:48px 0 20px;
-  font-weight:700;
+.article{
+  padding:38px 0;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:64px 1fr;gap:20px;text-align:left;
 }
-h2:first-of-type{margin-top:0}
-
-main p{text-align:left;font-size:.95rem;color:var(--sub);margin:0 0 16px}
-
-.path-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px 22px;margin:0 0 16px;box-shadow:0 2px 8px rgba(15,41,82,.04);
-  text-align:left;
+.article:first-of-type{border-top:none;padding-top:0}
+.art-num{
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--gold);
+  padding-top:3px;text-transform:uppercase;
 }
-.path-card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
-.path-card p{margin:0;font-size:.92rem;color:var(--sub);line-height:1.6}
+.art-num small{display:block;font-size:.6rem;color:var(--muted);margin-top:3px;letter-spacing:1px}
+.article h2{
+  font-family:'Cinzel',serif;font-size:1.15rem;font-weight:700;color:var(--navy);
+  margin:0 0 12px;letter-spacing:.2px;
+}
+.article p{margin:0 0 12px;font-size:.94rem;color:var(--sub)}
+.article p:last-child{margin-bottom:0}
+.article p b{color:var(--ink)}
+
+.indep{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:30px 26px;text-align:left;position:relative;
+}
+.indep::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold-bright);
+}
+.indep h2{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold-bright);margin:0 0 12px}
+.indep p{margin:0 0 10px;font-size:.93rem;color:rgba(255,255,255,.88)}
+.indep p:last-child{margin-bottom:0}
+.indep b{color:#fff}
+
+.not-list{list-style:none;margin:0;padding:0}
+.not-list li{
+  font-size:.94rem;color:var(--sub);padding:10px 0 10px 26px;position:relative;
+  border-bottom:1px solid var(--line);
+}
+.not-list li:last-child{border-bottom:none}
+.not-list li::before{
+  content:"—";position:absolute;left:0;color:var(--gold);font-weight:700;
+}
+.not-list b{color:var(--ink)}
 
 .cta{
-  background:linear-gradient(135deg,var(--navy),var(--blue));
-  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:48px 0;
-  text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;
+  margin:56px 0 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;
+  padding-top:36px;border-top:1px solid var(--line);
 }
-.cta p{margin:0;font-size:1rem;max-width:32ch;color:#fff}
+.cta p{margin:0;font-size:.95rem;color:var(--sub);max-width:32ch}
 .cta a{
-  display:inline-block;background:var(--gold);color:var(--navy);
-  font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;
-  text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px;
+  display:inline-block;background:var(--navy);color:#fff;
+  font-family:'Cinzel',serif;font-weight:600;font-size:.78rem;
+  text-decoration:none;padding:13px 30px;letter-spacing:1px;border-radius:2px;
+  text-transform:uppercase;border:1px solid var(--navy);
 }
 
 footer{
-  text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
-  border-top:1px solid var(--border);letter-spacing:.5px;
+  text-align:center;padding:26px;font-size:.72rem;color:var(--muted);
+  border-top:1px solid var(--line);letter-spacing:.5px;
 }
 footer a{color:var(--muted)}
 </style>
@@ -89,34 +114,72 @@ footer a{color:var(--muted)}
 <body>
 
 <div class="hero">
-  <div class="eyebrow">ComplaintCA · Civic Guidance</div>
+  <div class="seal">⚖️</div>
+  <div class="eyebrow">A Canadian Civic Platform</div>
   <h1>About ComplaintCA</h1>
+  <div class="rule"></div>
   <div class="updated-line">Last updated: July 21, 2026</div>
 </div>
 
 <main>
-  <p class="lede">ComplaintCA is a Canadian civic complaint platform, built to help people reach the correct authority for their issue — without guesswork, and without needing a lawyer for most of it.</p>
+  <p class="lede">Most people don't lose a fight with an institution because they were wrong. They lose it because they didn't know <b>which door to knock on</b>, missed a deadline no one told them about, or gave up navigating a system built for lawyers, not people. ComplaintCA exists to fix that first, hardest step.</p>
 
-  <h2>What ComplaintCA Is</h2>
-  <p>ComplaintCA routes complaints, legal-rights claims, and access-to-information requests to the correct Canadian authority — municipal, provincial, or federal — based on what actually happened. It offers AI-assisted drafting in 7 languages, an MP finder, a lawyer panel for cases that need real representation, and cyber crime reporting support.</p>
-  <p>It's built and maintained by an independent founder, not a law firm or government body. The guides on this site are cross-checked against the official authority named in each one, and updated when that information changes.</p>
-
-  <h2>How We Verify Information</h2>
-  <div class="path-card">
-    <h3>Real authorities, not AI guesses</h3>
-    <p>Every authority, deadline, and legal citation shown to a user is drawn from a manually verified reference table — not generated freely by the AI. If a specific detail isn't confirmed, the system is instructed to say so rather than invent one.</p>
-  </div>
-  <div class="path-card">
-    <h3>Sources you can check yourself</h3>
-    <p>Every guide links directly to the official government, tribunal, or ombudsman page it references, so you can verify it independently rather than take our word for it.</p>
+  <div class="article">
+    <div class="art-num">Art. I<small>Mission</small></div>
+    <div>
+      <h2>Route every complaint to the right door</h2>
+      <p>ComplaintCA identifies the correct Canadian authority for a complaint — municipal, provincial, or federal — and helps a person file it correctly, the first time. It offers AI-assisted drafting in <b>7 languages</b>, an MP finder, cyber crime reporting, access-to-information requests, and a panel that connects legal-track cases with independent partner lawyers.</p>
+    </div>
   </div>
 
-  <h2>What ComplaintCA Is Not</h2>
-  <p>ComplaintCA is not a law firm and does not provide legal advice or representation. AI-drafted content is a starting point to review, not a finished legal document. For matters requiring representation, the Lawyer Panel connects you with independent legal counsel — ComplaintCA itself does not practice law.</p>
+  <div class="article">
+    <div class="art-num">Art. II<small>Vision</small></div>
+    <div>
+      <h2>No one turned away for not knowing the process</h2>
+      <p>A Canada where filing a complaint against a landlord, an employer, or a government office doesn't require a law degree, a paid consultation, or hours lost to the wrong office. Where the deciding factor in whether someone is heard is <b>whether they were wronged</b> — not whether they knew how the system works.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="art-num">Art. III<small>How It Works</small></div>
+    <div>
+      <h2>Three paths, one platform</h2>
+      <p><b>Notify an institution</b> — put a formal complaint on record, with the deadline tracked. <b>Assert a legal right</b> — build a case file organized well enough that an independent partner lawyer can pick it up and act. <b>Request information</b> — file the access-to-information request a government body is legally required to answer.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="art-num">Art. IV<small>Verification</small></div>
+    <div>
+      <h2>Real authorities, never AI guesses</h2>
+      <p>Every authority, deadline, and legal citation shown to a user is drawn from a manually verified reference table — not generated freely by the AI. If a detail isn't confirmed, the system says so rather than invent one. Every guide links directly to the official page it references, so nothing has to be taken on trust.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div style="grid-column:1/-1">
+      <div class="indep">
+        <h2>Art. V — Independence</h2>
+        <p>ComplaintCA is a <b>civil society platform</b>. Advertising and sponsorship are not for sale here — no offer of either, from any government, political party, or corporation, will be accepted.</p>
+        <p>It carries no political affiliation and receives no political support, of any kind, from any side. This is an independent human rights effort, standing on its own — not a cause anyone gets to attach their name to.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="art-num">Art. VI<small>What We Are Not</small></div>
+    <div>
+      <ul class="not-list">
+        <li><b>Not a law firm.</b> ComplaintCA does not provide legal advice or representation.</li>
+        <li><b>Not a finished document.</b> AI-drafted content is a starting point to review, not a filed legal submission.</li>
+        <li><b>Not the decision-maker.</b> Every outcome is decided by the actual authority the complaint is filed with.</li>
+      </ul>
+    </div>
+  </div>
 
   <div class="cta">
-    <p>Have a question, a correction, or want to get in touch?</p>
-    <a href="mailto:complaintcaca@gmail.com">Contact Us →</a>
+    <p>Found something wrong, or want to get in touch?</p>
+    <a href="mailto:complaintcaca@gmail.com">Contact Us</a>
   </div>
 </main>
 
