@@ -48,6 +48,19 @@ service cloud.firestore {
       allow delete: if resource.data.keys().hasAll(['ref', 'email']);
     }
 
+    // Partner Lawyer allowlist — each doc has an `email` field (lowercased).
+    // Existence of a doc with the signed-in user's email means "verified
+    // partner"; a lawyer may only read their own status, never the full
+    // roster (the where('email','==',...) query the client sends satisfies
+    // this rule because Firestore only allows it to run at all when every
+    // possible result matches). Docs are created by hand in the Firebase
+    // Console after manual bar-registry verification — no client write path
+    // exists, intentionally.
+    match /partnerLawyers/{docId} {
+      allow read: if request.auth != null && request.auth.token.email.lower() == resource.data.email;
+      allow write: if false;
+    }
+
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;

@@ -4735,8 +4735,10 @@ try{
       var pendingGoogle=false;
       try{ pendingGoogle=sessionStorage.getItem('cc_pending_google')==='1'; }catch(e){}
       if(pendingGoogle) _handleGoogleUser(user);
+      _refreshPartnerStatus(user.email);
     }else{
       localStorage.removeItem('cc_session');
+      _refreshPartnerStatus(null);
     }
     if(typeof window._applyAuthUI==='function') window._applyAuthUI(); // keep the Sign In tab in sync
   });
@@ -4860,12 +4862,41 @@ try{
 
   // Manually-verified Partner Lawyers (checked against each province's public
   // bar registry before being added here — see chat/plan notes). This is the
-  // lightweight MVP stand-in for a real verification flow: no new backend, no
-  // account flag — just an allowlist we extend by hand as lawyers are verified.
-  var PARTNER_LAWYER_EMAILS=['kasimdemirca@gmail.com'];
+  // lightweight MVP stand-in for a real verification flow: no new backend
+  // beyond Firestore, no self-serve signup — a lawyer's document is created
+  // by hand in the Firebase Console (any doc ID, with an `email` field set
+  // to their lowercased email) once verified, so adding a new partner no
+  // longer requires a code deploy. Looked up via a where('email','==',...)
+  // query rather than getDoc-by-ID, since the vendor bundle only exports
+  // the plural getDocs, not getDoc.
+  // _isPartnerLawyer() itself must stay synchronous (renderLawyerPanelHTML
+  // calls it mid-render), so the actual Firestore read happens in
+  // _refreshPartnerStatus() and caches the result here; callers just read
+  // whatever's cached (defaults to false until the first check resolves).
+  var _partnerStatusCache={email:null, isPartner:false};
   function _isPartnerLawyer(){
     var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
-    return !!(s&&s.email&&PARTNER_LAWYER_EMAILS.indexOf(s.email.toLowerCase())!==-1);
+    var email=s&&s.email?s.email.toLowerCase():null;
+    if(!email) return false;
+    return _partnerStatusCache.email===email && _partnerStatusCache.isPartner;
+  }
+  async function _refreshPartnerStatus(email){
+    if(!email){ _partnerStatusCache={email:null, isPartner:false}; return; }
+    var lower=email.toLowerCase();
+    var isPartner=false;
+    try{
+      var q=query(collection(db,'partnerLawyers'),where('email','==',lower),limit(1));
+      var snap=await getDocs(q);
+      isPartner=!snap.empty;
+    }catch(e){ isPartner=false; }
+    _partnerStatusCache={email:lower, isPartner:isPartner};
+    if(typeof _updatePartnerBadge==='function') _updatePartnerBadge();
+    if(_lawyerFeedStarted && _lastLawyerSnapshot){
+      // Re-render with the now-known partner status (contact info unlock
+      // depends on it) without re-subscribing to the snapshot listener.
+      var lpbox=document.getElementById('lawyer-panel-feed');
+      if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(_lastLawyerSnapshot);
+    }
   }
   function renderLawyerPanelHTML(snapshot){
     if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--lex-muted);font-size:.82rem;font-family:\'EB Garamond\',serif;font-style:italic">'+V.t('feed_none')+'</div>';
@@ -4917,6 +4948,7 @@ try{
   // açıyor, o yüzden bu dinleyici ancak oturum varken kurulur (aksi halde
   // permission-denied ile hemen sonlanır ve giriş sonrası kendini yenilemez).
   var _lawyerFeedStarted=false;
+  var _lastLawyerSnapshot=null;
   // Reflects partner status right away — independent of whether the case data
   // itself loads. Being a Partner Lawyer is about who's signed in, not whether
   // Firestore happened to return results, so this must never wait on onSnapshot.
@@ -4933,6 +4965,7 @@ try{
     _lawyerFeedStarted=true;
     var legalFeedQ=query(collection(db,'complaints'),where('isLegal','==',true),orderBy('date','desc'),limit(20));
     onSnapshot(legalFeedQ,function(snapshot){
+      _lastLawyerSnapshot=snapshot;
       var lpbox=document.getElementById('lawyer-panel-feed');
       if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(snapshot);
       var ledger=document.getElementById('lwp-ledger');
