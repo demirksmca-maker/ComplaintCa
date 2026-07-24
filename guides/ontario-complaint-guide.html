@@ -161,6 +161,72 @@ footer{
   font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
   box-shadow:0 3px 10px rgba(201,168,76,.35);
 }
+
+/* ===== ComplaintCA in-card support tools ===== */
+.dc-pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.dc-pill{
+  display:flex;align-items:center;gap:5px;
+  background:#fff;border:1.3px solid var(--blue);
+  border-radius:12px;padding:5px 11px;cursor:pointer;
+  font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;transition:background .15s;
+}
+.dc-pill:hover{background:var(--ice)}
+.dc-pill:active{background:var(--ice)}
+.dc-pill .dc-p-icon{display:flex;color:var(--blue)}
+.dc-pill .dc-p-icon svg{display:block}
+.dc-pill .dc-p-label{color:var(--blue);font-size:.72rem;font-weight:700}
+
+.dc-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;opacity:0;pointer-events:none;transition:opacity .25s}
+.dc-backdrop.open{opacity:1;pointer-events:auto}
+.dc-sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:1001;background:#fff;border-radius:20px 20px 0 0;
+  max-width:640px;margin:0 auto;box-shadow:0 -8px 30px rgba(15,41,82,.25);
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  max-height:88vh;overflow-y:auto;padding:10px 22px 26px;font-family:'Inter',sans-serif;
+}
+.dc-sheet.open{transform:translateY(0)}
+.dc-sheet-handle{width:38px;height:4px;background:var(--border);border-radius:3px;margin:0 auto 14px}
+.dc-sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.dc-sheet-head-left{display:flex;align-items:center;gap:10px;min-width:0}
+.dc-sheet-icon{width:32px;height:32px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff}
+.dc-sheet-icon svg{display:block}
+.dc-sheet h3{margin:0;font-size:.96rem;font-weight:700;color:var(--navy);line-height:1.3;font-family:'Inter',sans-serif}
+.dc-sheet-close{background:var(--off);border:none;border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:1rem;cursor:pointer;flex-shrink:0}
+.dc-tabs{display:flex;gap:6px;margin:16px 0 18px;border-bottom:1px solid var(--border)}
+.dc-tab{flex:1;background:none;border:none;padding:9px 4px 11px;cursor:pointer;font-size:.72rem;font-weight:700;color:var(--muted);border-bottom:2.5px solid transparent;margin-bottom:-1px;text-align:center;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px}
+.dc-tab svg{display:block}
+.dc-tab.active{color:var(--navy);border-bottom-color:var(--blue)}
+.dc-panel{display:none}
+.dc-panel.active{display:block}
+.dc-field{margin-bottom:14px}
+.dc-field label{display:block;font-size:.72rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.dc-field input[type="date"]{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:11px 12px;font-size:.9rem;font-family:'Inter',sans-serif;background:var(--off);color:var(--text)}
+.dc-field input:focus{outline:none;border-color:var(--blue);background:#fff}
+.dc-calc-btn{width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;padding:13px;cursor:pointer;box-shadow:0 3px 10px rgba(26,79,160,.3)}
+.dc-result{margin-top:16px;border-radius:12px;padding:15px 16px;display:none;border:1.5px solid var(--border)}
+.dc-result.show{display:block}
+.dc-r-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.dc-r-days{font-family:'Cinzel',serif;font-weight:900;font-size:1.7rem;line-height:1}
+.dc-r-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+.dc-r-badge{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:5px 10px;border-radius:20px;color:#fff;white-space:nowrap}
+.dc-r-detail{font-size:.82rem;color:var(--sub);line-height:1.6;border-top:1px dashed var(--border);padding-top:9px}
+.dc-r-detail b{color:var(--text)}
+.dc-result.ok{background:#f0faf4;border-color:#bfe6cc}.dc-result.ok .dc-r-days{color:#1a8a52}.dc-result.ok .dc-r-badge{background:#1a8a52}
+.dc-result.warn{background:#fdf7ea;border-color:#eeddb0}.dc-result.warn .dc-r-days{color:#b8863a}.dc-result.warn .dc-r-badge{background:#b8863a}
+.dc-result.danger{background:#fdeeee;border-color:#f0c4c4}.dc-result.danger .dc-r-days{color:var(--crimson)}.dc-result.danger .dc-r-badge{background:var(--crimson)}
+.dc-calc-foot{font-size:.7rem;color:var(--muted);margin-top:12px;text-align:center}
+.dc-remind-btn{width:100%;margin-top:10px;background:#fff;border:1.3px solid var(--blue);border-radius:9px;color:var(--blue);font-size:.76rem;font-weight:700;padding:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Inter',sans-serif}
+.dc-toast{display:none;margin-top:8px;font-size:.72rem;color:#1a8a52;text-align:center;font-weight:600}
+.dc-toast.show{display:block}
+.dc-tpl-box{background:var(--off);border:1px solid var(--border);border-radius:10px;padding:14px 15px;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;margin-bottom:12px;max-height:260px;overflow-y:auto}
+.dc-tpl-box .ph{color:var(--blue);font-weight:600}
+.dc-copy-btn{width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));border:none;border-radius:9px;color:#fff;font-size:.8rem;font-weight:700;padding:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Inter',sans-serif}
+.dc-chk-list{display:flex;flex-direction:column;gap:9px}
+.dc-chk-item{display:flex;align-items:center;gap:10px;background:var(--off);border:1px solid var(--border);border-radius:9px;padding:11px 13px;cursor:pointer}
+.dc-chk-item input{width:17px;height:17px;accent-color:var(--blue);flex-shrink:0}
+.dc-chk-item span{font-size:.84rem;color:var(--text)}
+.dc-chk-item.checked{opacity:.5}
+.dc-chk-item.checked span{text-decoration:line-through}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -199,30 +265,35 @@ window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user d
     <h3>Consumer &amp; business disputes</h3>
     <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
     <a class="official" href="https://www.ontario.ca/page/consumer-protection" target="_blank" rel="noopener">Consumer Protection Ontario — 1-800-889-9768 →</a>
+    <div class="dc-pill-row"><button type="button" class="dc-pill" onclick="dcOpen('consumer','deadline')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg></span><span class="dc-p-label">Deadline</span></button><button type="button" class="dc-pill" onclick="dcOpen('consumer','template')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></span><span class="dc-p-label">Draft Letter</span></button><button type="button" class="dc-pill" onclick="dcOpen('consumer','checklist')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="dc-p-label">What You Need</span></button></div>
   </div>
 
   <div class="path-card">
     <h3>Municipal &amp; city services (Toronto)</h3>
     <p>Unresolved issue with a City of Toronto department — waste collection, permits, bylaw enforcement.</p>
     <a class="official" href="https://www.ombudsmantoronto.ca/" target="_blank" rel="noopener">Ombudsman Toronto →</a>
+    <div class="dc-pill-row"><button type="button" class="dc-pill" onclick="dcOpen('municipal','deadline')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg></span><span class="dc-p-label">Deadline</span></button><button type="button" class="dc-pill" onclick="dcOpen('municipal','template')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></span><span class="dc-p-label">Draft Letter</span></button><button type="button" class="dc-pill" onclick="dcOpen('municipal','checklist')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="dc-p-label">What You Need</span></button></div>
   </div>
 
   <div class="path-card">
     <h3>Federal services &amp; your MP</h3>
     <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
     <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
+    <div class="dc-pill-row"><button type="button" class="dc-pill" onclick="dcOpen('mp','deadline')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg></span><span class="dc-p-label">Deadline</span></button><button type="button" class="dc-pill" onclick="dcOpen('mp','template')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></span><span class="dc-p-label">Draft Letter</span></button><button type="button" class="dc-pill" onclick="dcOpen('mp','checklist')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="dc-p-label">What You Need</span></button></div>
   </div>
 
   <div class="path-card">
     <h3>Cyber crime &amp; online fraud</h3>
     <p>Scams, phishing, identity theft, online harassment.</p>
     <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
+    <div class="dc-pill-row"><button type="button" class="dc-pill" onclick="dcOpen('cyber','deadline')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"></path><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span><span class="dc-p-label">Recovery Window</span></button><button type="button" class="dc-pill" onclick="dcOpen('cyber','template')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></span><span class="dc-p-label">Draft Letter</span></button><button type="button" class="dc-pill" onclick="dcOpen('cyber','checklist')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="dc-p-label">What You Need</span></button></div>
   </div>
 
   <div class="path-card">
     <h3>Legal disputes needing representation</h3>
     <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
     <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
+    <div class="dc-pill-row"><button type="button" class="dc-pill" onclick="dcOpen('legal','deadline')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg></span><span class="dc-p-label">Deadline</span></button><button type="button" class="dc-pill" onclick="dcOpen('legal','template')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></span><span class="dc-p-label">Draft Letter</span></button><button type="button" class="dc-pill" onclick="dcOpen('legal','checklist')"><span class="dc-p-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span><span class="dc-p-label">What You Need</span></button></div>
   </div>
 
   <h2>Where ComplaintCA Fits</h2>
@@ -263,6 +334,176 @@ window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user d
 </main>
 
 <footer>ComplaintCA · complaintca.ca</footer>
+
+
+<!-- ComplaintCA in-card tools: bottom sheet -->
+<div class="dc-backdrop" id="dc-backdrop" onclick="dcClose()"></div>
+<div class="dc-sheet" id="dc-sheet" role="dialog" aria-modal="true">
+  <div class="dc-sheet-handle"></div>
+  <div class="dc-sheet-head">
+    <div class="dc-sheet-head-left">
+      <div class="dc-sheet-icon"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg></div>
+      <h3 id="dc-sheet-title">—</h3>
+    </div>
+    <button class="dc-sheet-close" onclick="dcClose()" aria-label="Close">&times;</button>
+  </div>
+  <div class="dc-tabs">
+    <button class="dc-tab" id="dc-tab-deadline" onclick="dcSwitch('deadline')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline></svg><span id="dc-tab-deadline-label">Deadline</span></button>
+    <button class="dc-tab" id="dc-tab-template" onclick="dcSwitch('template')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg>Draft Letter</button>
+    <button class="dc-tab" id="dc-tab-checklist" onclick="dcSwitch('checklist')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>What You Need</button>
+  </div>
+  <div class="dc-panel" id="dc-panel-deadline">
+    <div class="dc-field">
+      <label for="dc-date">Date of the incident / decision</label>
+      <input type="date" id="dc-date">
+    </div>
+    <button class="dc-calc-btn" onclick="dcCalc()">Calculate my deadline &rarr;</button>
+    <div class="dc-result" id="dc-result">
+      <div class="dc-r-top">
+        <div><div class="dc-r-days" id="dc-r-days">—</div><div class="dc-r-label">days left</div></div>
+        <div class="dc-r-badge" id="dc-r-badge">—</div>
+      </div>
+      <div class="dc-r-detail" id="dc-r-detail"></div>
+      <button class="dc-remind-btn" onclick="document.getElementById('dc-remind-toast').classList.add('show')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>Remind me of this date</button>
+      <div class="dc-toast" id="dc-remind-toast">Reminder set (demo) &#10003;</div>
+    </div>
+    <div class="dc-calc-foot">This is an estimate — always confirm the exact rules with the authority itself.</div>
+  </div>
+  <div class="dc-panel" id="dc-panel-template">
+    <div class="dc-tpl-box" id="dc-tpl-text"></div>
+    <button class="dc-copy-btn" onclick="dcCopy()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>Copy this draft</button>
+    <div class="dc-toast" id="dc-copy-toast">Copied &#10003;</div>
+  </div>
+  <div class="dc-panel" id="dc-panel-checklist">
+    <div class="dc-chk-list" id="dc-chk-list"></div>
+  </div>
+</div>
+
+<script>
+var DC_CATS = {
+  consumer: {
+    label: 'Consumer & Business Disputes', days: 730, deadlineLabel: 'Deadline',
+    resultName: 'Ontario civil claim — 2-year limitation',
+    note: 'To sue in Ontario you generally have 2 years from when you discovered the problem (Limitations Act, 2002). Filing a complaint with Consumer Protection Ontario has no strict deadline, but acting early helps.',
+    template: 'To: Consumer Protection Ontario\n\nSubject: Formal Complaint — [Company Name]\n\nOn [date] I purchased [product/service]. The problem arose as follows: [brief description of the issue].\n\nI contacted the company [X] times but the issue was not resolved. I am therefore requesting [refund / replacement / compensation].\n\nPlease find attached my receipt, photos and correspondence.\n\nSincerely,\n[Full Name]',
+    checklist: ['Receipt or invoice', 'Photo of the product/service', 'Correspondence with the company', 'Warranty document (if any)']
+  },
+  municipal: {
+    label: 'Municipal / Ombudsman Toronto', days: 9999, deadlineLabel: 'Deadline',
+    resultName: 'Ombudsman Toronto complaint',
+    note: 'There is no strict statutory deadline, but you must usually raise the issue with the city department first and act promptly.',
+    template: 'To: Ombudsman Toronto\n\nSubject: Unresolved Complaint about [City Department]\n\nOn [date] I contacted [department name] about [description of the issue] (Reference No: [if any]). The problem is still not resolved.\n\nI am requesting an independent review of this matter.\n\nSincerely,\n[Full Name]',
+    checklist: ['Complaint reference number (if any)', 'Photos / evidence', 'Correspondence with the department', 'Dates and times of the incident']
+  },
+  mp: {
+    label: 'Federal Service / MP', days: 9999, deadlineLabel: 'Deadline',
+    resultName: 'Federal / MP complaint',
+    note: 'There is no strict legal deadline for contacting your MP, but raising it early speeds up the process.',
+    template: 'To: [Member of Parliament], MP\n\nSubject: Federal Service Issue\n\nAs a constituent in your riding, I am experiencing a problem with a service from [federal agency]: [description of the issue]. My file/application number is: [if any].\n\nI would appreciate your office intervening on this matter.\n\nSincerely,\n[Full Name]',
+    checklist: ['Application / file number', 'ID / proof of residence', 'Relevant correspondence', 'Timeline of events']
+  },
+  cyber: {
+    label: 'Cyber Crime — Bank Dispute', days: 120, deadlineLabel: 'Recovery Window',
+    resultName: 'Bank / card chargeback window',
+    note: 'Visa and Mastercard generally allow ~120 days from the transaction date to dispute a charge; for fraud this can extend up to 540 days. Confirm with your bank — and report to the Canadian Anti-Fraud Centre.',
+    template: 'To: [Bank] Customer Service / Fraud Department\n\nSubject: Unauthorized Transaction Dispute\n\nOn [date] I found an unauthorized transaction of [amount] on my account. I did not make this transaction and I am disputing it immediately.\n\nTransaction details: [transaction no, date, amount].\n\nI request that my account be secured and the transaction reversed.\n\nSincerely,\n[Full Name]',
+    checklist: ['Screenshot of the transaction', 'Bank account statement', 'Copy of the suspicious message/email', 'Canadian Anti-Fraud Centre report number']
+  },
+  legal: {
+    label: 'Legal Dispute', days: 730, deadlineLabel: 'Deadline',
+    resultName: 'Ontario civil claim — 2-year limitation',
+    note: 'In Ontario you generally have 2 years from when you discovered the issue to start a legal claim (Limitations Act, 2002).',
+    template: 'To: ComplaintCA Lawyer Panel\n\nSubject: Request for Legal Guidance\n\nThe issue I am facing: [brief summary of what happened].\n\nSteps I have taken so far: [if any].\n\nI would like legal guidance on this matter.\n\nSincerely,\n[Full Name]',
+    checklist: ['Written summary of events', 'Relevant documents / contracts', 'Previous correspondence', 'Witness information (if any)']
+  }
+};
+
+var dcCurrent = 'consumer';
+
+function dcOpen(catKey, tab){
+  dcCurrent = catKey;
+  var cat = DC_CATS[catKey];
+  document.getElementById('dc-sheet-title').textContent = cat.label;
+  document.getElementById('dc-tab-deadline-label').textContent = cat.deadlineLabel;
+  document.getElementById('dc-result').classList.remove('show');
+  document.getElementById('dc-remind-toast').classList.remove('show');
+  document.getElementById('dc-copy-toast').classList.remove('show');
+  document.getElementById('dc-date').value = '';
+  dcRenderTemplate(catKey);
+  dcRenderChecklist(catKey);
+  dcSwitch(tab || 'deadline');
+  document.getElementById('dc-backdrop').classList.add('open');
+  document.getElementById('dc-sheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function dcClose(){
+  document.getElementById('dc-backdrop').classList.remove('open');
+  document.getElementById('dc-sheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function dcSwitch(tab){
+  ['deadline','template','checklist'].forEach(function(t){
+    document.getElementById('dc-tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('dc-panel-'+t).classList.toggle('active', t===tab);
+  });
+}
+function dcCalc(){
+  var cat = DC_CATS[dcCurrent];
+  var dateVal = document.getElementById('dc-date').value;
+  var box = document.getElementById('dc-result');
+  if(!dateVal){ document.getElementById('dc-date').style.borderColor = 'var(--crimson)'; return; }
+  document.getElementById('dc-date').style.borderColor = '';
+  var incident = new Date(dateVal + 'T00:00:00');
+  var deadline = new Date(incident);
+  deadline.setDate(deadline.getDate() + cat.days);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var remaining = Math.round((deadline - today) / 86400000);
+  box.classList.remove('ok','warn','danger');
+  var badge;
+  if(cat.days >= 9999){ box.classList.add('ok'); badge = 'No fixed deadline'; }
+  else if(remaining < 0){ box.classList.add('danger'); badge = 'Passed'; }
+  else if(remaining <= 30){ box.classList.add('danger'); badge = 'Urgent'; }
+  else if(remaining <= 90){ box.classList.add('warn'); badge = 'Approaching'; }
+  else { box.classList.add('ok'); badge = 'You have time'; }
+  document.getElementById('dc-r-days').textContent = cat.days >= 9999 ? '\u221e' : (remaining < 0 ? '0' : remaining);
+  document.getElementById('dc-r-badge').textContent = badge;
+  var dStr = deadline.toLocaleDateString('en-CA', {year:'numeric', month:'long', day:'numeric'});
+  document.getElementById('dc-r-detail').innerHTML =
+    '<b>' + cat.resultName + '</b>' +
+    (cat.days >= 9999 ? '<br>' + cat.note :
+      '<br>Estimated final date: <b>' + dStr + '</b><br>' + cat.note +
+      (remaining < 0 ? '<br><b>This window may have passed</b> — contact the authority anyway; some allow exceptions.' : ''));
+  box.classList.add('show');
+  document.getElementById('dc-remind-toast').classList.remove('show');
+}
+function dcRenderTemplate(catKey){
+  var cat = DC_CATS[catKey];
+  var esc = cat.template.replace(/[&<>]/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]; });
+  var hl = esc.replace(/\[([^\]]+)\]/g, '<span class="ph">[$1]</span>');
+  document.getElementById('dc-tpl-text').innerHTML = hl;
+  document.getElementById('dc-copy-toast').classList.remove('show');
+}
+function dcCopy(){
+  var cat = DC_CATS[dcCurrent];
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(cat.template).catch(function(){}); }
+  document.getElementById('dc-copy-toast').classList.add('show');
+}
+function dcRenderChecklist(catKey){
+  var cat = DC_CATS[catKey];
+  var list = document.getElementById('dc-chk-list');
+  list.innerHTML = '';
+  cat.checklist.forEach(function(item, i){
+    var row = document.createElement('label');
+    row.className = 'dc-chk-item';
+    var cb = document.createElement('input'); cb.type = 'checkbox';
+    cb.addEventListener('change', function(){ row.classList.toggle('checked', cb.checked); });
+    var sp = document.createElement('span'); sp.textContent = item;
+    row.appendChild(cb); row.appendChild(sp);
+    list.appendChild(row);
+  });
+}
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') dcClose(); });
+</script>
 
 </body>
 </html>
