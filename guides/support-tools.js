@@ -37,7 +37,7 @@
       checklist: ["Résumé écrit des faits", "Documents / contrats pertinents", "Correspondance antérieure", "Coordonnées des témoins (le cas échéant)"]
     },
     cyber: {
-      label: "Cyber Crime — Bank Dispute", days: 120, deadlineLabel: "Recovery Window", icon: "shield",
+      label: "Cyber Crime — Bank Dispute", days: 120, deadlineLabel: "Recovery Window", pillLabel: "Recovery", icon: "shield",
       resultName: "Bank / card chargeback window",
       note: "Visa and Mastercard generally allow ~120 days from the transaction date to dispute a charge; for fraud this can extend up to 540 days. Confirm with your bank — and report to the Canadian Anti-Fraud Centre.",
       template: "To: [Bank] Customer Service / Fraud Department\n\nSubject: Unauthorized Transaction Dispute\n\nOn [date] I found an unauthorized transaction of [amount] on my account. I did not make this transaction and I am disputing it immediately.\n\nTransaction details: [transaction no, date, amount].\n\nPlease secure my account and reverse the transaction.\n\nSincerely,\n[Full Name]",
@@ -114,14 +114,14 @@
       checklist: ["Date and channel of contact (phone/mail)", "Agent ID or reference (if any)", "What went wrong", "Any correspondence"]
     },
     airline: {
-      label: "Airline Complaint", days: 365, deadlineLabel: "Claim Deadline",
+      label: "Airline Complaint", days: 365, deadlineLabel: "Claim Deadline", pillLabel: "Deadline",
       resultName: "Airline compensation claim — 1 year",
       note: "To claim compensation for a delay/cancellation you must file with the airline in writing within 1 year of the flight. The airline has 30 days to respond; if unsatisfied you can then escalate to the Canadian Transportation Agency (CTA).",
       template: "To: [Airline] Customer Relations\n\nSubject: APPR Compensation Claim — Flight [number], [date]\n\nMy flight [number] on [date] from [origin] to [destination] was [delayed/cancelled/denied boarding] by [duration]. Under the Air Passenger Protection Regulations I am claiming [compensation/refund].\n\nBooking reference: [PNR].\n\nSincerely,\n[Full Name]",
       checklist: ["Booking reference (PNR) and ticket", "Flight number and date", "Proof of delay/cancellation (email/screenshot)", "Boarding passes / receipts for expenses"]
     },
     banking: {
-      label: "Banking Complaint — OBSI", days: 180, deadlineLabel: "Escalation Deadline",
+      label: "Banking Complaint — OBSI", days: 180, deadlineLabel: "Escalation Deadline", pillLabel: "Deadline",
       resultName: "OBSI escalation — 180 days",
       note: "First complain to the bank and let its process run (up to 56 days). If unsatisfied, you generally have 180 days from the bank's final response to escalate to OBSI (free).",
       template: "To: [Bank] — Complaints / Ombudsman\n\nSubject: Formal Complaint\n\nOn [date] I experienced [issue: fees / error / service]. Account: [xxxx]. I contacted the bank on [dates] but the matter is unresolved.\n\nI am requesting a final resolution before escalating to OBSI.\n\nSincerely,\n[Full Name]",
@@ -142,7 +142,7 @@
       checklist: ["Policy number and claim number", "The insurer's decision letter", "Your evidence of the loss", "Correspondence with the adjuster"]
     },
     wsib: {
-      label: "Workers' Compensation Appeal", days: 180, deadlineLabel: "Appeal Deadline",
+      label: "Workers' Compensation Appeal", days: 180, deadlineLabel: "Appeal Deadline", pillLabel: "Deadline",
       resultName: "Workers' comp appeal — ~6 months",
       note: "Most provinces require you to object/appeal a workers' compensation decision within about 6 months of the decision letter (e.g. Ontario WSIB Intent to Object; then WSIAT). Deadlines vary — confirm with your board and act fast.",
       template: "To: [Workers' Compensation Board]\n\nSubject: Intent to Object / Appeal — Claim [number]\n\nI am objecting to the decision dated [date] denying/reducing my claim [number].\n\nReasons: [why the decision is wrong]. Supporting medical evidence attached.\n\nSincerely,\n[Full Name]",
@@ -178,11 +178,11 @@
   }
 
   var CSS = [
-    ".dc-pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}",
-    ".dc-pill{display:flex;align-items:center;gap:5px;background:#fff;border:1.3px solid var(--blue);border-radius:12px;padding:5px 11px;cursor:pointer;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;transition:background .15s}",
-    ".dc-pill:hover,.dc-pill:active{background:var(--ice)}",
-    ".dc-pill .dc-pi{display:flex;color:var(--blue)}.dc-pill .dc-pi svg{display:block}",
-    ".dc-pill .dc-pl{color:var(--blue);font-size:.72rem;font-weight:700}",
+    ".dc-pill-row{display:flex;gap:4px;flex-wrap:nowrap;margin-top:12px}",
+    ".dc-pill{display:flex;align-items:center;justify-content:center;gap:4px;flex:1 1 0;min-width:0;background:linear-gradient(135deg,#1fc8db,#0e9cb5);border:none;border-radius:10px;padding:6px 6px;cursor:pointer;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;box-shadow:0 2px 7px rgba(14,156,181,.28);transition:filter .15s}",
+    ".dc-pill:hover,.dc-pill:active{filter:brightness(1.06)}",
+    ".dc-pill .dc-pi{display:flex;color:#fff;flex-shrink:0}.dc-pill .dc-pi svg{display:block}",
+    ".dc-pill .dc-pl{color:#fff;font-size:.62rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
     ".dc-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;opacity:0;pointer-events:none;transition:opacity .25s}",
     ".dc-backdrop.open{opacity:1;pointer-events:auto}",
     ".dc-sheet{position:fixed;left:0;right:0;bottom:0;z-index:1001;background:#fff;border-radius:20px 20px 0 0;max-width:640px;margin:0 auto;box-shadow:0 -8px 30px rgba(15,41,82,.25);transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);max-height:88vh;overflow-y:auto;padding:10px 22px 26px;font-family:'Inter',sans-serif}",
@@ -367,9 +367,9 @@
       var c = CATS[key];
       var row = document.createElement("div");
       row.className = "dc-pill-row";
-      row.appendChild(pill(key, "d", c.deadlineLabel || "Deadline", c.icon === "shield" ? "shield" : "clock"));
+      row.appendChild(pill(key, "d", c.pillLabel || c.deadlineLabel || "Deadline", c.icon === "shield" ? "shield" : "clock"));
       row.appendChild(pill(key, "t", "Draft Letter", "doc"));
-      row.appendChild(pill(key, "c", "What You Need", "check"));
+      row.appendChild(pill(key, "c", "Checklist", "check"));
       node.appendChild(row);
     }
   }
