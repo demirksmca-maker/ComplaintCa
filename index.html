@@ -4532,7 +4532,7 @@ document.addEventListener('keydown',function(e){
   el.click();
 });
 
-document.addEventListener('DOMContentLoaded',function(){V.init();_handleGuidePrefill();_handleTrackLink();_updateThemeBtn();});
+document.addEventListener('DOMContentLoaded',function(){V.init();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_updateThemeBtn();});
 // Light/dark toggle — the theme itself is applied at parse-time (see the inline
 // script in <head>, which avoids a flash of the wrong theme); this just flips it
 // and keeps the topbar icon in sync.
@@ -4586,6 +4586,18 @@ function _handleTrackLink(){
     goApp('track');
     var inp=document.getElementById('trk-inp');
     if(inp){ inp.value=ref.toUpperCase(); if(typeof doTrack==='function') doTrack(); }
+  }catch(e){}
+}
+// /start sayfasındaki "araca köprü" kartları: /?go=new|lawyer|cyber|verify|track|rep
+// → doğrudan ilgili uygulama sekmesine düş.
+function _handleGoLink(){
+  try{
+    var go=new URLSearchParams(location.search).get('go');
+    if(!go) return;
+    history.replaceState(null,'',location.pathname);
+    if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
+    var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
+    if(allowed[go]) goApp(go);
   }catch(e){}
 }
 function _handleGuidePrefill(){

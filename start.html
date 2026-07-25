@@ -1,0 +1,271 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start — Find the Right Authority for Your Complaint | ComplaintCA</title>
+<meta name="description" content="Tell ComplaintCA what happened and get routed to the right authority anywhere in Canada — with a deadline calculator, a ready complaint letter, and an evidence checklist.">
+<link rel="canonical" href="https://www.complaintca.ca/start.html">
+<meta name="theme-color" content="#0f2952">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#0f2952;--blue:#1a4fa0;--ice:#e8f0fe;--off:#f4f7ff;--text:#0f172a;
+  --sub:#475569;--muted:#5a6b80;--border:#dbeafe;--gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+.demo-flag{position:sticky;top:0;z-index:80;background:var(--crimson);color:#fff;text-align:center;font-size:.7rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 12px}
+
+.hero{background:linear-gradient(160deg,var(--navy) 0%,#163a7a 55%,var(--blue) 100%);color:#fff;padding:44px 24px 30px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.hero .eyebrow{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:0 0 12px;font-weight:700}
+.hero h1{font-family:'Cinzel',serif;font-size:1.7rem;font-weight:700;margin:0;line-height:1.35;letter-spacing:.3px;max-width:16ch;text-wrap:balance}
+.hero .sub{color:rgba(255,255,255,.8);font-size:.9rem;margin-top:12px;max-width:40ch}
+
+main{max-width:640px;margin:0 auto;padding:26px 24px 64px}
+
+.asya-feature{background:linear-gradient(160deg,#fff,var(--ice));border:1.5px solid var(--gold);border-radius:14px;padding:14px 16px;margin:0 0 18px;position:relative;box-shadow:0 3px 14px rgba(15,41,82,.12)}
+.asya-inner{display:flex;gap:10px;align-items:flex-start}
+.asya-ring{width:34px;height:34px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;position:relative}
+.asya-ring::before{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid var(--gold);opacity:.55;animation:ap 2.4s ease-out infinite}
+@keyframes ap{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.4);opacity:0}}
+.asya-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:.85rem}
+.asya-body{flex:1;min-width:0}
+.asya-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.76rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.asya-name .tag{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);padding:2px 7px;border-radius:9px}
+.asya-bubble{background:#fff;border:1px solid var(--border);border-radius:4px 10px 10px 10px;padding:7px 10px;font-size:.76rem;color:var(--sub);line-height:1.5;margin-bottom:8px}
+.asya-row{display:flex;gap:6px}
+.asya-input{flex:1;border:1.5px solid var(--border);border-radius:20px;padding:8px 13px;font-size:.8rem;font-family:'Inter',sans-serif;background:var(--off);color:var(--text);min-width:0}
+.asya-send{background:linear-gradient(135deg,var(--gold),var(--dark-gold));border:none;border-radius:50%;color:var(--navy);font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer}
+
+/* province selector */
+.prov-label{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:6px 0 8px}
+.prov-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:26px}
+.prov-chip{border:1.3px solid var(--border);background:#fff;color:var(--sub);border-radius:20px;padding:6px 13px;font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:.15s}
+.prov-chip.on{background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;border-color:transparent}
+
+h2{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);text-align:left;border-top:1px solid var(--border);padding-top:12px;margin:26px 0 18px;font-weight:700}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:0 0 14px;box-shadow:0 2px 8px rgba(15,41,82,.04)}
+.card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
+.card p{margin:0 0 12px;font-size:.9rem;color:var(--sub);line-height:1.6}
+.card .official{display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px}
+
+.pill-row{display:flex;gap:4px;flex-wrap:nowrap;margin-top:12px}
+.pill{display:flex;align-items:center;justify-content:center;gap:4px;flex:1 1 0;min-width:0;background:linear-gradient(135deg,#1fc8db,#0e9cb5);border:none;border-radius:10px;padding:6px 6px;cursor:pointer;box-shadow:0 2px 7px rgba(14,156,181,.28);font-family:'Inter',sans-serif}
+.pill:active{filter:brightness(1.06)}
+.pill .pi{display:flex;color:#fff;flex-shrink:0}.pill .pi svg{display:block}
+.pill .pl{color:#fff;font-size:.62rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* core tools strip */
+.core{margin-top:34px}
+.core-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.core-tile{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--border);border-radius:11px;padding:13px 14px;text-decoration:none;box-shadow:0 2px 8px rgba(15,41,82,.04)}
+.core-ico{width:30px;height:30px;border-radius:8px;flex-shrink:0;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff}
+.core-ico svg{display:block}
+.core-t{font-size:.82rem;font-weight:700;color:var(--navy);line-height:1.25}
+.core-d{font-size:.66rem;color:var(--muted);margin-top:1px}
+
+/* bottom sheet */
+.dc-bd{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1000;opacity:0;pointer-events:none;transition:opacity .25s}
+.dc-bd.open{opacity:1;pointer-events:auto}
+.dc-sh{position:fixed;left:0;right:0;bottom:0;z-index:1001;background:#fff;border-radius:20px 20px 0 0;max-width:640px;margin:0 auto;box-shadow:0 -8px 30px rgba(15,41,82,.25);transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);max-height:88vh;overflow-y:auto;padding:10px 22px 26px}
+.dc-sh.open{transform:translateY(0)}
+.dc-handle{width:38px;height:4px;background:var(--border);border-radius:3px;margin:0 auto 14px}
+.dc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.dc-hl{display:flex;align-items:center;gap:10px;min-width:0}
+.dc-hi{width:32px;height:32px;border-radius:9px;flex-shrink:0;background:linear-gradient(135deg,var(--blue),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff}
+.dc-sh h3{margin:0;font-size:.96rem;font-weight:700;color:var(--navy)}
+.dc-x{background:var(--off);border:none;border-radius:50%;width:30px;height:30px;color:var(--muted);font-size:1rem;cursor:pointer}
+.dc-tabs{display:flex;gap:6px;margin:16px 0 18px;border-bottom:1px solid var(--border)}
+.dc-tab{flex:1;background:none;border:none;padding:9px 4px 11px;cursor:pointer;font-size:.72rem;font-weight:700;color:var(--muted);border-bottom:2.5px solid transparent;margin-bottom:-1px;display:flex;align-items:center;justify-content:center;gap:5px;font-family:'Inter',sans-serif}
+.dc-tab.on{color:var(--navy);border-bottom-color:var(--blue)}
+.dc-panel{display:none}.dc-panel.on{display:block}
+.dc-field{margin-bottom:14px}
+.dc-field label{display:block;font-size:.72rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.dc-field input{width:100%;border:1.5px solid var(--border);border-radius:9px;padding:11px 12px;font-size:.9rem;font-family:'Inter',sans-serif;background:var(--off);color:var(--text)}
+.dc-go{width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.85rem;padding:13px;cursor:pointer}
+.dc-res{margin-top:16px;border-radius:12px;padding:15px 16px;display:none;border:1.5px solid var(--border)}
+.dc-res.on{display:block}
+.dc-rt{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.dc-rd{font-family:'Cinzel',serif;font-weight:900;font-size:1.7rem;line-height:1}
+.dc-rl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+.dc-rb{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:5px 10px;border-radius:20px;color:#fff;white-space:nowrap}
+.dc-det{font-size:.82rem;color:var(--sub);line-height:1.6;border-top:1px dashed var(--border);padding-top:9px}.dc-det b{color:var(--text)}
+.dc-res.ok{background:#f0faf4;border-color:#bfe6cc}.dc-res.ok .dc-rd{color:#1a8a52}.dc-res.ok .dc-rb{background:#1a8a52}
+.dc-res.warn{background:#fdf7ea;border-color:#eeddb0}.dc-res.warn .dc-rd{color:#b8863a}.dc-res.warn .dc-rb{background:#b8863a}
+.dc-res.bad{background:#fdeeee;border-color:#f0c4c4}.dc-res.bad .dc-rd{color:var(--crimson)}.dc-res.bad .dc-rb{background:var(--crimson)}
+.dc-foot{font-size:.7rem;color:var(--muted);margin-top:12px;text-align:center}
+.dc-tpl{background:var(--off);border:1px solid var(--border);border-radius:10px;padding:14px 15px;font-size:.82rem;color:var(--text);line-height:1.7;white-space:pre-wrap;margin-bottom:12px;max-height:240px;overflow-y:auto}.dc-tpl .ph{color:var(--blue);font-weight:600}
+.dc-copy{width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));border:none;border-radius:9px;color:#fff;font-size:.8rem;font-weight:700;padding:11px;cursor:pointer}
+.dc-chk{display:flex;flex-direction:column;gap:9px}
+.dc-ci{display:flex;align-items:center;gap:10px;background:var(--off);border:1px solid var(--border);border-radius:9px;padding:11px 13px;cursor:pointer}
+.dc-ci input{width:17px;height:17px;accent-color:var(--blue)}
+.dc-ci span{font-size:.84rem;color:var(--text)}
+.dc-ci.done{opacity:.5}.dc-ci.done span{text-decoration:line-through}
+</style>
+
+<main>
+  <div class="asya-feature">
+    <div class="asya-inner">
+      <div class="asya-ring"><span>A</span></div>
+      <div class="asya-body">
+        <div class="asya-name">Ask Asya <span class="tag">AI</span></div>
+        <div class="asya-bubble">Tell me what happened — I'll point you to the right authority in seconds.</div>
+        <div class="asya-row">
+          <input type="text" class="asya-input" id="asya-in" placeholder="e.g. My landlord won't return my deposit..." onkeydown="if(event.key==='Enter')asyaGo()">
+          <button class="asya-send" onclick="asyaGo()">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prov-label">Your province</div>
+  <div class="prov-chips" id="prov-chips"></div>
+
+  <h2>Find Your Path</h2>
+  <div id="cards"></div>
+
+  <div class="core">
+    <h2>Or go straight to a tool</h2>
+    <div class="core-grid" id="core-grid"></div>
+  </div>
+</main>
+
+<!-- bottom sheet -->
+<div class="dc-bd" id="dc-bd"></div>
+<div class="dc-sh" id="dc-sh" role="dialog" aria-modal="true">
+  <div class="dc-handle"></div>
+  <div class="dc-head"><div class="dc-hl"><div class="dc-hi" id="dc-hi"></div><h3 id="dc-title">—</h3></div><button class="dc-x" id="dc-x">&times;</button></div>
+  <div class="dc-tabs">
+    <button class="dc-tab" id="t-d"></button>
+    <button class="dc-tab" id="t-t"></button>
+    <button class="dc-tab" id="t-c"></button>
+  </div>
+  <div class="dc-panel" id="p-d">
+    <div class="dc-field"><label for="dc-date">Date of the incident / decision</label><input type="date" id="dc-date"></div>
+    <button class="dc-go" id="dc-go">Calculate my deadline &rarr;</button>
+    <div class="dc-res" id="dc-res"><div class="dc-rt"><div><div class="dc-rd" id="dc-days">—</div><div class="dc-rl">days left</div></div><div class="dc-rb" id="dc-badge">—</div></div><div class="dc-det" id="dc-det"></div></div>
+    <div class="dc-foot">This is an estimate — always confirm the exact rules with the authority itself.</div>
+  </div>
+  <div class="dc-panel" id="p-t"><div class="dc-tpl" id="dc-tpl"></div><button class="dc-copy" id="dc-copy">Copy this draft</button></div>
+  <div class="dc-panel" id="p-c"><div class="dc-chk" id="dc-chk"></div></div>
+</div>
+
+<script>
+function ic(n){var p={clock:'<circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line>',check:'<polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>',shield:'<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"></path><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>',scale:'<path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/>',home:'<path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/>',search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/>',book:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'};return '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+(p[n]||p.clock)+'</svg>';}
+function icBig(n){return ic(n).replace('width="13" height="13"','width="15" height="15"');}
+
+var PROVS = [['ON','Ontario'],['BC','British Columbia'],['AB','Alberta'],['QC','Quebec'],['MB','Manitoba'],['SK','Saskatchewan'],['ATL','Atlantic'],['FED','Federal only']];
+var CONSUMER = {ON:'Consumer Protection Ontario',BC:'Consumer Protection BC',AB:'Service Alberta — Consumer',QC:'Office de la protection du consommateur',MB:'Manitoba Consumer Protection Office',SK:'Consumer Protection Division (FCAA)',ATL:'Your provincial consumer office',FED:'Consumer Protection (federal programs vary)'};
+var TENANCY = {ON:'Landlord and Tenant Board (LTB)',BC:'Residential Tenancy Branch (RTB)',AB:'Residential Tenancy Dispute Resolution Service',QC:'Tribunal administratif du logement (TAL)',MB:'Residential Tenancies Branch',SK:'Office of Residential Tenancies',ATL:'Your provincial tenancy office',FED:'Tenancy is provincial — pick a province'};
+
+var CATS = {
+  consumer:{label:'Consumer & Business',days:730,dl:'Deadline',pill:'Deadline',result:'Provincial civil claim — 2-year limitation',note:'In most provinces you have 2 years from when you discovered the problem to start a legal claim (Limitations Act). 3 years in Quebec.',tpl:'To: Consumer Protection Office\n\nSubject: Formal Complaint — [Company]\n\nOn [date] I purchased [product/service]. The problem: [description]. I contacted the company [X] times without resolution and request [refund/replacement/compensation].\n\nSincerely,\n[Full Name]',chk:['Receipt or invoice','Photo of the product/service','Correspondence with the company','Warranty (if any)']},
+  tenancy:{label:'Renting & Tenancy',days:9999,dl:'Deadline',pill:'Deadline',result:'Tenancy deadlines are short',note:'Tenancy deadlines vary and are short — disputing an eviction/notice can be as little as 10–15 days. Contact your provincial tenancy board immediately.',tpl:'To: [Provincial Tenancy Board]\n\nSubject: Tenancy Dispute — [Address]\n\nMy landlord [issue: deposit/repairs/notice]. Relevant date: [date].\n\nI request [remedy].\n\nSincerely,\n[Full Name]',chk:['Written lease','Timestamped photos','All texts/emails/notices','Deposit / rent records']},
+  employment:{label:'Work & Employment',days:9999,dl:'Deadline',pill:'Deadline',result:'Employment deadlines vary',note:'Most provinces allow ~2 years to recover unpaid wages; federal complaints are often shorter. Workplace discrimination goes to a human-rights tribunal within 1 year.',tpl:'To: [Employment Standards Office]\n\nSubject: Employment Standards Complaint — [Employer]\n\nI worked at [employer] from [dates]. Issue: [unpaid wages/termination/hours]. Amount owed: [amount].\n\nSincerely,\n[Full Name]',chk:['Employment contract','Pay stubs / hours','Termination letter (if any)','Correspondence with employer']},
+  humanrights:{label:'Human Rights',days:365,dl:'Deadline',pill:'Deadline',result:'Human rights application — 1-year limit',note:'Human rights tribunals (provincial and the federal Canadian Human Rights Commission) generally require filing within 1 year of the last incident.',tpl:'To: [Human Rights Tribunal / Commission]\n\nSubject: Human Rights Application\n\nI experienced discrimination based on [ground] on [date(s)]: [description]. I am filing within the 1-year limit.\n\nSincerely,\n[Full Name]',chk:['Dates of each incident','Witness names/contacts','Emails, texts, notes','The protected ground']},
+  cyber:{label:'Cyber Crime & Fraud',days:120,dl:'Recovery Window',pill:'Recovery',icon:'shield',result:'Bank / card chargeback window',note:'Visa/Mastercard generally allow ~120 days from the transaction to dispute a charge (up to 540 for fraud). Confirm with your bank and report to the Canadian Anti-Fraud Centre.',tpl:'To: [Bank] Fraud Department\n\nSubject: Unauthorized Transaction Dispute\n\nOn [date] I found an unauthorized transaction of [amount]. I dispute it and request my account be secured and the charge reversed.\n\nSincerely,\n[Full Name]',chk:['Transaction screenshot','Bank statement','Copy of the scam message','Anti-Fraud Centre report number']},
+  mp:{label:'Federal Service / MP',days:9999,dl:'Deadline',pill:'Deadline',result:'Federal / MP complaint',note:'No strict legal deadline for contacting your MP, but raising it early speeds things up. Immigration, EI, passport and CRA-service issues fit here.',tpl:'To: [Member of Parliament], MP\n\nSubject: Federal Service Issue\n\nAs a constituent, I have a problem with [federal agency]: [description]. File number: [if any].\n\nPlease have your office intervene.\n\nSincerely,\n[Full Name]',chk:['Application / file number','ID / proof of residence','Relevant correspondence','Timeline of events']}
+};
+
+var CARD_DEFS = [
+  ['consumer','Consumer & business disputes','Faulty goods, unfair practices, contract disputes with a company.', function(p){return CONSUMER[p];}],
+  ['tenancy','Renting & tenancy','Deposits, repairs, eviction notices, and other tenancy issues.', function(p){return TENANCY[p];}],
+  ['employment','Work & employment','Unpaid wages, wrongful termination, workplace violations.', function(p){return 'Employment standards ('+p2name(p)+')';}],
+  ['humanrights','Discrimination & human rights','Discrimination or harassment based on a protected ground.', function(p){return p==='FED'?'Canadian Human Rights Commission':'Provincial human rights tribunal';}],
+  ['cyber','Cyber crime & online fraud','Scams, phishing, identity theft, unauthorized transactions.', function(){return 'Canadian Anti-Fraud Centre';}],
+  ['mp','Federal services & your MP','Immigration delays, EI, passport, or CRA service issues.', function(){return "Your riding's MP";}]
+];
+function p2name(code){for(var i=0;i<PROVS.length;i++)if(PROVS[i][0]===code)return PROVS[i][1];return code;}
+
+var CORE = [
+  ['scale','File a Complaint','Turn your voice into a formal complaint','/?go=new'],
+  ['scale','Free Lawyer Panel','Law Society referrals & non-profit help','/?go=lawyer'],
+  ['home','Find My Representative','Locate your MP/MPP by address','/?go=rep'],
+  ['shield','Cyber Crime Report','Report harassment, threats, ID theft','/?go=cyber'],
+  ['search','Verify a Document','AI risk check on a suspicious email/file','/?go=verify'],
+  ['book','All Guides','Right authority by province & topic','/guides/']
+];
+
+var curProv='ON', cur='consumer';
+
+function renderProvs(){
+  var w=document.getElementById('prov-chips'); w.innerHTML='';
+  PROVS.forEach(function(pr){
+    var b=document.createElement('button'); b.className='prov-chip'+(pr[0]===curProv?' on':''); b.textContent=pr[1];
+    b.onclick=function(){curProv=pr[0]; renderProvs(); renderCards();};
+    w.appendChild(b);
+  });
+}
+function pill(key,which,label,icon){var b=document.createElement('button');b.className='pill';b.innerHTML='<span class="pi">'+ic(icon)+'</span><span class="pl">'+label+'</span>';b.onclick=function(){openSheet(key,which);};return b;}
+function renderCards(){
+  var w=document.getElementById('cards'); w.innerHTML='';
+  CARD_DEFS.forEach(function(d){
+    var key=d[0], c=CATS[key];
+    var card=document.createElement('div'); card.className='card';
+    card.innerHTML='<h3>'+d[1]+'</h3><p>'+d[2]+'</p><a class="official" href="#" onclick="return false">'+d[3](curProv)+' →</a>';
+    var row=document.createElement('div'); row.className='pill-row';
+    row.appendChild(pill(key,'d',c.pill,c.icon==='shield'?'shield':'clock'));
+    row.appendChild(pill(key,'t','Draft Letter','doc'));
+    row.appendChild(pill(key,'c','Checklist','check'));
+    card.appendChild(row); w.appendChild(card);
+  });
+}
+function renderCore(){
+  var w=document.getElementById('core-grid'); w.innerHTML='';
+  CORE.forEach(function(t){
+    var a=document.createElement('a'); a.className='core-tile'; a.href=t[3];
+    a.innerHTML='<div class="core-ico">'+icBig(t[0])+'</div><div><div class="core-t">'+t[1]+'</div><div class="core-d">'+t[2]+'</div></div>';
+    w.appendChild(a);
+  });
+}
+
+function el(id){return document.getElementById(id);}
+function openSheet(key,which){
+  cur=key; var c=CATS[key];
+  el('dc-hi').innerHTML=icBig(c.icon==='shield'?'shield':'clock');
+  el('dc-title').textContent=c.label;
+  el('t-d').innerHTML=ic(c.icon==='shield'?'shield':'clock')+(c.pill||'Deadline');
+  el('t-t').innerHTML=ic('doc')+'Draft Letter';
+  el('t-c').innerHTML=ic('check')+'Checklist';
+  el('dc-res').classList.remove('on'); el('dc-date').value='';
+  var esc=c.tpl.replace(/[&<>]/g,function(x){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[x];});
+  el('dc-tpl').innerHTML=esc.replace(/\[([^\]]+)\]/g,'<span class="ph">[$1]</span>');
+  renderChk(key); tab(which||'d');
+  el('dc-bd').classList.add('open'); el('dc-sh').classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeSheet(){el('dc-bd').classList.remove('open');el('dc-sh').classList.remove('open');document.body.style.overflow='';}
+function tab(w){['d','t','c'].forEach(function(t){el('t-'+t).classList.toggle('on',t===w);el('p-'+t).classList.toggle('on',t===w);});}
+function calc(){
+  var c=CATS[cur],v=el('dc-date').value,box=el('dc-res');
+  if(!v){el('dc-date').style.borderColor='var(--crimson)';return;}
+  el('dc-date').style.borderColor='';
+  var s=new Date(v+'T00:00:00'),dl=new Date(s);dl.setDate(dl.getDate()+c.days);
+  var today=new Date();today.setHours(0,0,0,0);var left=Math.round((dl-today)/86400000);
+  box.classList.remove('ok','warn','bad');var badge;
+  if(c.days>=9999){box.classList.add('ok');badge='No fixed deadline';}
+  else if(left<0){box.classList.add('bad');badge='Passed';}
+  else if(left<=30){box.classList.add('bad');badge='Urgent';}
+  else if(left<=90){box.classList.add('warn');badge='Approaching';}
+  else{box.classList.add('ok');badge='You have time';}
+  el('dc-days').textContent=c.days>=9999?'∞':(left<0?'0':left);
+  el('dc-badge').textContent=badge;
+  var ds=dl.toLocaleDateString('en-CA',{year:'numeric',month:'long',day:'numeric'});
+  el('dc-det').innerHTML='<b>'+c.result+'</b>'+(c.days>=9999?'<br>'+c.note:'<br>Estimated final date: <b>'+ds+'</b><br>'+c.note+(left<0?'<br><b>This window may have passed</b> — contact the authority anyway.':''));
+  box.classList.add('on');
+}
+function renderChk(key){var c=CATS[key],list=el('dc-chk');list.innerHTML='';c.chk.forEach(function(item){var row=document.createElement('label');row.className='dc-ci';var cb=document.createElement('input');cb.type='checkbox';cb.addEventListener('change',function(){row.classList.toggle('done',cb.checked);});var sp=document.createElement('span');sp.textContent=item;row.appendChild(cb);row.appendChild(sp);list.appendChild(row);});}
+
+el('dc-bd').addEventListener('click',closeSheet);
+el('dc-x').addEventListener('click',closeSheet);
+el('t-d').addEventListener('click',function(){tab('d');});
+el('t-t').addEventListener('click',function(){tab('t');});
+el('t-c').addEventListener('click',function(){tab('c');});
+el('dc-go').addEventListener('click',calc);
+el('dc-copy').addEventListener('click',function(){if(navigator.clipboard)navigator.clipboard.writeText(CATS[cur].tpl).catch(function(){});el('dc-copy').textContent='Copied ✓';setTimeout(function(){el('dc-copy').textContent='Copy this draft';},1500);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSheet();});
+function asyaGo(){
+  var v=(document.getElementById('asya-in').value||'').trim();
+  if(v){ location.href='/?d='+encodeURIComponent(v); }
+  else { location.href='/?go=new'; }
+}
+renderProvs(); renderCards(); renderCore();
+</script>
