@@ -874,7 +874,7 @@ textarea{resize:vertical;min-height:90px}
           <div id="legal-details" style="display:none;margin-top:4px;padding:8px 10px;background:var(--surface-2);border:1px solid var(--border);font-size:.72rem;color:var(--sub);line-height:1.5;border-radius:8px"></div>
         </div>
         <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenNew" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenNew" data-error-callback="_tsErrorNew" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
         <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Submit Complaint</button>
         </div>
       </div>
@@ -1264,7 +1264,7 @@ textarea{resize:vertical;min-height:90px}
         ⚠️ Submitting false reports is a criminal offence. Evidence you upload will only be shared with the relevant Canadian authority. We do not contact the offender directly.
       </div>
 
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenCyber" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenCyber" data-error-callback="_tsErrorCyber" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
       <button onclick="doSubmitCyber()" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:15px;font-size:.88rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,16,46,.3);letter-spacing:1px" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Submit Cyber Crime Report</span></button>
 
       <!-- SUCCESS -->
@@ -3533,6 +3533,15 @@ function genRef(){
 var _tsToken={new:'',cyber:''};
 function _tsTokenNew(token){_tsToken.new=token;}
 function _tsTokenCyber(token){_tsToken.cyber=token;}
+// Turnstile's own widget throws an uncaught error on transient render/challenge
+// failures (blocked storage, extensions, flaky network) — without these the
+// exception propagates to window.onerror and shows up in Sentry as an
+// unhandled TurnstileError. Registering error-callback lets the widget hand
+// the failure to us instead: we just clear the token so _verifyTurnstile()
+// safely falls back to "blocked" (same as no token yet), and Turnstile
+// auto-retries the challenge on its own.
+function _tsErrorNew(code){ console.warn('[Turnstile] new widget error', code); _tsToken.new=''; }
+function _tsErrorCyber(code){ console.warn('[Turnstile] cyber widget error', code); _tsToken.cyber=''; }
 async function _verifyTurnstile(which){
   var token=_tsToken[which];
   if(!token) return false;
