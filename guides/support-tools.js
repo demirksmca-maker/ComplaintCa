@@ -161,6 +161,27 @@
       note: "Open a service ticket with Canada Post first — the Ombudsman is the final appeal, not the first step, and needs a closed ticket. No strict deadline, but file while tracking details are available.",
       template: "To: Canada Post — Customer Service\n\nSubject: Service Complaint — Tracking [number]\n\nMy item (tracking [number]) sent on [date] was [lost/delayed/damaged]. Expected delivery: [date].\n\nI am requesting an investigation and, if unresolved, will appeal to the Ombudsman.\n\nSincerely,\n[Full Name]",
       checklist: ["Tracking number", "Proof of mailing / receipt", "Photos if item was damaged", "The support ticket number once opened"]
+    },
+    chargeback: {
+      label: "Online Purchase Dispute", days: 100, deadlineLabel: "Chargeback Window", pillLabel: "Deadline", icon: "shield",
+      resultName: "Credit card chargeback window",
+      note: "Chargeback deadlines vary by card network and issuer, but are commonly in the 90–120 day range from the transaction date. This estimate uses 100 days as a mid-range figure — confirm the exact deadline with your card issuer and don't wait.",
+      template: "To: [Merchant] Customer Service\n\nSubject: Order Not Received / Not As Described — Order [number]\n\nI ordered [item] on [date] (Order #[number], $[amount]). [It never arrived / It arrived significantly different from described: describe].\n\nI am requesting a full refund within [X] days, after which I will file a chargeback with my card issuer.\n\nSincerely,\n[Full Name]",
+      checklist: ["Order confirmation and receipt", "Payment method used (credit/debit)", "Tracking information (if any)", "Screenshots of the listing/description", "Your message(s) to the merchant"]
+    },
+    debtcollector: {
+      label: "Debt Collector Complaint", days: 9999, deadlineLabel: "Deadline",
+      resultName: "Provincial collection agency complaint",
+      note: "No strict statutory deadline to report a collector's conduct, but file promptly with dates and details while they're fresh. If it's a bank collecting its own debt directly (not a third-party agency), also consider the Financial Consumer Agency of Canada.",
+      template: "To: [Collector / Agency Name] — cc: [Provincial Consumer Protection Office]\n\nSubject: Formal Complaint — Collection Conduct\n\nOn [date(s)], your agency contacted me regarding [debt/account]. The following occurred: [describe: excessive calls, workplace contact after being told not to, threats, etc.].\n\nI am requesting that all further contact be in writing only [or: through my lawyer, [name]]. I am also filing a complaint about this conduct with [provincial regulator].\n\nSincerely,\n[Full Name]",
+      checklist: ["Dates and times of each contact", "Collector's agency name and licence number", "Notes on what was said", "Any voicemails or messages saved", "Account/reference number they cited"]
+    },
+    utility: {
+      label: "Utility Billing Complaint", days: 9999, deadlineLabel: "Deadline",
+      resultName: "Energy regulator complaint",
+      note: "No strict statutory deadline, but you must file with your utility's own complaints process first — regulators like the OEB, BCUC, AUC, or Régie de l'énergie expect proof of that attempt before they'll review an escalation.",
+      template: "To: [Utility Name] — Customer Service / Complaints\n\nSubject: Billing Dispute — Account [number]\n\nMy account [number] shows [describe: an unexplained increase / a billing error / a service issue] starting [date]. I have reviewed my usage and believe this is incorrect because [reason].\n\nI am requesting a review and correction. If unresolved, I will escalate to [OEB/BCUC/AUC/Régie de l'énergie].\n\nSincerely,\n[Full Name]",
+      checklist: ["Account number", "Recent bills showing the disputed charge", "Meter reading photos (if relevant)", "Dates of any outages or service issues", "Prior correspondence with the utility"]
     }
   };
 
