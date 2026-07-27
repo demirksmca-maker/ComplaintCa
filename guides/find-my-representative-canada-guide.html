@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>How to Find and Contact Your MP, MPP/MLA, or City Councillor in Canada (2026) | ComplaintCA</title>
+<meta name="description" content="Not sure if your issue is federal, provincial, or municipal? This guide explains which elected official handles what in Canada, and the official tool to find and contact your MP, MPP/MLA/MNA, and city councillor.">
+<meta name="theme-color" content="#0f2952">
+<link rel="canonical" href="https://www.complaintca.ca/guides/find-my-representative-canada-guide.html">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I find out who my MP is?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Use the official Members of Parliament directory at ourcommons.ca/members/en, or ComplaintCA's Find My Representative tool, and enter your address or postal code to see your federal riding and MP's contact details." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between an MP, MPP, MLA, and MNA?",
+      "acceptedAnswer": { "@type": "Answer", "text": "An MP (Member of Parliament) represents you federally in the House of Commons. MPP (Ontario), MLA (most other provinces), and MNA (Quebec, Member of the National Assembly) all mean the same thing at the provincial level — your representative in your provincial legislature." }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I contact my MP or my city councillor for my issue?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It depends which level of government is responsible. Federal MPs handle immigration, EI, CPP, passports, and federal benefits. Provincial MPPs/MLAs/MNAs handle healthcare, education, tenancy law, and provincial licensing. City councillors handle property taxes, zoning, garbage collection, local bylaws, and municipal services." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can my MP or MPP actually solve my problem?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Elected officials can't override a government department's decision, but their constituency office can escalate a stuck file (e.g. a delayed immigration or EI application), request a status update through official channels, or refer you to the right program — often faster than going through a general call centre." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find my city councillor?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Search your municipality's official website for its council or ward directory — most Canadian cities let you look up your councillor by address. ComplaintCA's Find My Representative tool also surfaces this using the Represent API, a public database of Canadian elected officials." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is ComplaintCA?",
+      "acceptedAnswer": { "@type": "Answer", "text": "ComplaintCA is a Canadian civic platform that routes residents to the correct authority for their issue, drafts complaints with AI in 7 languages, and includes a Find My Representative tool covering federal, provincial, and municipal officials." }
+    }
+  ]
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --navy:#0f2952;--blue:#1a4fa0;--mid:#2563c0;--light:#3b82f6;
+  --ice:#e8f0fe;--white:#fff;--off:#f4f7ff;--text:#0f172a;
+  --sub:#475569;--muted:#5a6b80;--border:#dbeafe;
+  --gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
+  --radius:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+
+.hero{
+  background:linear-gradient(160deg,var(--navy) 0%,#163a7a 55%,var(--blue) 100%);
+  color:#fff;padding:52px 24px 44px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;
+}
+.hero .eyebrow{
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;
+  text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
+}
+.hero h1{
+  font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin:0;
+  line-height:1.4;letter-spacing:.3px;max-width:18ch;
+  text-wrap:balance;
+}
+
+main{max-width:640px;margin:0 auto;padding:40px 24px 64px}
+
+.lede{
+  font-size:1rem;color:var(--sub);border-left:3px solid var(--gold);
+  padding:2px 0 2px 18px;margin:0 0 40px;text-align:left;
+}
+
+h2{
+  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--blue);text-align:left;
+  border-top:1px solid var(--border);padding-top:12px;margin:48px 0 20px;
+  font-weight:700;
+}
+
+.path-card{
+  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 22px;margin:0 0 16px;box-shadow:0 2px 8px rgba(15,41,82,.04);
+  text-align:left;
+}
+.path-card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
+.path-card p{margin:0 0 12px;font-size:.92rem;color:var(--sub);line-height:1.6}
+.path-card p:last-child{margin-bottom:0}
+.path-card a.official{
+  display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);
+  text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px;
+}
+.path-card ol,.path-card ul{margin:0 0 12px;padding-left:20px;font-size:.92rem;color:var(--sub);line-height:1.7}
+
+.cta{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:48px 0;
+  text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.cta p{margin:0;font-size:1rem;max-width:28ch}
+.cta a{
+  display:inline-block;background:var(--gold);color:var(--navy);
+  font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;
+  text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px;
+}
+
+.faq-item{margin:0 0 24px;text-align:left}
+.faq-item h3{font-size:.98rem;margin:0 0 8px;color:var(--navy);font-weight:600;line-height:1.5}
+.faq-item p{margin:0;color:var(--sub);font-size:.9rem;line-height:1.65}
+
+table.split{width:100%;border-collapse:collapse;font-size:.86rem;margin:0 0 16px}
+table.split th{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:1px;text-transform:uppercase;text-align:left;padding:8px 10px;color:var(--navy);border-bottom:2px solid var(--navy)}
+table.split td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--sub);vertical-align:top}
+
+footer{
+  text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
+  border-top:1px solid var(--border);letter-spacing:.5px;
+}
+
+.asya-feature{
+  background:linear-gradient(160deg,#fff,var(--ice));
+  border:1.5px solid var(--gold);border-radius:14px;
+  padding:14px 16px;margin:0 0 30px;position:relative;
+  box-shadow:0 3px 14px rgba(15,41,82,.12);
+}
+.asya-feature-inner{display:flex;gap:10px;align-items:flex-start}
+.asya-avatar-ring{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.asya-avatar-ring::before{
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  border:1.5px solid var(--gold);opacity:.55;
+  animation:asyaPulse 2.4s ease-out infinite;
+}
+@keyframes asyaPulse{
+  0%{transform:scale(1);opacity:.55}
+  100%{transform:scale(1.4);opacity:0}
+}
+.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:.85rem}
+.asya-feature-body{flex:1;min-width:0}
+.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.76rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.asya-feature-name .tag{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);padding:2px 7px;border-radius:9px}
+.asya-bubble{
+  background:#fff;border:1px solid var(--border);border-radius:4px 10px 10px 10px;
+  padding:7px 10px;font-size:.76rem;color:var(--sub);line-height:1.5;margin-bottom:8px;
+}
+.asya-input-row{display:flex;gap:6px}
+.asya-input{
+  flex:1;border:1.5px solid var(--border);border-radius:20px;
+  padding:8px 13px;font-size:.8rem;font-family:'Inter',sans-serif;
+  background:var(--off);color:var(--text);min-width:0;
+}
+.asya-input::placeholder{color:var(--muted)}
+.asya-input:focus{outline:none;border-color:var(--gold);background:#fff}
+.asya-send{
+  background:linear-gradient(135deg,var(--gold),var(--dark-gold));
+  border:none;border-radius:50%;color:var(--navy);
+  font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
+  box-shadow:0 3px 10px rgba(201,168,76,.35);
+}
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">ComplaintCA · Civic Guidance</div>
+  <h1>Find and Contact Your Elected Representative</h1>
+</div>
+
+<main>
+  <p class="lede">Canada has three levels of elected officials, and each one handles different problems. Picking the wrong one wastes weeks. Here's how to tell which level you need, and the official tool to find them.</p>
+
+  <div class="dc-toolbar" data-dc="representative" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 26px;box-shadow:0 2px 8px rgba(15,41,82,.04)"><div style="font-size:.86rem;font-weight:700;color:var(--navy);margin-bottom:2px">Free ComplaintCA tool for this</div><div style="font-size:.8rem;color:var(--muted)">Open Find My Representative in the app — enter your address to see your MP, MPP/MLA, and municipal councillor at once.</div></div>
+
+  <div class="asya-feature">
+    <div class="asya-feature-inner">
+      <div class="asya-avatar-ring"><span>A</span></div>
+      <div class="asya-feature-body">
+        <div class="asya-feature-name">Ask Asya <span class="tag">AI</span></div>
+        <div class="asya-bubble" id="asya-guide-msg">Tell me your issue in a sentence and I'll tell you whether it's federal, provincial, or municipal — and who to contact.</div>
+        <div class="asya-input-row">
+          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. My passport renewal has been stuck for months..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
+          <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes an issue. In 2-3 short sentences, tell them which level of Canadian government is responsible (federal MP, provincial MPP/MLA/MNA, or municipal councillor) and name the specific type of official, then mention they can use ComplaintCA's Find My Representative tool to get the exact contact. Be concrete and concise, no preamble.";
+</script>
+<script src="/guides/asya-widget.js"></script>
+
+  <h2>Which Level of Government Handles What</h2>
+
+  <table class="split">
+    <tr><th>Level</th><th>Handles</th></tr>
+    <tr><td><strong>Federal (MP)</strong></td><td>Immigration &amp; passports, Employment Insurance, CPP/OAS, federal taxes (CRA), Canada Post, federal prisons, national defence</td></tr>
+    <tr><td><strong>Provincial (MPP/MLA/MNA)</strong></td><td>Healthcare, K-12 &amp; post-secondary education, landlord-tenant law, provincial courts, driver's licences, welfare/disability programs, provincial policing</td></tr>
+    <tr><td><strong>Municipal (Councillor/Mayor)</strong></td><td>Property taxes, garbage &amp; recycling, zoning &amp; building permits, local roads, transit, bylaws, municipal parks</td></tr>
+  </table>
+
+  <h2>How to Find Each One</h2>
+
+  <div class="path-card">
+    <h3>Your MP (federal)</h3>
+    <p>Use the official House of Commons directory — search by postal code or riding.</p>
+    <a class="official" href="https://www.ourcommons.ca/members/en" target="_blank" rel="noopener">Find your MP at ourcommons.ca →</a>
+  </div>
+
+  <div class="path-card">
+    <h3>Your MPP / MLA / MNA (provincial)</h3>
+    <p>Each province runs its own legislature website with a "find your member" search — for example Ontario's Legislative Assembly (ola.org) or BC's Legislative Assembly (leg.bc.ca). Search "[your province] legislative assembly find my MLA" if you're unsure of the exact site.</p>
+  </div>
+
+  <div class="path-card">
+    <h3>Your city councillor (municipal)</h3>
+    <p>Search your city or town's official website for its council or ward directory — most let you search by address. ComplaintCA's tool pulls this automatically using the Represent API, a public, nonpartisan database of Canadian elected officials at all three levels.</p>
+  </div>
+
+  <h2>Where ComplaintCA Fits</h2>
+  <p style="font-size:.95rem;color:var(--sub)">The Find My Representative tool in the app looks up all three levels at once from your address, so you don't have to guess which legislature or council website to search — and Asya can tell you which one is actually responsible for your issue first.</p>
+
+  <div class="cta">
+    <p>Not sure if your issue is federal, provincial, or municipal? Ask Asya first.</p>
+    <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+  </div>
+
+  <h2>Frequently Asked</h2>
+
+  <div class="faq-item">
+    <h3>How do I find out who my MP is?</h3>
+    <p>Use ourcommons.ca/members/en, or ComplaintCA's Find My Representative tool, and enter your address or postal code.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What's the difference between an MP, MPP, MLA, and MNA?</h3>
+    <p>MP is federal. MPP (Ontario), MLA (most provinces), and MNA (Quebec) are all the same thing — your provincial representative.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Should I contact my MP or my city councillor?</h3>
+    <p>Depends on the issue: MPs handle federal programs like immigration and EI; councillors handle property tax, zoning, and local bylaws.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Can my MP or MPP actually solve my problem?</h3>
+    <p>They can't override a department's decision, but their office can escalate a stuck file or request a status update — often faster than a general call centre.</p>
+  </div>
+  <div class="faq-item">
+    <h3>How do I find my city councillor?</h3>
+    <p>Search your municipality's website for its council/ward directory, or use ComplaintCA's Find My Representative tool.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What is ComplaintCA?</h3>
+    <p>A Canadian civic platform that routes you to the correct authority, drafts complaints with AI in 7 languages, and includes a Find My Representative tool for all three levels of government.</p>
+  </div>
+
+</main>
+
+<footer>ComplaintCA · complaintca.ca</footer>
+
+<script src="/guides/support-tools.js" defer></script>
+</body>
+</html>
