@@ -1,0 +1,29 @@
+name: AI Classifier Eval
+
+# Manual only — this hits a live /api/groq-proxy deployment (production by
+# default) and counts against its rate limit and Groq usage, so it must
+# never run automatically on push/PR/schedule. Trigger it by hand from the
+# Actions tab whenever a classifier prompt or model change needs a fresh
+# accuracy read against eval/complaints.json.
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Site base URL to test against (must expose /api/groq-proxy with GROQ_API_KEY configured)'
+        required: true
+        default: 'https://complaintca.ca'
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run classifier eval
+        run: node eval/run-classifier.js "${{ inputs.base_url }}"
