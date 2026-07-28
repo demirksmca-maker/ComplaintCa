@@ -3822,6 +3822,7 @@ function _locSearch(){
   fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
     .then(r=>r.json()).then(results=>{
       if(!dd) return;
+      if(document.getElementById('inp-loc').value.trim()!==val) return; // eski/gecikmiş yanıtı yok say
       if(!results||!results.length){dd.style.display='none';return;}
       dd.innerHTML='';
       results.forEach(r=>{
@@ -4584,6 +4585,7 @@ function _mvLocSearch(){
   fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
     .then(function(r){return r.json();}).then(function(results){
       if(!dd) return;
+      if(document.getElementById('mv-postal').value.trim()!==val) return; // eski/gecikmiş yanıtı yok say
       if(!results||!results.length){dd.style.display='none';return;}
       dd.innerHTML='';
       results.forEach(function(r){
