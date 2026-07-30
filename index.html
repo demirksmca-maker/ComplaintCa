@@ -2816,6 +2816,12 @@ async function doSubmitCyber(){
     return;
   }
 
+  var modCheckCy=await _moderateCheck('Cyber Crime Report',desc);
+  if(modCheckCy.blocked){
+    _cyShowNote('⚠ This report was flagged and could not be sent. If this seems wrong, rephrase and try again.');
+    return;
+  }
+
   var crimeEl=document.querySelector('.cy-crime.sel');
   var crimeLabel=crimeEl?crimeEl.getAttribute('data-label'):'Cyber Crime';
   var platforms=Array.from(document.querySelectorAll('.cy-plat.cyp-sel')).map(function(e){return e.getAttribute('data-platform');});
@@ -3351,6 +3357,18 @@ async function _verifyTurnstile(which){
   }catch(e){return false;} // ağ hatasında güvenli taraf: engelle
 }
 
+// ── MODERATION (prompt-injection / spam screen) ──
+// Runs right after Turnstile, before writing to Firestore. Optional
+// defense-in-depth layer, not a Firestore-rule-enforced gate — fails
+// open on any error so our own infra never blocks a real complaint.
+async function _moderateCheck(title,desc){
+  try{
+    var r=await fetch('/api/moderate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:title||'',desc:desc||''})});
+    var d=await r.json();
+    return {blocked:!!d.blocked,reason:d.reason||null};
+  }catch(e){return {blocked:false};}
+}
+
 async function doSubmit(){
   // Gönderim sıklığı sınırı (anti-istismar) — aynı cihazdan ardışık gönderimi yavaşlatır
   var COOLDOWN_MS=5*60*1000;
@@ -3460,6 +3478,18 @@ async function doSubmit(){
       noteTs.style.background='rgba(240,87,106,.16)';noteTs.style.borderColor='#c8102e';noteTs.style.color='#c8102e';
       noteTs.textContent='⚠ Please complete the verification checkbox before submitting.';
       noteTs.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    return;
+  }
+
+  var modCheck=await _moderateCheck(title,desc);
+  if(modCheck.blocked){
+    var noteMod=document.getElementById('a-note');
+    if(noteMod){
+      noteMod.style.background='rgba(240,87,106,.16)';noteMod.style.borderColor='#c8102e';noteMod.style.color='#c8102e';
+      noteMod.textContent='⚠ This submission was flagged and could not be sent. If this seems wrong, rephrase and try again.';
+      noteMod.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(function(){noteMod.style.background='';noteMod.style.borderColor='';noteMod.style.color='';noteMod.textContent=V.t('not');},4500);
     }
     return;
   }
