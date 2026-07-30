@@ -36,6 +36,26 @@
     },
     {
       "@type": "Question",
+      "name": "Where can I download the Ontario LTB tenant application forms (T2, T6)?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Form T2 (Application about Tenant Rights) and Form T6 (Application about Maintenance) are both available as free PDF downloads directly from Tribunals Ontario, or can be filed online through the Tribunals Ontario Portal." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I download the BC RTB dispute resolution form?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Tenant's Application for Dispute Resolution (Form RTB-12T) is available as a free PDF download directly from the Province of British Columbia's residential tenancy forms page." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I download the Alberta RTDRS tenant application form?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Tenant's Application form is available as a free PDF download directly from Alberta.ca, or can be filed online through the RTDRS eFiling service." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I download the Quebec TAL application form?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The Demande / Application form is available as a free PDF download directly from the Tribunal administratif du logement website, in both French and English." }
+    },
+    {
+      "@type": "Question",
       "name": "What is ComplaintCA?",
       "acceptedAnswer": { "@type": "Answer", "text": "ComplaintCA is a Canadian civic complaint platform that guides residents to the correct authority for their issue, offers AI-assisted complaint drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support." }
     }
@@ -97,6 +117,8 @@ h2{
   display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);
   text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px;
 }
+.path-card .form-links{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);display:flex;flex-direction:column;gap:8px}
+.path-card .form-links a.official{border-bottom-style:dotted}
 
 .cta{
   background:linear-gradient(135deg,var(--navy),var(--blue));
@@ -200,24 +222,37 @@ window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user d
     <h3>Ontario</h3>
     <p>Deposit disputes, repairs, illegal eviction notices, and other tenancy issues.</p>
     <a class="official" href="https://tribunalsontario.ca/ltb/contact/" target="_blank" rel="noopener">Landlord and Tenant Board (LTB) — 1-888-332-3234 →</a>
+    <div class="form-links">
+      <a class="official" href="https://tribunalsontario.ca/documents/ltb/Tenant%20Applications%20&%20Instructions/T2.pdf" target="_blank" rel="noopener">📄 Download Form T2 — Tenant Rights (PDF) →</a>
+      <a class="official" href="https://tribunalsontario.ca/documents/ltb/Tenant%20Applications%20&%20Instructions/T6.pdf" target="_blank" rel="noopener">📄 Download Form T6 — Maintenance (PDF) →</a>
+    </div>
   </div>
 
   <div class="path-card" data-dc="tenancy">
     <h3>British Columbia</h3>
     <p>Deposit disputes, repairs, and notices to end tenancy in BC.</p>
     <a class="official" href="https://www2.gov.bc.ca/gov/content/housing-tenancy/residential-tenancies/contact-the-residential-tenancy-branch" target="_blank" rel="noopener">Residential Tenancy Branch (RTB) — 604-660-1020 →</a>
+    <div class="form-links">
+      <a class="official" href="https://www2.gov.bc.ca/assets/gov/housing-and-tenancy/residential-tenancies/forms/rtb12tct.pdf" target="_blank" rel="noopener">📄 Download Form RTB-12T — Dispute Resolution (PDF) →</a>
+    </div>
   </div>
 
   <div class="path-card" data-dc="tenancy">
     <h3>Alberta</h3>
     <p>Faster dispute resolution for straightforward tenancy matters, as an alternative to court.</p>
     <a class="official" href="https://www.alberta.ca/residential-tenancy-dispute-resolution-service" target="_blank" rel="noopener">Residential Tenancy Dispute Resolution Service (RTDRS) — 310-0000 then 780-644-3000 →</a>
+    <div class="form-links">
+      <a class="official" href="https://cfr.forms.gov.ab.ca/Form/RTDR0008" target="_blank" rel="noopener">📄 Download Tenant's Application Form (PDF) →</a>
+    </div>
   </div>
 
   <div class="path-card" data-dc="tenancy">
     <h3>Quebec</h3>
     <p>Lease disputes, repairs, and eviction matters for Quebec tenants and landlords.</p>
     <a class="official" href="https://www.tal.gouv.qc.ca/en/contact-us" target="_blank" rel="noopener">Tribunal administratif du logement (TAL) — 1-800-683-2245 →</a>
+    <div class="form-links">
+      <a class="official" href="https://www.tal.gouv.qc.ca/sites/default/files/TAL_001A_E.pdf" target="_blank" rel="noopener">📄 Download Application Form (PDF) →</a>
+    </div>
   </div>
 
   <div class="path-card" data-dc="tenancy">
@@ -260,6 +295,10 @@ window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user d
   <div class="faq-item">
     <h3>Where do I file a complaint against a landlord in Quebec?</h3>
     <p>The Tribunal administratif du logement (TAL), at 1-800-683-2245 outside Montréal/Laval/Longueuil.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Where can I download the official tenancy complaint forms?</h3>
+    <p>Yes — each province card above links directly to the free official PDF: Ontario's Form T2 (tenant rights) and Form T6 (maintenance), BC's Form RTB-12T (dispute resolution), Alberta's RTDRS Tenant's Application, and Quebec's TAL Demande form.</p>
   </div>
   <div class="faq-item">
     <h3>What is ComplaintCA?</h3>
