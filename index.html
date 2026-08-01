@@ -2456,7 +2456,28 @@ window.addEventListener('popstate',function(e){
     _suppressNavPush=false;
   }
 });
-document.addEventListener('DOMContentLoaded',function(){history.replaceState(null,'');});
+document.addEventListener('DOMContentLoaded',function(){
+  // A hard refresh keeps the same history entry (and its state), but until now
+  // nothing read it back — this restores whatever tab/step the user was on
+  // instead of always landing back on the home screen.
+  var s=history.state;
+  if(s&&s.tab){
+    _suppressNavPush=true;
+    try{
+      goApp(s.tab);
+      if(s.step){
+        if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
+        else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
+        else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
+      }
+    }finally{
+      _suppressNavPush=false;
+    }
+    history.replaceState(s,'');
+  }else{
+    history.replaceState(null,'');
+  }
+});
 
 function goHome(){
   document.getElementById('pg-land').style.display='block';
