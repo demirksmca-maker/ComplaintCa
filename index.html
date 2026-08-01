@@ -17,6 +17,7 @@
 }catch(e){}})();
 </script>
 <script>(function(){try{if(localStorage.getItem('cc_theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<script>(function(){try{if(history.state&&history.state.tab)document.documentElement.setAttribute('data-restoring-tab','1');}catch(e){}})();</script>
 <!-- Google Identity Services: native Google sign-in that works without third-party
      storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
      onerror flags when the script is blocked (ad-blocker / privacy filter) so the
@@ -196,6 +197,8 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 
 /* ── PAGES ── */
 #pg-land{display:block}#pg-app{display:none}#pg-land .hero{transition:none}
+html[data-restoring-tab] #pg-land{display:none}
+html[data-restoring-tab] #pg-app{display:block}
 
 /* ── TOPBAR ── */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
