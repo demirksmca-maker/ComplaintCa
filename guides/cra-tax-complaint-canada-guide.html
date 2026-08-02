@@ -85,7 +85,7 @@ body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-s
   text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
 }
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;margin:0;
+  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;margin:0;
   line-height:1.4;letter-spacing:.3px;max-width:20ch;
   text-wrap:balance;
 color:var(--navy);}
@@ -216,9 +216,7 @@ footer{
 <body>
 
 <div class="hero">
-  <div class="eyebrow">ComplaintCA · Civic Guidance</div>
   <h1>CRA Problems: Two Different Processes</h1>
-  <div class="updated-line">Last updated: July 21, 2026 &middot; Reviewed against official sources</div>
 </div>
 
 <main>
@@ -239,24 +237,6 @@ footer{
     </div>
   </div>
 
-  <div class="asya-feature">
-    <div class="asya-feature-inner">
-      <div class="asya-avatar-ring"><span>A</span></div>
-      <div class="asya-feature-body">
-        <div class="asya-feature-name">Ask Asya <span class="tag">AI</span></div>
-        <div class="asya-bubble" id="asya-guide-msg">Tell me what happened — I'll tell you which CRA process fits.</div>
-        <div class="asya-input-row">
-          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. CRA reassessed my return and I think it's wrong..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
-          <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a problem with the CRA. In 2-3 short sentences, determine if this is a SERVICE complaint (how they were treated, delays, staff conduct -> goes to the CRA Service Feedback Program then the Taxpayers Ombudsperson at 1-866-586-3839) or an ASSESSMENT dispute (they disagree with a tax amount owed -> needs a formal Notice of Objection, generally within 90 days of the notice date, strict deadline). Mention ComplaintCA can help draft the complaint or objection letter. Be concrete and concise, no preamble. Do not invent deadlines or numbers you are not certain of.";
-</script>
-<script src="/guides/asya-widget.js"></script>
 
   <h2>If It's About Service</h2>
 

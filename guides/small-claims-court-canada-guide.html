@@ -100,7 +100,7 @@ body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-s
   text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
 }
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.6rem;font-weight:700;margin:0;
+  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;margin:0;
   line-height:1.4;letter-spacing:.3px;max-width:18ch;
   text-wrap:balance;
 color:var(--navy);}
@@ -228,9 +228,7 @@ footer{
 <body>
 
 <div class="hero">
-  <div class="eyebrow">ComplaintCA · Civic Guidance</div>
   <h1>Small Claims Court, By Province</h1>
-  <div class="updated-line">Last updated: July 27, 2026 &middot; Reviewed against official sources</div>
 </div>
 
 <main>
@@ -238,24 +236,6 @@ footer{
 
   <div class="dc-toolbar" data-dc="consumer" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 26px;box-shadow:0 2px 8px rgba(15,41,82,.04)"><div style="font-size:.86rem;font-weight:700;color:var(--navy);margin-bottom:2px">Free ComplaintCA tools for this</div><div style="font-size:.8rem;color:var(--muted)">Ask Asya whether small claims makes sense for your situation, or draft your demand letter first — most courts require you to try that before filing.</div></div>
 
-  <div class="asya-feature">
-    <div class="asya-feature-inner">
-      <div class="asya-avatar-ring"><span>A</span></div>
-      <div class="asya-feature-body">
-        <div class="asya-feature-name">Ask Asya <span class="tag">AI</span></div>
-        <div class="asya-bubble" id="asya-guide-msg">Tell me your province and how much you're owed, and I'll tell you which court handles it and what to do first.</div>
-        <div class="asya-input-row">
-          <input type="text" class="asya-input" id="asya-guide-input" placeholder="e.g. A contractor in Alberta owes me $8,000..." onkeydown="if(event.key==='Enter')askAsyaGuide()">
-          <button class="asya-send" id="asya-guide-send" onclick="askAsyaGuide()">→</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-window._GUIDE_SYSTEM_PROMPT="You are Asya, the ComplaintCA assistant. The user describes a money dispute and possibly their province. In 2-3 short sentences, tell them which court/tribunal handles it at that amount (e.g. BC Civil Resolution Tribunal under $5,000, Alberta Court of Justice Civil Claims up to $100,000), and remind them most courts require a demand letter first. Be concrete and concise, no preamble.";
-</script>
-<script src="/guides/asya-widget.js"></script>
 
   <h2>Before You File: Send a Demand Letter</h2>
   <div class="path-card">
