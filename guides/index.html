@@ -178,6 +178,16 @@ footer{
   text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
   border-top:1px solid var(--border);letter-spacing:.5px;
 }
+
+.blog-teaser{text-align:center;margin:22px 0 0}
+.blog-teaser a{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.8rem;font-weight:600;color:var(--muted);
+  text-decoration:none;border-bottom:1px dashed var(--border);
+  padding-bottom:2px;transition:color .15s,border-color .15s;
+}
+.blog-teaser a:hover{color:var(--blue);border-color:var(--blue)}
+.blog-teaser a:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -216,6 +226,9 @@ footer{
         </span>
         <span class="choice-arrow">→</span>
       </button>
+    </div>
+    <div class="blog-teaser">
+      <a href="/blog/">📰 Prefer to read? Visit our Blog →</a>
     </div>
   </section>
 
