@@ -1902,6 +1902,16 @@ const AUTHORITIES = {
     bc:         [{name:'BC Ministry of Education', email:'educ.minister@gov.bc.ca', phone:'250-356-5963', note:''},{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:'School discrimination'}],
     alberta:    [{name:'Alberta Education', email:'comm.contact@gov.ab.ca', phone:'780-427-7219', note:''}],
     quebec:     [{name:'Ministère de l\'Éducation', email:'aide.demandes@meq.gouv.qc.ca', phone:'1-866-747-6626', note:''}]
+  },
+  condo: {
+    default:    [{name:'Condominium Authority of Ontario (CAO)', email:'info@condoauthorityontario.ca', phone:'1-800-854-9014', note:'General inquiries — Ontario condo corporations'},{name:'Condominium Authority Tribunal (CAT)', email:'condoauthorityontario.ca/issues-and-dispute-resolution', phone:'1-800-854-9014', note:'File a case online — records, governance, nuisance disputes'}],
+    bc:         [{name:'Civil Resolution Tribunal — Strata Property', email:'RSC@crtbc.ca', phone:'1-844-322-2292', note:'Apply online or by email'}],
+    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:'No dedicated condo tribunal — disputes go through mediation, arbitration, or the courts under the Condominium Property Act'}],
+    quebec:     [{name:'Cour du Québec — Petites créances', email:'quebec.ca/en/justice', phone:'', note:'No dedicated tribunal — co-ownership disputes go through Small Claims (up to $15,000) or Superior Court'}]
+  },
+  studentloan: {
+    default:    [{name:'NSLSC — National Student Loans Service Centre', email:'csnpe-nslsc.canada.ca/en/public/contact/contact-us', phone:'1-888-815-4514', note:'Secure online messaging only — no public email; covers federal + most provincial loans (not Quebec)'},{name:'Service Canada Feedback (ESDC)', email:'clientfeedback-commentairesclient@servicecanada.gc.ca', phone:'1-800-206-7218', note:'ESDC oversees the NSLSC — escalate unresolved disputes here'}],
+    quebec:     [{name:'Aide financière aux études (AFE) — Bureau des recours', email:'quebec.ca/en/gouvernement/ministeres-organismes/enseignement-superieur/plainte', phone:'1-877-643-3750', note:'Quebec runs its own separate student loan system, not the NSLSC'}]
   }
 };
 
@@ -3046,9 +3056,9 @@ var CAT_SUBS={
   landlord:[{v:'property',i:'🏚️',l:'Property Damage'},{v:'repairs',i:'🔧',l:'Repairs'},{v:'safety',i:'⚠️',l:'Safety / Mold'},{v:'billing',i:'💳',l:'Rent / Billing'},{v:'noise',i:'🔊',l:'Noise'},{v:'disc',i:'⚖️',l:'Discrimination'}],
   employer:[{v:'harassment',i:'🚫',l:'Harassment'},{v:'wages',i:'💰',l:'Unpaid Wages'},{v:'disc',i:'⚖️',l:'Discrimination'},{v:'safety',i:'⚠️',l:'Workplace Safety'},{v:'privacy',i:'🔒',l:'Privacy'},{v:'wrongful',i:'📋',l:'Wrongful Dismissal'}],
   rights:[{v:'race',i:'✊',l:'Race / Ethnicity',r:true},{v:'gender',i:'⚧️',l:'Gender / Sex',r:true},{v:'religion',i:'🕌',l:'Religion',r:true},{v:'disability',i:'♿',l:'Disability',r:true},{v:'age',i:'👴',l:'Age',r:true},{v:'sexual',i:'🏳️‍🌈',l:'Sexual Orientation',r:true},{v:'language',i:'🗣️',l:'Language Rights',r:true},{v:'indigenous',i:'🪶',l:'Indigenous Rights',r:true}],
-  government:[{v:'service',i:'📋',l:'Poor Service'},{v:'delays',i:'⏱️',l:'Excessive Delays'},{v:'privacy',i:'🔒',l:'Privacy / PIPEDA'},{v:'benefits',i:'💰',l:'Benefits'},{v:'immigration',i:'🛂',l:'Immigration'},{v:'police',i:'👮',l:'Police / Authority'}],
+  government:[{v:'service',i:'📋',l:'Poor Service'},{v:'delays',i:'⏱️',l:'Excessive Delays'},{v:'privacy',i:'🔒',l:'Privacy / PIPEDA'},{v:'benefits',i:'💰',l:'Benefits'},{v:'immigration',i:'🛂',l:'Immigration'},{v:'police',i:'👮',l:'Police / Authority'},{v:'studentloan',i:'🎓',l:'Student Loans'}],
   healthcare:[{v:'malpractice',i:'🩺',l:'Malpractice'},{v:'service',i:'📋',l:'Poor Service'},{v:'delays',i:'⏱️',l:'Wait Times'},{v:'billing',i:'💳',l:'Billing'},{v:'privacy',i:'🔒',l:'Medical Privacy'},{v:'disc',i:'⚖️',l:'Discrimination'}],
-  other:[{v:'education',i:'🏫',l:'Education'},{v:'privacy',i:'🔒',l:'Privacy / Data'},{v:'environment',i:'🌿',l:'Environment'},{v:'other',i:'📌',l:'Other'}]
+  other:[{v:'education',i:'🏫',l:'Education'},{v:'privacy',i:'🔒',l:'Privacy / Data'},{v:'condo',i:'🏢',l:'Condo / Strata'},{v:'environment',i:'🌿',l:'Environment'},{v:'other',i:'📌',l:'Other'}]
 };
 var CAT_GROUPS={municipal:'Municipality',business:'Business',landlord:'Landlord',employer:'Employer',rights:'Human Rights',government:'Government',healthcare:'Healthcare',other:'Other'};
 function resetCat(){
