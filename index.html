@@ -4641,6 +4641,7 @@ function _handleGoLink(){
     if(!go) return;
     history.replaceState(null,'',location.pathname);
     if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
+    if(go==='asya'){ if(typeof _aToggle==='function') _aToggle(); return; }
     var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
     if(allowed[go]) goApp(go);
   }catch(e){}
