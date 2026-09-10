@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="dark">
 <title>How to Find and Contact Your MP, MPP/MLA, or City Councillor in Canada (2026) | ComplaintCA</title>
 <meta name="description" content="Not sure if your issue is federal, provincial, or municipal? This guide explains which elected official handles what in Canada, and the official tool to find and contact your MP, MPP/MLA/MNA, and city councillor.">
 <meta name="theme-color" content="#0f2952">
@@ -95,130 +95,99 @@
   --sub:#475569;--muted:#5a6b80;--border:#dbeafe;
   --gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
   --radius:12px;
+  --dbg:#060b16;--dtext:#f0f4f8;--dsub:#b8c5d6;--dmuted:#6b7d99;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+html,body{height:100%}
+body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5;overflow:hidden;display:flex;flex-direction:column}
 
-.hero{background:var(--off);color:var(--navy);padding:52px 24px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}
-.hero .eyebrow{
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
-}
-.hero h1{
-  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:18ch;
-  text-wrap:balance;
-color:var(--navy);}
+.topbar{flex:0 0 auto;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
+.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
+.logo-text{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;color:#fff;line-height:1;white-space:nowrap}
+.logo-ca{color:#ff5a5a}
+.topbar-right{display:flex;align-items:center;gap:8px;height:46px}
+.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 10px;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600}
+.lang-pill .car{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:2px}
 
-main{max-width:640px;margin:0 auto;padding:24px 24px 64px}
+.hero{flex:0 0 auto;background:var(--dbg);color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
+.hero .eyebrow{display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 6px}
+.hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
+.hero h1{font-size:1.3rem;font-weight:800;margin:0;line-height:1.18;letter-spacing:-.01em;color:#f4f5f7;max-width:26ch}
+.hero h1 em{font-style:normal;color:#7c5cff}
+.hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
 
-.lede{
-  font-size:1rem;color:var(--sub);border-left:3px solid var(--gold);
-  padding:2px 0 2px 18px;margin:0 0 40px;text-align:left;
-}
+main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 10px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
 
-h2{
-  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--blue);text-align:left;
-  border-top:1px solid var(--border);padding-top:12px;margin:26px 0 18px;
-  font-weight:700;
-}
+h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#8fb4f0;text-align:left;border-top:1px solid rgba(255,255,255,.1);padding-top:12px;margin:30px 0 18px;font-weight:700}
+.section-hint{width:100%;max-width:460px;font-size:.66rem;font-weight:700;letter-spacing:.04em;color:#8991a3;margin:0 0 10px;text-align:left}
+.more-link{font-size:.72rem;color:#8fb4f0;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(143,180,240,.4);margin-top:2px}
+.dc-toolbar{width:100%;max-width:460px}
 
-.path-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px 22px;margin:0 0 16px;box-shadow:0 2px 8px rgba(15,41,82,.04);
-  text-align:left;
-}
-.path-card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
-.path-card p{margin:0 0 12px;font-size:.92rem;color:var(--sub);line-height:1.6}
-.path-card p:last-child{margin-bottom:0}
-.path-card a.official{
-  display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);
-  text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px;
-}
-.path-card ol,.path-card ul{margin:0 0 12px;padding-left:20px;font-size:.92rem;color:var(--sub);line-height:1.7}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:10px;width:100%;max-width:460px;flex:1 1 auto;min-height:0;margin:0 0 10px}
+.path-card{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;text-align:left;padding:clamp(10px,2.2vh,18px) 14px;border-radius:16px;border:none;cursor:pointer;position:relative;overflow:hidden;color:#fff;min-height:0;transition:transform .2s,filter .2s;text-decoration:none}
+.path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.path-card .picon{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.path-card .arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.72rem}
+.path-card h3{margin:0;font-weight:800;font-size:clamp(.7rem,2.3vh,.85rem);line-height:1.22;color:#fff}
+.path-card .tag{font-size:.66rem;color:rgba(255,255,255,.7);font-weight:600}
+.pc-1{background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
+.pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
+.pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
+.pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
+.pc-5{background:linear-gradient(155deg,#ff4d8d,#c22463)}
+.pc-6{background:linear-gradient(155deg,#2c3340,#1a1e26);border:1px solid rgba(255,255,255,.12)}
 
-.cta{
-  background:linear-gradient(135deg,var(--navy),var(--blue));
-  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:48px 0;
-  text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;
-}
+.track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.track-link{color:#8991a3;font-size:.68rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);cursor:pointer}
+.feat-row{display:flex;gap:10px;flex-wrap:wrap;color:#6b7d99;font-size:.62rem}
+.feat-row span::before{content:'●';color:#7c5cff;margin-right:4px;font-size:.5rem}
+
+.info-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:210;padding:20px}
+.info-overlay.show{display:flex}
+.info-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px 24px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto}
+.info-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+
+.step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.step-overlay.show{display:flex}
+.step-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:pcPop .2s ease}
+@keyframes pcPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.step-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+.step-modal h3{margin:0 0 14px;font-size:1.15rem;font-weight:700}
+.step-modal p{margin:0 0 12px;font-size:.92rem;color:var(--dsub);line-height:1.7}
+.step-modal p:last-child{margin-bottom:0}
+.step-modal a.official{display:inline-block;font-size:.85rem;font-weight:600;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4);padding-bottom:1px;margin-top:4px}
+.step-modal table{width:100%;border-collapse:collapse;font-size:.85rem}
+.step-modal table th{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;text-align:left;padding:6px 8px;color:var(--gold);border-bottom:2px solid rgba(212,175,55,.4)}
+.step-modal table td{padding:8px;border-bottom:1px solid rgba(255,255,255,.1);color:var(--dsub);vertical-align:top}
+
+.cta{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:var(--radius);padding:30px 24px;margin:44px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border:1px solid rgba(212,175,55,.25)}
 .cta p{margin:0;font-size:1rem;max-width:28ch}
-.cta a{
-  display:inline-block;background:var(--gold);color:var(--navy);
-  font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;
-  text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px;
-}
+.cta a{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px}
 
-.faq-item{margin:0 0 24px;text-align:left}
-.faq-item h3{font-size:.98rem;margin:0 0 8px;color:var(--navy);font-weight:600;line-height:1.5}
-.faq-item p{margin:0;color:var(--sub);font-size:.9rem;line-height:1.65}
+.faq-item{margin:0 0 12px;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.faq-item.open{border-color:var(--gold)}
+.faq-item summary{padding:16px 18px;cursor:pointer;font-size:.98rem;color:#fff;font-weight:600;line-height:1.5;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'▼';font-size:.75rem;color:var(--dmuted);flex-shrink:0;transition:transform .25s}
+.faq-item[open] summary::after{transform:rotate(180deg)}
+.faq-item p{margin:0;color:var(--dsub);font-size:.9rem;line-height:1.65;padding:0 18px 16px}
 
-table.split{width:100%;border-collapse:collapse;font-size:.86rem;margin:0 0 16px}
-table.split th{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:1px;text-transform:uppercase;text-align:left;padding:8px 10px;color:var(--navy);border-bottom:2px solid var(--navy)}
-table.split td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--sub);vertical-align:top}
+footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--dmuted);border-top:1px solid rgba(255,255,255,.1);letter-spacing:.5px}
 
-footer{
-  text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
-  border-top:1px solid var(--border);letter-spacing:.5px;
-}
-
-.asya-feature{
-  background:linear-gradient(160deg,#fff,var(--ice));
-  border:1.5px solid var(--gold);border-radius:14px;
-  padding:14px 16px;margin:0 0 30px;position:relative;
-  box-shadow:0 3px 14px rgba(15,41,82,.12);
-}
-.asya-feature-inner{display:flex;gap:10px;align-items:flex-start}
-.asya-avatar-ring{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--navy),var(--blue));
-  display:flex;align-items:center;justify-content:center;position:relative;
-}
-.asya-avatar-ring::before{
-  content:'';position:absolute;inset:-3px;border-radius:50%;
-  border:1.5px solid var(--gold);opacity:.55;
-  animation:asyaPulse 2.4s ease-out infinite;
-}
-@keyframes asyaPulse{
-  0%{transform:scale(1);opacity:.55}
-  100%{transform:scale(1.4);opacity:0}
-}
-.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:.85rem}
-.asya-feature-body{flex:1;min-width:0}
-.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.76rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.asya-feature-name .tag{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);padding:2px 7px;border-radius:9px}
-.asya-bubble{
-  background:#fff;border:1px solid var(--border);border-radius:4px 10px 10px 10px;
-  padding:7px 10px;font-size:.76rem;color:var(--sub);line-height:1.5;margin-bottom:8px;
-}
-.asya-input-row{display:flex;gap:6px}
-.asya-input{
-  flex:1;border:1.5px solid var(--border);border-radius:20px;
-  padding:8px 13px;font-size:.8rem;font-family:'Inter',sans-serif;
-  background:var(--off);color:var(--text);min-width:0;
-}
-.asya-input::placeholder{color:var(--muted)}
-.asya-input:focus{outline:none;border-color:var(--gold);background:#fff}
-.asya-send{
-  background:linear-gradient(135deg,var(--gold),var(--dark-gold));
-  border:none;border-radius:50%;color:var(--navy);
-  font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
-  box-shadow:0 3px 10px rgba(201,168,76,.35);
-}
-.updated-line{
-  font-family:'Inter',sans-serif;font-size:.68rem;color:var(--muted);
-  letter-spacing:.3px;margin-top:10px;
-}
-.trust-box{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:22px 24px;margin:40px 0 0;text-align:left;
-}
-.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--sub);line-height:1.6}
+.trust-box{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:var(--radius);padding:22px 24px;margin:40px 0 0;text-align:left}
+.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--dsub);line-height:1.6}
 .trust-box p:last-child{margin-bottom:0}
 .trust-sources{margin:0 0 14px;padding-left:20px}
-.trust-sources li{font-size:.86rem;color:var(--sub);margin-bottom:6px;line-height:1.5}
-.trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
+.trust-sources li{font-size:.86rem;color:var(--dsub);margin-bottom:6px;line-height:1.5}
+.trust-sources a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,175,55,.3)}
+.trust-box a{color:var(--gold)}
+
+.related-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:20px 22px;text-align:left}
+.related-box ul{margin:0;padding-left:20px;font-size:.92rem;line-height:1.9;color:var(--dsub)}
+.related-box a{color:#8fb4f0;text-decoration:none}
+.related-box a:hover{text-decoration:underline}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -226,109 +195,202 @@ footer{
 </head>
 <body>
 
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-btn" href="https://www.complaintca.ca">
+      <img src="/icons/icon-192.png" alt="ComplaintCA" width="20" height="20" style="display:block;border-radius:5px;flex-shrink:0">
+      <span class="logo-text">Complaint<span class="logo-ca">CA</span></span>
+    </a>
+    <div class="topbar-right">
+      <div class="lang-pill">🇨🇦 EN <span class="car">▾</span></div>
+    </div>
+  </div>
+</header>
+
 <div class="hero">
-  <h1>Find and Contact Your Elected Representative</h1>
+  <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
+  <div class="hero-row">
+    <h1>Find Your Representative.<br><em>Federal, Provincial, Municipal.</em></h1>
+    <a href="https://www.complaintca.ca" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+  </div>
 </div>
 
 <main>
-  <p class="lede">Canada has three levels of elected officials, and each one handles different problems. Picking the wrong one wastes weeks. Here's how to tell which level you need, and the official tool to find them.</p>
+  <div class="dc-toolbar" data-dc="mp" style="margin:0 0 10px"></div>
 
-  <div class="dc-toolbar" data-dc="mp" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 26px;box-shadow:0 2px 8px rgba(15,41,82,.04)"><div style="font-size:.86rem;font-weight:700;color:var(--navy);margin-bottom:2px">Free ComplaintCA tool for this</div><div style="font-size:.8rem;color:var(--muted)">Open Find My Representative in the app — enter your address to see your MP, MPP/MLA, and municipal councillor at once.</div></div>
+  <div class="section-hint">Three Levels of Government <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
 
+  <div class="step-grid">
+    <div class="path-card pc-1" onclick="openStep('s1')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
+      <h3>Your MP (Federal)</h3>
+      <div class="tag">Immigration, EI, CPP</div>
+    </div>
 
-  <h2>Which Level of Government Handles What</h2>
+    <div class="path-card pc-2" onclick="openStep('s2')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
+      <h3>MPP / MLA / MNA</h3>
+      <div class="tag">Healthcare, tenancy law</div>
+    </div>
 
-  <table class="split">
-    <tr><th>Level</th><th>Handles</th></tr>
-    <tr><td><strong>Federal (MP)</strong></td><td>Immigration &amp; passports, Employment Insurance, CPP/OAS, federal taxes (CRA), Canada Post, federal prisons, national defence</td></tr>
-    <tr><td><strong>Provincial (MPP/MLA/MNA)</strong></td><td>Healthcare, K-12 &amp; post-secondary education, landlord-tenant law, provincial courts, driver's licences, welfare/disability programs, provincial policing</td></tr>
-    <tr><td><strong>Municipal (Councillor/Mayor)</strong></td><td>Property taxes, garbage &amp; recycling, zoning &amp; building permits, local roads, transit, bylaws, municipal parks</td></tr>
-  </table>
+    <div class="path-card pc-3" onclick="openStep('s3')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
+      <h3>City Councillor</h3>
+      <div class="tag">Taxes, zoning, bylaws</div>
+    </div>
 
-  <h2>How to Find Each One</h2>
+    <div class="path-card pc-4" onclick="openStep('s4')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
+      <h3>Which Level Handles What</h3>
+      <div class="tag">Quick reference table</div>
+    </div>
 
-  <div class="path-card">
-    <h3>Your MP (federal)</h3>
-    <p>Use the official House of Commons directory — search by postal code or riding.</p>
-    <a class="official" href="https://www.ourcommons.ca/members/en" target="_blank" rel="noopener">Find your MP at ourcommons.ca →</a>
+    <a class="path-card pc-5" href="https://www.complaintca.ca?go=rep" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
+      <h3>Find My Representative</h3>
+      <div class="tag">All 3 levels at once</div>
+    </a>
+
+    <a class="path-card pc-6" href="https://www.complaintca.ca?go=lawyer" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
+      <h3>Free Lawyer &amp; Civil Society</h3>
+      <div class="tag">When it goes beyond</div>
+    </a>
   </div>
 
-  <div class="path-card">
-    <h3>Your MPP / MLA / MNA (provincial)</h3>
-    <p>Each province runs its own legislature website with a "find your member" search — for example Ontario's Legislative Assembly (ola.org) or BC's Legislative Assembly (leg.bc.ca). Search "[your province] legislative assembly find my MLA" if you're unsure of the exact site.</p>
+  <div class="track-row">
+    <div class="track-link">Track My Complaint</div>
+    <div class="feat-row">
+      <span>Anonymous</span>
+      <span>AI Routing</span>
+      <span>7 Languages</span>
+      <span>Live Tracking</span>
+    </div>
   </div>
 
-  <div class="path-card">
-    <h3>Your city councillor (municipal)</h3>
-    <p>Search your city or town's official website for its council or ward directory — most let you search by address. ComplaintCA's tool pulls this automatically using the Represent API, a public, nonpartisan database of Canadian elected officials at all three levels.</p>
+  <div class="step-overlay" id="step-overlay" onclick="if(event.target===this)closeStep()">
+    <div class="step-modal" id="s1" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Your MP (Federal)</h3>
+      <p>Use the official House of Commons directory — search by postal code or riding.</p>
+      <a class="official" href="https://www.ourcommons.ca/members/en" target="_blank" rel="noopener">Find your MP at ourcommons.ca →</a>
+    </div>
+    <div class="step-modal" id="s2" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Your MPP / MLA / MNA (Provincial)</h3>
+      <p>Each province runs its own legislature website with a "find your member" search — for example Ontario's Legislative Assembly (ola.org) or BC's Legislative Assembly (leg.bc.ca). Search "[your province] legislative assembly find my MLA" if you're unsure of the exact site.</p>
+    </div>
+    <div class="step-modal" id="s3" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Your City Councillor (Municipal)</h3>
+      <p>Search your city or town's official website for its council or ward directory — most let you search by address. ComplaintCA's tool pulls this automatically using the Represent API, a public, nonpartisan database of Canadian elected officials at all three levels.</p>
+    </div>
+    <div class="step-modal" id="s4" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Which Level of Government Handles What</h3>
+      <table>
+        <tr><th>Level</th><th>Handles</th></tr>
+        <tr><td><strong>Federal (MP)</strong></td><td>Immigration &amp; passports, EI, CPP/OAS, federal taxes, Canada Post</td></tr>
+        <tr><td><strong>Provincial</strong></td><td>Healthcare, education, landlord-tenant law, provincial courts, driver's licences</td></tr>
+        <tr><td><strong>Municipal</strong></td><td>Property taxes, garbage, zoning, local roads, transit, bylaws</td></tr>
+      </table>
+    </div>
   </div>
 
-  <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">The Find My Representative tool in the app looks up all three levels at once from your address, so you don't have to guess which legislature or council website to search — and Asya can tell you which one is actually responsible for your issue first.</p>
+  <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
+    <div class="info-modal">
+      <button class="mclose" onclick="closeInfo()">✕</button>
 
-  <div class="cta">
-    <p>Not sure if your issue is federal, provincial, or municipal? Ask Asya first.</p>
-    <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
-  </div>
+      <h2 style="margin-top:0">Where ComplaintCA Fits</h2>
+      <p style="font-size:.95rem;color:var(--dsub)">The Find My Representative tool in the app looks up all three levels at once from your address, so you don't have to guess which legislature or council website to search — and Asya can tell you which one is actually responsible for your issue first.</p>
 
-  <h2>Frequently Asked</h2>
+      <div class="cta">
+        <p>Not sure if your issue is federal, provincial, or municipal? Ask Asya first.</p>
+        <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+      </div>
 
-  <div class="faq-item">
-    <h3>How do I find out who my MP is?</h3>
-    <p>Use ourcommons.ca/members/en, or ComplaintCA's Find My Representative tool, and enter your address or postal code.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How do I find my MPP?</h3>
-    <p>If you're in Ontario, search the Legislative Assembly of Ontario's member directory at ola.org, or use ComplaintCA's Find My Representative tool and enter your address or postal code to see your MPP along with your MP and councillor at once.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How do I find my MLA by postal code?</h3>
-    <p>Enter your postal code into ComplaintCA's Find My Representative tool, or your province's legislative assembly website — most let you search directly by postal code or address.</p>
-  </div>
-  <div class="faq-item">
-    <h3>What's the difference between an MP, MPP, MLA, and MNA?</h3>
-    <p>MP is federal. MPP (Ontario), MLA (most provinces), and MNA (Quebec) are all the same thing — your provincial representative.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Should I contact my MP or my city councillor?</h3>
-    <p>Depends on the issue: MPs handle federal programs like immigration and EI; councillors handle property tax, zoning, and local bylaws.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Can my MP or MPP actually solve my problem?</h3>
-    <p>They can't override a department's decision, but their office can escalate a stuck file or request a status update — often faster than a general call centre.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How do I find my city councillor?</h3>
-    <p>Search your municipality's website for its council/ward directory, or use ComplaintCA's Find My Representative tool.</p>
-  </div>
-  <div class="faq-item">
-    <h3>What is ComplaintCA?</h3>
-    <p>A Canadian civic platform that routes you to the correct authority, drafts complaints with AI in 7 languages, and includes a Find My Representative tool for all three levels of government.</p>
-  </div>
+      <h2>Frequently Asked</h2>
 
-  <div class="trust-box">
-    <h2 style="margin-top:0">Sources &amp; Verification</h2>
-    <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
-    <ul class="trust-sources">
-    <li><a href="https://www.ourcommons.ca/members/en" target="_blank" rel="noopener">House of Commons of Canada — Find Your MP</a></li>
-    </ul>
-    <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
-  </div>
+      <details class="faq-item">
+        <summary>How do I find out who my MP is?</summary>
+        <p>Use ourcommons.ca/members/en, or ComplaintCA's Find My Representative tool, and enter your address or postal code.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I find my MPP?</summary>
+        <p>If you're in Ontario, search the Legislative Assembly of Ontario's member directory at ola.org, or use ComplaintCA's Find My Representative tool.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I find my MLA by postal code?</summary>
+        <p>Enter your postal code into ComplaintCA's Find My Representative tool, or your province's legislative assembly website.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What's the difference between an MP, MPP, MLA, and MNA?</summary>
+        <p>MP is federal. MPP (Ontario), MLA (most provinces), and MNA (Quebec) are all the same thing — your provincial representative.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Should I contact my MP or my city councillor?</summary>
+        <p>Depends on the issue: MPs handle federal programs like immigration and EI; councillors handle property tax, zoning, and local bylaws.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can my MP or MPP actually solve my problem?</summary>
+        <p>They can't override a department's decision, but their office can escalate a stuck file or request a status update — often faster than a general call centre.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How do I find my city councillor?</summary>
+        <p>Search your municipality's website for its council/ward directory, or use ComplaintCA's Find My Representative tool.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is ComplaintCA?</summary>
+        <p>A Canadian civic platform that routes you to the correct authority, drafts complaints with AI in 7 languages, and includes a Find My Representative tool for all three levels of government.</p>
+      </details>
 
-  <h2>Related Guides</h2>
-  <div class="path-card">
-    <ul style="margin:0;padding-left:20px;font-size:.92rem;line-height:1.9">
-    <li><a href="/guides/human-rights-complaint-canada-guide.html">Human Rights Complaint in Canada</a></li>
-    <li><a href="/guides/free-legal-help-canada-guide.html">Free Legal Help in Canada</a></li>
-    <li><a href="/guides/immigration-complaint-canada-guide.html">Delayed Immigration Application</a></li>
-    <li><a href="/guides/student-loan-complaint-canada-guide.html">Canada Student Loan Complaints</a></li>
-      <li><a href="/guides/">All Complaint Guides →</a></li>
-    </ul>
+      <div class="trust-box">
+        <h2 style="margin-top:0">Sources &amp; Verification</h2>
+        <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
+        <ul class="trust-sources">
+        <li><a href="https://www.ourcommons.ca/members/en" target="_blank" rel="noopener">House of Commons of Canada — Find Your MP</a></li>
+        </ul>
+        <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
+      </div>
+
+      <h2>Related Guides</h2>
+      <div class="related-box">
+        <ul>
+        <li><a href="/guides/human-rights-complaint-canada-guide.html">Human Rights Complaint in Canada</a></li>
+        <li><a href="/guides/free-legal-help-canada-guide.html">Free Legal Help in Canada</a></li>
+        <li><a href="/guides/immigration-complaint-canada-guide.html">Delayed Immigration Application</a></li>
+        <li><a href="/guides/student-loan-complaint-canada-guide.html">Canada Student Loan Complaints</a></li>
+          <li><a href="/guides/">All Complaint Guides →</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </main>
 
 <footer>ComplaintCA · complaintca.ca</footer>
 
 <script src="/guides/support-tools.js" defer></script>
+<script>
+function openStep(id){
+  document.querySelectorAll('.step-modal').forEach(function(m){m.style.display='none'});
+  document.getElementById(id).style.display='block';
+  document.getElementById('step-overlay').classList.add('show');
+}
+function closeStep(){
+  document.getElementById('step-overlay').classList.remove('show');
+}
+function openInfo(){
+  document.getElementById('info-overlay').classList.add('show');
+}
+function closeInfo(){
+  document.getElementById('info-overlay').classList.remove('show');
+}
+</script>
 </body>
 </html>
