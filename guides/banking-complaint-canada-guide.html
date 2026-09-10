@@ -98,18 +98,24 @@ body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-
 .logo-ca{color:#ff5a5a}
 .topbar-right{display:flex;align-items:center;gap:8px;height:46px}
 .lang-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 10px;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600}
+.lang-pill .car{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:2px}
 
 .hero{background:var(--dbg);color:#fff;padding:28px 20px 6px;text-align:left;max-width:1080px;margin:0 auto;}
 .hero .eyebrow{
   display:flex;align-items:center;gap:6px;font-size:.7rem;
   font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 8px;
 }
+.hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
 .hero h1{
-  font-size:1.3rem;font-weight:800;margin:0 0 6px;
-  line-height:1.25;letter-spacing:-.01em;color:#f4f5f7;max-width:22ch;
+  font-size:1.6rem;font-weight:800;margin:0 0 6px;
+  line-height:1.2;letter-spacing:-.01em;color:#f4f5f7;max-width:22ch;
 }
+.hero h1 em{font-style:normal;color:#7c5cff;display:block}
 .hero .quote{font-family:'EB Garamond',serif;font-style:italic;font-size:.85rem;color:#c7cbd4;margin:10px 0 4px;line-height:1.4}
 .hero .quote b{display:block;font-family:'Inter',sans-serif;font-style:normal;text-transform:uppercase;font-size:.62em;font-weight:700;color:#7c5cff;letter-spacing:1.5px;margin-top:3px}
+
+.hero-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.asya-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:24px;padding:9px 18px;color:#fff;font-weight:700;font-size:.82rem;text-decoration:none;white-space:nowrap;flex-shrink:0;margin-top:4px}
 
 main{max-width:1080px;margin:0 auto;padding:0 20px 64px}
 
@@ -127,22 +133,27 @@ h2{
 
 .section-hint{font-size:.68rem;font-weight:700;letter-spacing:.04em;color:#8991a3;margin:-10px 0 14px;text-align:left}
 
-.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 8px;max-width:460px}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);gap:10px;width:100%;max-width:460px;aspect-ratio:460/560;margin:0 0 16px}
 .path-card{
   display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
-  gap:8px;text-align:left;padding:18px 14px;border-radius:16px;border:none;
-  cursor:pointer;position:relative;overflow:hidden;color:#fff;
-  min-height:112px;transition:transform .2s,filter .2s;
+  gap:8px;text-align:left;padding:clamp(12px,2.4vh,18px) 14px;border-radius:16px;border:none;
+  cursor:pointer;position:relative;overflow:hidden;color:#fff;min-height:0;
+  transition:transform .2s,filter .2s;
 }
 .path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
-.path-card .picon{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.path-card .picon{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
 .path-card .arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.75rem}
-.path-card h3{margin:0;font-weight:800;font-size:.85rem;line-height:1.3;color:#fff}
-.path-card .tag{font-size:.66rem;color:rgba(255,255,255,.7);font-weight:600}
+.path-card h3{margin:0;font-weight:800;font-size:clamp(.7rem,2.4vh,.82rem);line-height:1.25;color:#fff}
+.path-card .tag{font-size:.68rem;color:rgba(255,255,255,.7);font-weight:600}
 .pc-1{background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
 .pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
 .pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
 .pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
+
+.track-row{display:flex;flex-direction:column;gap:8px;margin:0 0 24px}
+.track-link{color:#8991a3;font-size:.82rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);align-self:flex-start;cursor:pointer}
+.feat-row{display:flex;gap:14px;flex-wrap:wrap;color:#6b7d99;font-size:.72rem}
+.feat-row span::before{content:'●';color:#7c5cff;margin-right:5px;font-size:.55rem}
 
 /* step detail opens in a centered modal — cards never grow/push layout */
 .step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
@@ -264,15 +275,18 @@ footer{
       <span class="logo-text">Complaint<span class="logo-ca">CA</span></span>
     </a>
     <div class="topbar-right">
-      <div class="lang-pill">🇨🇦 EN</div>
+      <div class="lang-pill">🇨🇦 EN <span class="car">▾</span></div>
     </div>
   </div>
 </header>
 
 <div class="hero">
-  <div class="eyebrow">🇨🇦 Canada's Complaint Platform</div>
-  <h1>How to File a Banking Complaint</h1>
-  <div class="quote">"Justice is the source of all the other virtues."<b>— Marcus Aurelius</b></div>
+  <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
+  <h1>Banking Complaint.<br><em>Filed. Escalated. Resolved.</em></h1>
+  <div class="hero-row">
+    <div class="quote">"Justice is the source of all the other virtues."<b>— Marcus Aurelius</b></div>
+    <a href="https://www.complaintca.ca" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+  </div>
 </div>
 
 <main>
@@ -310,6 +324,16 @@ footer{
       <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
       <h3>What FCAC Does</h3>
       <div class="tag">Oversight, not resolution</div>
+    </div>
+  </div>
+
+  <div class="track-row">
+    <div class="track-link">Track My Complaint</div>
+    <div class="feat-row">
+      <span>Anonymous</span>
+      <span>AI Routing</span>
+      <span>7 Languages</span>
+      <span>Live Tracking</span>
     </div>
   </div>
 
