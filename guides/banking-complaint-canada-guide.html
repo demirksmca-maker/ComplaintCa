@@ -131,7 +131,7 @@ h2{
 
 .dc-toolbar{width:100%;max-width:460px}
 
-.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,1fr);gap:10px;width:100%;max-width:460px;flex:1 1 auto;min-height:0;margin:0 0 10px}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:10px;width:100%;max-width:460px;flex:1 1 auto;min-height:0;margin:0 0 10px}
 .path-card{
   display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
   gap:6px;text-align:left;padding:clamp(10px,2.2vh,18px) 14px;border-radius:16px;border:none;
@@ -147,6 +147,8 @@ h2{
 .pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
 .pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
 .pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
+.pc-5{background:linear-gradient(155deg,#ff4d8d,#c22463)}
+.pc-6{background:linear-gradient(155deg,#2c3340,#1a1e26);border:1px solid rgba(255,255,255,.12)}
 
 .track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
 .track-link{color:#8991a3;font-size:.68rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);cursor:pointer}
@@ -326,6 +328,20 @@ footer{
       <h3>What FCAC Does</h3>
       <div class="tag">Oversight, not resolution</div>
     </div>
+
+    <a class="path-card pc-5" href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+      <h3>Verify a Document</h3>
+      <div class="tag">Suspicious bank email or text?</div>
+    </a>
+
+    <a class="path-card pc-6" href="https://www.complaintca.ca?go=lawyer" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
+      <h3>Free Lawyer &amp; Civil Society</h3>
+      <div class="tag">If OBSI isn't enough</div>
+    </a>
   </div>
 
   <div class="track-row">
