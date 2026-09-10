@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="dark">
 <title>File a Complaint in Quebec (2026 Guide) | ComplaintCA</title>
 <meta name="description" content="Not sure where to file your complaint in Quebec? Covers consumer, tenancy, and provincial service issues — with direct links to the right authority.">
 <meta name="theme-color" content="#0f2952">
@@ -80,126 +80,96 @@
   --sub:#475569;--muted:#5a6b80;--border:#dbeafe;
   --gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
   --radius:12px;
+  --dbg:#060b16;--dtext:#f0f4f8;--dsub:#b8c5d6;--dmuted:#6b7d99;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+html,body{height:100%}
+body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5;overflow:hidden;display:flex;flex-direction:column}
 
-.hero{background:var(--off);color:var(--navy);padding:52px 24px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}
-.hero .eyebrow{
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
-}
-.hero h1{
-  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:15ch;
-  text-wrap:balance;
-color:var(--navy);}
+.topbar{flex:0 0 auto;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
+.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
+.logo-text{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;color:#fff;line-height:1;white-space:nowrap}
+.logo-ca{color:#ff5a5a}
+.topbar-right{display:flex;align-items:center;gap:8px;height:46px}
+.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 10px;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600}
+.lang-pill .car{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:2px}
 
-main{max-width:640px;margin:0 auto;padding:24px 24px 64px}
+.hero{flex:0 0 auto;background:var(--dbg);color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
+.hero .eyebrow{display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 6px}
+.hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
+.hero h1{font-size:1.3rem;font-weight:800;margin:0;line-height:1.18;letter-spacing:-.01em;color:#f4f5f7;max-width:26ch}
+.hero h1 em{font-style:normal;color:#7c5cff}
+.hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
 
-.lede{
-  font-size:1rem;color:var(--sub);border-left:3px solid var(--gold);
-  padding:2px 0 2px 18px;margin:0 0 40px;text-align:left;
-}
+main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 10px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
 
-h2{
-  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--blue);text-align:left;
-  border-top:1px solid var(--border);padding-top:12px;margin:26px 0 18px;
-  font-weight:700;
-}
+h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#8fb4f0;text-align:left;border-top:1px solid rgba(255,255,255,.1);padding-top:12px;margin:30px 0 18px;font-weight:700}
+.section-hint{width:100%;max-width:460px;font-size:.66rem;font-weight:700;letter-spacing:.04em;color:#8991a3;margin:0 0 10px;text-align:left}
+.more-link{font-size:.72rem;color:#8fb4f0;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(143,180,240,.4);margin-top:2px}
+.dc-toolbar{width:100%;max-width:460px}
 
-.path-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px 22px;margin:0 0 16px;box-shadow:0 2px 8px rgba(15,41,82,.04);
-  text-align:left;
-}
-.path-card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
-.path-card p{margin:0 0 12px;font-size:.92rem;color:var(--sub);line-height:1.6}
-.path-card p:last-child{margin-bottom:0}
-.path-card a.official{
-  display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);
-  text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px;
-}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:10px;width:100%;max-width:460px;flex:1 1 auto;min-height:0;margin:0 0 10px}
+.path-card{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;text-align:left;padding:clamp(10px,2.2vh,18px) 14px;border-radius:16px;border:none;cursor:pointer;position:relative;overflow:hidden;color:#fff;min-height:0;transition:transform .2s,filter .2s;text-decoration:none}
+.path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.path-card .picon{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.path-card .arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.72rem}
+.path-card h3{margin:0;font-weight:800;font-size:clamp(.7rem,2.3vh,.85rem);line-height:1.22;color:#fff}
+.path-card .tag{font-size:.66rem;color:rgba(255,255,255,.7);font-weight:600}
+.pc-1{background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
+.pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
+.pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
+.pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
+.pc-5{background:linear-gradient(155deg,#ff4d8d,#c22463)}
+.pc-6{background:linear-gradient(155deg,#2c3340,#1a1e26);border:1px solid rgba(255,255,255,.12)}
 
-.cta{
-  background:linear-gradient(135deg,var(--navy),var(--blue));
-  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:48px 0;
-  text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;
-}
+.track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.track-link{color:#8991a3;font-size:.68rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);cursor:pointer}
+.feat-row{display:flex;gap:10px;flex-wrap:wrap;color:#6b7d99;font-size:.62rem}
+.feat-row span::before{content:'●';color:#7c5cff;margin-right:4px;font-size:.5rem}
+
+.info-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:210;padding:20px}
+.info-overlay.show{display:flex}
+.info-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px 24px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto}
+.info-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+
+.step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.step-overlay.show{display:flex}
+.step-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:pcPop .2s ease}
+@keyframes pcPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.step-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+.step-modal h3{margin:0 0 14px;font-size:1.15rem;font-weight:700}
+.step-modal p{margin:0 0 12px;font-size:.92rem;color:var(--dsub);line-height:1.7}
+.step-modal p:last-child{margin-bottom:0}
+.step-modal a.official{display:inline-block;font-size:.85rem;font-weight:600;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4);padding-bottom:1px;margin-top:4px}
+
+.cta{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:var(--radius);padding:30px 24px;margin:44px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border:1px solid rgba(212,175,55,.25)}
 .cta p{margin:0;font-size:1rem;max-width:28ch}
-.cta a{
-  display:inline-block;background:var(--gold);color:var(--navy);
-  font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;
-  text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px;
-}
+.cta a{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px}
 
-.faq-item{margin:0 0 24px;text-align:left}
-.faq-item h3{font-size:.98rem;margin:0 0 8px;color:var(--navy);font-weight:600;line-height:1.5}
-.faq-item p{margin:0;color:var(--sub);font-size:.9rem;line-height:1.65}
+.faq-item{margin:0 0 12px;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.faq-item.open{border-color:var(--gold)}
+.faq-item summary{padding:16px 18px;cursor:pointer;font-size:.98rem;color:#fff;font-weight:600;line-height:1.5;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'▼';font-size:.75rem;color:var(--dmuted);flex-shrink:0;transition:transform .25s}
+.faq-item[open] summary::after{transform:rotate(180deg)}
+.faq-item p{margin:0;color:var(--dsub);font-size:.9rem;line-height:1.65;padding:0 18px 16px}
 
-footer{
-  text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
-  border-top:1px solid var(--border);letter-spacing:.5px;
-}
+footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--dmuted);border-top:1px solid rgba(255,255,255,.1);letter-spacing:.5px}
 
-.asya-feature{
-  background:linear-gradient(160deg,#fff,var(--ice));
-  border:1.5px solid var(--gold);border-radius:14px;
-  padding:14px 16px;margin:0 0 18px;position:relative;
-  box-shadow:0 3px 14px rgba(15,41,82,.12);
-}
-.asya-feature-inner{display:flex;gap:10px;align-items:flex-start}
-.asya-avatar-ring{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--navy),var(--blue));
-  display:flex;align-items:center;justify-content:center;position:relative;
-}
-.asya-avatar-ring::before{
-  content:'';position:absolute;inset:-3px;border-radius:50%;
-  border:1.5px solid var(--gold);opacity:.55;
-  animation:asyaPulse 2.4s ease-out infinite;
-}
-@keyframes asyaPulse{
-  0%{transform:scale(1);opacity:.55}
-  100%{transform:scale(1.4);opacity:0}
-}
-.asya-avatar-ring span{color:var(--gold);font-family:'Cinzel',serif;font-weight:700;font-size:.85rem}
-.asya-feature-body{flex:1;min-width:0}
-.asya-feature-name{font-family:'Cinzel',serif;font-weight:700;color:var(--navy);font-size:.76rem;margin-bottom:5px;display:flex;align-items:center;gap:6px}
-.asya-feature-name .tag{font-family:'Inter',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);padding:2px 7px;border-radius:9px}
-.asya-bubble{
-  background:#fff;border:1px solid var(--border);border-radius:4px 10px 10px 10px;
-  padding:7px 10px;font-size:.76rem;color:var(--sub);line-height:1.5;margin-bottom:8px;
-}
-.asya-input-row{display:flex;gap:6px}
-.asya-input{
-  flex:1;border:1.5px solid var(--border);border-radius:20px;
-  padding:8px 13px;font-size:.8rem;font-family:'Inter',sans-serif;
-  background:var(--off);color:var(--text);min-width:0;
-}
-.asya-input::placeholder{color:var(--muted)}
-.asya-input:focus{outline:none;border-color:var(--gold);background:#fff}
-.asya-send{
-  background:linear-gradient(135deg,var(--gold),var(--dark-gold));
-  border:none;border-radius:50%;color:var(--navy);
-  font-weight:700;width:32px;height:32px;flex-shrink:0;font-size:.85rem;cursor:pointer;
-  box-shadow:0 3px 10px rgba(201,168,76,.35);
-}
-
-.updated-line{
-  font-family:'Inter',sans-serif;font-size:.68rem;color:var(--muted);
-  letter-spacing:.3px;margin-top:10px;
-}
-.trust-box{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:22px 24px;margin:40px 0 0;text-align:left;
-}
-.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--sub);line-height:1.6}
+.trust-box{background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:var(--radius);padding:22px 24px;margin:40px 0 0;text-align:left}
+.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--dsub);line-height:1.6}
 .trust-box p:last-child{margin-bottom:0}
 .trust-sources{margin:0 0 14px;padding-left:20px}
-.trust-sources li{font-size:.86rem;color:var(--sub);margin-bottom:6px;line-height:1.5}
-.trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
+.trust-sources li{font-size:.86rem;color:var(--dsub);margin-bottom:6px;line-height:1.5}
+.trust-sources a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,175,55,.3)}
+.trust-box a{color:var(--gold)}
+
+.related-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:20px 22px;text-align:left}
+.related-box ul{margin:0;padding-left:20px;font-size:.92rem;line-height:1.9;color:var(--dsub)}
+.related-box a{color:#8fb4f0;text-decoration:none}
+.related-box a:hover{text-decoration:underline}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -207,114 +177,188 @@ footer{
 </head>
 <body>
 
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-btn" href="https://www.complaintca.ca">
+      <img src="/icons/icon-192.png" alt="ComplaintCA" width="20" height="20" style="display:block;border-radius:5px;flex-shrink:0">
+      <span class="logo-text">Complaint<span class="logo-ca">CA</span></span>
+    </a>
+    <div class="topbar-right">
+      <div class="lang-pill">🇨🇦 EN <span class="car">▾</span></div>
+    </div>
+  </div>
+</header>
+
 <div class="hero">
-  <h1>How to File a Complaint in Quebec</h1>
+  <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
+  <div class="hero-row">
+    <h1>Quebec Complaint.<br><em>Right Authority, First Try.</em></h1>
+    <a href="https://www.complaintca.ca" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+  </div>
 </div>
 
 <main>
-  <p class="lede">Not sure where to file your complaint in Quebec? Covers consumer, tenancy, and provincial service issues — with direct links to the right authority.</p>
+  <div class="dc-toolbar" data-dc="consumer_qc" style="margin:0 0 10px"></div>
 
+  <div class="section-hint">Find Your Path <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
 
+  <div class="step-grid">
+    <div class="path-card pc-1" onclick="openStep('s1')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2l12 0 3 5-9 15L3 7z"/><path d="M3 7h18"/></svg>
+      <h3>Consumer &amp; Business Disputes</h3>
+      <div class="tag">Faulty goods, unfair practices</div>
+    </div>
 
-  <h2>Find Your Path</h2>
+    <div class="path-card pc-2" onclick="openStep('s2')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>
+      <h3>Residential Tenancy</h3>
+      <div class="tag">TAL — leases &amp; evictions</div>
+    </div>
 
-  <div class="path-card" data-dc="consumer_qc">
-    <h3>Consumer &amp; business disputes</h3>
-    <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
-    <a class="official" href="https://www.opc.gouv.qc.ca/en/contact/consumer" target="_blank" rel="noopener">Office de la protection du consommateur (OPC) →</a>
+    <div class="path-card pc-3" onclick="openStep('s3')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
+      <h3>Provincial Departments</h3>
+      <div class="tag">Protecteur du citoyen</div>
+    </div>
+
+    <a class="path-card pc-4" href="https://www.complaintca.ca?go=rep" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      <h3>Federal Services &amp; Your MP</h3>
+      <div class="tag">Immigration, EI, passports</div>
+    </a>
+
+    <a class="path-card pc-5" href="https://www.complaintca.ca?go=cyber" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+      <h3>Cyber Crime &amp; Online Fraud</h3>
+      <div class="tag">Scams, phishing, ID theft</div>
+    </a>
+
+    <a class="path-card pc-6" href="https://www.complaintca.ca?go=lawyer" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
+      <h3>Legal Disputes</h3>
+      <div class="tag">Free Lawyer Panel</div>
+    </a>
   </div>
 
-  <div class="path-card" data-dc="tenancy">
-    <h3>Residential tenancy disputes</h3>
-    <p>Lease disputes, repairs, and eviction matters for Quebec tenants and landlords.</p>
-    <a class="official" href="https://www.tal.gouv.qc.ca/en/contact-us" target="_blank" rel="noopener">Tribunal administratif du logement (TAL) — 1-800-683-2245 →</a>
+  <div class="track-row">
+    <div class="track-link">Track My Complaint</div>
+    <div class="feat-row">
+      <span>Anonymous</span>
+      <span>AI Routing</span>
+      <span>7 Languages</span>
+      <span>Live Tracking</span>
+    </div>
   </div>
 
-  <div class="path-card" data-dc="provincial_dept">
-    <h3>Provincial departments &amp; public bodies</h3>
-    <p>An unresolved complaint about a Quebec government department, agency, or health/social services institution.</p>
-    <a class="official" href="https://protecteurducitoyen.qc.ca/en/contact-us" target="_blank" rel="noopener">Protecteur du citoyen (Quebec Ombudsman) — 1-800-463-5070 →</a>
+  <div class="step-overlay" id="step-overlay" onclick="if(event.target===this)closeStep()">
+    <div class="step-modal" id="s1" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Consumer &amp; Business Disputes</h3>
+      <p>Faulty goods, unfair business practices, contract disputes with a company.</p>
+      <a class="official" href="https://www.opc.gouv.qc.ca/en/contact/consumer" target="_blank" rel="noopener">Office de la protection du consommateur (OPC) →</a>
+    </div>
+    <div class="step-modal" id="s2" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Residential Tenancy Disputes</h3>
+      <p>Lease disputes, repairs, and eviction matters for Quebec tenants and landlords.</p>
+      <a class="official" href="https://www.tal.gouv.qc.ca/en/contact-us" target="_blank" rel="noopener">Tribunal administratif du logement (TAL) — 1-800-683-2245 →</a>
+    </div>
+    <div class="step-modal" id="s3" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Provincial Departments &amp; Public Bodies</h3>
+      <p>An unresolved complaint about a Quebec government department, agency, or health/social services institution.</p>
+      <a class="official" href="https://protecteurducitoyen.qc.ca/en/contact-us" target="_blank" rel="noopener">Protecteur du citoyen (Quebec Ombudsman) — 1-800-463-5070 →</a>
+    </div>
   </div>
 
-  <div class="path-card" data-dc="mp">
-    <h3>Federal services &amp; your MP</h3>
-    <p>Immigration delays, EI, passport issues, or any federal program not working as it should.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's MP Finder identifies your riding's representative and helps draft a formal letter.</p>
-  </div>
+  <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
+    <div class="info-modal">
+      <button class="mclose" onclick="closeInfo()">✕</button>
 
-  <div class="path-card" data-dc="cyber">
-    <h3>Cyber crime &amp; online fraud</h3>
-    <p>Scams, phishing, identity theft, online harassment.</p>
-    <a class="official" href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre →</a>
-  </div>
+      <h2 style="margin-top:0">Where ComplaintCA Fits</h2>
+      <p style="font-size:.95rem;color:var(--dsub)">ComplaintCA doesn't replace the OPC, the TAL, or the Protecteur du citoyen — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
 
-  <div class="path-card" data-dc="legal_qc">
-    <h3>Legal disputes needing representation</h3>
-    <p>When a complaint needs more than an authority referral — a lawyer's involvement.</p>
-    <p style="font-size:.88rem;color:var(--muted)">ComplaintCA's Lawyer Panel connects you with vetted legal counsel.</p>
-  </div>
+      <div class="cta">
+        <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
+        <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+      </div>
 
-  <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace the OPC, the TAL, or the Protecteur du citoyen — it helps you reach the correct one without guesswork, drafts your complaint in one of 7 supported languages, and keeps a record you can refer back to.</p>
+      <h2>Frequently Asked</h2>
 
-  <div class="cta">
-    <p>No need to read this whole guide — Asya can ask a few questions and point you to the right authority in seconds.</p>
-    <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
-  </div>
+      <details class="faq-item">
+        <summary>Where do I file a consumer complaint in Quebec?</summary>
+        <p>The Office de la protection du consommateur (OPC) — see opc.gouv.qc.ca for phone and regional office contact.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where do I file a tenancy dispute in Quebec?</summary>
+        <p>The Tribunal administratif du logement (TAL), at 1-800-683-2245 outside Montréal/Laval/Longueuil.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where do I complain about a Quebec government department?</summary>
+        <p>The Protecteur du citoyen (Quebec Ombudsman), at 1-800-463-5070.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is ComplaintCA?</summary>
+        <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Where do I report cyber crime in Canada?</summary>
+        <p>The Canadian Anti-Fraud Centre (1-888-495-8501) and your local police service. ComplaintCA's Cyber Crime module helps you document the report first.</p>
+      </details>
+      <details class="faq-item">
+        <summary>I'm Deaf or hard of hearing — how do I call a phone-only authority?</summary>
+        <p>Use <a href="https://www.canadavrs.ca/" target="_blank" rel="noopener" style="color:var(--gold)">Canada VRS</a> (free sign-language video relay, available 24/7) or dial 711 for a text-based relay operator — both let you place a real phone call to any number listed on this page.</p>
+      </details>
 
-  <h2>Frequently Asked</h2>
+      <div class="trust-box">
+        <h2 style="margin-top:0">Sources &amp; Verification</h2>
+        <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
+        <ul class="trust-sources">
+        <li><a href="https://www.opc.gouv.qc.ca/en/contact/consumer" target="_blank" rel="noopener">Office de la protection du consommateur (OPC)</a></li>
+        <li><a href="https://www.tal.gouv.qc.ca/en/contact-us" target="_blank" rel="noopener">Tribunal administratif du logement (TAL)</a></li>
+        <li><a href="https://protecteurducitoyen.qc.ca/en/contact-us" target="_blank" rel="noopener">Protecteur du citoyen (Quebec Ombudsman)</a></li>
+        <li><a href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a></li>
+        </ul>
+        <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
+      </div>
 
-  <div class="faq-item">
-    <h3>Where do I file a consumer complaint in Quebec?</h3>
-    <p>The Office de la protection du consommateur (OPC) — see opc.gouv.qc.ca for phone and regional office contact.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Where do I file a tenancy dispute in Quebec?</h3>
-    <p>The Tribunal administratif du logement (TAL), at 1-800-683-2245 outside Montréal/Laval/Longueuil.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Where do I complain about a Quebec government department?</h3>
-    <p>The Protecteur du citoyen (Quebec Ombudsman), at 1-800-463-5070.</p>
-  </div>
-  <div class="faq-item">
-    <h3>What is ComplaintCA?</h3>
-    <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Where do I report cyber crime in Canada?</h3>
-    <p>The Canadian Anti-Fraud Centre (1-888-495-8501) and your local police service. ComplaintCA's Cyber Crime module helps you document the report first.</p>
-  </div>
-  <div class="faq-item">
-    <h3>I'm Deaf or hard of hearing — how do I call a phone-only authority?</h3>
-    <p>Use <a href="https://www.canadavrs.ca/" target="_blank" rel="noopener" style="color:var(--blue)">Canada VRS</a> (free sign-language video relay, available 24/7) or dial 711 for a text-based relay operator — both let you place a real phone call to any number listed on this page.</p>
-  </div>
-
-
-  <div class="trust-box">
-    <h2 style="margin-top:0">Sources &amp; Verification</h2>
-    <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
-    <ul class="trust-sources">
-    <li><a href="https://www.opc.gouv.qc.ca/en/contact/consumer" target="_blank" rel="noopener">Office de la protection du consommateur (OPC)</a></li>
-    <li><a href="https://www.tal.gouv.qc.ca/en/contact-us" target="_blank" rel="noopener">Tribunal administratif du logement (TAL)</a></li>
-    <li><a href="https://protecteurducitoyen.qc.ca/en/contact-us" target="_blank" rel="noopener">Protecteur du citoyen (Quebec Ombudsman)</a></li>
-    <li><a href="https://www.antifraudcentre-centreantifraude.ca/" target="_blank" rel="noopener">Canadian Anti-Fraud Centre</a></li>
-    </ul>
-    <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
-  </div>
-
-  <h2>Related Guides</h2>
-  <div class="path-card">
-    <ul style="margin:0;padding-left:20px;font-size:.92rem;line-height:1.9">
-    <li><a href="/guides/ontario-complaint-guide.html">Complaint in Ontario</a></li>
-    <li><a href="/guides/alberta-complaint-guide.html">Complaint in Alberta</a></li>
-    <li><a href="/guides/free-legal-help-canada-guide.html">Free Legal Help in Canada</a></li>
-      <li><a href="/guides/">All Complaint Guides →</a></li>
-    </ul>
+      <h2>Related Guides</h2>
+      <div class="related-box">
+        <ul>
+        <li><a href="/guides/ontario-complaint-guide.html">Complaint in Ontario</a></li>
+        <li><a href="/guides/alberta-complaint-guide.html">Complaint in Alberta</a></li>
+        <li><a href="/guides/free-legal-help-canada-guide.html">Free Legal Help in Canada</a></li>
+          <li><a href="/guides/">All Complaint Guides →</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </main>
 
 <footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 
 <script src="/guides/support-tools.js" defer></script>
+<script>
+function openStep(id){
+  document.querySelectorAll('.step-modal').forEach(function(m){m.style.display='none'});
+  document.getElementById(id).style.display='block';
+  document.getElementById('step-overlay').classList.add('show');
+}
+function closeStep(){
+  document.getElementById('step-overlay').classList.remove('show');
+}
+function openInfo(){
+  document.getElementById('info-overlay').classList.add('show');
+}
+function closeInfo(){
+  document.getElementById('info-overlay').classList.remove('show');
+}
+</script>
 </body>
 </html>
