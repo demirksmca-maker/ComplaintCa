@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="dark">
 <title>Banking Complaint in Canada: OBSI &amp; FCAC Guide | ComplaintCA</title>
 <meta name="description" content="Bank problem — fraud, service, or a disputed charge? Learn when to escalate to OBSI and where FCAC fits, with direct links and drafting help.">
 <meta name="theme-color" content="#0f2952">
@@ -80,52 +80,107 @@
   --sub:#475569;--muted:#5a6b80;--border:#dbeafe;
   --gold:#c9a84c;--dark-gold:#a8882e;--crimson:#c8102e;
   --radius:12px;
+  /* page-level dark theme — kept separate from the vars above so the
+     support-tools.js bottom-sheet (which reads --off/--text/--border etc.)
+     stays on its own light styling and isn't affected by this. */
+  --dbg:#060b16;--dtext:#f0f4f8;--dsub:#b8c5d6;--dmuted:#6b7d99;
+  --purple1:#6d28d9;--purple2:#7c3aed;--teal1:#0d9488;--teal2:#14b8a6;
+  --orange1:#c2410c;--orange2:#f97316;--blue1:#1d4ed8;--blue2:#3b82f6;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--off);color:var(--text);font-family:'Inter',sans-serif;line-height:1.65}
+html,body{height:100%}
+body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5;overflow:hidden;display:flex;flex-direction:column}
 
-.hero{background:var(--off);color:var(--navy);padding:52px 24px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}
+/* ── Topbar — matches complaintca.ca's main navbar exactly ── */
+.topbar{flex:0 0 auto;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
+.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
+.logo-text{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;color:#fff;line-height:1;white-space:nowrap}
+.logo-ca{color:#ff5a5a}
+.topbar-right{display:flex;align-items:center;gap:8px;height:46px}
+.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 10px;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600}
+.lang-pill .car{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:2px}
+
+.hero{flex:0 0 auto;background:var(--dbg);color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
 .hero .eyebrow{
-  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:3px;
-  text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700;
+  display:flex;align-items:center;gap:6px;font-size:.66rem;
+  font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 6px;
 }
+.hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
 .hero h1{
-  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;margin:0;
-  line-height:1.4;letter-spacing:.3px;max-width:19ch;
-  text-wrap:balance;
-color:var(--navy);}
-
-main{max-width:640px;margin:0 auto;padding:24px 24px 64px}
-
-.lede{
-  font-size:1rem;color:var(--sub);border-left:3px solid var(--gold);
-  padding:2px 0 2px 18px;margin:0 0 40px;text-align:left;
+  font-size:1.3rem;font-weight:800;margin:0;
+  line-height:1.18;letter-spacing:-.01em;color:#f4f5f7;max-width:26ch;
 }
+.hero h1 em{font-style:normal;color:#7c5cff}
+
+.hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
+
+main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 10px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
 
 h2{
-  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2.5px;
-  text-transform:uppercase;color:var(--blue);text-align:left;
-  border-top:1px solid var(--border);padding-top:12px;margin:26px 0 18px;
+  font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;
+  text-transform:uppercase;color:#8fb4f0;text-align:left;
+  border-top:1px solid rgba(255,255,255,.1);padding-top:12px;margin:30px 0 18px;
   font-weight:700;
 }
 
+.section-hint{width:100%;max-width:460px;font-size:.66rem;font-weight:700;letter-spacing:.04em;color:#8991a3;margin:0 0 10px;text-align:left}
+
+.more-link{font-size:.72rem;color:#8fb4f0;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(143,180,240,.4);margin-top:2px}
+
+.dc-toolbar{width:100%;max-width:460px}
+
+.step-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:10px;width:100%;max-width:460px;flex:1 1 auto;min-height:0;margin:0 0 10px}
 .path-card{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px 22px;margin:0 0 16px;box-shadow:0 2px 8px rgba(15,41,82,.04);
-  text-align:left;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;
+  gap:6px;text-align:left;padding:clamp(10px,2.2vh,18px) 14px;border-radius:16px;border:none;
+  cursor:pointer;position:relative;overflow:hidden;color:#fff;min-height:0;
+  transition:transform .2s,filter .2s;
 }
-.path-card h3{margin:0 0 8px;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.4}
-.path-card p{margin:0 0 12px;font-size:.92rem;color:var(--sub);line-height:1.6}
-.path-card p:last-child{margin-bottom:0}
-.path-card a.official{
-  display:inline-block;font-size:.82rem;font-weight:600;color:var(--blue);
-  text-decoration:none;border-bottom:1px solid var(--blue);padding-bottom:1px;
+.path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.path-card .picon{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.path-card .arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.72rem}
+.path-card h3{margin:0;font-weight:800;font-size:clamp(.7rem,2.3vh,.85rem);line-height:1.22;color:#fff}
+.path-card .tag{font-size:.66rem;color:rgba(255,255,255,.7);font-weight:600}
+.pc-1{background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
+.pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
+.pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
+.pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
+.pc-5{background:linear-gradient(155deg,#ff4d8d,#c22463)}
+.pc-6{background:linear-gradient(155deg,#2c3340,#1a1e26);border:1px solid rgba(255,255,255,.12)}
+
+.track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
+.track-link{color:#8991a3;font-size:.68rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);cursor:pointer}
+.feat-row{display:flex;gap:10px;flex-wrap:wrap;color:#6b7d99;font-size:.62rem}
+.feat-row span::before{content:'●';color:#7c5cff;margin-right:4px;font-size:.5rem}
+
+/* ── secondary modal: FAQ / sources / related (SEO content stays in the
+   DOM, just shown on demand so the main view never has to scroll) ── */
+.info-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:210;padding:20px}
+.info-overlay.show{display:flex}
+.info-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px 24px;max-width:560px;width:100%;max-height:82vh;overflow-y:auto}
+.info-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+
+/* step detail opens in a centered modal — cards never grow/push layout */
+.step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.step-overlay.show{display:flex}
+.step-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:pcPop .2s ease}
+@keyframes pcPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.step-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+.step-modal h3{margin:0 0 14px;font-size:1.15rem;font-weight:700}
+.step-modal p{margin:0 0 12px;font-size:.92rem;color:var(--dsub);line-height:1.7}
+.step-modal p:last-child{margin-bottom:0}
+.step-modal a.official{
+  display:inline-block;font-size:.85rem;font-weight:600;color:var(--gold);
+  text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4);padding-bottom:1px;margin-top:4px;
 }
 
 .cta{
   background:linear-gradient(135deg,var(--navy),var(--blue));
-  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:48px 0;
+  color:#fff;border-radius:var(--radius);padding:30px 24px;margin:44px 0;
   text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;
+  border:1px solid rgba(212,175,55,.25);
 }
 .cta p{margin:0;font-size:1rem;max-width:28ch}
 .cta a{
@@ -134,13 +189,17 @@ h2{
   text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px;
 }
 
-.faq-item{margin:0 0 24px;text-align:left}
-.faq-item h3{font-size:.98rem;margin:0 0 8px;color:var(--navy);font-weight:600;line-height:1.5}
-.faq-item p{margin:0;color:var(--sub);font-size:.9rem;line-height:1.65}
+.faq-item{margin:0 0 12px;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
+.faq-item.open{border-color:var(--gold)}
+.faq-item summary{padding:16px 18px;cursor:pointer;font-size:.98rem;color:#fff;font-weight:600;line-height:1.5;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'▼';font-size:.75rem;color:var(--dmuted);flex-shrink:0;transition:transform .25s}
+.faq-item[open] summary::after{transform:rotate(180deg)}
+.faq-item p{margin:0;color:var(--dsub);font-size:.9rem;line-height:1.65;padding:0 18px 16px}
 
 footer{
-  text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
-  border-top:1px solid var(--border);letter-spacing:.5px;
+  flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--dmuted);
+  border-top:1px solid rgba(255,255,255,.1);letter-spacing:.5px;
 }
 
 .asya-feature{
@@ -192,14 +251,23 @@ footer{
   letter-spacing:.3px;margin-top:10px;
 }
 .trust-box{
-  background:#fff;border:1px solid var(--border);border-radius:var(--radius);
+  background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:var(--radius);
   padding:22px 24px;margin:40px 0 0;text-align:left;
 }
-.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--sub);line-height:1.6}
+.trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--dsub);line-height:1.6}
 .trust-box p:last-child{margin-bottom:0}
 .trust-sources{margin:0 0 14px;padding-left:20px}
-.trust-sources li{font-size:.86rem;color:var(--sub);margin-bottom:6px;line-height:1.5}
-.trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
+.trust-sources li{font-size:.86rem;color:var(--dsub);margin-bottom:6px;line-height:1.5}
+.trust-sources a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,175,55,.3)}
+.trust-box a{color:var(--gold)}
+
+.related-box{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);
+  padding:20px 22px;text-align:left;
+}
+.related-box ul{margin:0;padding-left:20px;font-size:.92rem;line-height:1.9;color:var(--dsub)}
+.related-box a{color:#8fb4f0;text-decoration:none}
+.related-box a:hover{text-decoration:underline}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -207,99 +275,190 @@ footer{
 </head>
 <body>
 
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-btn" href="https://www.complaintca.ca">
+      <img src="/icons/icon-192.png" alt="ComplaintCA" width="20" height="20" style="display:block;border-radius:5px;flex-shrink:0">
+      <span class="logo-text">Complaint<span class="logo-ca">CA</span></span>
+    </a>
+    <div class="topbar-right">
+      <div class="lang-pill">🇨🇦 EN <span class="car">▾</span></div>
+    </div>
+  </div>
+</header>
+
 <div class="hero">
-  <h1>How to File a Banking Complaint in Canada</h1>
+  <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
+  <div class="hero-row">
+    <h1>Banking Complaint.<br><em>Filed. Escalated. Resolved.</em></h1>
+    <a href="https://www.complaintca.ca" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+  </div>
 </div>
 
 <main>
-  <p class="lede">Bank problem — fraud, service, or a disputed charge? Learn when to escalate to OBSI and where FCAC fits, with direct links and drafting help.</p>
+  <div class="dc-toolbar" data-dc="banking" style="margin:0 0 10px"></div>
 
-  <div class="dc-toolbar" data-dc="banking" style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 26px;box-shadow:0 2px 8px rgba(15,41,82,.04)"><div style="font-size:.86rem;font-weight:700;color:var(--navy);margin-bottom:2px">Free ComplaintCA tools for this banking complaint</div><div style="font-size:.8rem;color:var(--muted)">Check your deadline, generate a complaint letter, and see what to gather &mdash; tap below.</div></div>
+  <div class="section-hint">Four Steps to Resolution <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
 
+  <div class="step-grid">
+    <div class="path-card pc-1" onclick="openStep('s1')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
+      <h3>Contact Your Bank</h3>
+      <div class="tag">Required first step</div>
+    </div>
 
-  <h2>Find Your Path</h2>
+    <div class="path-card pc-2" onclick="openStep('s2')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+      <h3>Wait for a Response</h3>
+      <div class="tag">Up to 56 days</div>
+    </div>
 
-  <div class="path-card">
-    <h3>Step 1 — Complain to your bank directly</h3>
-    <p>Start at your branch or the department involved, explain the issue clearly, and ask for a resolution. If unresolved, ask to escalate to the bank's dedicated complaint-handling department. Put it in writing so there's a timeline.</p>
-    <a class="official" href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC — How to File a Complaint With Your Bank →</a>
+    <div class="path-card pc-3" onclick="openStep('s3')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
+      <h3>Escalate to OBSI</h3>
+      <div class="tag">Free &amp; independent</div>
+    </div>
+
+    <div class="path-card pc-4" onclick="openStep('s4')">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+      <h3>What FCAC Does</h3>
+      <div class="tag">Oversight, not resolution</div>
+    </div>
+
+    <a class="path-card pc-5" href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+      <h3>Verify a Document</h3>
+      <div class="tag">Suspicious bank email or text?</div>
+    </a>
+
+    <a class="path-card pc-6" href="https://www.complaintca.ca?go=lawyer" target="_blank" rel="noopener">
+      <span class="arrow">→</span>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
+      <h3>Free Lawyer &amp; Civil Society</h3>
+      <div class="tag">If OBSI isn't enough</div>
+    </a>
   </div>
 
-  <div class="path-card">
-    <h3>Step 2 — Let the bank's process run (up to 56 days)</h3>
-    <p>Banks and federal credit unions have up to 56 days to deal with your complaint. You can escalate once that's exhausted, or once they give you a final written response you're not satisfied with — whichever comes first.</p>
+  <div class="track-row">
+    <div class="track-link">Track My Complaint</div>
+    <div class="feat-row">
+      <span>Anonymous</span>
+      <span>AI Routing</span>
+      <span>7 Languages</span>
+      <span>Live Tracking</span>
+    </div>
   </div>
 
-  <div class="path-card">
-    <h3>Step 3 — Escalate to OBSI (free)</h3>
-    <p>The Ombudsman for Banking Services and Investments is an independent, free dispute resolution service. Banks and federal credit unions are required to participate. OBSI aims for a final written recommendation within 120 days of receiving everything it needs.</p>
-    <a class="official" href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI — How the Complaint Process Works →</a>
+  <div class="step-overlay" id="step-overlay" onclick="if(event.target===this)closeStep()">
+    <div class="step-modal" id="s1" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 1 — Complain to Your Bank Directly</h3>
+      <p>Start at your branch or the department involved, explain the issue clearly, and ask for a resolution. If unresolved, ask to escalate to the bank's dedicated complaint-handling department. Put it in writing so there's a timeline.</p>
+      <a class="official" href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC — How to File a Complaint With Your Bank →</a>
+    </div>
+    <div class="step-modal" id="s2" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 2 — Let the Bank's Process Run</h3>
+      <p>Banks and federal credit unions have up to 56 days to deal with your complaint. You can escalate once that's exhausted, or once they give you a final written response you're not satisfied with — whichever comes first.</p>
+    </div>
+    <div class="step-modal" id="s3" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 3 — Escalate to OBSI (Free)</h3>
+      <p>The Ombudsman for Banking Services and Investments is an independent, free dispute resolution service. Banks and federal credit unions are required to participate. OBSI aims for a final written recommendation within 120 days of receiving everything it needs.</p>
+      <a class="official" href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI — How the Complaint Process Works →</a>
+    </div>
+    <div class="step-modal" id="s4" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>What the FCAC Actually Does</h3>
+      <p>The Financial Consumer Agency of Canada oversees whether banks follow consumer-protection rules — it does not resolve individual disputes. For your own case, the path is your bank, then OBSI.</p>
+    </div>
   </div>
 
-  <div class="path-card">
-    <h3>What the FCAC actually does</h3>
-    <p>The Financial Consumer Agency of Canada oversees whether banks follow consumer-protection rules — it does not resolve individual disputes. For your own case, the path is your bank, then OBSI.</p>
-  </div>
+  <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
+    <div class="info-modal">
+      <button class="mclose" onclick="closeInfo()">✕</button>
 
-  <h2>Where ComplaintCA Fits</h2>
-  <p style="font-size:.95rem;color:var(--sub)">ComplaintCA doesn't replace your bank's complaint process or OBSI — it helps you draft a clear, factual written complaint to your bank (the required first step), in one of 7 supported languages, so you have a solid record if you need to escalate.</p>
+      <h2 style="margin-top:0">Where ComplaintCA Fits</h2>
+      <p style="font-size:.95rem;color:var(--dsub)">ComplaintCA doesn't replace your bank's complaint process or OBSI — it helps you draft a clear, factual written complaint to your bank (the required first step), in one of 7 supported languages, so you have a solid record if you need to escalate.</p>
 
-  <div class="cta">
-    <p>No need to read this whole guide — Asya can ask a few questions and draft your banking complaint in seconds.</p>
-    <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
-  </div>
+      <div class="cta">
+        <p>No need to read this whole guide — Asya can ask a few questions and draft your banking complaint in seconds.</p>
+        <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+      </div>
 
-  <h2>Frequently Asked</h2>
+      <h2>Frequently Asked</h2>
 
-  <div class="faq-item">
-    <h3>Can I go straight to OBSI?</h3>
-    <p>No — you must complain to your bank first and let their process run (up to 56 days) before OBSI can get involved.</p>
-  </div>
-  <div class="faq-item">
-    <h3>What does the FCAC do with my complaint?</h3>
-    <p>It oversees whether banks follow the rules generally — it doesn't resolve individual complaints. That's what OBSI is for.</p>
-  </div>
-  <div class="faq-item">
-    <h3>Does OBSI cost anything?</h3>
-    <p>No — it's free, and banks are required to participate.</p>
-  </div>
-  <div class="faq-item">
-    <h3>How long does OBSI take?</h3>
-    <p>It aims for a final written recommendation within 120 days of receiving all the information it needs.</p>
-  </div>
-  <div class="faq-item">
-    <h3>What is ComplaintCA?</h3>
-    <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
-  </div>
-  <div class="faq-item">
-    <h3>I'm Deaf or hard of hearing — how do I call a phone-only authority?</h3>
-    <p>Use <a href="https://www.canadavrs.ca/" target="_blank" rel="noopener" style="color:var(--blue)">Canada VRS</a> (free sign-language video relay, available 24/7) or dial 711 for a text-based relay operator — both let you place a real phone call to any number listed on this page.</p>
-  </div>
+      <details class="faq-item">
+        <summary>Can I go straight to OBSI?</summary>
+        <p>No — you must complain to your bank first and let their process run (up to 56 days) before OBSI can get involved.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does the FCAC do with my complaint?</summary>
+        <p>It oversees whether banks follow the rules generally — it doesn't resolve individual complaints. That's what OBSI is for.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does OBSI cost anything?</summary>
+        <p>No — it's free, and banks are required to participate.</p>
+      </details>
+      <details class="faq-item">
+        <summary>How long does OBSI take?</summary>
+        <p>It aims for a final written recommendation within 120 days of receiving all the information it needs.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What is ComplaintCA?</summary>
+        <p>A Canadian civic complaint platform that routes you to the correct authority, with AI-assisted drafting in 7 languages, an MP finder, a lawyer panel, and cyber crime reporting support.</p>
+      </details>
+      <details class="faq-item">
+        <summary>I'm Deaf or hard of hearing — how do I call a phone-only authority?</summary>
+        <p>Use <a href="https://www.canadavrs.ca/" target="_blank" rel="noopener" style="color:var(--gold)">Canada VRS</a> (free sign-language video relay, available 24/7) or dial 711 for a text-based relay operator — both let you place a real phone call to any number listed on this page.</p>
+      </details>
 
+      <div class="trust-box">
+        <h2 style="margin-top:0">Sources &amp; Verification</h2>
+        <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
+        <ul class="trust-sources">
+        <li><a href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC</a></li>
+        <li><a href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI</a></li>
+        </ul>
+        <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
+      </div>
 
-  <div class="trust-box">
-    <h2 style="margin-top:0">Sources &amp; Verification</h2>
-    <p>This guide is maintained by ComplaintCA and checked against the official sources linked throughout, including:</p>
-    <ul class="trust-sources">
-    <li><a href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC</a></li>
-    <li><a href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI</a></li>
-    </ul>
-    <p>Learn more about how ComplaintCA verifies information on our <a href="/about.html">About page</a>.</p>
-  </div>
-
-  <h2>Related Guides</h2>
-  <div class="path-card">
-    <ul style="margin:0;padding-left:20px;font-size:.92rem;line-height:1.9">
-    <li><a href="/guides/cyber-crime-reporting-canada-guide.html">Report a Scam or Fraud</a></li>
-    <li><a href="/guides/debt-collector-complaint-canada-guide.html">Complaint Against a Debt Collector</a></li>
-    <li><a href="/guides/small-claims-court-canada-guide.html">Small Claims Court in Canada</a></li>
-      <li><a href="/guides/">All Complaint Guides →</a></li>
-    </ul>
+      <h2>Related Guides</h2>
+      <div class="related-box">
+        <ul>
+        <li><a href="/guides/cyber-crime-reporting-canada-guide.html">Report a Scam or Fraud</a></li>
+        <li><a href="/guides/debt-collector-complaint-canada-guide.html">Complaint Against a Debt Collector</a></li>
+        <li><a href="/guides/small-claims-court-canada-guide.html">Small Claims Court in Canada</a></li>
+          <li><a href="/guides/">All Complaint Guides →</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </main>
 
 <footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 
 <script src="/guides/support-tools.js" defer></script>
+<script>
+function openStep(id){
+  document.querySelectorAll('.step-modal').forEach(function(m){m.style.display='none'});
+  document.getElementById(id).style.display='block';
+  document.getElementById('step-overlay').classList.add('show');
+}
+function closeStep(){
+  document.getElementById('step-overlay').classList.remove('show');
+}
+function openInfo(){
+  document.getElementById('info-overlay').classList.add('show');
+}
+function closeInfo(){
+  document.getElementById('info-overlay').classList.remove('show');
+}
+</script>
 </body>
 </html>
