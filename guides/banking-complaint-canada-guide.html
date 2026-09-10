@@ -117,29 +117,35 @@ h2{
 
 .section-hint{color:var(--dmuted);font-size:.78rem;margin:-10px 0 16px}
 
+.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 8px}
 .path-card{
-  border-radius:16px;padding:20px 22px;margin:0 0 14px;
+  border-radius:16px;padding:18px 18px;
   text-align:left;color:#fff;cursor:pointer;position:relative;
   transition:transform .2s,box-shadow .2s;border:1px solid rgba(255,255,255,.08);
+  min-height:110px;display:flex;flex-direction:column;justify-content:space-between;
 }
 .path-card:hover{transform:translateY(-2px)}
-.path-card .arrow{position:absolute;top:18px;right:20px;font-size:1.1rem;opacity:.8;transition:transform .3s}
-.path-card.open .arrow{transform:rotate(90deg)}
-.path-card h3{margin:0 0 6px;font-size:1.05rem;font-weight:700;line-height:1.4;padding-right:24px}
+.path-card .arrow{align-self:flex-end;font-size:1.1rem;opacity:.8}
+.path-card h3{margin:6px 0 4px;font-size:1rem;font-weight:700;line-height:1.35}
 .path-card .tag{font-size:.72rem;color:rgba(255,255,255,.75);font-weight:600}
-.path-card .body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18)}
-.path-card.open .body{display:block;animation:pcOpen .2s ease}
-@keyframes pcOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.path-card .body p{margin:0 0 12px;font-size:.92rem;color:rgba(255,255,255,.9);line-height:1.65}
-.path-card .body p:last-child{margin-bottom:0}
-.path-card a.official{
-  display:inline-block;font-size:.82rem;font-weight:600;color:#fff;
-  text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:1px;
-}
 .pc-1{background:linear-gradient(135deg,var(--purple1),var(--purple2))}
 .pc-2{background:linear-gradient(135deg,var(--teal1),var(--teal2))}
 .pc-3{background:linear-gradient(135deg,var(--orange1),var(--orange2))}
 .pc-4{background:linear-gradient(135deg,var(--blue1),var(--blue2))}
+
+/* step detail opens in a centered modal — cards never grow/push layout */
+.step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.step-overlay.show{display:flex}
+.step-modal{background:#0d1b34;border:1.5px solid var(--gold);border-radius:16px;padding:26px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;animation:pcPop .2s ease}
+@keyframes pcPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.step-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
+.step-modal h3{margin:0 0 14px;font-size:1.15rem;font-weight:700}
+.step-modal p{margin:0 0 12px;font-size:.92rem;color:var(--dsub);line-height:1.7}
+.step-modal p:last-child{margin-bottom:0}
+.step-modal a.official{
+  display:inline-block;font-size:.85rem;font-weight:600;color:var(--gold);
+  text-decoration:none;border-bottom:1px solid rgba(212,175,55,.4);padding-bottom:1px;margin-top:4px;
+}
 
 .cta{
   background:linear-gradient(135deg,var(--navy),var(--blue));
@@ -253,40 +259,61 @@ footer{
   <h2>Find Your Path</h2>
   <div class="section-hint">Tap any card for details</div>
 
-  <div class="path-card pc-1" onclick="this.classList.toggle('open')">
-    <span class="arrow">▸</span>
-    <h3>Step 1 — Complain to your bank directly</h3>
-    <div class="tag">Required first step</div>
-    <div class="body">
+  <div class="step-grid">
+    <div class="path-card pc-1" onclick="openStep('s1')">
+      <span class="arrow">→</span>
+      <div>
+        <h3>Step 1 — Complain to Your Bank</h3>
+        <div class="tag">Required first step</div>
+      </div>
+    </div>
+
+    <div class="path-card pc-2" onclick="openStep('s2')">
+      <span class="arrow">→</span>
+      <div>
+        <h3>Step 2 — Let the Process Run</h3>
+        <div class="tag">Up to 56 days</div>
+      </div>
+    </div>
+
+    <div class="path-card pc-3" onclick="openStep('s3')">
+      <span class="arrow">→</span>
+      <div>
+        <h3>Step 3 — Escalate to OBSI</h3>
+        <div class="tag">Free &amp; independent</div>
+      </div>
+    </div>
+
+    <div class="path-card pc-4" onclick="openStep('s4')">
+      <span class="arrow">→</span>
+      <div>
+        <h3>What the FCAC Does</h3>
+        <div class="tag">Oversight, not resolution</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-overlay" id="step-overlay" onclick="if(event.target===this)closeStep()">
+    <div class="step-modal" id="s1" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 1 — Complain to Your Bank Directly</h3>
       <p>Start at your branch or the department involved, explain the issue clearly, and ask for a resolution. If unresolved, ask to escalate to the bank's dedicated complaint-handling department. Put it in writing so there's a timeline.</p>
       <a class="official" href="https://www.canada.ca/en/financial-consumer-agency/services/complaints/file-complaint-financial-institution.html" target="_blank" rel="noopener">FCAC — How to File a Complaint With Your Bank →</a>
     </div>
-  </div>
-
-  <div class="path-card pc-2" onclick="this.classList.toggle('open')">
-    <span class="arrow">▸</span>
-    <h3>Step 2 — Let the bank's process run</h3>
-    <div class="tag">Up to 56 days</div>
-    <div class="body">
+    <div class="step-modal" id="s2" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 2 — Let the Bank's Process Run</h3>
       <p>Banks and federal credit unions have up to 56 days to deal with your complaint. You can escalate once that's exhausted, or once they give you a final written response you're not satisfied with — whichever comes first.</p>
     </div>
-  </div>
-
-  <div class="path-card pc-3" onclick="this.classList.toggle('open')">
-    <span class="arrow">▸</span>
-    <h3>Step 3 — Escalate to OBSI</h3>
-    <div class="tag">Free &amp; independent</div>
-    <div class="body">
+    <div class="step-modal" id="s3" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>Step 3 — Escalate to OBSI (Free)</h3>
       <p>The Ombudsman for Banking Services and Investments is an independent, free dispute resolution service. Banks and federal credit unions are required to participate. OBSI aims for a final written recommendation within 120 days of receiving everything it needs.</p>
       <a class="official" href="https://www.obsi.ca/en/for-consumers/how-the-complaint-process-works/" target="_blank" rel="noopener">OBSI — How the Complaint Process Works →</a>
     </div>
-  </div>
-
-  <div class="path-card pc-4" onclick="this.classList.toggle('open')">
-    <span class="arrow">▸</span>
-    <h3>What the FCAC actually does</h3>
-    <div class="tag">Oversight, not resolution</div>
-    <div class="body">
+    <div class="step-modal" id="s4" style="display:none">
+      <button class="mclose" onclick="closeStep()">✕</button>
+      <h3>What the FCAC Actually Does</h3>
       <p>The Financial Consumer Agency of Canada oversees whether banks follow consumer-protection rules — it does not resolve individual disputes. For your own case, the path is your bank, then OBSI.</p>
     </div>
   </div>
@@ -351,5 +378,15 @@ footer{
 <footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 
 <script src="/guides/support-tools.js" defer></script>
+<script>
+function openStep(id){
+  document.querySelectorAll('.step-modal').forEach(function(m){m.style.display='none'});
+  document.getElementById(id).style.display='block';
+  document.getElementById('step-overlay').classList.add('show');
+}
+function closeStep(){
+  document.getElementById('step-overlay').classList.remove('show');
+}
+</script>
 </body>
 </html>
