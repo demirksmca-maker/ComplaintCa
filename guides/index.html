@@ -94,16 +94,6 @@ p.sub{color:var(--sub);font-size:.92rem;margin:0 0 28px;max-width:46ch}
 .prov-btn .flag{display:block;font-size:.72rem;color:var(--muted);font-weight:500;margin-top:3px}
 .territories-note{grid-column:1/-1;font-size:.78rem;color:var(--muted);text-align:center;padding-top:6px}
 
-.dc-pill-row{display:flex;gap:4px;flex-wrap:nowrap;margin-top:12px}
-.dc-pill{
-  display:flex;align-items:center;justify-content:center;gap:4px;flex:1 1 0;min-width:0;
-  background:linear-gradient(135deg,#1fc8db,#0e9cb5);border:none;border-radius:10px;padding:8px 6px;
-  box-shadow:0 2px 7px rgba(14,156,181,.28);
-}
-.dc-pill .dc-pi{display:flex;color:#fff;flex-shrink:0}
-.dc-pill .dc-pi svg{display:block}
-.dc-pill .dc-pl{color:#fff;font-size:.64rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
 .result-head{margin:0 0 22px}
 .result-head .kicker{
   font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;
@@ -408,22 +398,6 @@ function selectProvince(p){
   goScreen(3);
 }
 
-var TOOL_ICONS = {
-  clock: '<circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline>',
-  doc: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line>',
-  check: '<polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>'
-};
-function toolIcon(name){
-  return '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">' + TOOL_ICONS[name] + '</svg>';
-}
-function pillRowHTML(){
-  return '<div class="dc-pill-row">' +
-      '<div class="dc-pill"><span class="dc-pi">' + toolIcon('clock') + '</span><span class="dc-pl">Deadline</span></div>' +
-      '<div class="dc-pill"><span class="dc-pi">' + toolIcon('doc') + '</span><span class="dc-pl">Draft Letter</span></div>' +
-      '<div class="dc-pill"><span class="dc-pi">' + toolIcon('check') + '</span><span class="dc-pl">Checklist</span></div>' +
-    '</div>';
-}
-
 function renderResults(kicker, title, items){
   document.getElementById('result-kicker').textContent = kicker;
   document.getElementById('result-title').textContent = title;
@@ -434,7 +408,7 @@ function renderResults(kicker, title, items){
     a.className = 'guide-card' + (g.primary ? ' primary' : '');
     a.href = BASE + g.url;
     var tag = g.primary ? '<span class="tag">Main Guide</span>' : '';
-    a.innerHTML = tag + '<h3>' + g.title + ' →</h3><p>' + g.desc + '</p>' + pillRowHTML();
+    a.innerHTML = tag + '<h3>' + g.title + ' →</h3><p>' + g.desc + '</p>';
     list.appendChild(a);
   });
 }
