@@ -4848,84 +4848,25 @@ try{
   if(window.__fbResolveReady) window.__fbResolveReady();
 
   // ── LIVE FEED ──
-  // GÜVENLİK: Halka açık akış artık şikayet göstermiyor (gizli mesaj basıyor).
-  // Eskiden bu sorgu TÜM anonim şikayetleri (isim/e-posta değil ama başlık,
-  // açıklama, konum) her ziyaretçinin tarayıcısına akıtıyordu — ekranda gizli
-  // olsa bile ağ üstünden gidiyordu. Sorguyu eşleşmeyen bir referansa çevirdik:
-  // callback yine bir kez çalışıp gizli mesajı basıyor, ama hiçbir şikayet
-  // verisi tarayıcıya indirilmiyor. (Veritabanı seviyesindeki tam koruma için
-  // Firestore okuma kuralı + referans-takibini sunucuya taşımak gerekir — ayrı iş.)
-  const feedQ=query(collection(db,'complaints'),where('ref','==','__public_feed_disabled__'),limit(1));
-  onSnapshot(feedQ,function(snapshot){
-    var catColors={noise:'#3b82f6',property:'#f97316',billing:'#8b5cf6',disc:'#c8102e',garbage:'#16a34a',safety:'#d97706',harassment:'#c8102e',wages:'#16a34a',general:'#1a4fa0'};
-    var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
-    function catLabel(cat){
-      var k=catKeyMap[cat];
-      return k?V.t(k):(cat?cat.charAt(0).toUpperCase()+cat.slice(1):'');
-    }
+  // GÜVENLİK: Şikayetler artık halka açık gösterilmiyor — bildirenlerin
+  // gizliliğini korumak için hem ana akış hem takip sekmesindeki liste
+  // kapatıldı, yerine statik bir "gizli tutulur" mesajı basılıyor (Avukat
+  // paneli ayrı ve girişli, kendi canlı sorgusunu kullanıyor).
+  // Eskiden bu bir Firestore onSnapshot aboneliğiydi (eşleşmeyen sabit bir
+  // referansı dinleyip callback'te bu statik mesajı basıyordu) — sonuç asla
+  // değişmediği için her ziyaretçide gereksiz, süresiz açık bir canlı bağlantı
+  // tutuyordu. Doğrudan basmak aynı sonucu, Firestore'a hiç dokunmadan verir.
+  var privMsg='<div style="text-align:center;padding:40px 20px">'+
+    '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🔒</div>'+
+    '<div style="color:var(--text);font-size:.92rem;font-weight:700;margin-bottom:6px;max-width:34ch;margin-left:auto;margin-right:auto;line-height:1.5">'+V.t('feed_private')+'</div>'+
+    '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px;margin-top:14px">'+V.t('feed_new_btn')+'</button>'+
+  '</div>';
+  var fbox=document.getElementById('public-complaint-feed');
+  if(fbox) fbox.innerHTML=privMsg;
+  var tbox=document.getElementById('trk-complaint-feed');
+  if(tbox) tbox.innerHTML=privMsg;
 
-    function renderFeedHTML(snapshot){
-      if(snapshot.empty) return '<div style="text-align:center;padding:40px 20px">'+
-        '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🗂️</div>'+
-        '<div style="color:var(--text);font-size:.92rem;font-weight:700;margin-bottom:6px">'+V.t('feed_none')+'</div>'+
-        '<div style="color:var(--muted);font-size:.8rem;line-height:1.6;max-width:32ch;margin:0 auto 18px">'+V.t('feed_none_sub')+'</div>'+
-        '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px">'+V.t('feed_new_btn')+'</button>'+
-      '</div>';
-      var html='';
-      var i=0;
-      snapshot.forEach(function(doc){
-        var d=doc.data();
-        var color=catColors[d.category]||'#1a4fa0';
-        var ago=d.date?window._timeAgo(d.date):'';
-        var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':d.content?d.content.substring(0,45)+'…':V.t('feed_default_title')));
-        var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
-        var cat=escHtml(catLabel(d.category||'general'));
-        var desc=escHtml(d.desc||d.content||'');
-        var uid='fc-'+i;
-        html+='<div style="background:var(--surface);border-radius:12px;border:1px solid rgba(77,142,232,.16);margin-bottom:10px;overflow:hidden">'+
-          '<div onclick="toggleFeedCard(\''+uid+'\')" style="padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer">'+
-            '<div style="width:9px;height:9px;border-radius:50%;background:'+color+';flex-shrink:0"></div>'+
-            '<div style="flex:1;min-width:0">'+
-              '<div style="font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">'+title+'</div>'+
-              '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+
-                '<span style="font-size:.62rem;color:white;background:'+color+';border-radius:10px;padding:2px 8px;font-weight:600">'+cat+'</span>'+
-                '<span style="font-size:.62rem;color:var(--muted)">📍 '+loc+'</span>'+
-                '<span style="font-size:.62rem;color:var(--muted)">'+ago+'</span>'+
-              '</div>'+
-            '</div>'+
-            '<span id="'+uid+'-arr" style="font-size:.8rem;color:var(--muted);flex-shrink:0;transition:transform .2s">▼</span>'+
-          '</div>'+
-          (desc?'<div id="'+uid+'" style="display:none;padding:0 16px 14px 37px;font-size:.8rem;color:var(--text);line-height:1.65;border-top:1px solid #f1f5f9">'+desc+'</div>':'')+
-        '</div>';
-        i++;
-      });
-      return html;
-    }
-
-    // Şikayetler artık halka açık gösterilmiyor — bildirenlerin gizliliğini
-    // korumak için hem ana akış hem takip sekmesindeki liste kapatıldı, yerine
-    // kısa bir "gizli tutulur" mesajı konuyor. (Avukat paneli ayrı ve girişli.)
-    var privMsg='<div style="text-align:center;padding:40px 20px">'+
-      '<div style="font-size:1.8rem;margin-bottom:10px;opacity:.7">🔒</div>'+
-      '<div style="color:var(--text);font-size:.92rem;font-weight:700;margin-bottom:6px;max-width:34ch;margin-left:auto;margin-right:auto;line-height:1.5">'+V.t('feed_private')+'</div>'+
-      '<button onclick="goApp(\'new\')" class="btn-w" style="font-size:.65rem;padding:11px 22px;margin-top:14px">'+V.t('feed_new_btn')+'</button>'+
-    '</div>';
-    var fbox=document.getElementById('public-complaint-feed');
-    if(fbox) fbox.innerHTML=privMsg;
-    var tbox=document.getElementById('trk-complaint-feed');
-    if(tbox) tbox.innerHTML=privMsg;
-  },function(err){
-    var fbox=document.getElementById('public-complaint-feed');
-    if(fbox) fbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
-    var tbox=document.getElementById('trk-complaint-feed');
-    if(tbox) tbox.innerHTML='<div class="empty">'+V.t('feed_error')+'</div>';
-  });
-
-  // catLabel was previously only defined inside the (disabled) public feed's
-  // onSnapshot closure above, out of reach for renderLawyerPanelHTML below —
-  // calling it threw a ReferenceError the instant there was a real case to
-  // render, silently aborting the Pool's innerHTML update (blank tab, no
-  // error shown). Defined here too so the Pool can actually reach it.
+  // Used by renderLawyerPanelHTML below.
   var catKeyMap={noise:'cno',safety:'csa',garbage:'cga',disc:'cdi',service:'cse',billing:'cbi',property:'cpr',general:'cot',harassment:'cy_c1t',wages:'cse',business:'tbz',municipal:'tmn',landlord:'tld'};
   function catLabel(cat){
     var k=catKeyMap[cat];
