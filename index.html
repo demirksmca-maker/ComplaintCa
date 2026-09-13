@@ -156,28 +156,30 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 .loc-item strong{display:block;color:var(--text);font-weight:600}
 .loc-item span{display:block;color:var(--muted);font-size:.72rem;margin-top:1px}
 .vfy-container{
-  background:#0B1D3A;
-  color:#FFFFFF;font-family:'Inter',sans-serif;border-radius:12px;width:100%;
-  border:1px solid rgba(212,175,55,.25);padding:26px 20px;
+  background:#060b16;
+  color:#FFFFFF;font-family:'Inter',sans-serif;border-radius:14px;width:100%;
+  border:1px solid rgba(212,175,55,.22);padding:26px 20px;
+  box-shadow:0 14px 36px rgba(0,0,0,.4);
 }
 .vfy-header h2{
   font-family:'Cinzel',serif;text-transform:uppercase;font-weight:700;letter-spacing:.5px;font-size:1.05rem;
   color:#D4AF37;padding-bottom:12px;margin-bottom:10px;
-  border-bottom:1px solid rgba(212,175,55,.25);
+  border-bottom:1px solid rgba(212,175,55,.22);
 }
 .vfy-header p{color:#A0AABF;font-size:.85em;line-height:1.6}
 .vfy-dropzone{
-  border:1px dashed rgba(212,175,55,.4);background:transparent;
-  padding:32px 16px;text-align:center;border-radius:10px;cursor:pointer;
+  border:1.5px dashed rgba(212,175,55,.4);
+  background:linear-gradient(180deg,rgba(124,92,255,.07),rgba(0,194,168,.05));
+  padding:32px 16px;text-align:center;border-radius:12px;cursor:pointer;
   transition:background .2s,border-color .2s;margin:22px 0;
 }
-.vfy-dropzone:hover{background:rgba(212,168,55,.06);border-color:rgba(212,175,55,.6)}
+.vfy-dropzone:hover{background:linear-gradient(180deg,rgba(124,92,255,.13),rgba(0,194,168,.09));border-color:rgba(212,175,55,.6)}
 .vfy-drop-icon{width:36px;height:36px;margin:0 auto 12px;display:block}
 .vfy-dropzone h3{margin:0 0 8px 0;color:#FFFFFF;font-size:.95rem;font-weight:600}
 .vfy-ai-status{background:rgba(255,255,255,.04);padding:16px;border-radius:8px;font-size:.9em;display:none;border-left:3px solid #D4AF37;margin-bottom:20px}
 .vfy-ai-title{color:#D4AF37;font-family:'Cinzel',serif;text-transform:uppercase;font-weight:bold;font-size:1.05em;margin-bottom:10px}
-.vfy-action-btn{background:#C8102E;color:white;border:none;padding:14px 22px;font-family:'Inter',sans-serif;font-weight:bold;font-size:.92em;border-radius:8px;cursor:pointer;width:100%;display:none;transition:background-color .2s}
-.vfy-action-btn:hover{background:#A00D24}
+.vfy-action-btn{background:linear-gradient(155deg,#ff5a5a,#c8102e);color:white;border:none;padding:14px 22px;font-family:'Inter',sans-serif;font-weight:bold;font-size:.92em;border-radius:9px;cursor:pointer;width:100%;display:none;transition:filter .2s}
+.vfy-action-btn:hover{filter:brightness(.92)}
 
 /* ── INTRO ── */
 #site-intro{position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px}
@@ -1318,7 +1320,7 @@ textarea{resize:vertical;min-height:90px}
         <button class="vfy-action-btn" id="vfy-legal-action-btn" onclick="createLegalPetition(_vfyFile?_vfyFile.name:'belge', 'resmi.kurum@canada.ca')">
           <span id="vfy-action-lbl">Bilgi Edinme Hakkı Kanunu Kapsamında Kuruma Teyit Sor</span>
         </button>
-        <button class="vfy-action-btn" id="vfy-transfer-btn" style="background-color:var(--blue);margin-top:8px" onclick="transferToComplaint()">📋 Bu bulguyu şikayet formuna aktar</button>
+        <button class="vfy-action-btn" id="vfy-transfer-btn" style="background:linear-gradient(155deg,#3d8bff,#1c57c9);margin-top:8px" onclick="transferToComplaint()">📋 Bu bulguyu şikayet formuna aktar</button>
       </div>
     </div>
 
