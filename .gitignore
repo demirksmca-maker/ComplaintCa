@@ -8,3 +8,7 @@ android-twa/
 *.apk
 *.aab
 scripts/twa-build/node_modules/
+
+# staff-scheduler desktop app (Electron)
+staff-scheduler/node_modules/
+staff-scheduler/dist/

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>Personel Vardiya Planlayıcı</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Personel Vardiya Planlayıcı</h1>
+    <p class="subtitle">AI destekli otomatik vardiya optimizasyonu</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="employees">Personel</button>
+    <button class="tab-btn" data-tab="shifts">Vardiyalar</button>
+    <button class="tab-btn" data-tab="schedule">Program</button>
+    <button class="tab-btn" data-tab="reports">Raporlar</button>
+  </nav>
+
+  <main>
+    <!-- PERSONEL -->
+    <section id="tab-employees" class="tab-panel active">
+      <div class="panel-grid">
+        <form id="employee-form" class="card">
+          <h2 id="employee-form-title">Yeni Personel Ekle</h2>
+          <input type="hidden" id="employee-id" />
+
+          <label>Ad Soyad
+            <input type="text" id="employee-name" required />
+          </label>
+
+          <label>Rol / Pozisyon
+            <input type="text" id="employee-role" placeholder="ör. Kasiyer, Aşçı, Garson" />
+          </label>
+
+          <div class="row">
+            <label>Min. Haftalık Saat
+              <input type="number" id="employee-min-hours" min="0" value="0" />
+            </label>
+            <label>Maks. Haftalık Saat
+              <input type="number" id="employee-max-hours" min="0" value="40" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>Vardiyalar Arası Min. Dinlenme (saat)
+              <input type="number" id="employee-min-rest" min="0" value="11" />
+            </label>
+            <label>Maks. Ardışık Çalışma Günü
+              <input type="number" id="employee-max-consecutive" min="1" value="6" />
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Sabit İzin Günleri</legend>
+            <div id="employee-days-off" class="day-checkboxes"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Ek Uygunsuzluk Aralıkları (izin/randevu vb.)</legend>
+            <div id="employee-unavailability-list"></div>
+            <button type="button" id="add-unavailability-btn" class="secondary">+ Aralık Ekle</button>
+          </fieldset>
+
+          <div class="row form-actions">
+            <button type="submit">Kaydet</button>
+            <button type="button" id="employee-cancel-btn" class="secondary">Vazgeç</button>
+          </div>
+        </form>
+
+        <div class="card">
+          <h2>Personel Listesi</h2>
+          <table class="data-table">
+            <thead>
+              <tr><th>Ad</th><th>Rol</th><th>Saat Aralığı</th><th>İzin Günleri</th><th></th></tr>
+            </thead>
+            <tbody id="employee-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VARDİYALAR -->
+    <section id="tab-shifts" class="tab-panel">
+      <div class="panel-grid">
+        <form id="shift-form" class="card">
+          <h2 id="shift-form-title">Yeni Vardiya Şablonu</h2>
+          <input type="hidden" id="shift-id" />
+
+          <label>Vardiya Adı
+            <input type="text" id="shift-name" placeholder="ör. Sabah Vardiyası" required />
+          </label>
+
+          <label>Gün
+            <select id="shift-day"></select>
+          </label>
+
+          <div class="row">
+            <label>Başlangıç
+              <input type="time" id="shift-start" value="09:00" required />
+            </label>
+            <label>Bitiş
+              <input type="time" id="shift-end" value="17:00" required />
+            </label>
+          </div>
+
+          <div class="row">
+            <label>Gereken Kişi Sayısı
+              <input type="number" id="shift-required-count" min="1" value="1" />
+            </label>
+            <label>Gereken Rol (opsiyonel)
+              <input type="text" id="shift-required-role" placeholder="Boş = herkes" />
+            </label>
+          </div>
+
+          <div class="row form-actions">
+            <button type="submit">Kaydet</button>
+            <button type="button" id="shift-cancel-btn" class="secondary">Vazgeç</button>
+          </div>
+        </form>
+
+        <div class="card">
+          <h2>Vardiya Şablonları</h2>
+          <table class="data-table">
+            <thead>
+              <tr><th>Gün</th><th>Vardiya</th><th>Saat</th><th>Kişi</th><th>Rol</th><th></th></tr>
+            </thead>
+            <tbody id="shift-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROGRAM -->
+    <section id="tab-schedule" class="tab-panel">
+      <div class="card">
+        <div class="row form-actions">
+          <button id="generate-schedule-btn">⚡ Programı Otomatik Oluştur</button>
+          <button id="export-csv-btn" class="secondary">CSV Olarak Dışa Aktar</button>
+        </div>
+        <div id="schedule-warnings"></div>
+        <div id="schedule-grid"></div>
+      </div>
+    </section>
+
+    <!-- RAPORLAR -->
+    <section id="tab-reports" class="tab-panel">
+      <div class="card">
+        <h2>Haftalık Saat Özeti</h2>
+        <table class="data-table">
+          <thead>
+            <tr><th>Personel</th><th>Rol</th><th>Planlanan Saat</th><th>Min / Maks</th><th>Durum</th></tr>
+          </thead>
+          <tbody id="reports-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

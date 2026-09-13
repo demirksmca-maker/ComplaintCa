@@ -1,0 +1,22 @@
+{
+  "name": "staff-scheduler",
+  "version": "1.0.0",
+  "description": "AI destekli personel vardiya planlama masaüstü uygulaması",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.mjs",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.3.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.complaintca.staffscheduler",
+    "productName": "Personel Vardiya Planlayıcı",
+    "files": ["main.js", "preload.js", "src/**/*", "renderer/**/*"],
+    "directories": { "output": "dist" }
+  }
+}
