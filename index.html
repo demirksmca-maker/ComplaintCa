@@ -185,6 +185,7 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 .res-badge.risk-bad{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
 .res-badge.risk-ok{background:linear-gradient(155deg,#00c2a8,#008a76)}
 .res-badge.risk-mid{background:linear-gradient(155deg,#f5c563,#c9962e)}
+.res-badge.risk-info{background:linear-gradient(155deg,#7c93b8,#4d6690)}
 .res-sum{font-size:.86rem;color:#e5eaf2;line-height:1.5;flex:1;min-width:140px}
 .res-meter{display:flex;align-items:center;gap:10px;margin:0 0 16px}
 .res-track{flex:1;height:6px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -1459,18 +1460,18 @@ async function vfyAnalyze(){
   }
 
   var langName=VFY_LANG_NAMES[V.getCur()]||'English';
-  var sys='You are Asya, working together with Claude AI as a senior Canadian phishing/fraud document analyst for ComplaintCA. Examine the uploaded document or screenshot for signs of phishing, scam, fraud, or impersonation: suspicious sender domains, urgency/threat language, fake or mismatched links, spoofed logos, requests for credentials or payment, poor grammar, unofficial formatting. Call the record_verification tool with your findings — do not respond in plain text. The "risk" field must be exactly one of the listed values, in English; every other field (risk_label, summary, flag titles/details, advice) must be written in '+langName+'.';
+  var sys='You are Asya, working together with Claude AI as a senior Canadian phishing/fraud document analyst for ComplaintCA. This tool exists ONLY to detect phishing, scam, fraud, or institutional impersonation in an uploaded document or screenshot — it does not judge personal disputes, workplace disagreements, arguments, or conversations between people who already know each other.\n\nOnly treat something as phishing/fraud when you can point to concrete evidence: a spoofed or mismatched sender domain, a link to a fake website, a request for a password/OTP/credit card number, impersonation of a real government agency/bank/company, fabricated urgency about an account/refund/package from an unfamiliar sender, or an unsolicited demand for payment or gift cards to a stranger.\n\nAn emotionally heated exchange, a wage/hours disagreement, a family matter, or any dispute between two people who already know each other is NOT phishing or fraud — even if it mentions money, deadlines, or uses a pressuring tone. In that case use risk NOT_PHISHING, keep risk_score low (under 30), leave flags empty or nearly empty, and use "advice" to say plainly this is not a scam/phishing case and (only if genuinely relevant) that ComplaintCA has separate tools for workplace or other disputes — do not invent phishing-style flags just to justify a high score.\n\nCall the record_verification tool with your findings — do not respond in plain text. The "risk" field must be exactly one of the listed values, in English; every other field (risk_label, summary, flag titles/details, advice) must be written in '+langName+'.';
   var tools=[{
     name:'record_verification',
     description:'Record the structured result of a phishing/fraud document verification.',
     input_schema:{
       type:'object',
       properties:{
-        risk:{type:'string',enum:['SUSPICIOUS_PHISHING','SUSPICIOUS_FRAUD','SAFE','UNCERTAIN']},
-        risk_label:{type:'string',description:'Short 1-3 word badge label for this risk level, in the user\'s language (e.g. "Suspicious", "Şüpheli", "Sûr")'},
-        risk_score:{type:'integer',minimum:0,maximum:100,description:'0 = certainly safe, 100 = certainly fraudulent'},
+        risk:{type:'string',enum:['SUSPICIOUS_PHISHING','SUSPICIOUS_FRAUD','SAFE','NOT_PHISHING','UNCERTAIN'],description:'SAFE = this is a phishing-relevant message (claims to be official/urgent) but checks out as genuine. NOT_PHISHING = this document is not a phishing/fraud/scam artifact at all (e.g. a personal or workplace dispute) — use this instead of forcing SUSPICIOUS.'},
+        risk_label:{type:'string',description:'Short 1-3 word badge label for this risk level, in the user\'s language (e.g. "Suspicious", "Şüpheli", "Sûr", "Konu Dışı")'},
+        risk_score:{type:'integer',minimum:0,maximum:100,description:'0 = certainly safe or not applicable, 100 = certain phishing/fraud. Do not score above 40 unless at least one concrete phishing/fraud indicator (fake link, credential request, impersonation) is named in flags.'},
         summary:{type:'string',description:'One short verdict sentence'},
-        flags:{type:'array',items:{type:'object',properties:{title:{type:'string'},detail:{type:'string'}},required:['title','detail']},description:'Concrete findings supporting the verdict; empty array if none'},
+        flags:{type:'array',items:{type:'object',properties:{title:{type:'string'},detail:{type:'string'}},required:['title','detail']},description:'Concrete phishing/fraud findings supporting the verdict; empty array if none — never fill this with generic conflict/tone observations'},
         advice:{type:'string',description:'1-2 sentences on what the user should do next'}
       },
       required:['risk','risk_label','risk_score','summary','flags','advice']
@@ -1505,21 +1506,25 @@ async function vfyAnalyze(){
     var riskNorm=(out.risk||'UNCERTAIN').toUpperCase();
     var suspicious=/^SUSPICIOUS/.test(riskNorm);
     var safe=riskNorm==='SAFE';
-    var tone=safe?'ok':(suspicious?'bad':'mid');
+    var notPhishing=riskNorm==='NOT_PHISHING';
+    var noAction=safe||notPhishing;
+    var tone=notPhishing?'info':(safe?'ok':(suspicious?'bad':'mid'));
     var score=Math.max(0,Math.min(100,parseInt(out.risk_score,10)||0));
     var flags=Array.isArray(out.flags)?out.flags:[];
     _vfyLastAnalysis={risk:riskNorm,verdict:out.summary,detail:flags.map(function(fl){return fl.title+(fl.detail?': '+fl.detail:'');}).join(' · '),advice:out.advice};
 
     var html='<div class="res-verdict"><span class="res-badge risk-'+tone+'">'+escHtml(out.risk_label||riskNorm)+'</span><span class="res-sum">'+escHtml(out.summary||'')+'</span></div>';
-    html+='<div class="res-meter"><div class="res-track"><div class="res-fill risk-'+tone+'" style="width:'+score+'%"></div></div><div class="res-n">'+score+'/100</div></div>';
-    flags.forEach(function(fl){
-      html+='<div class="res-flag"><b>'+escHtml(fl.title||'')+'</b>'+(fl.detail?'<span>'+escHtml(fl.detail)+'</span>':'')+'</div>';
-    });
+    if(!notPhishing){
+      html+='<div class="res-meter"><div class="res-track"><div class="res-fill risk-'+tone+'" style="width:'+score+'%"></div></div><div class="res-n">'+score+'/100</div></div>';
+      flags.forEach(function(fl){
+        html+='<div class="res-flag"><b>'+escHtml(fl.title||'')+'</b>'+(fl.detail?'<span>'+escHtml(fl.detail)+'</span>':'')+'</div>';
+      });
+    }
     if(out.advice) html+='<p class="res-advice">'+escHtml(out.advice)+'</p>';
 
     document.getElementById('vfy-text').innerHTML=html;
-    actionBtn.style.display=safe?'none':'block';
-    document.getElementById('vfy-transfer-btn').style.display=safe?'none':'block';
+    actionBtn.style.display=noAction?'none':'block';
+    document.getElementById('vfy-transfer-btn').style.display=noAction?'none':'block';
   }catch(e){
     _vfyLastAnalysis=null;
     var isTimeout=e&&(e.name==='AbortError');
