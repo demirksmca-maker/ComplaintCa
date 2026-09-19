@@ -101,6 +101,8 @@ body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-
 .hero h1 em{font-style:normal;color:#7c5cff}
 .hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+.file-pill{display:inline-flex;align-items:center;gap:6px;background:var(--crimson);border:1.5px solid var(--crimson);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
 
 main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 10px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
 
@@ -193,7 +195,10 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
   <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
   <div class="hero-row">
     <h1>Human Rights Complaint.<br><em>Discrimination, Addressed.</em></h1>
-    <a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+    <div class="pill-row">
+      <a href="https://www.complaintca.ca?go=new" target="_blank" rel="noopener" class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> File Now</a>
+      <a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+    </div>
   </div>
 </div>
 

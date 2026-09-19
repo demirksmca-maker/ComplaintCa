@@ -208,12 +208,12 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
   <div class="section-hint">Verify, Organization by Organization <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
 
   <div class="step-grid">
-    <div class="path-card pc-1" onclick="openStep('s1')">
+    <a class="path-card pc-1" href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener">
       <span class="arrow">→</span>
-      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
-      <h3>Five Red Flags</h3>
-      <div class="tag">Spot a fake message fast</div>
-    </div>
+      <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+      <h3>Verify With AI</h3>
+      <div class="tag">Upload it, check in seconds</div>
+    </a>
 
     <div class="path-card pc-2" onclick="openStep('s2')">
       <span class="arrow">→</span>
@@ -262,17 +262,6 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
   </div>
 
   <div class="step-overlay" id="step-overlay" onclick="if(event.target===this)closeStep()">
-    <div class="step-modal" id="s1" style="display:none">
-      <button class="mclose" onclick="closeStep()">✕</button>
-      <h3>Five Red Flags of a Fake Message</h3>
-      <ol>
-        <li><strong>Urgency and threats</strong> — "act within 24 hours or face arrest/legal action." Real government agencies don't threaten immediate arrest by text or email.</li>
-        <li><strong>Unusual payment methods</strong> — gift cards, cryptocurrency, or e-transfer to a personal name. No legitimate agency asks for these.</li>
-        <li><strong>A callback number inside the message itself</strong> — the safest rule: never call a number given to you in the suspicious message. Look up the real number yourself.</li>
-        <li><strong>Requests for your SIN, full password, or one-time codes</strong> — legitimate organizations never ask you to read back a 2FA code you just received.</li>
-        <li><strong>Slightly-off sender details</strong> — a CRA email from "@cra-gov-refund.com" instead of a canada.ca address, or a link that doesn't match the real domain when you hover over it.</li>
-      </ol>
-    </div>
     <div class="step-modal" id="s2" style="display:none">
       <button class="mclose" onclick="closeStep()">✕</button>
       <h3>Canada Revenue Agency (CRA)</h3>
@@ -305,8 +294,17 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
 
       <div class="cta">
         <p>Not sure about a message you got? Upload it or ask Asya before you act.</p>
-        <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+        <a href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener">Verify It Now →</a>
       </div>
+
+      <h2>Five Red Flags of a Fake Message</h2>
+      <ol style="margin:0 0 20px;padding-left:20px;color:var(--dsub);font-size:.86rem;line-height:1.7">
+        <li><strong>Urgency and threats</strong> — "act within 24 hours or face arrest/legal action." Real government agencies don't threaten immediate arrest by text or email.</li>
+        <li><strong>Unusual payment methods</strong> — gift cards, cryptocurrency, or e-transfer to a personal name. No legitimate agency asks for these.</li>
+        <li><strong>A callback number inside the message itself</strong> — the safest rule: never call a number given to you in the suspicious message. Look up the real number yourself.</li>
+        <li><strong>Requests for your SIN, full password, or one-time codes</strong> — legitimate organizations never ask you to read back a 2FA code you just received.</li>
+        <li><strong>Slightly-off sender details</strong> — a CRA email from "@cra-gov-refund.com" instead of a canada.ca address, or a link that doesn't match the real domain when you hover over it.</li>
+      </ol>
 
       <h2>Frequently Asked</h2>
 

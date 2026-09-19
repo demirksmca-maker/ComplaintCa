@@ -251,12 +251,12 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
       <div class="tag">Check before you act</div>
     </a>
 
-    <div class="path-card pc-5" onclick="openStep('s5')">
+    <a class="path-card pc-5" href="https://www.complaintca.ca?go=cyber" target="_blank" rel="noopener">
       <span class="arrow">→</span>
       <svg class="picon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
-      <h3>Common Scam Types</h3>
-      <div class="tag">Know what to spot</div>
-    </div>
+      <h3>Report It on ComplaintCA</h3>
+      <div class="tag">Free, anonymous, tracked</div>
+    </a>
 
     <a class="path-card pc-6" href="https://www.complaintca.ca?go=lawyer" target="_blank" rel="noopener">
       <span class="arrow">→</span>
@@ -294,16 +294,6 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
       <h3>Your Local Police Service</h3>
       <p>File a report with your local police (non-emergency line) — this creates an official record, which some banks and insurers require to process a claim.</p>
     </div>
-    <div class="step-modal" id="s5" style="display:none">
-      <button class="mclose" onclick="closeStep()">✕</button>
-      <h3>Common Cyber Crime Types</h3>
-      <ul>
-        <li><strong>Phishing</strong> — fake emails/texts impersonating banks, government, or delivery services asking for credentials or payment.</li>
-        <li><strong>Identity theft</strong> — someone using your personal information to open accounts or make purchases.</li>
-        <li><strong>Romance &amp; investment scams</strong> — long-term manipulation building trust before requesting money or crypto.</li>
-        <li><strong>Online harassment &amp; extortion</strong> — threats, doxxing, or sextortion attempts.</li>
-      </ul>
-    </div>
   </div>
 
   <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
@@ -315,8 +305,16 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
 
       <div class="cta">
         <p>No need to read this whole guide — Asya can ask a few questions and point you to the right next step in seconds.</p>
-        <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start with Asya Now →</a>
+        <a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener">Start with Asya Now →</a>
       </div>
+
+      <h2>Common Cyber Crime Types</h2>
+      <ul style="margin:0 0 20px;padding-left:20px;color:var(--dsub);font-size:.86rem;line-height:1.7">
+        <li><strong>Phishing</strong> — fake emails/texts impersonating banks, government, or delivery services asking for credentials or payment.</li>
+        <li><strong>Identity theft</strong> — someone using your personal information to open accounts or make purchases.</li>
+        <li><strong>Romance &amp; investment scams</strong> — long-term manipulation building trust before requesting money or crypto.</li>
+        <li><strong>Online harassment &amp; extortion</strong> — threats, doxxing, or sextortion attempts.</li>
+      </ul>
 
       <h2>Frequently Asked</h2>
 
