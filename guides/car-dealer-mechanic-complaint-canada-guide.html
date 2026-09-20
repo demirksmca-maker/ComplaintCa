@@ -106,6 +106,8 @@ body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-
 .hero h1 em{font-style:normal;color:#7c5cff}
 .hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+.file-pill{display:inline-flex;align-items:center;gap:6px;background:var(--crimson);border:1.5px solid var(--crimson);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
 
 main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 10px;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
 
@@ -129,7 +131,11 @@ h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transfo
 .pc-6{background:linear-gradient(155deg,#2c3340,#1a1e26);border:1px solid rgba(255,255,255,.12)}
 
 .track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
-.track-link{color:#8991a3;font-size:.68rem;font-weight:600;border-bottom:1px dashed rgba(137,145,163,.5);cursor:pointer}
+.track-link{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:14px;font-size:.7rem;font-weight:700;text-decoration:none;white-space:nowrap}
+.track-link-group{display:flex;gap:10px;flex-wrap:wrap}
+.track-link.tl-track{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.3);color:#eef1f5}
+.track-link.tl-verify{background:rgba(61,139,255,.18);border:1.5px solid #3d8bff;color:#a9c8ff}
+.track-link.tl-lawyer{background:rgba(212,175,55,.15);border:1.5px solid var(--gold);color:var(--gold-bright,var(--gold))}
 .feat-row{display:flex;gap:10px;flex-wrap:wrap;color:#6b7d99;font-size:.62rem}
 .feat-row span::before{content:'●';color:#7c5cff;margin-right:4px;font-size:.5rem}
 
@@ -197,7 +203,10 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
   <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
   <div class="hero-row">
     <h1>Car Dealer &amp; Mechanic.<br><em>Right Regulator, Fast.</em></h1>
-    <a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+    <div class="pill-row">
+      <a href="https://www.complaintca.ca?go=new" target="_blank" rel="noopener" class="file-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> File Now</a>
+      <a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener" class="asya-pill">🎙️ ASYA</a>
+    </div>
   </div>
 </div>
 
@@ -251,7 +260,10 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
   </div>
 
   <div class="track-row">
-    <div class="track-link">Track My Complaint</div>
+    <div class="track-link-group">
+      <a href="https://www.complaintca.ca?go=track" target="_blank" rel="noopener" class="track-link tl-track">Track My Complaint</a>
+      <a href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener" class="track-link tl-verify">Verify a Document</a>
+    </div>
     <div class="feat-row">
       <span>Anonymous</span>
       <span>AI Routing</span>
