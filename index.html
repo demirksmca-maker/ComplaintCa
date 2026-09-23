@@ -1346,8 +1346,8 @@ textarea{resize:vertical;min-height:90px}
         </div>
 
         <div class="vfy-note-wrap">
-          <label for="vfy-note" class="vfy-note-lbl" id="vfy-note-lbl">Kısa not (isteğe bağlı)</label>
-          <textarea id="vfy-note" class="vfy-note" rows="2" maxlength="300" placeholder="Bu görselle ilgili kısa bir bağlam ekleyin — örn. &quot;işverenimle mesajlaşma&quot;, &quot;bankamdan geldiğini iddia ediyor&quot;"></textarea>
+          <label for="vfy-note" class="vfy-note-lbl" id="vfy-note-lbl"></label>
+          <textarea id="vfy-note" class="vfy-note" rows="2" maxlength="300"></textarea>
         </div>
 
         <div class="vfy-dropzone" tabindex="0" role="button" id="vfy-dropzone" onclick="vfyTriggerFileSelect()" ondragover="vfyDragOver(event)" ondragleave="vfyDragLeave(event)" ondrop="vfyDrop(event)">
@@ -2131,7 +2131,7 @@ const V = (function(){
       suc_save_note:"Save your reference number to track your complaint status in the <strong style=\"color:var(--text)\">\"Track My Complaint\"</strong> section.",
       suc_mv_btn:"🏛️ Forward to Representative",
       feed_live:"LIVE FEED",feed_tab_title:"Recent Complaints",feed_tab_sub:"Real-time · Updating live",feed_new_btn:"+ File Complaint",feed_last10:"Showing last 10 complaints",feed_private:"Complaints are kept private to protect the people who file them.",
-      vfy_tab:"Verify",vfy_title:"Secure Document Verification Center",vfy_sub:"Upload your suspicious email or documents. Analysis happens on your device — no data is stored on the server.",vfy_link_file:"File a Complaint",vfy_link_lawyer:"Find Free Legal Help",
+      vfy_tab:"Verify",vfy_title:"Secure Document Verification Center",vfy_sub:"Upload your suspicious email or documents. Analysis happens on your device — no data is stored on the server.",vfy_link_file:"File a Complaint",vfy_link_lawyer:"Find Free Legal Help",vfy_note_lbl:"Short note (optional)",vfy_note_ph:"Add a short context about this image — e.g. \"conversation with my employer\", \"claims to be from my bank\"",
       vfy_drop_t:"Drag & Drop or Select a Document",vfy_drop_s:"PNG, JPG or PDF · Analysis powered by Claude AI",
       vfy_ai_title:"Asya & Claude AI Analysis Report",vfy_action_btn:"Request Confirmation from the Institution Under the Access to Information Act",
       vfy_loading:"Scanning document... Verifying content...",vfy_unsupported:"Unsupported file type. Please upload a PNG, JPG, or PDF.",
@@ -2217,7 +2217,7 @@ const V = (function(){
       suc_save_note:"Şikayet durumunuzu takip etmek için referans numaranızı <strong style=\"color:var(--text)\">\"Şikayetimi Takip Et\"</strong> bölümünde saklayın.",
       suc_mv_btn:"🏛️ Milletvekiline İlet",
       feed_live:"CANLI AKIŞ",feed_tab_title:"Son Şikayetler",feed_tab_sub:"Gerçek zamanlı · Canlı güncelleniyor",feed_new_btn:"+ Şikayet Et",feed_last10:"Son 10 şikayet gösteriliyor",feed_private:"Şikayetler, bildiren kişileri korumak için gizli tutulur.",
-      vfy_tab:"Doğrula",vfy_title:"Güvenli Belge Doğrulama Merkezi",vfy_sub:"Şüpheli e-posta veya belgelerinizi yükleyin. Analiz cihazınızda gerçekleşir, sunucuda hiçbir veri depolanmaz.",vfy_link_file:"Şikayet Oluştur",vfy_link_lawyer:"Ücretsiz Avukat Bul",
+      vfy_tab:"Doğrula",vfy_title:"Güvenli Belge Doğrulama Merkezi",vfy_sub:"Şüpheli e-posta veya belgelerinizi yükleyin. Analiz cihazınızda gerçekleşir, sunucuda hiçbir veri depolanmaz.",vfy_link_file:"Şikayet Oluştur",vfy_link_lawyer:"Ücretsiz Avukat Bul",vfy_note_lbl:"Kısa not (isteğe bağlı)",vfy_note_ph:"Bu görselle ilgili kısa bir bağlam ekleyin — örn. \"işverenimle mesajlaşma\", \"bankamdan geldiğini iddia ediyor\"",
       vfy_drop_t:"Belgeyi Buraya Sürükleyin veya Seçin",vfy_drop_s:"PNG, JPG veya PDF · Analiz Claude AI ile yapılır",
       vfy_ai_title:"Asya & Claude AI Analiz Raporu",vfy_action_btn:"Bilgi Edinme Hakkı Kanunu Kapsamında Kuruma Teyit Sor",
       vfy_loading:"Belge taranıyor... İçerik doğrulanıyor...",vfy_unsupported:"Desteklenmeyen dosya türü. Lütfen PNG, JPG veya PDF yükleyin.",
@@ -2259,7 +2259,7 @@ const V = (function(){
       sr:"Reçue",sv:"En cours",so:"Résolue",sj:"Rejetée",
       tr_r:"Reçue",tr_v:"En cours",tr_o:"Résolue",tr_j:"Rejetée",
       ld:"Détection...",ld2:"Position détectée",
-      vfy_tab:"Vérifier",vfy_title:"Centre Sécurisé de Vérification de Documents",vfy_sub:"Téléchargez votre e-mail ou document suspect. L'analyse se fait sur votre appareil — aucune donnée n'est stockée sur le serveur.",vfy_link_file:"Déposer une Plainte",vfy_link_lawyer:"Trouver une Aide Juridique Gratuite",
+      vfy_tab:"Vérifier",vfy_title:"Centre Sécurisé de Vérification de Documents",vfy_sub:"Téléchargez votre e-mail ou document suspect. L'analyse se fait sur votre appareil — aucune donnée n'est stockée sur le serveur.",vfy_link_file:"Déposer une Plainte",vfy_link_lawyer:"Trouver une Aide Juridique Gratuite",vfy_note_lbl:"Note courte (facultatif)",vfy_note_ph:"Ajoutez un court contexte sur cette image — p. ex. « conversation avec mon employeur », « prétend venir de ma banque »",
       vfy_drop_t:"Glissez-déposez ou sélectionnez un document",vfy_drop_s:"PNG, JPG ou PDF · Analyse propulsée par Claude AI",
       vfy_ai_title:"Rapport d'analyse Asya & Claude AI",vfy_action_btn:"Demander une confirmation à l'institution en vertu de la Loi sur l'accès à l'information",
       vfy_loading:"Analyse du document... Vérification du contenu...",vfy_unsupported:"Type de fichier non pris en charge. Veuillez téléverser un PNG, JPG ou PDF.",
@@ -2301,7 +2301,7 @@ const V = (function(){
       sr:"已收到",sv:"审核中",so:"已解决",sj:"已拒绝",
       tr_r:"已收到",tr_v:"审核中",tr_o:"已解决",tr_j:"已拒绝",
       ld:"检测位置中...",ld2:"位置已检测",
-      vfy_tab:"验证",vfy_title:"安全文件验证中心",vfy_sub:"上传您可疑的电子邮件或文件。分析在您的设备上进行，服务器不存储任何数据。",vfy_link_file:"提交投诉",vfy_link_lawyer:"寻找免费法律援助",
+      vfy_tab:"验证",vfy_title:"安全文件验证中心",vfy_sub:"上传您可疑的电子邮件或文件。分析在您的设备上进行，服务器不存储任何数据。",vfy_link_file:"提交投诉",vfy_link_lawyer:"寻找免费法律援助",vfy_note_lbl:"简短备注（可选）",vfy_note_ph:"为这张图片添加简短背景说明——例如“与雇主的对话”、“声称来自我的银行”",
       vfy_drop_t:"拖放或选择文件",vfy_drop_s:"PNG、JPG 或 PDF · 由 Claude AI 提供分析",
       vfy_ai_title:"Asya 与 Claude AI 分析报告",vfy_action_btn:"根据《信息获取法》向机构请求确认",
       vfy_loading:"正在扫描文件... 正在验证内容...",vfy_unsupported:"不支持的文件类型。请上传 PNG、JPG 或 PDF。",
@@ -2343,7 +2343,7 @@ const V = (function(){
       sr:"Recibida",sv:"En revisión",so:"Resuelta",sj:"Rechazada",
       tr_r:"Recibida",tr_v:"En revisión",tr_o:"Resuelta",tr_j:"Rechazada",
       ld:"Detectando ubicación...",ld2:"Ubicación detectada",
-      vfy_tab:"Verificar",vfy_title:"Centro Seguro de Verificación de Documentos",vfy_sub:"Suba su correo electrónico o documento sospechoso. El análisis ocurre en su dispositivo — no se almacenan datos en el servidor.",vfy_link_file:"Presentar una Queja",vfy_link_lawyer:"Buscar Ayuda Legal Gratuita",
+      vfy_tab:"Verificar",vfy_title:"Centro Seguro de Verificación de Documentos",vfy_sub:"Suba su correo electrónico o documento sospechoso. El análisis ocurre en su dispositivo — no se almacenan datos en el servidor.",vfy_link_file:"Presentar una Queja",vfy_link_lawyer:"Buscar Ayuda Legal Gratuita",vfy_note_lbl:"Nota breve (opcional)",vfy_note_ph:"Agregue un breve contexto sobre esta imagen — p. ej. «conversación con mi empleador», «dice ser de mi banco»",
       vfy_drop_t:"Arrastre y suelte o seleccione un documento",vfy_drop_s:"PNG, JPG o PDF · Análisis impulsado por Claude AI",
       vfy_ai_title:"Informe de análisis de Asya y Claude AI",vfy_action_btn:"Solicitar confirmación a la institución bajo la Ley de Acceso a la Información",
       vfy_loading:"Escaneando documento... Verificando contenido...",vfy_unsupported:"Tipo de archivo no compatible. Suba un PNG, JPG o PDF.",
@@ -2385,7 +2385,7 @@ const V = (function(){
       sr:"مستلمة",sv:"قيد المراجعة",so:"محلولة",sj:"مرفوضة",
       tr_r:"مستلمة",tr_v:"قيد المراجعة",tr_o:"محلولة",tr_j:"مرفوضة",
       ld:"جاري تحديد الموقع...",ld2:"تم تحديد الموقع",
-      vfy_tab:"تحقق",vfy_title:"مركز التحقق الآمن من المستندات",vfy_sub:"حمّل بريدك الإلكتروني أو مستنداتك المشبوهة. يتم التحليل على جهازك — لا يتم تخزين أي بيانات على الخادم.",vfy_link_file:"تقديم شكوى",vfy_link_lawyer:"العثور على مساعدة قانونية مجانية",
+      vfy_tab:"تحقق",vfy_title:"مركز التحقق الآمن من المستندات",vfy_sub:"حمّل بريدك الإلكتروني أو مستنداتك المشبوهة. يتم التحليل على جهازك — لا يتم تخزين أي بيانات على الخادم.",vfy_link_file:"تقديم شكوى",vfy_link_lawyer:"العثور على مساعدة قانونية مجانية",vfy_note_lbl:"ملاحظة قصيرة (اختياري)",vfy_note_ph:"أضف سياقًا قصيرًا حول هذه الصورة — مثلاً «محادثة مع صاحب العمل»، «يدّعي أنه من البنك»",
       vfy_drop_t:"اسحب وأفلت أو اختر مستندًا",vfy_drop_s:"PNG أو JPG أو PDF · التحليل مدعوم بواسطة Claude AI",
       vfy_ai_title:"تقرير تحليل Asya وClaude AI",vfy_action_btn:"اطلب تأكيدًا من الجهة بموجب قانون الحصول على المعلومات",
       vfy_loading:"جاري فحص المستند... جاري التحقق من المحتوى...",vfy_unsupported:"نوع ملف غير مدعوم. يرجى تحميل PNG أو JPG أو PDF.",
@@ -2427,7 +2427,7 @@ const V = (function(){
       sr:"ਮਿਲੀ",sv:"ਸਮੀਖਿਆ ਅਧੀਨ",so:"ਹੱਲ ਕੀਤੀ",sj:"ਰੱਦ",
       tr_r:"ਮਿਲੀ",tr_v:"ਸਮੀਖਿਆ ਅਧੀਨ",tr_o:"ਹੱਲ ਕੀਤੀ",tr_j:"ਰੱਦ",
       ld:"ਟਿਕਾਣਾ ਲੱਭਿਆ ਜਾ ਰਿਹਾ ਹੈ...",ld2:"ਟਿਕਾਣਾ ਮਿਲਿਆ",
-      vfy_tab:"ਤਸਦੀਕ",vfy_title:"ਸੁਰੱਖਿਅਤ ਦਸਤਾਵੇਜ਼ ਤਸਦੀਕ ਕੇਂਦਰ",vfy_sub:"ਆਪਣੀ ਸ਼ੱਕੀ ਈਮੇਲ ਜਾਂ ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ। ਵਿਸ਼ਲੇਸ਼ਣ ਤੁਹਾਡੀ ਡਿਵਾਈਸ 'ਤੇ ਹੁੰਦਾ ਹੈ — ਸਰਵਰ 'ਤੇ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੁੰਦਾ।",vfy_link_file:"ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰੋ",vfy_link_lawyer:"ਮੁਫ਼ਤ ਕਾਨੂੰਨੀ ਮਦਦ ਲੱਭੋ",
+      vfy_tab:"ਤਸਦੀਕ",vfy_title:"ਸੁਰੱਖਿਅਤ ਦਸਤਾਵੇਜ਼ ਤਸਦੀਕ ਕੇਂਦਰ",vfy_sub:"ਆਪਣੀ ਸ਼ੱਕੀ ਈਮੇਲ ਜਾਂ ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ। ਵਿਸ਼ਲੇਸ਼ਣ ਤੁਹਾਡੀ ਡਿਵਾਈਸ 'ਤੇ ਹੁੰਦਾ ਹੈ — ਸਰਵਰ 'ਤੇ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੁੰਦਾ।",vfy_link_file:"ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰੋ",vfy_link_lawyer:"ਮੁਫ਼ਤ ਕਾਨੂੰਨੀ ਮਦਦ ਲੱਭੋ",vfy_note_lbl:"ਛੋਟਾ ਨੋਟ (ਵਿਕਲਪਿਕ)",vfy_note_ph:"ਇਸ ਤਸਵੀਰ ਬਾਰੇ ਛੋਟਾ ਪ੍ਰਸੰਗ ਸ਼ਾਮਲ ਕਰੋ — ਜਿਵੇਂ “ਮੇਰੇ ਮਾਲਕ ਨਾਲ ਗੱਲਬਾਤ”, “ਮੇਰੇ ਬੈਂਕ ਤੋਂ ਹੋਣ ਦਾ ਦਾਅਵਾ ਕਰਦਾ ਹੈ”",
       vfy_drop_t:"ਦਸਤਾਵੇਜ਼ ਨੂੰ ਇੱਥੇ ਖਿੱਚੋ ਜਾਂ ਚੁਣੋ",vfy_drop_s:"PNG, JPG ਜਾਂ PDF · ਵਿਸ਼ਲੇਸ਼ਣ Claude AI ਦੁਆਰਾ",
       vfy_ai_title:"Asya ਅਤੇ Claude AI ਵਿਸ਼ਲੇਸ਼ਣ ਰਿਪੋਰਟ",vfy_action_btn:"ਜਾਣਕਾਰੀ ਤੱਕ ਪਹੁੰਚ ਕਾਨੂੰਨ ਅਧੀਨ ਸੰਸਥਾ ਤੋਂ ਪੁਸ਼ਟੀ ਮੰਗੋ",
       vfy_loading:"ਦਸਤਾਵੇਜ਼ ਸਕੈਨ ਹੋ ਰਿਹਾ ਹੈ... ਸਮੱਗਰੀ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਰਹੀ ਹੈ...",vfy_unsupported:"ਅਸਮਰਥਿਤ ਫਾਈਲ ਕਿਸਮ। ਕਿਰਪਾ ਕਰਕੇ PNG, JPG ਜਾਂ PDF ਅੱਪਲੋਡ ਕਰੋ।",
@@ -2440,7 +2440,7 @@ const V = (function(){
     const map={
       'tab-new-lbl':'nw','tab-feed-lbl':'fd','tab-track-lbl':'tr','tab-lawyer-lbl':'lw','tab-cyber-lbl':'cy','tab-verify-lbl':'vfy_tab',
       'vfy-title':'vfy_title','vfy-sub':'vfy_sub','vfy-drop-title':'vfy_drop_t','vfy-drop-sub':'vfy_drop_s',
-      'vfy-ai-title':'vfy_ai_title','vfy-action-lbl':'vfy_action_btn','l-vfy-link':'l_vfy_link',
+      'vfy-ai-title':'vfy_ai_title','vfy-action-lbl':'vfy_action_btn','l-vfy-link':'l_vfy_link','vfy-note-lbl':'vfy_note_lbl',
       'lw-panel-cta-t':'lw_panel_cta_t','lw-panel-cta-s':'lw_panel_cta_s',
       'lwp-eyebrow':'lwp_eyebrow','lwp-title':'lwp_title','lwp-sub':'lwp_sub',
       'lwp-partner-text':'lwp_partner_text','lwp-partner-btn':'lwp_partner_btn','lwp-ledger-l':'lwp_ledger_l',
@@ -2501,7 +2501,7 @@ const V = (function(){
       const el=document.getElementById(id);
       if(el) el.innerHTML=t(key);
     });
-    const phMap={'mv-postal':'mv_addr_ph'};
+    const phMap={'mv-postal':'mv_addr_ph','vfy-note':'vfy_note_ph'};
     Object.entries(phMap).forEach(([id,key])=>{
       const el=document.getElementById(id);
       if(el) el.placeholder=t(key);
