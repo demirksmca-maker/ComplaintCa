@@ -24,7 +24,7 @@
      UI can say so instead of hanging on "still loading". -->
 <script src="https://accounts.google.com/gsi/client" async onerror="window._gisLoadFailed=true"></script>
 <title>ComplaintCA — Canada's Complaint Platform</title>
-<meta name="description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered and anonymous. Track complaints, find a lawyer, and verify scams.">
+<meta name="description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.complaintca.ca/">
 
@@ -57,7 +57,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ComplaintCA">
 <meta property="og:title" content="ComplaintCA — Canada's Complaint Platform">
-<meta property="og:description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered and anonymous. Track complaints, find a lawyer, and verify scams.">
+<meta property="og:description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
 <meta property="og:url" content="https://www.complaintca.ca/">
 <meta property="og:locale" content="en_CA">
 <meta property="og:image" content="https://www.complaintca.ca/og-image.png">
@@ -67,7 +67,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ComplaintCA — Canada's Complaint Platform">
-<meta name="twitter:description" content="File complaints against municipalities, businesses, or landlords across Canada — AI-powered and anonymous. Track complaints, find a lawyer, and verify scams.">
+<meta name="twitter:description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
 <meta name="twitter:image" content="https://www.complaintca.ca/og-image.png">
 
 <link rel="manifest" href="/manifest.json">
@@ -285,6 +285,8 @@ html[data-restoring-tab] #pg-app{display:block}
 .hub-tile-desc{display:none}
 .hub-tile-arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.75rem;transition:transform .18s}
 .hub-tile:hover .hub-tile-arrow{transform:translateX(2px);opacity:1}
+.hub-links{display:flex;align-items:baseline;justify-content:center;gap:8px}
+.hub-links-sep{color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem)}
 .hub-track-link{display:inline-block;color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem);font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(124,92,255,.5);padding-bottom:1px;margin-bottom:8px}
 
 /* ── APP ── */
@@ -739,7 +741,7 @@ textarea{resize:vertical;min-height:90px}
       </a>
     </div>
 
-    <a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a>
+    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a></div>
 
     <div class="hero-trust">
       <div class="ht-item"><span class="ht-dot"></span><span id="l-t1">Anonymous</span></div>
