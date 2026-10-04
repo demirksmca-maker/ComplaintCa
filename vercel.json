@@ -11,12 +11,6 @@
       "permanent": true
     }
   ],
-  "rewrites": [
-    {
-      "source": "/.netlify/functions/claude-proxy",
-      "destination": "/api/claude-proxy"
-    }
-  ],
   "headers": [
     {
       "source": "/",

@@ -185,7 +185,6 @@
     }
   };
 
-  var ns = "http://www.w3.org/2000/svg";
   function icon(name) {
     var p = {
       clock: '<circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 16 14"></polyline>',
