@@ -924,6 +924,7 @@ textarea{resize:vertical;min-height:90px}
         <div class="refno" id="ref-disp"></div>
         <div id="sync-note" style="display:none;font-size:.75rem;padding:10px 14px;border-radius:10px;margin:10px 0;text-align:left"></div>
         <div id="email-status" style="display:none;font-size:.78rem;margin:8px 0;padding:10px;border-radius:8px"></div>
+        <div id="chain-success" style="display:none;text-align:left;background:var(--ice);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin:12px 0"></div>
 
         <div style="background:var(--off);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.75rem;color:var(--sub);line-height:1.6;text-align:left" id="suc-save-note">
           Save your reference number to track your complaint status in the <strong style="color:var(--text)">"Track My Complaint"</strong> section.
@@ -1994,6 +1995,77 @@ const AUTHORITIES = {
   }
 };
 
+const CHAIN={"NS":{"consumer":[{"n":"Service Nova Scotia (Consumer Services)","p":"1-800-670-4357","u":"https://www.novascotia.ca/make-complaint-about-business"}],"tenancy":[{"n":"Service Nova Scotia (residential tenancies)","p":"1-800-670-4357","u":"https://www.novascotia.ca/programs-and-services/consumer-protection"}],"employment":[{"n":"Labour Standards","p":"1-888-315-0110","u":"https://novascotia.ca/lae/employmentrights/process.asp"}],"human_rights":[{"n":"Human Rights Commission","p":"1-877-269-7699","u":"https://humanrights.novascotia.ca/contact-us"}],"health":[{"n":"Nova Scotia Health Patient Relations","p":"1-844-884-4177","u":"https://www.nshealth.ca/contact/patient-relations"},{"n":"College of Physicians and Surgeons","p":"902-421-2201","u":"https://cpsns.ns.ca/public/filing-a-complaint/"}],"police":[{"n":"Police Complaints Commissioner","p":"902-424-3246","u":"https://novascotia.ca/opcc/filingacomplaint.htm"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"1-866-243-1564","u":"https://oipc.novascotia.ca/contact-us"}],"energy":[{"n":"NS Power Dispute Resolution Officer","p":"1-877-428-6202","u":"https://nserbt.ca/nseb/complaints/complaint-about-electric-utility/ns-power-complaints/contact-ns-power-dro"},{"n":"Nova Scotia Energy Board","p":"1-833-809-0040","u":"https://nserbt.ca/nseb/complaints/complaint-about-electric-utility"}],"schools":[{"n":"Your Regional Centre for Education (or CSAP)","p":null,"u":"https://www.ednet.ns.ca/school-safety/contacts"},{"n":"Office of the Ombudsman","p":"1-800-670-1111","u":"https://ombudsman.novascotia.ca/complaints/what-we-investigate/jurisdictional-complaints-what-we-oversee"}],"condo":[{"n":"Condominium Dispute Officer (Service Nova Scotia)","p":null,"u":"https://www.novascotia.ca/condominium-dispute-resolution"}],"ombudsman":[{"n":"Office of the Ombudsman","p":"1-800-670-1111","u":"https://ombudsman.novascotia.ca/complaints/what-we-investigate/jurisdictional-complaints-what-we-oversee"}],"small_claims":[{"n":"Small Claims Court (up to $25,000)","p":null,"u":"https://courts.ns.ca/courts/small-claims-court"}]},"NB":{"consumer":[{"n":"Financial and Consumer Services Commission (FCNB)","p":"1-866-933-2222","u":"https://fcnb.ca/en/online-services/submit-a-complaint"}],"tenancy":[{"n":"Tenant and Landlord Relations Office","p":"1-888-762-8600","u":"https://www.gnb.ca/en/topic/family-home-community/housing-property/solve-problem.html"}],"employment":[{"n":"Employment Standards","p":"1-888-452-2687","u":"https://www.gnb.ca/en/topic/jobs-workplaces/labour-market-workforce/employment-standards.html"}],"human_rights":[{"n":"Human Rights Commission","p":"1-888-471-2233","u":"https://www2.gnb.ca/content/gnb/en/departments/nbhrc/the-complaint-process/filing-a-complaint.html"}],"health":[{"n":"Horizon Health Patient Relations","p":"1-844-225-0220","u":"https://horizonnb.ca/patients-visitors/patient-relations-department/"},{"n":"Vitalité Health Patient Experience","p":"1-877-286-1311","u":"https://vitalitenb.ca/en/health-network/quality-and-safety/comments-concerns-or-complaints"},{"n":"College of Physicians and Surgeons","p":"1-800-667-4641","u":"https://cpsnb.org/en/contact-us-complaints"}],"police":[{"n":"New Brunswick Police Commission","p":"506-453-2069","u":"https://www.nbpolicecommission.ca/content/nbpc-cpnb/en/complaint.html"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Ombud NB (access & privacy)","p":"1-888-465-1100","u":"https://ombudnb.ca/information-and-privacy/"}],"energy":[{"n":"Energy and Utilities Board","p":"1-866-766-2782","u":"https://nbeub.ca/natural-gas"}],"schools":[{"n":"Ombud NB","p":"1-888-465-1100","u":"https://ombudnb.ca/administrative-fairness/"}],"condo":[{"n":"Director of Condominiums (appoints arbitrators)","p":"1-888-621-9789","u":"https://www2.snb.ca/content/snb/en/sites/condominium.html"}],"ombudsman":[{"n":"Ombud NB","p":"1-888-465-1100","u":"https://ombudnb.ca/administrative-fairness/"}],"small_claims":[{"n":"Small Claims Court (up to $20,000)","p":null,"u":"https://www.courtsnb-coursnb.ca/content/cour/en/small-claims-court.html"}]},"PE":{"consumer":[{"n":"Financial and Consumer Services Division","p":"902-368-4550","u":"https://www.princeedwardisland.ca/en/information/justice-and-public-safety/complaints-financial-and-consumer-services"}],"tenancy":[{"n":"PEI Rental Office","p":"1-800-501-6268","u":"https://peirentaloffice.ca/contact-us/"}],"employment":[{"n":"Employment Standards Branch","p":"1-800-333-4362","u":"https://www.princeedwardisland.ca/en/topic/employment-standards"}],"human_rights":[{"n":"Human Rights Commission","p":"902-368-4180","u":"https://www.peihumanrights.ca/complaint-process"}],"health":[{"n":"Health PEI Patient Feedback","p":null,"u":"https://services.princeedwardisland.ca/en/service/health-pei-patient-feedback"},{"n":"College of Physicians and Surgeons","p":"902-566-3861","u":"https://www.cpspei.ca/complaints/"}],"police":[{"n":"Police Commissioner","p":null,"u":"https://www.policecommissioner.pe.ca/making-complaint"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"902-368-4099","u":"https://www.assembly.pe.ca/offices/information-and-privacy-commissioner"}],"energy":[{"n":"Island Regulatory and Appeals Commission (IRAC)","p":"902-892-3501","u":"https://irac.pe.ca/electric/electric/electricity-faqs/"}],"schools":[{"n":"Public Schools Branch","p":null,"u":"https://psb.edu.pe.ca/concerns-and-resolutions-0"}],"ombudsman":[{"n":"Office of the Ombudsperson","p":"1-902-288-1105","u":"https://ombudspei.ca/complaints-fairness/"}],"small_claims":[{"n":"Small Claims, Supreme Court of PEI (up to $16,000)","p":"902-368-6067","u":"https://www.courts.pe.ca/supreme-court/prothonotary"}]},"NL":{"consumer":[{"n":"Consumer and Financial Services Division","p":"1-877-968-2600","u":"https://www.gov.nl.ca/gs/consumer/"}],"tenancy":[{"n":"Residential Tenancies (Consumer and Financial Services)","p":"1-877-968-2600","u":"https://www.gov.nl.ca/gs/landlord-tenant/"}],"employment":[{"n":"Labour Standards","p":"1-877-563-1063","u":"https://www.gov.nl.ca/gs/labour/nonunion/"}],"human_rights":[{"n":"Human Rights Commission","p":"1-800-563-5808","u":"https://thinkhumanrights.ca/complaint-process/how-to-file-a-complaint/"}],"health":[{"n":"NL Health Services Patient Relations","p":"1-844-776-4400","u":"https://nlhealthservices.ca/patient-feedback/"},{"n":"College of Physicians and Surgeons","p":"709-726-8546","u":"https://cpsnl.ca/for-the-public/making-a-complaint/"}],"police":[{"n":"RNC Public Complaints Commission","p":null,"u":"https://www.rncpcc.ca/file-a-complaint/"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":null,"u":"https://www.oipc.nl.ca/public/how-to-make-a-complaint/"}],"energy":[{"n":"Board of Commissioners of Public Utilities","p":"1-866-782-0006","u":"http://www.pub.nl.ca/contact.php"}],"schools":[{"n":"NLSchools (Department of Education)","p":"709-729-1234","u":"https://www.nlschools.ca/studentsfamilies/faqs.jsp"},{"n":"Citizens' Representative","p":null,"u":"https://www.citizensrep.nl.ca/aboutus.htm"}],"ombudsman":[{"n":"Citizens' Representative","p":null,"u":"https://www.citizensrep.nl.ca/aboutus.htm"}],"small_claims":[{"n":"Small Claims Court (up to $25,000)","p":null,"u":"https://www.court.nl.ca/provincial/courts/small-claims-court/"}]},"YT":{"consumer":[{"n":"Consumer Services","p":"867-667-5111","u":"https://yukon.ca/en/your-government/contact-and-follow-government/make-complaint-against-government-regulated-business"}],"tenancy":[{"n":"Residential Tenancies Office","p":"867-667-5944","u":"https://yukon.ca/en/housing-and-property/landlords-and-tenants-responsibilities/dispute-resolution-residential-tenancies-office"}],"employment":[{"n":"Employment Standards","p":"867-667-5944","u":"https://yukon.ca/en/employment/employment-standards/submit-wage-complaint"}],"human_rights":[{"n":"Human Rights Commission","p":"867-667-6226","u":"https://yukonhumanrights.ca/human-rights-complaints/"}],"health":[{"n":"Yukon Hospitals Feedback & Concerns","p":"867-393-8731","u":"https://yukonhospitals.ca/en/feedback"},{"n":"Professional Licensing (licensed health professionals)","p":"867-667-5798","u":"https://yukon.ca/en/your-government/contact-and-follow-government/make-complaint-against-government-regulated-health"}],"police":[{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"867-667-8468","u":"https://yukonaccountability.ca/ipc"}],"energy":[{"n":"ATCO Electric Yukon (contact first)","p":"867-633-7000","u":"https://www.atcoelectricyukon.com/en-ca/about/contact.html"},{"n":"Yukon Energy (contact first)","p":"867-993-5565","u":"https://yukonenergy.ca/customer-service/accounts-billing/customer-billing-concerns"},{"n":"Yukon Utilities Board","p":null,"u":"https://yukonutilitiesboard.yk.ca/complaints/"}],"schools":[{"n":"Department of Education (public schools)","p":"867-667-5068","u":"https://yukon.ca/en/education-and-schools/plan-elementary-and-high-school/learn-about-dispute-resolution-process-yukon"},{"n":"Education Appeal Tribunal","p":null,"u":"https://yukon.ca/en/education-and-schools/plan-elementary-and-high-school/submit-appeal-education-appeal-tribunal"}],"ombudsman":[{"n":"Yukon Ombudsman","p":"867-667-8468","u":"https://yukonaccountability.ca/ombudsman/how-to-make-a-complaint"}],"small_claims":[{"n":"Small Claims Court (up to $25,000)","p":"867-667-5441","u":"https://www.yukoncourts.ca/en/small-claims-court"}]},"NT":{"consumer":[{"n":"Consumer Affairs (MACA)","p":"867-767-9161 ext 21022","u":"https://www.maca.gov.nt.ca/en/services/consumer-affairs"}],"tenancy":[{"n":"Rental Office","p":"1-867-767-9254","u":"https://www.justice.gov.nt.ca/en/boards-agencies/rental-office/"}],"employment":[{"n":"Employment Standards Office","p":null,"u":"https://www.ece.gov.nt.ca/en/services/employment-standards/filing-complaint"}],"human_rights":[{"n":"Human Rights Commission","p":"1-888-669-5575","u":"https://nwthumanrights.ca/complaints/"}],"health":[{"n":"NWT Health Office of Client Experience","p":"1-855-846-9601","u":"https://www.nthssa.ca/en/services/office-client-experience"}],"police":[{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"1-867-669-0976","u":"https://oipc-nt.ca/know-your-rights/access-to-information-and-protection-of-privacy-act/"}],"energy":[{"n":"NTPC (contact first)","p":"1-855-575-6872","u":"https://www.ntpc.com/contact-us"},{"n":"Naka Power (contact first)","p":"1-800-264-5313","u":"https://www.nakapower.com/en-ca/contact-us.html"},{"n":"Public Utilities Board","p":"867-874-3944","u":"https://nwtpublicutilitiesboard.ca/"}],"schools":[{"n":"NWT Ombud","p":"1-844-686-6283","u":"https://nwtombud.ca/frequently-asked-questions/"}],"ombudsman":[{"n":"NWT Ombud","p":"1-844-686-6283","u":"https://nwtombud.ca/how-to-make-a-complaint/"}],"small_claims":[{"n":"Territorial Court civil claims (under $35,000)","p":"1-867-767-9289","u":"https://www.nwtcourts.ca/en/courts/territorial-court/civil-claims/"}]},"NU":{"consumer":[{"n":"Consumer Affairs","p":"1-866-223-8139","u":"https://www.gov.nu.ca/information/consumer-affairs"}],"tenancy":[{"n":"Nunavut Rental Office","p":null,"u":"https://www.gov.nu.ca/en/justice-and-individual-protection/nunavut-rental-office"}],"employment":[{"n":"Labour Standards Compliance Office","p":"1-877-806-8402","u":"https://nu-lsco.ca/"}],"human_rights":[{"n":"Human Rights Tribunal","p":"1-866-413-6478","u":"https://nhrt.ca/how-to-file/"}],"health":[{"n":"Department of Health Patient Relations","p":null,"u":"https://www.gov.nu.ca/en/health/patient-relations"}],"police":[{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"1-855-979-3081","u":"https://atipp-nu.ca/"}],"energy":[{"n":"Qulliq Energy Customer Care (contact first)","p":"1-866-710-4200","u":"https://www.qec.nu.ca/customer-care"}],"schools":[{"n":"Representative for Children and Youth","p":"1-855-449-8118","u":"https://rcynu.ca/individual-advocacy"}],"ombudsman":[],"small_claims":[{"n":"Nunavut Court of Justice (small claims)","p":"1-866-286-0546","u":"https://www.nunavutcourts.ca/nunavut-court-justice/about-court/court-registry"}]},"MB":{"consumer":[{"n":"Consumer Protection Office","p":"1-800-782-0067","u":"https://www.gov.mb.ca/consumerinfo/contact-us.html"}],"tenancy":[{"n":"Residential Tenancies Branch","p":"1-800-782-8403","u":"https://www.gov.mb.ca/cca/rtb/detailde.html"}],"employment":[{"n":"Employment Standards","p":"1-800-821-4307","u":"https://www.gov.mb.ca/labour/standards/claims.html"}],"human_rights":[{"n":"Manitoba Human Rights Commission","p":"204-945-3007","u":"https://www.manitobahumanrights.ca/about/contact.html"}],"health":[{"n":"Your health authority's Patient Relations office","p":null,"u":"https://www.gov.mb.ca/health/concerns.html"},{"n":"Manitoba Ombudsman","p":"1-800-665-0531","u":"https://www.ombudsman.mb.ca/making-a-complaint/what-you-can-complain-about/"},{"n":"College of Physicians and Surgeons","p":"1-877-774-4344","u":"https://www.cpsm.mb.ca/complaints/complaint-process"}],"police":[{"n":"Law Enforcement Review Agency (LERA)","p":"1-800-282-8069","u":"https://www.gov.mb.ca/justice/lera/contacts.html"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Manitoba Ombudsman (access & privacy)","p":"1-800-665-0531","u":"https://www.ombudsman.mb.ca/making-a-complaint/what-you-can-complain-about/"}],"energy":[{"n":"Public Utilities Board","p":null,"u":"https://www.pubmanitoba.ca"}],"schools":[{"n":"Manitoba Ombudsman","p":"1-800-665-0531","u":"https://www.ombudsman.mb.ca/contact/"}],"ombudsman":[{"n":"Manitoba Ombudsman","p":"1-800-665-0531","u":"https://www.ombudsman.mb.ca/contact/"}],"small_claims":[{"n":"Small Claims Court (up to $20,000)","p":null,"u":"https://www.gov.mb.ca/justice/courts/smallclaims.html"}]},"SK":{"consumer":[{"n":"Financial and Consumer Affairs Authority (FCAA)","p":"1-877-880-5550","u":"https://fcaa.gov.sk.ca/contact-us"}],"tenancy":[{"n":"Office of Residential Tenancies","p":"306-787-1334","u":"https://www.saskatchewan.ca/government/government-structure/boards-commissions-and-agencies/office-of-residential-tenancies"}],"employment":[{"n":"Employment Standards","p":"1-800-667-1783","u":"https://www.saskatchewan.ca/business/employment-standards/complaints-investigations-enforcement-and-fines/file-an-employment-standards-complaint"}],"human_rights":[{"n":"Saskatchewan Human Rights Commission","p":"1-800-667-9249","u":"https://saskatchewanhumanrights.ca/about-us/contact"}],"health":[{"n":"Ombudsman Saskatchewan","p":null,"u":"https://ombudsman.sk.ca/ombudsman/where-to-complain/"}],"police":[{"n":"Public Complaints Commission (PCC)","p":"1-866-256-6194","u":"https://www.saskatchewan.ca/residents/justice-crime-and-the-law/your-rights-and-the-law/make-a-complaint-about-the-police-service"},{"n":"Civilian Review and Complaints Commission for the RCMP","p":"1-800-665-6878","u":"https://www.crcc-ccetp.gc.ca/"}],"privacy":[{"n":"Information and Privacy Commissioner","p":"1-877-748-2298","u":"https://oipc.sk.ca/how-do-i-resolve-a-privacy-complaint/"}],"energy":[{"n":"Ombudsman Saskatchewan","p":null,"u":"https://ombudsman.sk.ca/ombudsman/where-to-complain/"}],"schools":[{"n":"Ombudsman Saskatchewan — schools","p":null,"u":"https://ombudsman.sk.ca/ombudsman/where-to-complain/schools/"}],"ombudsman":[{"n":"Ombudsman Saskatchewan","p":null,"u":"https://ombudsman.sk.ca/ombudsman/where-to-complain/"}],"small_claims":[{"n":"Small Claims Court (up to $50,000)","p":null,"u":"https://sasklawcourts.ca/provincial-court/small-claims-court/"}]}};
+// Province detection from any free-text address (names, postal code, abbreviations)
+var _PROV_NAMES=[['NL',/newfoundland|labrador/i],['PE',/prince edward island|île-du-prince-édouard/i],['NS',/nova scotia|nouvelle-écosse/i],['NB',/new brunswick|nouveau-brunswick/i],
+  ['QC',/qu[ée]bec/i],['ON',/ontario/i],['MB',/manitoba/i],['SK',/saskatchewan/i],['AB',/alberta/i],['BC',/british columbia|colombie-britannique/i],
+  ['YT',/yukon/i],['NT',/northwest territories|territoires du nord-ouest/i],['NU',/nunavut/i]];
+var _PC_FIRST={A:'NL',B:'NS',C:'PE',E:'NB',G:'QC',H:'QC',J:'QC',K:'ON',L:'ON',M:'ON',N:'ON',P:'ON',R:'MB',S:'SK',T:'AB',V:'BC',Y:'YT'};
+var _PROV_LABEL={ON:'Ontario',BC:'British Columbia',AB:'Alberta',QC:'Quebec',MB:'Manitoba',SK:'Saskatchewan',NS:'Nova Scotia',NB:'New Brunswick',PE:'Prince Edward Island',NL:'Newfoundland & Labrador',YT:'Yukon',NT:'Northwest Territories',NU:'Nunavut'};
+function _detectProvince(text){
+  text=text||''; if(!text.trim()) return '';
+  for(var i=0;i<_PROV_NAMES.length;i++){ if(_PROV_NAMES[i][1].test(text)) return _PROV_NAMES[i][0]; }
+  var pc=text.toUpperCase().match(/\b([ABCEGHJKLMNPRSTVXY])\d[A-Z] ?\d[A-Z]\d\b/);
+  if(pc){ var f=pc[1]; if(f==='X'){ var fsa=pc[0].slice(0,3); return (fsa==='X0A'||fsa==='X0B'||fsa==='X0C')?'NU':'NT'; } return _PC_FIRST[f]||''; }
+  var ab=text.match(/\b(ON|BC|AB|QC|MB|SK|NS|NB|PEI|PE|NL|YT|NT|NU)\b/);
+  if(ab) return ab[1]==='PEI'?'PE':ab[1];
+  return '';
+}
+function _complaintProvince(){
+  var l=document.getElementById('inp-loc'),a=document.getElementById('inp-taddr');
+  return _detectProvince(l?l.value:'')||_detectProvince(a?a.value:'');
+}
+// Category → provincial topic. Categories not listed here are federal (telecom, benefits, immigration…)
+var _CAT_TOPIC={wages:'employment',wrongful:'employment',harassment:'employment',disc:'human_rights',race:'human_rights',gender:'human_rights',religion:'human_rights',
+  disability:'human_rights',age:'human_rights',sexual:'human_rights',property:'tenancy',repairs:'tenancy',utility:'energy',malpractice:'health',police:'police',
+  privacy:'privacy',education:'schools',condo:'condo',billing:'consumer',service:'consumer',other:'consumer',construction:'consumer',delays:'ombudsman',
+  noise:'municipal',garbage:'municipal',road:'municipal',transit:'municipal',animal:'municipal',environment:'municipal',safety:'municipal'};
+var _TGT_TOPIC={school:'schools',health:'health',municipality:'municipal',landlord:'tenancy',government:'ombudsman',business:'consumer'};
+function _chainTopic(category){
+  var t=_CAT_TOPIC[category]||'';
+  if((!t||t==='consumer'||t==='ombudsman')&&_selTgt&&_TGT_TOPIC[_selTgt]) t=_TGT_TOPIC[_selTgt];
+  return t;
+}
+function _isFederalAuth(name){
+  return /canada|canadian|federal|fcac|obsi|ccts|crtc|competition bureau|\bopc\b|rcmp|ircc|\birb\b|nslsc|official languages|immigration ombudsman|indigenous|reconciliation|industrial relations/i.test(name)
+    && !/ontario|toronto|ohrc|cpso|\bcno\b|hparb|aoda|tarion|hcra|tssa|oiprd/i.test(name);
+}
+function _chainItem(b){
+  return '<a href="'+escHtml(b.u)+'" target="_blank" rel="noopener" style="display:block;font-size:.8rem;font-weight:600;color:var(--blue);text-decoration:none;margin:4px 0">'+escHtml(b.n)+(b.p?' — '+escHtml(b.p):'')+' →</a>';
+}
+function _chainHTML(category){
+  var pv=_complaintProvince(); if(!pv||!CHAIN[pv]) return '';
+  var topic=_chainTopic(category); if(!topic) return '';
+  var C=CHAIN[pv], t=V.t, tn=(document.getElementById('inp-tname')||{}).value||'', ta=(document.getElementById('inp-taddr')||{}).value||'';
+  var step=function(n,title,body){return '<div style="margin:10px 0 0"><div style="font-size:.66rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">'+n+'. '+title+'</div>'+body+'</div>';};
+  var first, second=[], third=[];
+  if(topic==='municipal'){ first='<div style="font-size:.8rem;color:var(--text);margin-top:4px">'+escHtml(tn||t('ch_city'))+'</div>'; third=C.ombudsman||[]; }
+  else {
+    first='<div style="font-size:.8rem;color:var(--text);margin-top:4px">'+(tn?escHtml(tn)+(ta?'<br><span style="color:var(--muted);font-size:.72rem">'+escHtml(ta)+'</span>':''):escHtml(t('ch_org')))+'</div>';
+    second=(topic==='ombudsman')?[]:(C[topic]||[]);
+    if(topic==='consumer') third=C.small_claims||[];
+    else if(topic==='schools'||topic==='health'||topic==='ombudsman') third=(C.ombudsman||[]).filter(function(b){return !second.some(function(x){return x.u===b.u;});});
+    if(topic==='ombudsman'){ second=C.ombudsman||[]; third=[]; }
+  }
+  var h='<div style="font-family:Cinzel,serif;font-size:.68rem;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase">🧭 '+escHtml(t('ch_title'))+' · '+escHtml(_PROV_LABEL[pv])+'</div>';
+  h+=step(1,t('ch_s1'),first);
+  if(second.length) h+=step(2,t('ch_s2'),second.map(_chainItem).join(''));
+  if(third.length) h+=step(second.length?3:2,t('ch_s3'),third.map(_chainItem).join(''));
+  if(pv==='NU'&&(topic==='ombudsman'||topic==='municipal')) h+='<div style="font-size:.7rem;color:var(--muted);margin-top:6px">'+escHtml(t('ch_nu'))+'</div>';
+  h+='<div style="font-size:.68rem;color:var(--muted);margin-top:10px">'+escHtml(t('ch_keep'))+'</div>';
+  return h;
+}
+function _refreshChain(){
+  var old=document.getElementById('chain-box'); if(old) old.remove();
+  var cat=(document.getElementById('inp-cat')||{}).value||'';
+  var h=_chainHTML(cat); if(!h) return;
+  var box=document.createElement('div'); box.id='chain-box';
+  box.style.cssText='background:var(--ice);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px';
+  box.innerHTML=h;
+  var ab=document.getElementById('auth-box'); if(ab) ab.remove();
+  var submitBtn=document.getElementById('sub-btn'); if(submitBtn) submitBtn.parentNode.insertBefore(box,submitBtn);
+}
+
 function getAuthorities(category, location) {
   const cat = AUTHORITIES[category] || AUTHORITIES.other;
   const loc = (location || '').toLowerCase();
@@ -2002,15 +2074,24 @@ function getAuthorities(category, location) {
   if (loc.includes('mississauga')) return cat.mississauga || cat.default || AUTHORITIES.other.default;
   if (loc.includes('brampton')) return cat.brampton || cat.default || AUTHORITIES.other.default;
   if (loc.includes('toronto') || loc.includes('north york') || loc.includes('etobicoke')) return cat.toronto || cat.default || AUTHORITIES.other.default;
-  if (loc.includes('vancouver') || loc.includes('burnaby') || loc.includes('surrey')) return cat.bc || cat.default || AUTHORITIES.other.default;
-  if (loc.includes('calgary') || loc.includes('edmonton') || loc.includes('alberta')) return cat.alberta || cat.default || AUTHORITIES.other.default;
-  if (loc.includes('montreal') || loc.includes('québec') || loc.includes('quebec')) return cat.quebec || cat.default || AUTHORITIES.other.default;
+  // Outside Ontario, never fall back to the (Ontario) default list — only keep federal bodies from it.
+  var fed = function(){ return (cat.default||[]).filter(function(a){return _isFederalAuth(a.name);}); };
+  if (loc.includes('vancouver') || loc.includes('burnaby') || loc.includes('surrey')) return cat.bc || fed();
+  if (loc.includes('calgary') || loc.includes('edmonton') || loc.includes('alberta')) return cat.alberta || fed();
+  if (loc.includes('montreal') || loc.includes('québec') || loc.includes('quebec')) return cat.quebec || fed();
+  var pv = _detectProvince(location) || _detectProvince((document.getElementById('inp-taddr')||{}).value||'');
+  if (pv === 'BC') return cat.bc || fed();
+  if (pv === 'AB') return cat.alberta || fed();
+  if (pv === 'QC') return cat.quebec || fed();
+  // Manitoba, Saskatchewan, Atlantic Canada and the territories: never fall back to Ontario bodies.
+  // Provincial topics get the verified chain instead of an auto-email; federal topics keep federal bodies.
+  if (pv && CHAIN[pv]) return _CAT_TOPIC[category] ? [] : fed();
   return cat.default || AUTHORITIES.other.default;
 }
 
 function showAuthorities(category, location) {
   const auths = getAuthorities(category, location);
-  if (!auths || !auths.length) return;
+  if (!auths || !auths.length) { const ob=document.getElementById('auth-box'); if(ob) ob.remove(); _refreshChain(); return; }
   
   // Remove existing authority box
   const old = document.getElementById('auth-box');
@@ -2038,6 +2119,7 @@ function showAuthorities(category, location) {
   // Insert before submit button
   const submitBtn = document.getElementById('sub-btn');
   if (submitBtn) submitBtn.parentNode.insertBefore(box, submitBtn);
+  _refreshChain();
 }
 
 // ── TRANSLATIONS ──
@@ -2067,6 +2149,7 @@ const V = (function(){
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
+      ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
       tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
       cat:"Category",csl:"Select a category...",cno:"Noise / Disturbance",csa:"Safety Hazard",cga:"Garbage / Cleanliness",cdi:"Discrimination / Rights",cse:"Poor Service",cbi:"Billing / Overcharge",cpr:"Property Damage",cot:"Other",
       pri:"Priority",plo:"🟢 Low",pme:"🟡 Medium",phi:"🔴 High",
@@ -2154,6 +2237,7 @@ const V = (function(){
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
+      ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
       tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
       cat:"Kategori",csl:"Kategori seçin...",cno:"Gürültü",csa:"Güvenlik Tehlikesi",cga:"Çöp / Temizlik",cdi:"Ayrımcılık",cse:"Kötü Hizmet",cbi:"Fatura / Fazla Ücret",cpr:"Mülk Hasarı",cot:"Diğer",
       pri:"Öncelik",plo:"🟢 Düşük",pme:"🟡 Orta",phi:"🔴 Yüksek",
@@ -2241,6 +2325,7 @@ const V = (function(){
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
+      ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
       tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
       cat:"Catégorie",csl:"Sélectionner...",cno:"Bruit",csa:"Danger",cga:"Déchets",cdi:"Discrimination",cse:"Mauvais service",cbi:"Facturation",cpr:"Dommages",cot:"Autre",
       pri:"Priorité",plo:"🟢 Faible",pme:"🟡 Moyenne",phi:"🔴 Élevée",
@@ -2284,6 +2369,7 @@ const V = (function(){
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
+      ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
       tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
       cat:"类别",csl:"选择类别...",cno:"噪音/骚扰",csa:"安全隐患",cga:"垃圾/卫生",cdi:"歧视/权利",cse:"服务差",cbi:"账单/超收",cpr:"财产损失",cot:"其他",
       pri:"优先级",plo:"🟢 低",pme:"🟡 中",phi:"🔴 高",
@@ -2327,6 +2413,7 @@ const V = (function(){
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
+      ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
       tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
       cat:"Categoría",csl:"Seleccionar categoría...",cno:"Ruido/Perturbación",csa:"Peligro de seguridad",cga:"Basura/Limpieza",cdi:"Discriminación",cse:"Mal servicio",cbi:"Facturación",cpr:"Daños a propiedad",cot:"Otro",
       pri:"Prioridad",plo:"🟢 Baja",pme:"🟡 Media",phi:"🔴 Alta",
@@ -2370,6 +2457,7 @@ const V = (function(){
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
+      ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
       tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
       cat:"الفئة",csl:"اختر فئة...",cno:"ضوضاء",csa:"خطر أمني",cga:"نفايات/نظافة",cdi:"تمييز",cse:"خدمة سيئة",cbi:"فواتير",cpr:"أضرار ممتلكات",cot:"أخرى",
       pri:"الأولوية",plo:"🟢 منخفضة",pme:"🟡 متوسطة",phi:"🔴 عالية",
@@ -2413,6 +2501,7 @@ const V = (function(){
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
+      ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
       tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
       cat:"ਸ਼੍ਰੇਣੀ",csl:"ਸ਼੍ਰੇਣੀ ਚੁਣੋ...",cno:"ਰੌਲਾ",csa:"ਸੁਰੱਖਿਆ ਖ਼ਤਰਾ",cga:"ਕੂੜਾ",cdi:"ਵਿਤਕਰਾ",cse:"ਮਾੜੀ ਸੇਵਾ",cbi:"ਬਿੱਲਿੰਗ",cpr:"ਜਾਇਦਾਦ ਨੁਕਸਾਨ",cot:"ਹੋਰ",
       pri:"ਤਰਜੀਹ",plo:"🟢 ਘੱਟ",pme:"🟡 ਦਰਮਿਆਨੀ",phi:"🔴 ਉੱਚ",
@@ -3126,6 +3215,7 @@ function toggleAnon(){
 function selTarget(el){
   document.querySelectorAll('#tgt-grid .group-card').forEach(o=>o.classList.remove('sel'));
   el.classList.add('sel');_selTgt=el.getAttribute('data-val');
+  if(typeof _refreshAuthBox==='function')_refreshAuthBox();
 }
 function selCtype(t,el){
   _ctype=t;
@@ -3291,7 +3381,7 @@ function getLoc(){
     fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lng+'&format=json')
       .then(r=>r.json()).then(d=>{
         const addr=d.display_name||lat.toFixed(4)+','+lng.toFixed(4);
-        document.getElementById('inp-loc').value=addr;
+        document.getElementById('inp-loc').value=addr;setTimeout(_refreshAuthBox,0);
         s.textContent=V.t('ld2')+' ✓';btn.textContent='✅';
         _initMap(lat,lng);_showMapConfirm(addr);
       }).catch(()=>{
@@ -3892,6 +3982,8 @@ async function doSubmit(){
   }
 
   // 4. Show success screen
+  var _ch=_chainHTML(c.category),_chEl=document.getElementById('chain-success');
+  if(_chEl){_chEl.innerHTML=_ch;_chEl.style.display=_ch?'block':'none';}
   document.getElementById('form-sec').style.display='none';
   document.getElementById('scs-screen').style.display='block';
   document.getElementById('ref-disp').textContent=ref;
@@ -4262,6 +4354,7 @@ function _tgtSearch(){
             _initMap(parseFloat(r.lat),parseFloat(r.lon));
             _showMapConfirm(r.display_name);
           }
+          _refreshAuthBox();
         };
         item.onkeydown=function(e){if(e.key==='Enter'){item.onclick();}};
         dd.appendChild(item);
@@ -4298,6 +4391,7 @@ function _locSearch(){
           dd.style.display='none';
           _initMap(parseFloat(r.lat),parseFloat(r.lon));
           _showMapConfirm(r.display_name);
+          _refreshAuthBox();
         };
         dd.appendChild(item);
       });
@@ -4329,7 +4423,9 @@ function _showMapConfirm(addr){
   const c=document.getElementById('map-confirm'),t=document.getElementById('map-addr-txt');
   if(c&&t){t.textContent=addr;c.style.display='block';}
 }
-function _mapConfirm(){const c=document.getElementById('map-confirm');if(c)c.style.display='none';}
+function _mapConfirm(){const c=document.getElementById('map-confirm');if(c)c.style.display='none';_refreshAuthBox();}
+function _refreshAuthBox(){var c=(document.getElementById('inp-cat')||{}).value||'';var l=(document.getElementById('inp-loc')||{}).value||'';if(c)showAuthorities(c,l);else _refreshChain();}
+document.addEventListener('change',function(e){if(e.target&&(e.target.id==='inp-loc'||e.target.id==='inp-taddr'||e.target.id==='inp-tname'))_refreshAuthBox();});
 function _mapClear(){
   const mp=document.getElementById('map-preview'),mc=document.getElementById('map-confirm'),il=document.getElementById('inp-loc');
   if(mp)mp.style.display='none';if(mc)mc.style.display='none';if(il)il.value='';
