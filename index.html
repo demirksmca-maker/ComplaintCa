@@ -355,6 +355,9 @@ textarea{resize:vertical;min-height:90px}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loc-wrap{position:relative;flex:1}
+.tgt-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tgt-chip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--border);border-radius:20px;padding:6px 11px;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);cursor:pointer;transition:all .15s}
+.tgt-chip.sel{border-color:var(--blue);background:var(--ice);color:var(--blue)}
 .loc-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(15,41,82,.15);z-index:9000;max-height:200px;overflow-y:auto;display:none}
 .loc-item{padding:10px 14px;font-size:.82rem;color:var(--text);cursor:pointer;border-bottom:1px solid var(--off);line-height:1.4}
 .loc-item:hover{background:var(--ice);color:var(--blue)}
@@ -842,11 +845,31 @@ textarea{resize:vertical;min-height:90px}
 
         <!-- Category + priority are decided automatically by AI from the description above -->
         <input type="hidden" id="inp-cat">
-        <input type="hidden" id="inp-tname" value="">
 
         <div id="new-step-2" style="display:none">
         <div class="card">
-          <div class="ct"><div class="ci">III</div><span id="a-loc">Location</span></div>
+          <div class="ct"><div class="ci">III</div><span id="a-target">Who is this about?</span></div>
+          <div class="tgt-chips" id="tgt-grid">
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="business" onclick="selTarget(this)"><span>🏪</span><span id="a-tbiz">Business</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="municipality" onclick="selTarget(this)"><span>🏛️</span><span id="a-tmun">Municipality</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="government" onclick="selTarget(this)"><span>🏢</span><span id="a-tgov">Government agency</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="school" onclick="selTarget(this)"><span>🏫</span><span id="a-tsch">School</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="health" onclick="selTarget(this)"><span>🏥</span><span id="a-thlth">Health care</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="landlord" onclick="selTarget(this)"><span>🏠</span><span id="a-tland">Landlord</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="other" onclick="selTarget(this)"><span>•••</span><span id="a-tother">Other</span></div>
+          </div>
+          <label id="a-tname-l" for="inp-tname" style="margin-bottom:4px">Institution / Company Name</label>
+          <div class="loc-wrap" style="margin-bottom:10px">
+            <input type="text" id="inp-tname" placeholder="e.g. Tim Hortons, Halifax City Hall, Lincoln High School" oninput="_tgtDebounce()" autocomplete="off" maxlength="160" style="margin-bottom:0">
+            <div class="loc-dropdown" id="tgt-dropdown"></div>
+          </div>
+          <label id="a-taddr-l" for="inp-taddr" style="margin-bottom:4px">Their address</label>
+          <input type="text" id="inp-taddr" placeholder="Street, city, province" autocomplete="off" maxlength="240" style="margin-bottom:4px">
+          <div id="a-thint" style="font-size:.66rem;color:var(--muted)">Pick from the suggestions to fill in the address automatically.</div>
+        </div>
+
+        <div class="card">
+          <div class="ct"><div class="ci">IV</div><span id="a-loc">Location</span></div>
           <div class="lbar">
             <div class="loc-wrap">
               <input type="text" id="inp-loc" placeholder="Enter address..." oninput="_locDebounce()" autocomplete="off" style="margin-bottom:0">
@@ -867,7 +890,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
 
         <div class="card" style="padding:14px 20px;margin-top:12px">
-          <div class="ct" style="margin-bottom:10px"><div class="ci">IV</div><span id="a-media">Evidence</span></div>
+          <div class="ct" style="margin-bottom:10px"><div class="ci">V</div><span id="a-media">Evidence</span></div>
           <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
           <label style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px dashed var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:0;text-transform:none;font-size:.82rem;color:var(--sub);font-weight:500" onclick="document.getElementById('photo-input').click()">
             <span style="font-size:1.1rem">📎</span>
@@ -2044,6 +2067,7 @@ const V = (function(){
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
+      tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
       cat:"Category",csl:"Select a category...",cno:"Noise / Disturbance",csa:"Safety Hazard",cga:"Garbage / Cleanliness",cdi:"Discrimination / Rights",cse:"Poor Service",cbi:"Billing / Overcharge",cpr:"Property Damage",cot:"Other",
       pri:"Priority",plo:"🟢 Low",pme:"🟡 Medium",phi:"🔴 High",
       cmp:"Complaint",ltl:"Title",ldc:"Description",
@@ -2130,6 +2154,7 @@ const V = (function(){
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
+      tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
       cat:"Kategori",csl:"Kategori seçin...",cno:"Gürültü",csa:"Güvenlik Tehlikesi",cga:"Çöp / Temizlik",cdi:"Ayrımcılık",cse:"Kötü Hizmet",cbi:"Fatura / Fazla Ücret",cpr:"Mülk Hasarı",cot:"Diğer",
       pri:"Öncelik",plo:"🟢 Düşük",pme:"🟡 Orta",phi:"🔴 Yüksek",
       cmp:"Şikayet",ltl:"Başlık",ldc:"Açıklama",
@@ -2216,6 +2241,7 @@ const V = (function(){
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
+      tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
       cat:"Catégorie",csl:"Sélectionner...",cno:"Bruit",csa:"Danger",cga:"Déchets",cdi:"Discrimination",cse:"Mauvais service",cbi:"Facturation",cpr:"Dommages",cot:"Autre",
       pri:"Priorité",plo:"🟢 Faible",pme:"🟡 Moyenne",phi:"🔴 Élevée",
       cmp:"Plainte",ltl:"Titre",ldc:"Description",
@@ -2258,6 +2284,7 @@ const V = (function(){
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
+      tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
       cat:"类别",csl:"选择类别...",cno:"噪音/骚扰",csa:"安全隐患",cga:"垃圾/卫生",cdi:"歧视/权利",cse:"服务差",cbi:"账单/超收",cpr:"财产损失",cot:"其他",
       pri:"优先级",plo:"🟢 低",pme:"🟡 中",phi:"🔴 高",
       cmp:"投诉",ltl:"标题",ldc:"描述",
@@ -2300,6 +2327,7 @@ const V = (function(){
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
+      tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
       cat:"Categoría",csl:"Seleccionar categoría...",cno:"Ruido/Perturbación",csa:"Peligro de seguridad",cga:"Basura/Limpieza",cdi:"Discriminación",cse:"Mal servicio",cbi:"Facturación",cpr:"Daños a propiedad",cot:"Otro",
       pri:"Prioridad",plo:"🟢 Baja",pme:"🟡 Media",phi:"🔴 Alta",
       cmp:"Queja",ltl:"Título",ldc:"Descripción de la Queja",
@@ -2342,6 +2370,7 @@ const V = (function(){
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
+      tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
       cat:"الفئة",csl:"اختر فئة...",cno:"ضوضاء",csa:"خطر أمني",cga:"نفايات/نظافة",cdi:"تمييز",cse:"خدمة سيئة",cbi:"فواتير",cpr:"أضرار ممتلكات",cot:"أخرى",
       pri:"الأولوية",plo:"🟢 منخفضة",pme:"🟡 متوسطة",phi:"🔴 عالية",
       cmp:"الشكوى",ltl:"العنوان",ldc:"الوصف",
@@ -2384,6 +2413,7 @@ const V = (function(){
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
+      tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
       cat:"ਸ਼੍ਰੇਣੀ",csl:"ਸ਼੍ਰੇਣੀ ਚੁਣੋ...",cno:"ਰੌਲਾ",csa:"ਸੁਰੱਖਿਆ ਖ਼ਤਰਾ",cga:"ਕੂੜਾ",cdi:"ਵਿਤਕਰਾ",cse:"ਮਾੜੀ ਸੇਵਾ",cbi:"ਬਿੱਲਿੰਗ",cpr:"ਜਾਇਦਾਦ ਨੁਕਸਾਨ",cot:"ਹੋਰ",
       pri:"ਤਰਜੀਹ",plo:"🟢 ਘੱਟ",pme:"🟡 ਦਰਮਿਆਨੀ",phi:"🔴 ਉੱਚ",
       cmp:"ਸ਼ਿਕਾਇਤ",ltl:"ਸਿਰਲੇਖ",ldc:"ਵੇਰਵਾ",
@@ -2431,7 +2461,7 @@ const V = (function(){
       'tab-new':'nw','tab-track':'tr',
       'a-who':'who','a-anon-l':'anl','a-anon-s':'ans',
       'a-lname':'lnm','a-lemail':'lem','a-lphone':'lph','a-anon-email-note':'anonemailnote',
-      'a-target':'tgt','a-tmun':'tmn','a-tbiz':'tbz','a-tland':'tld','a-tother':'tot','a-tname-l':'tnl',
+      'a-target':'tgt','a-tmun':'tmn','a-tbiz':'tbz','a-tland':'tld','a-tother':'tot','a-tname-l':'tnl','a-tgov':'tgv','a-tsch':'tsc','a-thlth':'thl','a-taddr-l':'tad','a-thint':'thn',
       'a-cat':'cat','a-csel':'csl','a-cnoise':'cno','a-csafe':'csa','a-cgarb':'cga','a-cdisc':'cdi','a-cserv':'cse','a-cbill':'cbi','a-cprop':'cpr','a-coth':'cot',
       'a-lpri':'pri','a-plow':'plo','a-pmed':'pme','a-phigh':'phi',
       'a-comp':'cmp','a-ltitle':'ltl','a-ldesc':'ldc',
@@ -2470,7 +2500,7 @@ const V = (function(){
       const el=document.getElementById(id);
       if(el) el.innerHTML=t(key);
     });
-    const phMap={'mv-postal':'mv_addr_ph','vfy-note':'vfy_note_ph'};
+    const phMap={'mv-postal':'mv_addr_ph','vfy-note':'vfy_note_ph','inp-tname':'tname_ph','inp-taddr':'taddr_ph'};
     Object.entries(phMap).forEach(([id,key])=>{
       const el=document.getElementById(id);
       if(el) el.placeholder=t(key);
@@ -3508,6 +3538,7 @@ function _basicComplaintEmail(c, authorityName){
       ? 'Je vous écris pour présenter une demande d\'accès à l\'information auprès de '+(authorityName||'votre bureau')+' par l\'intermédiaire de ComplaintCA, en vertu de la législation applicable en matière d\'accès à l\'information. Aucun motif n\'est requis pour cette demande.\n\n'
       : 'I am writing to submit an access to information request to '+(authorityName||'your office')+' through ComplaintCA, under applicable access-to-information legislation. No reason is required to be given for this request.\n\n';
     fbody += (fr?'Objet : ':'Subject: ')+c.title+'\n'+(fr?'Catégorie : ':'Category: ')+c.category+'\n';
+    if(c.targetName) fbody += (fr?'Concerne : ':'Concerning: ')+c.targetName+(c.targetAddress?' — '+c.targetAddress:'')+'\n';
     if(c.location) fbody += (fr?'Lieu : ':'Location: ')+c.location+'\n';
     fbody += '\n'+(fr?'Renseignements ou documents demandés :':'Records or information requested:')+'\n'+c.desc+'\n\n';
     fbody += fr
@@ -3522,6 +3553,7 @@ function _basicComplaintEmail(c, authorityName){
     : (fr ? 'Je vous écris pour déposer formellement une plainte auprès de '+(authorityName||'votre bureau')+' par l\'intermédiaire de ComplaintCA.\n\n'
            : 'I am writing to formally file a complaint with '+(authorityName||'your office')+' through ComplaintCA.\n\n');
   body += (fr?'Objet : ':'Subject: ')+c.title+'\n'+(fr?'Catégorie : ':'Category: ')+c.category+'\n';
+  if(c.targetName) body += (fr?'Concerne : ':'Concerning: ')+c.targetName+(c.targetAddress?' — '+c.targetAddress:'')+'\n';
   if(c.location) body += (fr?'Lieu : ':'Location: ')+c.location+'\n';
   body += '\n'+(fr?'Détails :':'Details:')+'\n'+c.desc+'\n\n';
   body += c.anonymous
@@ -3786,7 +3818,7 @@ async function doSubmit(){
   var now=new Date().toISOString();
   var c={
     ref:ref,title:title,desc:desc,category:cat,
-    target:_selTgt,targetName:document.getElementById('inp-tname').value.trim(),
+    target:_selTgt,targetName:document.getElementById('inp-tname').value.trim(),targetAddress:document.getElementById('inp-taddr').value.trim(),
     priority:_selPri,location:document.getElementById('inp-loc').value.trim(),
     anonymous:_isAnon,
     name:_isAnon?null:document.getElementById('inp-name').value.trim(),
@@ -3995,11 +4027,12 @@ function resetForm(){
   var lb=document.getElementById('legal-box');if(lb){lb.remove();}
   var ab=document.getElementById('auth-box');if(ab){ab.remove();}
   var lsb=document.getElementById('lw-suggest-box');if(lsb){lsb.remove();}
-  ['inp-title','inp-desc','inp-name','inp-email','inp-phone','inp-tname','inp-loc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  ['inp-title','inp-desc','inp-name','inp-email','inp-phone','inp-tname','inp-taddr','inp-loc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('inp-cat').value='';
   _photos=[];renderPhotos();updateCC();
   document.querySelectorAll('#tgt-grid .group-card').forEach(function(o){o.classList.remove('sel');});
   _selTgt='';_selPri='medium';_ctype='notice';
+  document.querySelectorAll('#tgt-grid .tgt-chip').forEach(function(o){o.classList.remove('sel');});
   document.querySelectorAll('.ctype-btn').forEach(function(b){b.classList.remove('active');});
   var defBtn=document.getElementById('ctype-notice');if(defBtn)defBtn.classList.add('active');
   var ctNote=document.getElementById('ctype-legal-note');if(ctNote)ctNote.style.display='none';
@@ -4173,6 +4206,73 @@ function renderRecent(){
   if(!_complaints.length){el.innerHTML='';return;}
   el.innerHTML='<div class="ct" style="padding:0 4px;margin-bottom:10px"><div class="ci">🗂️</div><span>'+V.t('tkr')+'</span></div>'+_complaints.slice(0,5).map(c=>renderCard(c)).join('');
 }
+
+// ── TARGET (who the complaint is about) ──
+let _tgtTimer=null,_tgtSeq=0;
+function _tgtDebounce(){clearTimeout(_tgtTimer);_tgtTimer=setTimeout(_tgtSearch,500);}
+function _tgtTypeFromOSM(r){
+  var c=r.class||'',ty=r.type||'';
+  if(ty==='school'||ty==='college'||ty==='university'||ty==='kindergarten') return 'school';
+  if(ty==='hospital'||ty==='clinic'||ty==='doctors'||ty==='dentist'||ty==='pharmacy'||c==='healthcare') return 'health';
+  if(ty==='townhall'||ty==='library'||ty==='community_centre'||ty==='fire_station') return 'municipality';
+  if(c==='office'&&ty==='government'||ty==='courthouse'||ty==='police'||ty==='post_office') return 'government';
+  if(c==='shop'||c==='craft'||c==='tourism'||(c==='amenity'&&/restaurant|cafe|fast_food|bank|fuel|car_rental|bar|pub|cinema/.test(ty))||(c==='office'&&ty!=='government')) return 'business';
+  return '';
+}
+function _tgtAddr(r){
+  var a=r.address||{};
+  var street=[a.house_number,a.road].filter(Boolean).join(' ');
+  var city=a.city||a.town||a.village||a.municipality||a.hamlet||'';
+  return [street,city,a.state,a.postcode].filter(Boolean).join(', ');
+}
+function _tgtNear(){
+  var loc=document.getElementById('inp-loc').value.trim();
+  if(!loc) return '';
+  var parts=loc.split(',').map(function(x){return x.trim();}).filter(Boolean);
+  return parts.length>2?parts.slice(-4,-2).join(', '):'';
+}
+function _tgtSearch(){
+  var val=document.getElementById('inp-tname').value.trim();
+  var dd=document.getElementById('tgt-dropdown');
+  if(!dd) return;
+  if(val.length<3){dd.style.display='none';return;}
+  var near=_tgtNear();
+  var seq=++_tgtSeq;
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(near?val+', '+near:val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
+    .then(function(r){return r.json();}).then(function(results){
+      if(seq!==_tgtSeq) return;
+      if(!results||!results.length){dd.style.display='none';return;}
+      dd.innerHTML='';
+      results.forEach(function(r){
+        var parts=r.display_name.split(',');
+        var name=(r.name||parts[0]).trim();
+        var addr=_tgtAddr(r)||parts.slice(1).join(',').trim();
+        var item=document.createElement('div');
+        item.className='loc-item';item.tabIndex=0;item.setAttribute('role','button');
+        item.innerHTML='<strong>'+escHtml(name)+'</strong><span>'+escHtml(addr)+'</span>';
+        item.onclick=function(){
+          document.getElementById('inp-tname').value=name;
+          document.getElementById('inp-taddr').value=addr;
+          dd.style.display='none';
+          var ty=_tgtTypeFromOSM(r);
+          if(ty&&!_selTgt){var chip=document.querySelector('#tgt-grid .tgt-chip[data-val="'+ty+'"]');if(chip)selTarget(chip);}
+          var locEl=document.getElementById('inp-loc');
+          if(locEl&&!locEl.value.trim()){
+            locEl.value=r.display_name;
+            _initMap(parseFloat(r.lat),parseFloat(r.lon));
+            _showMapConfirm(r.display_name);
+          }
+        };
+        item.onkeydown=function(e){if(e.key==='Enter'){item.onclick();}};
+        dd.appendChild(item);
+      });
+      dd.style.display='block';
+    }).catch(function(){});
+}
+document.addEventListener('click',function(e){
+  var dd=document.getElementById('tgt-dropdown');
+  if(dd&&!dd.contains(e.target)&&e.target.id!=='inp-tname') dd.style.display='none';
+});
 
 // ── MAP ──
 let _map=null,_mapReady=false,_locTimer=null;
