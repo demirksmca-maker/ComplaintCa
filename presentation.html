@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ComplaintCA | From Complaint to Case</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="How ComplaintCA turns a complaint into a ready case: information requests, complaints and the lawyer panel, with narration.">
+<meta name="theme-color" content="#0f2952">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ComplaintCA">
+<meta property="og:title" content="ComplaintCA | From Complaint to Case">
+<meta property="og:description" content="Ready cases for lawyers, not just clients. An interactive walkthrough of the ComplaintCA process.">
+<meta property="og:url" content="https://www.complaintca.ca/presentation">
+<meta property="og:image" content="https://www.complaintca.ca/og-image.png">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+/* Presentation page: header band, sticky narration bar, top-down flowchart with two branches and the lawyer panel */
+:root {
+  --bg: #eceef2;
+  --stage: #ffffff;
+  --ink: #0f2952;
+  --muted: #5e6673;
+  --line: #d6d9de;
+  --soft: #f4f5f7;
+  --accent: #0f2952;
+  --accent-soft: #eef1f6;
+  --gold: #a8802e;
+  --green: #2e7d5b;
+  --yellow: #d4a017;
+  --red: #c0392b;
+  --band: #0f2952;
+  --band-ink: #f4f5f7;
+  --font-display: "Source Serif 4", Cambria, Georgia, serif;
+  --font-body: "Source Sans 3", Calibri, "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1420; --stage: #152036; --ink: #e8ecf2; --muted: #9aa5b4; --line: #2c3a52; --soft: #1b2840;
+    --accent: #d8c7a6; --accent-soft: #233150; --gold: #d8c7a6; --green: #4fb58a; --yellow: #e8bc3f; --red: #e2685a;
+    --band: #0a101b; --band-ink: #e8ecf2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1420; --stage: #152036; --ink: #e8ecf2; --muted: #9aa5b4; --line: #2c3a52; --soft: #1b2840;
+  --accent: #d8c7a6; --accent-soft: #233150; --gold: #d8c7a6; --green: #4fb58a; --yellow: #e8bc3f; --red: #e2685a;
+  --band: #0a101b; --band-ink: #e8ecf2;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1000px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; }
+
+.stage { background: var(--stage); border-radius: 14px; box-shadow: 0 1px 2px rgba(16,42,67,.06), 0 12px 32px rgba(16,42,67,.08); }
+.band { background: var(--band); color: var(--band-ink); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding: 14px 28px; border-radius: 14px 14px 0 0; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 17px; }
+.brand span { opacity: .6; font-weight: 600; }
+.phase { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #d8c7a6; }
+
+.head { padding: 28px 28px 12px; display: grid; gap: 6px; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.15; margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.lead { color: var(--muted); margin: 0; max-width: 70ch; font-size: 16px; }
+
+/* Narration bar and controls (sticky) */
+.caption { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--stage); border-block: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; padding: 14px 28px 16px; }
+.controls { display: flex; gap: 6px; }
+.btn { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--stage); color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--stage); }
+.btn svg { width: 18px; height: 18px; }
+.text { display: grid; gap: 4px; min-width: 0; }
+.meta { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--gold); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.text p { margin: 0; font-size: 17px; line-height: 1.5; max-width: 80ch; min-height: 3em; }
+.progress { height: 3px; background: var(--soft); border-radius: 2px; overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .35s; }
+
+.diagram { overflow-x: auto; padding: 20px 20px 28px; }
+.diagram svg { display: block; width: 100%; max-width: 860px; min-width: 620px; margin: 0 auto; height: auto; }
+.diagram svg text { font-family: var(--font-body); }
+.n-box { fill: var(--stage); stroke: var(--line); stroke-width: 1.5; transition: fill .25s, stroke .25s; }
+.n-icon-bg { fill: var(--soft); }
+.n-icon { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.n-num { font-family: var(--font-display); font-weight: 700; font-size: 13px; fill: var(--gold); letter-spacing: .06em; }
+.n-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; fill: var(--ink); }
+.n-sub { font-size: 13.5px; fill: var(--muted); }
+.edge { fill: none; stroke: var(--line); stroke-width: 2; }
+.arrowhead { fill: var(--line); }
+.lane { font-family: var(--font-body); font-weight: 600; font-size: 12.5px; letter-spacing: .12em; fill: var(--gold); }
+.d-green { fill: var(--green); } .d-yellow { fill: var(--yellow); } .d-red { fill: var(--red); }
+
+.node { cursor: pointer; transition: opacity .3s; outline: none; }
+.node:focus-visible .n-box { stroke: var(--accent); stroke-width: 3; }
+.node.active .n-box { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 2.5; }
+.node.active .n-icon-bg { fill: var(--stage); }
+.node.active .n-num { fill: var(--accent); }
+.diagram.playing .node:not(.active) { opacity: .4; }
+
+.foot { padding: 12px 4px 0; font-size: 13px; color: var(--muted); display: grid; gap: 2px; }
+
+/* Access gate */
+.gate { min-height: 100vh; display: grid; place-items: center; padding-inline: 16px; padding-block: 32px; }
+.gate form { width: min(380px, 100%); background: var(--stage); border-radius: 14px; overflow: hidden; box-shadow: 0 12px 32px rgba(16,42,67,.12); }
+.gate .gate-head { background: var(--band); color: var(--band-ink); padding: 22px 26px; display: grid; gap: 4px; }
+.gate .gate-head span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #d8c7a6; font-weight: 600; }
+.gate .gate-head strong { font-family: var(--font-display); font-size: 22px; }
+.gate .gate-body { padding: 22px 26px 26px; display: grid; gap: 14px; }
+.gate label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; }
+.gate input { font: 16px var(--font-body); padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--stage); color: var(--ink); }
+.gate input:focus-visible { outline: 3px solid var(--gold); outline-offset: 1px; }
+.gate button { font: 600 15px var(--font-body); padding: 12px; border: 0; border-radius: 8px; background: var(--accent); color: var(--stage); cursor: pointer; }
+.gate button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.gate .gate-error { margin: 0; font-size: 14px; color: var(--red); min-height: 1.2em; }
+
+@media (max-width: 640px) {
+  .band, .head, .caption { padding-inline: 18px; }
+  .caption { grid-template-columns: 1fr; gap: 10px; }
+  .text p { font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .node, .n-box, .progress i { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <form id="gateForm" autocomplete="off">
+    <div class="gate-head"><span>ComplaintCA · Private preview</span><strong>Enter your access details</strong></div>
+    <div class="gate-body">
+      <label for="gateUser">Username<input id="gateUser" name="user" type="text" autocapitalize="off" spellcheck="false" required></label>
+      <label for="gatePass">Password<input id="gatePass" name="pass" type="password" required></label>
+      <p class="gate-error" id="gateError" aria-live="polite"></p>
+      <button type="submit">View presentation</button>
+    </div>
+  </form>
+</div>
+
+<div class="wrap" id="content" hidden>
+  <article class="stage">
+    <div class="band">
+      <div class="brand">ComplaintCA <span>· Case Management</span></div>
+      <div class="phase">Information Requests · Complaints · Lawyer Panel</div>
+    </div>
+
+    <div class="head">
+      <h1>From complaint to case, one platform</h1>
+      <p class="lead">The user files a complaint; the system draws a roadmap, identifies the request type and runs the process automatically. Complaint files meet the right lawyer in the lawyer panel.</p>
+    </div>
+
+    <div class="caption">
+      <div class="controls">
+        <button class="btn" id="prev" aria-label="Previous step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="btn primary" id="play" aria-label="Start narration">
+          <svg id="icoPlay" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="icoPause" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+        </button>
+        <button class="btn" id="next" aria-label="Next step">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <button class="btn" id="restart" aria-label="Restart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg>
+        </button>
+      </div>
+      <div class="text" aria-live="polite">
+        <div class="meta"><b id="nlabel"></b><span id="counter"></span></div>
+        <p id="ntext"></p>
+        <div class="progress"><i id="bar"></i></div>
+      </div>
+    </div>
+
+    <div class="diagram" id="diagram">
+      <svg id="svg" viewBox="0 0 900 1940" role="img" aria-labelledby="dgTitle">
+        <title id="dgTitle">Information request and complaint process flowchart</title>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,0 L10,5 L0,10 z"/>
+          </marker>
+        </defs>
+        <g id="edges">
+          <path class="edge" d="M450,98 V134" marker-end="url(#arr)"/>
+          <path class="edge" d="M450,216 V234" marker-end="url(#arr)"/>
+          <path class="edge" d="M450,362 V392 M225,392 H675"/>
+          <path class="edge" d="M225,392 V426" marker-end="url(#arr)"/>
+          <path class="edge" d="M675,392 V426" marker-end="url(#arr)"/>
+          <path class="edge" d="M225,508 V536" marker-end="url(#arr)"/>
+          <path class="edge" d="M675,508 V536 M675,618 V646 M675,728 V756 M675,838 V866 M675,948 V976"/>
+          <path class="edge" d="M675,1058 V1116" marker-end="url(#arr)"/>
+          <path class="edge" d="M675,1198 V1226 M675,1308 V1336 M675,1418 V1446 M675,1528 V1556 M675,1638 V1666"/>
+          <path class="edge" d="M815,1709 H862 V1269 H819" marker-end="url(#arr)"/>
+          <path class="edge" d="M225,618 V1800 H675 M675,1748 V1800"/>
+          <path class="edge" d="M450,1800 V1836" marker-end="url(#arr)"/>
+        </g>
+        <text class="lane" x="236" y="418">INFORMATION REQUEST</text>
+        <text class="lane" x="686" y="418">COMPLAINT</text>
+        <text class="lane" x="686" y="1100">LAWYER PANEL</text>
+        <text class="lane" x="878" y="1489" text-anchor="middle" transform="rotate(-90 878 1489)">NO REPLY: BACK TO POOL</text>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+  </article>
+
+  <div class="foot">
+    <span>The play button reads the narration aloud; you can also click any step in the diagram.</span>
+    <span id="voiceNote"></span>
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  edit: "M12 20h9 M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z",
+  zap: "M13 2 3 14h9l-1 8 10-12h-9l1-8z",
+  mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M22 6l-10 7L2 6",
+  link: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
+  upload: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12",
+  verify: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M9 15l2 2 4-4",
+  send: "M22 2 11 13 M22 2l-7 20-4-9-9-4z",
+  scale: "M12 3v18 M7 21h10 M4 7h16 M7 7l-3 7a3 3 0 0 0 6 0z M17 7l-3 7a3 3 0 0 0 6 0z",
+  users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",
+  chart: "M12 20V10 M18 20V4 M6 20v-4",
+  login: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4 M10 17l5-5-5-5 M15 12H3",
+  list: "M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01",
+  percent: "M19 5 5 19 M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z M17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+  lock: "M5 11h14v10H5z M7 11V7a5 5 0 0 1 10 0v4",
+  message: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
+  clock: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 6v6l4 2"
+};
+
+const steps = [
+  { num: "01", cx: 450, y: 20,  icon: "edit",   title: "Filing a complaint", sub: "Created by the user",
+    label: "Filing a complaint", text: "It all starts with the user, who files a complaint on our platform." },
+  { num: "02", cx: 450, y: 138, icon: "zap",    title: "Automated analysis", sub: "Roadmap · ≈ 7 sec",
+    label: "Automated analysis", text: "As soon as the complaint is filed, system automation kicks in and draws a roadmap for it within about seven seconds." },
+  { num: "03", diamond: true, cx: 450, cy: 300, title: "Request type",
+    label: "Request type", text: "The system evaluates the request and decides whether it is a complaint or a right-to-information request." },
+  { num: "I1", cx: 225, y: 430, icon: "mail",   title: "Request email", sub: "Generated automatically",
+    label: "Information request · Email", text: "Because the right to information is defined by law, the system generates the information request email automatically." },
+  { num: "I2", cx: 225, y: 540, icon: "link",   title: "Tracking link", sub: "Replies on our site",
+    label: "Information request · Tracking", text: "A link to our site is added to the email. The institution's replies and the tracking of the request happen on our site." },
+  { num: "C1", cx: 675, y: 430, codes: true,    title: "Code assignment", sub: "Green · Yellow · Red",
+    label: "Complaint · Code", text: "Now the complaint system. Based on the analysis, each complaint is assigned one of three codes: green, yellow or red." },
+  { num: "C2", cx: 675, y: 540, icon: "upload", title: "Evidence upload", sub: "All evidence uploaded",
+    label: "Complaint · Evidence", text: "The user uploads all evidence needed for the complaint to the platform." },
+  { num: "C3", cx: 675, y: 650, icon: "verify", title: "Document check", sub: "Verified by the system",
+    label: "Complaint · Verification", text: "The system verifies the uploaded documents." },
+  { num: "C4", cx: 675, y: 760, icon: "send",   title: "Legal letters", sub: "Automated, to user's inbox",
+    label: "Complaint · Legal correspondence", text: "Next, legal correspondence is handled by automation, all the way to the user's inbox." },
+  { num: "C5", cx: 675, y: 870, icon: "scale",  title: "Precedents", sub: "Class action fit",
+    label: "Complaint · Precedent comparison", text: "During this process, the case is compared with precedents and assessed for class action suitability." },
+  { num: "C6", cx: 675, y: 980, icon: "users",  title: "Lawyer pool", sub: "Ready for lawyers",
+    label: "Complaint · Lawyer pool", text: "Finally, the file becomes ready for lawyers in our platform's pool." },
+  { num: "L1", cx: 675, y: 1120, icon: "login",  title: "Panel login", sub: "License no. · verified",
+    label: "Lawyer panel · Login", text: "Part three, the lawyer panel. A lawyer or law firm logs in with their bar license number, which is legally verified. In law firms, each lawyer logs in with their own license number." },
+  { num: "L2", cx: 675, y: 1230, icon: "list",   title: "Matching cases", sub: "Listed by case type",
+    label: "Lawyer panel · Matching cases", text: "The system lists the cases that match the lawyer's case type." },
+  { num: "L3", cx: 675, y: 1340, icon: "percent", title: "Win potential", sub: "Precedents + evidence = %",
+    label: "Lawyer panel · Win potential", text: "Each case's win potential is shown as a percentage. For cases with precedents, it is based on precedents and evidence; for cases without precedents, on evidence alone." },
+  { num: "L4", cx: 675, y: 1450, icon: "lock",   title: "Case lock", sub: "1 case · 1 lawyer",
+    label: "Lawyer panel · Case lock", text: "A lawyer can handle multiple cases. But once a lawyer takes a case, it is locked to them, and each case stays open to one lawyer only." },
+  { num: "L5", cx: 675, y: 1560, icon: "message", title: "Class action · contact", sub: "Lawyers reach users",
+    label: "Lawyer panel · Class action", text: "Lawyers can create their own class action from the panel and contact users. Users have already accepted a general agreement for the case pool." },
+  { num: "L6", cx: 675, y: 1670, icon: "clock",  title: "Follow-up questions", sub: "No reply: back to pool",
+    label: "Lawyer panel · Follow-up", text: "When the lawyer logs in, the site asks questions about the case at set intervals. If the lawyer does not reply within the follow-up period, the case returns to the pool." },
+  { num: "04", cx: 450, y: 1840, icon: "chart", title: "Statistics", sub: "Process is tracked",
+    label: "Statistics", text: "Information requests, complaints and the lawyer panel are all tracked statistically. Lawyers and law firms join with a monthly subscription; ComplaintCA brings them ready cases, not just clients." }
+];
+
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs, parent) => {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+};
+const txt = (cls, x, y, s, parent, anchor) => {
+  const t = el("text", { class: cls, x, y, ...(anchor ? { "text-anchor": anchor } : {}) }, parent);
+  t.textContent = s; return t;
+};
+
+const root = document.getElementById("nodes");
+steps.forEach((s, i) => {
+  const g = el("g", { class: "node", "data-i": i, tabindex: 0, role: "button", "aria-label": `${s.num}: ${s.title}` }, root);
+  if (s.diamond) {
+    el("path", { class: "n-box", d: `M${s.cx},${s.cy - 62} L${s.cx + 92},${s.cy} L${s.cx},${s.cy + 62} L${s.cx - 92},${s.cy} z` }, g);
+    txt("n-num", s.cx, s.cy - 12, s.num, g, "middle");
+    txt("n-title", s.cx, s.cy + 12, s.title, g, "middle");
+    return;
+  }
+  const x = s.cx - 140, y = s.y;
+  el("rect", { class: "n-box", x, y, width: 280, height: 78, rx: 10 }, g);
+  el("rect", { class: "n-icon-bg", x: x + 14, y: y + 22, width: 34, height: 34, rx: 8 }, g);
+  if (s.codes) {
+    ["d-green", "d-yellow", "d-red"].forEach((c, k) => el("circle", { class: c, cx: x + 22 + k * 9, cy: y + 39, r: 4 }, g));
+  } else {
+    el("path", { class: "n-icon", d: ICONS[s.icon], transform: `translate(${x + 19},${y + 27}) scale(1)` }, g);
+  }
+  txt("n-num", x + 266, y + 22, s.num, g, "end");
+  txt("n-title", x + 62, y + 38, s.title, g);
+  txt("n-sub", x + 62, y + 59, s.sub, g);
+});
+
+const nodes = [...document.querySelectorAll(".node")];
+const $ = id => document.getElementById(id);
+const synth = window.speechSynthesis;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let current = 0, playing = false, timer = null, trVoice = null;
+
+function pickVoice() {
+  if (!synth) return;
+  const voices = synth.getVoices();
+  trVoice = voices.find(v => /^en-(US|GB)/i.test(v.lang || "")) || voices.find(v => /^en/i.test(v.lang || "")) || null;
+  $("voiceNote").textContent = (!trVoice && voices.length)
+    ? "No English voice was found on this device. Chrome or Edge give the best results." : "";
+}
+if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+else $("voiceNote").textContent = "This browser does not support speech; steps advance automatically.";
+
+function show(i, scroll) {
+  current = Math.max(0, Math.min(steps.length - 1, i));
+  nodes.forEach(n => n.classList.toggle("active", +n.dataset.i === current));
+  $("nlabel").textContent = steps[current].label;
+  $("ntext").textContent = steps[current].text;
+  $("counter").textContent = `${current + 1} / ${steps.length}`;
+  $("bar").style.width = `${(current + 1) / steps.length * 100}%`;
+  if (scroll) {
+    try { nodes[current].scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" }); } catch (e) {}
+  }
+}
+
+function setPlaying(on) {
+  playing = on;
+  $("diagram").classList.toggle("playing", on);
+  $("icoPlay").hidden = on; $("icoPause").hidden = !on;
+  $("play").setAttribute("aria-label", on ? "Pause narration" : "Start narration");
+}
+
+function speak(i) {
+  show(i, true);
+  clearTimeout(timer);
+  const advance = () => {
+    if (!playing) return;
+    if (current < steps.length - 1) speak(current + 1); else stop();
+  };
+  if (synth) {
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(steps[current].text);
+    u.lang = "en-US"; u.rate = 0.95;
+    if (trVoice) u.voice = trVoice;
+    u.onend = () => { timer = setTimeout(advance, 600); };
+    synth.speak(u);
+  } else {
+    timer = setTimeout(advance, 3000 + steps[current].text.length * 45);
+  }
+}
+
+function stop() { setPlaying(false); clearTimeout(timer); if (synth) synth.cancel(); }
+
+$("play").onclick = () => {
+  if (playing) return stop();
+  if (current === steps.length - 1) current = 0;
+  setPlaying(true); speak(current);
+};
+$("restart").onclick = () => { if (playing) speak(0); else show(0, true); };
+$("next").onclick = () => playing ? speak(current + 1) : show(current + 1, true);
+$("prev").onclick = () => playing ? speak(current - 1) : show(current - 1, true);
+nodes.forEach(n => {
+  const go = () => playing ? speak(+n.dataset.i) : show(+n.dataset.i);
+  n.addEventListener("click", go);
+  n.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+});
+show(0);
+
+// Access gate: a light deterrent for a one-off private share, not real security.
+(function () {
+  const HASH = "3e05ac42a24563324d28e58f2329a39cc71bb9242050f3b41b51823ae1bbd384";
+  const KEY = "complaintca-presentation-access";
+  const unlock = () => { $("gate").hidden = true; $("content").hidden = false; };
+  try { if (sessionStorage.getItem(KEY) === HASH) { unlock(); return; } } catch (e) {}
+  async function sha256(text) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+  $("gateForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const h = await sha256($("gateUser").value.trim().toLowerCase() + ":" + $("gatePass").value);
+    if (h === HASH) {
+      try { sessionStorage.setItem(KEY, HASH); } catch (err) {}
+      $("gateError").textContent = "";
+      unlock();
+    } else {
+      $("gateError").textContent = "Incorrect username or password. Please check the details in your email.";
+      $("gatePass").value = ""; $("gatePass").focus();
+    }
+  });
+  $("gateUser").focus();
+})();
+</script>
+</body>
+</html>
