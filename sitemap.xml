@@ -20,9 +20,21 @@
   </url>
   <url>
     <loc>https://www.complaintca.ca/blog/</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/recover-unpaid-invoice-canada.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/insurance-claim-denied-canada.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/blog/debt-collector-rules-ontario.html</loc>
