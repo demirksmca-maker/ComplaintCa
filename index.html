@@ -363,7 +363,7 @@ textarea{resize:vertical;min-height:90px}
 .loc-item:hover{background:var(--ice);color:var(--blue)}
 .loc-item strong{display:block;font-weight:600}
 .loc-item span{color:var(--muted);font-size:.75rem}
-#map-preview{height:240px;border-radius:12px;border:2px solid var(--border);margin-bottom:14px;display:none;overflow:hidden;box-shadow:0 4px 16px rgba(15,41,82,.1)}
+#map-preview{position:relative;z-index:0;isolation:isolate;height:240px;border-radius:12px;border:2px solid var(--border);margin-bottom:14px;display:none;overflow:hidden;box-shadow:0 4px 16px rgba(15,41,82,.1)}
 .map-confirm{background:var(--off);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--sub);margin-bottom:14px;display:none}
 .map-confirm strong{color:var(--text);display:block;margin-bottom:4px}
 .map-btns{display:flex;gap:8px;margin-top:8px}
@@ -840,6 +840,7 @@ textarea{resize:vertical;min-height:90px}
           </div>
           <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Improve with AI</button>
         </div>
+        <div id="s1-note" style="display:none;font-size:.75rem;color:#c8102e;background:rgba(240,87,106,.12);border:1px solid #c8102e;border-radius:8px;padding:8px 12px;margin-top:12px;text-align:center"></div>
         <button onclick="newValidateStep1()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px;margin-top:12px">Next →</button>
         </div>
 
@@ -899,7 +900,7 @@ textarea{resize:vertical;min-height:90px}
           </label>
           <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
         </div>
-        <button onclick="newGoStep(1)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
+        <button onclick="newGoStep(1)" id="new-back-btn" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin:12px 0">← Back</button>
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
@@ -2149,6 +2150,7 @@ const V = (function(){
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
+      nbk:"← Back",miss_title:"complaint title",miss_desc:"description",miss_email:"valid email",fill_in:"Please fill in",draft_restored:"We restored what you typed before the page reloaded.",
       ld_err:"Couldn't detect your location — please type your address instead.",loc_ph:"Enter address...",
       ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
       tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
@@ -2238,6 +2240,7 @@ const V = (function(){
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
+      nbk:"← Geri",miss_title:"şikayet başlığı",miss_desc:"açıklama",miss_email:"geçerli e-posta",fill_in:"Lütfen doldurun",draft_restored:"Sayfa yeniden yüklenmeden önce yazdıklarınızı geri getirdik.",
       ld_err:"Konum alınamadı — lütfen adresinizi yazın.",loc_ph:"Adres yazın...",
       ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
       tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
@@ -2327,6 +2330,7 @@ const V = (function(){
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
+      nbk:"← Retour",miss_title:"titre de la plainte",miss_desc:"description",miss_email:"e-mail valide",fill_in:"Veuillez remplir",draft_restored:"Nous avons restauré ce que vous aviez saisi avant le rechargement.",
       ld_err:"Impossible de détecter votre position — veuillez saisir votre adresse.",loc_ph:"Saisissez une adresse...",
       ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
       tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
@@ -2372,6 +2376,7 @@ const V = (function(){
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
+      nbk:"← 返回",miss_title:"投诉标题",miss_desc:"描述",miss_email:"有效邮箱",fill_in:"请填写",draft_restored:"已恢复页面重新加载前您输入的内容。",
       ld_err:"无法检测您的位置——请输入您的地址。",loc_ph:"输入地址...",
       ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
       tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
@@ -2417,6 +2422,7 @@ const V = (function(){
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
+      nbk:"← Atrás",miss_title:"título de la queja",miss_desc:"descripción",miss_email:"correo válido",fill_in:"Complete",draft_restored:"Restauramos lo que escribió antes de que la página se recargara.",
       ld_err:"No se pudo detectar su ubicación: escriba su dirección.",loc_ph:"Escriba una dirección...",
       ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
       tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
@@ -2462,6 +2468,7 @@ const V = (function(){
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
+      nbk:"→ رجوع",miss_title:"عنوان الشكوى",miss_desc:"الوصف",miss_email:"بريد إلكتروني صالح",fill_in:"يرجى تعبئة",draft_restored:"استعدنا ما كتبته قبل إعادة تحميل الصفحة.",
       ld_err:"تعذّر تحديد موقعك — يرجى كتابة عنوانك.",loc_ph:"أدخل العنوان...",
       ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
       tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
@@ -2507,6 +2514,7 @@ const V = (function(){
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
+      nbk:"← ਵਾਪਸ",miss_title:"ਸ਼ਿਕਾਇਤ ਦਾ ਸਿਰਲੇਖ",miss_desc:"ਵੇਰਵਾ",miss_email:"ਸਹੀ ਈਮੇਲ",fill_in:"ਕਿਰਪਾ ਕਰਕੇ ਭਰੋ",draft_restored:"ਪੰਨਾ ਮੁੜ ਲੋਡ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਿਆ ਤੁਹਾਡਾ ਲਿਖਤ ਵਾਪਸ ਲਿਆਂਦਾ ਗਿਆ।",
       ld_err:"ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਨਹੀਂ ਲੱਭ ਸਕਿਆ — ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪਤਾ ਲਿਖੋ।",loc_ph:"ਪਤਾ ਲਿਖੋ...",
       ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
       tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
@@ -2562,7 +2570,7 @@ const V = (function(){
       'a-lpri':'pri','a-plow':'plo','a-pmed':'pme','a-phigh':'phi',
       'a-comp':'cmp','a-ltitle':'ltl','a-ldesc':'ldc',
       'a-loc':'loc','a-media':'med','a-mlab':'mla',
-      'a-note':'not','sub-btn':'sub','ai-btn':'aib',
+      'a-note':'not','sub-btn':'sub','ai-btn':'aib','new-back-btn':'nbk',
       'legal-title-lbl':'legal_title','legal-see-lbl':'legal_see','legal-details':'legal_body',
       'a-suct':'sut','a-sucs':'sus','a-sucn':'sun',
       'a-trkt':'tkt','a-trkb':'tkb',
@@ -3224,6 +3232,7 @@ function selTarget(el){
   document.querySelectorAll('#tgt-grid .group-card').forEach(o=>o.classList.remove('sel'));
   el.classList.add('sel');_selTgt=el.getAttribute('data-val');
   if(typeof _refreshAuthBox==='function')_refreshAuthBox();
+  if(typeof _draftSave==='function')_draftSave();
 }
 function selCtype(t,el){
   _ctype=t;
@@ -3411,7 +3420,10 @@ function addPhotos(inp){
 }
 function removePhoto(i){_photos.splice(i,1);renderPhotos();}
 function renderPhotos(){
-  document.getElementById('pgrid').innerHTML=_photos.map(function(p,i){return '<div class="ptwrap"><img class="pthumb" src="'+p.data+'"><button class="prm" onclick="removePhoto('+i+')">✕</button></div>';}).join('');
+  document.getElementById('pgrid').innerHTML=_photos.map(function(p,i){
+    var isVid=/^data:video\//.test(p.data||'');
+    var media=isVid?'<video class="pthumb" src="'+p.data+'#t=0.1" muted playsinline preload="metadata" style="object-fit:cover;background:#000"></video><span style="position:absolute;left:6px;bottom:4px;color:#fff;font-size:.9rem;text-shadow:0 1px 3px #000">▶</span>':'<img class="pthumb" src="'+p.data+'">';
+    return '<div class="ptwrap" style="position:relative">'+media+'<button class="prm" onclick="removePhoto('+i+')">✕</button></div>';}).join('');
   var cnt=document.getElementById('photo-count');
   if(cnt) cnt.textContent=_photos.length+' / 10';
 }
@@ -3817,15 +3829,19 @@ async function doSubmit(){
 
   // Validation
   var errs=[];
-  if(!title) errs.push('complaint title');
-  if(!desc)  errs.push('description');
-  if(!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) errs.push('valid email');
+  if(!title) errs.push(V.t('miss_title'));
+  if(!desc)  errs.push(V.t('miss_desc'));
+  if(!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) errs.push(V.t('miss_email'));
   if(errs.length){
+    // These fields live on step 1 — take the user back there instead of leaving them stuck on step 2.
+    newGoStep(1);
+    var firstEl=document.getElementById(!emailVal||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)?'inp-email':(!title?'inp-title':'inp-desc'));
+    if(firstEl){firstEl.style.borderColor='#c8102e';setTimeout(function(){firstEl.scrollIntoView({behavior:'smooth',block:'center'});firstEl.focus();},250);setTimeout(function(){firstEl.style.borderColor='';},5000);}
     var note=document.getElementById('a-note');
     note.style.background='rgba(240,87,106,.16)';note.style.borderColor='#c8102e';note.style.color='#c8102e';
-    note.textContent='⚠ Please fill in: '+errs.join(', ')+'.';
-    note.scrollIntoView({behavior:'smooth',block:'center'});
-    setTimeout(function(){note.style.background='';note.style.borderColor='';note.style.color='';note.textContent=V.t('not');},4000);
+    note.textContent='⚠ '+V.t('fill_in')+': '+errs.join(', ')+'.';
+    var s1n=document.getElementById('s1-note');if(s1n){s1n.textContent=note.textContent;s1n.style.display='block';setTimeout(function(){s1n.style.display='none';},6000);}
+    setTimeout(function(){note.style.background='';note.style.borderColor='';note.style.color='';note.textContent=V.t('not');},5000);
     return;
   }
 
@@ -3995,6 +4011,7 @@ async function doSubmit(){
   }
 
   // 4. Show success screen
+  _draftClear();
   var _ch=_chainHTML(c.category),_chEl=document.getElementById('chain-success');
   if(_chEl){_chEl.innerHTML=_ch;_chEl.style.display=_ch?'block':'none';}
   document.getElementById('form-sec').style.display='none';
@@ -4133,6 +4150,7 @@ function resetForm(){
   var ab=document.getElementById('auth-box');if(ab){ab.remove();}
   var lsb=document.getElementById('lw-suggest-box');if(lsb){lsb.remove();}
   ['inp-title','inp-desc','inp-name','inp-email','inp-phone','inp-tname','inp-taddr','inp-loc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  _draftClear();
   document.getElementById('inp-cat').value='';
   _photos=[];renderPhotos();updateCC();
   document.querySelectorAll('#tgt-grid .group-card').forEach(function(o){o.classList.remove('sel');});
@@ -4312,6 +4330,22 @@ function renderRecent(){
   el.innerHTML='<div class="ct" style="padding:0 4px;margin-bottom:10px"><div class="ci">🗂️</div><span>'+V.t('tkr')+'</span></div>'+_complaints.slice(0,5).map(c=>renderCard(c)).join('');
 }
 
+// ── DRAFT: survive the tab being reloaded (Android often reloads it after the camera / photo picker) ──
+var _DRAFT_KEY='cc_file_draft',_DRAFT_IDS=['inp-title','inp-desc','inp-email','inp-tname','inp-taddr','inp-loc'];
+function _draftSave(){try{var d={};_DRAFT_IDS.forEach(function(id){var el=document.getElementById(id);if(el)d[id]=el.value;});d.tgt=_selTgt;d.t=Date.now();sessionStorage.setItem(_DRAFT_KEY,JSON.stringify(d));}catch(e){}}
+function _draftClear(){try{sessionStorage.removeItem(_DRAFT_KEY);}catch(e){}}
+function _draftRestore(){
+  try{
+    var d=JSON.parse(sessionStorage.getItem(_DRAFT_KEY)||'null'); if(!d||Date.now()-(d.t||0)>6*3600*1000) return;
+    var restored=false;
+    _DRAFT_IDS.forEach(function(id){var el=document.getElementById(id);if(el&&!el.value&&d[id]){el.value=d[id];restored=true;}});
+    if(d.tgt){var chip=document.querySelector('#tgt-grid .tgt-chip[data-val="'+d.tgt+'"]');if(chip&&!_selTgt)selTarget(chip);}
+    if(restored){ if(typeof updateCC==='function')updateCC(); var n=document.getElementById('a-note'); if(n){n.textContent='↺ '+V.t('draft_restored');setTimeout(function(){n.textContent=V.t('not');},6000);} }
+  }catch(e){}
+}
+document.addEventListener('input',function(e){if(e.target&&_DRAFT_IDS.indexOf(e.target.id)!==-1)_draftSave();});
+window.addEventListener('load',function(){setTimeout(_draftRestore,300);});
+
 // ── TARGET (who the complaint is about) ──
 let _tgtTimer=null,_tgtSeq=0;
 function _tgtDebounce(){clearTimeout(_tgtTimer);_tgtTimer=setTimeout(_tgtSearch,500);}
@@ -4437,7 +4471,7 @@ function _showMapConfirm(addr){
   if(c&&t){t.textContent=addr;c.style.display='block';}
 }
 function _mapConfirm(){const c=document.getElementById('map-confirm');if(c)c.style.display='none';_refreshAuthBox();}
-function _refreshAuthBox(){var c=(document.getElementById('inp-cat')||{}).value||'';var l=(document.getElementById('inp-loc')||{}).value||'';if(c)showAuthorities(c,l);else _refreshChain();}
+function _refreshAuthBox(){if(typeof _draftSave==='function')_draftSave();var c=(document.getElementById('inp-cat')||{}).value||'';var l=(document.getElementById('inp-loc')||{}).value||'';if(c)showAuthorities(c,l);else _refreshChain();}
 document.addEventListener('change',function(e){if(e.target&&(e.target.id==='inp-loc'||e.target.id==='inp-taddr'||e.target.id==='inp-tname'))_refreshAuthBox();});
 function _mapClear(){
   const mp=document.getElementById('map-preview'),mc=document.getElementById('map-confirm'),il=document.getElementById('inp-loc');
