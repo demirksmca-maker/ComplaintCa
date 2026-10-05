@@ -2149,6 +2149,7 @@ const V = (function(){
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
+      ld_err:"Couldn't detect your location — please type your address instead.",loc_ph:"Enter address...",
       ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
       tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
       cat:"Category",csl:"Select a category...",cno:"Noise / Disturbance",csa:"Safety Hazard",cga:"Garbage / Cleanliness",cdi:"Discrimination / Rights",cse:"Poor Service",cbi:"Billing / Overcharge",cpr:"Property Damage",cot:"Other",
@@ -2237,6 +2238,7 @@ const V = (function(){
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
+      ld_err:"Konum alınamadı — lütfen adresinizi yazın.",loc_ph:"Adres yazın...",
       ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
       tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
       cat:"Kategori",csl:"Kategori seçin...",cno:"Gürültü",csa:"Güvenlik Tehlikesi",cga:"Çöp / Temizlik",cdi:"Ayrımcılık",cse:"Kötü Hizmet",cbi:"Fatura / Fazla Ücret",cpr:"Mülk Hasarı",cot:"Diğer",
@@ -2325,6 +2327,7 @@ const V = (function(){
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
+      ld_err:"Impossible de détecter votre position — veuillez saisir votre adresse.",loc_ph:"Saisissez une adresse...",
       ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
       tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
       cat:"Catégorie",csl:"Sélectionner...",cno:"Bruit",csa:"Danger",cga:"Déchets",cdi:"Discrimination",cse:"Mauvais service",cbi:"Facturation",cpr:"Dommages",cot:"Autre",
@@ -2369,6 +2372,7 @@ const V = (function(){
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
+      ld_err:"无法检测您的位置——请输入您的地址。",loc_ph:"输入地址...",
       ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
       tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
       cat:"类别",csl:"选择类别...",cno:"噪音/骚扰",csa:"安全隐患",cga:"垃圾/卫生",cdi:"歧视/权利",cse:"服务差",cbi:"账单/超收",cpr:"财产损失",cot:"其他",
@@ -2413,6 +2417,7 @@ const V = (function(){
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
+      ld_err:"No se pudo detectar su ubicación: escriba su dirección.",loc_ph:"Escriba una dirección...",
       ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
       tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
       cat:"Categoría",csl:"Seleccionar categoría...",cno:"Ruido/Perturbación",csa:"Peligro de seguridad",cga:"Basura/Limpieza",cdi:"Discriminación",cse:"Mal servicio",cbi:"Facturación",cpr:"Daños a propiedad",cot:"Otro",
@@ -2457,6 +2462,7 @@ const V = (function(){
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
+      ld_err:"تعذّر تحديد موقعك — يرجى كتابة عنوانك.",loc_ph:"أدخل العنوان...",
       ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
       tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
       cat:"الفئة",csl:"اختر فئة...",cno:"ضوضاء",csa:"خطر أمني",cga:"نفايات/نظافة",cdi:"تمييز",cse:"خدمة سيئة",cbi:"فواتير",cpr:"أضرار ممتلكات",cot:"أخرى",
@@ -2501,6 +2507,7 @@ const V = (function(){
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
+      ld_err:"ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਨਹੀਂ ਲੱਭ ਸਕਿਆ — ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪਤਾ ਲਿਖੋ।",loc_ph:"ਪਤਾ ਲਿਖੋ...",
       ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
       tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
       cat:"ਸ਼੍ਰੇਣੀ",csl:"ਸ਼੍ਰੇਣੀ ਚੁਣੋ...",cno:"ਰੌਲਾ",csa:"ਸੁਰੱਖਿਆ ਖ਼ਤਰਾ",cga:"ਕੂੜਾ",cdi:"ਵਿਤਕਰਾ",cse:"ਮਾੜੀ ਸੇਵਾ",cbi:"ਬਿੱਲਿੰਗ",cpr:"ਜਾਇਦਾਦ ਨੁਕਸਾਨ",cot:"ਹੋਰ",
@@ -2589,7 +2596,7 @@ const V = (function(){
       const el=document.getElementById(id);
       if(el) el.innerHTML=t(key);
     });
-    const phMap={'mv-postal':'mv_addr_ph','vfy-note':'vfy_note_ph','inp-tname':'tname_ph','inp-taddr':'taddr_ph'};
+    const phMap={'mv-postal':'mv_addr_ph','vfy-note':'vfy_note_ph','inp-tname':'tname_ph','inp-taddr':'taddr_ph','inp-loc':'loc_ph'};
     Object.entries(phMap).forEach(([id,key])=>{
       const el=document.getElementById(id);
       if(el) el.placeholder=t(key);
@@ -2602,6 +2609,7 @@ const V = (function(){
   return {
     lang(l,btn){
       cur=l;
+      try{document.documentElement.setAttribute('lang',l==='zh'?'zh':l);}catch(e){}
       apply();
       if(typeof renderLwResults==='function'&&document.getElementById('lw-results')&&document.getElementById('lw-results').innerHTML) renderLwResults();
     },
@@ -3375,20 +3383,25 @@ function updateCC(){
 }
 function getLoc(){
   const s=document.getElementById('loc-st'),btn=document.getElementById('loc-btn');
+  const fail=function(){s.style.display='block';s.textContent=V.t('ld_err');btn.textContent='📡';};
+  if(!navigator.geolocation){fail();return;}
   s.style.display='block';s.textContent=V.t('ld');btn.textContent='⏳';
+  // Hard stop: some phones never call back if the permission prompt is dismissed.
+  var done=false,guard=setTimeout(function(){if(!done){done=true;fail();}},15000);
   navigator.geolocation.getCurrentPosition(pos=>{
+    if(done) return; done=true; clearTimeout(guard);
     const{latitude:lat,longitude:lng}=pos.coords;
-    fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lng+'&format=json')
-      .then(r=>r.json()).then(d=>{
-        const addr=d.display_name||lat.toFixed(4)+','+lng.toFixed(4);
-        document.getElementById('inp-loc').value=addr;setTimeout(_refreshAuthBox,0);
-        s.textContent=V.t('ld2')+' ✓';btn.textContent='✅';
-        _initMap(lat,lng);_showMapConfirm(addr);
-      }).catch(()=>{
-        document.getElementById('inp-loc').value=lat.toFixed(5)+','+lng.toFixed(5);
-        s.textContent=V.t('ld2')+' ✓';btn.textContent='✅';_initMap(lat,lng);
-      });
-  },()=>{s.textContent='Location access denied.';btn.textContent='📡';});
+    const finish=function(addr){
+      document.getElementById('inp-loc').value=addr;setTimeout(_refreshAuthBox,0);
+      s.textContent=V.t('ld2')+' ✓';btn.textContent='✅';
+      _initMap(lat,lng);_showMapConfirm(addr);
+    };
+    const ctl=(typeof AbortController!=='undefined')?new AbortController():null;
+    const t=setTimeout(function(){if(ctl)ctl.abort();},10000);
+    fetch('https://nominatim.openstreetmap.org/reverse?lat='+lat+'&lon='+lng+'&format=json',ctl?{signal:ctl.signal}:{})
+      .then(r=>r.json()).then(d=>{clearTimeout(t);finish(d.display_name||lat.toFixed(5)+','+lng.toFixed(5));})
+      .catch(()=>{clearTimeout(t);finish(lat.toFixed(5)+','+lng.toFixed(5));});
+  },()=>{if(done) return; done=true; clearTimeout(guard); fail();},{enableHighAccuracy:false,timeout:12000,maximumAge:60000});
 }
 function addPhotos(inp){
   Array.from(inp.files).forEach(f=>{
@@ -4369,7 +4382,7 @@ document.addEventListener('click',function(e){
 
 // ── MAP ──
 let _map=null,_mapReady=false,_locTimer=null;
-function _locDebounce(){clearTimeout(_locTimer);_locTimer=setTimeout(_locSearch,500);}
+function _locDebounce(){clearTimeout(_locTimer);_locTimer=setTimeout(_locSearch,500);var st=document.getElementById('loc-st'),b=document.getElementById('loc-btn');if(st)st.style.display='none';if(b&&b.textContent!=='📡')b.textContent='📡';}
 function _locSearch(){
   const val=document.getElementById('inp-loc').value.trim();
   const dd=document.getElementById('loc-dropdown');
