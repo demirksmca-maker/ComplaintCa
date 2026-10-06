@@ -1,0 +1,85 @@
+{
+  "_help": "Each post is published once, on or after its 'date' (YYYY-MM-DD, Toronto time). Images must be JPEG in social/images/. Set 'platforms' to any of facebook, instagram, linkedin. Published ids are recorded in social/posted.json.",
+  "posts": [
+    {
+      "id": "01-brand",
+      "date": "2026-10-13",
+      "image": "social/images/01-brand.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Your complaint. Heard. Tracked. Resolved. 🍁\n\nComplaintCA helps people in Canada take a problem to the right authority — free, in 7 languages, with an anonymous option.\n\nStart at complaintca.ca",
+      "hashtags": "#Canada #ConsumerRights #KnowYourRights #ComplaintCA"
+    },
+    {
+      "id": "02-three-steps",
+      "date": "2026-10-15",
+      "image": "social/images/02-three-steps.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Filing a complaint shouldn't feel like a maze.\n\n1️⃣ Tell us what happened — type or speak, in your own language\n2️⃣ We match it to the right authority for your province\n3️⃣ Send it and keep your reference number\n\ncomplaintca.ca",
+      "hashtags": "#Canada #ConsumerProtection #CivicTech #ComplaintCA"
+    },
+    {
+      "id": "03-scam-check",
+      "date": "2026-10-20",
+      "image": "social/images/03-scam-check.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "The CRA will never ask you to pay with gift cards. 🚩\n\nGot a letter, text or email that feels off? Check it on ComplaintCA before you pay or click.\n\nReport scams to the Canadian Anti-Fraud Centre: 1-888-495-8501\n\ncomplaintca.ca",
+      "hashtags": "#ScamAlert #FraudPrevention #CRAscam #Canada #ComplaintCA"
+    },
+    {
+      "id": "04-landlord",
+      "date": "2026-10-22",
+      "image": "social/images/04-landlord.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Mould, no heat, repairs ignored? 🏚️\n\nEvery province has a tenancy board that can order your landlord to make repairs:\n• Ontario — Landlord and Tenant Board\n• BC — Residential Tenancy Branch\n• Alberta — RTDRS\n• Quebec — Tribunal administratif du logement\n\nFind yours at complaintca.ca",
+      "hashtags": "#TenantRights #Renters #Canada #Housing #ComplaintCA"
+    },
+    {
+      "id": "05-unpaid-wages",
+      "date": "2026-10-27",
+      "image": "social/images/05-unpaid-wages.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Your employer didn't pay you? In Ontario you generally have 2 years to file an Employment Standards claim with the Ministry of Labour — and it's free.\n\nOther provinces have their own deadlines. Check yours at complaintca.ca",
+      "hashtags": "#WorkerRights #UnpaidWages #Ontario #EmploymentStandards #ComplaintCA"
+    },
+    {
+      "id": "06-bank-obsi",
+      "date": "2026-10-29",
+      "image": "social/images/06-bank-obsi.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Your bank said no? That's not the end. 🏦\n\n✓ Banks must respond to complaints within 56 days\n✓ Then you can go to OBSI — free and independent\n✓ File with OBSI within 180 days of the bank's final answer\n\ncomplaintca.ca",
+      "hashtags": "#Banking #ConsumerRights #PersonalFinance #Canada #ComplaintCA"
+    },
+    {
+      "id": "07-human-rights",
+      "date": "2026-11-03",
+      "image": "social/images/07-human-rights.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Facing discrimination at work, in housing or in services?\n\nIn Ontario, you must apply to the Human Rights Tribunal within one year of the last incident. Don't wait.\n\nFind the right body for your province at complaintca.ca",
+      "hashtags": "#HumanRights #Equality #Ontario #Canada #ComplaintCA"
+    },
+    {
+      "id": "08-languages",
+      "date": "2026-11-05",
+      "image": "social/images/08-languages.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Speak up in the language you think in. 🌐\n\nComplaintCA works in English, Français, 中文, Español, العربية, ਪੰਜਾਬੀ and Türkçe.\n\ncomplaintca.ca",
+      "hashtags": "#Newcomers #Immigrants #Multilingual #Canada #ComplaintCA"
+    },
+    {
+      "id": "09-anonymous",
+      "date": "2026-11-10",
+      "image": "social/images/09-anonymous.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Afraid to speak up? 🔒\n\nYou can report anonymously on ComplaintCA. Some bodies can't open a formal file without your identity — we tell you when, so you can decide.\n\ncomplaintca.ca",
+      "hashtags": "#Privacy #Whistleblower #SpeakUp #Canada #ComplaintCA"
+    },
+    {
+      "id": "10-find-mp",
+      "date": "2026-11-12",
+      "image": "social/images/10-find-mp.jpg",
+      "platforms": ["facebook", "instagram", "linkedin"],
+      "caption": "Your representatives work for you. 🏛️\n\nEnter your postal code on ComplaintCA to find your federal and provincial representatives and contact them directly.\n\ncomplaintca.ca",
+      "hashtags": "#Democracy #CivicEngagement #CdnPoli #Canada #ComplaintCA"
+    }
+  ]
+}
