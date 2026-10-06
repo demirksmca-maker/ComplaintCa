@@ -1288,7 +1288,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
         <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
           <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px"></div>
-          <div><div style="font-size:.78rem;font-weight:600;color:var(--text)">RCMP — National Cybercrime Coordination Unit (NC3)</div><div style="font-size:.68rem;color:var(--muted);margin-top:1px">cybercrime.gc.ca · 1-800-387-0020</div></div>
+          <div><div style="font-size:.78rem;font-weight:600;color:var(--text)">RCMP — National Cybercrime Coordination Centre (NC3)</div><div style="font-size:.68rem;color:var(--muted);margin-top:1px">rcmp.ca (Report cybercrime and fraud) · 1-888-495-8501</div></div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
           <div style="width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:4px"></div>
@@ -3175,7 +3175,7 @@ async function sendCyberConfirmationEmail(c){
     V.t('cy_conf_type_line').replace('{type}',typeStr)+'\n'+
     V.t('cy_conf_urgency_line').replace('{urgency}',priMap[c.priority]||c.priority)+'\n\n'+
     V.t('cy_conf_notice')+'\n\n'+
-    '- RCMP — National Cybercrime Coordination Unit (NC3): cybercrime.gc.ca · 1-800-387-0020\n'+
+    '- RCMP — National Cybercrime Coordination Centre (NC3): rcmp.ca (Report cybercrime and fraud) · 1-888-495-8501\n'+
     '- Canadian Anti-Fraud Centre: antifraudcentre-centreantifraude.ca · 1-888-495-8501\n'+
     '- Ontario Provincial Police — Cyber Unit: opp.ca/cybercrime (Ontario residents)\n\n'+
     (c.priority==='high'?V.t('cy_conf_danger')+'\n\n':'')+
