@@ -13,6 +13,10 @@ on:
         description: 'Preview only — do not post'
         type: boolean
         default: true
+      post_id:
+        description: 'Publish only this post id now (optional)'
+        type: string
+        required: false
 
 permissions:
   contents: write
@@ -38,6 +42,7 @@ jobs:
       - name: Publish due posts
         env:
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
+          POST_ID: ${{ inputs.post_id }}
           META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
           META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
@@ -53,4 +58,5 @@ jobs:
           git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
           git add social/posted.json
           git commit -m "Social: record published posts [skip ci]"
+          git pull --rebase -q origin main
           git push origin HEAD:main
