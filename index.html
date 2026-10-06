@@ -1404,7 +1404,7 @@ function vfyHandleFile(inp){
 }
 // Asya & Claude AI tarafından hazırlanan yasal dilekçe oluşturucu
 function transferToComplaint(){
-  if(!_vfyLastAnalysis){alert('Önce bir belge analiz edin.');return;}
+  if(!_vfyLastAnalysis){alert(V.t('al_noanalysis'));return;}
   goApp('new');
   newGoStep(1);
   var d=document.getElementById('inp-desc');
@@ -1578,71 +1578,70 @@ var _lwProv='on', _lwArea='tenant';
 var LAWYERS = {
   on:{
     tenant:[
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation. Official Law Society referral.',badge:'FREE CONSULT'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation. Official Law Society referral.',badge:'FREE CONSULT'},
       {name:'Community Legal Education Ontario (CLEO)',phone:'',url:'https://www.cleo.on.ca',note:'Free legal info & referrals for tenants in Ontario.',badge:'FREE'},
       {name:'Landlord & Tenant Board — Legal Aid',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Legal Aid Ontario — income-based free tenant representation.',badge:'LEGAL AID'}
     ],
     employment:[
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation with employment lawyers.',badge:'FREE CONSULT'},
-      {name:'Employment Lawyers Toronto (OLES)',phone:'',url:'https://www.ontario-employment-lawyers.ca',note:'Ontario employment lawyer directory — wrongful dismissal specialists.',badge:'DIRECTORY'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation with employment lawyers.',badge:'FREE CONSULT'},
       {name:'Legal Aid Ontario',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Free employment legal help if income-eligible.',badge:'LEGAL AID'}
     ],
     humanrights:[
       {name:'Human Rights Legal Support Centre',phone:'1-866-625-5179',url:'https://www.hrlsc.on.ca',note:'Free legal representation at HRTO for eligible applicants.',badge:'FREE'},
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca',note:'Find a licensed human rights lawyer.',badge:'FREE CONSULT'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Find a licensed human rights lawyer.',badge:'FREE CONSULT'},
       {name:'Ontario Human Rights Commission',phone:'1-800-387-9080',url:'https://www.ohrc.on.ca',note:'Policy guidance and referral to HRTO.',badge:'OFFICIAL'}
     ],
     immigration:[
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca',note:'Find a licensed immigration lawyer in Ontario.',badge:'FREE CONSULT'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Find a licensed immigration lawyer in Ontario.',badge:'FREE CONSULT'},
       {name:'ICCRC — Immigration Consultants Registry',phone:'',url:'https://www.college-ic.ca',note:'Official registry of authorized immigration consultants.',badge:'OFFICIAL'},
       {name:'Legal Aid Ontario — Immigration',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Refugee & immigration legal aid for eligible clients.',badge:'LEGAL AID'}
     ],
     criminal:[
       {name:'Legal Aid Ontario — Criminal',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'},
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca',note:'Free 30-min consultation with criminal defence lawyers.',badge:'FREE CONSULT'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Free 30-min consultation with criminal defence lawyers.',badge:'FREE CONSULT'},
       {name:'Ontario Justice Education Network',phone:'',url:'https://ojen.ca',note:'Legal resources and lawyer finder for criminal matters.',badge:'RESOURCE'}
     ],
     family:[
-      {name:'Law Society of Ontario — Referral Service',phone:'1-800-268-8326',url:'https://lso.ca',note:'Free 30-min consultation with family lawyers.',badge:'FREE CONSULT'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Free 30-min consultation with family lawyers.',badge:'FREE CONSULT'},
       {name:'Legal Aid Ontario — Family',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Divorce, custody, domestic violence legal aid.',badge:'LEGAL AID'},
-      {name:'Family Law Information Centres (FLIC)',phone:'',url:'https://www.ontario.ca/page/family-law-information-centre',note:'Free in-person help at Ontario courthouses.',badge:'FREE'}
+      {name:'Family Law Information Centres (FLIC)',phone:'',url:'https://www.ontario.ca/page/family-law-information-centres',note:'Free in-person help at Ontario courthouses.',badge:'FREE'}
     ]
   },
   bc:{
     tenant:[
-      {name:'Law Society of BC — Lawyer Referral Service',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'$25 for 30-min consultation with a BC lawyer.',badge:'$25 CONSULT'},
+      {name:'Law Society of BC — Lawyer Referral Service',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'$25 for 30-min consultation with a BC lawyer.',badge:'$25 CONSULT'},
       {name:'Tenant Resource & Advisory Centre (TRAC)',phone:'1-800-665-1185',url:'https://tenants.bc.ca',note:'Free tenant legal info and referrals across BC.',badge:'FREE'},
       {name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Free legal help for eligible tenants in BC.',badge:'LEGAL AID'}
     ],
     employment:[
-      {name:'Law Society of BC — Lawyer Referral',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'$25 for 30-min employment law consultation.',badge:'$25 CONSULT'},
+      {name:'Law Society of BC — Lawyer Referral',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'$25 for 30-min employment law consultation.',badge:'$25 CONSULT'},
       {name:'Employment Standards Branch BC',phone:'1-833-236-3700',url:'https://www2.gov.bc.ca/gov/content/employment-business/employment-standards-advice',note:'Official BC employment standards legal guidance.',badge:'OFFICIAL'},
       {name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Employment legal help if income-eligible.',badge:'LEGAL AID'}
     ],
     humanrights:[
-      {name:'BC Human Rights Clinic',phone:'1-855-685-6222',url:'https://www.bchrc.net',note:'Free legal help for BC Human Rights Tribunal cases.',badge:'FREE'},
-      {name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'Find a licensed human rights lawyer in BC.',badge:'$25 CONSULT'},
+      {name:'BC Human Rights Clinic',phone:'1-888-685-6222',url:'https://www.bchrc.net',note:'Free legal help for BC Human Rights Tribunal cases.',badge:'FREE'},
+      {name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed human rights lawyer in BC.',badge:'$25 CONSULT'},
       {name:'BC Human Rights Tribunal',phone:'604-775-2000',url:'https://www.bchrt.bc.ca',note:'Official tribunal for discrimination complaints.',badge:'OFFICIAL'}
     ],
-    immigration:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'Find a licensed immigration lawyer in BC.',badge:'$25 CONSULT'},{name:'MOSAIC — Immigration Legal Services',phone:'604-254-9626',url:'https://mosaicbc.org',note:'Free/low-cost immigration legal help in BC.',badge:'FREE'}],
-    criminal:[{name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Free criminal defence legal aid in BC.',badge:'LEGAL AID'},{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'Find a licensed criminal defence lawyer.',badge:'$25 CONSULT'}],
-    family:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lsbc.ca',note:'Find a family lawyer in BC.',badge:'$25 CONSULT'},{name:'Legal Aid BC — Family',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Family law legal aid if income-eligible.',badge:'LEGAL AID'},{name:'Family Justice Centres BC',phone:'',url:'https://www2.gov.bc.ca/gov/content/life-events/divorce/family-justice',note:'Free in-person help at BC courthouses.',badge:'FREE'}]
+    immigration:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed immigration lawyer in BC.',badge:'$25 CONSULT'},{name:'MOSAIC — Immigration Legal Services',phone:'604-254-9626',url:'https://mosaicbc.org',note:'Free/low-cost immigration legal help in BC.',badge:'FREE'}],
+    criminal:[{name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Free criminal defence legal aid in BC.',badge:'LEGAL AID'},{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed criminal defence lawyer.',badge:'$25 CONSULT'}],
+    family:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a family lawyer in BC.',badge:'$25 CONSULT'},{name:'Legal Aid BC — Family',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Family law legal aid if income-eligible.',badge:'LEGAL AID'},{name:'Family Justice Centres BC',phone:'',url:'https://www2.gov.bc.ca/gov/content/life-events/divorce/family-justice',note:'Free in-person help at BC courthouses.',badge:'FREE'}]
   },
   qc:{
-    tenant:[{name:'Barreau du Québec — Référence',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'$30 for 30-min consultation with a Quebec lawyer.',badge:'$30 CONSULT'},{name:'RCLALQ — Logement',phone:'514-521-7114',url:'https://rclalq.qc.ca',note:'Free tenant legal resources in Quebec.',badge:'FREE'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csaj.gouv.qc.ca',note:'Free legal aid for eligible tenants in Quebec.',badge:'LEGAL AID'}],
+    tenant:[{name:'Barreau du Québec — Référence',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'$30 for 30-min consultation with a Quebec lawyer.',badge:'$30 CONSULT'},{name:'RCLALQ — Logement',phone:'514-521-7114',url:'https://rclalq.qc.ca',note:'Free tenant legal resources in Quebec.',badge:'FREE'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Free legal aid for eligible tenants in Quebec.',badge:'LEGAL AID'}],
     employment:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'$30 for 30-min consultation with employment lawyers.',badge:'$30 CONSULT'},{name:'CNESST — Normes du travail',phone:'1-844-838-0808',url:'https://www.cnesst.gouv.qc.ca',note:'Official Quebec labour standards complaint body.',badge:'OFFICIAL'}],
     humanrights:[{name:'Commission des droits de la personne QC',phone:'1-800-361-6477',url:'https://www.cdpdj.qc.ca',note:'Official Quebec human rights commission.',badge:'OFFICIAL'},{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a licensed human rights lawyer in Quebec.',badge:'$30 CONSULT'}],
-    immigration:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a licensed immigration lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec — Immigration',phone:'1-800-842-2213',url:'https://www.csaj.gouv.qc.ca',note:'Immigration legal aid for refugee claimants.',badge:'LEGAL AID'}],
-    criminal:[{name:'Aide juridique Québec — Criminel',phone:'1-800-842-2213',url:'https://www.csaj.gouv.qc.ca',note:'Free criminal legal aid in Quebec.',badge:'LEGAL AID'},{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a criminal defence lawyer in Quebec.',badge:'$30 CONSULT'}],
-    family:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a family lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csaj.gouv.qc.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+    immigration:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a licensed immigration lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec — Immigration',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Immigration legal aid for refugee claimants.',badge:'LEGAL AID'}],
+    criminal:[{name:'Aide juridique Québec — Criminel',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Free criminal legal aid in Quebec.',badge:'LEGAL AID'},{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a criminal defence lawyer in Quebec.',badge:'$30 CONSULT'}],
+    family:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a family lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   },
   ab:{
-    tenant:[{name:'Law Society of Alberta — Referral',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Lawyer referral service across Alberta.',badge:'REFERRAL'},{name:'RTDRS — Residential Tenancy',phone:'780-644-3000',url:'https://www.alberta.ca/rtdrs',note:'Official AB tenancy dispute resolution.',badge:'OFFICIAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free tenant legal help if income-eligible.',badge:'LEGAL AID'}],
-    employment:[{name:'Law Society of Alberta',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Lawyer referral for employment matters.',badge:'REFERRAL'},{name:'Alberta Employment Standards',phone:'1-877-427-3731',url:'https://www.alberta.ca/employment-standards',note:'Official employment standards complaints.',badge:'OFFICIAL'}],
-    humanrights:[{name:'Alberta Human Rights Commission',phone:'780-427-7661',url:'https://www.albertahumanrights.ab.ca',note:'Official human rights complaints in Alberta.',badge:'OFFICIAL'},{name:'Law Society of Alberta',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Find a human rights lawyer in Alberta.',badge:'REFERRAL'}],
-    immigration:[{name:'Law Society of Alberta',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Find a licensed immigration lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta — Immigration',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Refugee immigration legal aid in Alberta.',badge:'LEGAL AID'}],
-    criminal:[{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'},{name:'Law Society of Alberta',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Find a criminal defence lawyer in Alberta.',badge:'REFERRAL'}],
-    family:[{name:'Law Society of Alberta',phone:'1-800-661-1095',url:'https://www.lawsociety.ab.ca',note:'Find a family lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+    tenant:[{name:'Law Society of Alberta — Lawyer Directory',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Online directory to find a lawyer across Alberta (phone referral line closed).',badge:'REFERRAL'},{name:'RTDRS — Residential Tenancy',phone:'780-644-3000',url:'https://www.alberta.ca/residential-tenancy-dispute-resolution-service',note:'Official AB tenancy dispute resolution.',badge:'OFFICIAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free tenant legal help if income-eligible.',badge:'LEGAL AID'}],
+    employment:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Lawyer referral for employment matters.',badge:'REFERRAL'},{name:'Alberta Employment Standards',phone:'1-877-427-3731',url:'https://www.alberta.ca/employment-standards',note:'Official employment standards complaints.',badge:'OFFICIAL'}],
+    humanrights:[{name:'Alberta Human Rights Commission',phone:'780-427-7661',url:'https://www.albertahumanrights.ab.ca',note:'Official human rights complaints in Alberta.',badge:'OFFICIAL'},{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a human rights lawyer in Alberta.',badge:'REFERRAL'}],
+    immigration:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a licensed immigration lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta — Immigration',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Refugee immigration legal aid in Alberta.',badge:'LEGAL AID'}],
+    criminal:[{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'},{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a criminal defence lawyer in Alberta.',badge:'REFERRAL'}],
+    family:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a family lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   },
   mb:{
     tenant:[{name:'Law Society of Manitoba',phone:'204-942-5571',url:'https://www.lawsociety.mb.ca',note:'Lawyer referral service in Manitoba.',badge:'REFERRAL'},{name:'Community Legal Education Association MB',phone:'204-943-2382',url:'https://www.communitylegal.mb.ca',note:'Free legal resources for tenants in Manitoba.',badge:'FREE'},{name:'Legal Aid Manitoba',phone:'204-985-8500',url:'https://www.legalaid.mb.ca',note:'Free legal help if income-eligible.',badge:'LEGAL AID'}],
@@ -1655,7 +1654,7 @@ var LAWYERS = {
   sk:{
     tenant:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Lawyer referral service in Saskatchewan.',badge:'REFERRAL'},{name:'Public Legal Education Association of SK',phone:'306-653-1868',url:'https://www.plea.org',note:'Free legal info and referrals in Saskatchewan.',badge:'FREE'}],
     employment:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find an employment lawyer in Saskatchewan.',badge:'REFERRAL'}],
-    humanrights:[{name:'Saskatchewan Human Rights Commission',phone:'1-800-667-9249',url:'https://www.shrc.gov.sk.ca',note:'Official human rights body in Saskatchewan.',badge:'OFFICIAL'}],
+    humanrights:[{name:'Saskatchewan Human Rights Commission',phone:'1-800-667-9249',url:'https://saskatchewanhumanrights.ca',note:'Official human rights body in Saskatchewan.',badge:'OFFICIAL'}],
     immigration:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find an immigration lawyer in Saskatchewan.',badge:'REFERRAL'}],
     criminal:[{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'}],
     family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
@@ -1769,230 +1768,230 @@ const AUTHORITIES = {
   noise: {
     toronto:    [{name:'311 Toronto — Noise Team', email:'311@toronto.ca', phone:'311', note:'Available 6am–2am daily'}],
     scarborough:[{name:'311 Toronto — East District', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'}],
-    mississauga:[{name:'City of Mississauga Bylaw', email:'311@mississauga.ca', phone:'905-615-4311', note:'Online: mississauga.ca/311'}],
-    brampton:   [{name:'Brampton Bylaw Services', email:'bylawservices@brampton.ca', phone:'905-458-3424', note:'bylawservices@brampton.ca'}],
-    bc:         [{name:'Vancouver 311', email:'contactus@vancouver.ca', phone:'311', note:'City of Vancouver'}],
+    mississauga:[{name:'City of Mississauga Bylaw', email:'public.info@mississauga.ca', phone:'905-615-4311', note:'Online: mississauga.ca/311'}],
+    brampton:   [{name:'Brampton Bylaw Services', email:'enforcement@brampton.ca', phone:'905-458-3424', note:'enforcement@brampton.ca'}],
+    bc:         [{name:'Vancouver 311', email:'vancouver.ca/van311.aspx', phone:'311', note:'City of Vancouver'}],
     alberta:    [{name:'City of Calgary 311', email:'311@calgary.ca', phone:'311', note:'403-268-2489'}],
-    quebec:     [{name:'Ville de Montréal 311', email:'communications@montreal.ca', phone:'311', note:'514-872-0311'}],
-    default:    [{name:'Municipal Bylaw Office', email:'311@toronto.ca', phone:'311', note:'Contact your local 311'}]
+    quebec:     [{name:'Ville de Montréal 311', email:'montreal.ca/en/contact-us', phone:'311', note:'514-872-0311'}],
+    default:    [{name:'Municipal Bylaw Office', email:'', phone:'311', note:'Contact your local 311'}]
   },
   property: {
     toronto:    [{name:'RentSafeTO', email:'311@toronto.ca', phone:'311', note:'Apartment building standards'},{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'All Ontario'}],
     scarborough:[{name:'RentSafeTO (Toronto)', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    mississauga:[{name:'Mississauga Property Standards', email:'propertystandards@mississauga.ca', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    brampton:   [{name:'Brampton Property Standards', email:'bylaw.enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    bc:         [{name:'Residential Tenancy Branch BC', email:'rtbinfo@gov.bc.ca', phone:'1-800-665-8779', note:''}],
+    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    bc:         [{name:'Residential Tenancy Branch BC', email:'HSRTO@gov.bc.ca', phone:'1-800-665-8779', note:''}],
     alberta:    [{name:'RTDRS Alberta', email:'rtdrs@gov.ab.ca', phone:'780-644-3000', note:'Under $100,000'}],
     quebec:     [{name:'Tribunal administratif du logement', email:'informations@tal.gouv.qc.ca', phone:'1-800-683-2245', note:''}],
-    default:    [{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Ontario'},{name:'Rental Housing Enforcement Unit', email:'rheu@ontario.ca', phone:'1-888-772-9277', note:'RTA Offences'}]
+    default:    [{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Ontario'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'RTA Offences'}]
   },
   billing: {
-    default:    [{name:'FCAC — Banking', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banks & credit cards', deadline:'Bank must respond within 56 days', deadlineDays:56},{name:'OBSI — Banking Ombudsman', email:'ombudsman@obsi.ca', phone:'1-888-451-4519', note:'Escalate if unresolved after 56 days', deadline:'Free & independent review'},{name:'CCTS — Telecom', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario businesses'},{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas'}],
+    default:    [{name:'FCAC — Banking', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banks & credit cards', deadline:'Bank must respond within 56 days', deadlineDays:56},{name:'OBSI — Banking Ombudsman', email:'ombudsman@obsi.ca', phone:'1-888-451-4519', note:'Free & independent — escalate if unresolved after 56 days', deadline:'File with OBSI within 180 days of the bank\'s final response'},{name:'CCTS — Telecom', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario businesses'},{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas'}],
     bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banking'}],
-    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}],
-    quebec:     [{name:'OPC Quebec', email:'courrier@opc.gouv.qc.ca', phone:'1-888-672-2556', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}]
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}],
+    quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}]
   },disc: {
     toronto:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:''},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy guidance'}],
     default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Ontario', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   garbage: {
     toronto:    [{name:'Toronto Solid Waste 311', email:'311@toronto.ca', phone:'311', note:'Missed pickup, illegal dumping'}],
-    mississauga:[{name:'Mississauga Waste', email:'waste@mississauga.ca', phone:'905-615-4311', note:''}],
-    brampton:   [{name:'Brampton Public Works', email:'publicworks@brampton.ca', phone:'905-874-2000', note:''}],
-    bc:         [{name:'Vancouver Solid Waste', email:'contactus@vancouver.ca', phone:'311', note:'City of Vancouver'}],
+    mississauga:[{name:'Peel Region Waste', email:'peelregion.ca/waste', phone:'905-791-7800', note:'Peel Region runs waste collection in Mississauga'}],
+    brampton:   [{name:'Peel Region Waste', email:'peelregion.ca/waste', phone:'905-791-7800', note:'Peel Region runs waste collection in Brampton'}],
+    bc:         [{name:'Vancouver Solid Waste', email:'vancouver.ca/van311.aspx', phone:'311', note:'City of Vancouver'}],
     alberta:    [{name:'Calgary Waste & Recycling', email:'311@calgary.ca', phone:'311', note:'City of Calgary'}],
-    quebec:     [{name:'Ville de Montréal — Collecte', email:'communications@montreal.ca', phone:'311', note:''}],
-    default:    [{name:'Municipal Solid Waste', email:'311@toronto.ca', phone:'311', note:'Contact your local city hall'}]
+    quebec:     [{name:'Ville de Montréal — Collecte', email:'montreal.ca/en/contact-us', phone:'311', note:''}],
+    default:    [{name:'Municipal Solid Waste', email:'', phone:'311', note:'Contact your local city hall'}]
   },
   safety: {
-    toronto:    [{name:'Toronto Public Health', email:'toronto.publichealth@toronto.ca', phone:'416-338-7600', note:'Food, mold, pests'},{name:'TSSA', email:'inquiries@tssa.org', phone:'1-877-682-8772', note:'Elevators, gas'}],
-    mississauga:[{name:'Peel Public Health', email:'health@peelregion.ca', phone:'905-799-7700', note:''},{name:'TSSA', email:'inquiries@tssa.org', phone:'1-877-682-8772', note:''}],
-    brampton:   [{name:'Peel Public Health', email:'health@peelregion.ca', phone:'905-799-7700', note:''},{name:'TSSA', email:'inquiries@tssa.org', phone:'1-877-682-8772', note:''}],
-    bc:         [{name:'WorkSafeBC', email:'info@worksafebc.com', phone:'1-888-621-7233', note:'Workplace safety'},{name:'Health Canada', email:'hc.cpsd.sc@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'}],
-    alberta:    [{name:'Alberta OHS', email:'ohs.contactcentre@gov.ab.ca', phone:'1-866-415-8690', note:'Workplace safety'},{name:'Health Canada', email:'hc.cpsd.sc@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
-    quebec:     [{name:'CNESST', email:'info@cnesst.gouv.qc.ca', phone:'1-844-838-0808', note:'Workplace safety'},{name:'Health Canada', email:'hc.cpsd.sc@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
-    default:    [{name:'TSSA Ontario', email:'inquiries@tssa.org', phone:'1-877-682-8772', note:'Technical safety'},{name:'Health Canada', email:'hc.cpsd.sc@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'},{name:'Ministry of Labour', email:'labour@ontario.ca', phone:'1-800-531-5551', note:'Workplace'}]
+    toronto:    [{name:'Toronto Public Health', email:'publichealth@toronto.ca', phone:'416-338-7600', note:'Food, mold, pests'},{name:'TSSA', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:'Elevators, gas'}],
+    mississauga:[{name:'Peel Public Health', email:'peelhealth@peelregion.ca', phone:'905-799-7700', note:''},{name:'TSSA', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:''}],
+    brampton:   [{name:'Peel Public Health', email:'peelhealth@peelregion.ca', phone:'905-799-7700', note:''},{name:'TSSA', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:''}],
+    bc:         [{name:'WorkSafeBC', email:'www.worksafebc.com/en/contact-us', phone:'1-888-621-7233', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'}],
+    alberta:    [{name:'Alberta OHS', email:'alberta.ca/file-complaint-online', phone:'1-866-415-8690', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
+    quebec:     [{name:'CNESST', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
+    default:    [{name:'TSSA Ontario', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:'Technical safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'},{name:'Ministry of Labour', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Workplace'}]
   },
   service: {
-    default:    [{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario'},{name:'Competition Bureau', email:'compbureau@cb-bc.gc.ca', phone:'1-800-348-5358', note:'Federal — false advertising'},{name:'BBB Toronto', email:'info@thetorontobbb.org', phone:'416-341-6166', note:'Business disputes'}],
+    default:    [{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario'},{name:'Competition Bureau', email:'competition-bureau.canada.ca/en/contact-competition-bureau-canada', phone:'1-800-348-5358', note:'Federal — false advertising'},{name:'BBB — Better Business Bureau', email:'bbb.org/file-a-complaint', phone:'', note:'Business disputes'}],
     bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
-    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''}],
-    quebec:     [{name:'OPC Quebec', email:'courrier@opc.gouv.qc.ca', phone:'1-888-672-2556', note:''}]
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
+    quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
   },
   other: {
-    default:    [{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:''},{name:'Office of Consumer Affairs', email:'oca-bc@ised-isde.gc.ca', phone:'1-800-328-6189', note:'Federal guidance'}],
+    default:    [{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:''},{name:'Office of Consumer Affairs', email:'ised-isde.canada.ca/site/office-consumer-affairs/en', phone:'1-800-328-6189', note:'Federal guidance'}],
     bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
-    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''}],
-    quebec:     [{name:'OPC Quebec', email:'courrier@opc.gouv.qc.ca', phone:'1-888-672-2556', note:''}]
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
+    quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
   },
   telecom: {
-    default:    [{name:'CCTS — Telecom & TV Ombudsman', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus, Shaw, Videotron'},{name:'CRTC', email:'crtc.gc.ca/complaint', phone:'1-877-249-2782', note:'Telemarketing, DNCL, broadcast content', deadline:'Broadcast content complaints: within 4 weeks of airing', deadlineDays:28}],
-    bc:         [{name:'CCTS', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:'All provinces'},{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
-    alberta:    [{name:'CCTS', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''}],
-    quebec:     [{name:'CCTS', email:'commissioner@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'OPC Quebec', email:'courrier@opc.gouv.qc.ca', phone:'1-888-672-2556', note:''}]
+    default:    [{name:'CCTS — Telecom & TV Ombudsman', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus, Shaw, Videotron'},{name:'CRTC', email:'crtc.gc.ca/complaint', phone:'1-877-249-2782', note:'Telemarketing, DNCL, broadcast content', deadline:'Broadcast content complaints: within 4 weeks of airing', deadlineDays:28}],
+    bc:         [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'All provinces'},{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
+    alberta:    [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
+    quebec:     [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
   },
   privacy: {
-    default:    [{name:'OPC — Office of the Privacy Commissioner', email:'info@priv.gc.ca', phone:'1-800-282-1376', note:'PIPEDA — federal companies'},{name:'IPC Ontario', email:'info@ipc.on.ca', phone:'1-800-387-0073', note:'Ontario provincial bodies'}],
-    bc:         [{name:'OIPC BC', email:'info@oipc.bc.ca', phone:'250-387-5629', note:'BC Privacy Commissioner'},{name:'OPC Federal', email:'info@priv.gc.ca', phone:'1-800-282-1376', note:''}],
-    alberta:    [{name:'OIPC Alberta', email:'generalinfo@oipc.ab.ca', phone:'780-422-6860', note:''},{name:'OPC Federal', email:'info@priv.gc.ca', phone:'1-800-282-1376', note:''}],
-    quebec:     [{name:'Commission d\'accès à l\'information', email:'cai@cai.gouv.qc.ca', phone:'1-888-528-7741', note:''},{name:'OPC Federal', email:'info@priv.gc.ca', phone:'1-800-282-1376', note:''}]
+    default:    [{name:'OPC — Office of the Privacy Commissioner', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:'PIPEDA — federal companies'},{name:'IPC Ontario', email:'info@ipc.on.ca', phone:'1-800-387-0073', note:'Ontario provincial bodies'}],
+    bc:         [{name:'OIPC BC', email:'info@oipc.bc.ca', phone:'250-387-5629', note:'BC Privacy Commissioner'},{name:'OPC — Office of the Privacy Commissioner of Canada', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:''}],
+    alberta:    [{name:'OIPC Alberta', email:'generalinfo@oipc.ab.ca', phone:'780-422-6860', note:''},{name:'OPC — Office of the Privacy Commissioner of Canada', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:''}],
+    quebec:     [{name:'Commission d\'accès à l\'information', email:'cai.communications@cai.gouv.qc.ca', phone:'1-888-528-7741', note:''},{name:'OPC — Office of the Privacy Commissioner of Canada', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:''}]
   },
   repairs: {
     toronto:    [{name:'RentSafeTO — Apartment Standards', email:'311@toronto.ca', phone:'311', note:'Building maintenance & repairs'},{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Withhold rent for repairs'}],
-    mississauga:[{name:'Mississauga Property Standards', email:'propertystandards@mississauga.ca', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    brampton:   [{name:'Brampton Property Standards', email:'bylaw.enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    bc:         [{name:'Residential Tenancy Branch BC', email:'rtbinfo@gov.bc.ca', phone:'1-800-665-8779', note:''}],
+    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    bc:         [{name:'Residential Tenancy Branch BC', email:'HSRTO@gov.bc.ca', phone:'1-800-665-8779', note:''}],
     alberta:    [{name:'RTDRS Alberta', email:'rtdrs@gov.ab.ca', phone:'780-644-3000', note:''}],
     quebec:     [{name:'Tribunal administratif du logement', email:'informations@tal.gouv.qc.ca', phone:'1-800-683-2245', note:''}],
-    default:    [{name:'Landlord & Tenant Board Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'File T6 application for repairs'},{name:'Rental Housing Enforcement Unit', email:'rheu@ontario.ca', phone:'1-888-772-9277', note:'Serious bylaw violations'}]
+    default:    [{name:'Landlord & Tenant Board Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'File T6 application for repairs'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'Serious bylaw violations'}]
   },
   harassment: {
-    default:    [{name:'Ontario Human Rights Tribunal', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Workplace harassment & discrimination', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Ministry of Labour Ontario', email:'labour@ontario.ca', phone:'1-800-531-5551', note:'Occupational Health & Safety Act'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''},{name:'WorkSafeBC', email:'helpdesk@worksafebc.com', phone:'1-888-967-5377', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''},{name:'OHS Alberta', email:'ohs-contact@gov.ab.ca', phone:'1-866-415-8690', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    default:    [{name:'Ontario Human Rights Tribunal', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Workplace harassment & discrimination', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Ministry of Labour Ontario', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Occupational Health & Safety Act'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''},{name:'WorkSafeBC', email:'www.worksafebc.com/en/contact-us', phone:'1-888-967-5377', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''},{name:'OHS Alberta', email:'alberta.ca/file-complaint-online', phone:'1-866-415-8690', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   wages: {
-    default:    [{name:'Ministry of Labour Ontario — ESA', email:'labour@ontario.ca', phone:'1-800-531-5551', note:'File ESA claim for unpaid wages', deadline:'Must file within 2 years of the wages becoming due', deadlineDays:730},{name:'Employment Standards Branch', email:'es.info@ontario.ca', phone:'1-800-531-5551', note:'Minimum wage, overtime, vacation pay'}],
-    bc:         [{name:'Employment Standards Branch BC', email:'esb@gov.bc.ca', phone:'1-833-236-3700', note:''}],
-    alberta:    [{name:'Alberta Employment Standards', email:'escontact@gov.ab.ca', phone:'780-427-3731', note:''}],
-    quebec:     [{name:'CNESST Quebec', email:'informations@cnesst.gouv.qc.ca', phone:'1-844-838-0808', note:''}]
+    default:    [{name:'Ministry of Labour Ontario — ESA', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'File ESA claim for unpaid wages', deadline:'Must file within 2 years of the wages becoming due', deadlineDays:730},{name:'Employment Standards Branch', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Minimum wage, overtime, vacation pay'}],
+    bc:         [{name:'Employment Standards Branch BC', email:'EmploymentStandards@esb.gov.bc.ca', phone:'1-833-236-3700', note:''}],
+    alberta:    [{name:'Alberta Employment Standards', email:'alberta.ca/file-employment-standards-complaint', phone:'780-427-3731', note:''}],
+    quebec:     [{name:'CNESST Quebec', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:''}]
   },
   wrongful: {
-    default:    [{name:'Ministry of Labour Ontario', email:'labour@ontario.ca', phone:'1-800-531-5551', note:'Unjust dismissal — ESA severance', deadline:'Court claim: within 2 years of termination date', deadlineDays:730},{name:'Canadian Industrial Relations Board', email:'registrar@cirb-ccri.gc.ca', phone:'1-800-575-9696', note:'Federal sector employees'},{name:'Law Society of Ontario — Referral', email:'lawsociety@lso.ca', phone:'1-800-668-7380', note:'Find a wrongful dismissal lawyer'}],
-    bc:         [{name:'Employment Standards Branch BC', email:'esb@gov.bc.ca', phone:'1-833-236-3700', note:''},{name:'BC Labour Relations Board', email:'lrb@lrb.bc.ca', phone:'604-660-1300', note:''}],
-    alberta:    [{name:'Alberta Employment Standards', email:'escontact@gov.ab.ca', phone:'780-427-3731', note:''},{name:'Alberta Labour Relations Board', email:'alrb@gov.ab.ca', phone:'780-422-5926', note:''}],
-    quebec:     [{name:'CNESST Quebec', email:'informations@cnesst.gouv.qc.ca', phone:'1-844-838-0808', note:''}]
+    default:    [{name:'Ministry of Labour Ontario', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Unjust dismissal — ESA severance', deadline:'Court claim: within 2 years of termination date', deadlineDays:730},{name:'Canadian Industrial Relations Board', email:'info@cirb-ccri.gc.ca', phone:'1-800-575-9696', note:'Federal sector employees'},{name:'Law Society of Ontario — Referral', email:'lawsociety@lso.ca', phone:'1-800-668-7380', note:'Find a wrongful dismissal lawyer'}],
+    bc:         [{name:'Employment Standards Branch BC', email:'EmploymentStandards@esb.gov.bc.ca', phone:'1-833-236-3700', note:''},{name:'BC Labour Relations Board', email:'information@lrb.bc.ca', phone:'604-660-1300', note:''}],
+    alberta:    [{name:'Alberta Employment Standards', email:'alberta.ca/file-employment-standards-complaint', phone:'780-427-3731', note:''},{name:'Alberta Labour Relations Board', email:'alrb@gov.ab.ca', phone:'780-422-5926', note:''}],
+    quebec:     [{name:'CNESST Quebec', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:''}]
   },
   road: {
     toronto:    [{name:'311 Toronto — Roads & Potholes', email:'311@toronto.ca', phone:'311', note:'Report potholes, road damage, signs'},{name:'Toronto Public Works', email:'311@toronto.ca', phone:'311', note:'toronto.ca/311'}],
-    mississauga:[{name:'Mississauga 311 — Transportation', email:'311@mississauga.ca', phone:'905-615-4311', note:''}],
-    brampton:   [{name:'Brampton Public Works', email:'publicworks@brampton.ca', phone:'905-874-2000', note:''}],
-    bc:         [{name:'BC Ministry of Transportation', email:'TRANSinfo@gov.bc.ca', phone:'1-800-663-4997', note:''}],
-    alberta:    [{name:'Alberta Transportation', email:'Trans.Infoline@gov.ab.ca', phone:'780-427-2731', note:''}],
-    default:    [{name:'Municipal 311', email:'311@toronto.ca', phone:'311', note:'Contact your local city 311'}]
+    mississauga:[{name:'Mississauga 311 — Transportation', email:'public.info@mississauga.ca', phone:'905-615-4311', note:''}],
+    brampton:   [{name:'Brampton Public Works', email:'roads@brampton.ca', phone:'905-874-2000', note:''}],
+    bc:         [{name:'BC Ministry of Transportation and Transit', email:'www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/transportation/ministry-contacts', phone:'250-387-3198', note:''}],
+    alberta:    [{name:'Alberta Transportation', email:'alberta.ca/general-inquiries', phone:'310-0000 / 780-427-2711', note:''}],
+    default:    [{name:'Municipal 311', email:'', phone:'311', note:'Contact your local city 311'}]
   },
   utility: {
-    toronto:    [{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas complaints'},{name:'Toronto Hydro', email:'customercare@torontohydro.com', phone:'416-542-8000', note:'Toronto electricity'}],
+    toronto:    [{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas complaints'},{name:'Toronto Hydro', email:'contactus@torontohydro.com', phone:'416-542-8000', note:'Toronto electricity'}],
     default:    [{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'OEB — electricity & gas Ontario'},{name:'Hydro One', email:'customerrelations@hydroone.com', phone:'1-888-664-9376', note:'Ontario grid'}],
-    bc:         [{name:'BC Utilities Commission', email:'commission.secretary@bcuc.com', phone:'604-660-4700', note:''},{name:'BC Hydro', email:'customer.service@bchydro.com', phone:'1-800-224-9376', note:''}],
+    bc:         [{name:'BC Utilities Commission', email:'complaints@bcuc.com', phone:'604-660-4700', note:''},{name:'BC Hydro', email:'customer.service@bchydro.com', phone:'1-800-224-9376', note:''}],
     alberta:    [{name:'Alberta Utilities Commission', email:'info@auc.ab.ca', phone:'780-427-4903', note:''}],
-    quebec:     [{name:'Régie de l\'énergie Quebec', email:'secretariat@regie-energie.qc.ca', phone:'514-873-2452', note:''}]
+    quebec:     [{name:'Régie de l\'énergie Quebec', email:'greffe@regie-energie.qc.ca', phone:'514-873-2452', note:''}]
   },
   transit: {
-    toronto:    [{name:'TTC — Customer Relations', email:'ttccustomerservice@ttc.ca', phone:'416-393-3030', note:'Bus, subway, streetcar complaints'},{name:'Metrolinx / GO Transit', email:'customerservice@metrolinx.com', phone:'1-888-438-6646', note:'GO Train, UP Express'}],
+    toronto:    [{name:'TTC — Customer Relations', email:'www.ttc.ca/customer-service/complaints-compliments-suggestions', phone:'416-393-3030', note:'Bus, subway, streetcar complaints'},{name:'Metrolinx / GO Transit', email:'www.gotransit.com/en/connect-with-go/customer-comment-form', phone:'1-888-438-6646', note:'GO Train, UP Express'}],
     mississauga:[{name:'MiWay Transit', email:'miway@mississauga.ca', phone:'905-615-4636', note:''}],
     brampton:   [{name:'Brampton Transit', email:'bramptontransit@brampton.ca', phone:'905-874-2750', note:''}],
-    bc:         [{name:'TransLink Customer Relations', email:'customerrelations@translink.ca', phone:'604-953-3333', note:''}],
-    alberta:    [{name:'Calgary Transit', email:'calgarytransit@calgary.ca', phone:'403-262-1000', note:''},{name:'Edmonton Transit (ETS)', email:'ets@edmonton.ca', phone:'780-496-1600', note:''}],
-    default:    [{name:'Local Transit Authority', email:'ttccustomerservice@ttc.ca', phone:'311', note:'Contact your local transit provider'}]
+    bc:         [{name:'TransLink Customer Relations', email:'www.translink.ca/about-us/customer-service/contact-information', phone:'604-953-3333', note:''}],
+    alberta:    [{name:'Calgary Transit', email:'TransitContact@calgary.ca', phone:'403-262-1000', note:''},{name:'Edmonton Transit (ETS)', email:'www.edmonton.ca/ets/customer-service', phone:'311 / 780-442-5311', note:''}],
+    default:    [{name:'Local Transit Authority', email:'', phone:'311', note:'Contact your local transit provider directly'}]
   },
   construction: {
     toronto:    [{name:'City of Toronto — Building Permits', email:'311@toronto.ca', phone:'311', note:'Illegal construction, permits'},{name:'HCRA — New Home Builder', email:'info@hcraontario.ca', phone:'1-800-582-7994', note:'Licensed builder complaints'}],
-    default:    [{name:'HCRA — Home Construction Regulatory Authority', email:'info@hcraontario.ca', phone:'1-800-582-7994', note:'Ontario new home builders'},{name:'Tarion Warranty', email:'info@tarion.com', phone:'1-877-982-7466', note:'New home warranty Ontario'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Contractor disputes'}],
-    bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'BC Housing', email:'bhominfo@bchousing.org', phone:'604-433-2218', note:''}],
-    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:''}],
-    quebec:     [{name:'Régie du bâtiment du Québec', email:'info@rbq.gouv.qc.ca', phone:'1-800-361-0761', note:''}]
+    default:    [{name:'HCRA — Home Construction Regulatory Authority', email:'info@hcraontario.ca', phone:'1-800-582-7994', note:'Ontario new home builders'},{name:'Tarion Warranty', email:'customerservice@tarion.com', phone:'1-877-982-7466', note:'New home warranty Ontario'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Contractor disputes'}],
+    bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'BC Housing', email:'www.bchousing.org/contact', phone:'604-433-2218', note:''}],
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
+    quebec:     [{name:'Régie du bâtiment du Québec', email:'rbq.gouv.qc.ca/en/contact-us/', phone:'1-800-361-0761', note:''}]
   },
   environment: {
-    toronto:    [{name:'Toronto Environment Office', email:'311@toronto.ca', phone:'311', note:'Spills, air quality, contamination'},{name:'MOE Ontario — Spills', email:'infocline@ontario.ca', phone:'1-800-268-6060', note:'24hr spill reporting: 1-800-268-6060'}],
-    default:    [{name:'Environment Canada — ECCC', email:'ec.enviroinfo.ec@canada.ca', phone:'1-800-668-6767', note:'Federal environmental complaints'},{name:'MOE Ontario', email:'infocline@ontario.ca', phone:'1-800-268-6060', note:'Ontario spills & pollution'}],
-    bc:         [{name:'BC ENV Reporting', email:'reportallspills@gov.bc.ca', phone:'1-800-663-3456', note:''}],
-    alberta:    [{name:'Alberta Environment', email:'aep.infocent@gov.ab.ca', phone:'780-427-2700', note:'Spills: 1-800-222-6514'}],
-    quebec:     [{name:'MELCCFP Quebec', email:'info@environnement.gouv.qc.ca', phone:'1-800-561-1616', note:'Urgences: 1-866-694-5454'}]
+    toronto:    [{name:'Toronto Environment Office', email:'311@toronto.ca', phone:'311', note:'Spills, air quality, contamination'},{name:'MOE Ontario — Spills', email:'picemail.moe@ontario.ca', phone:'1-800-268-6060', note:'24hr spill reporting: 1-800-268-6060'}],
+    default:    [{name:'Environment Canada — ECCC', email:'ec.enviroinfo.ec@canada.ca', phone:'1-800-668-6767', note:'Federal environmental complaints'},{name:'MOE Ontario', email:'picemail.moe@ontario.ca', phone:'1-800-268-6060', note:'Ontario spills & pollution'}],
+    bc:         [{name:'BC ENV Reporting', email:'www2.gov.bc.ca/gov/content/environment/air-land-water/spills-environmental-emergencies/report-a-spill', phone:'1-800-663-3456', note:''}],
+    alberta:    [{name:'Alberta Environment', email:'www.alberta.ca/contacts-for-environment-and-protected-areas', phone:'310-3773 / 1-877-944-0313', note:'Spills: 1-800-222-6514'}],
+    quebec:     [{name:'MELCCFP Quebec', email:'environnement.gouv.qc.ca/formulaires/renseignements.asp', phone:'1-800-561-1616', note:'Urgences: 1-866-694-5454'}]
   },
   animal: {
-    toronto:    [{name:'Toronto Animal Services', email:'311@toronto.ca', phone:'311', note:'Stray animals, bylaw, cruelty'},{name:'Ontario SPCA', email:'info@ontariospca.ca', phone:'310-9SPCA (7722)', note:'Animal cruelty investigations'}],
-    mississauga:[{name:'Peel Animal Services', email:'animalservices@peelregion.ca', phone:'905-615-4311', note:''}],
-    brampton:   [{name:'Peel Animal Services', email:'animalservices@peelregion.ca', phone:'905-615-4311', note:''}],
+    toronto:    [{name:'Toronto Animal Services', email:'311@toronto.ca', phone:'311', note:'Stray animals, bylaw, cruelty'},{name:'PAWS — Provincial Animal Welfare Services', email:'', phone:'1-833-926-4625', note:'Ontario animal cruelty line (1-833-9ANIMAL)'}],
+    mississauga:[{name:'Mississauga Animal Services', email:'mypet.info@mississauga.ca', phone:'311 / 905-615-4311', note:''}],
+    brampton:   [{name:'Brampton Animal Services', email:'', phone:'905-458-5800', note:''}],
     bc:         [{name:'BC SPCA', email:'info@spca.bc.ca', phone:'1-855-622-7722', note:''}],
-    default:    [{name:'Municipal Animal Control (311)', email:'311@toronto.ca', phone:'311', note:'Contact your local city 311'},{name:'Ontario SPCA', email:'info@ontariospca.ca', phone:'310-9SPCA', note:'Province-wide cruelty line'}]
+    default:    [{name:'Municipal Animal Control (311)', email:'', phone:'311', note:'Contact your local city 311'},{name:'PAWS — Provincial Animal Welfare Services', email:'', phone:'1-833-926-4625', note:'Province-wide cruelty line (1-833-9ANIMAL)'}]
   },
   malpractice: {
     default:    [{name:'CPSO — College of Physicians & Surgeons Ontario', email:'feedback@cpso.on.ca', phone:'416-967-2600', note:'Doctor complaints'},{name:'CNO — College of Nurses Ontario', email:'cno@cnomail.org', phone:'416-928-0900', note:'Nurse complaints'},{name:'HPARB — Health Professions Appeal Board', email:'hparb@ontario.ca', phone:'416-327-8512', note:'Appeal CPSO decisions'}],
-    bc:         [{name:'CPSBC', email:'registrar@cpsbc.ca', phone:'604-733-7758', note:'BC Physicians'},{name:'BCCNM', email:'info@bccnm.ca', phone:'604-742-6200', note:'BC Nurses'}],
-    alberta:    [{name:'CPSA Alberta', email:'hcap@hqca.ca', phone:'403-297-8162', note:'Alberta physicians & health quality'}],
-    quebec:     [{name:'CMQ', email:'secretariat@cmq.org', phone:'514-933-4441', note:'Quebec physicians'},{name:'OIIQ', email:'inf@oiiq.org', phone:'514-935-2501', note:'Quebec nurses'}]
+    bc:         [{name:'CPSBC', email:'complaints@cpsbc.ca', phone:'604-733-7758', note:'BC Physicians'},{name:'BCCNM', email:'info@bccnm.ca', phone:'604-742-6200', note:'BC Nurses'}],
+    alberta:    [{name:'CPSA — College of Physicians & Surgeons of Alberta', email:'cpsa.ca/albertans/albertan-complaints/', phone:'1-800-561-3899', note:'Doctor complaints — online form or mail'},{name:'Alberta Health Advocates', email:'info@albertahealthadvocates.ca', phone:'780-422-1812', note:'Help with health service concerns'}],
+    quebec:     [{name:'CMQ', email:'deonto@cmq.org', phone:'514-933-4441', note:'Quebec physicians'},{name:'OIIQ', email:'www.oiiq.org/en/customer-service', phone:'514-935-2501', note:'Quebec nurses'}]
   },
   delays: {
-    default:    [{name:'Ontario Ombudsman', email:'ombudsman@ombudsman.on.ca', phone:'1-800-263-1830', note:'Government service delays Ontario'},{name:'Federal Ombudsman', email:'ombudsman@federal-ombudsman.gc.ca', phone:'1-800-520-2520', note:'Federal service delays'},{name:'Office of the Patient Ombudsman', email:'info@patientombudsman.ca', phone:'1-888-321-0339', note:'Healthcare wait times Ontario'}],
-    bc:         [{name:'BC Ombudsperson', email:'bcombudsperson@bcombudsperson.ca', phone:'1-800-567-3247', note:''}],
-    alberta:    [{name:'Alberta Ombudsman', email:'ombudsman@ombudsman.ab.ca', phone:'780-427-2756', note:''}],
+    default:    [{name:'Ontario Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Government service delays Ontario'},{name:'Office of the Patient Ombudsman', email:'info@patientombudsman.ca', phone:'1-888-321-0339', note:'Healthcare wait times Ontario'}],
+    bc:         [{name:'BC Ombudsperson', email:'bcombudsperson.ca/complaints/', phone:'1-800-567-3247', note:''}],
+    alberta:    [{name:'Alberta Ombudsman', email:'info@ombudsman.ab.ca', phone:'780-427-2756', note:''}],
     quebec:     [{name:'Protecteur du citoyen', email:'protecteur@protecteurducitoyen.qc.ca', phone:'1-800-463-5070', note:''}]
   },
   benefits: {
-    default:    [{name:'Service Canada', email:'servicecanada.gc.ca/contact', phone:'1-800-206-7218', note:'EI, CPP, OAS complaints'},{name:'Service Canada Feedback', email:'clientfeedback-commentairesclient@servicecanada.gc.ca', phone:'1-800-206-7218', note:'EI & benefit disputes'},{name:'Canada Revenue Agency', email:'canada.ca/contact-cra', phone:'1-800-959-8281', note:'Tax benefit issues (GST/HST, CCB)'}]
+    default:    [{name:'Service Canada', email:'canada.ca/en/employment-social-development/corporate/service-canada/client-satisfaction.html', phone:'1-800-206-7218', note:'EI, CPP, OAS complaints'},{name:'Service Canada Feedback', email:'canada.ca/en/employment-social-development/corporate/service-canada/client-satisfaction.html', phone:'1-800-206-7218', note:'EI & benefit disputes'},{name:'Canada Revenue Agency', email:'www.canada.ca/en/revenue-agency/corporate/contact-information.html', phone:'1-800-959-8281', note:'Tax benefit issues (GST/HST, CCB)'}]
   },
   immigration: {
-    default:    [{name:'IRCC — Immigration Refugees & Citizenship', email:'ircc.immigration-enquiries@cic.gc.ca', phone:'1-888-242-2100', note:'Passport, visa, PR complaints'},{name:'Immigration Ombudsman', email:'inm-ombudsman@cic.gc.ca', phone:'1-888-242-2100', note:'IRCC service complaints'},{name:'IRB — Immigration & Refugee Board', email:'irb.cisr.contact@irb-cisr.gc.ca', phone:'1-800-465-8190', note:'Hearings & decisions'}]
+    default:    [{name:'IRCC — Immigration Refugees & Citizenship', email:'canada.ca/en/immigration-refugees-citizenship/corporate/contact-ircc/web-form.html', phone:'1-888-242-2100', note:'Passport, visa, PR complaints'},{name:'IRB — Immigration & Refugee Board', email:'IRB.contact.CISR@irb-cisr.gc.ca', phone:'1-833-931-5121', note:'Hearings & decisions'}]
   },
   police: {
-    default:    [{name:'LECA — Law Enforcement Complaints Agency (formerly OIPRD)', email:'oiprd@oiprd.on.ca', phone:'1-877-411-4773', note:'Ontario police complaints'},{name:'RCMP Civilian Review & Complaints', email:'complaints-plaintes@crcc-ccetp.gc.ca', phone:'1-800-665-6878', note:'Federal RCMP complaints'}],
-    bc:         [{name:'Office of the Police Complaint Commissioner BC', email:'opcc@opcc.bc.ca', phone:'1-877-999-8707', note:''}],
-    alberta:    [{name:'Alberta Serious Incident Response Team', email:'asirt@gov.ab.ca', phone:'780-644-1483', note:''}],
-    quebec:     [{name:'Bureau des enquêtes indépendantes', email:'bei@bei.gouv.qc.ca', phone:'514-228-6928', note:''}]
+    default:    [{name:'LECA — Law Enforcement Complaints Agency', email:'lecacomplaints@ontario.ca', phone:'1-877-411-4773', note:'Ontario police complaints'},{name:'RCMP Civilian Review & Complaints', email:'www.crcc-ccetp.gc.ca/en/make-complaint-form', phone:'1-800-665-6878', note:'Federal RCMP complaints'}],
+    bc:         [{name:'Office of the Police Complaint Commissioner BC', email:'info@opcc.bc.ca', phone:'1-877-999-8707', note:''}],
+    alberta:    [{name:'Police Review Commission (Alberta)', email:'prccomplaints@gov.ab.ca', phone:'780-644-0306', note:'Replaced ASIRT on Dec 1, 2025'}],
+    quebec:     [{name:'Bureau des enquêtes indépendantes', email:'info@bei.gouv.qc.ca', phone:'450-640-1350', note:''}]
   },
   race: {
     default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Ontario — race discrimination'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — race discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Ontario Human Rights Commission'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   gender: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Gender & sex discrimination'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'},{name:'Status of Women Canada', email:'swc-cfc@cfc-swc.gc.ca', phone:'1-855-969-9922', note:'Gender equality issues'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Gender & sex discrimination'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   religion: {
     default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Religious discrimination Ontario'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — religion & creed'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   disability: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Disability accommodation'},{name:'AODA — Accessibility Directorate', email:'accesson@ontario.ca', phone:'1-866-515-2025', note:'Accessibility for Ontarians with Disabilities'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal disability rights'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}]
+    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Disability accommodation'},{name:'AODA — Accessibility Directorate', email:'', phone:'1-866-515-2025', note:'Accessibility for Ontarians with Disabilities'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal disability rights'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}]
   },
   age: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Age discrimination (18+)'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal age discrimination'},{name:'Ontario Seniors Advocate', email:'seniors@ontario.ca', phone:'1-888-910-1999', note:'Senior-specific issues'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}]
+    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Age discrimination (18+)'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal age discrimination'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}]
   },
   sexual: {
     default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Sexual orientation & gender identity'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal LGBTQ+ discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy & guidance'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRCcomplaints@gov.ab.ca', phone:'780-427-7661', note:''}],
-    quebec:     [{name:'Commission des droits de la personne', email:'plaintes@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
+    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   language: {
-    default:    [{name:'Office of the Commissioner of Official Languages', email:'commissioner@clo-ocol.gc.ca', phone:'1-877-996-6368', note:'English/French language rights — federal'},{name:'French Language Services Ontario', email:'flsc@ontario.ca', phone:'1-800-268-7507', note:'Ontario French language rights'}],
-    bc:         [{name:'OPC Federal', email:'commissioner@clo-ocol.gc.ca', phone:'1-877-996-6368', note:''},{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:''}],
-    quebec:     [{name:'Office québécois de la langue française', email:'communication@oqlf.gouv.qc.ca', phone:'514-873-6565', note:'French language protection QC'}]
+    default:    [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:'English/French language rights — federal'},{name:'French Language Services Commissioner (Ontario Ombudsman)', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Ontario French language rights'}],
+    bc:         [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:''},{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    quebec:     [{name:'Office québécois de la langue française', email:'www.oqlf.gouv.qc.ca/francisation/respect/plaintes/', phone:'514-873-6565', note:'French language protection QC'}]
   },
   indigenous: {
-    default:    [{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Indigenous rights — federal'},{name:'National Centre for Truth & Reconciliation', email:'info@nctr.ca', phone:'1-204-474-7427', note:'Residential school survivors'},{name:'Indigenous Services Canada', email:'ServicesAutochtones-IndigenousServices@sac-isc.gc.ca', phone:'1-800-567-9604', note:'Federal Indigenous services'}]
+    default:    [{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Indigenous rights — federal'},{name:'National Centre for Truth & Reconciliation', email:'nctr@umanitoba.ca', phone:'1-855-415-4534', note:'Residential school survivors'},{name:'Indigenous Services Canada', email:'sac-isc.gc.ca/eng/1291132820288/1603310905799', phone:'1-800-567-9604', note:'Federal Indigenous services'}]
   },
   education: {
-    toronto:    [{name:'TDSB — Toronto District School Board', email:'info@tdsb.on.ca', phone:'416-397-3000', note:'Public school complaints'},{name:'TCDSB', email:'info@tcdsb.org', phone:'416-222-8282', note:'Catholic school board'},{name:'Ontario Education Ombudsman', email:'ombudsman@ombudsman.on.ca', phone:'1-800-263-1830', note:'Escalated school complaints'}],
-    default:    [{name:'Ministry of Education Ontario', email:'minister.edu@ontario.ca', phone:'1-800-387-5514', note:'School board complaints'},{name:'Ontario Ombudsman', email:'ombudsman@ombudsman.on.ca', phone:'1-800-263-1830', note:'Unresolved school disputes'}],
-    bc:         [{name:'BC Ministry of Education', email:'educ.minister@gov.bc.ca', phone:'250-356-5963', note:''},{name:'BC Human Rights Tribunal', email:'bchrt@bchrt.bc.ca', phone:'604-775-2000', note:'School discrimination'}],
-    alberta:    [{name:'Alberta Education', email:'comm.contact@gov.ab.ca', phone:'780-427-7219', note:''}],
-    quebec:     [{name:'Ministère de l\'Éducation', email:'aide.demandes@meq.gouv.qc.ca', phone:'1-866-747-6626', note:''}]
+    toronto:    [{name:'TDSB — Toronto District School Board', email:'GeneralInquiries@tdsb.on.ca', phone:'416-397-3000', note:'Public school complaints'},{name:'TCDSB', email:'www.tcdsb.org/page/contact-us/', phone:'416-222-8282', note:'Catholic school board'},{name:'Ontario Education Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Escalated school complaints'}],
+    default:    [{name:'Ministry of Education Ontario', email:'minister.edu@ontario.ca', phone:'1-800-387-5514', note:'School board complaints'},{name:'Ontario Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Unresolved school disputes'}],
+    bc:         [{name:'BC Ministry of Education and Child Care', email:'ECC.Minister@gov.bc.ca', phone:'1-800-663-7867', note:''},{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:'School discrimination'}],
+    alberta:    [{name:'Alberta Education', email:'alberta.ca/contact-government', phone:'780-427-7219', note:''}],
+    quebec:     [{name:'Ministère de l\'Éducation du Québec', email:'joindre.education.gouv.qc.ca', phone:'1-866-747-6626', note:''}]
   },
   condo: {
-    default:    [{name:'Condominium Authority of Ontario (CAO)', email:'info@condoauthorityontario.ca', phone:'1-800-854-9014', note:'General inquiries — Ontario condo corporations'},{name:'Condominium Authority Tribunal (CAT)', email:'condoauthorityontario.ca/issues-and-dispute-resolution', phone:'1-800-854-9014', note:'File a case online — records, governance, nuisance disputes'}],
-    bc:         [{name:'Civil Resolution Tribunal — Strata Property', email:'RSC@crtbc.ca', phone:'1-844-322-2292', note:'Apply online or by email'}],
-    alberta:    [{name:'Service Alberta', email:'consumer.contact@gov.ab.ca', phone:'1-877-427-4088', note:'No dedicated condo tribunal — disputes go through mediation, arbitration, or the courts under the Condominium Property Act'}],
+    default:    [{name:'Condominium Authority of Ontario (CAO)', email:'condoauthorityontario.ca/contact-us/', phone:'1-800-854-9014', note:'General inquiries — Ontario condo corporations'},{name:'Condominium Authority Tribunal (CAT)', email:'condoauthorityontario.ca/issues-and-dispute-resolution', phone:'1-800-854-9014', note:'File a case online — records, governance, nuisance disputes'}],
+    bc:         [{name:'Civil Resolution Tribunal — Strata Property', email:'info@crtbc.ca', phone:'1-844-322-2292', note:'Apply online or by email'}],
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:'No dedicated condo tribunal — disputes go through mediation, arbitration, or the courts under the Condominium Property Act'}],
     quebec:     [{name:'Cour du Québec — Petites créances', email:'quebec.ca/en/justice', phone:'', note:'No dedicated tribunal — co-ownership disputes go through Small Claims (up to $15,000) or Superior Court'}]
   },
   studentloan: {
-    default:    [{name:'NSLSC — National Student Loans Service Centre', email:'csnpe-nslsc.canada.ca/en/public/contact/contact-us', phone:'1-888-815-4514', note:'Secure online messaging only — no public email; covers federal + most provincial loans (not Quebec)'},{name:'Service Canada Feedback (ESDC)', email:'clientfeedback-commentairesclient@servicecanada.gc.ca', phone:'1-800-206-7218', note:'ESDC oversees the NSLSC — escalate unresolved disputes here'}],
-    quebec:     [{name:'Aide financière aux études (AFE) — Bureau des recours', email:'quebec.ca/en/gouvernement/ministeres-organismes/enseignement-superieur/plainte', phone:'1-877-643-3750', note:'Quebec runs its own separate student loan system, not the NSLSC'}]
+    default:    [{name:'NSLSC — National Student Loans Service Centre', email:'csnpe-nslsc.canada.ca/en/contact-us', phone:'1-888-815-4514', note:'Secure online messaging only — no public email; covers federal + most provincial loans (not Quebec)'},{name:'Service Canada Feedback (ESDC)', email:'canada.ca/en/employment-social-development/corporate/service-canada/client-satisfaction.html', phone:'1-800-206-7218', note:'ESDC oversees the NSLSC — escalate unresolved disputes here'}],
+    quebec:     [{name:'Aide financière aux études (AFE) — Bureau des recours', email:'quebec.ca/en/education/student-financial-assistance', phone:'1-877-643-3750', note:'Quebec runs its own separate student loan system, not the NSLSC'}]
   }
 };
 
@@ -2066,6 +2065,9 @@ function _refreshChain(){
   var submitBtn=document.getElementById('sub-btn'); if(submitBtn) submitBtn.parentNode.insertBefore(box,submitBtn);
 }
 
+// Some bodies only take complaints through an online form: their "email" field holds the form URL.
+function _isMail(e){ return /^[^\s@\/]+@[^\s@\/]+\.[a-z]{2,}$/i.test(e||''); }
+function _authUrl(e){ return /^https?:\/\//i.test(e)?e:'https://'+e; }
 function getAuthorities(category, location) {
   const cat = AUTHORITIES[category] || AUTHORITIES.other;
   const loc = (location || '').toLowerCase();
@@ -2085,6 +2087,7 @@ function getAuthorities(category, location) {
   if (pv === 'QC') return cat.quebec || fed();
   // Manitoba, Saskatchewan, Atlantic Canada and the territories: never fall back to Ontario bodies.
   // Provincial topics get the verified chain instead of an auto-email; federal topics keep federal bodies.
+  if (pv === 'ON') return cat.default || AUTHORITIES.other.default;
   if (pv && CHAIN[pv]) return _CAT_TOPIC[category] ? [] : fed();
   return cat.default || AUTHORITIES.other.default;
 }
@@ -2108,7 +2111,8 @@ function showAuthorities(category, location) {
   auths.forEach(function(a){
     html += '<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,.05)">'
       + '<div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:4px">'+a.name+'</div>'
-      + '<div style="font-size:.75rem;color:var(--blue);margin-bottom:2px">✉ <a href="mailto:'+a.email+'" style="color:inherit;text-decoration:none">'+a.email+'</a></div>'
+      + (_isMail(a.email)?'<div style="font-size:.75rem;color:var(--blue);margin-bottom:2px">✉ <a href="mailto:'+escAttr(a.email)+'" style="color:inherit;text-decoration:none">'+escHtml(a.email)+'</a></div>'
+        :(a.email?'<div style="font-size:.75rem;color:var(--blue);margin-bottom:2px">🔗 <a href="'+escAttr(_authUrl(a.email))+'" target="_blank" rel="noopener" style="color:inherit">'+escHtml(V.t('auth_form'))+'</a></div>':''))
       + '<div style="font-size:.72rem;color:var(--muted)">📞 '+a.phone+(a.note?' · '+a.note:'')+'</div>'
       + (a.deadline && !_isAnon?'<div style="font-size:.7rem;color:#c8102e;font-weight:600;margin-top:4px;background:rgba(240,87,106,.12);border-radius:6px;padding:4px 8px;display:inline-block">⏱ '+a.deadline+'</div>':'')
       + '</div>';
@@ -2149,7 +2153,7 @@ const V = (function(){
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
-      nbk:"← Back",miss_title:"complaint title",miss_desc:"description",miss_email:"valid email",fill_in:"Please fill in",draft_restored:"We restored what you typed before the page reloaded.",
+      nbk:"← Back",miss_title:"complaint title",auth_no_email:"We have no verified e-mail for {name} — please contact them directly:",auth_form:"Official complaint form",auth_form_only:"{name} takes complaints only through its official form — we did not e-mail them. Please file there:",al_noanalysis:"Analyze a document first.",al_min10:"Please write at least 10 characters.",al_error:"Something went wrong. Please try again.",al_nomic:"Microphone not supported. Please type.",al_micdenied:"Microphone permission denied.",miss_desc:"description",miss_email:"valid email",fill_in:"Please fill in",draft_restored:"We restored what you typed before the page reloaded.",
       ld_err:"Couldn't detect your location — please type your address instead.",loc_ph:"Enter address...",
       ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
       tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
@@ -2239,7 +2243,7 @@ const V = (function(){
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
-      nbk:"← Geri",miss_title:"şikayet başlığı",miss_desc:"açıklama",miss_email:"geçerli e-posta",fill_in:"Lütfen doldurun",draft_restored:"Sayfa yeniden yüklenmeden önce yazdıklarınızı geri getirdik.",
+      nbk:"← Geri",miss_title:"şikayet başlığı",auth_no_email:"{name} için doğrulanmış e-posta yok — lütfen doğrudan iletişime geçin:",auth_form:"Resmi şikayet formu",auth_form_only:"{name} şikayetleri yalnızca resmi formdan kabul ediyor — e-posta göndermedik. Lütfen buradan başvurun:",al_noanalysis:"Önce bir belge analiz edin.",al_min10:"Lütfen en az 10 karakter yazın.",al_error:"Bir hata oluştu. Lütfen tekrar deneyin.",al_nomic:"Mikrofon desteklenmiyor. Lütfen yazın.",al_micdenied:"Mikrofon izni reddedildi.",miss_desc:"açıklama",miss_email:"geçerli e-posta",fill_in:"Lütfen doldurun",draft_restored:"Sayfa yeniden yüklenmeden önce yazdıklarınızı geri getirdik.",
       ld_err:"Konum alınamadı — lütfen adresinizi yazın.",loc_ph:"Adres yazın...",
       ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
       tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
@@ -2329,7 +2333,7 @@ const V = (function(){
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
-      nbk:"← Retour",miss_title:"titre de la plainte",miss_desc:"description",miss_email:"e-mail valide",fill_in:"Veuillez remplir",draft_restored:"Nous avons restauré ce que vous aviez saisi avant le rechargement.",
+      nbk:"← Retour",miss_title:"titre de la plainte",auth_no_email:"Nous n'avons pas de courriel vérifié pour {name} — veuillez les contacter directement :",auth_form:"Formulaire officiel de plainte",auth_form_only:"{name} reçoit les plaintes uniquement par son formulaire officiel — nous ne lui avons pas écrit. Déposez-la ici :",al_noanalysis:"Analysez d'abord un document.",al_min10:"Veuillez écrire au moins 10 caractères.",al_error:"Une erreur s'est produite. Veuillez réessayer.",al_nomic:"Microphone non pris en charge. Veuillez écrire.",al_micdenied:"Accès au microphone refusé.",miss_desc:"description",miss_email:"e-mail valide",fill_in:"Veuillez remplir",draft_restored:"Nous avons restauré ce que vous aviez saisi avant le rechargement.",
       ld_err:"Impossible de détecter votre position — veuillez saisir votre adresse.",loc_ph:"Saisissez une adresse...",
       ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
       tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
@@ -2375,7 +2379,7 @@ const V = (function(){
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
-      nbk:"← 返回",miss_title:"投诉标题",miss_desc:"描述",miss_email:"有效邮箱",fill_in:"请填写",draft_restored:"已恢复页面重新加载前您输入的内容。",
+      nbk:"← 返回",miss_title:"投诉标题",auth_no_email:"我们没有 {name} 的已验证邮箱——请直接联系：",auth_form:"官方投诉表格",auth_form_only:"{name} 只通过官方表格受理投诉——我们没有向其发送邮件。请在此提交：",al_noanalysis:"请先分析一份文件。",al_min10:"请至少输入10个字符。",al_error:"出现错误，请重试。",al_nomic:"不支持麦克风，请输入文字。",al_micdenied:"麦克风权限被拒绝。",miss_desc:"描述",miss_email:"有效邮箱",fill_in:"请填写",draft_restored:"已恢复页面重新加载前您输入的内容。",
       ld_err:"无法检测您的位置——请输入您的地址。",loc_ph:"输入地址...",
       ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
       tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
@@ -2421,7 +2425,7 @@ const V = (function(){
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
-      nbk:"← Atrás",miss_title:"título de la queja",miss_desc:"descripción",miss_email:"correo válido",fill_in:"Complete",draft_restored:"Restauramos lo que escribió antes de que la página se recargara.",
+      nbk:"← Atrás",miss_title:"título de la queja",auth_no_email:"No tenemos un correo verificado de {name} — contáctelos directamente:",auth_form:"Formulario oficial de queja",auth_form_only:"{name} solo acepta quejas mediante su formulario oficial — no le enviamos un correo. Preséntela aquí:",al_noanalysis:"Primero analice un documento.",al_min10:"Escriba al menos 10 caracteres.",al_error:"Algo salió mal. Inténtelo de nuevo.",al_nomic:"Micrófono no compatible. Escriba su mensaje.",al_micdenied:"Permiso de micrófono denegado.",miss_desc:"descripción",miss_email:"correo válido",fill_in:"Complete",draft_restored:"Restauramos lo que escribió antes de que la página se recargara.",
       ld_err:"No se pudo detectar su ubicación: escriba su dirección.",loc_ph:"Escriba una dirección...",
       ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
       tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
@@ -2467,7 +2471,7 @@ const V = (function(){
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
-      nbk:"→ رجوع",miss_title:"عنوان الشكوى",miss_desc:"الوصف",miss_email:"بريد إلكتروني صالح",fill_in:"يرجى تعبئة",draft_restored:"استعدنا ما كتبته قبل إعادة تحميل الصفحة.",
+      nbk:"→ رجوع",miss_title:"عنوان الشكوى",auth_no_email:"ليس لدينا بريد موثّق لـ {name} — يرجى التواصل معهم مباشرة:",auth_form:"نموذج الشكوى الرسمي",auth_form_only:"تقبل {name} الشكاوى عبر نموذجها الرسمي فقط — لم نرسل إليها بريدًا. يرجى التقديم هنا:",al_noanalysis:"حلّل مستندًا أولاً.",al_min10:"يرجى كتابة 10 أحرف على الأقل.",al_error:"حدث خطأ. يرجى المحاولة مرة أخرى.",al_nomic:"الميكروفون غير مدعوم. يرجى الكتابة.",al_micdenied:"تم رفض إذن الميكروفون.",miss_desc:"الوصف",miss_email:"بريد إلكتروني صالح",fill_in:"يرجى تعبئة",draft_restored:"استعدنا ما كتبته قبل إعادة تحميل الصفحة.",
       ld_err:"تعذّر تحديد موقعك — يرجى كتابة عنوانك.",loc_ph:"أدخل العنوان...",
       ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
       tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
@@ -2513,7 +2517,7 @@ const V = (function(){
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
-      nbk:"← ਵਾਪਸ",miss_title:"ਸ਼ਿਕਾਇਤ ਦਾ ਸਿਰਲੇਖ",miss_desc:"ਵੇਰਵਾ",miss_email:"ਸਹੀ ਈਮੇਲ",fill_in:"ਕਿਰਪਾ ਕਰਕੇ ਭਰੋ",draft_restored:"ਪੰਨਾ ਮੁੜ ਲੋਡ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਿਆ ਤੁਹਾਡਾ ਲਿਖਤ ਵਾਪਸ ਲਿਆਂਦਾ ਗਿਆ।",
+      nbk:"← ਵਾਪਸ",miss_title:"ਸ਼ਿਕਾਇਤ ਦਾ ਸਿਰਲੇਖ",auth_no_email:"{name} ਲਈ ਸਾਡੇ ਕੋਲ ਪ੍ਰਮਾਣਿਤ ਈਮੇਲ ਨਹੀਂ — ਕਿਰਪਾ ਕਰਕੇ ਸਿੱਧਾ ਸੰਪਰਕ ਕਰੋ:",auth_form:"ਅਧਿਕਾਰਤ ਸ਼ਿਕਾਇਤ ਫਾਰਮ",auth_form_only:"{name} ਸ਼ਿਕਾਇਤਾਂ ਸਿਰਫ਼ ਆਪਣੇ ਅਧਿਕਾਰਤ ਫਾਰਮ ਰਾਹੀਂ ਲੈਂਦਾ ਹੈ — ਅਸੀਂ ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ। ਕਿਰਪਾ ਕਰਕੇ ਇੱਥੇ ਦਰਜ ਕਰੋ:",al_noanalysis:"ਪਹਿਲਾਂ ਇੱਕ ਦਸਤਾਵੇਜ਼ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ।",al_min10:"ਕਿਰਪਾ ਕਰਕੇ ਘੱਟੋ-ਘੱਟ 10 ਅੱਖਰ ਲਿਖੋ।",al_error:"ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",al_nomic:"ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਸਮਰਥਿਤ ਨਹੀਂ। ਕਿਰਪਾ ਕਰਕੇ ਲਿਖੋ।",al_micdenied:"ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਮਿਲੀ।",miss_desc:"ਵੇਰਵਾ",miss_email:"ਸਹੀ ਈਮੇਲ",fill_in:"ਕਿਰਪਾ ਕਰਕੇ ਭਰੋ",draft_restored:"ਪੰਨਾ ਮੁੜ ਲੋਡ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਿਆ ਤੁਹਾਡਾ ਲਿਖਤ ਵਾਪਸ ਲਿਆਂਦਾ ਗਿਆ।",
       ld_err:"ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਨਹੀਂ ਲੱਭ ਸਕਿਆ — ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪਤਾ ਲਿਖੋ।",loc_ph:"ਪਤਾ ਲਿਖੋ...",
       ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
       tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
@@ -3463,7 +3467,7 @@ async function runAI(){
   var cat=document.getElementById('inp-cat').value;
   var loc=document.getElementById('inp-loc').value.trim();
   var targetName=document.getElementById('inp-tname').value.trim();
-  if(!desc||desc.length<10){alert('Lütfen en az 10 karakter yazın.');return;}
+  if(!desc||desc.length<10){alert(V.t('al_min10'));return;}
   var btn=document.getElementById('ai-btn');
   var orig=btn.textContent;
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';
@@ -3621,7 +3625,7 @@ async function runAI(){
     setTimeout(function(){btn.textContent=orig;btn.disabled=false;},2000);
   }catch(e){
     btn.textContent=orig;btn.disabled=false;
-    alert('Error: '+e.message);
+    console.warn(e);alert(V.t('al_error'));
   }
 }
 
@@ -3982,7 +3986,14 @@ async function doSubmit(){
   var auths=getAuthorities(c.category,c.location);
   var emailDraft=emailDraftEl?emailDraftEl.innerText:_basicComplaintEmail(c,(auths&&auths[0])?auths[0].name:'');
   var emailStatus=document.getElementById('email-status');
-  if(auths&&auths.length){
+  if(auths&&auths.length&&!_isMail(auths[0].email)&&emailStatus){
+    // No public complaint e-mail for this body — point the user to its official form instead of e-mailing a wrong inbox.
+    var fa=auths[0];
+    emailStatus.style.display='block';emailStatus.style.background='rgba(231,185,85,.16)';emailStatus.style.color='#f0cf8a';
+    emailStatus.innerHTML='📝 '+escHtml(V.t(fa.email?'auth_form_only':'auth_no_email').replace('{name}',fa.name))
+      +(fa.email?' <a href="'+escAttr(_authUrl(fa.email))+'" target="_blank" rel="noopener" style="color:inherit;font-weight:700">'+escHtml(V.t('auth_form'))+' →</a>':(fa.phone?' 📞 '+escHtml(fa.phone):''));
+  }
+  if(auths&&auths.length&&_isMail(auths[0].email)){
     var auth=auths[0];
     sendComplaintEmail(c,auth.email,auth.name,emailDraft).then(function(result){
       if(!emailStatus) return;
@@ -4587,14 +4598,14 @@ async function _aListen(){
     return;
   }
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){
-    alert('Microphone not supported. Please type.');
+    alert(V.t('al_nomic'));
     return;
   }
   if(_aSpeaking){window.speechSynthesis.cancel();_aSpeaking=false;}
   try{
     _aMicStream=await navigator.mediaDevices.getUserMedia({audio:true});
   }catch(e){
-    alert('Microphone permission denied.');
+    alert(V.t('al_micdenied'));
     return;
   }
   _aAudioChunks=[];
