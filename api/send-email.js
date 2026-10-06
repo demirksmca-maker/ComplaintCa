@@ -1,6 +1,6 @@
 import { isRateLimited } from './_rateLimit.js';
 
-const SENDER = { name: 'ComplaintCA', email: 'complaintcaca@gmail.com' };
+export const SENDER = { name: 'ComplaintCA', email: 'complaintcaca@gmail.com' };
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -11,7 +11,7 @@ function escapeHtml(s) {
     .replace(/'/g, '&#39;');
 }
 
-function buildBrandedHtml(body) {
+export function buildBrandedHtml(body) {
   const safeBody = escapeHtml(body).replace(/\n/g, '<br>');
   return `<!doctype html><html><body style="margin:0;padding:0;background:#f4f7ff;font-family:Georgia,'Times New Roman',serif">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f7ff;padding:24px 0">
