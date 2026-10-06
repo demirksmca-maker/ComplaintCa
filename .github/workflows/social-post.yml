@@ -1,0 +1,56 @@
+name: Social Post
+
+# Publishes due posts from social/queue.json to Facebook, Instagram and LinkedIn
+# once a day (10:00 Toronto in summer, 09:00 in winter). Records what was
+# published in social/posted.json so nothing is posted twice. Run it by hand
+# from the Actions tab with "dry_run" to preview without posting.
+on:
+  schedule:
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only — do not post'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social-post
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Publish due posts
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+          LINKEDIN_AUTHOR: ${{ secrets.LINKEDIN_AUTHOR }}
+        run: node scripts/social-post.mjs
+
+      - name: Save posted log
+        if: always()
+        run: |
+          if git diff --quiet -- social/posted.json; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add social/posted.json
+          git commit -m "Social: record published posts [skip ci]"
+          git push origin HEAD:main
