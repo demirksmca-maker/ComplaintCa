@@ -8,7 +8,8 @@
 //   META_PAGE_ID, META_PAGE_TOKEN     Facebook Page id + non-expiring Page access token
 //   IG_USER_ID                        Instagram business account id (uses META_PAGE_TOKEN)
 //   LINKEDIN_TOKEN, LINKEDIN_AUTHOR   OAuth token + urn:li:organization:123 (or urn:li:person:abc)
-// Optional: DRY_RUN=1, SITE_BASE, GRAPH_VERSION, LINKEDIN_VERSION, MAX_POSTS_PER_RUN
+// Optional: DRY_RUN=1, POST_ID (publish just this post now, ignoring its date),
+//           SITE_BASE, GRAPH_VERSION, LINKEDIN_VERSION, MAX_POSTS_PER_RUN
 // A platform whose secrets are missing is skipped (not an error).
 
 import { readFile, writeFile } from 'node:fs/promises';
@@ -47,9 +48,9 @@ export function fullCaption(post) {
   return post.caption + (post.hashtags ? '\n\n' + post.hashtags : '');
 }
 
-export function duePosts(queue, posted, today, enabled) {
+export function duePosts(queue, posted, today, enabled, onlyId) {
   return queue.posts
-    .filter((p) => p.date <= today)
+    .filter((p) => (onlyId ? p.id === onlyId : p.date <= today))
     .map((p) => ({ post: p, todo: p.platforms.filter((pl) => enabled.includes(pl) && !(posted[p.id] || {})[pl]) }))
     .filter((x) => x.todo.length)
     .sort((a, b) => a.post.date.localeCompare(b.post.date));
@@ -132,7 +133,9 @@ async function main() {
     if (!enabled.includes(pl)) console.warn(`[skip] ${pl}: secrets not set`);
 
   const today = torontoToday();
-  const due = duePosts(queue, posted, today, enabled).slice(0, MAX);
+  const onlyId = (env.POST_ID || '').trim();
+  if (onlyId && !queue.posts.some((p) => p.id === onlyId)) { console.error(`✗ post "${onlyId}" not in queue`); process.exit(1); }
+  const due = duePosts(queue, posted, today, enabled, onlyId).slice(0, MAX);
   console.log(`Today (Toronto): ${today} — ${due.length} post(s) to publish${DRY ? ' [DRY RUN]' : ''}`);
 
   let failed = 0;

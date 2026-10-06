@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Paylaşım Paneli — ComplaintCA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1830;--card:#121e36;--card2:#182642;--line:#26334a;--text:#e9edf5;--sub:#a9b4c9;--muted:#7c8aa3;
+ --gold:#e7b955;--gold2:#c9a84c;--blue:#4d8ee8;--green:#2fd07a;--red:#f0576a;--crimson:#e0324d}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(160deg,#0a1830,#0c1526 60%,#081120);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif;min-height:100vh}
+a{color:var(--blue)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.logo{font-family:Cinzel,serif;font-weight:800;font-size:24px}.logo b{color:var(--crimson)}
+.logo small{display:block;font-family:Inter;font-weight:600;font-size:12px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.btn{border:0;border-radius:10px;padding:10px 16px;font:600 14px Inter,sans-serif;cursor:pointer;background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.btn:hover{border-color:var(--gold2)}.btn:disabled{opacity:.5;cursor:default}
+.btn.gold{background:linear-gradient(135deg,#f0d78c,#c9a84c);color:#0f2952;border:0}
+.btn.red{color:var(--red)}.btn.sm{padding:6px 11px;font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+h2{font-family:Inter,sans-serif;font-weight:700;font-size:18px;margin:0 0 12px;color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat .n{font-family:Inter,sans-serif;font-size:30px;font-weight:800;color:var(--gold)}.stat .l{color:var(--sub);font-size:13px}
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.post{background:var(--card2);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.post img{width:100%;aspect-ratio:1;object-fit:cover;background:#081120;display:block}
+.post .b{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.date{font-weight:700}.cap{color:var(--sub);font-size:13px;white-space:pre-line;max-height:5.6em;overflow:hidden}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.chip.ok{color:#7fe3a8;border-color:rgba(47,208,122,.4);background:rgba(47,208,122,.1)}
+.chip.wait{color:#f0cf8a;border-color:rgba(231,185,85,.4)}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+label{display:block;font-weight:600;font-size:13px;margin:12px 0 5px;color:var(--sub)}
+input[type=text],input[type=password],input[type=date],textarea{width:100%;background:#0c1526;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--text);font:14px Inter,sans-serif}
+textarea{min-height:130px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cb{display:inline-flex;gap:6px;align-items:center;font-weight:500;color:var(--text);margin:0 12px 0 0}
+.hint{color:var(--muted);font-size:13px}
+.msg{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#0f2952;border:1px solid var(--gold2);padding:12px 18px;border-radius:12px;max-width:90vw;z-index:9;display:none}
+.msg.err{border-color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:14px}td{padding:8px 6px;border-top:1px solid var(--line)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+dialog{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:20px;width:min(560px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.prev{width:120px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:none}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}.tab.on{border-color:var(--gold);color:var(--gold)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header>
+  <div class="logo"><span lang="en">Complaint<b>CA</b></span><small>Paylaşım Paneli</small></div>
+  <div class="row" id="topActs" style="display:none">
+   <button class="btn gold" onclick="openEdit()">＋ Yeni paylaşım</button>
+   <button class="btn" onclick="loadAll()">↻ Yenile</button>
+   <button class="btn" onclick="logout()">Çıkış</button>
+  </div>
+ </header>
+
+ <!-- Login -->
+ <div class="card" id="login">
+  <h2>GitHub ile bağlan</h2>
+  <p class="hint">Panel, paylaşım takvimini GitHub'daki <code>social/queue.json</code> dosyasından okur ve oraya yazar. Bunun için bir kez GitHub anahtarı (token) girmen gerekiyor. Anahtar sadece bu tarayıcıda saklanır, hiçbir yere gönderilmez.</p>
+  <ol class="hint">
+   <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Yeni token oluştur</a> (Fine-grained)</li>
+   <li>Repository access → <b>Only select repositories</b> → <b>ComplaintCa</b></li>
+   <li>Permissions → <b>Contents: Read and write</b>, <b>Actions: Read and write</b>, <b>Secrets: Read-only</b></li>
+   <li>Oluşan token'ı aşağıya yapıştır</li>
+  </ol>
+  <label for="tok">GitHub token</label>
+  <input type="password" id="tok" placeholder="github_pat_..." autocomplete="off">
+  <div class="row" style="margin-top:12px">
+   <label class="cb" style="margin:0"><input type="checkbox" id="remember" checked> Bu cihazda hatırla</label>
+   <button class="btn gold" onclick="login()">Bağlan</button>
+  </div>
+ </div>
+
+ <div id="app" class="hidden">
+  <div class="stats">
+   <div class="stat"><div class="n" id="sPlanned">–</div><div class="l">Bekleyen paylaşım</div></div>
+   <div class="stat"><div class="n" id="sDone">–</div><div class="l">Paylaşıldı</div></div>
+   <div class="stat"><div class="n" id="sNext" style="font-size:20px;padding-top:8px">–</div><div class="l">Sıradaki paylaşım</div></div>
+   <div class="stat"><div class="n" id="sConn" style="font-size:20px;padding-top:8px">–</div><div class="l">Bağlı hesaplar</div></div>
+  </div>
+
+  <div class="tabs">
+   <button class="btn tab on" data-f="upcoming" onclick="setFilter(this)">Bekleyenler</button>
+   <button class="btn tab" data-f="done" onclick="setFilter(this)">Paylaşılanlar</button>
+   <button class="btn tab" data-f="all" onclick="setFilter(this)">Tümü</button>
+  </div>
+  <div class="posts" id="posts"></div>
+
+  <div class="card" style="margin-top:16px">
+   <h2>Son çalışmalar</h2>
+   <p class="hint">Sistem her gün 14:00 UTC'de (Toronto'da yazın 10:00, kışın 09:00) çalışır ve saati gelen <b>bir</b> paylaşımı yapar.</p>
+   <div class="row" style="margin-bottom:10px"><button class="btn" onclick="runWorkflow(true)">🧪 Deneme çalıştır (paylaşmaz)</button></div>
+   <table id="runs"></table>
+  </div>
+
+  <div class="card">
+   <h2>Hesap bağlantıları</h2>
+   <div id="secrets" class="hint"></div>
+   <p class="hint">Anahtar eklemek için: <a href="https://github.com/demirksmca-maker/ComplaintCa/settings/secrets/actions" target="_blank" rel="noopener">GitHub → Secrets</a></p>
+  </div>
+ </div>
+</div>
+
+<dialog id="dlg">
+ <h2 id="dlgTitle">Yeni paylaşım</h2>
+ <label>Görsel</label>
+ <div class="row"><img id="imgPrev" class="prev" alt=""><input type="file" id="imgFile" accept="image/*"></div>
+ <div class="hint">Kare (1080×1080) en iyisidir. Otomatik olarak JPEG'e çevrilir.</div>
+ <label for="fDate">Tarih (Toronto saatiyle o günün sabahı paylaşılır)</label>
+ <input type="date" id="fDate">
+ <label for="fCap">Metin <span class="hint" id="capCount"></span></label>
+ <textarea id="fCap"></textarea>
+ <label for="fTags">Hashtag'ler</label>
+ <input type="text" id="fTags" placeholder="#Canada #ComplaintCA">
+ <label>Platformlar</label>
+ <div><label class="cb"><input type="checkbox" id="pFb" checked> Facebook</label><label class="cb"><input type="checkbox" id="pIg" checked> Instagram</label><label class="cb"><input type="checkbox" id="pLi" checked> LinkedIn</label></div>
+ <div class="row" style="margin-top:18px;justify-content:flex-end">
+  <button class="btn" onclick="dlg.close()">Vazgeç</button>
+  <button class="btn gold" id="saveBtn" onclick="savePost()">Kaydet</button>
+ </div>
+</dialog>
+<div class="msg" id="msg"></div>
+
+<script>
+const OWNER='demirksmca-maker', REPO='ComplaintCa', BRANCH='main', WF='social-post.yml';
+const API='https://api.github.com/repos/'+OWNER+'/'+REPO;
+const SITE=location.origin.includes('complaintca')?location.origin:'https://www.complaintca.ca';
+const PL={facebook:'Facebook',instagram:'Instagram',linkedin:'LinkedIn'};
+const NEED={facebook:['META_PAGE_ID','META_PAGE_TOKEN'],instagram:['IG_USER_ID','META_PAGE_TOKEN'],linkedin:['LINKEDIN_TOKEN','LINKEDIN_AUTHOR']};
+let TOKEN='', queue=null, queueSha=null, posted={}, filter='upcoming', editId=null, newImage=null, secretNames=null;
+
+function store(){try{return localStorage}catch(e){return null}}
+function msg(t,err){const m=document.getElementById('msg');m.textContent=t;m.className='msg'+(err?' err':'');m.style.display='block';clearTimeout(msg._t);msg._t=setTimeout(()=>m.style.display='none',err?7000:3500)}
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function fmtDate(d){const [y,m,dd]=d.split('-').map(Number);return new Date(y,m-1,dd).toLocaleDateString('tr-TR',{day:'numeric',month:'long',weekday:'short'})}
+
+async function gh(path,opts={}){
+ const r=await fetch(path.startsWith('http')?path:API+path,{...opts,headers:{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opts.headers||{})}});
+ if(r.status===204) return null;
+ const j=await r.json().catch(()=>({}));
+ if(!r.ok){const e=new Error((j.message||'HTTP '+r.status));e.status=r.status;throw e}
+ return j;
+}
+const b64enc=bytes=>{let s='';for(let i=0;i<bytes.length;i+=0x8000)s+=String.fromCharCode.apply(null,bytes.subarray(i,i+0x8000));return btoa(s)};
+const b64dec=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,'')),c=>c.charCodeAt(0)));
+async function getFile(p){const j=await gh('/contents/'+p+'?ref='+BRANCH);return {text:b64dec(j.content),sha:j.sha}}
+async function putFile(p,bytes,message,sha){return gh('/contents/'+p,{method:'PUT',body:JSON.stringify({message,content:b64enc(bytes),branch:BRANCH,...(sha?{sha}:{})})})}
+
+async function login(){
+ const t=document.getElementById('tok').value.trim(); if(!t) return msg('Token boş',1);
+ TOKEN=t;
+ try{await gh('');}catch(e){TOKEN='';return msg('Token çalışmadı: '+e.message,1)}
+ const s=store(); if(s){ if(document.getElementById('remember').checked) s.setItem('cc_social_tok',t); else s.removeItem('cc_social_tok'); }
+ try{sessionStorage.setItem('cc_social_tok',t)}catch(e){}
+ start();
+}
+function logout(){try{localStorage.removeItem('cc_social_tok');sessionStorage.removeItem('cc_social_tok')}catch(e){} location.reload()}
+function start(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('topActs').style.display='flex';loadAll()}
+
+async function loadAll(){
+ try{
+  const q=await getFile('social/queue.json'); queue=JSON.parse(q.text); queueSha=q.sha;
+  try{posted=JSON.parse((await getFile('social/posted.json')).text)}catch(e){posted={}}
+  render();
+ }catch(e){msg('Takvim okunamadı: '+e.message,1)}
+ loadRuns(); loadSecrets();
+}
+function statusOf(p){const done=p.platforms.filter(x=>(posted[p.id]||{})[x]);return {done,all:done.length===p.platforms.length&&p.platforms.length>0}}
+function render(){
+ const t=today(), list=queue.posts.slice().sort((a,b)=>a.date.localeCompare(b.date));
+ const up=list.filter(p=>!statusOf(p).all), done=list.filter(p=>statusOf(p).all);
+ document.getElementById('sPlanned').textContent=up.length;
+ document.getElementById('sDone').textContent=done.length;
+ const nx=up[0]; document.getElementById('sNext').textContent=nx?fmtDate(nx.date<t?t:nx.date):'—';
+ const show=filter==='upcoming'?up:filter==='done'?done.reverse():list;
+ document.getElementById('posts').innerHTML=show.length?show.map(p=>{
+  const st=posted[p.id]||{};
+  const chips=p.platforms.map(x=>`<span class="chip ${st[x]?'ok':'wait'}">${st[x]?'✓':'⏳'} ${PL[x]}</span>`).join('');
+  const late=!statusOf(p).all&&p.date<t?' <span class="chip wait">gecikti — sıradaki çalışmada</span>':'';
+  return `<div class="post"><img loading="lazy" src="${esc(SITE+'/'+p.image)}?v=${esc(p.id)}" alt="" onerror="this.style.opacity=.3">
+   <div class="b"><div class="date">📅 ${esc(fmtDate(p.date))}${late}</div>
+   <div class="chips">${chips}</div><div class="cap">${esc(p.caption)}</div>
+   <div class="acts">${statusOf(p).all?'':`<button class="btn sm gold" onclick="shareNow('${esc(p.id)}')">🚀 Şimdi paylaş</button>`}
+   <button class="btn sm" onclick="openEdit('${esc(p.id)}')">✏️ Düzenle</button>
+   <button class="btn sm red" onclick="delPost('${esc(p.id)}')">🗑 Sil</button></div></div></div>`}).join('')
+  :'<p class="hint">Burada paylaşım yok.</p>';
+}
+function setFilter(b){filter=b.dataset.f;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));render()}
+
+async function loadRuns(){
+ const el=document.getElementById('runs');
+ try{
+  const j=await gh('/actions/workflows/'+WF+'/runs?per_page=8');
+  el.innerHTML=j.workflow_runs.length?j.workflow_runs.map(r=>{
+   const c=r.status!=='completed'?'#e7b955':r.conclusion==='success'?'#2fd07a':'#f0576a';
+   const s=r.status!=='completed'?'Çalışıyor':r.conclusion==='success'?'Başarılı':'Hata';
+   return `<tr><td><span class="dot" style="background:${c}"></span>${s}</td><td>${new Date(r.created_at).toLocaleString('tr-TR')}</td><td>${r.event==='schedule'?'Otomatik':'Elle'}</td><td><a href="${esc(r.html_url)}" target="_blank" rel="noopener">Ayrıntı →</a></td></tr>`}).join('')
+   :'<tr><td class="hint">Henüz çalışma yok.</td></tr>';
+ }catch(e){el.innerHTML='<tr><td class="hint">Çalışmalar okunamadı ('+esc(e.message)+'). Token\'da "Actions: Read" izni olmalı.</td></tr>'}
+}
+async function loadSecrets(){
+ const el=document.getElementById('secrets'), conn=document.getElementById('sConn');
+ try{
+  const j=await gh('/actions/secrets?per_page=100'); secretNames=new Set(j.secrets.map(s=>s.name));
+  const ok=Object.keys(NEED).filter(p=>NEED[p].every(n=>secretNames.has(n)));
+  conn.textContent=ok.length?ok.map(p=>PL[p]).join(', '):'Yok';
+  el.innerHTML=Object.keys(NEED).map(p=>{const miss=NEED[p].filter(n=>!secretNames.has(n));
+   return `<div style="margin:4px 0">${miss.length?'⚪':'🟢'} <b>${PL[p]}</b> — ${miss.length?'eksik: '+miss.map(esc).join(', '):'bağlı'}</div>`}).join('');
+ }catch(e){conn.textContent='?';el.innerHTML='Bağlantı durumu görülemiyor (token\'a "Secrets: Read-only" izni ekleyebilirsin).'}
+}
+
+async function saveQueue(message){
+ const body=new TextEncoder().encode(JSON.stringify(queue,null,2)+'\n');
+ try{const r=await putFile('social/queue.json',body,message,queueSha);queueSha=r.content.sha}
+ catch(e){ if(e.status===409){const q=await getFile('social/queue.json');queueSha=q.sha;throw new Error('Takvim başka yerden değişti, yenileyip tekrar dene.')} throw e }
+}
+
+function openEdit(id){
+ editId=id||null; newImage=null;
+ const p=id?queue.posts.find(x=>x.id===id):null;
+ document.getElementById('dlgTitle').textContent=p?'Paylaşımı düzenle':'Yeni paylaşım';
+ document.getElementById('fDate').value=p?p.date:today();
+ document.getElementById('fCap').value=p?p.caption:'';
+ document.getElementById('fTags').value=p?(p.hashtags||''):'#Canada #ComplaintCA';
+ const pls=p?p.platforms:['facebook','instagram','linkedin'];
+ document.getElementById('pFb').checked=pls.includes('facebook');document.getElementById('pIg').checked=pls.includes('instagram');document.getElementById('pLi').checked=pls.includes('linkedin');
+ const pv=document.getElementById('imgPrev'); pv.style.display=p?'block':'none'; if(p) pv.src=SITE+'/'+p.image+'?v='+p.id;
+ document.getElementById('imgFile').value=''; capCount(); dlg.showModal();
+}
+function capCount(){const n=(document.getElementById('fCap').value+'\n\n'+document.getElementById('fTags').value).length;document.getElementById('capCount').textContent='('+n+' / 2200)'}
+document.getElementById('fCap').addEventListener('input',capCount);document.getElementById('fTags').addEventListener('input',capCount);
+
+// Any image → JPEG within Instagram's allowed ratios (4:5 … 1.91:1), max 1440px wide.
+document.getElementById('imgFile').addEventListener('change',async e=>{
+ const f=e.target.files[0]; if(!f) return;
+ const img=await createImageBitmap(f);
+ let sw=img.width, sh=img.height, sx=0, sy=0, r=sw/sh;
+ if(r<0.8){sh=Math.round(sw/0.8);sy=Math.round((img.height-sh)/2)} else if(r>1.91){sw=Math.round(sh*1.91);sx=Math.round((img.width-sw)/2)}
+ const scale=Math.min(1,1440/sw), c=document.createElement('canvas'); c.width=Math.round(sw*scale); c.height=Math.round(sh*scale);
+ const ctx=c.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height); ctx.drawImage(img,sx,sy,sw,sh,0,0,c.width,c.height);
+ const blob=await new Promise(res=>c.toBlob(res,'image/jpeg',0.9));
+ newImage=new Uint8Array(await blob.arrayBuffer());
+ const pv=document.getElementById('imgPrev'); pv.src=URL.createObjectURL(blob); pv.style.display='block';
+});
+
+function slug(s){return s.toLowerCase().replace(/ı/g,'i').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30)||'post'}
+async function savePost(){
+ const date=document.getElementById('fDate').value, caption=document.getElementById('fCap').value.trim(), hashtags=document.getElementById('fTags').value.trim();
+ const platforms=[['pFb','facebook'],['pIg','instagram'],['pLi','linkedin']].filter(([i])=>document.getElementById(i).checked).map(x=>x[1]);
+ if(!date) return msg('Tarih seç',1); if(!caption) return msg('Metin yaz',1); if(!platforms.length) return msg('En az bir platform seç',1);
+ if((caption+'\n\n'+hashtags).length>2200) return msg('Metin çok uzun (en fazla 2200)',1);
+ if(!editId&&!newImage) return msg('Görsel seç',1);
+ const btn=document.getElementById('saveBtn'); btn.disabled=true; btn.textContent='Kaydediliyor…';
+ try{
+  let p=editId?queue.posts.find(x=>x.id===editId):null;
+  if(!p){let id=date+'-'+slug(caption.split('\n')[0]),n=2;while(queue.posts.some(x=>x.id===id))id=id.replace(/-\d+$/,'')+'-'+n++;p={id,date,image:'social/images/'+id+'.jpg',platforms,caption,hashtags};queue.posts.push(p)}
+  if(newImage){
+   let sha; try{sha=(await gh('/contents/'+p.image+'?ref='+BRANCH)).sha}catch(e){}
+   await putFile(p.image,newImage,'Social: image for '+p.id,sha);
+  }
+  Object.assign(p,{date,caption,hashtags,platforms});
+  await saveQueue('Social: '+(editId?'edit ':'add ')+p.id);
+  dlg.close(); render(); msg('Kaydedildi ✓ (görsel ~1 dk içinde sitede yayında olur)');
+ }catch(e){msg('Kaydedilemedi: '+e.message,1); loadAll()}
+ btn.disabled=false; btn.textContent='Kaydet';
+}
+async function delPost(id){
+ const p=queue.posts.find(x=>x.id===id); if(!p) return;
+ if(!confirm((statusOf(p).done.length?'Bu paylaşım bazı hesaplarda zaten yayında; oradan silinmez, sadece takvimden çıkar.\n\n':'')+'Takvimden silinsin mi?')) return;
+ queue.posts=queue.posts.filter(x=>x.id!==id);
+ try{await saveQueue('Social: remove '+id);render();msg('Silindi')}catch(e){msg('Silinemedi: '+e.message,1);loadAll()}
+}
+async function waitImage(url){for(let i=0;i<24;i++){try{const r=await fetch(url+'?t='+Date.now(),{method:'HEAD',cache:'no-store'});if(r.ok)return true}catch(e){} await new Promise(r=>setTimeout(r,5000))}return false}
+async function shareNow(id){
+ const p=queue.posts.find(x=>x.id===id); if(!p) return;
+ const left=p.platforms.filter(x=>!(posted[p.id]||{})[x]).map(x=>PL[x]).join(', ');
+ if(!confirm('Bu paylaşım ŞİMDİ şu hesaplarda yayınlanacak: '+left+'\n\nEmin misin?')) return;
+ msg('Görsel kontrol ediliyor…');
+ if(!await waitImage(SITE+'/'+p.image)) return msg('Görsel henüz sitede değil, 1-2 dk sonra tekrar dene.',1);
+ await runWorkflow(false,id);
+}
+async function runWorkflow(dry,id){
+ try{
+  await gh('/actions/workflows/'+WF+'/dispatches',{method:'POST',body:JSON.stringify({ref:BRANCH,inputs:{dry_run:dry?'true':'false',...(id?{post_id:id}:{})}})});
+  msg(dry?'Deneme başlatıldı — sonuç birkaç dakika içinde "Son çalışmalar"da':'Paylaşım başlatıldı 🚀 — birkaç dakika içinde hesaplarında');
+  setTimeout(loadRuns,6000); setTimeout(loadAll,90000);
+ }catch(e){msg('Başlatılamadı: '+e.message+' (token\'da "Actions: Read and write" izni olmalı)',1)}
+}
+const dlg=document.getElementById('dlg');
+(function init(){let t='';try{t=sessionStorage.getItem('cc_social_tok')||localStorage.getItem('cc_social_tok')||''}catch(e){} if(t){TOKEN=t;start()}})();
+</script>
+</body>
+</html>
