@@ -531,54 +531,183 @@ document.querySelectorAll('.tile').forEach(t=>{
   window.openComplaintFlow=open;
 })();
 
-/* Free Lawyer — voice-first */
+var LAWYERS = {
+  on:{
+    tenant:[
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation. Official Law Society referral.',badge:'FREE CONSULT'},
+      {name:'Community Legal Education Ontario (CLEO)',phone:'',url:'https://www.cleo.on.ca',note:'Free legal info & referrals for tenants in Ontario.',badge:'FREE'},
+      {name:'Landlord & Tenant Board — Legal Aid',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Legal Aid Ontario — income-based free tenant representation.',badge:'LEGAL AID'}
+    ],
+    employment:[
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal',note:'Free 30-min consultation with employment lawyers.',badge:'FREE CONSULT'},
+      {name:'Legal Aid Ontario',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Free employment legal help if income-eligible.',badge:'LEGAL AID'}
+    ],
+    humanrights:[
+      {name:'Human Rights Legal Support Centre',phone:'1-866-625-5179',url:'https://www.hrlsc.on.ca',note:'Free legal representation at HRTO for eligible applicants.',badge:'FREE'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Find a licensed human rights lawyer.',badge:'FREE CONSULT'},
+      {name:'Ontario Human Rights Commission',phone:'1-800-387-9080',url:'https://www.ohrc.on.ca',note:'Policy guidance and referral to HRTO.',badge:'OFFICIAL'}
+    ],
+    immigration:[
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Find a licensed immigration lawyer in Ontario.',badge:'FREE CONSULT'},
+      {name:'ICCRC — Immigration Consultants Registry',phone:'',url:'https://www.college-ic.ca',note:'Official registry of authorized immigration consultants.',badge:'OFFICIAL'},
+      {name:'Legal Aid Ontario — Immigration',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Refugee & immigration legal aid for eligible clients.',badge:'LEGAL AID'}
+    ],
+    criminal:[
+      {name:'Legal Aid Ontario — Criminal',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'},
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Free 30-min consultation with criminal defence lawyers.',badge:'FREE CONSULT'},
+      {name:'Ontario Justice Education Network',phone:'',url:'https://ojen.ca',note:'Legal resources and lawyer finder for criminal matters.',badge:'RESOURCE'}
+    ],
+    family:[
+      {name:'Law Society of Ontario — Referral Service',phone:'1-855-947-5255',url:'https://lso.ca',note:'Free 30-min consultation with family lawyers.',badge:'FREE CONSULT'},
+      {name:'Legal Aid Ontario — Family',phone:'1-800-668-8258',url:'https://www.legalaid.on.ca',note:'Divorce, custody, domestic violence legal aid.',badge:'LEGAL AID'},
+      {name:'Family Law Information Centres (FLIC)',phone:'',url:'https://www.ontario.ca/page/family-law-information-centres',note:'Free in-person help at Ontario courthouses.',badge:'FREE'}
+    ]
+  },
+  bc:{
+    tenant:[
+      {name:'Law Society of BC — Lawyer Referral Service',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'$25 for 30-min consultation with a BC lawyer.',badge:'$25 CONSULT'},
+      {name:'Tenant Resource & Advisory Centre (TRAC)',phone:'1-800-665-1185',url:'https://tenants.bc.ca',note:'Free tenant legal info and referrals across BC.',badge:'FREE'},
+      {name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Free legal help for eligible tenants in BC.',badge:'LEGAL AID'}
+    ],
+    employment:[
+      {name:'Law Society of BC — Lawyer Referral',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'$25 for 30-min employment law consultation.',badge:'$25 CONSULT'},
+      {name:'Employment Standards Branch BC',phone:'1-833-236-3700',url:'https://www2.gov.bc.ca/gov/content/employment-business/employment-standards-advice',note:'Official BC employment standards legal guidance.',badge:'OFFICIAL'},
+      {name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Employment legal help if income-eligible.',badge:'LEGAL AID'}
+    ],
+    humanrights:[
+      {name:'BC Human Rights Clinic',phone:'1-888-685-6222',url:'https://www.bchrc.net',note:'Free legal help for BC Human Rights Tribunal cases.',badge:'FREE'},
+      {name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed human rights lawyer in BC.',badge:'$25 CONSULT'},
+      {name:'BC Human Rights Tribunal',phone:'604-775-2000',url:'https://www.bchrt.bc.ca',note:'Official tribunal for discrimination complaints.',badge:'OFFICIAL'}
+    ],
+    immigration:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed immigration lawyer in BC.',badge:'$25 CONSULT'},{name:'MOSAIC — Immigration Legal Services',phone:'604-254-9626',url:'https://mosaicbc.org',note:'Free/low-cost immigration legal help in BC.',badge:'FREE'}],
+    criminal:[{name:'Legal Aid BC',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Free criminal defence legal aid in BC.',badge:'LEGAL AID'},{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a licensed criminal defence lawyer.',badge:'$25 CONSULT'}],
+    family:[{name:'Law Society of BC',phone:'1-800-663-1919',url:'https://www.lawsociety.bc.ca',note:'Find a family lawyer in BC.',badge:'$25 CONSULT'},{name:'Legal Aid BC — Family',phone:'1-866-577-2525',url:'https://legalaid.bc.ca',note:'Family law legal aid if income-eligible.',badge:'LEGAL AID'},{name:'Family Justice Centres BC',phone:'',url:'https://www2.gov.bc.ca/gov/content/life-events/divorce/family-justice',note:'Free in-person help at BC courthouses.',badge:'FREE'}]
+  },
+  qc:{
+    tenant:[{name:'Barreau du Québec — Référence',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'$30 for 30-min consultation with a Quebec lawyer.',badge:'$30 CONSULT'},{name:'RCLALQ — Logement',phone:'514-521-7114',url:'https://rclalq.qc.ca',note:'Free tenant legal resources in Quebec.',badge:'FREE'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Free legal aid for eligible tenants in Quebec.',badge:'LEGAL AID'}],
+    employment:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'$30 for 30-min consultation with employment lawyers.',badge:'$30 CONSULT'},{name:'CNESST — Normes du travail',phone:'1-844-838-0808',url:'https://www.cnesst.gouv.qc.ca',note:'Official Quebec labour standards complaint body.',badge:'OFFICIAL'}],
+    humanrights:[{name:'Commission des droits de la personne QC',phone:'1-800-361-6477',url:'https://www.cdpdj.qc.ca',note:'Official Quebec human rights commission.',badge:'OFFICIAL'},{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a licensed human rights lawyer in Quebec.',badge:'$30 CONSULT'}],
+    immigration:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a licensed immigration lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec — Immigration',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Immigration legal aid for refugee claimants.',badge:'LEGAL AID'}],
+    criminal:[{name:'Aide juridique Québec — Criminel',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Free criminal legal aid in Quebec.',badge:'LEGAL AID'},{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a criminal defence lawyer in Quebec.',badge:'$30 CONSULT'}],
+    family:[{name:'Barreau du Québec',phone:'1-800-361-8495',url:'https://www.barreau.qc.ca',note:'Find a family lawyer in Quebec.',badge:'$30 CONSULT'},{name:'Aide juridique Québec',phone:'1-800-842-2213',url:'https://www.csj.qc.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+  },
+  ab:{
+    tenant:[{name:'Law Society of Alberta — Lawyer Directory',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Online directory to find a lawyer across Alberta (phone referral line closed).',badge:'REFERRAL'},{name:'RTDRS — Residential Tenancy',phone:'780-644-3000',url:'https://www.alberta.ca/residential-tenancy-dispute-resolution-service',note:'Official AB tenancy dispute resolution.',badge:'OFFICIAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free tenant legal help if income-eligible.',badge:'LEGAL AID'}],
+    employment:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Lawyer referral for employment matters.',badge:'REFERRAL'},{name:'Alberta Employment Standards',phone:'1-877-427-3731',url:'https://www.alberta.ca/employment-standards',note:'Official employment standards complaints.',badge:'OFFICIAL'}],
+    humanrights:[{name:'Alberta Human Rights Commission',phone:'780-427-7661',url:'https://www.albertahumanrights.ab.ca',note:'Official human rights complaints in Alberta.',badge:'OFFICIAL'},{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a human rights lawyer in Alberta.',badge:'REFERRAL'}],
+    immigration:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a licensed immigration lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta — Immigration',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Refugee immigration legal aid in Alberta.',badge:'LEGAL AID'}],
+    criminal:[{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'},{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a criminal defence lawyer in Alberta.',badge:'REFERRAL'}],
+    family:[{name:'Law Society of Alberta',phone:'1-800-661-9003',url:'https://www.lawsociety.ab.ca/public/findalawyer/',note:'Find a family lawyer in Alberta.',badge:'REFERRAL'},{name:'Legal Aid Alberta',phone:'1-866-845-3425',url:'https://www.legalaid.ab.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+  },
+  mb:{
+    tenant:[{name:'Law Society of Manitoba',phone:'204-942-5571',url:'https://www.lawsociety.mb.ca',note:'Lawyer referral service in Manitoba.',badge:'REFERRAL'},{name:'Community Legal Education Association MB',phone:'204-943-2382',url:'https://www.communitylegal.mb.ca',note:'Free legal resources for tenants in Manitoba.',badge:'FREE'},{name:'Legal Aid Manitoba',phone:'204-985-8500',url:'https://www.legalaid.mb.ca',note:'Free legal help if income-eligible.',badge:'LEGAL AID'}],
+    employment:[{name:'Law Society of Manitoba',phone:'204-942-5571',url:'https://www.lawsociety.mb.ca',note:'Find an employment lawyer in Manitoba.',badge:'REFERRAL'}],
+    humanrights:[{name:'Manitoba Human Rights Commission',phone:'204-945-3007',url:'https://www.manitobahumanrights.ca',note:'Official human rights complaints body in Manitoba.',badge:'OFFICIAL'}],
+    immigration:[{name:'Law Society of Manitoba',phone:'204-942-5571',url:'https://www.lawsociety.mb.ca',note:'Find an immigration lawyer in Manitoba.',badge:'REFERRAL'},{name:'Legal Aid Manitoba',phone:'204-985-8500',url:'https://www.legalaid.mb.ca',note:'Refugee legal aid in Manitoba.',badge:'LEGAL AID'}],
+    criminal:[{name:'Legal Aid Manitoba',phone:'204-985-8500',url:'https://www.legalaid.mb.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'}],
+    family:[{name:'Law Society of Manitoba',phone:'204-942-5571',url:'https://www.lawsociety.mb.ca',note:'Find a family lawyer in Manitoba.',badge:'REFERRAL'},{name:'Legal Aid Manitoba',phone:'204-985-8500',url:'https://www.legalaid.mb.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+  },
+  sk:{
+    tenant:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Lawyer referral service in Saskatchewan.',badge:'REFERRAL'},{name:'Public Legal Education Association of SK',phone:'306-653-1868',url:'https://www.plea.org',note:'Free legal info and referrals in Saskatchewan.',badge:'FREE'}],
+    employment:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find an employment lawyer in Saskatchewan.',badge:'REFERRAL'}],
+    humanrights:[{name:'Saskatchewan Human Rights Commission',phone:'1-800-667-9249',url:'https://saskatchewanhumanrights.ca',note:'Official human rights body in Saskatchewan.',badge:'OFFICIAL'}],
+    immigration:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find an immigration lawyer in Saskatchewan.',badge:'REFERRAL'}],
+    criminal:[{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Free criminal defence if income-eligible.',badge:'LEGAL AID'}],
+    family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
+  }
+};
+/* Free Lawyer — voice-first, connected to ASYA (Groq Whisper + Groq chat, Claude fallback) */
 (function(){
   const F=document.getElementById('vflow'), $=id=>document.getElementById(id);
   const live=$('v-live'), state=$('v-state'), tags=$('v-tags'), res=$('v-res'), topics=$('v-topics');
-  const CITIES=['Toronto, ON','Ottawa, ON','Mississauga, ON','Brampton, ON','Hamilton, ON','Montréal, QC','Québec City, QC','Vancouver, BC','Surrey, BC','Victoria, BC','Calgary, AB','Edmonton, AB','Winnipeg, MB','Regina, SK','Saskatoon, SK','Halifax, NS'];
-  const TOPICS=[['Housing',/landlord|rent|deposit|evict|tenant|lease/i],['Employment',/fired|job|boss|pay|wage|work|dismiss/i],['Immigration',/visa|pr\b|immigra|refugee|permit|citizen/i],['Family',/divorce|custody|child|spouse|support/i],['Criminal',/police|charge|arrest|court|crime/i],['Human Rights',/discriminat|racis|harass|disab/i]];
-  const SAMPLE='My landlord won\'t give back my deposit and says I damaged the apartment.';
-  let mode='idle', loc='', topic='', said='', rec=null, timer=null;
+  const CITIES=['Toronto, ON','Ottawa, ON','Mississauga, ON','Brampton, ON','Hamilton, ON','London, ON','Montréal, QC','Québec City, QC','Laval, QC','Vancouver, BC','Surrey, BC','Victoria, BC','Calgary, AB','Edmonton, AB','Winnipeg, MB','Regina, SK','Saskatoon, SK','Halifax, NS','Moncton, NB',"St. John's, NL",'Charlottetown, PE'];
+  const TOPICS=[['Housing','tenant'],['Employment','employment'],['Immigration','immigration'],['Family','family'],['Criminal','criminal'],['Human Rights','humanrights']];
+  const TOPIC_NAME={tenant:'Housing',employment:'Employment',immigration:'Immigration',family:'Family',criminal:'Criminal',humanrights:'Human Rights'};
+  const PROV={ON:'on',BC:'bc',QC:'qc',AB:'ab',MB:'mb',SK:'sk'};
+  const SYS="You are ASYA, the warm, calm assistant of ComplaintCA's Free Lawyer service in Canada. Goal: understand the person's legal problem and where they live, then hand off to a list of free legal help. "+
+   "Rules: Reply in the same language the user writes or speaks. Keep every reply to at most 2 short sentences. Ask only ONE question at a time. Be reassuring; never give legal advice or promise outcomes. "+
+   "You need two things: (1) the topic, one of tenant, employment, humanrights, immigration, criminal, family; (2) the province (two-letter code like ON, BC, QC, AB, MB, SK, NS, NB, NL, PE, YT, NT, NU) from their city or province. "+
+   "If the location is already given in a [Location: ...] note, do not ask for it again. As soon as you know both, write one short sentence saying you found free help, then on a new final line exactly: RESULT: {\"topic\":\"<topic>\",\"province\":\"<CODE>\"}";
+  let mode='idle', loc='', hist=[], rec=null, chunks=[], stream=null, busy=false, stopTimer=null;
   function set(m){ F.classList.remove('idle','listen','think','done','typing','topics'); F.classList.add(m); mode=m; }
-  function setLoc(v){ loc=v; $('v-loc-t').innerHTML=''; $('v-loc-t').append(document.createTextNode(v+' ')); const u=document.createElement('u'); u.textContent='Change'; $('v-loc-t').appendChild(u); $('v-locbox').classList.remove('open'); if(mode==='think'&&said) finish(); }
-  function liveText(fin,interim){ live.className='v-live'; live.textContent=''; live.append(document.createTextNode('“'+fin)); if(interim){ const e=document.createElement('em'); e.textContent=interim; live.appendChild(e); } live.append(document.createTextNode('”')); }
-  function startListen(){
-    set('listen'); state.textContent='Listening'; said=''; liveText('','…');
-    simulate();
+  function ask(t){ live.className='v-live ask'; live.textContent=t; }
+  function quote(t){ live.className='v-live'; live.textContent='“'+t+'”'; }
+  function speak(t){ try{ if(!window.speechSynthesis) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.rate=1; speechSynthesis.speak(u); }catch(e){} }
+  function hush(){ try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(e){} }
+  function setLoc(v){ loc=v; const t=$('v-loc-t'); t.textContent=v+' '; const u=document.createElement('u'); u.textContent='Change'; t.appendChild(u); $('v-locbox').classList.remove('open');
+    if(mode!=='done' && hist.length) send('My location is '+v+'.'); }
+  async function ai(){
+    const msgs=hist.slice();
+    try{
+      const r=await fetch('/api/groq-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:220,temperature:.4,messages:[{role:'system',content:SYS}].concat(msgs)})});
+      const d=await r.json(); if(d.error||!d.choices) throw 0; return (d.choices[0].message.content||'').trim();
+    }catch(e){
+      const r=await fetch('/api/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:220,system:SYS,messages:msgs})});
+      const d=await r.json(); if(d.error||!d.content) throw new Error('ai'); return d.content.map(c=>c.text||'').join('').trim();
+    }
   }
-  function simulate(){ const w=SAMPLE.split(' '); let i=0; clearInterval(timer);
-    timer=setInterval(()=>{ i++; said=w.slice(0,i).join(' '); liveText(w.slice(0,Math.max(0,i-3)).join(' ')+' ', w.slice(Math.max(0,i-3),i).join(' ')); if(i>=w.length){ clearInterval(timer); setTimeout(()=>{ if(mode==='listen') stopListen(); },700); } },230); }
-  function stopListen(){ clearInterval(timer); if(rec){ try{rec.stop();}catch(e){} rec=null; } if(!said){ set('idle'); state.textContent='Tap to talk'; live.className='v-live ask'; live.textContent='I didn\'t catch that. Tap the orb and try again.'; return; } understand(said); }
-  function understand(text){
-    set('think'); state.textContent='Thinking'; liveText(text,'');
-    topic=topic||((TOPICS.find(([,re])=>re.test(text))||['General'])[0]);
-    setTimeout(()=>{ if(!loc){ live.className='v-live ask'; live.textContent='Got it. Which city are you in?'; state.textContent='One more thing'; $('v-locbox').classList.add('open'); return; } finish(); },1100);
+  async function send(text){
+    if(busy||!text) return; busy=true;
+    hush(); set('think'); state.textContent='Thinking'; quote(text);
+    hist.push({role:'user',content:(hist.length===0&&loc?'[Location: '+loc+'] ':'')+text});
+    let reply;
+    try{ reply=await ai(); }catch(e){ busy=false; set('idle'); state.textContent='Tap to talk'; ask('Sorry, I could not connect. Please try again in a moment.'); hist.pop(); return; }
+    busy=false; hist.push({role:'assistant',content:reply});
+    const m=reply.match(/RESULT:\s*(\{[^}]*\})/);
+    const say=reply.replace(/RESULT:[\s\S]*$/,'').trim();
+    if(m){ let r={}; try{ r=JSON.parse(m[1]); }catch(e){} finish(say,r); return; }
+    set('idle'); state.textContent='Tap to answer'; ask(say); speak(say);
+    if(!loc && /city|province|where|ville|nerede|şehir|dónde|哪里|ਕਿੱਥੇ|أين/i.test(say)) $('v-locbox').classList.add('open');
   }
-  function finish(){
+  function finish(say,r){
     set('done'); state.textContent='Here is free help near you';
-    live.className='v-live ask'; live.textContent='I found 3 free options for you.';
-    tags.innerHTML=''; [topic,loc].forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
-    const prov=loc.split(',').pop().trim();
-    const list=[['Community Legal Clinic','Free lawyers and paralegals for '+topic.toLowerCase()+' cases.',['Free','In '+prov]],['Pro Bono Lawyer Network','Volunteer lawyers who give free advice by phone or video.',['Free','Online']],[topic+' Rights Association','A non-profit that can guide you and write letters for you.',['Free','Non-profit']]];
+    const topic=(r.topic||'').toLowerCase(), code=(r.province||'').toUpperCase(), pk=PROV[code];
+    ask(say||'I found free help for you.'); speak(say||'I found free help for you.');
+    tags.innerHTML=''; [TOPIC_NAME[topic]||topic, loc||code].filter(Boolean).forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
     res.innerHTML='';
-    list.forEach(([h,p,b],k)=>{ const c=document.createElement('div'); c.className='mcard'; c.style.setProperty('--k',k);
-      c.innerHTML='<h4></h4><p></p><div class="badges"></div><button class="go" type="button">Contact</button>';
-      c.querySelector('h4').textContent=h; c.querySelector('p').textContent=p;
-      b.forEach(x=>{ const s=document.createElement('span'); s.textContent=x; c.querySelector('.badges').appendChild(s); });
-      c.querySelector('.go').onclick=e=>{ e.target.textContent='Demo only, nothing sent'; e.target.disabled=true; };
+    const list=(pk&&LAWYERS[pk]&&LAWYERS[pk][topic])||[];
+    if(!list.length){ const n=document.createElement('div'); n.className='note'; n.textContent='A detailed list is available for Ontario, BC, Quebec, Alberta, Manitoba and Saskatchewan. For other provinces, contact your provincial Law Society referral service.'; res.appendChild(n); }
+    list.forEach((lw,k)=>{ const c=document.createElement('div'); c.className='mcard'; c.style.setProperty('--k',k);
+      c.innerHTML='<h4></h4><p></p><div class="badges"></div>';
+      c.querySelector('h4').textContent=lw.name; c.querySelector('p').textContent=lw.note+(lw.phone?' · '+lw.phone:'');
+      const sp=document.createElement('span'); sp.textContent=lw.badge; sp.className='gold'; c.querySelector('.badges').appendChild(sp);
+      if(lw.url){ const a=document.createElement('a'); a.className='go'; a.href=lw.url; a.target='_blank'; a.rel='noopener'; a.textContent='Contact'; a.style.cssText='display:block;text-align:center;text-decoration:none'; c.appendChild(a); }
       res.appendChild(c); });
     const again=document.createElement('button'); again.type='button'; again.className='v-loc'; again.textContent='↺ Start over'; again.onclick=reset; res.appendChild(again);
   }
-  function reset(){ clearInterval(timer); if(rec){ try{rec.stop();}catch(e){} rec=null; } topic=''; said=''; set('idle'); state.textContent='Tap to talk'; live.className='v-live ask'; live.textContent='Hi, I\'m ASYA. Tell me what happened.'; res.innerHTML=''; tags.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
-  const toggle=()=>{ if(mode==='listen') stopListen(); else { reset(); startListen(); } };
+  function b64(blob){ return new Promise((ok,no)=>{ const r=new FileReader(); r.onloadend=()=>{ const s=r.result; ok(s.slice(s.indexOf(',')+1)); }; r.onerror=no; r.readAsDataURL(blob); }); }
+  async function startListen(){
+    if(busy) return; hush();
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){ ask('Voice is not supported on this browser. Tap "Type instead".'); return; }
+    try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(e){ ask('Microphone access was blocked. Allow it in your browser, or tap "Type instead".'); return; }
+    chunks=[]; const mt=(MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported('audio/webm'))?'audio/webm':'';
+    rec=mt?new MediaRecorder(stream,{mimeType:mt}):new MediaRecorder(stream);
+    rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
+    rec.onstop=async()=>{ clearTimeout(stopTimer); stream.getTracks().forEach(t=>t.stop()); const type=rec.mimeType||'audio/webm'; rec=null;
+      if(!chunks.length){ set('idle'); state.textContent='Tap to talk'; return; }
+      set('think'); state.textContent='Understanding'; live.className='v-live'; live.textContent='…';
+      try{ const audio=await b64(new Blob(chunks,{type}));
+        const r=await fetch('/api/groq-transcribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({audio,mimeType:type})});
+        const d=await r.json(); const t=(d.text||'').trim(); if(!t) throw 0; send(t);
+      }catch(e){ set('idle'); state.textContent='Tap to talk'; ask('I could not hear that clearly. Please try again, or type it.'); } };
+    rec.start(); set('listen'); state.textContent='Listening'; live.className='v-live'; live.textContent='Speak now… tap the button when you finish.';
+    stopTimer=setTimeout(()=>{ if(rec&&rec.state!=='inactive') rec.stop(); },30000);
+  }
+  function stopListen(){ if(rec&&rec.state!=='inactive') rec.stop(); }
+  function reset(){ hush(); if(rec&&rec.state!=='inactive'){ rec.onstop=null; rec.stop(); stream&&stream.getTracks().forEach(t=>t.stop()); } rec=null; hist=[]; busy=false; set('idle'); state.textContent='Tap to talk'; ask('Hi, I\'m ASYA. Tell me what happened.'); res.innerHTML=''; tags.innerHTML=''; topics.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
+  const toggle=()=>{ if(mode==='listen') stopListen(); else if(mode==='done'){ reset(); startListen(); } else startListen(); };
   $('v-mic').onclick=toggle; $('v-orb').onclick=toggle;
   $('v-typebtn').onclick=()=>{ if(mode==='listen') stopListen(); set('typing'); state.textContent='Type to ASYA'; setTimeout(()=>$('v-text').focus(),50); };
-  const sendText=()=>{ const v=$('v-text').value.trim(); if(!v) return; said=v; understand(v); };
+  const sendText=()=>{ const v=$('v-text').value.trim(); if(!v) return; $('v-text').value=''; send(v); };
   $('v-send').onclick=sendText; $('v-text').onkeydown=e=>{ if(e.key==='Enter') sendText(); };
-  $('v-topicbtn').onclick=()=>{ if(mode==='listen') stopListen(); set('topics'); state.textContent='Choose a topic'; live.className='v-live ask'; live.textContent='What is it about?';
-    topics.innerHTML=''; TOPICS.forEach(([t],k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=t; b.style.setProperty('--k',k); b.onclick=()=>{ topic=t; said=t; understand(t); }; topics.appendChild(b); }); };
+  $('v-topicbtn').onclick=()=>{ if(mode==='listen') stopListen(); set('topics'); state.textContent='Choose a topic'; ask('What is it about?');
+    topics.innerHTML=''; TOPICS.forEach(([t],k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=t; b.style.setProperty('--k',k); b.onclick=()=>send('My issue is about '+t+'.'); topics.appendChild(b); }); };
   $('v-loc').onclick=()=>$('v-locbox').classList.toggle('open');
-  $('v-use').onclick=()=>{ const ok=p=>setLoc('Toronto, ON'); if(navigator.geolocation){ navigator.geolocation.getCurrentPosition(ok,()=>{ $('v-use').textContent='Location not available, please type it below'; },{timeout:5000}); } else $('v-use').textContent='Location not available, please type it below'; };
+  $('v-use').onclick=()=>{ const fail=()=>{ $('v-use').textContent='Location not available, please type it below'; };
+    if(!navigator.geolocation) return fail();
+    navigator.geolocation.getCurrentPosition(p=>{ const {latitude:la,longitude:lo}=p.coords;
+      fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat='+la+'&lon='+lo).then(r=>r.json()).then(d=>{ const a=d.address||{}; const city=a.city||a.town||a.village||a.county||''; const st=a['ISO3166-2-lvl4']?a['ISO3166-2-lvl4'].split('-')[1]:(a.state||''); setLoc((city?city+', ':'')+st); }).catch(fail);
+    },fail,{timeout:8000}); };
   $('v-city').oninput=e=>{ const q=e.target.value.trim().toLowerCase(); const box=$('v-sugg'); box.innerHTML=''; if(q.length<2) return;
     const hits=CITIES.filter(c=>c.toLowerCase().includes(q)).slice(0,4);
     (hits.length?hits:[e.target.value.trim()]).forEach(c=>{ const b=document.createElement('button'); b.type='button'; b.textContent=c; b.onclick=()=>{ $('v-city').value=''; box.innerHTML=''; setLoc(c); }; box.appendChild(b); }); };
