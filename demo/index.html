@@ -451,6 +451,12 @@ h1{margin-top:8px}
   .flow{align-items:center}
   .flow .sheet{height:min(780px,calc(100% - 80px));border-radius:26px}
 }
+
+/* "Six Paths to Justice": gold serif caps with a fine rule, matching tile labels */
+.kicker{display:flex;align-items:center;gap:10px;font:700 .68rem/1.2 var(--f-brand);letter-spacing:.22em;text-transform:uppercase;
+  background:linear-gradient(180deg,#fffdf6,#f1d79c 60%,#d9b670);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.kicker::before{content:"";width:22px;height:1px;flex:none;background:linear-gradient(90deg,rgba(230,201,138,0),#e6c98a)}
+@media (min-width:900px) and (min-height:600px){ .kicker::after{content:"";width:22px;height:1px;flex:none;background:linear-gradient(90deg,#e6c98a,rgba(230,201,138,0))} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
