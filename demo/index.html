@@ -648,34 +648,59 @@ body:has(.flow.open) main *,body:has(.flow.open) .nav::before,body:has(.flow.ope
 .yflow .mcard .go{display:block;text-align:center;text-decoration:none}
 .yflow .mcard .go.alt{background:none;border:1px solid rgba(255,154,192,.45);color:#ffd6e4;box-shadow:none;margin-top:8px}
 .yflag h4{color:#ffd6e4}
+
+/* ── language menu (7 languages) ── */
+.lmenu{position:fixed;top:calc(60px + env(safe-area-inset-top,0px));right:12px;z-index:30;display:grid;grid-template-columns:1fr;gap:4px;min-width:190px;padding:8px;border-radius:18px;
+  background:rgba(14,16,32,.97);border:1px solid rgba(124,92,255,.35);box-shadow:0 24px 50px -16px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.04) inset;animation:msgIn .25s both}
+.lmenu[hidden]{display:none}
+.lmenu button{display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:12px;background:none;color:#eef0f6;font:500 .9rem/1 var(--f-ui);cursor:pointer;text-align:start}
+.lmenu button b{width:30px;text-align:center;font:700 .62rem/1 'Cinzel',serif;letter-spacing:.12em;color:#e6c98a;padding:5px 0;border-radius:8px;border:1px solid rgba(230,201,138,.35)}
+.lmenu button:hover,.lmenu button:focus-visible{background:rgba(124,92,255,.14);outline:none}
+.lmenu button[aria-selected="true"]{background:rgba(124,92,255,.22)}
+.lmenu button[aria-selected="true"] b{background:#e6c98a;color:#2a1d05}
+/* non-Latin scripts: Cinzel has no glyphs, swap to matching faces and drop caps spacing */
+html[lang=ar] body{--f-brand:'Noto Naskh Arabic',serif;--f-ui:'Noto Naskh Arabic',system-ui,sans-serif}
+html[lang=zh] body{--f-brand:'Noto Serif SC',serif;--f-ui:'Noto Sans SC',system-ui,sans-serif}
+html[lang=pa] body{--f-brand:'Noto Sans Gurmukhi',sans-serif;--f-ui:'Noto Sans Gurmukhi',system-ui,sans-serif}
+html:is([lang=ar],[lang=zh],[lang=pa]) :is(.eyebrow,.kicker,.tile-t,.links a,.trust span){font-family:var(--f-brand)!important;letter-spacing:0!important;text-transform:none!important}
+html:is([lang=ar],[lang=zh],[lang=pa]) .tile-t{font-size:calc(var(--tfs) * 1.05)}
+html[dir=rtl] .kicker::before{background:linear-gradient(270deg,rgba(230,201,138,0),#e6c98a)}
+html[dir=rtl] .tile{text-align:right}
+html[dir=rtl] .arr{right:auto;left:14px;transform:scaleX(-1)!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
 
 <header class="nav">
   <a class="brand" href="#"><span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8394b" stroke-width="1.8"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="#fff"/></svg></span><span>COMPLAINT<b>CA</b></span></a>
-  <div class="lang"><span class="demo-tag">Demo</span><span class="lpill"><span class="wflag" aria-hidden="true"><i style="background-position:-0px 0;animation-delay:0.00s"></i><i style="background-position:-4px 0;animation-delay:-0.12s"></i><i style="background-position:-8px 0;animation-delay:-0.24s"></i><i style="background-position:-12px 0;animation-delay:-0.36s"></i><i style="background-position:-16px 0;animation-delay:-0.48s"></i><i style="background-position:-20px 0;animation-delay:-0.60s"></i><i style="background-position:-24px 0;animation-delay:-0.72s"></i><i style="background-position:-28px 0;animation-delay:-0.84s"></i><i style="background-position:-32px 0;animation-delay:-0.96s"></i><i style="background-position:-36px 0;animation-delay:-1.08s"></i></span>EN <small>▾</small></span></div>
+  <div class="lang"><span class="demo-tag">Demo</span><span class="lpill" id="lpill" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false"><span class="wflag" aria-hidden="true"><i style="background-position:-0px 0;animation-delay:0.00s"></i><i style="background-position:-4px 0;animation-delay:-0.12s"></i><i style="background-position:-8px 0;animation-delay:-0.24s"></i><i style="background-position:-12px 0;animation-delay:-0.36s"></i><i style="background-position:-16px 0;animation-delay:-0.48s"></i><i style="background-position:-20px 0;animation-delay:-0.60s"></i><i style="background-position:-24px 0;animation-delay:-0.72s"></i><i style="background-position:-28px 0;animation-delay:-0.84s"></i><i style="background-position:-32px 0;animation-delay:-0.96s"></i><i style="background-position:-36px 0;animation-delay:-1.08s"></i></span><span id="lcode">EN</span> <small>▾</small></span></div>
 </header>
 
+<div class="lmenu" id="lmenu" role="listbox" aria-label="Language" hidden>
+  <button type="button" data-l="en"><b>EN</b>English</button><button type="button" data-l="fr"><b>FR</b>Français</button>
+  <button type="button" data-l="es"><b>ES</b>Español</button><button type="button" data-l="tr"><b>TR</b>Türkçe</button>
+  <button type="button" data-l="ar"><b>AR</b>العربية</button><button type="button" data-l="zh"><b>ZH</b>中文</button>
+  <button type="button" data-l="pa"><b>PA</b>ਪੰਜਾਬੀ</button>
+</div>
 <main>
-  <div class="eyebrow">Canada's Complaint Platform <span class="fl" aria-hidden="true">🇨🇦</span></div>
-  <h1>Your Complaint.<em>Heard. Tracked. Resolved.</em></h1>
+  <div class="eyebrow"><span data-i="eyebrow">Canada's Complaint Platform</span> <span class="fl" aria-hidden="true">🇨🇦</span></div>
+  <h1><span data-i="h1a">Your Complaint.</span><em data-i="h1b">Heard. Tracked. Resolved.</em></h1>
   <div class="row">
-    <div class="kicker">Six Paths to Justice</div>
+    <div class="kicker"><span data-i="kicker">Six Paths to Justice</span></div>
     <button class="asya" id="asya" type="button" aria-pressed="false" aria-label="ASYA voice assistant"><span class="orb-wrap"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></span><span class="asya-t">ASYA</span></button>
   </div>
 
   <nav class="tiles" aria-label="Six paths to justice">
-    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Complaint">Complaint</span></a>
-    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Free Lawyer">Free Lawyer</span></a>
-    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Representative">Representative</span></a>
-    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Cyber Crime">Cyber Crime</span></a>
-    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Verify">Verify</span></a>
-    <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Guides">Guides</span></a>
+    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Complaint" data-i="t0">Complaint</span></a>
+    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Free Lawyer" data-i="t1">Free Lawyer</span></a>
+    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Representative" data-i="t2">Representative</span></a>
+    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Cyber Crime" data-i="t3">Cyber Crime</span></a>
+    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Verify" data-i="t4">Verify</span></a>
+    <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Guides" data-i="t5">Guides</span></a>
   </nav>
 
-  <div class="links"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Track My Complaint</a><a href="/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/></svg>Blog</a></div>
-  <div class="trust"><span>Anonymous</span><span>AI Routing</span><span>7 Languages</span><span>Live Tracking</span></div>
+  <div class="links"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span data-i="track">Track My Complaint</span></a><a href="/blog/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/></svg><span data-i="blog">Blog</span></a></div>
+  <div class="trust"><span data-i="tr0">Anonymous</span><span data-i="tr1">AI Routing</span><span data-i="tr2">7 Languages</span><span data-i="tr3">Live Tracking</span></div>
 </main>
 
 <div class="flow" id="flow" aria-hidden="true">
@@ -1293,5 +1318,30 @@ function fitTitles(){
   ts.forEach(t=>{ const room=t.parentElement.clientWidth-28; while(t.scrollWidth>room && size>11){ size-=.5; ts.forEach(x=>x.style.setProperty('--tfs',size+'px')); } });
 }
 fitTitles(); addEventListener('resize',fitTitles); document.fonts&&document.fonts.ready.then(fitTitles);
+/* 7-language switcher for the home screen */
+(function(){
+  const KEYS=["eyebrow", "h1a", "h1b", "kicker", "t0", "t1", "t2", "t3", "t4", "t5", "track", "blog", "tr0", "tr1", "tr2", "tr3"], T={"en": ["Canada's Complaint Platform", "Your Complaint.", "Heard. Tracked. Resolved.", "Six Paths to Justice", "Complaint", "Free Lawyer", "Representative", "Cyber Crime", "Verify", "Guides", "Track My Complaint", "Blog", "Anonymous", "AI Routing", "7 Languages", "Live Tracking"], "fr": ["Plateforme canadienne des plaintes", "Votre plainte.", "Entendue. Suivie. Résolue.", "Six voies vers la justice", "Plainte", "Avocat gratuit", "Député", "Cybercrime", "Vérifier", "Guides", "Suivre ma plainte", "Blogue", "Anonyme", "Routage IA", "7 langues", "Suivi en direct"], "es": ["Plataforma de quejas de Canadá", "Su queja.", "Escuchada. Seguida. Resuelta.", "Seis caminos a la justicia", "Queja", "Abogado gratis", "Representante", "Ciberdelito", "Verificar", "Guías", "Seguir mi queja", "Blog", "Anónimo", "Enrutamiento IA", "7 idiomas", "Seguimiento en vivo"], "tr": ["Kanada'nın Şikâyet Platformu", "Şikâyetiniz.", "Duyulur. İzlenir. Çözülür.", "Adalete Altı Yol", "Şikâyet", "Ücretsiz Avukat", "Temsilci", "Siber Suç", "Doğrula", "Rehberler", "Şikâyetimi Takip Et", "Blog", "Anonim", "YZ Yönlendirme", "7 Dil", "Canlı Takip"], "ar": ["منصة الشكاوى في كندا", "شكواك.", "تُسمَع. تُتابَع. تُحَلّ.", "ستة طرق إلى العدالة", "شكوى", "محامٍ مجاني", "ممثّلك", "جرائم إلكترونية", "تحقّق", "أدلّة", "تتبّع شكواي", "المدوّنة", "مجهول الهوية", "توجيه بالذكاء الاصطناعي", "7 لغات", "تتبّع مباشر"], "zh": ["加拿大投诉平台", "您的投诉", "被倾听 · 被跟进 · 被解决", "通往正义的六条路", "投诉", "免费律师", "民选代表", "网络犯罪", "核实", "指南", "跟踪我的投诉", "博客", "匿名", "AI 智能分流", "7 种语言", "实时跟踪"], "pa": ["ਕੈਨੇਡਾ ਦਾ ਸ਼ਿਕਾਇਤ ਪਲੇਟਫਾਰਮ", "ਤੁਹਾਡੀ ਸ਼ਿਕਾਇਤ।", "ਸੁਣੀ ਗਈ। ਟ੍ਰੈਕ ਹੋਈ। ਹੱਲ ਹੋਈ।", "ਨਿਆਂ ਦੇ ਛੇ ਰਸਤੇ", "ਸ਼ਿਕਾਇਤ", "ਮੁਫ਼ਤ ਵਕੀਲ", "ਨੁਮਾਇੰਦਾ", "ਸਾਈਬਰ ਅਪਰਾਧ", "ਪੁਸ਼ਟੀ ਕਰੋ", "ਗਾਈਡਾਂ", "ਮੇਰੀ ਸ਼ਿਕਾਇਤ ਟ੍ਰੈਕ ਕਰੋ", "ਬਲੌਗ", "ਗੁਮਨਾਮ", "AI ਰੂਟਿੰਗ", "7 ਭਾਸ਼ਾਵਾਂ", "ਲਾਈਵ ਟ੍ਰੈਕਿੰਗ"]};
+  const FONTS={ar:'Noto+Naskh+Arabic:wght@500;700',zh:'Noto+Serif+SC:wght@600;700&family=Noto+Sans+SC:wght@500;700',pa:'Noto+Sans+Gurmukhi:wght@500;700'};
+  const pill=document.getElementById('lpill'), menu=document.getElementById('lmenu'), code=document.getElementById('lcode');
+  function loadFont(l){ if(!FONTS[l]||document.getElementById('f-'+l)) return; const k=document.createElement('link'); k.id='f-'+l; k.rel='stylesheet'; k.href='https://fonts.googleapis.com/css2?family='+FONTS[l]+'&display=swap'; document.head.appendChild(k); }
+  function setLang(l){
+    if(!T[l]) l='en'; loadFont(l);
+    document.documentElement.lang=l; document.documentElement.dir=l==='ar'?'rtl':'ltr';
+    KEYS.forEach((k,i)=>document.querySelectorAll('[data-i="'+k+'"]').forEach(el=>{ el.textContent=T[l][i]; if(el.hasAttribute('data-text')) el.setAttribute('data-text',T[l][i]); }));
+    code.textContent=l.toUpperCase();
+    menu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.l===l));
+    try{ localStorage.setItem('ccLang',l); }catch(e){}
+    if(window.fitTitles) setTimeout(fitTitles,60); if(document.fonts) document.fonts.ready.then(()=>window.fitTitles&&fitTitles());
+  }
+  function toggle(open){ const o=open!==undefined?open:menu.hidden; menu.hidden=!o; pill.setAttribute('aria-expanded',o); if(o) (menu.querySelector('[aria-selected="true"]')||menu.querySelector('button')).focus(); }
+  pill.addEventListener('click',e=>{ e.stopPropagation(); toggle(); });
+  pill.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+  menu.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; setLang(b.dataset.l); toggle(false); pill.focus(); });
+  document.addEventListener('click',e=>{ if(!menu.hidden&&!menu.contains(e.target)) toggle(false); });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&!menu.hidden) toggle(false); });
+  let saved='en'; try{ saved=localStorage.getItem('ccLang')||(navigator.language||'en').slice(0,2); }catch(e){}
+  setLang(T[saved]?saved:'en');
+})();
+
 </script>
 </body></html>
