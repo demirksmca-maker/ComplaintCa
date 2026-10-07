@@ -160,7 +160,7 @@ body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246
   background:rgba(6,7,12,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .35s}
 .flow.open{opacity:1;pointer-events:auto}
 body:has(.flow.open) .demo-tag{display:none}
-.sheet{position:relative;width:100%;max-width:480px;max-height:92%;overflow-y:auto;overscroll-behavior:contain;
+.sheet{position:relative;width:100%;max-width:480px;height:calc(100% - 56px - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain;
   padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px));border-radius:24px 24px 0 0;
   background:linear-gradient(180deg,rgba(38,30,84,.96),rgba(13,12,26,.98) 40%);
   box-shadow:0 -20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(246,231,191,.35);
