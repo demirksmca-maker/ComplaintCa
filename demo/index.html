@@ -457,6 +457,20 @@ h1{margin-top:8px}
   background:linear-gradient(180deg,#fffdf6,#f1d79c 60%,#d9b670);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .kicker::before{content:"";width:22px;height:1px;flex:none;background:linear-gradient(90deg,rgba(230,201,138,0),#e6c98a)}
 @media (min-width:900px) and (min-height:600px){ .kicker::after{content:"";width:22px;height:1px;flex:none;background:linear-gradient(90deg,#e6c98a,rgba(230,201,138,0))} }
+
+/* ── Representative panel (same ASYA format as Free Lawyer) ── */
+.rcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:18px 16px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(124,92,255,.10),rgba(255,255,255,.03));border:1px solid rgba(124,92,255,.28);box-shadow:0 16px 40px -24px rgba(61,139,255,.8);animation:msgIn .5s both;animation-delay:calc(var(--k)*110ms)}
+.rcard .ph{width:72px;height:72px;border-radius:50%;object-fit:cover;background:rgba(124,92,255,.2);box-shadow:0 0 0 2px rgba(124,92,255,.5),0 0 24px -4px rgba(124,92,255,.8)}
+.rcard .ini{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font:700 1.3rem var(--f-brand);color:#e8e3ff;background:linear-gradient(135deg,#7c5cff,#3d8bff);box-shadow:0 0 24px -4px rgba(124,92,255,.8)}
+.rcard .lvl{font:700 .58rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;padding:6px 10px;border-radius:999px;color:#7fe9d8;background:rgba(0,194,168,.12);border:1px solid rgba(0,194,168,.4)}
+.rcard h4{margin:0;font:700 .92rem/1.25 var(--f-brand);letter-spacing:.1em;text-transform:uppercase;color:#e8e3ff}
+.rcard p{margin:0;color:rgba(255,255,255,.6);font-size:.8rem;line-height:1.4}
+.rcard .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:6px}
+.rcard .acts a{display:flex;align-items:center;justify-content:center;min-height:42px;border-radius:999px;text-decoration:none;font:700 .66rem/1 var(--f-brand);letter-spacing:.18em;text-transform:uppercase}
+.rcard .acts a.p{color:#fff;background:linear-gradient(100deg,#7c5cff,#3d8bff 55%,#00c2a8);box-shadow:0 10px 24px -10px rgba(124,92,255,.9)}
+.rcard .acts a.s{color:#d9d0ff;border:1px solid rgba(124,92,255,.45);background:rgba(124,92,255,.08)}
+.rcard .acts a:only-child{grid-column:1 / -1}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -551,6 +565,23 @@ h1{margin-top:8px}
   </div>
 </div>
 
+<div class="flow vflow rflow" id="rflow" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rflow-title">
+    <div class="sh-top"><span class="sh-title" id="rflow-title">Representative</span><button class="sh-close" type="button" id="rflow-close" aria-label="Close">✕</button></div>
+    <div class="v-main" id="r-main">
+      <div class="v-orb"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></div>
+      <div class="v-state" id="r-state">ASYA · Official data</div>
+      <div class="v-you" id="r-you"></div>
+      <div class="v-live ask" id="r-live" aria-live="polite"></div>
+      <div class="v-tags" id="r-tags"></div>
+      <div class="v-res" id="r-res"></div>
+    </div>
+    <div class="v-foot">
+      <div class="v-opts" id="r-opts"></div>
+      <div class="v-type"><div class="bar"><input id="r-text" type="text" placeholder="Reply to ASYA…" autocomplete="off"><button class="send" type="button" id="r-send" aria-label="Send">↑</button></div></div>
+    </div>
+  </div>
+</div>
 
 <script>
 document.querySelectorAll('.tile').forEach(t=>{
@@ -565,7 +596,7 @@ document.querySelectorAll('.tile').forEach(t=>{
   t.addEventListener('pointermove',move); t.addEventListener('pointerdown',move);
   t.addEventListener('pointerleave',leave); t.addEventListener('pointercancel',leave);
   t.addEventListener('pointerup',e=>{ if(e.pointerType!=='mouse') setTimeout(leave,350); });
-  t.addEventListener('click',e=>{ e.preventDefault(); const ix=[...t.parentElement.children].indexOf(t); if(ix===0) setTimeout(()=>window.openComplaintFlow&&window.openComplaintFlow(),120); if(ix===1) setTimeout(()=>window.openLawyerFlow&&window.openLawyerFlow(),120); });
+  t.addEventListener('click',e=>{ e.preventDefault(); const ix=[...t.parentElement.children].indexOf(t); if(ix===0) setTimeout(()=>window.openComplaintFlow&&window.openComplaintFlow(),120); if(ix===1) setTimeout(()=>window.openLawyerFlow&&window.openLawyerFlow(),120); if(ix===2) setTimeout(()=>window.openRepFlow&&window.openRepFlow(),120); });
 });
 
 
@@ -780,6 +811,84 @@ var LAWYERS = {
   $('vflow-close').onclick=close; F.addEventListener('click',e=>{ if(e.target===F) close(); });
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&F.classList.contains('open')) close(); });
   window.openLawyerFlow=open;
+})();
+
+/* Representative — ASYA asks, Represent API (Open North) answers with official data */
+(function(){
+  const F=document.getElementById('rflow'), $=id=>document.getElementById(id);
+  const live=$('r-live'), you=$('r-you'), state=$('r-state'), tags=$('r-tags'), res=$('r-res'), opts=$('r-opts'), inp=$('r-text');
+  const IDLE='ASYA · Official data';
+  const LEVELS=[['Federal MP','fed'],['Provincial MPP / MLA','prov'],['City councillor','city'],['All of them','all']];
+  const PC=/([A-Za-z]\d[A-Za-z])\s?(\d[A-Za-z]\d)/;
+  let step='who', level='all', busy=false;
+  function set(m){ F.classList.remove('idle','think','done'); F.classList.add(m); }
+  function ask(t){ live.className='v-live ask'; live.textContent=t; }
+  function showOpts(list){ opts.innerHTML=''; list.forEach(([t,v],k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=t; b.style.setProperty('--k',k); b.onclick=()=>reply(t,v); opts.appendChild(b); }); }
+  function lv(rep){ const t=((rep.representative_set_name||'')+' '+(rep.elected_office||'')).toLowerCase();
+    if(t.includes('house of commons')||/\bmp\b/.test(t)) return ['fed','Federal MP',1];
+    if(t.includes('legislative assembly')||t.includes('national assembly')||/\b(mpp|mla|mna|mha)\b/.test(t)) return ['prov','Provincial',2];
+    if(/mayor|maire/.test(t)) return ['city','Mayor',3];
+    return ['city','City councillor',4]; }
+  function reply(text,val){
+    if(busy) return; text=(text||'').trim(); if(!text) return; you.textContent=text; opts.innerHTML='';
+    if(step==='who'){
+      const t=text.toLowerCase();
+      level=val||(/federal|mp\b|ottawa/.test(t)?'fed':/provinc|mpp|mla|mna/.test(t)?'prov':/city|council|mayor|belediye/.test(t)?'city':'all');
+      if(PC.test(text)) return lookup(text);
+      step='where'; set('idle'); state.textContent=IDLE;
+      ask('Great. What is your postal code or address?'); inp.placeholder='Postal code, e.g. M5V 3L9';
+      showOpts([['📍 Use my location','__geo']]); setTimeout(()=>inp.focus(),60); return;
+    }
+    if(step==='where'){ if(val==='__geo') return geo(); lookup(text); }
+  }
+  function geo(){ if(!navigator.geolocation){ ask('Location is not available. Please type your postal code.'); return; }
+    set('think'); state.textContent='Finding you'; live.className='v-live'; live.textContent='…';
+    navigator.geolocation.getCurrentPosition(p=>fetchReps('https://represent.opennorth.ca/representatives/?point='+p.coords.latitude+','+p.coords.longitude,'Your location'),
+      ()=>{ set('idle'); state.textContent=IDLE; ask('I could not get your location. Please type your postal code.'); },{timeout:8000}); }
+  function lookup(text){
+    const m=text.match(PC);
+    set('think'); state.textContent='Searching official records'; live.className='v-live'; live.textContent='…';
+    if(m){ const pc=(m[1]+m[2]).toUpperCase(); return fetchReps('https://represent.opennorth.ca/postcodes/'+pc+'/',pc.slice(0,3)+' '+pc.slice(3),true); }
+    const q=/canada/i.test(text)?text:text+', Canada';
+    fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q)).then(r=>r.json())
+      .then(g=>{ if(!g||!g.length) throw 0; fetchReps('https://represent.opennorth.ca/representatives/?point='+g[0].lat+','+g[0].lon,text); })
+      .catch(()=>fail('I could not find that address. Please try your postal code.'));
+  }
+  function fail(msg){ busy=false; set('idle'); state.textContent=IDLE; ask(msg); step='where'; showOpts([['📍 Use my location','__geo']]); }
+  function fetchReps(url,label,isPc){ busy=true;
+    fetch(url).then(r=>{ if(!r.ok) throw 0; return r.json(); }).then(d=>{
+      const reps=isPc?((d.representatives_concordance&&d.representatives_concordance.length)?d.representatives_concordance:(d.representatives_centroid||[])):(d.objects||[]);
+      busy=false; show(reps,label); }).catch(()=>fail('I could not reach the official records. Please try again.')); }
+  function show(reps,label){
+    let list=reps.map(r=>({r,l:lv(r)})).filter(x=>level==='all'||x.l[0]===level);
+    const seen=new Set(); list=list.filter(x=>{ const k=x.r.name+x.l[1]; if(seen.has(k)) return false; seen.add(k); return true; });
+    list.sort((a,b)=>a.l[2]-b.l[2]); if(level==='all') list=list.filter(x=>x.l[2]<=3).concat(list.filter(x=>x.l[2]>3).slice(0,2));
+    set('done'); state.textContent='Your representatives';
+    tags.innerHTML=''; [LEVELS.find(x=>x[1]===level)[0],label].forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
+    res.innerHTML='';
+    if(!list.length){ ask('I could not find a representative for that area.'); }
+    else ask(list.length===1?'Here is who represents you.':'Here are the people who represent you.');
+    list.forEach(({r,l},k)=>{ const c=document.createElement('div'); c.className='rcard'; c.style.setProperty('--k',k);
+      if(r.photo_url&&/^https:/.test(r.photo_url)){ const im=document.createElement('img'); im.className='ph'; im.alt=''; im.src=r.photo_url; im.onerror=()=>im.replaceWith(ini(r.name)); c.appendChild(im); } else c.appendChild(ini(r.name));
+      const b=document.createElement('span'); b.className='lvl'; b.textContent=l[1]; c.appendChild(b);
+      const h=document.createElement('h4'); h.textContent=r.name||'—'; c.appendChild(h);
+      const p=document.createElement('p'); p.textContent=[r.party_name,r.district_name].filter(Boolean).join(' · '); c.appendChild(p);
+      const acts=document.createElement('div'); acts.className='acts';
+      if(r.email){ const a=document.createElement('a'); a.className='p'; a.href='mailto:'+r.email; a.textContent='Email'; acts.appendChild(a); }
+      if(r.url&&/^https?:/.test(r.url)){ const a=document.createElement('a'); a.className=r.email?'s':'p'; a.href=r.url; a.target='_blank'; a.rel='noopener'; a.textContent='Website'; acts.appendChild(a); }
+      if(acts.children.length) c.appendChild(acts);
+      res.appendChild(c); });
+    const again=document.createElement('button'); again.type='button'; again.className='v-loc'; again.textContent='↺ Start over'; again.onclick=reset; res.appendChild(again);
+  }
+  function ini(n){ const d=document.createElement('div'); d.className='ini'; d.textContent=(n||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join(''); return d; }
+  function reset(){ step='who'; level='all'; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask("Hi, I'm ASYA. Who would you like to reach?"); showOpts(LEVELS); res.innerHTML=''; tags.innerHTML=''; inp.value=''; inp.placeholder='Reply to ASYA…'; $('r-main').scrollTop=0; }
+  const send=()=>{ const v=inp.value; inp.value=''; reply(v); };
+  $('r-send').onclick=send; inp.onkeydown=e=>{ if(e.key==='Enter') send(); };
+  function open(){ F.classList.add('open'); F.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; reset(); }
+  function close(){ F.classList.remove('open'); F.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  $('rflow-close').onclick=close; F.addEventListener('click',e=>{ if(e.target===F) close(); });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&F.classList.contains('open')) close(); });
+  window.openRepFlow=open;
 })();
 const asya=document.getElementById('asya');
 asya.addEventListener('click',()=>{ const on=asya.classList.toggle('listen'); asya.setAttribute('aria-pressed',on); });
