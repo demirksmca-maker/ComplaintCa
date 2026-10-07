@@ -110,9 +110,13 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
 .trust span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--violet)}
 .demo-tag{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6;font:700 .62rem/1 var(--f-ui);letter-spacing:.14em;text-transform:uppercase;
   color:#d4af37;padding:6px 9px;border-radius:999px;border:1px solid rgba(212,175,55,.45);background:rgba(13,15,21,.75)}
+
+/* ── title variants (champagne gold) ── */
+body.v-b .tile-t{color:#8a6a2c;text-shadow:calc(var(--sx)*1px) calc(var(--sy)*1px) 0 #a07c36,calc(var(--sx)*2px) calc(var(--sy)*2px) 0 #876629,calc(var(--sx)*3px) calc(var(--sy)*3px) 0 #6d521f,calc(var(--sx)*4px + 2px) calc(var(--sy)*4px + 6px) 10px rgba(0,0,0,.45)}
+body.v-b .tile-t::before{background-image:linear-gradient(180deg,#fffdf6 0%,#fbefcf 35%,#ecd39a 55%,#f8ebc8 75%,#fffaf0 100%)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
-</head><body style="margin:0">
+</head><body class="v-b" style="margin:0">
 
 <header class="nav">
   <a class="brand" href="#"><span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8394b" stroke-width="1.8"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="#fff"/></svg></span><span>COMPLAINT<b>CA</b></span></a>
