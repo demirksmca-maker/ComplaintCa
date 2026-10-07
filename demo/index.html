@@ -62,18 +62,37 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
   background:linear-gradient(140deg,rgba(255,255,255,.28),transparent 30%,transparent 70%,rgba(255,255,255,.1));mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px}
 
-.tile-t{position:relative;font-weight:800;font-size:clamp(.86rem,3.9vw,1rem);line-height:1.22;text-shadow:0 2px 12px rgba(0,0,0,.45);transform:translateZ(30px)}
+@property --sx{syntax:'<number>';inherits:true;initial-value:.5}
+@property --sy{syntax:'<number>';inherits:true;initial-value:1}
+@property --lift{syntax:'<length>';inherits:true;initial-value:30px}
+.tile{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s,--sx .5s,--sy .5s,--lift .5s}
+.tile.on{--lift:64px;transition:transform .1s linear,box-shadow .4s,--sx .15s,--sy .15s,--lift .35s cubic-bezier(.2,.8,.2,1)}
+/* 3D title: real text, extruded in the tile's own deep tone, with a moving metallic sheen */
+.tile-t{position:relative;font-weight:800;font-size:clamp(.92rem,4.2vw,1.08rem);line-height:1.2;letter-spacing:-.005em;color:#fff;
+  transform:translateZ(var(--lift));
+  text-shadow:
+    calc(var(--sx)*1px) calc(var(--sy)*1px) 0 var(--deep),
+    calc(var(--sx)*2px) calc(var(--sy)*2px) 0 var(--deep),
+    calc(var(--sx)*3px) calc(var(--sy)*3px) 0 var(--deep),
+    calc(var(--sx)*4px) calc(var(--sy)*4px) 0 var(--deep),
+    calc(var(--sx)*5px) calc(var(--sy)*5px) 0 var(--deep),
+    calc(var(--sx)*6px + 2px) calc(var(--sy)*6px + 6px) 12px rgba(0,0,0,.55)}
+.tile-t::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;text-shadow:none;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.95) 45%,#ffe7a8 50%,transparent 62%);background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 5.5s ease-in-out infinite;animation-delay:calc(var(--i)*.6s)}
+@keyframes sheen{0%,55%{background-position:120% 0}85%,100%{background-position:-60% 0}}
+.tile.on .tile-t::after{animation-duration:1.6s}
 .arr{position:absolute;top:12px;right:14px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;
   background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);transform:translateZ(24px);transition:background .3s}
 .tile.on .arr{background:rgba(255,255,255,.3)}
 .tile:focus-visible{outline:2px solid #fff;outline-offset:3px}
 
-.tile:nth-child(1){--glow:rgba(124,92,255,.75);--shade:#3d23b0;background:#4b2fc9}
-.tile:nth-child(2){--glow:rgba(0,194,168,.6);--shade:#00594d;background:#008a76}
-.tile:nth-child(3){--glow:rgba(255,138,61,.6);--shade:#a8361a;background:#e0522a}
-.tile:nth-child(4){--glow:rgba(61,139,255,.65);--shade:#123c8f;background:#1c57c9}
-.tile:nth-child(5){--glow:rgba(255,77,141,.6);--shade:#8f1848;background:#c22463}
-.tile:nth-child(6){--glow:rgba(139,108,255,.4);--shade:#14171e;background:#1a1e26}
+.tile:nth-child(1){--deep:#2a1680;--glow:rgba(124,92,255,.75);--shade:#3d23b0;background:#4b2fc9}
+.tile:nth-child(2){--deep:#003a33;--glow:rgba(0,194,168,.6);--shade:#00594d;background:#008a76}
+.tile:nth-child(3){--deep:#7a2410;--glow:rgba(255,138,61,.6);--shade:#a8361a;background:#e0522a}
+.tile:nth-child(4){--deep:#0b2766;--glow:rgba(61,139,255,.65);--shade:#123c8f;background:#1c57c9}
+.tile:nth-child(5){--deep:#63102f;--glow:rgba(255,77,141,.6);--shade:#8f1848;background:#c22463}
+.tile:nth-child(6){--deep:#05060a;--glow:rgba(139,108,255,.4);--shade:#14171e;background:#1a1e26}
 .tile:nth-child(1) .img{background-image:url(complaint.jpg)}
 .tile:nth-child(2) .img{background-image:url(lawyer.jpg)}
 .tile:nth-child(3) .img{background-image:url(representative.jpg)}
@@ -107,12 +126,12 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
   </div>
 
   <nav class="tiles" aria-label="Six paths to justice">
-    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">File a Complaint</span></a>
-    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">Free Lawyer &amp; Civil Society</span></a>
-    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">Find My Representative</span></a>
-    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">Cyber Crime Report</span></a>
-    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">Verify a Document</span></a>
-    <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t">Guides</span></a>
+    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="File a Complaint">File a Complaint</span></a>
+    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Free Lawyer &amp; Civil Society">Free Lawyer &amp; Civil Society</span></a>
+    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Find My Representative">Find My Representative</span></a>
+    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Cyber Crime Report">Cyber Crime Report</span></a>
+    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Verify a Document">Verify a Document</span></a>
+    <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Guides">Guides</span></a>
   </nav>
 
   <div class="links"><a href="#">Track My Complaint</a>·<a href="#">Blog</a></div>
@@ -126,10 +145,10 @@ document.querySelectorAll('.tile').forEach(t=>{
   const move=e=>{
     const r=t.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
     set('--ry',(x*18).toFixed(2)+'deg'); set('--rx',(-y*18).toFixed(2)+'deg');
-    set('--px',(-x*16).toFixed(1)+'px'); set('--py',(-y*16).toFixed(1)+'px');
+    set('--px',(-x*16).toFixed(1)+'px'); set('--sx',(-x*3).toFixed(2)); set('--sy',(1.2-y*2).toFixed(2)); set('--py',(-y*16).toFixed(1)+'px');
     set('--mx',((x+.5)*100)+'%'); set('--my',((y+.5)*100)+'%'); t.classList.add('on');
   };
-  const leave=()=>{ ['--rx','--ry'].forEach(k=>set(k,'0deg')); ['--px','--py'].forEach(k=>set(k,'0px')); t.classList.remove('on'); };
+  const leave=()=>{ ['--rx','--ry'].forEach(k=>set(k,'0deg')); ['--px','--py'].forEach(k=>set(k,'0px')); t.style.removeProperty('--sx'); t.style.removeProperty('--sy'); t.classList.remove('on'); };
   t.addEventListener('pointermove',move); t.addEventListener('pointerdown',move);
   t.addEventListener('pointerleave',leave); t.addEventListener('pointercancel',leave);
   t.addEventListener('pointerup',e=>{ if(e.pointerType!=='mouse') setTimeout(leave,350); });
