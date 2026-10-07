@@ -178,7 +178,7 @@ body:has(.flow.open) .demo-tag{display:none}
 .steps{display:flex;flex-direction:column;gap:10px;perspective:900px}
 .step{border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(246,231,191,.14);transition:border-color .3s,background .3s,opacity .3s}
 .step.cur{background:rgba(255,255,255,.07);border-color:rgba(246,231,191,.45);box-shadow:0 14px 34px -16px rgba(124,92,255,.7)}
-.step.todo{opacity:.45}
+.step.todo{opacity:.6}
 .st-head{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;background:none;border:0;color:inherit;text-align:left;cursor:pointer}
 .st-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:none;font:700 .62rem/1 var(--f-brand);letter-spacing:.06em;color:#f6e7bf;border:1px solid rgba(246,231,191,.45)}
 .step.done .st-num{background:#e6c98a;color:#2a1d05;border-color:#e6c98a}
@@ -217,6 +217,8 @@ body:has(.flow.open) .demo-tag{display:none}
 .sum{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.8rem}
 .sum dt{color:var(--muted);font-weight:600}
 .sum dd{margin:0;color:#eef0f6;min-width:0;overflow-wrap:anywhere}
+.hint{margin:0;color:#f5c563;font-size:.78rem}
+.hint:empty{display:none}
 .done-view{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:26px 6px 10px}
 .flow.sent .steps,.flow.sent .prog{display:none}
 .flow.sent .done-view{display:flex}
@@ -268,7 +270,7 @@ body:has(.flow.open) .demo-tag{display:none}
       <section class="step" data-k="what"><button class="st-head" type="button"><span class="st-num">II</span><span class="st-name">What happened?</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad">
           <textarea id="f-what" placeholder="Describe what happened, when and where."></textarea>
-          <div class="row2"><button class="mini-asya" type="button" id="f-voice"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span>Tell ASYA</button><button class="go" type="button" data-next="what" id="f-what-go" disabled>Next</button></div>
+          <div class="row2"><button class="mini-asya" type="button" id="f-voice"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span>Tell ASYA</button><button class="go" type="button" data-next="what" id="f-what-go">Later</button></div>
         </div></div></div></section>
       <section class="step" data-k="urg"><button class="st-head" type="button"><span class="st-num">III</span><span class="st-name">How urgent?</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad"><div class="opts" data-pick="urg">
@@ -287,7 +289,7 @@ body:has(.flow.open) .demo-tag{display:none}
       <section class="step" data-k="send"><button class="st-head" type="button"><span class="st-num">VI</span><span class="st-name">Review &amp; send</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad">
           <dl class="sum" id="sum"></dl>
-          <button class="go" type="button" id="f-send">Send complaint</button>
+          <p class="hint" id="f-hint"></p><button class="go" type="button" id="f-send">Send complaint</button>
         </div></div></div></section>
     </div>
     <div class="done-view"><div class="seal">✓</div><h3>Complaint ready</h3><p>Demo only, nothing was sent. On the live site you would get tracking code <code>CA-7Q4K</code>.</p><button class="go" type="button" id="f-again" style="align-self:center">Done</button></div>
@@ -326,7 +328,7 @@ document.querySelectorAll('.tile').forEach(t=>{
     const c=steps[cur], sh=flow.querySelector('.sheet'); setTimeout(()=>sh.scrollTo({top:Math.max(0,c.offsetTop-90),behavior:'smooth'}),220);
   }
   function next(){ const n=keys.findIndex((k,i)=>i>cur&&ans[k]===undefined); cur = n<0 ? keys.length-1 : n; render(); }
-  steps.forEach((s,i)=>s.querySelector('.st-head').addEventListener('click',()=>{ if(i<=cur||ans[keys[i]]!==undefined||ans[keys[i-1]]!==undefined){ cur=i; render(); } }));
+  steps.forEach((s,i)=>s.querySelector('.st-head').addEventListener('click',()=>{ cur=i; render(); }));
   flow.querySelectorAll('[data-pick]').forEach(g=>g.addEventListener('click',e=>{
     const b=e.target.closest('button'); if(!b) return;
     g.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));
@@ -335,8 +337,8 @@ document.querySelectorAll('.tile').forEach(t=>{
     setTimeout(next,280);
   }));
   const what=document.getElementById('f-what'), whatGo=document.getElementById('f-what-go');
-  what.addEventListener('input',()=>{ whatGo.disabled = what.value.trim().length<10; });
-  whatGo.addEventListener('click',()=>{ const v=what.value.trim(); ans.what = v.length>28 ? v.slice(0,28)+'…' : v; ans.whatFull=v; next(); });
+  const syncWhat=()=>{ whatGo.textContent = what.value.trim() ? 'Next' : 'Later'; }; what.addEventListener('input',syncWhat);
+  whatGo.addEventListener('click',()=>{ const v=what.value.trim(); if(v){ ans.what = v.length>28 ? v.slice(0,28)+'…' : v; ans.whatFull=v; } else { ans.what='To add'; ans.whatFull=''; } next(); });
   document.getElementById('f-voice').addEventListener('click',()=>{ if(!what.value) what.value='On 2 October the landlord entered my unit without the 24-hour written notice required by law.'; what.dispatchEvent(new Event('input')); });
   const files=document.getElementById('f-files'), thumbs=document.getElementById('thumbs');
   files.addEventListener('change',()=>{ thumbs.innerHTML=''; [...files.files].forEach(f=>{ if(f.type.startsWith('image/')){ const im=new Image(); im.src=URL.createObjectURL(f); thumbs.appendChild(im);} }); });
@@ -346,11 +348,13 @@ document.querySelectorAll('.tile').forEach(t=>{
     const rows=[['About',ans.who],['What',ans.whatFull],['Urgency',ans.urg],['Identity',ans.id],['Evidence',ans.ev]];
     const dl=document.getElementById('sum'); dl.innerHTML='';
     rows.forEach(([k,v])=>{ const dt=document.createElement('dt'), dd=document.createElement('dd'); dt.textContent=k; dd.textContent=v||'—'; dl.append(dt,dd); });
+    const missing=[['who','Who'],['urg','Urgency'],['id','Identity']].filter(([k])=>!ans[k]).map(x=>x[1]); if(!ans.whatFull) missing.unshift('What happened');
+    const sb=document.getElementById('f-send'), hint=document.getElementById('f-hint'); sb.disabled=missing.length>0; hint.textContent = missing.length ? 'Still needed: '+missing.join(', ')+'. Tap a step above to fill it in.' : '';
   }
   document.getElementById('f-send').addEventListener('click',()=>{ ans.send='Sent'; flow.classList.add('sent'); });
   function open(){ flow.classList.add('open'); flow.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; render(); }
   function close(){ flow.classList.remove('open'); flow.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-  function reset(){ Object.keys(ans).forEach(k=>delete ans[k]); cur=0; flow.classList.remove('sent'); flow.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); what.value=''; whatGo.disabled=true; files.value=''; thumbs.innerHTML=''; }
+  function reset(){ Object.keys(ans).forEach(k=>delete ans[k]); cur=0; flow.classList.remove('sent'); flow.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); what.value=''; syncWhat(); files.value=''; thumbs.innerHTML=''; }
   document.getElementById('flow-close').addEventListener('click',close);
   document.getElementById('f-again').addEventListener('click',()=>{ close(); setTimeout(reset,400); });
   flow.addEventListener('click',e=>{ if(e.target===flow) close(); });
