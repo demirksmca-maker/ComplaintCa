@@ -440,6 +440,8 @@ h1{margin-top:8px}
 .trust{margin-top:6px}
 .trust{flex-wrap:nowrap;gap:4px 10px}
 .trust span{font-size:clamp(.56rem,2.5vw,.72rem);white-space:nowrap}
+html{overflow-x:hidden}
+@media (min-height:641px){ html,body{overflow-y:hidden} }
 @media (max-height:640px){ main{height:auto;max-height:none} .tiles{flex:none;grid-template-rows:none} .tile{aspect-ratio:1/1;height:auto} }
 @media (min-width:600px){ main{max-width:640px} }
 @media (min-width:900px) and (min-height:600px){
@@ -526,6 +528,22 @@ h1{margin-top:8px}
 @keyframes fshade{0%,100%{opacity:.2}50%{opacity:.9}}
 .wflag::before{content:"";position:absolute;left:-4px;top:-4px;width:2px;height:34px;border-radius:2px;background:linear-gradient(#f6e7bf,#a77d2c)}
 @media (max-width:380px){ .demo-tag{display:none} }
+
+/* ── footer row: glass link pills + gold serif trust line ── */
+.links{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px}
+.links a{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border:0;border-radius:999px;text-decoration:none;position:relative;
+  font:600 .74rem/1 var(--f-ui);color:#e8e3ff;background:rgba(124,92,255,.10);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 20px -12px rgba(124,92,255,.9)}
+.links a::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(120deg,rgba(124,92,255,.9),rgba(61,139,255,.6),rgba(0,194,168,.7));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.links a svg{width:13px;height:13px;color:#8fc2ff}
+.links-sep{display:none}
+.trust{justify-content:center;margin-top:9px;gap:0}
+.trust span{gap:0;font:700 clamp(.5rem,2.3vw,.6rem)/1 var(--f-brand);letter-spacing:.16em;text-transform:uppercase;color:#d9c48f}
+.trust span::before{display:none}
+.trust span+span::before{content:"";display:inline-block;width:4px;height:4px;margin:0 9px;border-radius:50%;background:#7fe9d8;box-shadow:0 0 6px #00c2a8;vertical-align:middle}
+@media (max-width:600px){ .links{margin-top:8px} .links a{padding:6px 12px;font-size:.7rem} .trust{margin-top:7px} .trust span{font-size:clamp(.44rem,2.05vw,.52rem);letter-spacing:.09em} .trust span+span::before{margin:0 6px;width:3px;height:3px} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -552,7 +570,7 @@ h1{margin-top:8px}
     <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Guides">Guides</span></a>
   </nav>
 
-  <div class="links"><a href="#">Track My Complaint</a>·<a href="#">Blog</a></div>
+  <div class="links"><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Track My Complaint</a><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/></svg>Blog</a></div>
   <div class="trust"><span>Anonymous</span><span>AI Routing</span><span>7 Languages</span><span>Live Tracking</span></div>
 </main>
 
