@@ -157,6 +157,78 @@ body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246
   background:rgba(255,255,255,.14);backdrop-filter:blur(12px) saturate(1.4);-webkit-backdrop-filter:blur(12px) saturate(1.4);
   border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -8px rgba(0,0,0,.5)}
   text-shadow:0 0 6px rgba(255,214,140,.9),0 0 18px rgba(255,190,90,.55),0 0 36px var(--glow)}
+
+/* ── one-page complaint flow: glass sheet with six steps that unfold in 3D ── */
+.flow{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(6,7,12,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .35s}
+.flow.open{opacity:1;pointer-events:auto}
+body:has(.flow.open) .demo-tag{display:none}
+.sheet{position:relative;width:100%;max-width:480px;max-height:92%;overflow-y:auto;overscroll-behavior:contain;
+  padding:18px 18px calc(22px + env(safe-area-inset-bottom,0px));border-radius:24px 24px 0 0;
+  background:linear-gradient(180deg,rgba(38,30,84,.96),rgba(13,12,26,.98) 40%);
+  box-shadow:0 -20px 60px rgba(0,0,0,.6),inset 0 1px 0 rgba(246,231,191,.35);
+  transform:translateY(40px) rotateX(8deg);transform-origin:50% 100%;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.flow.open .sheet{transform:none}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sh-title{font:700 .78rem/1 var(--f-brand);letter-spacing:.24em;text-transform:uppercase;color:#f6e7bf}
+.sh-close{width:34px;height:34px;border-radius:50%;border:1px solid rgba(246,231,191,.35);background:rgba(255,255,255,.06);color:#f6e7bf;font-size:1rem;cursor:pointer}
+.prog{display:flex;align-items:center;gap:0;margin:16px 2px 14px}
+.prog i{width:9px;height:9px;border-radius:50%;border:1px solid rgba(246,231,191,.5);background:transparent;flex:none;transition:all .35s}
+.prog b{flex:1;height:1px;background:rgba(246,231,191,.22);transition:background .35s}
+.prog i.done{background:#e6c98a;border-color:#e6c98a;box-shadow:0 0 8px rgba(230,201,138,.8)}
+.prog i.cur{background:#f6e7bf;transform:scale(1.35);box-shadow:0 0 12px rgba(246,231,191,.9)}
+.prog b.done{background:#e6c98a}
+.steps{display:flex;flex-direction:column;gap:10px;perspective:900px}
+.step{border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(246,231,191,.14);transition:border-color .3s,background .3s,opacity .3s}
+.step.cur{background:rgba(255,255,255,.07);border-color:rgba(246,231,191,.45);box-shadow:0 14px 34px -16px rgba(124,92,255,.7)}
+.step.todo{opacity:.45}
+.st-head{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;background:none;border:0;color:inherit;text-align:left;cursor:pointer}
+.st-num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:none;font:700 .62rem/1 var(--f-brand);letter-spacing:.06em;color:#f6e7bf;border:1px solid rgba(246,231,191,.45)}
+.step.done .st-num{background:#e6c98a;color:#2a1d05;border-color:#e6c98a}
+.st-name{flex:1;min-width:0;font:700 .72rem/1.2 var(--f-brand);letter-spacing:.18em;text-transform:uppercase;color:#f6e7bf}
+.st-val{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.72rem;font-weight:600;color:#2a1d05;background:#e6c98a;padding:4px 9px;border-radius:999px}
+.st-val:empty{display:none}
+.st-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1)}
+.st-in{overflow:hidden;min-height:0;transform:rotateX(-75deg);transform-origin:50% 0;opacity:0;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .4s}
+.step.cur .st-body{grid-template-rows:1fr}
+.step.cur .st-in{transform:none;opacity:1}
+.st-pad{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{padding:9px 13px;border-radius:999px;border:1px solid rgba(246,231,191,.3);background:rgba(255,255,255,.06);color:#eef0f6;font:600 .8rem/1 var(--f-ui);cursor:pointer;transition:all .2s}
+.opt:hover{border-color:rgba(246,231,191,.7)}
+.opt.sel{background:#e6c98a;color:#2a1d05;border-color:#e6c98a}
+.opt .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.cards2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card2{padding:12px;border-radius:14px;border:1px solid rgba(246,231,191,.25);background:rgba(255,255,255,.05);color:#eef0f6;text-align:left;cursor:pointer;font:600 .82rem/1.3 var(--f-ui)}
+.card2 small{display:block;margin-top:4px;color:var(--muted);font-weight:500;font-size:.7rem}
+.card2.sel{border-color:#e6c98a;box-shadow:inset 0 0 0 1px #e6c98a}
+.flow textarea,.flow input[type=text]{width:100%;border-radius:12px;border:1px solid rgba(246,231,191,.25);background:rgba(0,0,0,.25);color:#eef0f6;font:500 .88rem/1.45 var(--f-ui);padding:11px 12px;resize:vertical}
+.flow textarea{min-height:92px}
+.flow textarea:focus,.flow input:focus{outline:none;border-color:#e6c98a}
+.row2{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mini-asya{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;border:1px solid rgba(246,231,191,.35);background:rgba(255,255,255,.05);color:#f6e7bf;font:700 .66rem/1 var(--f-brand);letter-spacing:.18em;cursor:pointer}
+.mini-asya .orb{width:22px;height:22px}
+.mini-asya .orb i{width:18px;height:18px;left:2px;top:2px;filter:blur(3px)}
+.go{align-self:flex-end;padding:11px 20px;border-radius:999px;border:0;cursor:pointer;font:700 .72rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;color:#2a1d05;
+  background:linear-gradient(180deg,#fff6dc,#e6c98a);box-shadow:0 8px 20px -8px rgba(230,201,138,.8)}
+.go:disabled{opacity:.4;cursor:not-allowed}
+.ghost{background:none;border:0;color:var(--muted);font:600 .78rem/1 var(--f-ui);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px;border-radius:14px;border:1px dashed rgba(246,231,191,.4);color:var(--soft);font-size:.8rem;cursor:pointer;text-align:center}
+.drop input{display:none}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap}
+.thumbs img{width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid rgba(246,231,191,.3)}
+.sum{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.8rem}
+.sum dt{color:var(--muted);font-weight:600}
+.sum dd{margin:0;color:#eef0f6;min-width:0;overflow-wrap:anywhere}
+.done-view{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:26px 6px 10px}
+.flow.sent .steps,.flow.sent .prog{display:none}
+.flow.sent .done-view{display:flex}
+.seal{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;font-size:2rem;color:#2a1d05;
+  background:radial-gradient(circle at 35% 30%,#fffaf0,#e6c98a 55%,#a77d2c);box-shadow:0 0 30px rgba(230,201,138,.6);animation:pop .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.3) rotate(-30deg)}to{transform:none}}
+.done-view h3{margin:4px 0 0;font:700 .9rem/1.2 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;color:#f6e7bf}
+.done-view p{margin:0;color:var(--soft);font-size:.85rem;max-width:34ch}
+.done-view code{color:#e6c98a;font-weight:700}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -186,6 +258,44 @@ body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246
   <div class="links"><a href="#">Track My Complaint</a>·<a href="#">Blog</a></div>
   <div class="trust"><span>Anonymous</span><span>AI Routing</span><span>7 Languages</span><span>Live Tracking</span></div>
 </main>
+
+<div class="flow" id="flow" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="flow-title">
+    <div class="sh-top"><span class="sh-title" id="flow-title">File a Complaint</span><button class="sh-close" type="button" id="flow-close" aria-label="Close">✕</button></div>
+    <div class="prog" id="prog"></div>
+    <div class="steps" id="steps">
+      <section class="step" data-k="who"><button class="st-head" type="button"><span class="st-num">I</span><span class="st-name">Who is it about?</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad"><div class="opts" data-pick="who">
+          <button class="opt" type="button">Business</button><button class="opt" type="button">Government</button><button class="opt" type="button">Health</button><button class="opt" type="button">Landlord</button><button class="opt" type="button">Municipality</button><button class="opt" type="button">School</button><button class="opt" type="button">Other</button>
+        </div></div></div></div></section>
+      <section class="step" data-k="what"><button class="st-head" type="button"><span class="st-num">II</span><span class="st-name">What happened?</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad">
+          <textarea id="f-what" placeholder="Describe what happened, when and where."></textarea>
+          <div class="row2"><button class="mini-asya" type="button" id="f-voice"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span>Tell ASYA</button><button class="go" type="button" data-next="what" id="f-what-go" disabled>Next</button></div>
+        </div></div></div></section>
+      <section class="step" data-k="urg"><button class="st-head" type="button"><span class="st-num">III</span><span class="st-name">How urgent?</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad"><div class="opts" data-pick="urg">
+          <button class="opt" type="button"><span class="dot" style="background:#4ade80"></span>Low</button><button class="opt" type="button"><span class="dot" style="background:#f5c563"></span>Medium</button><button class="opt" type="button"><span class="dot" style="background:#ff5a5a"></span>High</button>
+        </div></div></div></div></section>
+      <section class="step" data-k="id"><button class="st-head" type="button"><span class="st-num">IV</span><span class="st-name">Your identity</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad"><div class="cards2" data-pick="id">
+          <button class="card2" type="button">Anonymous<small>Your name is never shared.</small></button><button class="card2" type="button">With my name<small>Faster follow-up from the agency.</small></button>
+        </div></div></div></div></section>
+      <section class="step" data-k="ev"><button class="st-head" type="button"><span class="st-num">V</span><span class="st-name">Evidence</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad">
+          <label class="drop" for="f-files">Add photos or documents<small style="color:var(--muted)">Optional · images or PDF</small><input id="f-files" type="file" accept="image/*,.pdf" multiple></label>
+          <div class="thumbs" id="thumbs"></div>
+          <div class="row2"><button class="ghost" type="button" data-skip="ev">Skip</button><button class="go" type="button" data-next="ev">Next</button></div>
+        </div></div></div></section>
+      <section class="step" data-k="send"><button class="st-head" type="button"><span class="st-num">VI</span><span class="st-name">Review &amp; send</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad">
+          <dl class="sum" id="sum"></dl>
+          <button class="go" type="button" id="f-send">Send complaint</button>
+        </div></div></div></section>
+    </div>
+    <div class="done-view"><div class="seal">✓</div><h3>Complaint ready</h3><p>Demo only, nothing was sent. On the live site you would get tracking code <code>CA-7Q4K</code>.</p><button class="go" type="button" id="f-again" style="align-self:center">Done</button></div>
+  </div>
+</div>
 <div class="demo-tag">Demo</div>
 
 <script>
@@ -201,9 +311,55 @@ document.querySelectorAll('.tile').forEach(t=>{
   t.addEventListener('pointermove',move); t.addEventListener('pointerdown',move);
   t.addEventListener('pointerleave',leave); t.addEventListener('pointercancel',leave);
   t.addEventListener('pointerup',e=>{ if(e.pointerType!=='mouse') setTimeout(leave,350); });
-  t.addEventListener('click',e=>e.preventDefault());
+  t.addEventListener('click',e=>{ e.preventDefault(); if(t===document.querySelector('.tile')) setTimeout(()=>window.openComplaintFlow&&window.openComplaintFlow(),120); });
 });
 
+
+/* one-page complaint flow */
+(function(){
+  const flow=document.getElementById('flow'), steps=[...flow.querySelectorAll('.step')], prog=document.getElementById('prog');
+  const keys=steps.map(s=>s.dataset.k), ans={}; let cur=0;
+  prog.innerHTML=keys.map((_,i)=>'<i></i>'+(i<keys.length-1?'<b></b>':'')).join('');
+  function render(){
+    steps.forEach((s,i)=>{ s.classList.toggle('cur',i===cur); s.classList.toggle('done',i!==cur&&ans[keys[i]]!==undefined); s.classList.toggle('todo',i>cur&&ans[keys[i]]===undefined);
+      s.querySelector('.st-val').textContent = i!==cur && ans[keys[i]]!==undefined ? ans[keys[i]] : ''; });
+    [...prog.children].forEach((el,j)=>{ const i=Math.floor(j/2), isDot=j%2===0;
+      el.className = isDot ? (i===cur?'cur':(ans[keys[i]]!==undefined?'done':'')) : (ans[keys[i]]!==undefined?'done':''); });
+    if (keys[cur]==='send') fillSum();
+    const c=steps[cur], sh=flow.querySelector('.sheet'); setTimeout(()=>sh.scrollTo({top:Math.max(0,c.offsetTop-90),behavior:'smooth'}),220);
+  }
+  function next(){ const n=keys.findIndex((k,i)=>i>cur&&ans[k]===undefined); cur = n<0 ? keys.length-1 : n; render(); }
+  steps.forEach((s,i)=>s.querySelector('.st-head').addEventListener('click',()=>{ if(i<=cur||ans[keys[i]]!==undefined||ans[keys[i-1]]!==undefined){ cur=i; render(); } }));
+  flow.querySelectorAll('[data-pick]').forEach(g=>g.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    g.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));
+    ans[g.dataset.pick]=b.childNodes[b.childNodes.length-1].textContent.trim() || b.textContent.trim();
+    if (g.dataset.pick==='id') ans.id=b.firstChild.textContent.trim();
+    setTimeout(next,280);
+  }));
+  const what=document.getElementById('f-what'), whatGo=document.getElementById('f-what-go');
+  what.addEventListener('input',()=>{ whatGo.disabled = what.value.trim().length<10; });
+  whatGo.addEventListener('click',()=>{ const v=what.value.trim(); ans.what = v.length>28 ? v.slice(0,28)+'…' : v; ans.whatFull=v; next(); });
+  document.getElementById('f-voice').addEventListener('click',()=>{ if(!what.value) what.value='On 2 October the landlord entered my unit without the 24-hour written notice required by law.'; what.dispatchEvent(new Event('input')); });
+  const files=document.getElementById('f-files'), thumbs=document.getElementById('thumbs');
+  files.addEventListener('change',()=>{ thumbs.innerHTML=''; [...files.files].forEach(f=>{ if(f.type.startsWith('image/')){ const im=new Image(); im.src=URL.createObjectURL(f); thumbs.appendChild(im);} }); });
+  flow.querySelector('[data-next="ev"]').addEventListener('click',()=>{ const n=files.files.length; ans.ev = n ? n+' file'+(n>1?'s':'') : 'None'; next(); });
+  flow.querySelector('[data-skip="ev"]').addEventListener('click',()=>{ ans.ev='None'; next(); });
+  function fillSum(){
+    const rows=[['About',ans.who],['What',ans.whatFull],['Urgency',ans.urg],['Identity',ans.id],['Evidence',ans.ev]];
+    const dl=document.getElementById('sum'); dl.innerHTML='';
+    rows.forEach(([k,v])=>{ const dt=document.createElement('dt'), dd=document.createElement('dd'); dt.textContent=k; dd.textContent=v||'—'; dl.append(dt,dd); });
+  }
+  document.getElementById('f-send').addEventListener('click',()=>{ ans.send='Sent'; flow.classList.add('sent'); });
+  function open(){ flow.classList.add('open'); flow.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; render(); }
+  function close(){ flow.classList.remove('open'); flow.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function reset(){ Object.keys(ans).forEach(k=>delete ans[k]); cur=0; flow.classList.remove('sent'); flow.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); what.value=''; whatGo.disabled=true; files.value=''; thumbs.innerHTML=''; }
+  document.getElementById('flow-close').addEventListener('click',close);
+  document.getElementById('f-again').addEventListener('click',()=>{ close(); setTimeout(reset,400); });
+  flow.addEventListener('click',e=>{ if(e.target===flow) close(); });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&flow.classList.contains('open')) close(); });
+  window.openComplaintFlow=open;
+})();
 const asya=document.getElementById('asya');
 asya.addEventListener('click',()=>{ const on=asya.classList.toggle('listen'); asya.setAttribute('aria-pressed',on); });
 function fitTitles(){
