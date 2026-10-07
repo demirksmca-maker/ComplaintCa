@@ -507,13 +507,32 @@ h1{margin-top:8px}
   .tiles{gap:9px}
   .links{margin-top:9px}
 }
+
+/* ── top bar: northern lights + waving 3D flag ── */
+.nav{overflow:hidden;background:#0b1530;border-bottom:1px solid rgba(127,233,216,.25)}
+.nav::before{content:"";position:absolute;inset:-40px -20px;z-index:0;filter:blur(18px);opacity:.85;pointer-events:none;
+  background:radial-gradient(40% 60% at 20% 70%,rgba(0,194,168,.75),transparent 70%),radial-gradient(35% 55% at 55% 30%,rgba(124,92,255,.7),transparent 70%),radial-gradient(30% 60% at 85% 60%,rgba(61,139,255,.6),transparent 70%);
+  animation:aurora 9s ease-in-out infinite alternate}
+@keyframes aurora{0%{transform:translateX(-12%) skewX(-8deg)}100%{transform:translateX(12%) skewX(8deg)}}
+.nav>*{position:relative;z-index:1}
+.brand{text-shadow:0 0 14px rgba(127,233,216,.6)}
+.lang{gap:10px}
+.lang .lpill{display:flex;align-items:center;gap:8px;cursor:pointer}
+.lang .lpill small{opacity:.6;font-size:.7em}
+.wflag{position:relative;display:flex;width:40px;height:24px;margin-left:4px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+.wflag i{flex:1;margin-right:-.6px;height:100%;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20200%20100%27%3E%3Crect%20width%3D%27200%27%20height%3D%27100%27%20fill%3D%27%23fff%27/%3E%3Crect%20width%3D%2750%27%20height%3D%27100%27%20fill%3D%27%23d52b1e%27/%3E%3Crect%20x%3D%27150%27%20width%3D%2750%27%20height%3D%27100%27%20fill%3D%27%23d52b1e%27/%3E%3Cpath%20transform%3D%27translate%2860%204%29%20scale%28.8%20.92%29%27%20fill%3D%27%23d52b1e%27%20d%3D%27M50%208%20L56%2022%20L64%2018%20L60%2038%20L72%2028%20L74%2036%20L86%2034%20L80%2046%20L88%2050%20L68%2064%20L72%2072%20L54%2070%20L54%2092%20L46%2092%20L46%2070%20L28%2072%20L32%2064%20L12%2050%20L20%2046%20L14%2034%20L26%2036%20L28%2028%20L40%2038%20L36%2018%20L44%2022%20Z%27/%3E%3C/svg%3E");background-size:40px 24px;animation:fwave 1.6s ease-in-out infinite;position:relative}
+.wflag i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.18),rgba(255,255,255,.22),rgba(0,0,0,.18));animation:fshade 1.6s ease-in-out infinite;animation-delay:inherit}
+@keyframes fwave{0%,100%{transform:translateY(-1.5px)}50%{transform:translateY(1.5px)}}
+@keyframes fshade{0%,100%{opacity:.2}50%{opacity:.9}}
+.wflag::before{content:"";position:absolute;left:-4px;top:-4px;width:2px;height:34px;border-radius:2px;background:linear-gradient(#f6e7bf,#a77d2c)}
+@media (max-width:380px){ .demo-tag{display:none} }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
 
 <header class="nav">
   <a class="brand" href="#"><span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8394b" stroke-width="1.8"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="#fff"/></svg></span><span>COMPLAINT<b>CA</b></span></a>
-  <div class="lang"><span class="demo-tag">Demo</span><span class="flag" aria-hidden="true"></span>EN</div>
+  <div class="lang"><span class="demo-tag">Demo</span><span class="lpill"><span class="wflag" aria-hidden="true"><i style="background-position:-0px 0;animation-delay:0.00s"></i><i style="background-position:-4px 0;animation-delay:-0.12s"></i><i style="background-position:-8px 0;animation-delay:-0.24s"></i><i style="background-position:-12px 0;animation-delay:-0.36s"></i><i style="background-position:-16px 0;animation-delay:-0.48s"></i><i style="background-position:-20px 0;animation-delay:-0.60s"></i><i style="background-position:-24px 0;animation-delay:-0.72s"></i><i style="background-position:-28px 0;animation-delay:-0.84s"></i><i style="background-position:-32px 0;animation-delay:-0.96s"></i><i style="background-position:-36px 0;animation-delay:-1.08s"></i></span>EN <small>▾</small></span></div>
 </header>
 
 <main>
