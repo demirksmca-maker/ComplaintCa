@@ -33,9 +33,40 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
 .quote cite{display:block;margin-top:4px;color:var(--violet-l);font-style:normal;font-size:.62rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
 .kicker{color:var(--muted);font-weight:700;font-size:.8rem;letter-spacing:.04em}
-.asya{display:flex;align-items:center;gap:10px;padding:9px 20px 9px 12px;border-radius:999px;color:#fff;font:800 .82rem/1 var(--f-ui);letter-spacing:.18em;
-  border:1.5px solid rgba(212,175,55,.75);background:radial-gradient(120% 140% at 0% 50%,#2e5cb8 0%,#3a3f8f 45%,#8e4f8f 100%);box-shadow:0 0 18px rgba(124,92,255,.3)}
-.asya-ico{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:grid;place-items:center;font-size:.6rem;letter-spacing:0}
+/* ── ASYA: dark glass capsule, living orb, gold serif name, travelling gold rim light ── */
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+.asya{position:relative;display:flex;align-items:center;gap:11px;padding:6px 20px 6px 7px;border-radius:999px;cursor:pointer;
+  font:700 .8rem/1 var(--f-brand);letter-spacing:.24em;color:#f6e7bf;border:0;
+  background:linear-gradient(180deg,rgba(44,36,92,.92),rgba(14,12,30,.95));
+  box-shadow:0 10px 28px -10px rgba(124,92,255,.65),inset 0 1px 0 rgba(255,255,255,.14),inset 0 -6px 14px rgba(0,0,0,.35);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.asya:active{transform:scale(.97)}
+.asya::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:conic-gradient(from var(--ang),rgba(201,150,46,.55) 0 70%,#fff3cf 82%,rgba(201,150,46,.55) 94%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:rim 4.5s linear infinite}
+@keyframes rim{to{--ang:360deg}}
+.asya-t{position:relative;text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.orb{position:relative;width:32px;height:32px;border-radius:50%;overflow:hidden;flex:none;isolation:isolate;
+  background:#160f38;box-shadow:0 0 14px rgba(139,108,255,.7),0 0 0 1px rgba(255,255,255,.18);animation:breathe 3.2s ease-in-out infinite}
+.orb i{position:absolute;width:26px;height:26px;border-radius:50%;filter:blur(5px);mix-blend-mode:screen;left:3px;top:3px}
+.orb .b1{background:#7c5cff;transform-origin:16px 8px;animation:swirl 5s linear infinite}
+.orb .b2{background:#3d8bff;transform-origin:6px 18px;animation:swirl 6.5s linear infinite reverse}
+.orb .b3{background:#ff4d8d;transform-origin:20px 20px;animation:swirl 4.2s linear infinite;opacity:.85}
+.orb .spec{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.9) 0 8%,rgba(255,255,255,.25) 18%,transparent 40%),radial-gradient(circle at 50% 120%,rgba(0,0,0,.45),transparent 60%)}
+@keyframes swirl{to{transform:rotate(360deg)}}
+@keyframes breathe{50%{box-shadow:0 0 22px rgba(139,108,255,.95),0 0 0 1px rgba(255,255,255,.25)}}
+.orb-wrap{position:relative;display:grid;place-items:center}
+.orb-wrap::before,.orb-wrap::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(201,150,46,.6);opacity:0;pointer-events:none}
+/* listening state (tap to preview) */
+.asya.listen{box-shadow:0 12px 34px -8px rgba(255,77,141,.6),inset 0 1px 0 rgba(255,255,255,.18)}
+.asya.listen .orb{animation:talk .55s ease-in-out infinite alternate}
+.asya.listen .orb i{animation-duration:1.4s}
+.asya.listen .orb-wrap::before,.asya.listen .orb-wrap::after{animation:wave 1.6s ease-out infinite}
+.asya.listen .orb-wrap::after{animation-delay:.8s}
+@keyframes talk{from{transform:scale(.94)}to{transform:scale(1.1)}}
+@keyframes wave{from{transform:scale(1);opacity:.9}to{transform:scale(2.1);opacity:0}}
 
 /* ── tiles ── */
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;perspective:800px}
@@ -140,7 +171,7 @@ body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246
   <p class="quote">"Justice is the source of all the other virtues."<cite>— Marcus Aurelius</cite></p>
   <div class="row">
     <div class="kicker">Six Paths to Justice</div>
-    <span class="asya"><span class="asya-ico">ılı</span>ASYA</span>
+    <button class="asya" id="asya" type="button" aria-pressed="false" aria-label="ASYA voice assistant"><span class="orb-wrap"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></span><span class="asya-t">ASYA</span></button>
   </div>
 
   <nav class="tiles" aria-label="Six paths to justice">
@@ -173,6 +204,8 @@ document.querySelectorAll('.tile').forEach(t=>{
   t.addEventListener('click',e=>e.preventDefault());
 });
 
+const asya=document.getElementById('asya');
+asya.addEventListener('click',()=>{ const on=asya.classList.toggle('listen'); asya.setAttribute('aria-pressed',on); });
 function fitTitles(){
   const ts=[...document.querySelectorAll('.tile-t')]; let size=19;
   ts.forEach(t=>t.style.setProperty('--tfs',size+'px'));
