@@ -182,6 +182,41 @@
       note: "No strict statutory deadline, but you must file with your utility's own complaints process first — regulators like the OEB, BCUC, AUC, or Régie de l'énergie expect proof of that attempt before they'll review an escalation.",
       template: "To: [Utility Name] — Customer Service / Complaints\n\nSubject: Billing Dispute — Account [number]\n\nMy account [number] shows [describe: an unexplained increase / a billing error / a service issue] starting [date]. I have reviewed my usage and believe this is incorrect because [reason].\n\nI am requesting a review and correction. If unresolved, I will escalate to [OEB/BCUC/AUC/Régie de l'énergie].\n\nSincerely,\n[Full Name]",
       checklist: ["Account number", "Recent bills showing the disputed charge", "Meter reading photos (if relevant)", "Dates of any outages or service issues", "Prior correspondence with the utility"]
+    },
+    condo: {
+      label: "Condo / Strata Dispute", days: 9999, deadlineLabel: "Deadline",
+      resultName: "Condo / strata dispute",
+      note: "Raise the issue in writing with your condo board or strata council first. Tribunals such as Ontario's Condominium Authority Tribunal (CAT) or BC's Civil Resolution Tribunal (CRT) expect proof of that attempt. Limitation periods for legal claims still apply (generally 2 years, 3 in Quebec), so act promptly.",
+      template: "To: Board of Directors / Strata Council — [Corporation Name / Number]\n\nSubject: Formal Request — Unit [number]\n\nI am writing about [issue: records request / noise / chargebacks / repairs / pets]. The relevant date(s): [date]. The bylaw or rule involved: [section].\n\nI am requesting [remedy] within [X] days, after which I will consider filing with [CAT / CRT / the appropriate body].\n\nSincerely,\n[Full Name], Unit [number]",
+      checklist: ["Declaration, bylaws and rules", "Your written request(s) to the board", "Photos / logs of the issue with dates", "Board minutes or notices (if relevant)", "Any response from the manager or board"]
+    },
+    education: {
+      label: "School Complaint", days: 9999, deadlineLabel: "Deadline",
+      resultName: "School complaint — escalate in order",
+      note: "No single statutory deadline, but escalate in order: teacher, then principal, then the school board, then the provincial ombudsman. Suspension, expulsion and special-education appeals can have short windows set by your board or province — check them right away.",
+      template: "To: [Principal / School Board Superintendent]\n\nSubject: Formal Complaint — [Student Name], Grade [X], [School]\n\nOn [date(s)] the following occurred: [describe: bullying / IEP not followed / discipline decision].\n\nI raised this with [teacher/principal] on [date] and it is not resolved. I am requesting [remedy] and a written response by [date].\n\nSincerely,\n[Full Name], parent/guardian of [Student Name]",
+      checklist: ["Dates and descriptions of each incident", "Emails / notes with teachers and the principal", "IEP or report cards (if relevant)", "Any suspension or decision letter", "Names of staff involved"]
+    },
+    police: {
+      label: "Police Conduct Complaint", days: 180, deadlineLabel: "Filing Deadline", pillLabel: "Deadline",
+      resultName: "Police complaint — ~6 months",
+      note: "Most provincial oversight bodies require you to file within 6 to 12 months of the incident; some allow later filing with an explanation. This counts 6 months (the shortest common limit) — confirm with your province's oversight body and file early.",
+      template: "To: [Police Oversight Body / Police Service]\n\nSubject: Complaint about Officer Conduct\n\nOn [date] at about [time], at [location], I dealt with officer(s) [name/badge number if known] of [police service]. The following occurred: [factual description].\n\nI request that this conduct be investigated.\n\nSincerely,\n[Full Name]",
+      checklist: ["Date, time and location", "Officer name / badge number (if known)", "Witness names and contacts", "Photos, video or medical records", "Any incident or ticket number"]
+    },
+    privacy: {
+      label: "Privacy Complaint", days: 9999, deadlineLabel: "Deadline",
+      resultName: "Privacy complaint",
+      note: "Contact the organization's privacy officer first and keep their reply. Then complain to the Office of the Privacy Commissioner of Canada or your provincial commissioner. File promptly — commissioners may decline complaints raised long after you learned of the issue.",
+      template: "To: Privacy Officer — [Organization]\n\nSubject: Privacy Complaint / Access Request\n\nOn [date] I learned that [describe: my personal information was disclosed / collected without consent / my access request was refused].\n\nI am requesting [an explanation / access to my information / correction / deletion] within 30 days, after which I will complain to the Privacy Commissioner.\n\nSincerely,\n[Full Name]",
+      checklist: ["Date you learned of the issue", "Breach notice or relevant message", "Your request to the organization", "The organization's reply", "What information was involved"]
+    },
+    studentloan: {
+      label: "Student Loan Complaint", days: 9999, deadlineLabel: "Deadline",
+      resultName: "Student loan escalation",
+      note: "Start with the National Student Loans Service Centre (NSLSC) and keep your reference number. If unresolved, escalate to Service Canada / ESDC, then your MP. In Quebec, decisions by AFE are reviewed by its Bureau de la révision (within 3 years of the decision).",
+      template: "To: National Student Loans Service Centre\n\nSubject: Complaint — Loan Account [number]\n\nOn [date] I [contacted you / received a decision] about [issue: repayment assistance / payment error / default]. Reference: [number].\n\nThe issue is unresolved. I am requesting [remedy] and a written response.\n\nSincerely,\n[Full Name]",
+      checklist: ["Loan account / SIN reference", "NSLSC reference numbers from each call", "Repayment Assistance Plan documents (if any)", "Statements showing the issue", "Any decision letter"]
     }
   };
 
