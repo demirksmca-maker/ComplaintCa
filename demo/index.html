@@ -554,6 +554,27 @@ html{overflow-x:hidden}
 .asya .orb{animation:none;box-shadow:0 0 16px rgba(139,108,255,.75),0 0 0 1px rgba(255,255,255,.2)}
 .asya::before{animation-duration:9s}
 .vflow .sheet::before{animation-duration:12s}
+
+/* ── anti-flicker for all panels (Complaint, Free Lawyer, Representative) ── */
+/* 1. freeze everything behind an open panel so the dimmed backdrop isn't re-blurred every frame */
+body:has(.flow.open) main *,body:has(.flow.open) .nav::before,body:has(.flow.open) .nav *{animation-play-state:paused!important}
+.flow{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(6,7,12,.78)}
+/* 2. panel edge light: no blur filter, slow, own layer */
+.vflow .sheet::before{filter:none;animation-duration:14s;will-change:transform}
+/* 3. ASYA orb inside panels: compositor-only motion, no blend-mode repaint */
+.v-orb .orb,.mini-asya .orb{isolation:auto;transform:translateZ(0)}
+.v-orb .orb i,.mini-asya .orb i{mix-blend-mode:normal;opacity:.8;will-change:transform;backface-visibility:hidden}
+.v-orb .orb .b3{opacity:.65}
+/* 4. no glass blur on controls that sit over moving content */
+.v-opts button,.v-topics button,.links a{backdrop-filter:none;-webkit-backdrop-filter:none}
+/* 5. send button: static gradient instead of a per-frame repaint */
+.vflow .v-type .send{animation:none;background:linear-gradient(135deg,#7c5cff,#3d8bff 55%,#00c2a8)}
+/* 6. complaint steps: open with a flat slide instead of a 3D flip */
+.st-in{transform:translateY(-6px)}
+.step.cur .st-in{transform:none}
+.steps{perspective:none}
+.flow .sheet{transform:translateY(30px)}
+.flow.open .sheet{transform:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
