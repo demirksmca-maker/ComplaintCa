@@ -68,18 +68,21 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
 .tile{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .4s,--sx .5s,--sy .5s,--lift .5s}
 .tile.on{--lift:64px;transition:transform .1s linear,box-shadow .4s,--sx .15s,--sy .15s,--lift .35s cubic-bezier(.2,.8,.2,1)}
 /* 3D title: real text, extruded in the tile's own deep tone, with a moving metallic sheen */
-.tile-t{position:relative;font-weight:800;font-size:clamp(.92rem,4.2vw,1.08rem);line-height:1.2;letter-spacing:-.005em;color:#fff;
-  transform:translateZ(var(--lift));
+.tile-t{position:relative;display:block;white-space:nowrap;font-weight:900;font-size:var(--tfs,1.15rem);line-height:1.1;letter-spacing:.005em;
+  transform:translateZ(var(--lift));color:#6b4a12;
   text-shadow:
-    calc(var(--sx)*1px) calc(var(--sy)*1px) 0 var(--deep),
-    calc(var(--sx)*2px) calc(var(--sy)*2px) 0 var(--deep),
-    calc(var(--sx)*3px) calc(var(--sy)*3px) 0 var(--deep),
-    calc(var(--sx)*4px) calc(var(--sy)*4px) 0 var(--deep),
-    calc(var(--sx)*5px) calc(var(--sy)*5px) 0 var(--deep),
-    calc(var(--sx)*6px + 2px) calc(var(--sy)*6px + 6px) 12px rgba(0,0,0,.55)}
+    calc(var(--sx)*1px) calc(var(--sy)*1px) 0 #5c3f0e,
+    calc(var(--sx)*2px) calc(var(--sy)*2px) 0 #4d340b,
+    calc(var(--sx)*3px) calc(var(--sy)*3px) 0 #3e2a09,
+    calc(var(--sx)*4px) calc(var(--sy)*4px) 0 #2f2007,
+    calc(var(--sx)*5px + 2px) calc(var(--sy)*5px + 7px) 12px rgba(0,0,0,.6)}
+/* metallic gold → silver face sits on top of the extruded body */
+.tile-t::before{content:attr(data-text);position:absolute;inset:0;text-shadow:none;
+  background:linear-gradient(180deg,#fffaf0 0%,#f6dc8c 26%,#d6a640 46%,#8a611a 52%,#e9cf86 66%,#f4f4f8 86%,#bfc3cc 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .tile-t::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;text-shadow:none;
-  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.95) 45%,#ffe7a8 50%,transparent 62%);background-size:260% 100%;
-  -webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 5.5s ease-in-out infinite;animation-delay:calc(var(--i)*.6s)}
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.9) 46%,#ffffff 50%,transparent 60%);background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:sheen 5.5s ease-in-out infinite;animation-delay:calc(var(--i)*.6s)}
 @keyframes sheen{0%,55%{background-position:120% 0}85%,100%{background-position:-60% 0}}
 .tile.on .tile-t::after{animation-duration:1.6s}
 .arr{position:absolute;top:12px;right:14px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;
@@ -126,11 +129,11 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
   </div>
 
   <nav class="tiles" aria-label="Six paths to justice">
-    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="File a Complaint">File a Complaint</span></a>
-    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Free Lawyer &amp; Civil Society">Free Lawyer &amp; Civil Society</span></a>
-    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Find My Representative">Find My Representative</span></a>
-    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Cyber Crime Report">Cyber Crime Report</span></a>
-    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Verify a Document">Verify a Document</span></a>
+    <a class="tile" style="--i:0" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Complaint">Complaint</span></a>
+    <a class="tile" style="--i:1" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Free Lawyer">Free Lawyer</span></a>
+    <a class="tile" style="--i:2" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Representative">Representative</span></a>
+    <a class="tile" style="--i:3" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Cyber Crime">Cyber Crime</span></a>
+    <a class="tile" style="--i:4" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Verify">Verify</span></a>
     <a class="tile" style="--i:5" href="#"><span class="media"><span class="img"></span></span><span class="shade"></span><span class="glare"></span><span class="edge"></span><span class="arr">→</span><span class="tile-t" data-text="Guides">Guides</span></a>
   </nav>
 
@@ -154,5 +157,12 @@ document.querySelectorAll('.tile').forEach(t=>{
   t.addEventListener('pointerup',e=>{ if(e.pointerType!=='mouse') setTimeout(leave,350); });
   t.addEventListener('click',e=>e.preventDefault());
 });
+
+function fitTitles(){
+  const ts=[...document.querySelectorAll('.tile-t')]; let size=19;
+  ts.forEach(t=>t.style.setProperty('--tfs',size+'px'));
+  ts.forEach(t=>{ const room=t.parentElement.clientWidth-28; while(t.scrollWidth>room && size>11){ size-=.5; ts.forEach(x=>x.style.setProperty('--tfs',size+'px')); } });
+}
+fitTitles(); addEventListener('resize',fitTitles); document.fonts&&document.fonts.ready.then(fitTitles);
 </script>
 </body></html>
