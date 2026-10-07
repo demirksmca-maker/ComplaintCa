@@ -320,18 +320,11 @@ body:has(.flow.open) .demo-tag{display:none}
 .v-orb .orb{display:block;width:132px;height:132px;box-shadow:0 0 60px rgba(124,92,255,.7),0 0 120px rgba(0,194,168,.3);cursor:pointer}
 .v-orb .orb i{width:108px;height:108px;left:12px;top:12px;filter:blur(16px)}
 .v-orb .orb .b1{transform-origin:66px 30px}.v-orb .orb .b2{transform-origin:24px 78px}.v-orb .orb .b3{transform-origin:84px 84px}
-.vflow.listen .v-orb .orb{animation:talk .5s ease-in-out infinite alternate}
 .vflow.think .v-orb .orb i{animation-duration:1.2s}
 .vflow.done .v-orb{transform:scale(.5);transform-origin:50% 0;margin-top:8px;margin-bottom:-66px}
-.vflow.done .v-wave{display:none}
 .v-loc u{margin-left:4px}
 .v-state{margin-top:14px;display:flex;align-items:center;gap:7px;font:700 .64rem/1 var(--f-brand);letter-spacing:.24em;text-transform:uppercase;color:#e6c98a}
 .v-state::before{content:"";width:7px;height:7px;border-radius:50%;background:#e6c98a;opacity:.5}
-.vflow.listen .v-state::before{background:#ff4d8d;opacity:1;box-shadow:0 0 10px #ff4d8d;animation:breathe 1s infinite}
-.v-wave{display:flex;align-items:center;justify-content:center;gap:4px;height:46px;margin-top:14px}
-.v-wave i{width:4px;height:6px;border-radius:4px;background:linear-gradient(#f6e7bf,#7c5cff);transition:height .3s}
-.vflow.listen .v-wave i{animation:bar .9s ease-in-out infinite alternate;animation-delay:calc(var(--d)*-90ms)}
-@keyframes bar{from{height:6px}to{height:calc(10px + var(--h)*1px)}}
 .v-live{min-height:3em;padding:14px 22px 0;font-size:1.12rem;line-height:1.5;color:#fff;font-weight:500;text-wrap:balance}
 .v-live em{font-style:normal;color:rgba(255,255,255,.42)}
 .v-live.ask{font-size:1.28rem;font-weight:600}
@@ -356,21 +349,29 @@ body:has(.flow.open) .demo-tag{display:none}
 .v-res{display:none;width:100%;flex-direction:column;gap:10px;margin-top:16px;text-align:left}
 .vflow.done .v-res{display:flex}
 .v-type{display:none;width:100%;padding:0 0 4px}
-.vflow.typing .v-type{display:flex}
 .v-type .bar{flex:1;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 16px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16)}
 .v-type input{flex:1;min-width:0;border:0;background:none;color:#fff;font:500 .92rem var(--f-ui)}
 .v-type input:focus{outline:none}
 .v-type .send{width:38px;height:38px;border-radius:50%;border:0;cursor:pointer;background:linear-gradient(180deg,#fff6dc,#e6c98a);color:#2a1d05;font-size:1rem}
-.v-bot{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:12px 4px calc(18px + env(safe-area-inset-bottom,0px))}
-.v-bot .side{background:none;border:0;color:rgba(255,255,255,.6);font:500 .82rem var(--f-ui);cursor:pointer;padding:8px 4px}
-.v-bot .side:first-child{text-align:left}.v-bot .side:last-child{text-align:right}
-.v-mic{width:66px;height:66px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;padding:3px;
-  background:conic-gradient(from var(--ang),#7c5cff,#00c2a8,#f5c563,#ff4d8d,#7c5cff);animation:rim 4s linear infinite;box-shadow:0 0 26px rgba(124,92,255,.55)}
-.v-mic span{width:100%;height:100%;border-radius:50%;background:#14112a;display:grid;place-items:center}
-.v-mic .sq{display:none;width:20px;height:20px;border-radius:5px;background:#ff4d8d}
-.vflow.listen .v-mic{background:rgba(255,77,141,.18);box-shadow:0 0 30px rgba(255,77,141,.5);animation:none;border:1px solid rgba(255,77,141,.6)}
-.vflow.listen .v-mic svg{display:none}.vflow.listen .v-mic .sq{display:block}
-.vflow.listen .v-mic span{background:transparent}
+
+/* text-only conversation footer */
+.v-foot{padding:10px 4px calc(18px + env(safe-area-inset-bottom,0px))}
+.vflow .v-type{display:flex}
+.v-opts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:12px}
+.v-opts:empty{display:none}
+.v-opts button{padding:10px 15px;border-radius:999px;border:1px solid rgba(230,201,138,.35);background:rgba(255,255,255,.05);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:#f6e7bf;font:600 .82rem/1.2 var(--f-ui);cursor:pointer;animation:msgIn .4s both;animation-delay:calc(var(--k)*60ms)}
+.v-opts button:hover{border-color:rgba(230,201,138,.8)}
+.vflow .v-type .bar{box-shadow:0 10px 30px -12px rgba(124,92,255,.55),inset 0 1px 0 rgba(255,255,255,.1)}
+.v-you{margin-top:16px;max-width:92%;font-size:.86rem;line-height:1.45;color:rgba(255,255,255,.5)}
+.v-you:empty{display:none}
+.v-you::before{content:"You · ";color:#e6c98a;font-weight:600}
+.vflow.think .v-state::before{background:#e6c98a;opacity:1;animation:breathe 1s infinite}
+.vflow.think .v-orb .orb{animation:talk .6s ease-in-out infinite alternate}
+.vflow.done .v-foot .v-opts{display:none}
+.vflow .v-type input[type=text]{border:0;background:none;padding:8px 0;border-radius:0}
+.vflow.done #v-loc,.vflow.done #v-locbox{display:none}
+.vflow.done .v-tags{margin-top:18px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -443,9 +444,9 @@ body:has(.flow.open) .demo-tag{display:none}
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="vflow-title">
     <div class="sh-top"><span class="sh-title" id="vflow-title">Free Lawyer</span><button class="sh-close" type="button" id="vflow-close" aria-label="Close">✕</button></div>
     <div class="v-main" id="vmain">
-      <div class="v-orb"><span class="orb" id="v-orb" role="button" aria-label="Talk to ASYA"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></div>
-      <div class="v-state" id="v-state">Tap to talk</div>
-      <div class="v-wave" aria-hidden="true"><i style="--d:0;--h:8"></i><i style="--d:1;--h:16"></i><i style="--d:2;--h:26"></i><i style="--d:3;--h:34"></i><i style="--d:4;--h:22"></i><i style="--d:5;--h:30"></i><i style="--d:6;--h:38"></i><i style="--d:7;--h:24"></i><i style="--d:8;--h:14"></i><i style="--d:9;--h:28"></i><i style="--d:10;--h:36"></i><i style="--d:11;--h:20"></i><i style="--d:12;--h:12"></i><i style="--d:13;--h:26"></i><i style="--d:14;--h:34"></i><i style="--d:15;--h:18"></i><i style="--d:16;--h:10"></i><i style="--d:17;--h:22"></i><i style="--d:18;--h:8"></i></div>
+      <div class="v-orb"><span class="orb" id="v-orb" role="button" aria-label="ASYA"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></div>
+      <div class="v-state" id="v-state">ASYA · Private &amp; free</div>
+      <div class="v-you" id="v-you"></div>
       <div class="v-live ask" id="v-live" aria-live="polite">Hi, I'm ASYA. Tell me what happened.</div>
       <div class="v-tags" id="v-tags"></div>
       <div class="v-topics" id="v-topics"></div>
@@ -458,10 +459,10 @@ body:has(.flow.open) .demo-tag{display:none}
       </div>
       <div class="v-res" id="v-res"></div>
     </div>
-    <div class="v-type"><div class="bar"><input id="v-text" type="text" placeholder="Type what happened…"><button class="send" type="button" id="v-send" aria-label="Send">↑</button></div></div>
-    <div class="v-bot"><button class="side" type="button" id="v-typebtn">⌨ Type instead</button>
-      <button class="v-mic" type="button" id="v-mic" aria-label="Start or stop listening"><span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f6e7bf" stroke-width="2"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg><i class="sq"></i></span></button>
-      <button class="side" type="button" id="v-topicbtn">Choose a topic</button></div>
+    <div class="v-foot">
+      <div class="v-opts" id="v-opts"></div>
+      <div class="v-type"><div class="bar"><input id="v-text" type="text" placeholder="Reply to ASYA…" autocomplete="off"><button class="send" type="button" id="v-send" aria-label="Send">↑</button></div></div>
+    </div>
   </div>
 </div>
 <div class="demo-tag">Demo</div>
@@ -616,54 +617,55 @@ var LAWYERS = {
     family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   }
 };
-/* Free Lawyer — voice-first, connected to ASYA (Groq Whisper + Groq chat, Claude fallback) */
+/* Free Lawyer — ASYA asks, the person replies (Groq chat, Claude fallback, real referral list) */
 (function(){
   const F=document.getElementById('vflow'), $=id=>document.getElementById(id);
-  const live=$('v-live'), state=$('v-state'), tags=$('v-tags'), res=$('v-res'), topics=$('v-topics');
+  const live=$('v-live'), you=$('v-you'), state=$('v-state'), tags=$('v-tags'), res=$('v-res'), opts=$('v-opts');
+  const IDLE='ASYA · Private & free', HELLO="Hi, I'm ASYA. What is going on? Tell me in your own words.";
+  const START=['My landlord kept my deposit','I was fired unfairly','Immigration or visa problem','Family matter'];
   const CITIES=['Toronto, ON','Ottawa, ON','Mississauga, ON','Brampton, ON','Hamilton, ON','London, ON','Montréal, QC','Québec City, QC','Laval, QC','Vancouver, BC','Surrey, BC','Victoria, BC','Calgary, AB','Edmonton, AB','Winnipeg, MB','Regina, SK','Saskatoon, SK','Halifax, NS','Moncton, NB',"St. John's, NL",'Charlottetown, PE'];
-  const TOPICS=[['Housing','tenant'],['Employment','employment'],['Immigration','immigration'],['Family','family'],['Criminal','criminal'],['Human Rights','humanrights']];
   const TOPIC_NAME={tenant:'Housing',employment:'Employment',immigration:'Immigration',family:'Family',criminal:'Criminal',humanrights:'Human Rights'};
   const PROV={ON:'on',BC:'bc',QC:'qc',AB:'ab',MB:'mb',SK:'sk'};
-  const SYS="You are ASYA, the warm, calm assistant of ComplaintCA's Free Lawyer service in Canada. Goal: understand the person's legal problem and where they live, then hand off to a list of free legal help. "+
-   "Rules: Reply in the same language the user writes or speaks. Keep every reply to at most 2 short sentences. Ask only ONE question at a time. Be reassuring; never give legal advice or promise outcomes. "+
-   "You need two things: (1) the topic, one of tenant, employment, humanrights, immigration, criminal, family; (2) the province (two-letter code like ON, BC, QC, AB, MB, SK, NS, NB, NL, PE, YT, NT, NU) from their city or province. "+
-   "If the location is already given in a [Location: ...] note, do not ask for it again. As soon as you know both, write one short sentence saying you found free help, then on a new final line exactly: RESULT: {\"topic\":\"<topic>\",\"province\":\"<CODE>\"}";
-  let mode='idle', loc='', hist=[], rec=null, chunks=[], stream=null, busy=false, stopTimer=null;
-  function set(m){ F.classList.remove('idle','listen','think','done','typing','topics'); F.classList.add(m); mode=m; }
+  const PNAME={ON:'Ontario',BC:'British Columbia',QC:'Quebec',AB:'Alberta',MB:'Manitoba',SK:'Saskatchewan',NS:'Nova Scotia',NB:'New Brunswick',NL:'Newfoundland and Labrador',PE:'Prince Edward Island',YT:'Yukon',NT:'Northwest Territories',NU:'Nunavut'};
+  const SYS="You are ASYA, the warm, calm and professional assistant of ComplaintCA's Free Lawyer service in Canada. Goal: understand the person's legal problem and where they live, then hand off to free legal help. "+
+   "Style: reply in the user's language; at most 2 short sentences; acknowledge their situation in a few words, then ask exactly ONE clear question. Never give legal advice or promise outcomes. "+
+   "Needed: (1) topic, one of tenant, employment, humanrights, immigration, criminal, family; (2) province code (ON, BC, QC, AB, MB, SK, NS, NB, NL, PE, YT, NT, NU) from their city or province. If a [Location: ...] note is given, do not ask for location. Ask at most one extra detail if the topic is unclear. "+
+   "After each question add a final line: OPTIONS: a | b | c  (2 to 4 very short likely answers in the user's language). "+
+   "As soon as you know both, write one short sentence saying you found free help, then a final line exactly: RESULT: {\"topic\":\"<topic>\",\"province\":\"<CODE>\"}";
+  let mode='idle', loc='', hist=[], busy=false;
+  function set(m){ F.classList.remove('idle','think','done'); F.classList.add(m); mode=m; }
   function ask(t){ live.className='v-live ask'; live.textContent=t; }
-  function quote(t){ live.className='v-live'; live.textContent='“'+t+'”'; }
-  function speak(t){ try{ if(!window.speechSynthesis) return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.rate=1; speechSynthesis.speak(u); }catch(e){} }
-  function hush(){ try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(e){} }
+  function showOpts(list){ opts.innerHTML=''; (list||[]).slice(0,4).forEach((o,k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=o; b.style.setProperty('--k',k); b.onclick=()=>send(o); opts.appendChild(b); }); }
   function setLoc(v){ loc=v; const t=$('v-loc-t'); t.textContent=v+' '; const u=document.createElement('u'); u.textContent='Change'; t.appendChild(u); $('v-locbox').classList.remove('open');
-    if(mode!=='done' && hist.length) send('My location is '+v+'.'); }
+    if(mode!=='done' && hist.length) send('I live in '+v+'.'); }
   async function ai(){
-    const msgs=hist.slice();
     try{
-      const r=await fetch('/api/groq-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:220,temperature:.4,messages:[{role:'system',content:SYS}].concat(msgs)})});
+      const r=await fetch('/api/groq-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:220,temperature:.4,messages:[{role:'system',content:SYS}].concat(hist)})});
       const d=await r.json(); if(d.error||!d.choices) throw 0; return (d.choices[0].message.content||'').trim();
     }catch(e){
-      const r=await fetch('/api/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:220,system:SYS,messages:msgs})});
+      const r=await fetch('/api/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:220,system:SYS,messages:hist})});
       const d=await r.json(); if(d.error||!d.content) throw new Error('ai'); return d.content.map(c=>c.text||'').join('').trim();
     }
   }
   async function send(text){
-    if(busy||!text) return; busy=true;
-    hush(); set('think'); state.textContent='Thinking'; quote(text);
+    text=(text||'').trim(); if(busy||!text) return; busy=true;
+    $('v-locbox').classList.remove('open'); set('think'); state.textContent='ASYA is thinking'; you.textContent=text; live.className='v-live'; live.textContent='…'; opts.innerHTML='';
     hist.push({role:'user',content:(hist.length===0&&loc?'[Location: '+loc+'] ':'')+text});
     let reply;
-    try{ reply=await ai(); }catch(e){ busy=false; set('idle'); state.textContent='Tap to talk'; ask('Sorry, I could not connect. Please try again in a moment.'); hist.pop(); return; }
+    try{ reply=await ai(); }catch(e){ busy=false; hist.pop(); set('idle'); state.textContent=IDLE; ask('Sorry, I could not connect right now. Please try again in a moment.'); return; }
     busy=false; hist.push({role:'assistant',content:reply});
     const m=reply.match(/RESULT:\s*(\{[^}]*\})/);
-    const say=reply.replace(/RESULT:[\s\S]*$/,'').trim();
+    const o=reply.match(/OPTIONS:\s*(.+)$/m);
+    const say=reply.replace(/^(OPTIONS|RESULT):.*$/gm,'').trim();
     if(m){ let r={}; try{ r=JSON.parse(m[1]); }catch(e){} finish(say,r); return; }
-    set('idle'); state.textContent='Tap to answer'; ask(say); speak(say);
-    if(!loc && /city|province|where|ville|nerede|şehir|dónde|哪里|ਕਿੱਥੇ|أين/i.test(say)) $('v-locbox').classList.add('open');
+    set('idle'); state.textContent=IDLE; ask(say); showOpts(o?o[1].split('|').map(x=>x.trim()).filter(Boolean):[]);
+    if(!loc && /city|province|where|live|ville|şehir|nerede|dónde|哪|ਕਿੱਥੇ|أين/i.test(say)) $('v-locbox').classList.add('open');
   }
   function finish(say,r){
-    set('done'); state.textContent='Here is free help near you';
+    set('done'); state.textContent='Free help near you'; opts.innerHTML='';
     const topic=(r.topic||'').toLowerCase(), code=(r.province||'').toUpperCase(), pk=PROV[code];
-    ask(say||'I found free help for you.'); speak(say||'I found free help for you.');
-    tags.innerHTML=''; [TOPIC_NAME[topic]||topic, loc||code].filter(Boolean).forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
+    ask(say||'I found free help for you.');
+    tags.innerHTML=''; [TOPIC_NAME[topic]||topic, loc||PNAME[code]||code].filter(Boolean).forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
     res.innerHTML='';
     const list=(pk&&LAWYERS[pk]&&LAWYERS[pk][topic])||[];
     if(!list.length){ const n=document.createElement('div'); n.className='note'; n.textContent='A detailed list is available for Ontario, BC, Quebec, Alberta, Manitoba and Saskatchewan. For other provinces, contact your provincial Law Society referral service.'; res.appendChild(n); }
@@ -675,33 +677,10 @@ var LAWYERS = {
       res.appendChild(c); });
     const again=document.createElement('button'); again.type='button'; again.className='v-loc'; again.textContent='↺ Start over'; again.onclick=reset; res.appendChild(again);
   }
-  function b64(blob){ return new Promise((ok,no)=>{ const r=new FileReader(); r.onloadend=()=>{ const s=r.result; ok(s.slice(s.indexOf(',')+1)); }; r.onerror=no; r.readAsDataURL(blob); }); }
-  async function startListen(){
-    if(busy) return; hush();
-    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){ ask('Voice is not supported on this browser. Tap "Type instead".'); return; }
-    try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(e){ ask('Microphone access was blocked. Allow it in your browser, or tap "Type instead".'); return; }
-    chunks=[]; const mt=(MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported('audio/webm'))?'audio/webm':'';
-    rec=mt?new MediaRecorder(stream,{mimeType:mt}):new MediaRecorder(stream);
-    rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
-    rec.onstop=async()=>{ clearTimeout(stopTimer); stream.getTracks().forEach(t=>t.stop()); const type=rec.mimeType||'audio/webm'; rec=null;
-      if(!chunks.length){ set('idle'); state.textContent='Tap to talk'; return; }
-      set('think'); state.textContent='Understanding'; live.className='v-live'; live.textContent='…';
-      try{ const audio=await b64(new Blob(chunks,{type}));
-        const r=await fetch('/api/groq-transcribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({audio,mimeType:type})});
-        const d=await r.json(); const t=(d.text||'').trim(); if(!t) throw 0; send(t);
-      }catch(e){ set('idle'); state.textContent='Tap to talk'; ask('I could not hear that clearly. Please try again, or type it.'); } };
-    rec.start(); set('listen'); state.textContent='Listening'; live.className='v-live'; live.textContent='Speak now… tap the button when you finish.';
-    stopTimer=setTimeout(()=>{ if(rec&&rec.state!=='inactive') rec.stop(); },30000);
-  }
-  function stopListen(){ if(rec&&rec.state!=='inactive') rec.stop(); }
-  function reset(){ hush(); if(rec&&rec.state!=='inactive'){ rec.onstop=null; rec.stop(); stream&&stream.getTracks().forEach(t=>t.stop()); } rec=null; hist=[]; busy=false; set('idle'); state.textContent='Tap to talk'; ask('Hi, I\'m ASYA. Tell me what happened.'); res.innerHTML=''; tags.innerHTML=''; topics.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
-  const toggle=()=>{ if(mode==='listen') stopListen(); else if(mode==='done'){ reset(); startListen(); } else startListen(); };
-  $('v-mic').onclick=toggle; $('v-orb').onclick=toggle;
-  $('v-typebtn').onclick=()=>{ if(mode==='listen') stopListen(); set('typing'); state.textContent='Type to ASYA'; setTimeout(()=>$('v-text').focus(),50); };
-  const sendText=()=>{ const v=$('v-text').value.trim(); if(!v) return; $('v-text').value=''; send(v); };
+  function reset(){ hist=[]; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask(HELLO); showOpts(START); res.innerHTML=''; tags.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
+  const sendText=()=>{ const v=$('v-text').value; $('v-text').value=''; send(v); };
   $('v-send').onclick=sendText; $('v-text').onkeydown=e=>{ if(e.key==='Enter') sendText(); };
-  $('v-topicbtn').onclick=()=>{ if(mode==='listen') stopListen(); set('topics'); state.textContent='Choose a topic'; ask('What is it about?');
-    topics.innerHTML=''; TOPICS.forEach(([t],k)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=t; b.style.setProperty('--k',k); b.onclick=()=>send('My issue is about '+t+'.'); topics.appendChild(b); }); };
+  $('v-orb').onclick=()=>$('v-text').focus();
   $('v-loc').onclick=()=>$('v-locbox').classList.toggle('open');
   $('v-use').onclick=()=>{ const fail=()=>{ $('v-use').textContent='Location not available, please type it below'; };
     if(!navigator.geolocation) return fail();
@@ -712,7 +691,7 @@ var LAWYERS = {
     const hits=CITIES.filter(c=>c.toLowerCase().includes(q)).slice(0,4);
     (hits.length?hits:[e.target.value.trim()]).forEach(c=>{ const b=document.createElement('button'); b.type='button'; b.textContent=c; b.onclick=()=>{ $('v-city').value=''; box.innerHTML=''; setLoc(c); }; box.appendChild(b); }); };
   function open(){ F.classList.add('open'); F.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; reset(); }
-  function close(){ reset(); F.classList.remove('open'); F.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  function close(){ F.classList.remove('open'); F.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
   $('vflow-close').onclick=close; F.addEventListener('click',e=>{ if(e.target===F) close(); });
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&F.classList.contains('open')) close(); });
   window.openLawyerFlow=open;
