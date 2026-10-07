@@ -100,6 +100,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 
 <script src="/ga-init.js"></script>
 </head>
 <body>
+<div class="guide-app">
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -124,7 +125,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 
 <main>
   <div class="dc-toolbar" data-dc="privacy" style="margin:0 0 10px"></div>
 
-  <div class="section-hint">Report In This Order <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
+  <div class="section-hint">Report In This Order <a class="more-link" href="#info">· More info, FAQ &amp; sources →</a></div>
 
   <div class="step-grid">
     <div class="path-card pc-1" onclick="openStep('s1')">
@@ -225,9 +226,11 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 
     </div>
   </div>
 
-  <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
+</main>
+</div>
+
+<section class="guide-info" id="info" aria-label="More information, FAQ and sources">
     <div class="info-modal">
-      <button class="mclose" onclick="closeInfo()">✕</button>
 
       <h2 style="margin-top:0">Where ComplaintCA Fits</h2>
       <p style="font-size:.95rem;color:var(--dsub)">ComplaintCA doesn't replace the Privacy Commissioner — it helps you identify whether your issue is federal or provincial, and drafts a clear, factual complaint in one of 7 supported languages. If your situation also involves a scam or phishing attempt, see ComplaintCA's <a href="/guides/cyber-crime-reporting-canada-guide.html" style="color:var(--gold)">cyber crime reporting guide</a>.</p>
@@ -284,8 +287,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:8px 20px 
         </ul>
       </div>
     </div>
-  </div>
-</main>
+  </section>
 
 <footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 

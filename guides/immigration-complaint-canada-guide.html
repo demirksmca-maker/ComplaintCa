@@ -123,6 +123,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:6px 20px 
 <script src="/ga-init.js"></script>
 </head>
 <body>
+<div class="guide-app">
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -147,7 +148,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:6px 20px 
 <main>
   <div class="dc-toolbar" data-dc="immigration" style="margin:0 0 8px"></div>
 
-  <div class="section-hint">⚠ No IRCC ombudsman exists yet — ~922,700 applications are past service standard <span class="more-link" onclick="openInfo()">· More info, FAQ &amp; sources →</span></div>
+  <div class="section-hint">⚠ No IRCC ombudsman exists yet — ~922,700 applications are past service standard <a class="more-link" href="#info">· More info, FAQ &amp; sources →</a></div>
 
   <div class="step-grid">
     <div class="path-card pc-1" onclick="openStep('s1')">
@@ -223,9 +224,11 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:6px 20px 
     </div>
   </div>
 
-  <div class="info-overlay" id="info-overlay" onclick="if(event.target===this)closeInfo()">
+</main>
+</div>
+
+<section class="guide-info" id="info" aria-label="More information, FAQ and sources">
     <div class="info-modal">
-      <button class="mclose" onclick="closeInfo()">✕</button>
 
       <h2 style="margin-top:0">Be Aware</h2>
       <p style="font-size:.95rem;color:var(--dsub)">Parliament has discussed creating an independent IRCC Ombudsperson office, but as of this writing it does not exist. IRCC's own inventories currently show roughly 2.1 million applications in process, with about 922,700 of those past the service standard — so a delay, while frustrating, is common. This guide covers the escalation paths that actually exist today.</p>
@@ -290,8 +293,7 @@ main{flex:1 1 auto;min-height:0;max-width:1080px;margin:0 auto;padding:6px 20px 
         </ul>
       </div>
     </div>
-  </div>
-</main>
+  </section>
 
 <footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a></footer>
 
