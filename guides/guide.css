@@ -2,7 +2,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5}
 .guide-app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-.guide-app::after{content:"";flex:0 0 28px}
+.guide-app::after{content:"";flex:0 0 calc(13px + .93rem)}
 .topbar{flex:0 0 auto;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
 .topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
 .logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
