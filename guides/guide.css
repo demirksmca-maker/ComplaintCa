@@ -9,8 +9,6 @@ body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-
 .logo-text{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;color:#fff;line-height:1;white-space:nowrap}
 .logo-ca{color:#ff5a5a}
 .topbar-right{display:flex;align-items:center;gap:8px;height:46px}
-.lang-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 10px;font-size:.72rem;color:rgba(255,255,255,.8);font-weight:600}
-.lang-pill .car{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:2px}
 .hero{flex:0 0 auto;background:var(--dbg);color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
 .hero .eyebrow{display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 6px}
 .hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
