@@ -114,9 +114,20 @@ h1 em{font-style:normal;display:block;color:var(--violet-l)}
 /* ── title variants (champagne gold) ── */
 body.v-b .tile-t{color:#8a6a2c;text-shadow:calc(var(--sx)*1px) calc(var(--sy)*1px) 0 #a07c36,calc(var(--sx)*2px) calc(var(--sy)*2px) 0 #876629,calc(var(--sx)*3px) calc(var(--sy)*3px) 0 #6d521f,calc(var(--sx)*4px + 2px) calc(var(--sy)*4px + 6px) 10px rgba(0,0,0,.45)}
 body.v-b .tile-t::before{background-image:linear-gradient(180deg,#fffdf6 0%,#fbefcf 35%,#ecd39a 55%,#f8ebc8 75%,#fffaf0 100%)}
+
+/* ── trial styles: 1 luxury serif caps, 2 glass plate, 3 glowing light ── */
+body.v-1 .tile-t{text-shadow:none;color:#fff}
+body.v-1 .tile-t::before{display:none}
+body.v-1 .tile-t{font-family:var(--f-brand);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:calc(var(--tfs) * .78);
+  color:#f6e7bf;padding-top:10px;text-shadow:0 1px 0 rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.55)}
+body.v-1 .tile-t::after{display:none}
+body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246,231,191,0)) top left/42px 1px no-repeat}
+  background:rgba(255,255,255,.14);backdrop-filter:blur(12px) saturate(1.4);-webkit-backdrop-filter:blur(12px) saturate(1.4);
+  border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 24px -8px rgba(0,0,0,.5)}
+  text-shadow:0 0 6px rgba(255,214,140,.9),0 0 18px rgba(255,190,90,.55),0 0 36px var(--glow)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
-</head><body class="v-b" style="margin:0">
+</head><body class="v-1" style="margin:0">
 
 <header class="nav">
   <a class="brand" href="#"><span class="brand-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e8394b" stroke-width="1.8"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5" stroke="#fff"/></svg></span><span>COMPLAINT<b>CA</b></span></a>
