@@ -25,13 +25,14 @@ body{font-family:var(--f-ui);-webkit-font-smoothing:antialiased;overflow-x:hidde
 .flag::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;background:#d52b1e;transform:translate(-50%,-50%) rotate(45deg)}
 
 main{max-width:460px;margin:0 auto;padding-inline:20px;padding-block:14px 32px}
-.eyebrow{display:flex;align-items:center;gap:8px;color:var(--muted);font-weight:600;font-size:.8rem}
+.eyebrow{display:flex;align-items:center;gap:8px;color:#d9c48f;font:700 .66rem/1 var(--f-brand);letter-spacing:.22em;text-transform:uppercase}
+.eyebrow .fl{font-size:.85rem;letter-spacing:0}
 .edot{width:6px;height:6px;border-radius:50%;background:var(--red)}
 h1{margin:10px 0 0;font-size:clamp(1.9rem,8.4vw,2.35rem);line-height:1.08;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
-h1 em{font-style:normal;display:block;color:var(--violet-l)}
+h1 em{font-style:normal;display:block;background:linear-gradient(180deg,#fffdf6 0%,#fbefcf 40%,#e6c98a 70%,#f6e6bf 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .quote{margin:16px 0 0;color:var(--soft);font-size:.98rem;font-weight:500}
 .quote cite{display:block;margin-top:4px;color:var(--violet-l);font-style:normal;font-size:.62rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 14px}
 .kicker{color:var(--muted);font-weight:700;font-size:.8rem;letter-spacing:.04em}
 /* ── ASYA: dark glass capsule, living orb, gold serif name, travelling gold rim light ── */
 @property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
@@ -166,9 +167,8 @@ body.v-1 .tile-t{background:linear-gradient(90deg,rgba(246,231,191,.85),rgba(246
 </header>
 
 <main>
-  <div class="eyebrow">🇨🇦 <span class="edot"></span>Canada's Complaint Platform</div>
+  <div class="eyebrow">Canada's Complaint Platform <span class="fl" aria-hidden="true">🇨🇦</span></div>
   <h1>Your Complaint.<em>Heard. Tracked. Resolved.</em></h1>
-  <p class="quote">"Justice is the source of all the other virtues."<cite>— Marcus Aurelius</cite></p>
   <div class="row">
     <div class="kicker">Six Paths to Justice</div>
     <button class="asya" id="asya" type="button" aria-pressed="false" aria-label="ASYA voice assistant"><span class="orb-wrap"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></span><span class="asya-t">ASYA</span></button>
