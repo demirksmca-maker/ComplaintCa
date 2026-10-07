@@ -471,6 +471,29 @@ h1{margin-top:8px}
 .rcard .acts a.p{color:#fff;background:linear-gradient(100deg,#7c5cff,#3d8bff 55%,#00c2a8);box-shadow:0 10px 24px -10px rgba(124,92,255,.9)}
 .rcard .acts a.s{color:#d9d0ff;border:1px solid rgba(124,92,255,.45);background:rgba(124,92,255,.08)}
 .rcard .acts a:only-child{grid-column:1 / -1}
+
+/* ── cinematic province reveal around the ASYA orb ── */
+.v-orb{position:relative}
+.pring{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none;opacity:0;transition:opacity .4s}
+.pring.on{opacity:1}
+.v-orb:has(.pring.on){margin-bottom:34px}
+.pring span{position:absolute;left:0;top:0;white-space:nowrap;font:700 .58rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;color:#cfc4ff;
+  text-shadow:0 0 10px rgba(124,92,255,.9);will-change:transform,opacity}
+.pring span.hit{color:#fff;text-shadow:0 0 14px #fff,0 0 28px rgba(124,92,255,1)}
+.preveal{display:none;flex-direction:column;align-items:center;gap:8px;margin-top:4px;position:relative;z-index:2}
+.preveal.on{display:flex}
+.preveal small{font:700 .56rem/1 var(--f-brand);letter-spacing:.3em;text-transform:uppercase;color:rgba(207,196,255,.7)}
+.preveal b{display:flex;justify-content:center;font:700 clamp(1.4rem,6.4vw,2rem)/1.1 var(--f-brand);letter-spacing:.18em;text-transform:uppercase;filter:drop-shadow(0 0 16px rgba(124,92,255,.8))}
+.preveal b i{background:linear-gradient(180deg,#fff,#d9d0ff 45%,#8fc2ff 75%,#7fe9d8);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.preveal b i{font-style:normal;display:inline-block;opacity:0;transform:translateY(14px) scale(1.6);filter:blur(8px);animation:letterIn .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--n)*55ms + 200ms)}
+@keyframes letterIn{to{opacity:1;transform:none;filter:blur(0)}}
+.preveal .rule{width:0;height:1px;background:linear-gradient(90deg,transparent,#b9a6ff,#7fe9d8,transparent);animation:ruleIn .9s .5s ease forwards}
+@keyframes ruleIn{to{width:160px}}
+.v-orb.burst .orb{animation:orbBurst .9s cubic-bezier(.2,.8,.2,1)}
+@keyframes orbBurst{0%{transform:scale(1)}30%{transform:scale(1.25);box-shadow:0 0 90px rgba(255,255,255,.9),0 0 160px rgba(124,92,255,.9)}100%{transform:scale(1)}}
+.v-orb.burst::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:2px solid rgba(185,166,255,.9);animation:shock .9s ease-out forwards;pointer-events:none}
+@keyframes shock{to{transform:scale(14);opacity:0}}
+@media (prefers-reduced-motion:reduce){.preveal b i{opacity:1;transform:none;filter:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -733,9 +756,39 @@ var LAWYERS = {
     family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   }
 };
+
+/* shared: provinces orbit the orb while ASYA searches, then the match is revealed */
+window.ProvinceFX=function(panel){
+  const NAMES=['Ontario','Alberta','Quebec','Manitoba','British Columbia','Nova Scotia','Saskatchewan','New Brunswick'];
+  const orbBox=panel.querySelector('.v-orb'); const ring=document.createElement('div'); ring.className='pring';
+  NAMES.forEach(n=>{ const sp=document.createElement('span'); sp.textContent=n; ring.appendChild(sp); }); orbBox.appendChild(ring);
+  const rev=document.createElement('div'); rev.className='preveal'; orbBox.after(rev);
+  let raf=0, t0=0, speed=1;
+  function frame(t){ if(!t0) t0=t; const a0=(t-t0)/1000*speed*.9; const R=Math.min(165,orbBox.parentElement.clientWidth/2-50);
+    [...ring.children].forEach((sp,i)=>{ if(sp.classList.contains('hit')) return; const a=a0+i/NAMES.length*Math.PI*2; const z=Math.sin(a);
+      sp.style.transform='translate(-50%,-50%) translate('+(Math.cos(a)*R).toFixed(1)+'px,'+(z*R*.3).toFixed(1)+'px) scale('+(.7+.45*(z+1)/2).toFixed(2)+')';
+      sp.style.opacity=(z<0?0:Math.pow(z,1.4)).toFixed(2); sp.style.zIndex=z>0?3:0; });
+    raf=requestAnimationFrame(frame); }
+  return {
+    start(){ cancelAnimationFrame(raf); t0=0; speed=1; rev.classList.remove('on'); rev.innerHTML=''; [...ring.children].forEach(s=>s.classList.remove('hit')); ring.classList.add('on'); raf=requestAnimationFrame(frame); },
+    stop(){ cancelAnimationFrame(raf); ring.classList.remove('on'); },
+    reveal(name){
+      if(!name){ this.stop(); return; }
+      const key=name.toLowerCase(); const hit=[...ring.children].find(s=>key.startsWith(s.textContent.toLowerCase().slice(0,5)));
+      if(ring.classList.contains('on')&&hit){ hit.classList.add('hit'); hit.style.transition='transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s'; hit.style.transform='translate(-50%,-50%) scale(1.6)'; hit.style.opacity='1';
+        [...ring.children].forEach(s=>{ if(s!==hit){ s.style.transition='opacity .4s'; s.style.opacity='0'; } }); }
+      setTimeout(()=>{ cancelAnimationFrame(raf); ring.classList.remove('on'); [...ring.children].forEach(s=>{ s.style.transition=''; s.classList.remove('hit'); });
+        orbBox.classList.remove('burst'); void orbBox.offsetWidth; orbBox.classList.add('burst');
+        rev.innerHTML='<small>Province</small><b></b><span class="rule"></span>'; const b=rev.querySelector('b');
+        [...name].forEach((ch,n)=>{ const i=document.createElement('i'); i.style.setProperty('--n',n); i.textContent=ch===' '?' ':ch; b.appendChild(i); });
+        rev.classList.add('on'); }, ring.classList.contains('on')?650:0);
+    },
+    clear(){ this.stop(); rev.classList.remove('on'); rev.innerHTML=''; orbBox.classList.remove('burst'); }
+  };
+};
 /* Free Lawyer — ASYA asks, the person replies (Groq chat, Claude fallback, real referral list) */
 (function(){
-  const F=document.getElementById('vflow'), $=id=>document.getElementById(id);
+  const F=document.getElementById('vflow'), $=id=>document.getElementById(id); const PFX=ProvinceFX(F);
   const live=$('v-live'), you=$('v-you'), state=$('v-state'), tags=$('v-tags'), res=$('v-res'), opts=$('v-opts');
   const IDLE='ASYA · Private & free', HELLO="Hi, I'm ASYA. What is going on? Tell me in your own words.";
   const START=['My landlord kept my deposit','I was fired unfairly','Immigration or visa problem','Family matter'];
@@ -765,7 +818,7 @@ var LAWYERS = {
   }
   async function send(text){
     text=(text||'').trim(); if(busy||!text) return; busy=true;
-    $('v-locbox').classList.remove('open'); set('think'); state.textContent='ASYA is thinking'; you.textContent=text; live.className='v-live'; live.textContent='…'; opts.innerHTML='';
+    $('v-locbox').classList.remove('open'); set('think'); state.textContent='ASYA is thinking'; if(loc||/,\s*[A-Z]{2}\b|ontario|quebec|qu[ée]bec|alberta|manitoba|saskatchewan|columbia|nova scotia|brunswick|toronto|montr|vancouver|calgary|ottawa|edmonton|winnipeg|halifax/i.test(text)) PFX.start(); you.textContent=text; live.className='v-live'; live.textContent='…'; opts.innerHTML='';
     hist.push({role:'user',content:(hist.length===0&&loc?'[Location: '+loc+'] ':'')+text});
     let reply;
     try{ reply=await ai(); }catch(e){ busy=false; hist.pop(); set('idle'); state.textContent=IDLE; ask('Sorry, I could not connect right now. Please try again in a moment.'); return; }
@@ -774,11 +827,11 @@ var LAWYERS = {
     const o=reply.match(/OPTIONS:\s*(.+)$/m);
     const say=reply.replace(/^(OPTIONS|RESULT):.*$/gm,'').trim();
     if(m){ let r={}; try{ r=JSON.parse(m[1]); }catch(e){} finish(say,r); return; }
-    set('idle'); state.textContent=IDLE; ask(say); showOpts(o?o[1].split('|').map(x=>x.trim()).filter(Boolean):[]);
+    PFX.stop(); set('idle'); state.textContent=IDLE; ask(say); showOpts(o?o[1].split('|').map(x=>x.trim()).filter(Boolean):[]);
     if(!loc && /city|province|where|live|ville|şehir|nerede|dónde|哪|ਕਿੱਥੇ|أين/i.test(say)) $('v-locbox').classList.add('open');
   }
   function finish(say,r){
-    set('done'); state.textContent='Free help near you'; opts.innerHTML='';
+    set('done'); state.textContent='Free help near you'; opts.innerHTML=''; PFX.reveal(PNAME[(r.province||'').toUpperCase()]||'');
     const topic=(r.topic||'').toLowerCase(), code=(r.province||'').toUpperCase(), pk=PROV[code];
     ask(say||'I found free help for you.');
     tags.innerHTML=''; [TOPIC_NAME[topic]||topic, loc||PNAME[code]||code].filter(Boolean).forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
@@ -793,7 +846,7 @@ var LAWYERS = {
       res.appendChild(c); });
     const again=document.createElement('button'); again.type='button'; again.className='v-loc'; again.textContent='↺ Start over'; again.onclick=reset; res.appendChild(again);
   }
-  function reset(){ hist=[]; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask(HELLO); showOpts(START); res.innerHTML=''; tags.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
+  function reset(){ PFX.clear(); hist=[]; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask(HELLO); showOpts(START); res.innerHTML=''; tags.innerHTML=''; $('v-text').value=''; $('vmain').scrollTop=0; }
   const sendText=()=>{ const v=$('v-text').value; $('v-text').value=''; send(v); };
   $('v-send').onclick=sendText; $('v-text').onkeydown=e=>{ if(e.key==='Enter') sendText(); };
   $('v-orb').onclick=()=>$('v-text').focus();
@@ -815,7 +868,10 @@ var LAWYERS = {
 
 /* Representative — ASYA asks, Represent API (Open North) answers with official data */
 (function(){
-  const F=document.getElementById('rflow'), $=id=>document.getElementById(id);
+  const F=document.getElementById('rflow'), $=id=>document.getElementById(id); const PFX=ProvinceFX(F);
+  const PCPROV={A:'Newfoundland',B:'Nova Scotia',C:'PEI',E:'New Brunswick',G:'Quebec',H:'Quebec',J:'Quebec',K:'Ontario',L:'Ontario',M:'Ontario',N:'Ontario',P:'Ontario',R:'Manitoba',S:'Saskatchewan',T:'Alberta',V:'British Columbia',X:'N.W.T.',Y:'Yukon'};
+  const PSET=[['ontario','Ontario'],['québec','Quebec'],['quebec','Quebec'],['british columbia','British Columbia'],['alberta','Alberta'],['manitoba','Manitoba'],['saskatchewan','Saskatchewan'],['nova scotia','Nova Scotia'],['new brunswick','New Brunswick'],['newfoundland','Newfoundland'],['prince edward','PEI'],['yukon','Yukon'],['northwest','N.W.T.'],['nunavut','Nunavut']];
+  let pcProv='';
   const live=$('r-live'), you=$('r-you'), state=$('r-state'), tags=$('r-tags'), res=$('r-res'), opts=$('r-opts'), inp=$('r-text');
   const IDLE='ASYA · Official data';
   const LEVELS=[['Federal MP','fed'],['Provincial MPP / MLA','prov'],['City councillor','city'],['All of them','all']];
@@ -842,19 +898,19 @@ var LAWYERS = {
     if(step==='where'){ if(val==='__geo') return geo(); lookup(text); }
   }
   function geo(){ if(!navigator.geolocation){ ask('Location is not available. Please type your postal code.'); return; }
-    set('think'); state.textContent='Finding you'; live.className='v-live'; live.textContent='…';
+    PFX.start(); pcProv=''; set('think'); state.textContent='Finding you'; live.className='v-live'; live.textContent='…';
     navigator.geolocation.getCurrentPosition(p=>fetchReps('https://represent.opennorth.ca/representatives/?point='+p.coords.latitude+','+p.coords.longitude,'Your location'),
       ()=>{ set('idle'); state.textContent=IDLE; ask('I could not get your location. Please type your postal code.'); },{timeout:8000}); }
   function lookup(text){
     const m=text.match(PC);
-    set('think'); state.textContent='Searching official records'; live.className='v-live'; live.textContent='…';
+    PFX.start(); { const mm=text.match(PC); pcProv=mm?PCPROV[mm[1][0].toUpperCase()]||'':''; } set('think'); state.textContent='Searching official records'; live.className='v-live'; live.textContent='…';
     if(m){ const pc=(m[1]+m[2]).toUpperCase(); return fetchReps('https://represent.opennorth.ca/postcodes/'+pc+'/',pc.slice(0,3)+' '+pc.slice(3),true); }
     const q=/canada/i.test(text)?text:text+', Canada';
     fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q)).then(r=>r.json())
       .then(g=>{ if(!g||!g.length) throw 0; fetchReps('https://represent.opennorth.ca/representatives/?point='+g[0].lat+','+g[0].lon,text); })
       .catch(()=>fail('I could not find that address. Please try your postal code.'));
   }
-  function fail(msg){ busy=false; set('idle'); state.textContent=IDLE; ask(msg); step='where'; showOpts([['📍 Use my location','__geo']]); }
+  function fail(msg){ PFX.stop(); busy=false; set('idle'); state.textContent=IDLE; ask(msg); step='where'; showOpts([['📍 Use my location','__geo']]); }
   function fetchReps(url,label,isPc){ busy=true;
     fetch(url).then(r=>{ if(!r.ok) throw 0; return r.json(); }).then(d=>{
       const reps=isPc?((d.representatives_concordance&&d.representatives_concordance.length)?d.representatives_concordance:(d.representatives_centroid||[])):(d.objects||[]);
@@ -864,6 +920,7 @@ var LAWYERS = {
     const seen=new Set(); list=list.filter(x=>{ const k=x.r.name+x.l[1]; if(seen.has(k)) return false; seen.add(k); return true; });
     list.sort((a,b)=>a.l[2]-b.l[2]); if(level==='all') list=list.filter(x=>x.l[2]<=3).concat(list.filter(x=>x.l[2]>3).slice(0,2));
     set('done'); state.textContent='Your representatives';
+    let prov=pcProv; if(!prov){ const sets=reps.map(r=>(r.representative_set_name||'').toLowerCase()).join(' '); const f=PSET.find(([k])=>sets.includes(k)); prov=f?f[1]:''; } PFX.reveal(prov);
     tags.innerHTML=''; [LEVELS.find(x=>x[1]===level)[0],label].forEach(t=>{ const sp=document.createElement('span'); sp.textContent=t; tags.appendChild(sp); });
     res.innerHTML='';
     if(!list.length){ ask('I could not find a representative for that area.'); }
@@ -881,7 +938,7 @@ var LAWYERS = {
     const again=document.createElement('button'); again.type='button'; again.className='v-loc'; again.textContent='↺ Start over'; again.onclick=reset; res.appendChild(again);
   }
   function ini(n){ const d=document.createElement('div'); d.className='ini'; d.textContent=(n||'?').split(/\s+/).map(w=>w[0]).slice(0,2).join(''); return d; }
-  function reset(){ step='who'; level='all'; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask("Hi, I'm ASYA. Who would you like to reach?"); showOpts(LEVELS); res.innerHTML=''; tags.innerHTML=''; inp.value=''; inp.placeholder='Reply to ASYA…'; $('r-main').scrollTop=0; }
+  function reset(){ PFX.clear(); step='who'; level='all'; busy=false; set('idle'); state.textContent=IDLE; you.textContent=''; ask("Hi, I'm ASYA. Who would you like to reach?"); showOpts(LEVELS); res.innerHTML=''; tags.innerHTML=''; inp.value=''; inp.placeholder='Reply to ASYA…'; $('r-main').scrollTop=0; }
   const send=()=>{ const v=inp.value; inp.value=''; reply(v); };
   $('r-send').onclick=send; inp.onkeydown=e=>{ if(e.key==='Enter') send(); };
   function open(){ F.classList.add('open'); F.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; reset(); }
