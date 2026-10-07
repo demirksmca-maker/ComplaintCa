@@ -284,6 +284,31 @@ body:has(.flow.open) .demo-tag{display:none}
 .badges span{font-size:.66rem;font-weight:700;padding:4px 8px;border-radius:999px;background:rgba(0,194,168,.14);color:#7fe9d8;border:1px solid rgba(0,194,168,.35)}
 .badges span.gold{background:rgba(230,201,138,.14);color:#f1d79c;border-color:rgba(230,201,138,.4)}
 .mcard .go{width:100%}
+
+/* Free Lawyer — design 1 (Apple Intelligence style): glowing edge, big orb, no bubbles, gold serif chips */
+.lflow .sheet{background:radial-gradient(120% 55% at 50% 0%,#1d1640,#0b0b12 62%);overflow:hidden}
+.lflow .sheet::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;pointer-events:none;z-index:2;
+  background:conic-gradient(from var(--ang),#7c5cff,#3d8bff,#00c2a8,#f5c563,#ff4d8d,#7c5cff);filter:blur(1px);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:rim 6s linear infinite}
+.l-orb{display:grid;place-items:center;margin-top:14px}
+.l-orb .orb{width:76px;height:76px;box-shadow:0 0 40px rgba(124,92,255,.7),0 0 90px rgba(0,194,168,.3)}
+.l-orb .orb i{width:62px;height:62px;left:7px;top:7px;filter:blur(11px)}
+.l-orb .orb .b1{transform-origin:38px 18px}.l-orb .orb .b2{transform-origin:14px 44px}.l-orb .orb .b3{transform-origin:48px 48px}
+.lflow.think .l-orb .orb{animation:talk .55s ease-in-out infinite alternate}
+.lflow .trust-bar{margin:12px 0 0;color:rgba(255,255,255,.55)}
+.lflow .chat{align-items:center;text-align:center;gap:14px;padding:18px 6px 16px}
+.lflow .msg,.lflow .msg.me{max-width:100%;align-self:center;justify-content:center}
+.lflow .msg .orb{display:none}
+.lflow .bub{background:none;border:0;padding:0;font-size:1.22rem;line-height:1.38;font-weight:600;color:#fff;letter-spacing:-.01em;text-wrap:balance}
+.lflow .msg:not(:last-of-type) .bub{font-size:.95rem;font-weight:500;color:rgba(255,255,255,.5)}
+.lflow .msg.me .bub{background:none;color:#e6c98a;font:700 .7rem/1 var(--f-brand);letter-spacing:.22em;text-transform:uppercase;padding:7px 14px;border-radius:0;border-top:1px solid rgba(230,201,138,.35);border-bottom:1px solid rgba(230,201,138,.35)}
+.lflow .typing{justify-content:center;padding:6px 0}
+.lflow .note{text-align:left}
+.lflow .reply{background:linear-gradient(180deg,rgba(11,11,18,0),rgba(11,11,18,.96) 22%)}
+.lflow .chips .opt{padding:14px 8px;border-radius:999px;border:1px solid rgba(230,201,138,.35);background:rgba(255,255,255,.05);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  color:#f6e7bf;font:700 .68rem/1.2 var(--f-brand);letter-spacing:.16em;text-transform:uppercase;box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.lflow .chips .opt:hover{border-color:rgba(230,201,138,.8)}
+.lflow .mcard{text-align:left}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -355,7 +380,7 @@ body:has(.flow.open) .demo-tag{display:none}
 <div class="flow lflow" id="lflow" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="lflow-title">
     <div class="sh-top"><span class="sh-title" id="lflow-title">Free Lawyer</span><button class="sh-close" type="button" id="lflow-close" aria-label="Close">✕</button></div>
-    <div class="trust-bar"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>Private</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg>Always free</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg>No account needed</span></div>
+    <div class="l-orb"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span></div><div class="trust-bar"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>Private</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg>Always free</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-10"/></svg>No account needed</span></div>
     <div class="chat" id="lchat" aria-live="polite"></div>
     <div class="reply" id="lreply"></div>
   </div>
@@ -436,8 +461,8 @@ document.querySelectorAll('.tile').forEach(t=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
   const down=()=>requestAnimationFrame(()=>chat.scrollTop=chat.scrollHeight);
   function el(cls,html){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; chat.appendChild(d); down(); return d; }
-  async function say(text,id){ const t=el('msg',orb+'<div class="bub typing"><i></i><i></i><i></i></div>'); await wait(650+Math.min(text.length*12,900)); if(id!==run) return false;
-    t.querySelector('.bub').className='bub'; t.querySelector('.bub').textContent=text; down(); return true; }
+  async function say(text,id){ flow.classList.add('think'); const t=el('msg',orb+'<div class="bub typing"><i></i><i></i><i></i></div>'); await wait(650+Math.min(text.length*12,900)); if(id!==run) return false;
+    flow.classList.remove('think'); t.querySelector('.bub').className='bub'; t.querySelector('.bub').textContent=text; down(); return true; }
   function me(text){ const m=el('msg me','<div class="bub"></div>'); m.querySelector('.bub').textContent=text; }
   function note(text){ const n=el('note',shield+'<span></span>'); n.querySelector('span').textContent=text; }
   function ask(opts,cls){ return new Promise(res=>{ reply.innerHTML=''; const g=document.createElement('div'); g.className='chips'+(cls?' '+cls:'');
@@ -449,9 +474,7 @@ document.querySelectorAll('.tile').forEach(t=>{
     document.getElementById('l-skip').onclick=()=>{ reply.innerHTML=''; me('I\'ll explain to the lawyer directly.'); res(''); }; down(); }); }
   async function start(){
     const id=++run; chat.innerHTML=''; reply.innerHTML='';
-    if(!await say('Hi, I\'m ASYA. I\'ll help you find free legal help near you.',id)) return;
-    if(!await say('You don\'t need an account, and nothing you share here is made public.',id)) return;
-    if(!await say('What is your situation about?',id)) return;
+    if(!await say('Hi, I\'m ASYA. What is your situation about?',id)) return;
     A.topic=await ask(['Housing','Employment','Immigration','Family','Criminal','Consumer','Human Rights']); if(id!==run) return;
     if(!await say('Thank you for telling me. Many people face '+A.topic.toLowerCase()+' issues, and there is help for it.',id)) return;
     if(!await say('Which province or territory do you live in?',id)) return;
