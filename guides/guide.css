@@ -1,5 +1,4 @@
 /* ComplaintCA — shared styles for /guides/*-guide.html pages. Page-specific rules stay inline. */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5;overflow:hidden;display:flex;flex-direction:column}
