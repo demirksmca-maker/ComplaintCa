@@ -63,3 +63,13 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
 .related-box a{color:#8fb4f0;text-decoration:none}
 .related-box a:hover{text-decoration:underline}
 .path-card:focus-visible,.more-link:focus-visible,.mclose:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.asya-box h2{margin-top:30px}
+.asya-bubble{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:4px 12px 12px 12px;padding:12px 14px;font-size:.9rem;color:var(--dsub);line-height:1.6;margin:0 0 12px}
+.asya-bubble a{color:var(--gold)!important}
+.asya-input-row{display:flex;gap:8px}
+.asya-input{flex:1;min-width:0;border:1.5px solid rgba(255,255,255,.18);border-radius:22px;padding:11px 16px;font:inherit;font-size:.9rem;background:rgba(255,255,255,.04);color:var(--dtext)}
+.asya-input::placeholder{color:var(--dmuted)}
+.asya-input:focus{outline:none;border-color:var(--gold)}
+.asya-send{flex-shrink:0;width:42px;height:42px;border:none;border-radius:50%;background:var(--gold);color:var(--navy);font-weight:700;font-size:1rem;cursor:pointer}
+.asya-send:disabled{opacity:.6;cursor:default}
+.asya-send:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
