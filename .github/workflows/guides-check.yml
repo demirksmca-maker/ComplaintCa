@@ -1,0 +1,37 @@
+name: Guides Check
+
+# Static checks for /guides/ (links, schema, support-tool categories,
+# sitemap dates). No network calls, no secrets.
+on:
+  pull_request:
+    paths:
+      - 'guides/**'
+      - 'sitemap.xml'
+      - 'scripts/check-guides.mjs'
+      - 'scripts/sitemap-lastmod.mjs'
+      - '.github/workflows/guides-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'guides/**'
+      - 'sitemap.xml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # sitemap dates come from git history
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check guide pages
+        run: node scripts/check-guides.mjs
+
+      - name: Check sitemap dates
+        run: node scripts/sitemap-lastmod.mjs --check
