@@ -667,6 +667,27 @@ html:is([lang=ar],[lang=zh],[lang=pa]) .tile-t{font-size:calc(var(--tfs) * 1.05)
 html[dir=rtl] .kicker::before{background:linear-gradient(270deg,rgba(230,201,138,0),#e6c98a)}
 html[dir=rtl] .tile{text-align:right}
 html[dir=rtl] .arr{right:auto;left:14px;transform:scaleX(-1)!important}
+
+/* ── complaint panel wired to /api/complaint ── */
+#flow input[type=text],#flow input[type=email]{width:100%;border-radius:12px;border:1px solid rgba(246,231,191,.25);background:rgba(0,0,0,.25);color:#eef0f6;font:500 .9rem/1.4 var(--f-ui);padding:11px 12px}
+#flow input:focus{outline:none;border-color:#e6c98a}
+#flow .small{margin:0;color:var(--muted);font-size:.76rem;line-height:1.45;text-align:center}
+.namebox{display:grid;grid-template-columns:1fr auto;gap:8px}
+.namebox[hidden]{display:none}
+.legal{display:flex;gap:10px;align-items:flex-start;font-size:.78rem;line-height:1.45;color:var(--soft);text-align:left;cursor:pointer}
+.legal input{margin-top:2px;width:18px;height:18px;accent-color:#e6c98a;flex:none}
+.ts{display:flex;justify-content:center;min-height:0}
+#flow .go:disabled{opacity:.45}
+.testbadge{font:700 .6rem/1 var(--f-brand);letter-spacing:.16em;text-transform:uppercase;color:#f5c563;padding:7px 11px;border-radius:999px;border:1px solid rgba(245,197,99,.5);background:rgba(245,197,99,.08)}
+.testbadge[hidden]{display:none}
+.refcode{font:700 1.5rem/1 var(--f-brand);letter-spacing:.12em;color:#fff;padding:12px 18px;border-radius:14px;border:1px solid rgba(230,201,138,.5);background:rgba(230,201,138,.06);user-select:all}
+.dres{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:4px}
+.dres h4{margin:8px 0 0;font:700 .62rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;color:#e6c98a;text-align:center}
+.acard{padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);text-align:center}
+.acard b{display:block;font-size:.86rem;color:#fff}
+.acard span{display:block;font-size:.74rem;color:var(--muted);margin-top:3px}
+.acard a{display:inline-block;margin-top:6px;color:#e6c98a;font-size:.76rem;font-weight:600;text-decoration:none}
+.flow.sent .done-view{gap:10px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head><body class="v-1" style="margin:0">
@@ -710,34 +731,58 @@ html[dir=rtl] .arr{right:auto;left:14px;transform:scaleX(-1)!important}
     <div class="steps" id="steps">
       <section class="step" data-k="who"><button class="st-head" type="button"><span class="st-num">I</span><span class="st-name">Who is it about?</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad"><div class="opts" data-pick="who">
-          <button class="opt" type="button">Business</button><button class="opt" type="button">Government</button><button class="opt" type="button">Health</button><button class="opt" type="button">Landlord</button><button class="opt" type="button">Municipality</button><button class="opt" type="button">School</button><button class="opt" type="button">Other</button>
+          <button class="opt" type="button" data-v="business">Business</button><button class="opt" type="button" data-v="government">Government</button><button class="opt" type="button" data-v="health">Health</button><button class="opt" type="button" data-v="landlord">Landlord</button><button class="opt" type="button" data-v="municipality">Municipality</button><button class="opt" type="button" data-v="school">School</button><button class="opt" type="button" data-v="other">Other</button>
         </div></div></div></div></section>
       <section class="step" data-k="what"><button class="st-head" type="button"><span class="st-num">II</span><span class="st-name">What happened?</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad">
-          <textarea id="f-what" placeholder="Describe what happened, when and where."></textarea>
-          <div class="row2"><button class="mini-asya" type="button" id="f-voice"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span>Tell ASYA</button><button class="go" type="button" data-next="what" id="f-what-go">Later</button></div>
+          <textarea id="f-what" maxlength="5000" placeholder="Describe what happened, when and where."></textarea>
+          <input id="f-tname" type="text" maxlength="200" placeholder="Name of the business or office (optional)" autocomplete="off">
+          <div class="row2"><button class="mini-asya" type="button" id="f-voice"><span class="orb"><i class="b1"></i><i class="b2"></i><i class="b3"></i><span class="spec"></span></span>Tell ASYA</button><button class="go" type="button" id="f-what-go">Next</button></div>
         </div></div></div></section>
-      <section class="step" data-k="urg"><button class="st-head" type="button"><span class="st-num">III</span><span class="st-name">How urgent?</span><span class="st-val"></span></button>
+      <section class="step" data-k="where"><button class="st-head" type="button"><span class="st-num">III</span><span class="st-name">Where did it happen?</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad">
+          <input id="f-loc" type="text" maxlength="200" placeholder="City or postal code, e.g. Toronto or M5V 3L9" autocomplete="off">
+          <div class="row2"><button class="mini-asya" type="button" id="f-geo">📍 Use my location</button><button class="go" type="button" id="f-loc-go">Next</button></div>
+        </div></div></div></section>
+      <section class="step" data-k="urg"><button class="st-head" type="button"><span class="st-num">IV</span><span class="st-name">How urgent?</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad"><div class="opts" data-pick="urg">
-          <button class="opt" type="button"><span class="dot" style="background:#4ade80"></span>Low</button><button class="opt" type="button"><span class="dot" style="background:#f5c563"></span>Medium</button><button class="opt" type="button"><span class="dot" style="background:#ff5a5a"></span>High</button>
+          <button class="opt" type="button" data-v="low"><span class="dot" style="background:#4ade80"></span>Low</button><button class="opt" type="button" data-v="medium"><span class="dot" style="background:#f5c563"></span>Medium</button><button class="opt" type="button" data-v="high"><span class="dot" style="background:#ff5a5a"></span>High</button>
         </div></div></div></div></section>
-      <section class="step" data-k="id"><button class="st-head" type="button"><span class="st-num">IV</span><span class="st-name">Your identity</span><span class="st-val"></span></button>
+      <section class="step" data-k="id"><button class="st-head" type="button"><span class="st-num">V</span><span class="st-name">Your identity</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad"><div class="cards2" data-pick="id">
-          <button class="card2" type="button">Anonymous<small>Your name is never shared.</small></button><button class="card2" type="button">With my name<small>Faster follow-up from the agency.</small></button>
-        </div></div></div></div></section>
-      <section class="step" data-k="ev"><button class="st-head" type="button"><span class="st-num">V</span><span class="st-name">Evidence</span><span class="st-val"></span></button>
+          <button class="card2" type="button" data-v="anon">Anonymous<small>Your name is never shared.</small></button><button class="card2" type="button" data-v="named">With my name<small>Faster follow-up from the agency.</small></button>
+        </div>
+        <p class="hint" id="f-id-note"></p>
+        <div class="namebox" id="f-namebox" hidden><input id="f-name" type="text" maxlength="120" placeholder="Your full name" autocomplete="name"><button class="go" type="button" id="f-name-go">Next</button></div>
+        </div></div></div></section>
+      <section class="step" data-k="mail"><button class="st-head" type="button"><span class="st-num">VI</span><span class="st-name">Your email</span><span class="st-val"></span></button>
+        <div class="st-body"><div class="st-in"><div class="st-pad">
+          <p class="small">We send your tracking number here. It is never shared with the institution.</p>
+          <input id="f-email" type="email" maxlength="254" placeholder="you@example.com" autocomplete="email" inputmode="email">
+          <div class="row2"><span></span><button class="go" type="button" id="f-mail-go">Next</button></div>
+        </div></div></div></section>
+      <section class="step" data-k="ev"><button class="st-head" type="button"><span class="st-num">VII</span><span class="st-name">Evidence</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad">
           <label class="drop" for="f-files">Add photos or documents<small style="color:var(--muted)">Optional · images or PDF</small><input id="f-files" type="file" accept="image/*,.pdf" multiple></label>
           <div class="thumbs" id="thumbs"></div>
           <div class="row2"><button class="ghost" type="button" data-skip="ev">Skip</button><button class="go" type="button" data-next="ev">Next</button></div>
         </div></div></div></section>
-      <section class="step" data-k="send"><button class="st-head" type="button"><span class="st-num">VI</span><span class="st-name">Review &amp; send</span><span class="st-val"></span></button>
+      <section class="step" data-k="send"><button class="st-head" type="button"><span class="st-num">VIII</span><span class="st-name">Review &amp; send</span><span class="st-val"></span></button>
         <div class="st-body"><div class="st-in"><div class="st-pad">
           <dl class="sum" id="sum"></dl>
+          <label class="legal"><input type="checkbox" id="f-legal"><span>I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.</span></label>
+          <div id="f-ts" class="ts"></div>
           <p class="hint" id="f-hint"></p><button class="go" type="button" id="f-send">Send complaint</button>
         </div></div></div></section>
     </div>
-    <div class="done-view"><div class="seal">✓</div><h3>Complaint ready</h3><p>Demo only, nothing was sent. On the live site you would get tracking code <code>CA-7Q4K</code>.</p><button class="go" type="button" id="f-again" style="align-self:center">Done</button></div>
+    <div class="done-view">
+      <div class="seal">✓</div><h3>Complaint received</h3>
+      <span class="testbadge" id="d-test" hidden>TEST · not sent to any institution</span>
+      <p class="small">Your tracking number</p><div class="refcode" id="d-ref"></div>
+      <p class="small" id="d-mail"></p>
+      <div class="dres" id="d-res"></div>
+      <button class="go" type="button" id="f-again" style="align-self:center">Done</button>
+    </div>
   </div>
 </div>
 
@@ -842,49 +887,104 @@ document.querySelectorAll('.tile').forEach(t=>{
 });
 
 
-/* one-page complaint flow */
+/* one-page complaint flow — wired to the new engine (/api/complaint, test mode) */
 (function(){
-  const flow=document.getElementById('flow'), steps=[...flow.querySelectorAll('.step')], prog=document.getElementById('prog');
-  const keys=steps.map(s=>s.dataset.k), ans={}; let cur=0;
+  const flow=document.getElementById('flow'), steps=[...flow.querySelectorAll('.step')], prog=document.getElementById('prog'), $=id=>document.getElementById(id);
+  const keys=steps.map(s=>s.dataset.k), ans={}, val={}; let cur=0, tsToken='', tsWidget=null;
+  const SITEKEY='0x4AAAAAAD0YTkgBQCsboEB8';
   prog.innerHTML=keys.map((_,i)=>'<i></i>'+(i<keys.length-1?'<b></b>':'')).join('');
+  const short=v=>v.length>26?v.slice(0,26)+'…':v;
   function render(){
     steps.forEach((s,i)=>{ s.classList.toggle('cur',i===cur); s.classList.toggle('done',i!==cur&&ans[keys[i]]!==undefined); s.classList.toggle('todo',i>cur&&ans[keys[i]]===undefined);
       s.querySelector('.st-val').textContent = i!==cur && ans[keys[i]]!==undefined ? ans[keys[i]] : ''; });
     [...prog.children].forEach((el,j)=>{ const i=Math.floor(j/2), isDot=j%2===0;
       el.className = isDot ? (i===cur?'cur':(ans[keys[i]]!==undefined?'done':'')) : (ans[keys[i]]!==undefined?'done':''); });
-    if (keys[cur]==='send') fillSum();
+    if (keys[cur]==='send'){ fillSum(); loadTurnstile(); }
     const c=steps[cur], sh=flow.querySelector('.sheet'); setTimeout(()=>sh.scrollTo({top:Math.max(0,c.offsetTop-90),behavior:'smooth'}),220);
   }
   function next(){ const n=keys.findIndex((k,i)=>i>cur&&ans[k]===undefined); cur = n<0 ? keys.length-1 : n; render(); }
+  function needName(){ return val.urg==='high'; }
   steps.forEach((s,i)=>s.querySelector('.st-head').addEventListener('click',()=>{ cur=i; render(); }));
   flow.querySelectorAll('[data-pick]').forEach(g=>g.addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b) return;
+    const b=e.target.closest('button'); if(!b) return; const k=g.dataset.pick;
     g.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x===b));
-    ans[g.dataset.pick]=b.childNodes[b.childNodes.length-1].textContent.trim() || b.textContent.trim();
-    if (g.dataset.pick==='id') ans.id=b.firstChild.textContent.trim();
-    setTimeout(next,280);
+    val[k]=b.dataset.v; const label=(k==='id'?b.firstChild.textContent:b.childNodes[b.childNodes.length-1].textContent).trim();
+    if(k==='id'){ $('f-id-note').textContent=''; if(val.id==='named'||needName()){ if(val.id==='anon'){ g.querySelectorAll('button').forEach(x=>x.classList.toggle('sel',x.dataset.v==='named')); val.id='named'; $('f-id-note').textContent='High-priority complaints need your name.'; }
+        $('f-namebox').hidden=false; delete ans.id; setTimeout(()=>$('f-name').focus(),60); render(); return; }
+      $('f-namebox').hidden=true; val.name=''; }
+    if(k==='urg'&&val.urg==='high'&&val.id==='anon'){ delete ans.id; val.id=''; flow.querySelectorAll('[data-pick="id"] button').forEach(x=>x.classList.remove('sel')); }
+    ans[k]=label; setTimeout(next,280);
   }));
-  const what=document.getElementById('f-what'), whatGo=document.getElementById('f-what-go');
-  const syncWhat=()=>{ whatGo.textContent = what.value.trim() ? 'Next' : 'Later'; }; what.addEventListener('input',syncWhat);
-  whatGo.addEventListener('click',()=>{ const v=what.value.trim(); if(v){ ans.what = v.length>28 ? v.slice(0,28)+'…' : v; ans.whatFull=v; } else { ans.what='To add'; ans.whatFull=''; } next(); });
-  document.getElementById('f-voice').addEventListener('click',()=>{ if(!what.value) what.value='On 2 October the landlord entered my unit without the 24-hour written notice required by law.'; what.dispatchEvent(new Event('input')); });
-  const files=document.getElementById('f-files'), thumbs=document.getElementById('thumbs');
+  $('f-name-go').addEventListener('click',()=>{ const v=$('f-name').value.trim(); if(!v){ $('f-name').focus(); return; } val.name=v; ans.id=short(v); next(); });
+  $('f-name').addEventListener('keydown',e=>{ if(e.key==='Enter') $('f-name-go').click(); });
+  const what=$('f-what');
+  $('f-what-go').addEventListener('click',()=>{ const v=what.value.trim(); if(v.length<10){ what.focus(); return; } val.desc=v; val.tname=$('f-tname').value.trim(); ans.what=short(v); next(); });
+  $('f-voice').addEventListener('click',()=>{ if(!what.value) what.value='On 2 October my landlord entered my unit without the 24-hour written notice required by law.'; what.focus(); });
+  $('f-loc-go').addEventListener('click',()=>{ const v=$('f-loc').value.trim(); if(!v){ $('f-loc').focus(); return; } val.loc=v; ans.where=short(v); next(); });
+  $('f-loc').addEventListener('keydown',e=>{ if(e.key==='Enter') $('f-loc-go').click(); });
+  $('f-geo').addEventListener('click',()=>{ if(!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(p=>{
+    fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat='+p.coords.latitude+'&lon='+p.coords.longitude).then(r=>r.json()).then(d=>{ const a=d.address||{}; const city=a.city||a.town||a.village||''; const st=a['ISO3166-2-lvl4']?a['ISO3166-2-lvl4'].split('-')[1]:''; $('f-loc').value=[city,st].filter(Boolean).join(', '); }).catch(()=>{});
+  },()=>{},{timeout:8000}); });
+  $('f-mail-go').addEventListener('click',()=>{ const v=$('f-email').value.trim(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ $('f-email').focus(); $('f-email').style.borderColor='#ff5a6e'; return; } $('f-email').style.borderColor=''; val.email=v; ans.mail=short(v); next(); });
+  $('f-email').addEventListener('keydown',e=>{ if(e.key==='Enter') $('f-mail-go').click(); });
+  const files=$('f-files'), thumbs=$('thumbs');
   files.addEventListener('change',()=>{ thumbs.innerHTML=''; [...files.files].forEach(f=>{ if(f.type.startsWith('image/')){ const im=new Image(); im.src=URL.createObjectURL(f); thumbs.appendChild(im);} }); });
   flow.querySelector('[data-next="ev"]').addEventListener('click',()=>{ const n=files.files.length; ans.ev = n ? n+' file'+(n>1?'s':'') : 'None'; next(); });
   flow.querySelector('[data-skip="ev"]').addEventListener('click',()=>{ ans.ev='None'; next(); });
+  function missing(){ const m=[]; if(!val.who) m.push('Who'); if(!val.desc) m.push('What happened'); if(!val.loc) m.push('Where'); if(!val.urg) m.push('Urgency');
+    if(!ans.id) m.push('Identity'); if(!val.email) m.push('Email'); return m; }
   function fillSum(){
-    const rows=[['About',ans.who],['What',ans.whatFull],['Urgency',ans.urg],['Identity',ans.id],['Evidence',ans.ev]];
-    const dl=document.getElementById('sum'); dl.innerHTML='';
+    const rows=[['About',ans.who],['What',val.desc],['Where',val.loc],['Urgency',ans.urg],['Identity',ans.id],['Email',val.email],['Evidence',ans.ev]];
+    const dl=$('sum'); dl.innerHTML='';
     rows.forEach(([k,v])=>{ const dt=document.createElement('dt'), dd=document.createElement('dd'); dt.textContent=k; dd.textContent=v||'—'; dl.append(dt,dd); });
-    const missing=[['who','Who'],['urg','Urgency'],['id','Identity']].filter(([k])=>!ans[k]).map(x=>x[1]); if(!ans.whatFull) missing.unshift('What happened');
-    const sb=document.getElementById('f-send'), hint=document.getElementById('f-hint'); sb.disabled=missing.length>0; hint.textContent = missing.length ? 'Still needed: '+missing.join(', ')+'. Tap a step above to fill it in.' : '';
+    sync();
   }
-  document.getElementById('f-send').addEventListener('click',()=>{ ans.send='Sent'; flow.classList.add('sent'); });
+  function sync(){ const m=missing(), sb=$('f-send'), hint=$('f-hint');
+    sb.disabled = m.length>0 || !$('f-legal').checked;
+    hint.textContent = m.length ? 'Still needed: '+m.join(', ')+'. Tap a step above to fill it in.' : (!$('f-legal').checked ? 'Please confirm the statement above.' : ''); }
+  $('f-legal').addEventListener('change',sync);
+  function loadTurnstile(){
+    if(tsWidget!==null) return; tsWidget=false;
+    const render=()=>{ try{ tsWidget=window.turnstile.render('#f-ts',{sitekey:SITEKEY,theme:'dark',callback:t=>{tsToken=t;},'error-callback':()=>{tsToken='';},'expired-callback':()=>{tsToken='';}}); }catch(e){} };
+    if(window.turnstile) return render();
+    const sc=document.createElement('script'); sc.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async=true; sc.onload=render; document.head.appendChild(sc);
+  }
+  const ERR={cooldown:'Please wait a few minutes before sending another complaint.',verification:'Please complete the verification check above, then try again.',save_failed:'We could not save your complaint. Please try again in a moment.'};
+  $('f-send').addEventListener('click',async()=>{
+    const sb=$('f-send'), hint=$('f-hint'); if(sb.disabled) return;
+    sb.disabled=true; const label=sb.textContent; sb.textContent='Sending…'; hint.textContent='';
+    let r, d={};
+    try{
+      r=await fetch('/api/complaint',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        test:true, desc:val.desc, title:'', target:val.who, targetName:val.tname||'', location:val.loc, priority:val.urg,
+        anonymous:val.id!=='named', name:val.id==='named'?val.name:'', email:val.email, photoCount:files.files.length,
+        legalAccepted:true, turnstileToken:tsToken, lang:document.documentElement.lang||'en' })});
+      d=await r.json().catch(()=>({}));
+    }catch(e){ d={error:'network'}; }
+    sb.textContent=label;
+    if(!r||!r.ok){ sb.disabled=false; if(window.turnstile&&tsWidget) try{ window.turnstile.reset(tsWidget); tsToken=''; }catch(e){}
+      hint.textContent = d.error==='invalid' ? 'Please check: '+(d.fields||[]).join(', ')+'.' : (ERR[d.error]||'Something went wrong. Please try again.'); return; }
+    showDone(d);
+  });
+  function showDone(d){
+    $('d-ref').textContent=d.ref; $('d-test').hidden=!d.test;
+    $('d-mail').textContent = d.confirmationSent ? 'We emailed the tracking number to '+val.email+'.' : 'Keep this number to track your complaint.';
+    const box=$('d-res'); box.innerHTML='';
+    const head=t=>{ const h=document.createElement('h4'); h.textContent=t; box.appendChild(h); };
+    const card=(name,line,href,link)=>{ const c=document.createElement('div'); c.className='acard'; const b=document.createElement('b'); b.textContent=name; c.appendChild(b);
+      if(line){ const s=document.createElement('span'); s.textContent=line; c.appendChild(s); }
+      if(href){ const a=document.createElement('a'); a.href=href; a.target='_blank'; a.rel='noopener'; a.textContent=link; c.appendChild(a); } box.appendChild(c); };
+    if(d.authorities&&d.authorities.length){ head('Relevant authority'); d.authorities.forEach(a=>card(a.name,[a.phone,a.email].filter(Boolean).join(' · ')||a.note,a.url,a.url?'Official form →':'')); }
+    if(d.chain&&d.chain.bodies&&d.chain.bodies.length){ head('Next steps · '+d.chain.provinceName); d.chain.bodies.forEach(b=>card(b.name,b.phone,b.url,'Open →')); }
+    flow.classList.add('sent'); flow.querySelector('.sheet').scrollTo({top:0});
+  }
   function open(){ flow.classList.add('open'); flow.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; render(); }
   function close(){ flow.classList.remove('open'); flow.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-  function reset(){ Object.keys(ans).forEach(k=>delete ans[k]); cur=0; flow.classList.remove('sent'); flow.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel')); what.value=''; syncWhat(); files.value=''; thumbs.innerHTML=''; }
-  document.getElementById('flow-close').addEventListener('click',close);
-  document.getElementById('f-again').addEventListener('click',()=>{ close(); setTimeout(reset,400); });
+  function reset(){ Object.keys(ans).forEach(k=>delete ans[k]); Object.keys(val).forEach(k=>delete val[k]); cur=0; flow.classList.remove('sent'); flow.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));
+    ['f-what','f-tname','f-loc','f-name','f-email'].forEach(id=>$(id).value=''); $('f-legal').checked=false; $('f-namebox').hidden=true; $('f-id-note').textContent=''; files.value=''; thumbs.innerHTML='';
+    if(window.turnstile&&tsWidget) try{ window.turnstile.reset(tsWidget); }catch(e){} tsToken=''; }
+  $('flow-close').addEventListener('click',close);
+  $('f-again').addEventListener('click',()=>{ close(); setTimeout(reset,400); });
   flow.addEventListener('click',e=>{ if(e.target===flow) close(); });
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&flow.classList.contains('open')) close(); });
   window.openComplaintFlow=open;
@@ -1329,8 +1429,13 @@ fitTitles(); addEventListener('resize',fitTitles); document.fonts&&document.font
     zh:[[/^How urgent is this\? I suggest (\w+)\.$/,(m,a)=>"这有多紧急？建议："+(PT.D.zh[a]||a)+"。"],[/^Demo only, nothing was sent\. On the live site we would email (.+) a reference number\.$/,(m,a)=>"仅为演示，未发送任何内容。正式网站会把参考编号发送到 "+a+"。"],[/^(\d+) files?$/,(m,a)=>a+" 个文件"]],
     pa:[[/^How urgent is this\? I suggest (\w+)\.$/,(m,a)=>"ਇਹ ਕਿੰਨਾ ਜ਼ਰੂਰੀ ਹੈ? ਮੇਰਾ ਸੁਝਾਅ: "+(PT.D.pa[a]||a)+"।"],[/^Demo only, nothing was sent\. On the live site we would email (.+) a reference number\.$/,(m,a)=>"ਸਿਰਫ਼ ਡੈਮੋ, ਕੁਝ ਨਹੀਂ ਭੇਜਿਆ। ਅਸਲ ਸਾਈਟ ਤੇ ਰੈਫ਼ਰੈਂਸ ਨੰਬਰ "+a+" ਤੇ ਭੇਜਿਆ ਜਾਵੇਗਾ।"],[/^(\d+) files?$/,(m,a)=>a+" ਫਾਈਲਾਂ"]]
   };
+
+  const PT_EXTRA={"fr": {"Where did it happen?": "Où cela s'est-il passé ?", "Where": "Où", "Name of the business or office (optional)": "Nom de l'entreprise ou du bureau (facultatif)", "City or postal code, e.g. Toronto or M5V 3L9": "Ville ou code postal, ex. Toronto ou M5V 3L9", "High-priority complaints need your name.": "Les plaintes prioritaires exigent votre nom.", "Your full name": "Votre nom complet", "Your email": "Votre courriel", "We send your tracking number here. It is never shared with the institution.": "Nous y envoyons votre numéro de suivi. Il n'est jamais transmis à l'organisme.", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "Je confirme que cette plainte est véridique à ma connaissance et j'en assume l'entière responsabilité juridique.", "Please confirm the statement above.": "Veuillez confirmer la déclaration ci-dessus.", "Sending…": "Envoi…", "Complaint received": "Plainte reçue", "TEST · not sent to any institution": "TEST · non transmise à un organisme", "Your tracking number": "Votre numéro de suivi", "Keep this number to track your complaint.": "Gardez ce numéro pour suivre votre plainte.", "Relevant authority": "Organisme compétent", "Official form →": "Formulaire officiel →", "Open →": "Ouvrir →", "Please wait a few minutes before sending another complaint.": "Patientez quelques minutes avant d'envoyer une autre plainte.", "Please complete the verification check above, then try again.": "Complétez la vérification ci-dessus, puis réessayez.", "We could not save your complaint. Please try again in a moment.": "Impossible d'enregistrer votre plainte. Réessayez dans un instant.", "Something went wrong. Please try again.": "Une erreur s'est produite. Réessayez."}, "es": {"Where did it happen?": "¿Dónde ocurrió?", "Where": "Dónde", "Name of the business or office (optional)": "Nombre de la empresa u oficina (opcional)", "City or postal code, e.g. Toronto or M5V 3L9": "Ciudad o código postal, ej. Toronto o M5V 3L9", "High-priority complaints need your name.": "Las quejas prioritarias requieren tu nombre.", "Your full name": "Tu nombre completo", "Your email": "Tu correo", "We send your tracking number here. It is never shared with the institution.": "Aquí enviamos tu número de seguimiento. Nunca se comparte con la institución.", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "Confirmo que esta queja es verdadera según mi conocimiento y acepto toda la responsabilidad legal.", "Please confirm the statement above.": "Confirma la declaración de arriba.", "Sending…": "Enviando…", "Complaint received": "Queja recibida", "TEST · not sent to any institution": "PRUEBA · no enviada a ninguna institución", "Your tracking number": "Tu número de seguimiento", "Keep this number to track your complaint.": "Guarda este número para seguir tu queja.", "Relevant authority": "Autoridad competente", "Official form →": "Formulario oficial →", "Open →": "Abrir →", "Please wait a few minutes before sending another complaint.": "Espera unos minutos antes de enviar otra queja.", "Please complete the verification check above, then try again.": "Completa la verificación de arriba y vuelve a intentarlo.", "We could not save your complaint. Please try again in a moment.": "No pudimos guardar tu queja. Inténtalo en un momento.", "Something went wrong. Please try again.": "Algo salió mal. Inténtalo de nuevo."}, "tr": {"Where did it happen?": "Nerede oldu?", "Where": "Nerede", "Name of the business or office (optional)": "İşletme veya kurum adı (isteğe bağlı)", "City or postal code, e.g. Toronto or M5V 3L9": "Şehir veya posta kodu, ör. Toronto veya M5V 3L9", "High-priority complaints need your name.": "Yüksek öncelikli şikâyetlerde adın gerekli.", "Your full name": "Adın soyadın", "Your email": "E-postan", "We send your tracking number here. It is never shared with the institution.": "Takip numaranı buraya göndeririz. Kurumla asla paylaşılmaz.", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "Bu şikâyetin bildiğim kadarıyla doğru olduğunu onaylıyor ve tüm yasal sorumluluğu kabul ediyorum.", "Please confirm the statement above.": "Lütfen yukarıdaki beyanı onayla.", "Sending…": "Gönderiliyor…", "Complaint received": "Şikâyet alındı", "TEST · not sent to any institution": "TEST · hiçbir kuruma gönderilmedi", "Your tracking number": "Takip numaran", "Keep this number to track your complaint.": "Şikâyetini takip etmek için bu numarayı sakla.", "Relevant authority": "İlgili kurum", "Official form →": "Resmî form →", "Open →": "Aç →", "Please wait a few minutes before sending another complaint.": "Yeni şikâyet göndermeden önce birkaç dakika bekle.", "Please complete the verification check above, then try again.": "Yukarıdaki doğrulamayı tamamlayıp tekrar dene.", "We could not save your complaint. Please try again in a moment.": "Şikâyetini kaydedemedik. Birazdan tekrar dene.", "Something went wrong. Please try again.": "Bir şeyler ters gitti. Tekrar dene."}, "ar": {"Where did it happen?": "أين حدث ذلك؟", "Where": "أين", "Name of the business or office (optional)": "اسم الشركة أو المكتب (اختياري)", "City or postal code, e.g. Toronto or M5V 3L9": "المدينة أو الرمز البريدي، مثل Toronto أو M5V 3L9", "High-priority complaints need your name.": "الشكاوى العاجلة تتطلب اسمك.", "Your full name": "اسمك الكامل", "Your email": "بريدك الإلكتروني", "We send your tracking number here. It is never shared with the institution.": "نرسل رقم التتبع إلى هنا، ولا تتم مشاركته مع الجهة أبدًا.", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "أؤكد أن هذه الشكوى صحيحة حسب علمي وأتحمّل كامل المسؤولية القانونية عنها.", "Please confirm the statement above.": "يرجى تأكيد الإقرار أعلاه.", "Sending…": "جارٍ الإرسال…", "Complaint received": "تم استلام الشكوى", "TEST · not sent to any institution": "تجربة · لم تُرسل إلى أي جهة", "Your tracking number": "رقم التتبع الخاص بك", "Keep this number to track your complaint.": "احتفظ بهذا الرقم لتتبع شكواك.", "Relevant authority": "الجهة المختصة", "Official form →": "النموذج الرسمي ←", "Open →": "فتح ←", "Please wait a few minutes before sending another complaint.": "انتظر بضع دقائق قبل إرسال شكوى أخرى.", "Please complete the verification check above, then try again.": "أكمل التحقق أعلاه ثم حاول مجددًا.", "We could not save your complaint. Please try again in a moment.": "تعذّر حفظ شكواك. حاول مجددًا بعد قليل.", "Something went wrong. Please try again.": "حدث خطأ ما. حاول مجددًا."}, "zh": {"Where did it happen?": "发生在哪里？", "Where": "地点", "Name of the business or office (optional)": "企业或机构名称（可选）", "City or postal code, e.g. Toronto or M5V 3L9": "城市或邮编，例如 Toronto 或 M5V 3L9", "High-priority complaints need your name.": "高优先级投诉需要填写姓名。", "Your full name": "您的全名", "Your email": "您的邮箱", "We send your tracking number here. It is never shared with the institution.": "我们会把跟踪编号发到这里，绝不会提供给机构。", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "我确认此投诉据我所知属实，并承担全部法律责任。", "Please confirm the statement above.": "请确认上方声明。", "Sending…": "正在发送…", "Complaint received": "投诉已收到", "TEST · not sent to any institution": "测试 · 未发送给任何机构", "Your tracking number": "您的跟踪编号", "Keep this number to track your complaint.": "请保存此编号以跟踪投诉。", "Relevant authority": "主管机构", "Official form →": "官方表格 →", "Open →": "打开 →", "Please wait a few minutes before sending another complaint.": "请等待几分钟后再提交新的投诉。", "Please complete the verification check above, then try again.": "请完成上方验证后重试。", "We could not save your complaint. Please try again in a moment.": "无法保存您的投诉，请稍后再试。", "Something went wrong. Please try again.": "出了点问题，请重试。"}, "pa": {"Where did it happen?": "ਇਹ ਕਿੱਥੇ ਹੋਇਆ?", "Where": "ਕਿੱਥੇ", "Name of the business or office (optional)": "ਕਾਰੋਬਾਰ ਜਾਂ ਦਫ਼ਤਰ ਦਾ ਨਾਂ (ਚੋਣਵਾਂ)", "City or postal code, e.g. Toronto or M5V 3L9": "ਸ਼ਹਿਰ ਜਾਂ ਪੋਸਟਲ ਕੋਡ, ਜਿਵੇਂ Toronto ਜਾਂ M5V 3L9", "High-priority complaints need your name.": "ਉੱਚ ਤਰਜੀਹ ਵਾਲੀ ਸ਼ਿਕਾਇਤ ਲਈ ਤੁਹਾਡਾ ਨਾਂ ਲੋੜੀਂਦਾ ਹੈ।", "Your full name": "ਤੁਹਾਡਾ ਪੂਰਾ ਨਾਂ", "Your email": "ਤੁਹਾਡੀ ਈਮੇਲ", "We send your tracking number here. It is never shared with the institution.": "ਅਸੀਂ ਟ੍ਰੈਕਿੰਗ ਨੰਬਰ ਇੱਥੇ ਭੇਜਦੇ ਹਾਂ। ਇਹ ਸੰਸਥਾ ਨਾਲ ਸਾਂਝਾ ਨਹੀਂ ਹੁੰਦਾ।", "I confirm this complaint is true to the best of my knowledge and I accept full legal responsibility for it.": "ਮੈਂ ਪੁਸ਼ਟੀ ਕਰਦਾ/ਕਰਦੀ ਹਾਂ ਕਿ ਇਹ ਸ਼ਿਕਾਇਤ ਮੇਰੀ ਜਾਣਕਾਰੀ ਮੁਤਾਬਕ ਸੱਚ ਹੈ ਅਤੇ ਪੂਰੀ ਕਾਨੂੰਨੀ ਜ਼ਿੰਮੇਵਾਰੀ ਲੈਂਦਾ/ਲੈਂਦੀ ਹਾਂ।", "Please confirm the statement above.": "ਕਿਰਪਾ ਕਰਕੇ ਉੱਪਰਲੇ ਬਿਆਨ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।", "Sending…": "ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ…", "Complaint received": "ਸ਼ਿਕਾਇਤ ਮਿਲ ਗਈ", "TEST · not sent to any institution": "ਟੈਸਟ · ਕਿਸੇ ਸੰਸਥਾ ਨੂੰ ਨਹੀਂ ਭੇਜੀ", "Your tracking number": "ਤੁਹਾਡਾ ਟ੍ਰੈਕਿੰਗ ਨੰਬਰ", "Keep this number to track your complaint.": "ਸ਼ਿਕਾਇਤ ਟ੍ਰੈਕ ਕਰਨ ਲਈ ਇਹ ਨੰਬਰ ਸੰਭਾਲੋ।", "Relevant authority": "ਸੰਬੰਧਿਤ ਅਧਿਕਾਰੀ", "Official form →": "ਸਰਕਾਰੀ ਫਾਰਮ →", "Open →": "ਖੋਲ੍ਹੋ →", "Please wait a few minutes before sending another complaint.": "ਹੋਰ ਸ਼ਿਕਾਇਤ ਭੇਜਣ ਤੋਂ ਪਹਿਲਾਂ ਕੁਝ ਮਿੰਟ ਉਡੀਕ ਕਰੋ।", "Please complete the verification check above, then try again.": "ਉੱਪਰਲੀ ਪੁਸ਼ਟੀ ਪੂਰੀ ਕਰਕੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।", "We could not save your complaint. Please try again in a moment.": "ਤੁਹਾਡੀ ਸ਼ਿਕਾਇਤ ਸੇਵ ਨਹੀਂ ਹੋ ਸਕੀ। ਥੋੜ੍ਹੀ ਦੇਰ ਬਾਅਦ ਕੋਸ਼ਿਸ਼ ਕਰੋ।", "Something went wrong. Please try again.": "ਕੁਝ ਗ਼ਲਤ ਹੋ ਗਿਆ। ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"}}; Object.keys(PT_EXTRA).forEach(l=>Object.assign(PT.D[l],PT_EXTRA[l]));
+  const MAILED={fr:'Nous avons envoyé le numéro de suivi à ',es:'Enviamos el número de seguimiento a ',tr:'Takip numarasını şu adrese gönderdik: ',ar:'أرسلنا رقم التتبع إلى ',zh:'我们已将跟踪编号发送至 ',pa:'ਅਸੀਂ ਟ੍ਰੈਕਿੰਗ ਨੰਬਰ ਇਸ ਤੇ ਭੇਜਿਆ: '};
+  const NEXT={fr:'Prochaines étapes · ',es:'Próximos pasos · ',tr:'Sonraki adımlar · ',ar:'الخطوات التالية · ',zh:'下一步 · ',pa:'ਅਗਲੇ ਕਦਮ · '};
   let lang='en'; const roots=[...document.querySelectorAll('.flow')];
   function tr(en){ if(lang==='en') return en; const t=en.trim(); if(!t) return en; const d=PT.D[lang]; let out=d[t];
+    if(out===undefined){ let m=t.match(/^We emailed the tracking number to (.+)\.$/); if(m) out=MAILED[lang]+m[1]+(lang==='zh'?'。':'.'); m=t.match(/^Next steps · (.+)$/); if(m) out=NEXT[lang]+m[1]; }
     if(out===undefined) for(const [re,fn] of (PAT[lang]||[])){ const m=t.match(re); if(m){ out=fn(...m); break; } }
     if(out===undefined) return en; return en.replace(t,out); }
   function doText(n){ if(n.__tr!==undefined&&n.nodeValue===n.__tr) return; n.__en=n.nodeValue; const v=tr(n.__en); n.__tr=v; if(v!==n.nodeValue) n.nodeValue=v; }
