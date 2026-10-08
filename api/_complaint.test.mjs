@@ -97,3 +97,36 @@ describe('POST /api/complaint', () => {
     assert.equal(data.category, 'repairs');
   });
 });
+
+describe('institution email (live parity)', () => {
+  test('replies go to the per-complaint alias, never the complainant', async () => {
+    mockFetch(); process.env.BREVO_API_KEY = 'k'; process.env.COMPLAINT_LIVE = '1';
+    await call({ ...good(), category: 'noise', test: false, anonymous: false, name: 'Ana' });
+    const inst = calls.filter(c => c.url.includes('brevo')).map(c => JSON.parse(c.body)).find(b => b.to[0].email !== 'me@example.com');
+    assert.match(inst.replyTo.email, /^complaintcaca\+VC-\d{4}-[A-Z0-9]{6}@gmail\.com$/);
+    assert.match(inst.textContent, /PRIVACY NOTICE/);
+    assert.match(inst.textContent, /Filed via ComplaintCA/);
+  });
+  test('uses the ASYA draft with the real reference', async () => {
+    mockFetch();
+    const { data } = await call({ ...good(), category: 'noise', emailDraft: 'Please act.\n\nComplainant — Ref: 2026-10-08-SAFETY-CA' });
+    const p = data.institution.preview;
+    assert.ok(p.body.startsWith('Please act.'));
+    assert.ok(p.body.includes('Ref: ' + data.ref)); assert.ok(!p.body.includes('SAFETY-CA'));
+  });
+  test('French complaints get the French email', async () => {
+    mockFetch();
+    const { data } = await call({ ...good(), category: 'noise', lang: 'fr' });
+    assert.match(data.institution.preview.subject, /^Plainte Officielle/);
+    assert.match(data.institution.preview.body, /AVIS DE CONFIDENTIALITÉ/);
+  });
+  test('admin heads-up only for live high priority', async () => {
+    mockFetch(); process.env.BREVO_API_KEY = 'k';
+    let r = await call({ ...good(), priority: 'high', name: 'Ana' });
+    assert.equal(r.data.admin, 'test_skipped');
+    process.env.COMPLAINT_LIVE = '1';
+    r = await call({ ...good(), category: 'noise', priority: 'high', name: 'Ana', test: false });
+    assert.equal(r.data.admin, 'sent');
+    assert.ok(calls.some(c => c.url.includes('brevo') && JSON.parse(c.body).to[0].email === 'complaintcaca@gmail.com'));
+  });
+});

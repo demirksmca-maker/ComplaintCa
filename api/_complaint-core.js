@@ -51,6 +51,7 @@ export function validate(body) {
     photoCount: Number.isInteger(b.photoCount) && b.photoCount >= 0 ? Math.min(b.photoCount, 20) : 0,
     legalAccepted: b.legalAccepted === true,
     lang: typeof b.lang === 'string' ? b.lang.slice(0, 5) : 'en',
+    emailDraft: str(b.emailDraft, 6000),
   };
   if (!input.title && input.desc) input.title = titleFromDesc(input.desc);
 
@@ -113,7 +114,7 @@ export function buildRecord(input, { ref, now = new Date().toISOString(), test =
     ctype: input.ctype, isLegal: input.ctype === 'legal',
     photoCount: input.photoCount, status: 'received', date: now,
     timeline: [{ status: 'received', date: now }],
-    source: 'ui-new', test,
+    source: 'ui-new', test, lang: input.lang,
   };
 }
 
@@ -125,28 +126,77 @@ export function confirmationEmail(c) {
   };
 }
 
-// English port of _basicComplaintEmail (non-FOI and FOI variants).
-export function institutionEmail(c, authorityName) {
-  const lines = [];
+// Port of _basicComplaintEmail (index.html): the plain templated email used when
+// the user did not run ASYA's legal verdict. English, or French when lang is fr.
+export function basicComplaintEmail(c, authorityName) {
+  const fr = c.lang === 'fr';
   if (c.ctype === 'access') {
-    lines.push('I am writing to submit an access to information request to ' + (authorityName || 'your office') + ' through ComplaintCA, under applicable access-to-information legislation. No reason is required to make this request.\n');
-  } else if (c.anonymous) {
-    lines.push('This is an anonymous advisory notice submitted via ComplaintCA regarding the following matter, for your awareness and possible review:\n');
-  } else {
-    lines.push('I am writing to formally file a complaint with ' + (authorityName || 'your office') + ' through ComplaintCA.\n');
+    let b = fr
+      ? 'Je vous écris pour présenter une demande d\'accès à l\'information auprès de ' + (authorityName || 'votre bureau') + ' par l\'intermédiaire de ComplaintCA, en vertu de la législation applicable en matière d\'accès à l\'information. Aucun motif n\'est requis pour cette demande.\n\n'
+      : 'I am writing to submit an access to information request to ' + (authorityName || 'your office') + ' through ComplaintCA, under applicable access-to-information legislation. No reason is required to be given for this request.\n\n';
+    b += (fr ? 'Objet : ' : 'Subject: ') + c.title + '\n' + (fr ? 'Catégorie : ' : 'Category: ') + c.category + '\n';
+    if (c.targetName) b += (fr ? 'Concerne : ' : 'Concerning: ') + c.targetName + (c.targetAddress ? ' — ' + c.targetAddress : '') + '\n';
+    if (c.location) b += (fr ? 'Lieu : ' : 'Location: ') + c.location + '\n';
+    b += '\n' + (fr ? 'Renseignements ou documents demandés :' : 'Records or information requested:') + '\n' + c.desc + '\n\n';
+    b += fr
+      ? 'Je vous prie de bien vouloir accuser réception de la présente demande et d\'y répondre par écrit dans le délai prévu par la loi.'
+      : 'Please confirm receipt of this request and respond in writing within the statutory deadline.';
+    return b + '\n\n' + (fr ? 'Demandeur' : 'Requester') + ' — Ref: ' + c.ref;
   }
-  lines.push('Subject: ' + c.title, 'Category: ' + c.category);
-  if (c.targetName) lines.push('Concerning: ' + c.targetName + (c.targetAddress ? ' — ' + c.targetAddress : ''));
-  if (c.location) lines.push('Location: ' + c.location);
-  lines.push('', c.ctype === 'access' ? 'Records or information requested:' : 'Details:', c.desc, '');
-  lines.push(c.ctype === 'access' ? 'Please confirm receipt of this request and respond in writing within the statutory deadline.'
-    : c.anonymous ? 'This notice is submitted anonymously; no identifying contact information has been shared.'
-    : 'I request this matter be reviewed and ask that you respond with next steps or an expected resolution timeline.');
-  lines.push('', (c.ctype === 'access' ? 'Requester' : c.anonymous ? 'Anonymous Notice' : 'Complainant') + ' — Ref: ' + c.ref);
-  const contact = c.anonymous ? 'Reference: ' + c.ref + ' | Filed anonymously via ComplaintCA'
-    : 'Contact: ' + (c.name || '—') + ' <' + c.email + '> | Reference: ' + c.ref;
-  lines.push('', '---', contact, 'Filed via ComplaintCA (complaintca.ca)');
-  return { subject: 'Formal Complaint — ' + c.ref + ' — ' + c.title, body: lines.join('\n') };
+  let b = c.anonymous
+    ? (fr ? 'Il s\'agit d\'un avis consultatif anonyme soumis via ComplaintCA concernant la question suivante, pour votre information et examen éventuel :\n\n'
+      : 'This is an anonymous advisory notice submitted via ComplaintCA regarding the following matter, for your awareness and possible review:\n\n')
+    : (fr ? 'Je vous écris pour déposer formellement une plainte auprès de ' + (authorityName || 'votre bureau') + ' par l\'intermédiaire de ComplaintCA.\n\n'
+      : 'I am writing to formally file a complaint with ' + (authorityName || 'your office') + ' through ComplaintCA.\n\n');
+  b += (fr ? 'Objet : ' : 'Subject: ') + c.title + '\n' + (fr ? 'Catégorie : ' : 'Category: ') + c.category + '\n';
+  if (c.targetName) b += (fr ? 'Concerne : ' : 'Concerning: ') + c.targetName + (c.targetAddress ? ' — ' + c.targetAddress : '') + '\n';
+  if (c.location) b += (fr ? 'Lieu : ' : 'Location: ') + c.location + '\n';
+  b += '\n' + (fr ? 'Détails :' : 'Details:') + '\n' + c.desc + '\n\n';
+  b += c.anonymous
+    ? (fr ? 'Cet avis est soumis de façon anonyme ; aucune coordonnée d\'identification n\'a été communiquée.'
+      : 'This notice is submitted anonymously; no identifying contact information has been shared.')
+    : (fr ? 'Je demande que cette affaire soit examinée et je vous prie de bien vouloir indiquer les prochaines étapes ou un délai de résolution prévu.'
+      : 'I request this matter be reviewed and ask that you respond with next steps or an expected resolution timeline.');
+  return b + '\n\n' + (c.anonymous ? (fr ? 'Avis anonyme' : 'Anonymous Notice') : (fr ? 'Plaignant' : 'Complainant')) + ' — Ref: ' + c.ref;
+}
+
+// The ASYA verdict draft signs with a placeholder (or a ref the model made up): use the real one.
+export function fixDraftRef(draft, ref) {
+  return draft.replace(/\[REF\]/g, ref).replace(/(Ref:\s*)(?!VC-\d{4}-[A-Z0-9]{6}\b)[^\s|]+/g, '$1' + ref);
+}
+
+// Port of sendComplaintEmail (index.html): draft + contact footer + privacy notice.
+// Replies go to a per-complaint alias, never to the complainant's own address.
+export function institutionEmail(c, authorityName, draft, now = new Date()) {
+  const fr = c.lang === 'fr';
+  const ref = c.ref;
+  const date = now.toLocaleDateString(fr ? 'fr-CA' : 'en-CA');
+  const contactLine = c.anonymous
+    ? (fr ? 'Référence : ' : 'Reference: ') + ref + (fr ? ' | Déposée anonymement via ComplaintCA' : ' | Filed anonymously via ComplaintCA')
+    : (fr ? 'Contact : ' : 'Contact: ') + (c.name || '—') + ' <' + (c.email || '—') + '> | ' + (fr ? 'Référence : ' : 'Reference: ') + ref;
+  const footer = '\n\n---\n' + contactLine + ' | ' + (fr ? 'Date : ' : 'Date: ') + date + '\n' + (fr ? 'Déposée via ComplaintCA (complaintca.ca)' : 'Filed via ComplaintCA (complaintca.ca)');
+  const privacy = fr
+    ? '\n\nAVIS DE CONFIDENTIALITÉ : Les renseignements personnels contenus dans cette plainte sont fournis uniquement pour traiter cette affaire et doivent être gérés conformément à la législation canadienne applicable en matière de protection des renseignements personnels. '
+      + (c.anonymous ? 'Le plaignant a choisi de rester anonyme ; aucune coordonnée d\'identification ne vous a été communiquée.'
+        : 'Le plaignant conserve le droit d\'accéder à ses renseignements personnels, de les corriger ou d\'en demander la suppression.')
+    : '\n\nPRIVACY NOTICE: The personal information in this complaint is provided solely to address this matter and should be handled in accordance with applicable Canadian privacy legislation. '
+      + (c.anonymous ? 'The complainant has chosen to remain anonymous; no identifying contact information has been shared with you.'
+        : 'The complainant retains the right to access, correct, or request deletion of their personal information.');
+  const subject = c.ctype === 'access'
+    ? (fr ? 'Demande d\'Accès à l\'Information — ' : 'Access to Information Request — ') + ref + ' — ' + c.title
+    : (fr ? 'Plainte Officielle — ' : 'Formal Complaint — ') + ref + ' — ' + c.title;
+  const text = draft ? fixDraftRef(draft, ref) : basicComplaintEmail(c, authorityName);
+  return { subject, body: text + footer + privacy, replyTo: 'complaintcaca+' + ref + '@gmail.com' };
+}
+
+// Port of the admin heads-up sent only for high-priority complaints.
+export function adminEmail(c, authority, instSent) {
+  return {
+    subject: '[🔴 Yüksek Öncelik] Yeni Şikayet — ' + c.ref,
+    body: 'Yüksek öncelikli şikayet alındı.\n\nReferans: ' + c.ref + '\nKategori: ' + c.category + '\n' +
+      'Kurum: ' + ((authority && authority.name) || c.targetName || c.target || '—') + ' (' + ((authority && authority.email) || '—') + ')\n' +
+      'Kuruma gönderim: ' + (instSent ? '✅ başarılı' : '⚠ başarısız — kullanıcıya manuel gönderim önerildi'),
+  };
 }
 
 export function publicAuthority(a) {

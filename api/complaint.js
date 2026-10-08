@@ -12,7 +12,7 @@ import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
-  institutionEmail, publicAuthority, toFirestore, categoryPrompt, isValidCategory, PRIORITIES
+  institutionEmail, adminEmail, publicAuthority, toFirestore, categoryPrompt, isValidCategory, PRIORITIES
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
 
@@ -111,22 +111,36 @@ export default async function handler(req, res) {
     const confirmationSent = await sendEmail(record.email, record.name || '', conf.subject, conf.body);
 
     const auths = getAuthorities(record.category, record.location, record.targetAddress) || [];
+    const top = auths[0];
     let institution = { status: 'none' };
-    if (auths.length && _isMail(auths[0].email)) {
+    let instSent = false;
+    if (top && _isMail(top.email)) {
+      const m = institutionEmail(record, top.name, input.emailDraft);
       if (live) {
-        const m = institutionEmail(record, auths[0].name);
-        const sent = await sendEmail(auths[0].email, auths[0].name, m.subject, m.body, record.anonymous ? undefined : record.email);
-        institution = { status: sent ? 'sent' : 'failed', name: auths[0].name };
+        instSent = await sendEmail(top.email, top.name, m.subject, m.body, m.replyTo);
+        institution = { status: instSent ? 'sent' : 'failed', name: top.name };
+        // Same fallback as the live form: the user can send it from their own mail app.
+        if (!instSent) institution.fallback = { to: top.email, subject: m.subject, body: m.body };
       } else {
-        institution = { status: 'test_skipped', name: auths[0].name };
+        // Test mode: show exactly what would have been sent, send nothing.
+        institution = { status: 'test_skipped', name: top.name, preview: { to: top.email, subject: m.subject, body: m.body, replyTo: m.replyTo } };
       }
-    } else if (auths.length) {
-      institution = { status: 'form_only', name: auths[0].name };
+    } else if (top) {
+      institution = { status: 'form_only', name: top.name };
+    }
+
+    // Admin heads-up for high-priority complaints (live only, like the institution email).
+    let admin = 'none';
+    if (record.priority === 'high') {
+      if (live) {
+        const a = adminEmail(record, top, instSent);
+        admin = (await sendEmail(SENDER.email, 'ComplaintCA Admin', a.subject, a.body)) ? 'sent' : 'failed';
+      } else admin = 'test_skipped';
     }
 
     return res.status(200).json({
       ref: record.ref, test: record.test, category: record.category, priority: record.priority,
-      confirmationSent, institution,
+      confirmationSent, institution, admin,
       authorities: auths.slice(0, 3).map(publicAuthority),
       chain: getChain(record.category, record.target, record.location, record.targetAddress),
     });
