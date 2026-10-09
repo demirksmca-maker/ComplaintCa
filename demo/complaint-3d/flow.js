@@ -243,6 +243,35 @@
       const ref = 'VC-' + new Date().getFullYear() + '-' + r;
       setTimeout(() => { done.querySelector('.cf-ref').textContent = ref; wrap.classList.add('sent'); emit({ type:'done', ref }); }, window.CC_SEND_DELAY || 1600);
     }
+    // ── Auto-fill: types a sample story and walks through every step so the theme can be watched ──
+    const STORY = 'On 2 October my landlord came into my apartment without the required 24-hour written notice and shouted threats at me when I asked him to leave. This is the third time this month and I no longer feel safe in my own home.';
+    const auto = el('button','cf-auto','▶ Auto-fill demo'); auto.type = 'button';
+    top.appendChild(auto);
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    const field = k => steps[STEPS.findIndex(x => x.k === k)].querySelector('.cf-in');
+    async function typeInto(f, text, ms){ f.focus({ preventScroll:true }); f.value = '';
+      for (const ch of text){ f.value += ch; f.dispatchEvent(new Event('input')); await wait(ms); } }
+    async function autoplay(){
+      auto.disabled = true; auto.textContent = 'Auto-filling…';
+      cur = 0; render(); await wait(700);
+      steps[0].querySelector('[data-v="landlord"]').click(); await wait(1100);
+      await typeInto(field('what'), STORY, 22); await wait(500); go(1); await wait(900);
+      await typeInto(field('where'), 'Toronto, ON', 70); await wait(500); go(1);
+      while (aiState === 'loading' || aiState === 'idle') await wait(200);
+      await wait(2600);
+      if (aiState === 'off') { parts.ai.querySelector('.cf-opt:nth-child(3)').click(); await wait(900); }
+      go(1); await wait(1000);
+      const idg = steps[STEPS.findIndex(x => x.k === 'id')];
+      if (needName()) { idg.querySelector('[data-v="named"]').click(); await wait(400); await typeInto(parts.name, 'Alex Martin', 60); await wait(500); go(1); }
+      else { idg.querySelector('[data-v="anon"]').click(); }
+      await wait(1100);
+      await typeInto(field('mail'), 'demo@example.com', 45); await wait(500); go(1); await wait(1000);
+      go(1); await wait(1200);
+      const cb = steps[STEPS.length - 1].querySelector('.cf-legal input'); cb.checked = true; cb.dispatchEvent(new Event('change'));
+      auto.textContent = 'Ready — tap Send'; refresh();
+    }
+    auto.addEventListener('click', autoplay);
+    if (/[?&]demo=1\b/.test(location.search)) setTimeout(autoplay, 900);
     back.addEventListener('click', () => go(-1));
     next.addEventListener('click', () => go(1));
     again.addEventListener('click', () => location.reload());

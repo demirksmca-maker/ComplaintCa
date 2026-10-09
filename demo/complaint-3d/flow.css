@@ -128,3 +128,6 @@ textarea.cf-in{min-height:118px;resize:none}
 .cf-sup-row b{color:var(--gold-l);white-space:nowrap}
 .cf-sup-row.danger{border-color:rgba(255,90,110,.6);background:rgba(200,16,46,.14)}
 .cf-ai .cf-chips.three .cf-opt{padding:11px 4px;white-space:nowrap;font-size:.82rem}
+.cf-auto{padding:7px 14px;border-radius:999px;cursor:pointer;font:700 .58rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-l);background:rgba(246,231,191,.07);border:1px solid rgba(246,231,191,.3)}
+.cf-auto:disabled{opacity:.7;cursor:default}
