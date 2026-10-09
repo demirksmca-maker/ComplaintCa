@@ -99,6 +99,8 @@ document.addEventListener('cc', e => {
   const d = e.detail;
   if (d.type === 'step') lit = d.i;
   if (d.type === 'pick'){ boostT = .5; setTimeout(() => boostT = 0, 500); if (d.key === 'urg'){ U.cA.value.setHex(URG[d.value][0]); U.cB.value.setHex(URG[d.value][1]); } }
+  if (d.type === 'thinking'){ boostT = .7; }
+  if (d.type === 'ai'){ boostT = 0; }
   if (d.type === 'send'){ boostT = 1.1; shootT = 0; }
   if (d.type === 'done'){ lit = 8; boostT = .35; }
 });

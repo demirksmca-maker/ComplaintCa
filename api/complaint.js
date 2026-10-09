@@ -12,9 +12,10 @@ import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
-  institutionEmail, adminEmail, publicAuthority, toFirestore, categoryPrompt, isValidCategory, PRIORITIES
+  institutionEmail, adminEmail, publicAuthority, toFirestore
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
+import { classify } from './_classify.js';
 
 const FIREBASE_PROJECT = 'ajan-d6070';
 // Public web API key (already shipped in index.html). Writes still pass through
@@ -32,26 +33,6 @@ async function verifyTurnstile(token, ip) {
     });
     return !!(await r.json()).success;
   } catch { return false; }
-}
-
-async function classify(desc) {
-  if (!process.env.GROQ_API_KEY) return null;
-  try {
-    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.GROQ_API_KEY },
-      body: JSON.stringify({ model: 'llama-3.3-70b-versatile', temperature: 0, max_tokens: 80,
-        messages: [{ role: 'system', content: categoryPrompt() }, { role: 'user', content: '<complaint>\n' + desc + '\n</complaint>' }] }),
-    });
-    const d = await r.json();
-    const m = (d.choices?.[0]?.message?.content || '').match(/\{[\s\S]*\}/);
-    if (!m) return null;
-    const p = JSON.parse(m[0]);
-    return {
-      category: isValidCategory(p.category) && !(typeof p.confidence === 'number' && p.confidence < 0.55) ? p.category : 'other',
-      priority: PRIORITIES.includes(p.priority) ? p.priority : 'medium',
-    };
-  } catch { return null; }
 }
 
 async function saveToFirestore(record) {

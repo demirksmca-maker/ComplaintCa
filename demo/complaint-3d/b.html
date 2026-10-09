@@ -74,6 +74,7 @@ document.addEventListener('cc', e => {
   if (d.type === 'step') target = d.i;
   if (d.type === 'type' && gates[target]) gates[target].userData.pulse = 1;
   if (d.type === 'pick' && d.key === 'urg') gates.forEach((g, i) => { if (i > 3) g.userData.outer.material.color.setHex(URG[d.value]); });
+  if (d.type === 'thinking') gates.forEach(g => g.userData.pulse = 1);
   if (d.type === 'send'){ warpT = 1; setTimeout(() => flash.classList.add('on'), 1400); }
   if (d.type === 'done'){ warpT = 0; setTimeout(() => flash.classList.remove('on'), 120); target = N; }
 });

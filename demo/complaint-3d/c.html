@@ -102,6 +102,8 @@ document.addEventListener('cc', e => {
   if (d.type === 'step') cur = d.i;
   if (d.type === 'type') type = Math.min(1, type + .35);
   if (d.type === 'pick'){ glowT = .8; setTimeout(() => glowT = 0, 350); if (d.key === 'urg') U.uTint.value.setHex(URG[d.value]); }
+  if (d.type === 'thinking'){ ampT = .32; glowT = .5; }
+  if (d.type === 'ai'){ ampT = .09; glowT = 0; }
   if (d.type === 'send'){ ampT = .45; scaleT = .35; glowT = 1.2; setTimeout(() => {
       for (let i = 0; i < BN; i++) bp.set([0, 0, 0], i * 3); burstGeo.attributes.position.needsUpdate = true; burstOn = 1; scaleT = 1.12; ampT = .06; }, 1300); }
   if (d.type === 'done'){ cur = 8; glowT = .55; U.uTint.value.setHex(0xf6e7bf); }

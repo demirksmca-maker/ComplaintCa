@@ -83,3 +83,48 @@ textarea.cf-in{min-height:118px;resize:none}
   font:700 .56rem/1 var(--f-brand);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-l);padding:8px 12px;border-radius:999px;
   background:rgba(10,8,22,.6);border:1px solid rgba(246,231,191,.25);white-space:nowrap;text-decoration:none}
 @media (prefers-reduced-motion:reduce){.cf-step{transition:opacity .2s}.cf.sent .cf-done{animation:none}}
+
+/* ── ASYA assessment (AI category + risk), complaint type, support screen ── */
+.cf-ai{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.cf-ai.loading{padding:14px 0}
+.cf-spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(246,231,191,.18);border-top-color:var(--gold-l);animation:cfSpin .9s linear infinite}
+@keyframes cfSpin{to{transform:rotate(360deg)}}
+.cf-ai-card{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;text-align:left;
+  background:rgba(10,8,22,.55);border:1px solid rgba(246,231,191,.22)}
+.cf-ai-ic{font-size:1.6rem;line-height:1}
+.cf-ai-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cf-ai-txt small{font:700 .56rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.cf-ai-txt b{font-size:.98rem;overflow-wrap:anywhere}
+.cf-risk{font-size:.74rem;font-weight:800;padding:6px 10px;border-radius:999px;white-space:nowrap;border:1px solid}
+.cf-risk.low{color:#86efac;border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.1)}
+.cf-risk.medium{color:#fcd98a;border-color:rgba(245,197,99,.55);background:rgba(245,197,99,.1)}
+.cf-risk.high{color:#ffb4bf;border-color:rgba(255,90,110,.6);background:rgba(255,90,110,.12)}
+.cf-ai.risk-high .cf-ai-card{border-color:rgba(255,90,110,.55);box-shadow:0 0 24px rgba(255,90,110,.15)}
+.cf-alert{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;font-size:.84rem;font-weight:600;text-align:center}
+.cf-alert.high{background:rgba(200,16,46,.14);border:1px solid rgba(255,90,110,.6)}
+.cf-alert.medium{background:rgba(201,168,76,.14);border:1px solid rgba(245,197,99,.55)}
+.cf-alert-btn{padding:9px 16px;border-radius:999px;border:0;cursor:pointer;font:700 .66rem/1 var(--f-brand);letter-spacing:.16em;text-transform:uppercase;color:#fff;background:#c8102e}
+.cf-alert.medium .cf-alert-btn{background:#d9b56d;color:#201605}
+.cf-sub{margin:6px 0 0;font:700 .58rem/1 var(--f-brand);letter-spacing:.26em;text-transform:uppercase;color:var(--gold-d)}
+.cf-types{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.cf-type{display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border-radius:14px;cursor:pointer;text-align:center;
+  border:1px solid rgba(246,231,191,.22);background:rgba(16,13,32,.55)}
+.cf-type:last-child{grid-column:1/-1}
+.cf-type-ic{font-size:1.05rem}
+.cf-type b{font-size:.8rem} .cf-type small{font-size:.68rem;opacity:.7;line-height:1.35}
+.cf-type.sel{border-color:var(--gold);background:rgba(230,201,138,.12);box-shadow:inset 0 0 0 1px rgba(230,201,138,.4)}
+.cf-tnote{text-align:center}
+.cf-tnote[hidden]{display:none}
+.cf-warn{color:#ffb4bf}
+.cf-warn[hidden]{display:none}
+.cf-opt:disabled{opacity:.35;cursor:not-allowed}
+.cf-support{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,5,14,.86);overflow:auto}
+.cf-support[hidden]{display:none}
+.cf-sup-card{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:22px 18px;border-radius:24px;
+  background:linear-gradient(180deg,#1d1640,#0f0c22);border:1px solid rgba(246,231,191,.2)}
+.cf-sup-badge{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;background:rgba(246,231,191,.1)}
+.cf-sup-row{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;text-decoration:none;color:var(--text);
+  background:rgba(255,255,255,.04);border:1px solid rgba(246,231,191,.14);font-size:.82rem;text-align:left}
+.cf-sup-row b{color:var(--gold-l);white-space:nowrap}
+.cf-sup-row.danger{border-color:rgba(255,90,110,.6);background:rgba(200,16,46,.14)}
+.cf-ai .cf-chips.three .cf-opt{padding:11px 4px;white-space:nowrap;font-size:.82rem}

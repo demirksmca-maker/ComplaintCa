@@ -81,6 +81,7 @@ document.addEventListener('cc', e => {
   const d = e.detail;
   if (d.type === 'step') levelT = d.i / d.n;
   if (d.type === 'pick'){ pulse = 1; gust(5); if (d.key === 'urg') warm.color.setHex(URG[d.value]); }
+  if (d.type === 'thinking'){ pulse = 1.2; gust(8); }
   if (d.type === 'send'){ levelT = 1; spinT += Math.PI * 2; setTimeout(() => gust(36, true), 700); }
   if (d.type === 'done'){ levelT = 1; pulse = 1.4; }
 });

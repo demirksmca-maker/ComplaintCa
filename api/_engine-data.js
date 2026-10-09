@@ -241,6 +241,7 @@ export const CAT_SUBS = {
   healthcare:[{v:'malpractice',i:'🩺',l:'Malpractice'},{v:'service',i:'📋',l:'Poor Service'},{v:'delays',i:'⏱️',l:'Wait Times'},{v:'billing',i:'💳',l:'Billing'},{v:'privacy',i:'🔒',l:'Medical Privacy'},{v:'disc',i:'⚖️',l:'Discrimination'}],
   other:[{v:'education',i:'🏫',l:'Education'},{v:'privacy',i:'🔒',l:'Privacy / Data'},{v:'condo',i:'🏢',l:'Condo / Strata'},{v:'environment',i:'🌿',l:'Environment'},{v:'other',i:'📌',l:'Other'}]
 };
+export const CAT_GROUPS = {municipal:'Municipality',business:'Business',landlord:'Landlord',employer:'Employer',rights:'Human Rights',government:'Government',healthcare:'Healthcare',other:'Other'};
 export const _CAT_TOPIC = {wages:'employment',wrongful:'employment',harassment:'employment',disc:'human_rights',race:'human_rights',gender:'human_rights',religion:'human_rights',
   disability:'human_rights',age:'human_rights',sexual:'human_rights',property:'tenancy',repairs:'tenancy',utility:'energy',malpractice:'health',police:'police',
   privacy:'privacy',education:'schools',condo:'condo',billing:'consumer',service:'consumer',other:'consumer',construction:'consumer',delays:'ombudsman',

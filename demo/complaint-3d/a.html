@@ -47,7 +47,7 @@ const paper = new THREE.MeshStandardMaterial({ map:tex, roughness:.85, metalness
 const edge = new THREE.MeshStandardMaterial({ color:0xefe2c2, roughness:.9 });
 const letter = new THREE.Mesh(new THREE.BoxGeometry(1.7, 2.12, .012), [edge, edge, edge, edge, paper, edge]);
 rig.add(letter);
-const FIELDS = [['who','About'],['what','What happened'],['where','Where'],['urg','Urgency'],['id','Identity'],['mail','Email'],['ev','Evidence']];
+const FIELDS = [['who','About'],['what','What happened'],['where','Where'],['urg','ASYA risk'],['id','Identity'],['mail','Email'],['ev','Evidence']];
 function wrapText(t, x, y, w, lh, max){
   const words = t.split(/\s+/); let line = '', n = 0;
   for (const wd of words){ const test = line ? line + ' ' + wd : wd;
@@ -122,8 +122,9 @@ const URG = { low:0x4ade80, medium:0xf5c563, high:0xff5a6e };
 let redraw = 0;
 document.addEventListener('cc', e => {
   const d = e.detail;
-  if (d.type === 'step'){ T.letterY = .95 + Math.min(d.i, 6) * .02; T.tilt = (d.i % 2 ? 1 : -1) * .05; drawLetter(); }
+  if (d.type === 'step'){ T.letterY = .9; T.tilt = (d.i % 2 ? 1 : -1) * .05; drawLetter(); }
   if (d.type === 'pick'){ drawLetter(); if (d.key === 'urg') lineMat.color.setHex(URG[d.value]); T.letterY += .12; setTimeout(() => T.letterY -= .12, 260); }
+  if (d.type === 'thinking'){ T.letterY += .18; setTimeout(() => T.letterY -= .18, 700); }
   if (d.type === 'type'){ clearTimeout(redraw); redraw = setTimeout(drawLetter, 120); }
   if (d.type === 'send'){ T.letterY = .35; T.fold = .62; setTimeout(() => T.flap = 0, 650); setTimeout(() => T.seal = 1, 1250); setTimeout(() => T.fly = 1, 1900); }
   if (d.type === 'done'){ drawLetter(d.ref); setTimeout(() => { Object.assign(T, { fly:0, letterY:.95, flap:Math.PI * .9, seal:0, fold:1 }); }, 300); }

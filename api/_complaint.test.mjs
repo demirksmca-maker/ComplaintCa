@@ -130,3 +130,32 @@ describe('institution email (live parity)', () => {
     assert.ok(calls.some(c => c.url.includes('brevo') && JSON.parse(c.body).to[0].email === 'complaintcaca@gmail.com'));
   });
 });
+
+describe('POST /api/classify (live classifier parity)', () => {
+  const run = async body => { const { default: h } = await import('./classify.js');
+    return new Promise(r => { const res = { code:0, status(c){ this.code = c; return this; }, json(d){ r({ code:this.code, data:d }); } };
+      h({ method:'POST', body, headers:{ 'x-forwarded-for':'10.9.0.' + (++ipN) } }, res); }); };
+  test('valid answer → group, label, icon and AI priority', async () => {
+    mockFetch(); process.env.GROQ_API_KEY = 'g';
+    const { code, data } = await run({ desc:'My landlord has not fixed the heating for weeks.' });
+    assert.equal(code, 200); assert.equal(data.group, 'landlord'); assert.equal(data.category, 'repairs');
+    assert.equal(data.label, 'Repairs'); assert.equal(data.priority, 'medium'); assert.equal(data.support, false);
+  });
+  test('low confidence falls back to Other, like the live form', async () => {
+    calls = []; process.env.GROQ_API_KEY = 'g';
+    globalThis.fetch = async () => Response.json({ choices:[{ message:{ content:'{"group":"landlord","category":"repairs","priority":"high","confidence":0.3}' } }] });
+    const { data } = await run({ desc:'something odd happened' });
+    assert.equal(data.group, 'other'); assert.equal(data.category, 'other'); assert.equal(data.priority, 'high');
+  });
+  test('workplace harassment asks for the support screen', async () => {
+    process.env.GROQ_API_KEY = 'g';
+    globalThis.fetch = async () => Response.json({ choices:[{ message:{ content:'{"group":"employer","category":"harassment","priority":"high","confidence":0.9}' } }] });
+    const { data } = await run({ desc:'My manager harasses me every day.' });
+    assert.equal(data.support, true);
+  });
+  test('no AI keys → 503 so the panel falls back to manual urgency', async () => {
+    mockFetch();
+    const { code } = await run({ desc:'My landlord has not fixed the heating.' });
+    assert.equal(code, 503);
+  });
+});
