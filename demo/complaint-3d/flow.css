@@ -42,7 +42,7 @@ button{font:inherit;color:inherit}
 .cf-cards small{font-weight:400;font-size:.72rem;opacity:.75}
 
 .cf-in{width:100%;border-radius:14px;border:1px solid rgba(246,231,191,.25);background:rgba(10,8,22,.6);color:var(--text);
-  font:500 .95rem/1.45 var(--f-ui);padding:13px 14px;text-align:left}
+  font:500 16px/1.45 var(--f-ui);padding:13px 14px;text-align:left}
 textarea.cf-in{min-height:118px;resize:none}
 .cf-in:focus{outline:none;border-color:var(--gold)}
 .cf-in[hidden]{display:none}

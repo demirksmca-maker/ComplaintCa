@@ -25,7 +25,7 @@ import * as THREE from 'three';
 const host = document.getElementById('scene');
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+renderer.setPixelRatio(Math.min(devicePixelRatio, 3));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 host.appendChild(renderer.domElement);
 const scene = new THREE.Scene();
@@ -40,9 +40,9 @@ const GOLD = new THREE.MeshStandardMaterial({ color:0xe6c98a, metalness:.9, roug
 const rig = new THREE.Group(); scene.add(rig);
 
 // ── Letter: a parchment sheet whose face is redrawn as the user answers ──
-const cv = document.createElement('canvas'); cv.width = 640; cv.height = 800;
+const LS = 2, cv = document.createElement('canvas'); cv.width = 640 * LS; cv.height = 800 * LS;
 const ctx = cv.getContext('2d');
-const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
 const paper = new THREE.MeshStandardMaterial({ map:tex, roughness:.85, metalness:0 });
 const edge = new THREE.MeshStandardMaterial({ color:0xefe2c2, roughness:.9 });
 const letter = new THREE.Mesh(new THREE.BoxGeometry(1.7, 2.12, .012), [edge, edge, edge, edge, paper, edge]);
@@ -55,21 +55,22 @@ function wrapText(t, x, y, w, lh, max){
   ctx.fillText(line, x, y); return y + lh;
 }
 function drawLetter(ref){
-  const W = cv.width, H = cv.height, g = ctx.createLinearGradient(0, 0, W, H);
+  ctx.setTransform(LS, 0, 0, LS, 0, 0);
+  const W = cv.width / LS, H = cv.height / LS, g = ctx.createLinearGradient(0, 0, W, H);
   g.addColorStop(0, '#fbf3df'); g.addColorStop(1, '#efe0bd'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   ctx.strokeStyle = '#c9a45a'; ctx.lineWidth = 3; ctx.strokeRect(22, 22, W - 44, H - 44);
   ctx.lineWidth = 1; ctx.strokeRect(32, 32, W - 64, H - 64);
   ctx.fillStyle = '#5b4417'; ctx.textAlign = 'center';
   ctx.font = '700 40px Cinzel, Georgia, serif'; ctx.fillText('COMPLAINT', W / 2, 98);
-  ctx.font = '600 18px Cinzel, Georgia, serif'; ctx.fillStyle = '#9a7a3a'; ctx.fillText(ref || 'COMPLAINTCA · CANADA', W / 2, 132);
-  ctx.textAlign = 'left'; let y = 186;
+  ctx.font = '700 20px Cinzel, Georgia, serif'; ctx.fillStyle = '#8a6a2a'; ctx.fillText(ref || 'COMPLAINTCA · CANADA', W / 2, 132);
+  ctx.textAlign = 'left'; let y = 180;
   for (const [k, l] of FIELDS){
     let v = k === 'id' && FLOW.values.id === 'named' ? FLOW.values.name : FLOW.labels[k];
-    ctx.font = '700 17px Cinzel, Georgia, serif'; ctx.fillStyle = '#9a7a3a'; ctx.fillText(l.toUpperCase(), 70, y);
-    ctx.font = '500 25px Inter, system-ui, sans-serif'; ctx.fillStyle = v ? '#2b2110' : 'rgba(43,33,16,.18)';
-    if (v){ y = wrapText(String(v), 70, y + 32, W - 140, 31, k === 'what' ? 3 : 1); }
+    ctx.font = '700 21px Cinzel, Georgia, serif'; ctx.fillStyle = '#8a6a2a'; ctx.fillText(l.toUpperCase(), 70, y);
+    ctx.font = '600 28px Inter, system-ui, sans-serif'; ctx.fillStyle = v ? '#2b2110' : 'rgba(43,33,16,.18)';
+    if (v){ y = wrapText(String(v), 70, y + 34, W - 140, 33, k === 'what' ? 3 : 1); }
     else { ctx.fillRect(70, y + 22, W - 140, 2); y += 44; }
-    y += 18;
+    y += 14;
   }
   tex.needsUpdate = true;
 }
@@ -91,7 +92,7 @@ const flap = new THREE.Mesh(new THREE.ExtrudeGeometry(flapShape, { depth:.02, be
 const flapTrim = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.ShapeGeometry(flapShape)), lineMat); flapTrim.position.z = .022; hinge.add(flapTrim);
 
 // ── Gold wax seal with a maple leaf, hidden until "send" ──
-const sc = document.createElement('canvas'); sc.width = sc.height = 256; const s2 = sc.getContext('2d');
+const sc = document.createElement('canvas'); sc.width = sc.height = 512; const s2 = sc.getContext('2d'); s2.scale(2, 2);
 const rg = s2.createRadialGradient(100, 90, 10, 128, 128, 128); rg.addColorStop(0, '#fff3cf'); rg.addColorStop(.55, '#d9b56d'); rg.addColorStop(1, '#8a6a2e');
 s2.fillStyle = rg; s2.beginPath(); s2.arc(128, 128, 126, 0, 7); s2.fill();
 s2.strokeStyle = 'rgba(90,60,15,.6)'; s2.lineWidth = 6; s2.beginPath(); s2.arc(128, 128, 100, 0, 7); s2.stroke();
