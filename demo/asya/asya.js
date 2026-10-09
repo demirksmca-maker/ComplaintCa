@@ -76,7 +76,9 @@
     let cur = 0, ai = null, aiFor = '', aiState = 'idle', tsToken = '', tsWidget = null, sending = false, verdict = null, routeFor = '';
     const wrap = el('div','af');
     const top = el('div','af-top'), dots = el('div','af-dots'), count = el('div','af-count');
-    STEPS.forEach(() => dots.appendChild(el('i'))); top.append(dots, count);
+    STEPS.forEach(() => dots.appendChild(el('i')));
+    const auto = el('button','af-auto'); auto.type = 'button'; auto.append(el('span', null, '▶ '), el('span', null, 'Auto-fill demo'));
+    top.append(dots, count, auto);
     const restored = el('p','af-note af-restored'); restored.hidden = true;
     const stage = el('div','af-stage');
     const nav = el('div','af-nav'), back = el('button','af-btn af-line','Back'), next = el('button','af-btn gold','Next');
@@ -195,7 +197,10 @@
     // VI · email (required even when anonymous — verification only, never shared)
     b = section(5);
     const mail = input('you@example.com', { type:'email', max:254, ac:'email' }); mail.inputMode = 'email';
-    mail.addEventListener('input', () => { val.mail = mail.value.trim(); saveDraft(); refresh(); });
+    mail.addEventListener('input', () => { val.mail = mail.value.trim(); saveDraft(); refresh();
+      try { if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.mail)) localStorage.setItem('cc_af_mail', val.mail); } catch (e) {} });
+    // the email typed once is remembered on this device only
+    try { const m0 = localStorage.getItem('cc_af_mail'); if (m0) { mail.value = m0; val.mail = m0; } } catch (e) {}
     mail.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(1); } });
     b.append(el('p','af-note','We send your tracking number here. It is never shared with the institution.'), mail);
 
@@ -503,6 +508,31 @@
         card.appendChild(row);
       }
     }
+    // ── Auto-fill demo: writes a sample story and walks every step, stopping before Send ──
+    const STORY_T = 'Landlord entered without notice';
+    const STORY = 'On 2 October my landlord came into my apartment without the required 24-hour written notice and shouted threats at me when I asked him to leave. This is the third time this month and I no longer feel safe in my own home.';
+    const typeInto = async (f, text, ms) => { f.value = ''; for (const ch of text) { f.value += ch; f.dispatchEvent(new Event('input')); await wait(ms); } };
+    async function autoplay(){
+      if (auto.disabled) return; auto.disabled = true; auto.lastChild.textContent = 'Auto-filling…';
+      cur = 0; render(); await wait(500);
+      whoG.querySelector('[data-v="landlord"]').click(); await wait(900);
+      await typeInto(ttl, STORY_T, 25); await typeInto(what, STORY, 10); await wait(400); go(1); await wait(800);
+      await typeInto(loc, 'Toronto, ON', 50); locDD.hidden = true; await wait(300); go(1);
+      while (aiState === 'loading' || aiState === 'idle') await wait(200);
+      await wait(1800);
+      if (aiState === 'off' && !val.urg) { aiBox.querySelector('.af-opt:nth-child(2)').click(); await wait(500); }
+      go(1); await wait(900);
+      if (needName()) { idG.querySelector('[data-v="named"]').click(); await wait(300); await typeInto(name, 'Alex Martin', 40); await wait(300); go(1); }
+      else idG.querySelector('[data-v="anon"]').click();
+      await wait(1000);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.mail || '')) {
+        hint.textContent = 'Type your email once — it will be remembered on this device.'; mail.focus();
+        auto.disabled = false; auto.lastChild.textContent = 'Auto-fill demo'; return; }
+      go(1); await wait(900); go(1); await wait(900);
+      cb.checked = true; cb.dispatchEvent(new Event('change'));
+      auto.lastChild.textContent = 'Ready — tap Send'; refresh();
+    }
+    auto.addEventListener('click', autoplay);
     back.addEventListener('click', () => go(-1));
     next.addEventListener('click', () => go(1));
     setType('notice');
