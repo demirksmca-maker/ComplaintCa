@@ -149,3 +149,49 @@ textarea.af-in::placeholder{text-align:center}
 @media (prefers-reduced-motion:reduce){.af-step{transition:opacity .2s}.af.sent .af-done{animation:none}}
 /* the stage takes the height of the active step only, so Next sits right under it */
 .af-step:not(.on){position:absolute;left:0;right:0;top:0}
+
+/* ── parity additions: counter, restored draft, media, route, verdict, agreement, results ── */
+.af-cc{margin-top:-4px;letter-spacing:.2em}
+.af-restored{color:#b9f6d3}
+.af-restored[hidden]{display:none}
+.af-mc{margin-left:6px;font-size:.72rem;color:#8f93aa;font-weight:500}
+.af-th{position:relative;width:64px;height:64px}
+.af-th img,.af-th video{width:64px;height:64px;object-fit:cover;border-radius:12px;background:#000}
+.af-rm{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;cursor:pointer;font-size:.62rem;color:#fff;background:#c8102e}
+.af-route{width:100%;display:flex;flex-direction:column;gap:8px}
+.af-route:empty{display:none}
+.af-route h4,.af-out h4{margin:4px 0 0;font:700 .6rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;text-transform:uppercase;color:#e6c98a}
+.af-vbtn{color:#fff;border-color:rgba(169,150,255,.45);background:rgba(124,92,255,.14)}
+.af-verdict{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 14px;border-radius:20px;
+  background:linear-gradient(180deg,rgba(40,30,90,.55),rgba(14,11,32,.7));border:1px solid rgba(230,201,138,.35)}
+.af-verdict[hidden]{display:none}
+.af-verdict.loading{background:none;border-color:transparent}
+.af-v-head{display:flex;flex-direction:column;align-items:center;gap:4px}
+.af-v-head b{font:700 .78rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#f6e7bf}
+.af-v-head small{font-size:.66rem;color:#8f93aa}
+.af-v-badge{font:700 .52rem/1 'Cinzel',Georgia,serif;letter-spacing:.2em;color:#e6c98a;padding:5px 10px;border-radius:999px;border:1px solid rgba(230,201,138,.5)}
+.af-v-row{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:10px;border-top:1px solid rgba(169,150,255,.14)}
+.af-v-row > small{display:inline;font:700 .55rem/1 'Cinzel',Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#a996ff}
+.af-v-row p{margin:0;font-size:.84rem;line-height:1.5}
+.af-v-mail{width:100%;margin:2px 0 4px;padding:12px;border-radius:14px;background:rgba(0,0,0,.28);white-space:pre-wrap;overflow-wrap:anywhere;font-family:inherit;font-size:.78rem;line-height:1.6;text-align:left}
+.af-v-pool{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;border-radius:16px;background:rgba(201,168,76,.12);border:1px solid rgba(230,201,138,.4)}
+.af-v-pool b{font-size:.86rem}
+.af-v-disc{font-size:.68rem}
+.af-legalbox{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px}
+.af-see{border:0;background:none;color:#a996ff;text-decoration:underline;cursor:pointer;font-size:.74rem}
+.af-agr{width:100%;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(169,150,255,.18)}
+.af-agr[hidden]{display:none}
+.af-agr p{margin:6px 0;font-size:.74rem;line-height:1.55;color:#c7cbd4;text-align:center}
+.af-ok{margin:0;font-size:.82rem;font-weight:600;color:#86efac}
+.af-status{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
+.af-status:empty{display:none}
+.af-status .af-mini,.af-links .af-mini{text-decoration:none}
+.af-dnav{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.af-dnav .af-btn:first-child{grid-column:1/-1}
+.af-lw{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px;border-radius:18px;background:rgba(124,92,255,.1);border:1px solid rgba(169,150,255,.3)}
+.af-lw.serious{background:linear-gradient(135deg,#1a1650,#2a1f6e);border-color:rgba(230,201,138,.5)}
+.af-lw small{font:700 .58rem/1 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#e6c98a}
+.af-lw p{margin:0;font-size:.82rem;line-height:1.5}
+.af-out{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px}
+.af-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.af-res:empty{display:none}

@@ -71,6 +71,9 @@ export ${fn('_detectProvince')}
 export ${fn('_isFederalAuth')}
 export ${fn('_isMail')}
 export ${fn('_authUrl')}
+export const FOI_FACTS = ${literal('FOI_FACTS')};
+export ${fn('_foiFactsFor')}
+export ${fn('_verifiedFactsFor')}
 export const CONF_SUBJ = ${JSON.stringify(enString('conf_subj'))};
 export const CONF_BODY = ${JSON.stringify(enString('conf_body'))};
 `;

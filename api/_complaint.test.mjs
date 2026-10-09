@@ -159,3 +159,33 @@ describe('POST /api/classify (live classifier parity)', () => {
     assert.equal(code, 503);
   });
 });
+
+describe('ASYA Legal Verdict (live runAI parity)', () => {
+  test('prompt carries the live rules, anonymity and FOI framing', async () => {
+    const { verdictPrompt } = await import('./_verdict.js');
+    const a = verdictPrompt({ desc:'x', category:'repairs', ctype:'notice', anonymous:true });
+    assert.match(a.system, /DO NOT hallucinate laws/); assert.match(a.system, /ANONYMOUS SUBMISSION/);
+    assert.match(a.user, /VERIFIED_FACTS[\s\S]*Correct authority: Landlord & Tenant Board Ontario/);
+    const f = verdictPrompt({ desc:'x', ctype:'access', anonymous:false, location:'Toronto, ON', lang:'fr' });
+    assert.match(f.system, /ACCESS TO INFORMATION REQUEST/); assert.match(f.system, /ONLY in French/);
+    assert.match(f.user, /Verified response deadline: 30 days/);
+  });
+  test('parsing strips markdown and grounds the deadline', async () => {
+    const { parseVerdict } = await import('./_verdict.js');
+    const out = parseVerdict('COMPLAINT:\n**Rewritten.**\n\nLAW:\nRTA s.20\n\nSANCTIONS:\nLTB order\n\nRESPONSE_DEADLINE:\n7 days\n\nEMAIL_DRAFT:\nDear...\nComplainant — Ref: [REF]\n\nCASE_POOL_SUGGEST:\nYES',
+      { facts:{ deadline:'30 days' }, isAnon:false });
+    assert.equal(out.complaint, 'Rewritten.'); assert.equal(out.deadline, '30 days'); assert.equal(out.poolSuggest, true);
+    assert.match(out.emailDraft, /Ref: \[REF\]/);
+  });
+  test('endpoint: 503 without key, parsed verdict with key', async () => {
+    const { default: h } = await import('./verdict.js');
+    const run = body => new Promise(r => { const res = { code:0, status(c){ this.code = c; return this; }, json(d){ r({ code:this.code, data:d }); } };
+      h({ method:'POST', body, headers:{ 'x-forwarded-for':'10.8.0.' + (++ipN) } }, res); });
+    let r = await run({ desc:'My landlord entered without notice.' }); assert.equal(r.code, 503);
+    process.env.ANTHROPIC_API_KEY = 'a';
+    globalThis.fetch = async () => Response.json({ content:[{ text:'COMPLAINT:\nA.\n\nLAW:\nB\n\nSANCTIONS:\nC\n\nRESPONSE_DEADLINE:\nD\n\nEMAIL_DRAFT:\nE\n\nCASE_POOL_SUGGEST:\nNO' }] });
+    r = await run({ desc:'My landlord entered without notice.', category:'noise', anonymous:false });
+    assert.equal(r.code, 200); assert.equal(r.data.law, 'B'); assert.equal(r.data.poolSuggest, false);
+    delete process.env.ANTHROPIC_API_KEY;
+  });
+});

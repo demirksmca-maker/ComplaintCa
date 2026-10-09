@@ -267,5 +267,29 @@ export function _isFederalAuth(name){
 }
 export function _isMail(e){ return /^[^\s@\/]+@[^\s@\/]+\.[a-z]{2,}$/i.test(e||''); }
 export function _authUrl(e){ return /^https?:\/\//i.test(e)?e:'https://'+e; }
+export const FOI_FACTS = {
+  federal:{act:'Access to Information Act, R.S.C. 1985, c. A-1 (federal institutions)',deadline:'30 days (extendable under s.9 for large record volumes, third-party consultation, or other institutions being consulted)',recourse:'Complaint to the Information Commissioner of Canada'},
+  ontario:{act:'Freedom of Information and Protection of Privacy Act (FIPPA), R.S.O. 1990, c. F.31 for provincial bodies, or the Municipal Freedom of Information and Protection of Privacy Act (MFIPPA), R.S.O. 1990, c. M.56 for municipal bodies',deadline:'30 days',recourse:'Appeal to the Information and Privacy Commissioner of Ontario (IPC)'},
+  bc:{act:'Freedom of Information and Protection of Privacy Act (FOIPPA), RSBC 1996, c. 165',deadline:'30 business days',recourse:'Complaint to the Office of the Information and Privacy Commissioner for British Columbia'},
+  alberta:{act:'Freedom of Information and Protection of Privacy Act (FOIP Act), RSA 2000, c. F-25',deadline:'30 days',recourse:'Complaint to the Office of the Information and Privacy Commissioner of Alberta'},
+  quebec:{act:'Act respecting Access to documents held by public bodies and the Protection of personal information (Access Act), CQLR c. A-2.1',deadline:'20 days, extendable by a further 10 days',recourse:'Review by the Commission d\'accès à l\'information du Québec'}
+};
+export function _foiFactsFor(location){
+  var loc=(location||'').toLowerCase();
+  if(loc.includes('scarborough')||loc.includes('mississauga')||loc.includes('brampton')||loc.includes('toronto')||loc.includes('north york')||loc.includes('etobicoke')||loc.includes('ontario')) return FOI_FACTS.ontario;
+  if(loc.includes('vancouver')||loc.includes('burnaby')||loc.includes('surrey')||loc.includes('british columbia')) return FOI_FACTS.bc;
+  if(loc.includes('calgary')||loc.includes('edmonton')||loc.includes('alberta')) return FOI_FACTS.alberta;
+  if(loc.includes('montreal')||loc.includes('québec')||loc.includes('quebec')) return FOI_FACTS.quebec;
+  return FOI_FACTS.federal; // varsayılan: eyalet netse yukarıdakiler yakalar, değilse federal kurum kabul edilir
+}
+export function _verifiedFactsFor(cat){
+  var entry=AUTHORITIES[cat];
+  if(!entry) return null;
+  var list=entry.default||[];
+  if(!list.length) return null;
+  var authNames=list.map(function(a){return a.name;}).slice(0,3).join('; ');
+  var withDl=list.find(function(a){return a.deadline;});
+  return {authorities:authNames, deadline:withDl?withDl.deadline:''};
+}
 export const CONF_SUBJ = "Your ComplaintCA reference — {ref}";
 export const CONF_BODY = "Hi,\n\nYour complaint has been received by ComplaintCA.\n\nReference: {ref}\nSubject: {title}\n\nKeep this reference — we'll email you whenever the status changes.\n\n🔗 Track it directly: {link}\n\nComplaintCA (complaintca.ca)";
