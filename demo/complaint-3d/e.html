@@ -1,0 +1,129 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow">
+<title>Northern Lights</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="flow.css">
+<style>
+/* Study E — "Northern Lights": aurora over Canadian peaks; each answer lights a star of the Big Dipper, the last one is the North Star. */
+body{background:#070a17;min-height:100dvh;overflow-x:hidden}
+.scene{position:relative;height:clamp(290px,46dvh,520px);width:100%}
+.scene canvas{display:block;width:100%!important;height:100%!important}
+.scene::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(180deg,transparent,#070a17);pointer-events:none}
+.panel{padding:0 18px calc(28px + env(safe-area-inset-bottom,0px));margin-top:-28px;position:relative}
+.cf{background:linear-gradient(180deg,rgba(18,22,48,.78),rgba(8,10,24,.88));border:1px solid rgba(160,240,220,.16);border-radius:24px;padding:18px 16px 16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(80,220,190,.06)}
+.cf-kicker{color:#7fe3c8}
+.cf-dots i.done{background:#7fe3c8}.cf-dots i.cur{background:#fff;box-shadow:0 0 12px #7fe3c8}
+</style>
+<script type="importmap">{"imports":{"three":"./three.module.min.js"}}</script>
+</head><body>
+<a class="study-tag" href="./">E · Northern Lights</a>
+<div class="scene" id="scene"></div>
+<div class="panel" id="panel"></div>
+<script src="flow.js"></script>
+<script>CCFlow.mount(document.getElementById('panel')); window.CC_SEND_DELAY = 2200;</script>
+<script type="module">
+import * as THREE from 'three';
+const host = document.getElementById('scene');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2.5));
+renderer.setClearColor(0x070a17);
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, .1, 200);
+camera.position.set(0, 1.2, 10); camera.lookAt(0, 3, -20);
+
+// ── Sky gradient dome ──
+const sky = new THREE.Mesh(new THREE.SphereGeometry(80, 32, 16), new THREE.ShaderMaterial({ side:THREE.BackSide, depthWrite:false,
+  vertexShader:'varying vec3 p;void main(){p=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:'varying vec3 p;void main(){float h=normalize(p).y;vec3 c=mix(vec3(.10,.07,.22),vec3(.02,.03,.09),smoothstep(0.,.6,h));gl_FragColor=vec4(c,1.);}' }));
+scene.add(sky);
+// ── Background stars ──
+const SN = 700, sp = new Float32Array(SN * 3);
+for (let i = 0; i < SN; i++) sp.set([(Math.random() - .5) * 150, Math.random() * 55 - 2, -70 - Math.random() * 5], i * 3);
+const sg = new THREE.BufferGeometry(); sg.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color:0xdfe6ff, size:.18, sizeAttenuation:true, transparent:true, opacity:.8, depthWrite:false })));
+
+// ── Aurora: tall curtains with a flowing noise shader ──
+const U = { t:{ value:0 }, boost:{ value:0 }, cA:{ value:new THREE.Color(0x5ef0c0) }, cB:{ value:new THREE.Color(0x8b6cff) } };
+const auroraMat = new THREE.ShaderMaterial({ uniforms:U, transparent:true, depthWrite:false, side:THREE.DoubleSide, blending:THREE.AdditiveBlending,
+  vertexShader:'varying vec2 vUv;uniform float t;void main(){vUv=uv;vec3 p=position;p.z+=sin(p.x*.25+t*.4)*2.;p.y+=sin(p.x*.6+t*.7)*.3;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}',
+  fragmentShader:`varying vec2 vUv;uniform float t,boost;uniform vec3 cA,cB;
+    float h(float n){return fract(sin(n)*43758.5453);}
+    float n1(float x){float i=floor(x),f=fract(x);return mix(h(i),h(i+1.),smoothstep(0.,1.,f));}
+    void main(){float x=vUv.x*14.;
+      float rays=n1(x*3.+t*.6)*.6+n1(x*7.-t*.9)*.4;
+      float band=smoothstep(0.,.25,vUv.y)*(1.-smoothstep(.35,1.,vUv.y));
+      float flick=.75+.25*n1(x*2.+t*1.3);
+      float a=band*rays*flick*(.55+boost);
+      vec3 c=mix(cA,cB,smoothstep(.2,.9,vUv.y));
+      gl_FragColor=vec4(c*a,a);}` });
+const curtains = [];
+[[-6, -34, 1.0], [8, -40, .8], [0, -46, .6]].forEach(([x, z, s]) => {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(60 * s, 16 * s, 120, 1), auroraMat); m.position.set(x, 13, z); m.rotation.z = (x > 0 ? -1 : 1) * .08; scene.add(m); curtains.push(m);
+});
+
+// ── Mountains: three low-poly ridges ──
+function ridge(z, height, color, seed){
+  const W = 140, N = 70, g = new THREE.BufferGeometry(), pos = [];
+  let r = seed; const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  const ys = []; for (let i = 0; i <= N; i++){ const x = i / N; ys.push(height * (.35 + .65 * Math.abs(Math.sin(x * 9 + seed)) * (.6 + rnd() * .5))); }
+  for (let i = 0; i < N; i++){ const x0 = -W / 2 + W * i / N, x1 = -W / 2 + W * (i + 1) / N;
+    pos.push(x0, -2, z, x1, -2, z, x1, ys[i + 1], z, x0, -2, z, x1, ys[i + 1], z, x0, ys[i], z); }
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color })); scene.add(m); return m;
+}
+ridge(-60, 9, 0x2b2366, 3); ridge(-38, 6.5, 0x1d1848, 11); ridge(-22, 4, 0x110e2c, 7);
+// snow caps hint: a faint gold rim line on the nearest ridge
+// ── Big Dipper (7) + Polaris: one star per step ──
+const DIP = [[-6.2,9.2],[-4.2,9.8],[-2.4,9.3],[-.6,8.6],[.1,6.6],[2.7,6.3],[3.2,8.3]];
+const POLARIS = [5.6,12.8];
+const starPts = DIP.concat([POLARIS]).map(([x, y]) => new THREE.Vector3(x, y + 1.5, -20));
+const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+  const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.18, 'rgba(255,243,207,.9)'); r.addColorStop(.45, 'rgba(230,201,138,.25)'); r.addColorStop(1, 'rgba(230,201,138,0)');
+  g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+const stars = starPts.map(p => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map:glowTex, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, opacity:.18 }));
+  s.position.copy(p); s.scale.setScalar(1.1); scene.add(s); return s; });
+const lineGeo = new THREE.BufferGeometry().setFromPoints(DIP.map(([x, y]) => new THREE.Vector3(x, y + 1.5, -20)).concat([new THREE.Vector3(DIP[3][0], DIP[3][1] + 1.5, -20)]));
+const dipLine = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color:0xe6c98a, transparent:true, opacity:.55 })); dipLine.geometry.setDrawRange(0, 0); scene.add(dipLine);
+const pointer = new THREE.Line(new THREE.BufferGeometry().setFromPoints([starPts[6], starPts[7]]), new THREE.LineDashedMaterial({ color:0xe6c98a, dashSize:.3, gapSize:.25, transparent:true, opacity:0 }));
+pointer.computeLineDistances(); scene.add(pointer);
+// shooting star
+const shoot = new THREE.Mesh(new THREE.PlaneGeometry(3, .05), new THREE.MeshBasicMaterial({ color:0xffffff, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false }));
+shoot.position.set(-10, 16, -20); shoot.rotation.z = -.35; scene.add(shoot);
+
+const URG = { low:[0x5ef0c0, 0x2fd18f], medium:[0x5ef0c0, 0x8b6cff], high:[0xff6b8a, 0x8b2fff] };
+let lit = 0, boostT = 0, shootT = -1, px = 0, py = 0;
+addEventListener('pointermove', e => { px = e.clientX / innerWidth - .5; py = e.clientY / innerHeight - .5; }, { passive:true });
+document.addEventListener('cc', e => {
+  const d = e.detail;
+  if (d.type === 'step') lit = d.i;
+  if (d.type === 'pick'){ boostT = .5; setTimeout(() => boostT = 0, 500); if (d.key === 'urg'){ U.cA.value.setHex(URG[d.value][0]); U.cB.value.setHex(URG[d.value][1]); } }
+  if (d.type === 'send'){ boostT = 1.1; shootT = 0; }
+  if (d.type === 'done'){ lit = 8; boostT = .35; }
+});
+function resize(){ const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+  camera.fov = camera.aspect < .8 ? 62 : 45; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+let run = true; document.addEventListener('visibilitychange', () => { run = !document.hidden; if (run) loop(); });
+const clock = new THREE.Clock();
+function loop(){
+  if (!run) return;
+  const t = clock.getElapsedTime();
+  U.t.value = still ? 2 : t;
+  U.boost.value += (boostT - U.boost.value) * .05;
+  stars.forEach((s, i) => { const on = i < lit, cur = i === lit && lit < 8;
+    const tw = still ? 0 : Math.sin(t * 3 + i) * .08;
+    s.material.opacity += ((on ? 1 : cur ? .55 + Math.sin(t * 4) * .3 : .16) - s.material.opacity) * .1;
+    s.scale.setScalar((on ? (i === 7 ? 2.6 : 1.9) : cur ? 1.6 : 1.1) + tw); });
+  dipLine.geometry.setDrawRange(0, Math.min(lit, 7) + (lit >= 7 ? 1 : 0));
+  pointer.material.opacity += ((lit >= 8 ? .7 : 0) - pointer.material.opacity) * .08;
+  if (shootT >= 0){ shootT += .016; shoot.position.set(-10 + shootT * 26, 16 - shootT * 9, -20); shoot.material.opacity = Math.sin(Math.min(1, shootT) * Math.PI); if (shootT > 1) shootT = -1; }
+  camera.position.x += ((px * 1.4) - camera.position.x) * .04; camera.position.y += ((1.2 - py * .6) - camera.position.y) * .04;
+  camera.lookAt(0, 6, -20);
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body></html>
