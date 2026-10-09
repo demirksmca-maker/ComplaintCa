@@ -133,8 +133,8 @@ function resize(){
   const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false);
   camera.aspect = w / h;
   // fit the letter + envelope (about 2.5 x 3.0 units) as large as the box allows
-  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), dist = Math.max(3.0 / 2 / tv, 2.45 / 2 / (tv * camera.aspect));
-  camera.position.set(0, .3, dist); camera.lookAt(0, .3, 0); camera.updateProjectionMatrix();
+  const tv = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), dist = Math.max(3.25 / 2 / tv, 2.45 / 2 / (tv * camera.aspect));
+  camera.position.set(0, .38, dist); camera.lookAt(0, .38, 0); camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
 const clock = new THREE.Clock(); let run = true;

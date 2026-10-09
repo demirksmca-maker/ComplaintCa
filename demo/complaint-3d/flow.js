@@ -16,6 +16,9 @@
     { k:'send', q:'Review & send', kind:'review' },
   ];
   const ROMAN = ['I','II','III','IV','V','VI','VII','VIII'];
+  const HINT = { what:'Please write a few words about what happened.', where:'Please enter a city or postal code.',
+    mail:'Please enter a valid email address.', id:'Please choose one — and enter your name if you file with it.',
+    send:'Please tick the confirmation above to send.' };
   const emit = d => document.dispatchEvent(new CustomEvent('cc', { detail:d }));
   const el = (t, c, txt) => { const e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; };
 
@@ -30,6 +33,7 @@
     const nav = el('div','cf-nav'), back = el('button','cf-btn ghost','Back'), next = el('button','cf-btn gold','Next');
     back.type = next.type = 'button';
     nav.append(back, next);
+    const hint = el('p','cf-hint'); hint.setAttribute('role','status');
 
     const steps = STEPS.map((s, i) => {
       const sec = el('section','cf-step'); sec.dataset.k = s.k;
@@ -86,12 +90,12 @@
     done.append(el('div','cf-seal','✓'), el('h2','cf-q','Complaint received'), el('span','cf-test','Demo · nothing was sent'),
       el('p','cf-note','Your tracking number'), el('div','cf-ref'), el('p','cf-note','Keep this number to track your complaint.'));
     const again = el('button','cf-btn gold','Start again'); again.type = 'button'; done.appendChild(again);
-    wrap.append(top, stage, nav, done);
+    wrap.append(top, stage, nav, hint, done);
     root.appendChild(wrap);
 
     function ok(i){
       const k = STEPS[i].k, v = val[k];
-      if (k === 'what') return (v || '').length >= 10;
+      if (k === 'what') return (v || '').length >= 3;
       if (k === 'where') return !!v;
       if (k === 'mail') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || '');
       if (k === 'id') return v === 'anon' || (v === 'named' && !!val.name);
@@ -100,7 +104,7 @@
       return !!v;
     }
     function refresh(){
-      next.disabled = !ok(cur);
+      next.classList.toggle('wait', !ok(cur)); if (ok(cur)) hint.textContent = '';
       next.textContent = STEPS[cur].k === 'send' ? 'Send complaint' : STEPS[cur].k === 'ev' && !val.ev ? 'Skip' : 'Next';
       back.hidden = !cur; nav.classList.toggle('one', !cur);
     }
@@ -115,12 +119,13 @@
       if (f && matchMedia('(pointer:fine)').matches) setTimeout(() => f.focus({ preventScroll:true }), 380);
     }
     function go(d){
-      if (d > 0 && !ok(cur)) return;
+      if (d > 0 && !ok(cur)){ hint.textContent = HINT[STEPS[cur].k] || 'Please choose one.'; hint.classList.remove('shake'); void hint.offsetWidth; hint.classList.add('shake'); return; }
+      hint.textContent = '';
       if (d > 0 && STEPS[cur].k === 'send') return send();
       cur = Math.max(0, Math.min(STEPS.length - 1, cur + d)); render();
     }
     function send(){
-      next.disabled = true; next.textContent = 'Sending…'; emit({ type:'send' });
+      next.disabled = true; next.classList.remove('wait'); next.textContent = 'Sending…'; emit({ type:'send' });
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r = '';
       for (let i = 0; i < 6; i++) r += chars[Math.floor(Math.random() * chars.length)];
       const ref = 'VC-' + new Date().getFullYear() + '-' + r;
