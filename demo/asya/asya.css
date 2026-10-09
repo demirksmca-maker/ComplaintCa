@@ -219,3 +219,5 @@ textarea.af-in::placeholder{text-align:center}
 .af-msg.wait p{letter-spacing:.3em;color:#a996ff}
 .af-crow{width:100%;display:grid;grid-template-columns:1fr auto;gap:8px}
 .af-crow .af-btn{padding:0 18px}
+.af-btn[hidden]{display:none}
+.af-chat .af-nav.one{grid-template-columns:minmax(0,240px);justify-content:center}
