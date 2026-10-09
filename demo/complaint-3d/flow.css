@@ -1,0 +1,80 @@
+/* Shared form layer for the 3D theme studies. Every page keeps this 2D and
+   accessible; only the scene behind/around it is 3D. Centred and symmetric. */
+:root{
+  color-scheme:dark;
+  --ink:#0b0a14; --text:#eef0f6; --muted:#9aa0b4;
+  --gold:#e6c98a; --gold-l:#f6e7bf; --gold-d:#b8914a;
+  --violet:#7c5cff; --red:#ff5a6e; --green:#4ade80; --amber:#f5c563;
+  --f-ui:-apple-system,'Segoe UI',Inter,system-ui,sans-serif;
+  --f-brand:'Cinzel',Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--text);font-family:var(--f-ui);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+
+.cf{position:relative;width:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px}
+.cf-top{display:flex;flex-direction:column;align-items:center;gap:8px}
+.cf-dots{display:flex;gap:8px}
+.cf-dots i{width:7px;height:7px;border-radius:50%;background:rgba(246,231,191,.18);transition:background .3s,transform .3s}
+.cf-dots i.done{background:var(--gold-d)}
+.cf-dots i.cur{background:var(--gold-l);transform:scale(1.45);box-shadow:0 0 10px rgba(246,231,191,.7)}
+.cf-count{font:700 .6rem/1 var(--f-brand);letter-spacing:.24em;color:var(--muted)}
+
+.cf-stage{position:relative;width:100%;display:grid}
+.cf-step{grid-area:1/1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
+  opacity:0;transform:translateY(18px) scale(.97);pointer-events:none;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+.cf-step.past{transform:translateY(-18px) scale(.97)}
+.cf-step.on{opacity:1;transform:none;pointer-events:auto}
+.cf-kicker{margin:0;font:700 .58rem/1 var(--f-brand);letter-spacing:.3em;text-transform:uppercase;color:var(--gold-d)}
+.cf-q{margin:0;font:700 1.28rem/1.2 var(--f-brand);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);text-wrap:balance}
+.cf-body{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:4px}
+
+.cf-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.cf-chips.three{display:grid;grid-template-columns:repeat(3,1fr);width:100%}
+.cf-opt{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:999px;cursor:pointer;
+  border:1px solid rgba(246,231,191,.24);background:rgba(16,13,32,.55);font-weight:700;font-size:.86rem;transition:background .2s,border-color .2s,color .2s}
+.cf-opt:hover{border-color:rgba(246,231,191,.5)}
+.cf-opt.sel{background:linear-gradient(180deg,#f6e7bf,#d9b56d);color:#201605;border-color:transparent}
+.cf-dot{width:8px;height:8px;border-radius:50%}
+.cf-dot.low{background:var(--green)} .cf-dot.medium{background:var(--amber)} .cf-dot.high{background:var(--red)}
+.cf-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.cf-cards .cf-opt{flex-direction:column;gap:4px;border-radius:16px;padding:16px 10px}
+.cf-cards small{font-weight:400;font-size:.72rem;opacity:.75}
+
+.cf-in{width:100%;border-radius:14px;border:1px solid rgba(246,231,191,.25);background:rgba(10,8,22,.6);color:var(--text);
+  font:500 .95rem/1.45 var(--f-ui);padding:13px 14px;text-align:left}
+textarea.cf-in{min-height:118px;resize:none}
+.cf-in:focus{outline:none;border-color:var(--gold)}
+.cf-in[hidden]{display:none}
+.cf-note{margin:0;font-size:.76rem;color:var(--muted);line-height:1.45}
+
+.cf-drop{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px;border-radius:16px;cursor:pointer;
+  border:1.5px dashed rgba(246,231,191,.35);background:rgba(10,8,22,.45);font-weight:600;font-size:.88rem}
+.cf-drop input{display:none}
+.cf-drop b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(246,231,191,.14);color:var(--gold-l)}
+
+.cf-sum{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;width:100%;margin:0;padding:12px 14px;border-radius:14px;
+  background:rgba(10,8,22,.55);border:1px solid rgba(246,231,191,.16);text-align:left;font-size:.78rem}
+.cf-sum dt{color:var(--muted)} .cf-sum dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.cf-legal{display:flex;gap:10px;align-items:flex-start;text-align:left;font-size:.76rem;line-height:1.45;color:#d5d8e2;cursor:pointer}
+.cf-legal input{width:18px;height:18px;margin:1px 0 0;accent-color:#d9b56d;flex:none}
+
+.cf-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.cf-nav.one{grid-template-columns:minmax(0,220px);justify-content:center}
+.cf-btn[hidden]{display:none}
+.cf-btn{padding:13px 10px;border-radius:999px;cursor:pointer;font:700 .72rem/1 var(--f-brand);letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(246,231,191,.3);background:rgba(16,13,32,.5)}
+.cf-btn.gold{background:linear-gradient(180deg,#f8ecc9,#d9b56d);color:#201605;border-color:transparent;box-shadow:0 8px 24px rgba(217,181,109,.25)}
+.cf-btn:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+
+.cf-done{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.cf.sent .cf-top,.cf.sent .cf-stage,.cf.sent .cf-nav{display:none}
+.cf.sent .cf-done{display:flex;animation:cfIn .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes cfIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.cf-seal{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;color:#201605;background:radial-gradient(circle at 35% 30%,#fff6d8,#d9b56d 70%);box-shadow:0 0 30px rgba(246,231,191,.45)}
+.cf-test{font:700 .58rem/1 var(--f-brand);letter-spacing:.18em;text-transform:uppercase;color:var(--amber);padding:7px 11px;border-radius:999px;border:1px solid rgba(245,197,99,.5)}
+.cf-ref{font:700 1.5rem/1 var(--f-brand);letter-spacing:.12em;padding:14px 20px;border-radius:14px;border:1px solid rgba(246,231,191,.4);background:rgba(10,8,22,.6)}
+
+.study-tag{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);z-index:9;
+  font:700 .56rem/1 var(--f-brand);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-l);padding:8px 12px;border-radius:999px;
+  background:rgba(10,8,22,.6);border:1px solid rgba(246,231,191,.25);white-space:nowrap;text-decoration:none}
+@media (prefers-reduced-motion:reduce){.cf-step{transition:opacity .2s}.cf.sent .cf-done{animation:none}}

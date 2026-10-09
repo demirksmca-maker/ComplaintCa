@@ -1,0 +1,137 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow">
+<title>ASYA Core</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="flow.css">
+<style>
+/* Study C — "ASYA Core": a living orb listens while you write; eight moons light up as each answer is given. */
+body{background:radial-gradient(70% 45% at 50% 24%,#1c1540 0%,#0b0916 60%,#060510 100%);min-height:100dvh;overflow-x:hidden}
+.scene{position:relative;height:clamp(260px,42dvh,400px);margin-top:calc(env(safe-area-inset-top,0px) + 40px)}
+.scene canvas{display:block;width:100%!important;height:100%!important}
+.panel{padding:0 22px calc(env(safe-area-inset-bottom,0px) + 28px)}
+.cf{gap:16px}
+.cf-kicker{font-size:0}
+.cf-kicker::before{content:"ASYA asks";font-size:.6rem;letter-spacing:.32em;color:#a996ff}
+.cf-q{font-family:var(--f-ui);text-transform:none;letter-spacing:-.01em;font-weight:700;font-size:1.45rem;color:#fff;
+  background:linear-gradient(180deg,#fff 30%,#e6c98a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cf-in{background:rgba(255,255,255,.04);border-color:rgba(169,150,255,.3);border-radius:18px}
+.cf-in:focus{border-color:#a996ff;box-shadow:0 0 0 4px rgba(124,92,255,.18)}
+.cf-opt{background:rgba(255,255,255,.04);border-color:rgba(169,150,255,.28)}
+.cf-opt.sel{background:linear-gradient(180deg,#b8a6ff,#7c5cff);color:#fff}
+.cf-dots i.done{background:#a996ff}.cf-dots i.cur{background:#fff;box-shadow:0 0 12px #a996ff}
+.cf-btn.gold{background:linear-gradient(180deg,#b8a6ff,#7c5cff);color:#fff;box-shadow:0 10px 30px rgba(124,92,255,.35)}
+.cf-btn{border-color:rgba(169,150,255,.3)}
+.cf-sum{background:rgba(255,255,255,.03);border-color:rgba(169,150,255,.2)}
+.cf-legal input{accent-color:#7c5cff}
+.cf-seal{display:none}
+.cf-ref{border-color:rgba(169,150,255,.45);background:rgba(124,92,255,.08)}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+</head><body>
+<a class="study-tag" href="./">C · ASYA Core</a>
+<div class="scene" id="scene"></div>
+<div class="panel" id="panel"></div>
+<script src="flow.js"></script>
+<script>CCFlow.mount(document.getElementById('panel')); window.CC_SEND_DELAY = 2100;</script>
+<script type="module">
+import * as THREE from 'three';
+const host = document.getElementById('scene');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, 1, .1, 50);
+
+// ── The core: noise-displaced sphere with a gold fresnel rim ──
+const NOISE = `
+vec3 m289(vec3 x){return x-floor(x*(1./289.))*289.;}vec4 m289(vec4 x){return x-floor(x*(1./289.))*289.;}
+vec4 perm(vec4 x){return m289(((x*34.)+1.)*x);}vec4 tis(vec4 r){return 1.79284291400159-.85373472095314*r;}
+float snoise(vec3 v){const vec2 C=vec2(1./6.,1./3.);const vec4 D=vec4(0.,.5,1.,2.);
+vec3 i=floor(v+dot(v,C.yyy));vec3 x0=v-i+dot(i,C.xxx);vec3 g=step(x0.yzx,x0.xyz);vec3 l=1.-g;vec3 i1=min(g.xyz,l.zxy);vec3 i2=max(g.xyz,l.zxy);
+vec3 x1=x0-i1+C.xxx;vec3 x2=x0-i2+C.yyy;vec3 x3=x0-D.yyy;i=m289(i);
+vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+float n_=.142857142857;vec3 ns=n_*D.wyz-D.xzx;vec4 j=p-49.*floor(p*ns.z*ns.z);vec4 x_=floor(j*ns.z);vec4 y_=floor(j-7.*x_);
+vec4 x=x_*ns.x+ns.yyyy;vec4 y=y_*ns.x+ns.yyyy;vec4 h=1.-abs(x)-abs(y);vec4 b0=vec4(x.xy,y.xy);vec4 b1=vec4(x.zw,y.zw);
+vec4 s0=floor(b0)*2.+1.;vec4 s1=floor(b1)*2.+1.;vec4 sh=-step(h,vec4(0.));vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy;vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+vec3 p0=vec3(a0.xy,h.x);vec3 p1=vec3(a0.zw,h.y);vec3 p2=vec3(a1.xy,h.z);vec3 p3=vec3(a1.zw,h.w);
+vec4 norm=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);m=m*m;
+return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}`;
+const U = { uT:{ value:0 }, uAmp:{ value:.09 }, uTint:{ value:new THREE.Color(0x7c5cff) }, uGlow:{ value:0 } };
+const core = new THREE.Mesh(new THREE.IcosahedronGeometry(1, still ? 24 : 48), new THREE.ShaderMaterial({
+  uniforms:U, transparent:true,
+  vertexShader: NOISE + `uniform float uT,uAmp;varying vec3 vN;varying vec3 vV;varying float vD;
+    void main(){float d=snoise(normal*1.6+uT*.35)*uAmp+snoise(normal*4.+uT*.8)*uAmp*.35;vD=d;
+      vec3 p=position+normal*d;vec4 mv=modelViewMatrix*vec4(p,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}`,
+  fragmentShader:`uniform vec3 uTint;uniform float uGlow;varying vec3 vN;varying vec3 vV;varying float vD;
+    void main(){float f=pow(1.-max(dot(vN,vV),0.),2.4);
+      vec3 deep=vec3(.06,.04,.16);vec3 gold=vec3(.96,.84,.56);
+      vec3 c=mix(deep,uTint,.35+vD*2.2);c=mix(c,gold,f*.95);c+=uGlow*gold*.6;
+      gl_FragColor=vec4(c,.97);}`
+}));
+scene.add(core);
+// soft halo sprite behind the core
+const hc = document.createElement('canvas'); hc.width = hc.height = 128; const h2 = hc.getContext('2d');
+const hg = h2.createRadialGradient(64, 64, 0, 64, 64, 64); hg.addColorStop(0, 'rgba(160,130,255,.55)'); hg.addColorStop(.45, 'rgba(124,92,255,.18)'); hg.addColorStop(1, 'rgba(124,92,255,0)');
+h2.fillStyle = hg; h2.fillRect(0, 0, 128, 128);
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map:new THREE.CanvasTexture(hc), depthWrite:false, blending:THREE.AdditiveBlending }));
+halo.scale.setScalar(4.2); halo.position.z = -.6; scene.add(halo);
+
+// ── Eight moons on a tilted orbit: one per step ──
+const orbit = new THREE.Group(); orbit.rotation.x = 1.2; scene.add(orbit);
+const ringGeo = new THREE.TorusGeometry(1.75, .006, 6, 160);
+orbit.add(new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:0xa996ff, transparent:true, opacity:.45 })));
+const moons = [];
+for (let i = 0; i < 8; i++){
+  const a = i / 8 * Math.PI * 2;
+  const m = new THREE.Mesh(new THREE.SphereGeometry(.075, 16, 12), new THREE.MeshBasicMaterial({ color:0x3a3070 }));
+  m.position.set(Math.cos(a) * 1.75, Math.sin(a) * 1.75, 0); orbit.add(m); moons.push(m);
+}
+// burst particles for "send"
+const BN = 500, bp = new Float32Array(BN * 3), bv = [];
+for (let i = 0; i < BN; i++){ const v = new THREE.Vector3().randomDirection(); bv.push(v.multiplyScalar(.02 + Math.random() * .05)); }
+const burstGeo = new THREE.BufferGeometry(); burstGeo.setAttribute('position', new THREE.BufferAttribute(bp, 3));
+const burst = new THREE.Points(burstGeo, new THREE.PointsMaterial({ color:0xf6e7bf, size:.04, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false }));
+scene.add(burst);
+
+const URG = { low:0x4ade80, medium:0xf5c563, high:0xff5a6e };
+let cur = 0, ampT = .09, glowT = 0, scaleT = 1, type = 0, burstOn = 0, px = 0, py = 0;
+addEventListener('pointermove', e => { px = e.clientX / innerWidth - .5; py = e.clientY / innerHeight - .5; }, { passive:true });
+document.addEventListener('cc', e => {
+  const d = e.detail;
+  if (d.type === 'step') cur = d.i;
+  if (d.type === 'type') type = Math.min(1, type + .35);
+  if (d.type === 'pick'){ glowT = .8; setTimeout(() => glowT = 0, 350); if (d.key === 'urg') U.uTint.value.setHex(URG[d.value]); }
+  if (d.type === 'send'){ ampT = .45; scaleT = .35; glowT = 1.2; setTimeout(() => {
+      for (let i = 0; i < BN; i++) bp.set([0, 0, 0], i * 3); burstGeo.attributes.position.needsUpdate = true; burstOn = 1; scaleT = 1.12; ampT = .06; }, 1300); }
+  if (d.type === 'done'){ cur = 8; glowT = .55; U.uTint.value.setHex(0xf6e7bf); }
+});
+function resize(){ const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+  camera.position.set(0, 0, Math.max(7, 4.4 / camera.aspect)); camera.lookAt(0, 0, 0); camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+let run = true; document.addEventListener('visibilitychange', () => { run = !document.hidden; if (run) loop(); });
+const clock = new THREE.Clock(); let last = 0;
+function loop(){
+  if (!run) return;
+  const t = clock.getElapsedTime(), dt = Math.min(.05, t - last); last = t;
+  type *= .96;
+  U.uT.value = still ? 0 : t;
+  U.uAmp.value += ((ampT + type * .22) - U.uAmp.value) * .08;
+  U.uGlow.value += (glowT - U.uGlow.value) * .12;
+  const s = core.scale.x + (scaleT - core.scale.x) * .08; core.scale.setScalar(s);
+  core.rotation.y = still ? 0 : t * .15;
+  orbit.rotation.z = still ? 0 : -t * .25;
+  scene.rotation.y += ((px * .35) - scene.rotation.y) * .05; scene.rotation.x += ((py * .2) - scene.rotation.x) * .05;
+  moons.forEach((m, i) => {
+    const done = i < cur, on = i === cur;
+    m.material.color.setHex(done ? 0xe6c98a : on ? 0xffffff : 0x3a3070);
+    m.scale.setScalar(on ? 1.6 + Math.sin(t * 4) * .25 : done ? 1.15 : 1);
+  });
+  if (burstOn){ const a = burstGeo.attributes.position.array; for (let i = 0; i < BN; i++){ a[i*3] += bv[i].x; a[i*3+1] += bv[i].y; a[i*3+2] += bv[i].z; }
+    burstGeo.attributes.position.needsUpdate = true; burst.material.opacity = Math.max(0, burstOn); burstOn -= dt * .55; }
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body></html>

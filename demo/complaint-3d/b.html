@@ -1,0 +1,116 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex,nofollow">
+<title>Gates of Justice</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="flow.css">
+<style>
+/* Study B — "Gates of Justice": every question is a golden gate; answering flies you through it. */
+body{background:#07060f;min-height:100dvh;overflow-x:hidden}
+#scene{position:fixed;inset:0;z-index:0}
+#scene canvas{display:block;width:100%!important;height:100%!important}
+.panel{position:relative;z-index:1;min-height:100dvh;display:flex;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 60px) 22px calc(env(safe-area-inset-bottom,0px) + 28px)}
+.cf{padding:20px 16px 16px;border-radius:26px;background:radial-gradient(120% 90% at 50% 0%,rgba(40,30,86,.55),rgba(10,8,22,.62));
+  border:1px solid rgba(246,231,191,.22);box-shadow:0 0 0 1px rgba(124,92,255,.15),0 30px 80px rgba(0,0,0,.55)}
+.cf-step.on{animation:gateIn .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes gateIn{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+.flash{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,244,214,.9),rgba(246,231,191,0) 60%);opacity:0;transition:opacity .5s}
+.flash.on{opacity:1;transition:opacity .25s}
+@media (prefers-reduced-motion:reduce){.cf-step.on{animation:none}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+</head><body>
+<a class="study-tag" href="./">B · Gates of Justice</a>
+<div id="scene"></div>
+<div class="panel" id="panel"></div>
+<div class="flash" id="flash"></div>
+<script src="flow.js"></script>
+<script>CCFlow.mount(document.getElementById('panel')); window.CC_SEND_DELAY = 1900;</script>
+<script type="module">
+import * as THREE from 'three';
+const host = document.getElementById('scene');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+renderer.setClearColor(0x07060f);
+host.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x0d0a22, .045);
+const camera = new THREE.PerspectiveCamera(55, 1, .1, 200);
+
+const GAP = 7, N = 8;
+const gates = [];
+const URG = { low:0x4ade80, medium:0xf5c563, high:0xff5a6e };
+for (let i = 0; i < N; i++){
+  const g = new THREE.Group(); g.position.z = -i * GAP;
+  const outer = new THREE.Mesh(new THREE.TorusGeometry(2.6, .035, 12, 120), new THREE.MeshBasicMaterial({ color:0xe6c98a }));
+  const inner = new THREE.Mesh(new THREE.TorusGeometry(2.42, .012, 8, 120), new THREE.MeshBasicMaterial({ color:0x8b6cff, transparent:true, opacity:.8 }));
+  g.add(outer, inner);
+  // twelve small studs around the ring, like a clock / compass
+  for (let k = 0; k < 12; k++){
+    const a = k / 12 * Math.PI * 2, st = new THREE.Mesh(new THREE.SphereGeometry(k % 3 ? .04 : .07, 10, 8), new THREE.MeshBasicMaterial({ color:0xf6e7bf }));
+    st.position.set(Math.cos(a) * 2.6, Math.sin(a) * 2.6, 0); g.add(st);
+  }
+  g.userData = { outer, inner, pulse:0 };
+  scene.add(g); gates.push(g);
+}
+// floor grid fading into the fog
+const grid = new THREE.GridHelper(200, 100, 0x5b45c9, 0x2a2066); grid.position.y = -3.4; grid.position.z = -60; scene.add(grid);
+// stars as short lines, so they can stretch into a warp
+const SN = still ? 300 : 900, sp = new Float32Array(SN * 6);
+for (let i = 0; i < SN; i++){
+  const r = 4 + Math.random() * 30, a = Math.random() * Math.PI * 2, z = 10 - Math.random() * 90;
+  const x = Math.cos(a) * r, y = Math.sin(a) * r * .7;
+  sp.set([x, y, z, x, y, z - .05], i * 6);
+}
+const starGeo = new THREE.BufferGeometry(); starGeo.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+const stars = new THREE.LineSegments(starGeo, new THREE.LineBasicMaterial({ color:0xf6e7bf, transparent:true, opacity:.75 }));
+scene.add(stars);
+
+let target = 0, camZ = 5, warp = 0, warpT = 0, px = 0, py = 0;
+addEventListener('pointermove', e => { px = e.clientX / innerWidth - .5; py = e.clientY / innerHeight - .5; }, { passive:true });
+const flash = document.getElementById('flash');
+document.addEventListener('cc', e => {
+  const d = e.detail;
+  if (d.type === 'step') target = d.i;
+  if (d.type === 'type' && gates[target]) gates[target].userData.pulse = 1;
+  if (d.type === 'pick' && d.key === 'urg') gates.forEach((g, i) => { if (i > 3) g.userData.outer.material.color.setHex(URG[d.value]); });
+  if (d.type === 'send'){ warpT = 1; setTimeout(() => flash.classList.add('on'), 1400); }
+  if (d.type === 'done'){ warpT = 0; setTimeout(() => flash.classList.remove('on'), 120); target = N; }
+});
+function resize(){ const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+let run = true; document.addEventListener('visibilitychange', () => { run = !document.hidden; if (run) loop(); });
+const clock = new THREE.Clock();
+function loop(){
+  if (!run) return;
+  const t = clock.getElapsedTime();
+  // stand just in front of the current gate: the card sits inside its ring
+  const goal = 5.2 - target * GAP;
+  camZ += (goal - camZ) * (still ? 1 : .045);
+  warp += (warpT - warp) * .05;
+  camZ -= warp * 1.4;
+  camera.position.set(px * .8, -py * .5 + .15, camZ);
+  camera.fov = 55 + warp * 40; camera.updateProjectionMatrix();
+  camera.lookAt(0, 0, camZ - 10);
+  gates.forEach((g, i) => {
+    const u = g.userData; u.pulse *= .9;
+    g.rotation.z = (still ? 0 : t * .08) * (i % 2 ? 1 : -1);
+    g.scale.setScalar(1 + u.pulse * .05);
+    // gates you passed fade, the current one glows
+    const passed = g.position.z > camZ + .5, cur = i === target;
+    u.inner.material.opacity = cur ? .95 : passed ? .15 : .55;
+  });
+  // stars: stretch with warp, recycle behind the camera
+  const a = starGeo.attributes.position.array, len = .05 + warp * 6;
+  for (let i = 0; i < a.length; i += 6){
+    if (a[i+2] > camZ + 4){ const z = camZ - 60 - Math.random() * 30; a[i+2] = z; }
+    a[i+5] = a[i+2] - len;
+  }
+  starGeo.attributes.position.needsUpdate = true;
+  grid.position.z = Math.floor(camZ / 2) * 2 - 60;
+  renderer.render(scene, camera);
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body></html>
