@@ -8,11 +8,16 @@
 // test:false AND the env var COMPLAINT_LIVE=1 is set. Until then every filing
 // is stored with test:true and only the complainant's own confirmation email
 // is sent (subject prefixed [TEST]).
+//
+// PILOT: set COMPLAINT_PILOT_TO to a mailbox you own and the institution email is
+// delivered there (never to the real institution), subject prefixed [PILOT]. The
+// complainant then also gets the second email ("sent to the institution"). This
+// lets the whole loop be tried with three addresses: site, complainant, institution.
 import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
-  institutionEmail, adminEmail, publicAuthority, toFirestore
+  institutionEmail, institutionSentEmail, adminEmail, publicAuthority, toFirestore
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
 import { classify } from './_classify.js';
@@ -95,13 +100,22 @@ export default async function handler(req, res) {
     const top = auths[0];
     let institution = { status: 'none' };
     let instSent = false;
-    if (top && _isMail(top.email)) {
+    const pilotTo = (process.env.COMPLAINT_PILOT_TO || '').trim();
+    let userNotified = false;
+    if (top && pilotTo && !live) {
+      // Pilot: the letter goes to the test mailbox, not to the real institution.
+      const m = institutionEmail(record, top.name, input.emailDraft);
+      instSent = await sendEmail(pilotTo, top.name, '[PILOT → ' + top.name + '] ' + m.subject, m.body, m.replyTo);
+      institution = { status: instSent ? 'sent' : 'failed', name: top.name, pilot: true };
+      if (instSent) { const n = institutionSentEmail(record, top.name); userNotified = await sendEmail(record.email, record.name || '', n.subject, n.body); }
+    } else if (top && _isMail(top.email)) {
       const m = institutionEmail(record, top.name, input.emailDraft);
       if (live) {
         instSent = await sendEmail(top.email, top.name, m.subject, m.body, m.replyTo);
         institution = { status: instSent ? 'sent' : 'failed', name: top.name };
         // Same fallback as the live form: the user can send it from their own mail app.
         if (!instSent) institution.fallback = { to: top.email, subject: m.subject, body: m.body };
+        else { const n = institutionSentEmail(record, top.name); userNotified = await sendEmail(record.email, record.name || '', n.subject, n.body); }
       } else {
         // Test mode: show exactly what would have been sent, send nothing.
         institution = { status: 'test_skipped', name: top.name, preview: { to: top.email, subject: m.subject, body: m.body, replyTo: m.replyTo } };
@@ -121,7 +135,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       ref: record.ref, test: record.test, category: record.category, priority: record.priority,
-      confirmationSent, institution, admin,
+      confirmationSent, institution, userNotified, admin,
       authorities: auths.slice(0, 3).map(publicAuthority),
       chain: getChain(record.category, record.target, record.location, record.targetAddress),
     });

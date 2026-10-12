@@ -430,7 +430,7 @@
       mail:'E-posta', req:'zorunlu', mailPh:'ornek@eposta.ca', loc:'Konum', locPh:'Şehir veya posta kodu', find:'📍 Bul', story:'Ne oldu?', storyPh:'Kendi cümlelerinizle anlatın…',
       wait:'Yazmaya başlayın. ASYA analiz edip kimlere ulaşabileceğinizi burada gösterecek.', busy:'ASYA analiz ediyor… (yaklaşık 10 saniye)', short:'Biraz daha yazın (en az 10 karakter). ASYA otomatik analiz edecek.', unsure:'Şikâyetiniz', whom:'KİMLERE ULAŞILSIN?', all:'Hepsi',
       primary:'ASYA gönderir', prep:'Hazır mektup + bağlantı', pool:'Avukat havuzu', poolSub:'Dosyanız adınız olmadan avukatlara açılır; adınız gerekir', name:'Adınız',
-      anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'Aşağıdaki beyanı kabul ediyorum', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
+      anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'ComplaintCA’nın bu şikâyeti benim adıma kuruma göndermesine ve yanıtları almasına yetki veriyorum; bilgilerin doğru olduğunu onaylıyorum.', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
       note:'İlk kuruma ASYA gönderir. Diğerleri için hazır mektup ve resmî bağlantı verilir.', sos:'Çocuğunuz veya biriniz tehlikedeyse 911’i arayın.',
       eMail:'Geçerli bir e-posta yazın.', eStory:'Lütfen olanı biraz daha ayrıntılı yazın.', eName:'Lütfen adınızı yazın.', eAgree:'Lütfen beyanı onaylayın.', eFail:'Bir sorun oluştu. Lütfen tekrar deneyin.',
       copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı',
@@ -439,7 +439,7 @@
       mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
       wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Write a little more (at least 10 characters). ASYA will analyse automatically.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
       primary:'ASYA sends', prep:'Ready letter + link', pool:'Lawyer pool', poolSub:'Your case opens to lawyers without your name; your name is required', name:'Your name',
-      anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I accept the statement below', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
+      anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I authorize ComplaintCA to send this complaint to the institution on my behalf and to receive the replies; I confirm the information is accurate.', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
       note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
       eMail:'Enter a valid email address.', eStory:'Please describe what happened in a bit more detail.', eName:'Please enter your name.', eAgree:'Please confirm the statement.', eFail:'Something went wrong. Please try again.',
       copy:'Copy letter', copied:'✓ Copied', open:'Open →', also:'Ready letter and link for these',
@@ -577,7 +577,7 @@
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
       await Promise.all([post('/api/complaint', { test:true, title:val.title, desc:what_, target:val.who || 'other', targetName:'', targetAddress:'', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
-        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, turnstileToken:tsToken, lang:pageLang(), emailDraft:V ? (V.emailDraft || '') : '' })
+        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:V ? (V.emailDraft || '') : '' })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
       if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {} o_err.textContent = ERR[d.error] || L1.eFail; return; }

@@ -2,7 +2,7 @@
 // index.html: same validation rules, same record shape, same authority routing,
 // so complaints filed through /api/complaint are indistinguishable from the
 // current form's (Track My Complaint, the lawyer pool and emails keep working).
-import { randomInt } from 'node:crypto';
+import { randomInt, createHmac, timingSafeEqual } from 'node:crypto';
 import {
   AUTHORITIES, CHAIN, CAT_SUBS, CAT_GROUPS, _CAT_TOPIC, _TGT_TOPIC, _PROV_LABEL,
   _detectProvince, _isFederalAuth, _isMail, _authUrl, CONF_SUBJ, CONF_BODY
@@ -52,6 +52,7 @@ export function validate(body) {
     legalAccepted: b.legalAccepted === true,
     lang: typeof b.lang === 'string' ? b.lang.slice(0, 5) : 'en',
     emailDraft: str(b.emailDraft, 6000),
+    consent: b.consent && b.consent.authorize === true ? { authorize: true, v: str(b.consent.v, 20) } : null,
   };
   if (!input.title && input.desc) input.title = titleFromDesc(input.desc);
 
@@ -115,6 +116,8 @@ export function buildRecord(input, { ref, now = new Date().toISOString(), test =
     photoCount: input.photoCount, status: 'received', date: now,
     timeline: [{ status: 'received', date: now }],
     source: 'ui-new', test, lang: input.lang,
+    // Authorization to act for the complainant (ts is server time, not client time).
+    consent: input.consent ? { authorize: true, v: input.consent.v || '', ts: now } : null,
   };
 }
 
@@ -124,6 +127,43 @@ export function confirmationEmail(c) {
     subject: (c.test ? '[TEST] ' : '') + CONF_SUBJ.split('{ref}').join(c.ref),
     body: CONF_BODY.split('{ref}').join(c.ref).replace('{title}', c.title || '').replace('{link}', link),
   };
+}
+
+// ── Per-complaint reply alias ──
+// Institutions reply to an address made for this one complaint. The tag is the ref plus a
+// short HMAC of it, so nothing is stored and a stranger cannot forge a valid address.
+// Gmail pilot: complaintcaca+TAG@gmail.com. With REPLY_DOMAIN set (catch-all inbound): TAG@REPLY_DOMAIN.
+const REPLY_FALLBACK_SECRET = 'dev-only-not-for-production';
+function replySecret() { return process.env.REPLY_SECRET || (process.env.VERCEL_ENV === 'production' ? '' : REPLY_FALLBACK_SECRET); }
+export function replyKey(ref) {
+  const sec = replySecret(); if (!sec) return '';
+  return createHmac('sha256', sec).update(String(ref)).digest('hex').slice(0, 10);
+}
+export function replyAddress(ref) {
+  const key = replyKey(ref);
+  const tag = key ? String(ref).toLowerCase() + '-' + key : String(ref);
+  const dom = process.env.REPLY_DOMAIN;
+  return dom ? tag + '@' + dom : 'complaintcaca+' + tag + '@gmail.com';
+}
+// Returns the ref for a valid signed alias address (To / Delivered-To header), else null.
+export function parseReplyAddress(addr) {
+  const m = String(addr || '').toLowerCase().match(/((?:vc|cy)-\d{4}-[a-z0-9]{6})-([0-9a-f]{10})(?:@|%40)/);
+  if (!m) return null;
+  const ref = m[1].toUpperCase(), want = replyKey(ref);
+  if (!want || want.length !== m[2].length) return null;
+  return timingSafeEqual(Buffer.from(want), Buffer.from(m[2])) ? ref : null;
+}
+
+// Second email to the complainant: the complaint has actually gone to the institution.
+export function institutionSentEmail(c, institutionName, now = new Date()) {
+  const link = 'https://www.complaintca.ca/?track=' + encodeURIComponent(c.ref);
+  const date = now.toLocaleDateString(c.lang === 'fr' ? 'fr-CA' : c.lang === 'tr' ? 'tr-TR' : 'en-CA');
+  const T = {
+    en: { s: 'Your complaint was sent to ' + institutionName, b: 'Your complaint ' + c.ref + ' ("' + (c.title || '') + '") was sent on ' + date + ' to ' + institutionName + ', on your behalf and with your authorization.\n\nReplies from the institution come to ComplaintCA. We will email you when one arrives, and you can read it on your tracking page:\n' + link },
+    fr: { s: 'Votre plainte a été envoyée à ' + institutionName, b: 'Votre plainte ' + c.ref + ' (« ' + (c.title || '') + ' ») a été envoyée le ' + date + ' à ' + institutionName + ', en votre nom et avec votre autorisation.\n\nLes réponses de l\'organisme arrivent chez ComplaintCA. Nous vous écrirons à leur arrivée; vous pourrez les lire sur votre page de suivi :\n' + link },
+    tr: { s: 'Şikâyetiniz ' + institutionName + ' kurumuna gönderildi', b: c.ref + ' numaralı şikâyetiniz ("' + (c.title || '') + '") ' + date + ' tarihinde, sizin adınıza ve yetkinizle ' + institutionName + ' kurumuna gönderildi.\n\nKurumun yanıtları ComplaintCA\'ya gelir. Yanıt geldiğinde size e-posta göndeririz; takip sayfanızdan okuyabilirsiniz:\n' + link },
+  }[c.lang === 'fr' ? 'fr' : c.lang === 'tr' ? 'tr' : 'en'];
+  return { subject: (c.test ? '[TEST] ' : '') + T.s + ' — ' + c.ref, body: T.b };
 }
 
 // Port of _basicComplaintEmail (index.html): the plain templated email used when
@@ -173,7 +213,7 @@ export function institutionEmail(c, authorityName, draft, now = new Date()) {
   const date = now.toLocaleDateString(fr ? 'fr-CA' : 'en-CA');
   const contactLine = c.anonymous
     ? (fr ? 'Référence : ' : 'Reference: ') + ref + (fr ? ' | Déposée anonymement via ComplaintCA' : ' | Filed anonymously via ComplaintCA')
-    : (fr ? 'Contact : ' : 'Contact: ') + (c.name || '—') + ' <' + (c.email || '—') + '> | ' + (fr ? 'Référence : ' : 'Reference: ') + ref;
+    : (fr ? 'Contact : ' : 'Contact: ') + (c.name || '—') + ' <' + replyAddress(ref) + '> | ' + (fr ? 'Référence : ' : 'Reference: ') + ref;
   const footer = '\n\n---\n' + contactLine + ' | ' + (fr ? 'Date : ' : 'Date: ') + date + '\n' + (fr ? 'Déposée via ComplaintCA (complaintca.ca)' : 'Filed via ComplaintCA (complaintca.ca)');
   const privacy = fr
     ? '\n\nAVIS DE CONFIDENTIALITÉ : Les renseignements personnels contenus dans cette plainte sont fournis uniquement pour traiter cette affaire et doivent être gérés conformément à la législation canadienne applicable en matière de protection des renseignements personnels. '
@@ -186,7 +226,7 @@ export function institutionEmail(c, authorityName, draft, now = new Date()) {
     ? (fr ? 'Demande d\'Accès à l\'Information — ' : 'Access to Information Request — ') + ref + ' — ' + c.title
     : (fr ? 'Plainte Officielle — ' : 'Formal Complaint — ') + ref + ' — ' + c.title;
   const text = draft ? fixDraftRef(draft, ref) : basicComplaintEmail(c, authorityName);
-  return { subject, body: text + footer + privacy, replyTo: 'complaintcaca+' + ref + '@gmail.com' };
+  return { subject, body: text + footer + privacy, replyTo: replyAddress(ref) };
 }
 
 // Port of the admin heads-up sent only for high-priority complaints.

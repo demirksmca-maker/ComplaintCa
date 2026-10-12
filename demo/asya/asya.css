@@ -290,3 +290,4 @@ textarea.af-in::placeholder{text-align:center}
 .af1-sbody .af1-q{margin-top:16px}.af1-sbody .af1-send{position:sticky;bottom:0}
 .af1-sbody .af1-done{display:flex;animation:none}.af1-sbody .af1-d-h{display:none}
 .af1-ts:empty{display:none}
+.af1-agree{align-items:flex-start}.af1-agree span{line-height:1.45;font-size:.84rem}.af1-agree input{margin-top:2px}

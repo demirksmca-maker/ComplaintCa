@@ -1,9 +1,9 @@
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import handler from './complaint.js';
-import { validate, genRef, getAuthorities, getChain, buildRecord, toFirestore, titleFromDesc } from './_complaint-core.js';
+import { validate, genRef, getAuthorities, getChain, buildRecord, toFirestore, titleFromDesc, replyAddress, parseReplyAddress } from './_complaint-core.js';
 
-const ENV = ['TURNSTILE_SECRET_KEY', 'GROQ_API_KEY', 'BREVO_API_KEY', 'COMPLAINT_LIVE', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
+const ENV = ['TURNSTILE_SECRET_KEY', 'GROQ_API_KEY', 'BREVO_API_KEY', 'COMPLAINT_LIVE', 'COMPLAINT_PILOT_TO', 'REPLY_SECRET', 'REPLY_DOMAIN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
 let saved, calls, ipN = 0;
 
 function mockFetch({ firestoreStatus = 200 } = {}) {
@@ -78,8 +78,9 @@ describe('POST /api/complaint', () => {
     mockFetch(); process.env.BREVO_API_KEY = 'k'; process.env.COMPLAINT_LIVE = '1';
     const { data } = await call({ ...good(), category: 'noise', test: false });
     assert.equal(data.test, false);
-    assert.equal(calls.filter(c => c.url.includes('brevo')).length, 2);
-    assert.equal(data.institution.status, 'sent');
+    // confirmation + institution letter + "sent to the institution" email to the complainant
+    assert.equal(calls.filter(c => c.url.includes('brevo')).length, 3);
+    assert.equal(data.institution.status, 'sent'); assert.equal(data.userNotified, true);
   });
   test('rejects invalid input with field list', async () => {
     mockFetch();
@@ -103,7 +104,9 @@ describe('institution email (live parity)', () => {
     mockFetch(); process.env.BREVO_API_KEY = 'k'; process.env.COMPLAINT_LIVE = '1';
     await call({ ...good(), category: 'noise', test: false, anonymous: false, name: 'Ana' });
     const inst = calls.filter(c => c.url.includes('brevo')).map(c => JSON.parse(c.body)).find(b => b.to[0].email !== 'me@example.com');
-    assert.match(inst.replyTo.email, /^complaintcaca\+VC-\d{4}-[A-Z0-9]{6}@gmail\.com$/);
+    assert.match(inst.replyTo.email, /^complaintcaca\+vc-\d{4}-[a-z0-9]{6}-[0-9a-f]{10}@gmail\.com$/);
+    assert.ok(!inst.textContent.includes('me@example.com'), 'the complainant\'s own address must not reach the institution');
+    assert.ok(inst.textContent.includes(inst.replyTo.email));
     assert.match(inst.textContent, /PRIVACY NOTICE/);
     assert.match(inst.textContent, /Filed via ComplaintCA/);
   });
@@ -187,5 +190,41 @@ describe('ASYA Legal Verdict (live runAI parity)', () => {
     r = await run({ desc:'My landlord entered without notice.', category:'noise', anonymous:false });
     assert.equal(r.code, 200); assert.equal(r.data.law, 'B'); assert.equal(r.data.poolSuggest, false);
     delete process.env.ANTHROPIC_API_KEY;
+  });
+});
+
+describe('reply alias, consent and pilot mode', () => {
+  test('alias round-trips and forged or altered addresses are rejected', () => {
+    process.env.REPLY_SECRET = 's1';
+    const a = replyAddress('VC-2026-ABC234');
+    assert.equal(parseReplyAddress(a), 'VC-2026-ABC234');
+    assert.equal(parseReplyAddress(a.replace(/-[0-9a-f]{10}@/, '-0000000000@')), null);
+    assert.equal(parseReplyAddress('complaintcaca+vc-2026-abc234@gmail.com'), null);
+    process.env.REPLY_SECRET = 's2';
+    assert.equal(parseReplyAddress(a), null);
+  });
+  test('REPLY_DOMAIN switches to catch-all addresses', () => {
+    process.env.REPLY_SECRET = 's1'; process.env.REPLY_DOMAIN = 'yanit.complaintca.ca';
+    assert.match(replyAddress('VC-2026-ABC234'), /^vc-2026-abc234-[0-9a-f]{10}@yanit\.complaintca\.ca$/);
+  });
+  test('authorization is stored with a server timestamp', async () => {
+    mockFetch();
+    const { data } = await call({ ...good(), consent: { authorize: true, v: '2026-10' } });
+    const body = JSON.parse(calls.find(c => c.url.includes('firestore')).body);
+    assert.equal(body.fields.consent.mapValue.fields.authorize.booleanValue, true);
+    assert.ok(body.fields.consent.mapValue.fields.ts.stringValue);
+    assert.ok(data.ref);
+  });
+  test('pilot mode sends the letter to the pilot mailbox only, then tells the complainant', async () => {
+    mockFetch(); process.env.BREVO_API_KEY = 'k'; process.env.COMPLAINT_PILOT_TO = 'pilot@example.org';
+    const { data } = await call({ ...good(), category: 'noise' });
+    assert.equal(data.test, true); assert.equal(data.institution.status, 'sent'); assert.equal(data.institution.pilot, true);
+    const mails = calls.filter(c => c.url.includes('brevo')).map(c => JSON.parse(c.body));
+    assert.equal(mails.length, 3);
+    const letter = mails.find(m => m.to[0].email === 'pilot@example.org');
+    assert.match(letter.subject, /^\[PILOT/);
+    assert.match(letter.replyTo.email, /^complaintcaca\+vc-/);
+    assert.equal(mails.filter(m => m.to[0].email === 'me@example.com').length, 2); // confirmation + "sent"
+    assert.ok(mails.every(m => !m.to[0].email.includes('toronto.ca')));
   });
 });
