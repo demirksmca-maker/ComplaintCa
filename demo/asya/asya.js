@@ -66,6 +66,7 @@
   const bar = el('div','af-bar'), title = el('span','af-title','File a Complaint'), x = el('button','af-close','✕');
   title.id = 'af-title'; x.type = 'button'; x.setAttribute('aria-label','Close'); bar.append(title, x);
   const scroll = el('div','af-scroll'), sceneHost = el('div','af-scene'), panel = el('div','af-panel');
+  const emblem = el('img','af-emblem'); emblem.src = '/demo/asya/emblem.jpg'; emblem.alt = ''; emblem.width = 360; emblem.height = 360; sceneHost.appendChild(emblem);
   scroll.append(sceneHost, panel); ov.append(bar, scroll);
   document.body.appendChild(ov);
   let scene = null, registered = false, F = null;
@@ -347,9 +348,9 @@
     let mode = 'choose';
     const choice = el('div','af-choose');
     choice.append(el('p','af-kicker','ASYA asks'), el('h2','af-q','How can I help you?'));
-    [['complaint','📢','File a complaint','Report a problem to the right institution — ASYA routes it for you.'],
-     ['access','📄','Access to information','Talk with ASYA about your right to get records from an institution — which law applies, deadlines, how to ask.'],
-     ['talk','💬','Just talk to ASYA','Not sure yet? Tell ASYA what happened — no form, nothing is sent.']].forEach(([m, ic, t, d]) => {
+    [['complaint','I','File a complaint','Report a problem to the right institution — ASYA routes it for you.'],
+     ['access','II','Access to information','Talk with ASYA about your right to get records from an institution — which law applies, deadlines, how to ask.'],
+     ['talk','III','Just talk to ASYA','Not sure yet? Tell ASYA what happened — no form, nothing is sent.']].forEach(([m, ic, t, d]) => {
       const o = el('button','af-mode'); o.type = 'button'; o.dataset.m = m;
       o.append(el('span','af-mode-ic', ic), el('b', null, t), el('small', null, d));
       o.addEventListener('click', () => setMode(m)); choice.appendChild(o); });
@@ -635,8 +636,6 @@
     if (!F) F = build();
     if (!registered && window.ccPanelRoot) { window.ccPanelRoot(ov); registered = true; }
     ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
-    if (!scene) import('./scene.js').then(m => { scene = m.init(sceneHost); scene.start(); }).catch(() => {});
-    else scene.start();
   }
   function close(){ ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }
   x.addEventListener('click', close);
