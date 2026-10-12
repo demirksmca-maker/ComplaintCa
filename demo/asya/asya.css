@@ -263,3 +263,15 @@ textarea.af-in::placeholder{text-align:center}
 .af1-bar{display:block;height:3px;margin:12px auto 0;max-width:220px;border-radius:2px;background:rgba(230,201,138,.2);position:relative;overflow:hidden}
 .af1-bar::after{content:"";position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,#c9a03c,#fff2b8);transform-origin:left;animation:af1fill 10s cubic-bezier(.2,.6,.3,1) forwards}
 @keyframes af1fill{from{transform:scaleX(.04)}to{transform:scaleX(.96)}}
+
+/* One-page done view: calm, magazine-like, single accent */
+.af1-done{display:none;flex-direction:column;width:100%;text-align:left}
+.af.mode-one.sent .af-done{display:none}.af.mode-one.sent .af1-done{display:flex;animation:afIn .6s cubic-bezier(.2,.8,.2,1)}
+.af1-d-h{margin:8px 0 6px;font:700 1.6rem Georgia,serif;color:#fff6dc}
+.af1-d-tag{align-self:flex-start;font:700 .62rem Georgia,serif;letter-spacing:.08em;color:#e6c98a;border:1px solid rgba(230,201,138,.4);border-radius:20px;padding:3px 10px}
+.af1-d-k{margin:18px 0 2px;font:700 .72rem Georgia,serif;letter-spacing:.14em;color:#8f96ab;text-transform:uppercase}
+.af1-d-ref{font:700 1.9rem Georgia,serif;letter-spacing:.1em;color:#e6c35c;cursor:pointer}
+.af1-d-s{margin:10px 0 0;color:#c3c9da;font-size:.92rem;line-height:1.55}
+.af1-d-act{display:inline-block;margin-top:10px;color:#e6c98a;font-size:.9rem}
+.af1-acts{display:flex;gap:14px;flex:none}.af1-acts a,.af1-acts button{background:none;border:0;padding:4px 0;color:#e6c98a;font:inherit;font-size:.88rem;cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(230,201,138,.4)}
+.af1-again{background:none;border:0;color:#8f96ab;font:inherit;font-size:.92rem;margin:14px auto 0;padding:8px;cursor:pointer}

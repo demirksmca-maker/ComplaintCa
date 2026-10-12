@@ -433,7 +433,8 @@
       anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'Aşağıdaki beyanı kabul ediyorum', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
       note:'İlk kuruma ASYA gönderir. Diğerleri için hazır mektup ve resmî bağlantı verilir.', sos:'Çocuğunuz veya biriniz tehlikedeyse 911’i arayın.',
       eMail:'Geçerli bir e-posta yazın.', eStory:'Lütfen olanı biraz daha ayrıntılı yazın.', eName:'Lütfen adınızı yazın.', eAgree:'Lütfen beyanı onaylayın.', eFail:'Bir sorun oluştu. Lütfen tekrar deneyin.',
-      copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı' }
+      copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı',
+      dTitle:'Şikâyetiniz alındı', dRef:'Takip numaranız', dMail:'Takip numarası e-postanıza gönderildi.', dTest:'TEST · hiçbir kuruma e-posta gitmedi', dSent:'ASYA şikâyetinizi {n} kurumuna gönderdi.', dForm:'{n} yalnızca resmî formu kabul ediyor.', dFail:'Otomatik gönderim yapılamadı; e-posta uygulamanızdan kendiniz gönderin.', dMailBtn:'E-postayı aç', dSaved:'Şikâyetiniz kaydedildi.', dReach:'ULAŞABİLECEĞİNİZ KURUMLAR', dLetter:'Mektup', dOpen:'Aç', dLawyer:'Uzman avukat bul', dAgain:'Yeni şikâyet', dFin:'Bitti' }
     : {
       mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
       wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Write a little more (at least 10 characters). ASYA will analyse automatically.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
@@ -441,7 +442,8 @@
       anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I accept the statement below', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
       note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
       eMail:'Enter a valid email address.', eStory:'Please describe what happened in a bit more detail.', eName:'Please enter your name.', eAgree:'Please confirm the statement.', eFail:'Something went wrong. Please try again.',
-      copy:'Copy letter', copied:'✓ Copied', open:'Open →', also:'Ready letter and link for these' };
+      copy:'Copy letter', copied:'✓ Copied', open:'Open →', also:'Ready letter and link for these',
+      dTitle:'Complaint received', dRef:'Your tracking number', dMail:'The tracking number was emailed to you.', dTest:'TEST · no institution was emailed', dSent:'ASYA sent your complaint to {n}.', dForm:'{n} only accepts its official form.', dFail:'Automatic sending failed; please send it from your email app.', dMailBtn:'Open email', dSaved:'Your complaint was saved.', dReach:'WHO YOU CAN REACH', dLetter:'Letter', dOpen:'Open', dLawyer:'Find a specialist lawyer', dAgain:'New complaint', dFin:'Done' };
     const one = el('div','af-one');
     const fld = (label, node, req) => { const w = el('div','af1-f'); const lb = el('label'); lb.append(document.createTextNode(label)); if (req) lb.appendChild(el('em', null, req)); w.append(lb, node); return w; };
     const o_mail = document.createElement('input'); o_mail.type = 'email'; o_mail.autocomplete = 'email'; o_mail.placeholder = L1.mailPh; o_mail.className = 'af1-in'; o_mail.maxLength = 254;
@@ -458,6 +460,7 @@
     const o_note = el('p','af1-note', L1.note), o_sos = el('p','af1-sos', L1.sos), o_err = el('p','af-hint af1-err'); o_err.setAttribute('role','status');
     o_res.append(o_an, el('div','af1-q', L1.whom), o_list, o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_note, o_sos);
     one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait, o_res, o_err);
+    const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
     const GROUP2T = { municipal:'municipality', business:'business', landlord:'landlord', employer:'business', rights:'government', government:'government', healthcare:'health', other:'other' };
@@ -512,6 +515,39 @@
         post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:'', ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
       if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
     }
+    function finishOne(d){
+      o_done.innerHTML = '';
+      const inst = d.institution || {}, letter = V && (V.emailDraft || V.complaint) || '';
+      const rows = [], seen = new Set();
+      const add = (n, line, url) => { const k = String(n || '').toLowerCase().replace(/[^a-z0-9]/g, ''); if (!k || seen.has(k)) return; seen.add(k); rows.push({ n, line, url }); };
+      (d.authorities || []).forEach(a => add(a.name, [a.phone, a.email].filter(Boolean).join(' · ') || a.note || '', a.url));
+      ((d.chain && d.chain.bodies) || []).forEach(x => add(x.name, x.phone || '', x.url));
+      sel.filter(x => x.on).forEach(x => add(x.n, x.line, x.url));
+      const ref = el('div','af1-d-ref', d.ref || ''); ref.title = 'Copy';
+      ref.addEventListener('click', () => { try { navigator.clipboard.writeText(d.ref || ''); } catch (e) {} });
+      let line = L1.dSaved;
+      if (inst.status === 'sent') line = L1.dSent.replace('{n}', inst.name || '');
+      else if (inst.status === 'form_only') line = L1.dForm.replace('{n}', inst.name || '');
+      else if (inst.status === 'failed') line = L1.dFail;
+      o_done.append(el('h2','af1-d-h', L1.dTitle), d.test ? el('span','af1-d-tag', L1.dTest) : el('span'), el('p','af1-d-k', L1.dRef), ref,
+        el('p','af1-d-s', line + (d.confirmationSent ? ' ' + L1.dMail : '')));
+      if (inst.status === 'failed' && inst.fallback) { const f = inst.fallback, a = el('a','af1-d-act', L1.dMailBtn); a.href = 'mailto:' + f.to + '?subject=' + encodeURIComponent(f.subject) + '&body=' + encodeURIComponent(f.body); o_done.appendChild(a); }
+      const lawyer = !!LW_AREA[d.category];
+      if (rows.length || lawyer) o_done.appendChild(el('div','af1-q', L1.dReach));
+      rows.forEach((x, i) => { const r = el('div','af1-row'), t = el('div','af1-t'), acts = el('div','af1-acts');
+        t.append(el('b', null, x.n)); if (x.line) t.appendChild(el('small', null, x.line));
+        if (x.url) { const a = el('a', null, L1.dOpen); a.href = x.url; a.target = '_blank'; a.rel = 'noopener'; acts.appendChild(a); }
+        if (letter && i > 0) { const b2 = el('button', null, L1.dLetter); b2.type = 'button'; b2.addEventListener('click', () => { try { navigator.clipboard.writeText(letter); b2.textContent = '✓'; } catch (e) {} }); acts.appendChild(b2); }
+        r.append(t, acts); o_done.appendChild(r); });
+      if (lawyer) { const r = el('div','af1-row'), t = el('div','af1-t'), acts = el('div','af1-acts'), b3 = el('button', null, L1.dOpen); b3.type = 'button';
+        b3.addEventListener('click', () => { close(); setTimeout(() => window.openLawyerFlow && window.openLawyerFlow(), 300); });
+        t.append(el('b', null, L1.dLawyer)); acts.appendChild(b3); r.append(t, acts); o_done.appendChild(r); }
+      const fin = el('button','af-btn gold af1-send', L1.dFin), again = el('button','af1-again', L1.dAgain); fin.type = again.type = 'button';
+      fin.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
+      again.addEventListener('click', () => { emit({ type:'reset' }); F = build(); });
+      o_done.append(fin, again);
+      wrap.classList.add('sent'); emit({ type:'done', ref:d.ref }); scroll.scrollTo({ top:0 });
+    }
     o_story.addEventListener('input', () => { clearTimeout(oTimer); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
     o_find.addEventListener('click', () => { if (!navigator.geolocation) return; o_find.textContent = '…';
@@ -538,15 +574,10 @@
       try { const list = JSON.parse(localStorage.getItem('vc_comp') || '[]'), now = new Date().toISOString();
         list.unshift({ ref:d.ref, title:val.title, desc:what_, category:d.category, target:val.who, targetName:'', priority:d.priority, location:val.where, anonymous:!isNamed, ctype:val.ctype, isLegal:val.ctype === 'legal', photoCount:0, status:'received', date:now, timeline:[{ status:'received', date:now }], test:d.test });
         localStorage.setItem('vc_comp', JSON.stringify(list.slice(0, 50))); } catch (e) {}
-      showDone(d);
-      const picks = sel.filter(x => x.on);
-      if (picks.length) { extra.appendChild(el('h4', null, L1.also));
-        picks.forEach(x => { extra.appendChild(authCard(x.n, x.line, x.url, x.url ? L1.open : ''));
-          if (V && (V.emailDraft || V.complaint)) { const cb2 = el('button','af-btn af-line', L1.copy); cb2.type = 'button';
-            cb2.addEventListener('click', () => { try { navigator.clipboard.writeText(V.emailDraft || V.complaint); cb2.textContent = L1.copied; } catch (e) {} }); extra.appendChild(cb2); } }); }
+      finishOne(d);
     });
 
-    wrap.append(top, restored, choice, chat, one, stage, nav, hint, done);
+    wrap.append(top, restored, choice, chat, one, o_done, stage, nav, hint, done);
     panel.append(wrap, sup, conf);
     const steps = [...stage.children];
 
