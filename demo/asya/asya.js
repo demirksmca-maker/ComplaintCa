@@ -411,19 +411,140 @@
       setMode('complaint'); });
 
     function setMode(m){
-      mode = m; wrap.classList.remove('mode-choose','mode-flow','mode-talk');
+      mode = m; wrap.classList.remove('mode-choose','mode-flow','mode-talk','mode-one');
       const talking = m === 'talk' || m === 'access';
-      wrap.classList.add(m === 'choose' ? 'mode-choose' : talking ? 'mode-talk' : 'mode-flow');
+      wrap.classList.add(m === 'choose' ? 'mode-choose' : talking ? 'mode-talk' : 'mode-one');
       hint.textContent = '';
       if (m === 'complaint') {
         types.querySelector('[data-v="access"]').hidden = true;
         setType(val.ctype === 'access' ? 'notice' : val.ctype);
-        cur = 0; render();
+        if (!o_story.value && what.value) { o_story.value = what.value; }
+        scroll.scrollTo({ top:0 }); setTimeout(() => o_mail.focus(), 300);
       } else { emit({ type:'step', i:0, n:STEPS.length, key:m }); scroll.scrollTo({ top:0, behavior:'smooth' });
         if (talking) { openChat(m); if (matchMedia('(pointer:fine)').matches) setTimeout(() => cin.focus(), 300); } }
     }
 
-    wrap.append(top, restored, choice, chat, stage, nav, hint, done);
+    // ── One-page complaint (e-mail · location · story → ASYA analysis → who to reach → send) ──
+    const TR = /^tr/i.test(pageLang());
+    const L1 = TR ? {
+      mail:'E-posta', req:'zorunlu', mailPh:'ornek@eposta.ca', loc:'Konum', locPh:'Şehir veya posta kodu', find:'📍 Bul', story:'Ne oldu?', storyPh:'Kendi cümlelerinizle anlatın…',
+      wait:'Yazmaya başlayın. ASYA analiz edip kimlere ulaşabileceğinizi burada gösterecek.', busy:'ASYA analiz ediyor…', whom:'KİMLERE ULAŞILSIN?', all:'Hepsi',
+      primary:'ASYA gönderir', prep:'Hazır mektup + bağlantı', pool:'Avukat havuzu', poolSub:'Dosyanız adınız olmadan avukatlara açılır; adınız gerekir', name:'Adınız',
+      anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'Aşağıdaki beyanı kabul ediyorum', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
+      note:'İlk kuruma ASYA gönderir. Diğerleri için hazır mektup ve resmî bağlantı verilir.', sos:'Çocuğunuz veya biriniz tehlikedeyse 911’i arayın.',
+      eMail:'Geçerli bir e-posta yazın.', eStory:'Lütfen olanı biraz daha ayrıntılı yazın.', eName:'Lütfen adınızı yazın.', eAgree:'Lütfen beyanı onaylayın.', eFail:'Bir sorun oluştu. Lütfen tekrar deneyin.',
+      copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı' }
+    : {
+      mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
+      wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing…', whom:'WHO SHOULD WE REACH?', all:'All',
+      primary:'ASYA sends', prep:'Ready letter + link', pool:'Lawyer pool', poolSub:'Your case opens to lawyers without your name; your name is required', name:'Your name',
+      anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I accept the statement below', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
+      note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
+      eMail:'Enter a valid email address.', eStory:'Please describe what happened in a bit more detail.', eName:'Please enter your name.', eAgree:'Please confirm the statement.', eFail:'Something went wrong. Please try again.',
+      copy:'Copy letter', copied:'✓ Copied', open:'Open →', also:'Ready letter and link for these' };
+    const one = el('div','af-one');
+    const fld = (label, node, req) => { const w = el('div','af1-f'); const lb = el('label'); lb.append(document.createTextNode(label)); if (req) lb.appendChild(el('em', null, req)); w.append(lb, node); return w; };
+    const o_mail = document.createElement('input'); o_mail.type = 'email'; o_mail.autocomplete = 'email'; o_mail.placeholder = L1.mailPh; o_mail.className = 'af1-in'; o_mail.maxLength = 254;
+    const o_loc = document.createElement('input'); o_loc.type = 'text'; o_loc.placeholder = L1.locPh; o_loc.className = 'af1-in'; o_loc.maxLength = 200;
+    const o_find = el('button','af1-find', L1.find); o_find.type = 'button';
+    const locRow = el('div','af1-locrow'); locRow.append(o_loc, o_find);
+    const o_story = document.createElement('textarea'); o_story.className = 'af1-in af1-ta'; o_story.placeholder = L1.storyPh; o_story.maxLength = 5000;
+    const o_wait = el('p','af1-wait', L1.wait);
+    const o_res = el('div','af1-res'); o_res.hidden = true;
+    const o_an = el('div','af1-an'), o_list = el('div','af1-list'), o_nameBox = el('div','af1-name'), o_agreeRow = el('label','af1-agree'), o_ts = el('div','af1-ts');
+    const o_cb = document.createElement('input'); o_cb.type = 'checkbox'; o_agreeRow.append(o_cb, el('span', null, L1.agree));
+    const o_terms = el('details','af1-terms'); o_terms.append(el('summary', null, L1.terms)); AGREEMENT.forEach(t => o_terms.appendChild(el('p', null, t)));
+    const o_btn = el('button','af-btn gold af1-send', L1.send); o_btn.type = 'button';
+    const o_note = el('p','af1-note', L1.note), o_sos = el('p','af1-sos', L1.sos), o_err = el('p','af-hint af1-err'); o_err.setAttribute('role','status');
+    o_res.append(o_an, el('div','af1-q', L1.whom), o_list, o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_note, o_sos);
+    one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait, o_res, o_err);
+    let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
+    const sel = [];   // extra recipients to prepare a letter for
+    const GROUP2T = { municipal:'municipality', business:'business', landlord:'landlord', employer:'business', rights:'government', government:'government', healthcare:'health', other:'other' };
+    const guessTarget = (d, c) => /school|principal|teacher|student|okul|öğretmen|müdür|öğrenci/i.test(d) ? 'school' : (GROUP2T[c && c.group] || 'other');
+    const sw = (on, locked) => { const s = el('button','af1-sw' + (on ? ' on' : '') + (locked ? ' lock' : '')); s.type = 'button'; s.setAttribute('role','switch'); s.setAttribute('aria-checked', on ? 'true' : 'false'); if (locked) s.disabled = true; return s; };
+    const flip = (s, on) => { s.classList.toggle('on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); };
+    const oNeedName = () => (A && A.priority === 'high') || pool;
+    function drawName(){
+      o_nameBox.innerHTML = '';
+      if (!oNeedName()) { const r = el('label','af1-agree'), c = document.createElement('input'); c.type = 'checkbox'; c.checked = !named; r.append(c, el('span', null, L1.anon)); c.addEventListener('change', () => { named = !c.checked; drawName(); }); o_nameBox.appendChild(r); }
+      if (oNeedName() || named) { const n = document.createElement('input'); n.type = 'text'; n.className = 'af1-in'; n.placeholder = L1.name; n.maxLength = 120; n.value = val.name || ''; n.addEventListener('input', () => { val.name = n.value; });
+        o_nameBox.append(...(oNeedName() ? [el('p','af1-why', L1.nameWhy)] : []), n); }
+    }
+    function drawRes(R){
+      o_wait.hidden = true; o_res.hidden = false; o_an.innerHTML = '';
+      const pr = A ? A.priority : 'medium', dot = el('i','af1-dot ' + pr), box = el('div');
+      const law = V && V.law ? String(V.law).replace(/\s+/g, ' ').trim().slice(0, 170) : '';
+      box.append(el('b', null, (A ? ((A.icon ? A.icon + ' ' : '') + A.label) : '')), el('small', null, law)); o_an.append(dot, box);
+      o_list.innerHTML = ''; sel.length = 0;
+      const rows = [];
+      ((R && R.authorities) || []).slice(0, 2).forEach((a, i) => rows.push({ n:a.name, line:[a.phone, a.email].filter(Boolean).join(' · ') || a.note || '', url:a.url, primary:i === 0 }));
+      ((R && R.chain && R.chain.bodies) || []).slice(0, 2).forEach(x => rows.push({ n:x.name, line:x.phone || '', url:x.url }));
+      const switches = [];
+      const mkRow = (n, sub, on, locked, cb) => { const r = el('div','af1-row'), t = el('div','af1-t'); t.append(el('b', null, n)); if (sub) t.appendChild(el('small', null, sub)); const s = sw(on, locked); s.addEventListener('click', () => { const v = !s.classList.contains('on'); flip(s, v); cb && cb(v); syncAll(); }); r.append(t, s); o_list.appendChild(r); switches.push(s); return s; };
+      rows.forEach(rw => { const row = { n:rw.n, line:rw.line, url:rw.url, on:true }; if (!rw.primary) sel.push(row);
+        mkRow(rw.n, rw.primary ? L1.primary : L1.prep, true, !!rw.primary, v => { row.on = v; }); });
+      if (A && (A.priority === 'high' || ['wrongful','wages','harassment','disc'].indexOf(A.category) >= 0)) {
+        mkRow(L1.pool, L1.poolSub, pool, false, v => { pool = v; drawName(); }); }
+      const head = o_res.querySelector('.af1-q'); let master = head.querySelector('.af1-all'); if (master) master.remove();
+      master = el('span','af1-all'); const ms = sw(true, false); master.append(document.createTextNode(L1.all + ' '), ms); head.appendChild(master);
+      const syncAll = () => { const free = switches.filter(s => !s.disabled); flip(ms, free.every(s => s.classList.contains('on'))); };
+      ms.addEventListener('click', () => { const v = !ms.classList.contains('on'); free(v); });
+      function free(v){ switches.forEach(s => { if (s.disabled) return; flip(s, v); }); rows.forEach((rw, i) => { const r = sel.find(x => x.n === rw.n); if (r) r.on = v; }); if (A && switches.length > rows.length) pool = v; drawName(); syncAll(); }
+      drawName(); loadTs2(); emit({ type:'ai', ...(A || { priority:'medium' }) });
+    }
+    function loadTs2(){
+      if (tsWidget !== null) return; tsWidget = false;
+      const render = () => { try { tsWidget = window.turnstile.render(o_ts, { sitekey:SITEKEY, theme:'dark', callback:t => { tsToken = t; }, 'error-callback':() => { tsToken = ''; }, 'expired-callback':() => { tsToken = ''; } }); } catch (e) {} };
+      if (window.turnstile) return render();
+      const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true; sc.onload = render; document.head.appendChild(sc);
+    }
+    async function analyse(){
+      const d = o_story.value.trim(); if (d.length < 25 || d === oFor) return; oFor = d;
+      o_wait.hidden = false; o_wait.textContent = L1.busy; emit({ type:'thinking' });
+      let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
+      if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = guessTarget(d, c);
+      const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
+      const [R, Vv] = await Promise.all([
+        post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:'' }).then(r => r.ok ? r.json() : null).catch(() => null),
+        post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:'', ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
+      if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
+    }
+    o_story.addEventListener('input', () => { clearTimeout(oTimer); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1600); });
+    o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
+    o_find.addEventListener('click', () => { if (!navigator.geolocation) return; o_find.textContent = '…';
+      navigator.geolocation.getCurrentPosition(p => { fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(r => r.json()).then(d => { const a = d.address || {}; o_loc.value = [a.city || a.town || a.village || a.municipality || '', a.state || ''].filter(Boolean).join(', '); }).catch(() => {}).then(() => { o_find.textContent = L1.find; }); }, () => { o_find.textContent = L1.find; }); });
+    o_btn.addEventListener('click', async () => {
+      o_err.textContent = '';
+      const mail = o_mail.value.trim(), what_ = o_story.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; o_mail.focus(); return; }
+      if (what_.length < 10) { o_err.textContent = L1.eStory; return; }
+      if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
+      if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
+      let last = 0; try { last = parseInt(localStorage.getItem('vc_last_submit') || '0', 10); } catch (e) {}
+      if (Date.now() - last < COOLDOWN_MS) { o_err.textContent = ERR.cooldown; return; }
+      if (A && A.priority === 'high' && !(await askHigh())) return;
+      if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
+      const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
+      let r, d = {};
+      await Promise.all([post('/api/complaint', { test:true, title:val.title, desc:what_, target:val.who || 'other', targetName:'', targetAddress:'', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
+        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, turnstileToken:tsToken, lang:pageLang(), emailDraft:V ? (V.emailDraft || '') : '' })
+        .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
+      oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
+      if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {} o_err.textContent = ERR[d.error] || L1.eFail; return; }
+      try { localStorage.setItem('vc_last_submit', String(Date.now())); } catch (e) {}
+      try { const list = JSON.parse(localStorage.getItem('vc_comp') || '[]'), now = new Date().toISOString();
+        list.unshift({ ref:d.ref, title:val.title, desc:what_, category:d.category, target:val.who, targetName:'', priority:d.priority, location:val.where, anonymous:!isNamed, ctype:val.ctype, isLegal:val.ctype === 'legal', photoCount:0, status:'received', date:now, timeline:[{ status:'received', date:now }], test:d.test });
+        localStorage.setItem('vc_comp', JSON.stringify(list.slice(0, 50))); } catch (e) {}
+      showDone(d);
+      const picks = sel.filter(x => x.on);
+      if (picks.length) { extra.appendChild(el('h4', null, L1.also));
+        picks.forEach(x => { extra.appendChild(authCard(x.n, x.line, x.url, x.url ? L1.open : ''));
+          if (V && (V.emailDraft || V.complaint)) { const cb2 = el('button','af-btn af-line', L1.copy); cb2.type = 'button';
+            cb2.addEventListener('click', () => { try { navigator.clipboard.writeText(V.emailDraft || V.complaint); cb2.textContent = L1.copied; } catch (e) {} }); extra.appendChild(cb2); } }); }
+    });
+
+    wrap.append(top, restored, choice, chat, one, stage, nav, hint, done);
     panel.append(wrap, sup, conf);
     const steps = [...stage.children];
 

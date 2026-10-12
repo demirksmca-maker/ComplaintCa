@@ -240,3 +240,23 @@ textarea.af-in::placeholder{text-align:center}
 /* Metallic lettering as real text (stays translatable): Cinzel + gold gradient */
 .af-choose .af-q{font-family:'Cinzel',Georgia,serif;font-weight:700;letter-spacing:.03em;background:linear-gradient(180deg,#fff7d6 0%,#e9cd73 48%,#b88a26 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
 .af-mode b{font-family:'Cinzel',Georgia,serif;letter-spacing:.05em;background:linear-gradient(180deg,#ffffff,#f1dc9a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+/* One-page complaint */
+.af-one{display:none;width:100%;flex-direction:column;gap:2px;animation:afIn .5s cubic-bezier(.2,.8,.2,1);text-align:left}
+.af.mode-one .af-one{display:flex}.af.mode-one .af-choose,.af.mode-one .af-chat,.af.mode-one .af-top,.af.mode-one .af-stage,.af.mode-one .af-nav,.af.mode-one .af-hint:not(.af1-err),.af.sent .af-one{display:none}
+.af1-f{margin-top:20px}.af1-f label{display:block;font:700 .74rem Georgia,serif;letter-spacing:.07em;color:#e6c98a;margin:0 0 6px}.af1-f label em{float:right;font-style:normal;color:#ffb4bf;letter-spacing:0}
+.af1-in{width:100%;border:0;border-bottom:1.5px solid rgba(230,201,138,.45);background:transparent;padding:8px 0 10px;font:inherit;font-size:1.05rem;color:#fff;border-radius:0;outline:0}.af1-in:focus{border-bottom-color:#e6c35c}
+.af1-ta{min-height:112px;line-height:1.55;border:1.5px solid rgba(230,201,138,.3);border-radius:12px;padding:12px;background:rgba(255,255,255,.04);resize:vertical}.af1-ta:focus{border-color:#e6c35c}
+.af1-locrow{display:flex;gap:10px;align-items:flex-end}.af1-locrow .af1-in{flex:1}.af1-find{flex:none;border:1px solid rgba(230,201,138,.4);border-radius:10px;background:transparent;color:#e6c98a;padding:9px 12px;font:inherit;font-size:.82rem;cursor:pointer}
+.af1-wait{margin:22px 0 0;text-align:center;color:#7f8aa3;font-size:.88rem;line-height:1.5}
+.af1-res{margin-top:24px;border-top:1px solid rgba(230,201,138,.35);padding-top:20px;animation:afIn .5s cubic-bezier(.2,.8,.2,1)}
+.af1-an{display:flex;gap:11px;align-items:flex-start}.af1-an b{display:block;color:#fff6dc;font-size:1.06rem}.af1-an small{display:block;color:#a9b0c4;font-size:.84rem;line-height:1.5;margin-top:3px}
+.af1-dot{width:11px;height:11px;border-radius:50%;margin-top:6px;flex:none;background:#e6c35c;box-shadow:0 0 10px #e6c35c}.af1-dot.high{background:#ff5a6e;box-shadow:0 0 10px #ff5a6e}.af1-dot.low{background:#5fe0a0;box-shadow:0 0 10px #5fe0a0}
+.af1-q{display:flex;justify-content:space-between;align-items:center;margin:22px 0 4px;font:700 .74rem Georgia,serif;letter-spacing:.07em;color:#e6c98a}.af1-all{display:flex;align-items:center;gap:8px;color:#c3c9da;font-weight:400;letter-spacing:0;font-size:.82rem}
+.af1-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}.af1-t{flex:1;min-width:0}.af1-t b{display:block;color:#fff;font-size:1rem;font-weight:400}.af1-t small{display:block;color:#8f96ab;font-size:.76rem;margin-top:1px}
+.af1-sw{flex:none;width:44px;height:26px;border-radius:14px;border:0;padding:0;position:relative;cursor:pointer;background:rgba(255,255,255,.14)}.af1-sw::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#9aa1b6;transition:left .2s,background .2s}
+.af1-sw.on{background:linear-gradient(145deg,#fff2b8,#c9a03c)}.af1-sw.on::after{left:21px;background:#3a2a06}.af1-sw.lock{opacity:.8}
+.af1-name{margin-top:6px}.af1-agree{display:flex;gap:10px;align-items:center;margin-top:16px;color:#c9cfdf;font-size:.88rem;cursor:pointer}.af1-agree input{width:20px;height:20px;accent-color:#c9a03c;flex:none}
+.af1-why{margin:10px 0 0;color:#ffb4bf;font-size:.8rem}.af1-terms{margin-top:8px;font-size:.78rem;color:#8f96ab}.af1-terms summary{cursor:pointer;color:#a9b0c4}.af1-terms p{margin:8px 0 0;line-height:1.5}.af1-ts{margin-top:12px;display:flex;justify-content:center}
+.af1-send{width:100%;margin-top:18px}.af1-note{margin:12px 2px 0;text-align:center;color:#8f96ab;font-size:.76rem;line-height:1.5}.af1-sos{margin:8px 0 0;text-align:center;color:#ffb4bf;font-size:.78rem}.af1-err{min-height:1.2em;text-align:center}
+.af-ov:has(.af.mode-one) .af-scene{height:clamp(110px,17dvh,150px)}
