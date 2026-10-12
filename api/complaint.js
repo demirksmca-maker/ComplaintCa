@@ -13,6 +13,9 @@
 // delivered there (never to the real institution), subject prefixed [PILOT]. The
 // complainant then also gets the second email ("sent to the institution"). This
 // lets the whole loop be tried with three addresses: site, complainant, institution.
+//
+// Reply addresses: REPLY_SECRET signs them (required in production). Without REPLY_DOMAIN
+// they are Gmail plus-tags (complaintca+TAG@gmail.com); with it, TAG@REPLY_DOMAIN.
 import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
