@@ -237,3 +237,6 @@ textarea.af-in::placeholder{text-align:center}
 .af-mode{padding:12px 14px;gap:2px}
 .af-mode-ic{width:32px;height:32px;font-size:.74rem;margin-bottom:2px}
 .af-mode b{font-size:.96rem}.af-mode small{font-size:.72rem;line-height:1.4}
+/* Metallic lettering as real text (stays translatable): Cinzel + gold gradient */
+.af-choose .af-q{font-family:'Cinzel',Georgia,serif;font-weight:700;letter-spacing:.03em;background:linear-gradient(180deg,#fff7d6 0%,#e9cd73 48%,#b88a26 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}
+.af-mode b{font-family:'Cinzel',Georgia,serif;letter-spacing:.05em;background:linear-gradient(180deg,#ffffff,#f1dc9a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
