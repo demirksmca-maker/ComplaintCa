@@ -452,14 +452,15 @@
     const locRow = el('div','af1-locrow'); locRow.append(o_loc, o_find);
     const o_story = document.createElement('textarea'); o_story.className = 'af1-in af1-ta'; o_story.placeholder = L1.storyPh; o_story.maxLength = 5000;
     const o_wait = el('p','af1-wait', L1.wait);
-    const o_res = el('div','af1-res'); o_res.hidden = true;
+    const o_sheet = el('div','af1-sheet'), o_grab = el('button','af1-grab'), o_sum = el('div','af1-sum'), o_body = el('div','af1-sbody'), o_bd = el('div','af1-bd');
+    o_sheet.hidden = true; o_bd.hidden = true; o_grab.type = 'button'; o_grab.setAttribute('aria-label','Toggle'); o_sheet.append(o_grab, o_sum, o_body);
     const o_an = el('div','af1-an'), o_list = el('div','af1-list'), o_nameBox = el('div','af1-name'), o_agreeRow = el('label','af1-agree'), o_ts = el('div','af1-ts');
     const o_cb = document.createElement('input'); o_cb.type = 'checkbox'; o_agreeRow.append(o_cb, el('span', null, L1.agree));
     const o_terms = el('details','af1-terms'); o_terms.append(el('summary', null, L1.terms)); AGREEMENT.forEach(t => o_terms.appendChild(el('p', null, t)));
     const o_btn = el('button','af-btn gold af1-send', L1.send); o_btn.type = 'button';
     const o_note = el('p','af1-note', L1.note), o_sos = el('p','af1-sos', L1.sos), o_err = el('p','af-hint af1-err'); o_err.setAttribute('role','status');
-    o_res.append(o_an, el('div','af1-q', L1.whom), o_list, o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_note, o_sos);
-    one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait, o_res, o_err);
+    o_body.append(o_an, el('div','af1-q', L1.whom), o_list, o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_err, o_note, o_sos);
+    one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
@@ -474,11 +475,20 @@
       if (oNeedName() || named) { const n = document.createElement('input'); n.type = 'text'; n.className = 'af1-in'; n.placeholder = L1.name; n.maxLength = 120; n.value = val.name || ''; n.addEventListener('input', () => { val.name = n.value; });
         o_nameBox.append(...(oNeedName() ? [el('p','af1-why', L1.nameWhy)] : []), n); }
     }
+    let sumTitle = '', sumPr = 'medium', sumCount = 0, sumDone = '';
+    const cleanLaw = s => { const t = String(s || '').replace(/[#*_`]+/g, ' ').replace(/\s+/g, ' ').trim(); const m = t.match(/^(.{40,150}?[.;])(\s|$)/); return (m ? m[1] : t.slice(0, 150)).trim(); };
+    function drawSum(){
+      o_sum.innerHTML = '';
+      const t = el('div'); t.append(el('b', null, sumDone ? '✓ ' + L1.dTitle : sumTitle), el('small', null, sumDone ? sumDone : sumCount + (TR ? ' kuruma ulaşabilirsiniz' : ' institutions you can reach')));
+      o_sum.append(el('i','af1-dot ' + (sumDone ? 'low' : sumPr)), t, el('span','af1-chev','⌃'));
+    }
+    function setSheet(st){ o_sheet.hidden = st === 'hid'; o_sheet.classList.toggle('open', st === 'open'); o_bd.hidden = st !== 'open'; if (st === 'open') o_body.scrollTop = 0; }
+    const togSheet = () => setSheet(o_sheet.classList.contains('open') ? 'peek' : 'open');
+    o_grab.addEventListener('click', togSheet); o_sum.addEventListener('click', togSheet); o_bd.addEventListener('click', () => setSheet('peek'));
     function drawRes(R){
-      o_wait.hidden = true; o_res.hidden = false; o_an.innerHTML = '';
-      const pr = A ? A.priority : 'medium', dot = el('i','af1-dot ' + pr), box = el('div');
-      const law = V && V.law ? String(V.law).replace(/\s+/g, ' ').trim().slice(0, 170) : '';
-      box.append(el('b', null, (A ? ((A.icon ? A.icon + ' ' : '') + A.label) : L1.unsure)), el('small', null, law)); o_an.append(dot, box);
+      o_wait.hidden = true; o_an.innerHTML = '';
+      sumPr = A ? A.priority : 'medium'; sumTitle = A ? ((A.icon ? A.icon + ' ' : '') + A.label) : L1.unsure; sumDone = '';
+      const law = cleanLaw(V && V.law); if (law) o_an.appendChild(el('p','af1-law', law));
       o_list.innerHTML = ''; sel.length = 0;
       const rows = [];
       ((R && R.authorities) || []).slice(0, 2).forEach((a, i) => rows.push({ n:a.name, line:[a.phone, a.email].filter(Boolean).join(' · ') || a.note || '', url:a.url, primary:i === 0 }));
@@ -489,23 +499,24 @@
         mkRow(rw.n, rw.primary ? L1.primary : L1.prep, true, !!rw.primary, v => { row.on = v; }); });
       if (A && (A.priority === 'high' || ['wrongful','wages','harassment','disc'].indexOf(A.category) >= 0)) {
         mkRow(L1.pool, L1.poolSub, pool, false, v => { pool = v; drawName(); }); }
-      const head = o_res.querySelector('.af1-q'); let master = head.querySelector('.af1-all'); if (master) master.remove();
+      const head = o_body.querySelector('.af1-q'); let master = head.querySelector('.af1-all'); if (master) master.remove();
       master = el('span','af1-all'); const ms = sw(true, false); master.append(document.createTextNode(L1.all + ' '), ms); head.appendChild(master);
       const syncAll = () => { const free = switches.filter(s => !s.disabled); flip(ms, free.every(s => s.classList.contains('on'))); };
       ms.addEventListener('click', () => { const v = !ms.classList.contains('on'); free(v); });
       function free(v){ switches.forEach(s => { if (s.disabled) return; flip(s, v); }); rows.forEach((rw, i) => { const r = sel.find(x => x.n === rw.n); if (r) r.on = v; }); if (A && switches.length > rows.length) pool = v; drawName(); syncAll(); }
       drawName(); loadTs2(); emit({ type:'ai', ...(A || { priority:'medium' }) });
+      sumCount = switches.length; drawSum(); setSheet('open');
     }
     function loadTs2(){
       if (tsWidget !== null) return; tsWidget = false;
-      const render = () => { try { tsWidget = window.turnstile.render(o_ts, { sitekey:SITEKEY, theme:'dark', callback:t => { tsToken = t; }, 'error-callback':() => { tsToken = ''; }, 'expired-callback':() => { tsToken = ''; } }); } catch (e) {} };
+      const render = () => { try { tsWidget = window.turnstile.render(o_ts, { sitekey:SITEKEY, theme:'dark', callback:t => { tsToken = t; }, 'error-callback':() => { tsToken = ''; o_ts.style.display = 'none'; }, 'expired-callback':() => { tsToken = ''; } }); } catch (e) {} };
       if (window.turnstile) return render();
       const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true; sc.onload = render; document.head.appendChild(sc);
     }
     async function analyse(){
       const d = o_story.value.trim(); if (d === oFor) return;
       if (d.length < 10) { if (d.length) { o_wait.hidden = false; o_wait.textContent = L1.short; } return; }
-      oFor = d; o_res.hidden = true;
+      oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
       if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = guessTarget(d, c);
@@ -546,17 +557,17 @@
       fin.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
       again.addEventListener('click', () => { emit({ type:'reset' }); F = build(); });
       o_done.append(fin, again);
-      wrap.classList.add('sent'); emit({ type:'done', ref:d.ref }); scroll.scrollTo({ top:0 });
+      o_body.innerHTML = ''; o_body.appendChild(o_done); sumDone = d.ref || ''; drawSum(); setSheet('open'); emit({ type:'done', ref:d.ref });
     }
-    o_story.addEventListener('input', () => { clearTimeout(oTimer); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
+    o_story.addEventListener('input', () => { clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
     o_find.addEventListener('click', () => { if (!navigator.geolocation) return; o_find.textContent = '…';
       navigator.geolocation.getCurrentPosition(p => { fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(r => r.json()).then(d => { const a = d.address || {}; o_loc.value = [a.city || a.town || a.village || a.municipality || '', a.state || ''].filter(Boolean).join(', '); }).catch(() => {}).then(() => { o_find.textContent = L1.find; }); }, () => { o_find.textContent = L1.find; }); });
     o_btn.addEventListener('click', async () => {
       o_err.textContent = '';
       const mail = o_mail.value.trim(), what_ = o_story.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; o_mail.focus(); return; }
-      if (what_.length < 10) { o_err.textContent = L1.eStory; return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; setSheet('peek'); o_mail.focus(); return; }
+      if (what_.length < 10) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
       if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
       let last = 0; try { last = parseInt(localStorage.getItem('vc_last_submit') || '0', 10); } catch (e) {}
@@ -577,7 +588,7 @@
       finishOne(d);
     });
 
-    wrap.append(top, restored, choice, chat, one, o_done, stage, nav, hint, done);
+    wrap.append(top, restored, choice, chat, one, stage, nav, hint, done, o_bd, o_sheet);
     panel.append(wrap, sup, conf);
     const steps = [...stage.children];
 

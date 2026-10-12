@@ -275,3 +275,18 @@ textarea.af-in::placeholder{text-align:center}
 .af1-d-act{display:inline-block;margin-top:10px;color:#e6c98a;font-size:.9rem}
 .af1-acts{display:flex;gap:14px;flex:none}.af1-acts a,.af1-acts button{background:none;border:0;padding:4px 0;color:#e6c98a;font:inherit;font-size:.88rem;cursor:pointer;text-decoration:none;border-bottom:1px solid rgba(230,201,138,.4)}
 .af1-again{background:none;border:0;color:#8f96ab;font:inherit;font-size:.92rem;margin:14px auto 0;padding:8px;cursor:pointer}
+
+/* Bottom sheet: analysis, recipients and sending live in a pull-up panel; the page itself never grows */
+.af-one{padding-bottom:120px}
+.af1-sheet{position:fixed;left:0;right:0;bottom:0;z-index:8;max-width:520px;margin:0 auto;background:linear-gradient(180deg,#12294f,#0a1a38);border-radius:24px 24px 0 0;border-top:1.5px solid #d9b55a;box-shadow:0 -14px 34px rgba(0,0,0,.55);padding:8px 20px calc(env(safe-area-inset-bottom,0px) + 14px);text-align:left;animation:afUp .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes afUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.af1-sheet[hidden],.af1-bd[hidden]{display:none}
+.af1-grab{display:block;width:44px;height:5px;border:0;border-radius:3px;background:rgba(230,201,138,.55);margin:2px auto 10px;padding:0;cursor:pointer}
+.af1-sum{display:flex;align-items:center;gap:12px;cursor:pointer;padding:2px 0 6px}.af1-sum b{display:block;color:#fff6dc;font-size:1.02rem}.af1-sum small{display:block;color:#a9b0c4;font-size:.8rem;margin-top:1px}
+.af1-chev{margin-left:auto;color:#e6c98a;font-size:1.3rem;transition:transform .25s}.af1-sheet.open .af1-chev{transform:rotate(180deg)}
+.af1-sbody{display:none;max-height:calc(74dvh - 80px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}.af1-sheet.open .af1-sbody{display:block}
+.af1-bd{position:fixed;inset:0;z-index:7;background:rgba(3,8,18,.62)}
+.af1-law{margin:4px 0 0;color:#c3c9da;font-size:.88rem;line-height:1.5}
+.af1-sbody .af1-q{margin-top:16px}.af1-sbody .af1-send{position:sticky;bottom:0}
+.af1-sbody .af1-done{display:flex;animation:none}.af1-sbody .af1-d-h{display:none}
+.af1-ts:empty{display:none}
