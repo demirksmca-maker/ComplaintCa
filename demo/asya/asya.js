@@ -425,10 +425,10 @@
     }
 
     // ── One-page complaint (e-mail · location · story → ASYA analysis → who to reach → send) ──
-    const TR = /^tr/i.test(pageLang());
+    const TR = /^tr/i.test(pageLang()) || /^tr/i.test(navigator.language || '');
     const L1 = TR ? {
       mail:'E-posta', req:'zorunlu', mailPh:'ornek@eposta.ca', loc:'Konum', locPh:'Şehir veya posta kodu', find:'📍 Bul', story:'Ne oldu?', storyPh:'Kendi cümlelerinizle anlatın…',
-      wait:'Yazmaya başlayın. ASYA analiz edip kimlere ulaşabileceğinizi burada gösterecek.', busy:'ASYA analiz ediyor…', whom:'KİMLERE ULAŞILSIN?', all:'Hepsi',
+      wait:'Yazmaya başlayın. ASYA analiz edip kimlere ulaşabileceğinizi burada gösterecek.', busy:'ASYA analiz ediyor… (yaklaşık 10 saniye)', short:'Biraz daha yazın (en az 10 karakter). ASYA otomatik analiz edecek.', unsure:'Şikâyetiniz', whom:'KİMLERE ULAŞILSIN?', all:'Hepsi',
       primary:'ASYA gönderir', prep:'Hazır mektup + bağlantı', pool:'Avukat havuzu', poolSub:'Dosyanız adınız olmadan avukatlara açılır; adınız gerekir', name:'Adınız',
       anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'Aşağıdaki beyanı kabul ediyorum', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
       note:'İlk kuruma ASYA gönderir. Diğerleri için hazır mektup ve resmî bağlantı verilir.', sos:'Çocuğunuz veya biriniz tehlikedeyse 911’i arayın.',
@@ -436,7 +436,7 @@
       copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı' }
     : {
       mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
-      wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing…', whom:'WHO SHOULD WE REACH?', all:'All',
+      wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Write a little more (at least 10 characters). ASYA will analyse automatically.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
       primary:'ASYA sends', prep:'Ready letter + link', pool:'Lawyer pool', poolSub:'Your case opens to lawyers without your name; your name is required', name:'Your name',
       anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I accept the statement below', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
       note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
@@ -475,7 +475,7 @@
       o_wait.hidden = true; o_res.hidden = false; o_an.innerHTML = '';
       const pr = A ? A.priority : 'medium', dot = el('i','af1-dot ' + pr), box = el('div');
       const law = V && V.law ? String(V.law).replace(/\s+/g, ' ').trim().slice(0, 170) : '';
-      box.append(el('b', null, (A ? ((A.icon ? A.icon + ' ' : '') + A.label) : '')), el('small', null, law)); o_an.append(dot, box);
+      box.append(el('b', null, (A ? ((A.icon ? A.icon + ' ' : '') + A.label) : L1.unsure)), el('small', null, law)); o_an.append(dot, box);
       o_list.innerHTML = ''; sel.length = 0;
       const rows = [];
       ((R && R.authorities) || []).slice(0, 2).forEach((a, i) => rows.push({ n:a.name, line:[a.phone, a.email].filter(Boolean).join(' · ') || a.note || '', url:a.url, primary:i === 0 }));
@@ -500,8 +500,10 @@
       const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true; sc.onload = render; document.head.appendChild(sc);
     }
     async function analyse(){
-      const d = o_story.value.trim(); if (d.length < 25 || d === oFor) return; oFor = d;
-      o_wait.hidden = false; o_wait.textContent = L1.busy; emit({ type:'thinking' });
+      const d = o_story.value.trim(); if (d === oFor) return;
+      if (d.length < 10) { if (d.length) { o_wait.hidden = false; o_wait.textContent = L1.short; } return; }
+      oFor = d; o_res.hidden = true;
+      o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
       if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
@@ -510,7 +512,7 @@
         post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:'', ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
       if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
     }
-    o_story.addEventListener('input', () => { clearTimeout(oTimer); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1600); });
+    o_story.addEventListener('input', () => { clearTimeout(oTimer); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
     o_find.addEventListener('click', () => { if (!navigator.geolocation) return; o_find.textContent = '…';
       navigator.geolocation.getCurrentPosition(p => { fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(r => r.json()).then(d => { const a = d.address || {}; o_loc.value = [a.city || a.town || a.village || a.municipality || '', a.state || ''].filter(Boolean).join(', '); }).catch(() => {}).then(() => { o_find.textContent = L1.find; }); }, () => { o_find.textContent = L1.find; }); });

@@ -260,3 +260,6 @@ textarea.af-in::placeholder{text-align:center}
 .af1-why{margin:10px 0 0;color:#ffb4bf;font-size:.8rem}.af1-terms{margin-top:8px;font-size:.78rem;color:#8f96ab}.af1-terms summary{cursor:pointer;color:#a9b0c4}.af1-terms p{margin:8px 0 0;line-height:1.5}.af1-ts{margin-top:12px;display:flex;justify-content:center}
 .af1-send{width:100%;margin-top:18px}.af1-note{margin:12px 2px 0;text-align:center;color:#8f96ab;font-size:.76rem;line-height:1.5}.af1-sos{margin:8px 0 0;text-align:center;color:#ffb4bf;font-size:.78rem}.af1-err{min-height:1.2em;text-align:center}
 .af-ov:has(.af.mode-one) .af-scene{height:clamp(110px,17dvh,150px)}
+.af1-bar{display:block;height:3px;margin:12px auto 0;max-width:220px;border-radius:2px;background:rgba(230,201,138,.2);position:relative;overflow:hidden}
+.af1-bar::after{content:"";position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,#c9a03c,#fff2b8);transform-origin:left;animation:af1fill 10s cubic-bezier(.2,.6,.3,1) forwards}
+@keyframes af1fill{from{transform:scaleX(.04)}to{transform:scaleX(.96)}}
