@@ -894,7 +894,7 @@
       if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
-      await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
+      await Promise.all([post('/api/complaint', { test:!!(window._ccPanelTest || /[?&]test=1\b/.test(location.search)), title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
         ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
