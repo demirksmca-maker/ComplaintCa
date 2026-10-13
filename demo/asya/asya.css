@@ -458,3 +458,6 @@ textarea.af-in::placeholder{text-align:center}
 .af1-frame .af1-f.af1-need>label::after{content:"●";margin-left:6px;color:#e6c35c;font-size:.55rem;animation:afPulseDot 1.4s ease-in-out infinite}
 @keyframes afPulseDot{50%{opacity:.3}}
 .af1-frame .af1-f.af1-need>label em{display:none}
+/* field filled from the story: brief gold glow */
+.af1-frame .af1-f.af1-found .af1-in{border-bottom-color:#e6c35c;box-shadow:0 8px 14px -10px rgba(230,195,92,1);transition:box-shadow .6s}
+.af1-frame .af1-f.af1-found>label{color:#ffe08a}

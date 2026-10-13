@@ -60,10 +60,9 @@
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const post = (url, body) => fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(body) });
   const pageLang = () => document.documentElement.lang || 'en';
-  // Panel language: the page's chosen language, else the browser's, among the site's 7 (en fr es tr ar zh pa).
+  // Panel language: the site's chosen language among its 7 (en fr es tr ar zh pa); English by default.
   const LANGS = ['fr','es','tr','ar','zh','pa'];
-  const pickLang = () => { const p = String(pageLang()).slice(0, 2).toLowerCase(); if (LANGS.includes(p)) return p; if (p && p !== 'en') return 'en';
-    const n = String(navigator.language || '').slice(0, 2).toLowerCase(); return LANGS.includes(n) ? n : 'en'; };
+  const pickLang = () => { const p = String(pageLang()).slice(0, 2).toLowerCase(); return LANGS.includes(p) ? p : 'en'; };   // the site's chosen language only, never the browser's
   const tx = (s, lg) => { const D = window.ccAsyaDict; return (lg && lg !== 'en' && D && D[lg] && D[lg][s]) || s; };
   const IS_DEMO = location.pathname.indexOf('/demo') === 0;
   let builtLg = 'en';
@@ -704,6 +703,18 @@
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
       if (oFor !== d) return;
       if (c && c.isComplaint === false) { setSheet('hid'); o_ask.hidden = true; o_wait.textContent = TX('This doesn’t look like a problem yet. Tell ASYA what went wrong.'); return; }
+      // What the story already says goes into the empty fields, with a short gold glow; only real gaps are asked.
+      if (c) {
+        const glow = inp => { const f = inp.closest('.af1-f'); f.classList.add('af1-found'); setTimeout(() => f.classList.remove('af1-found'), 2200); };
+        if (c.institution && !o_who.value.trim()) { o_who.value = c.institution; whoPicked = c.institution; glow(o_who); }
+        if (c.address && !whoAddr) whoAddr = c.address;
+        if (c.city && !o_loc.value.trim()) { o_loc.value = c.city; glow(o_loc); }
+        else if (c.address && !o_loc.value.trim()) {
+          try { const g = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&countrycodes=ca&q=' + encodeURIComponent(c.address), { headers:{ 'Accept-Language':'en' } }).then(r => r.json());
+            if (oFor === d && g && g[0] && !o_loc.value.trim()) { o_loc.value = osmShort(g[0]); glow(o_loc); } } catch (e) {}
+          if (oFor !== d) return;
+        }
+      }
       const miss = stillMissing(c);
       if (miss.some(m => NEED.includes(m))) { setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
       o_ask.hidden = true;
