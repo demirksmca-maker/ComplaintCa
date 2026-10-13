@@ -451,6 +451,27 @@
     const o_loc = document.createElement('input'); o_loc.type = 'text'; o_loc.placeholder = L1.locPh; o_loc.className = 'af1-in'; o_loc.maxLength = 200;
     const o_find = el('button','af1-find', L1.find); o_find.type = 'button';
     const locRow = el('div','af1-locrow'); locRow.append(o_loc, o_find);
+    // Who the complaint is about: optional, with OpenStreetMap suggestions near the location.
+    const o_who = document.createElement('input'); o_who.type = 'text'; o_who.className = 'af1-in'; o_who.placeholder = TX('School, company, landlord…'); o_who.maxLength = 120; o_who.autocomplete = 'off';
+    const o_sug = el('div','af1-sug'); o_sug.hidden = true; let whoAddr = '', whoPicked = '', sugTimer = 0, sugFor = '';
+    const whoBox = el('div','af1-whobox'); whoBox.append(o_who, o_sug);
+    async function suggest(){
+      const q = o_who.value.trim(); if (q.length < 3 || q === whoPicked) { o_sug.hidden = true; return; } if (q === sugFor) return; sugFor = q;
+      let rows = [];
+      try { const loc = o_loc.value.trim();
+        const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=4&countrycodes=ca&q=' + encodeURIComponent(q + (loc ? ', ' + loc : '')), { headers:{ 'Accept-Language':'en' } });
+        if (r.ok) rows = await r.json(); } catch (e) {}
+      if (sugFor !== q) return;
+      o_sug.innerHTML = '';
+      rows.forEach(x => { const parts = String(x.display_name || '').split(', '), name = (x.name || parts[0] || '').trim(), addr = parts.slice(x.name ? 1 : 1, 5).join(', ');
+        if (!name) return; const b = el('button','af1-sugi'); b.type = 'button'; b.append(el('b', null, name), el('small', null, addr));
+        b.addEventListener('mousedown', e => e.preventDefault());
+        b.addEventListener('click', () => { o_who.value = name; whoPicked = name; whoAddr = addr; o_sug.hidden = true; if (A) { fillOrg(); if (!draftEdited) buildDraft(); drawDraft(); } });
+        o_sug.appendChild(b); });
+      o_sug.hidden = !o_sug.children.length;
+    }
+    o_who.addEventListener('input', () => { whoAddr = ''; whoPicked = ''; clearTimeout(sugTimer); sugTimer = setTimeout(suggest, 450); });
+    o_who.addEventListener('blur', () => setTimeout(() => { o_sug.hidden = true; }, 150));
     const o_story = document.createElement('textarea'); o_story.className = 'af1-in af1-ta'; o_story.placeholder = L1.storyPh; o_story.maxLength = 5000;
     const o_wait = el('p','af1-wait', L1.wait);
     const o_sheet = el('div','af1-sheet'), o_grab = el('button','af1-grab'), o_sum = el('div','af1-sum'), o_body = el('div','af1-sbody'), o_bd = el('div','af1-bd');
@@ -519,9 +540,10 @@
     }
     o_edit.addEventListener('click', () => { editing = !editing; if (editing && !draftEdited) draftEdited = draftPlain(); drawDraft(); });
     o_org.addEventListener('input', () => { orgAuto = false; o_orgHint.textContent = ''; if (!draftEdited) { buildDraft(); } drawDraft(); });
-    function fillOrg(){ orgAuto = !!(A && A.institution); o_org.value = orgAuto ? A.institution : ''; o_orgHint.textContent = orgAuto ? L2.found : ''; }
+    function fillOrg(){ const typed = o_who.value.trim(); orgAuto = !typed && !!(A && A.institution); o_org.value = typed || (orgAuto ? A.institution : ''); o_orgHint.textContent = orgAuto ? L2.found : ''; }
     const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TX('Auto-fill demo'))); if (!IS_DEMO) o_auto.style.display = 'none';
-    one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait, o_auto);
+    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story));
+    one.append(o_frame, o_wait, o_auto);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
@@ -586,8 +608,8 @@
       if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
       const [R, Vv] = await Promise.all([
-        post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:'' }).then(r => r.ok ? r.json() : null).catch(() => null),
-        post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:'', ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
+        post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
+        post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:o_who.value.trim(), ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
       if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
     }
     function finishOne(d){
@@ -640,7 +662,7 @@
       if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
-      await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:'', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
+      await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
         ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
