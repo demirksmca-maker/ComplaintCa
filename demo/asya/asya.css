@@ -307,7 +307,8 @@ textarea.af-in::placeholder{text-align:center}
 .af1-navb{flex:none;border:1px solid rgba(230,201,138,.4);border-radius:12px;background:transparent;color:#e6c98a;padding:13px 18px;font:inherit;font-size:.9rem;cursor:pointer}
 .af1-navn{flex:1;margin:0}
 .af1-sbody{max-height:calc(74dvh - 150px)}
-.af1-sbody .af1-send{position:static}
+/* Send stays pinned at the bottom of the sheet, whatever is open above it (name, terms, verification). */
+.af1-sbody .af1-send{position:sticky;bottom:6px;z-index:3;box-shadow:0 -14px 18px 6px #0e2146}
 .af1-auto{display:block;margin:18px auto 0}
 .af1-p .af1-an{display:block}.af1-p .af1-q{margin-top:18px}.af1-p .af1-an .af1-q:first-child{margin-top:4px}
 /* host-page reset: the home page styles bare label/input/textarea; zero-specificity guards so every .af rule still wins */
