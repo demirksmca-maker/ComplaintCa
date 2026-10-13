@@ -653,7 +653,8 @@
       const inst = d.institution || {}, sent = inst.status === 'sent', ref = d.ref || '';
       const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const fin = el('div','af1-fin' + (calm ? ' calm' : ''));
-      const stage = el('div','af1-stage'), env = el('div','af1-env'), wax = el('b','af1-wax','⚖'), seal = el('div','af1-seal fx', '⚖');
+      const MAPLE = '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#d52b1e" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></svg>';
+      const stage = el('div','af1-stage'), env = el('div','af1-env'), wax = el('b','af1-wax'), seal = el('div','af1-seal fx'); wax.innerHTML = MAPLE; seal.innerHTML = MAPLE;
       env.append(el('i','af1-flap'), wax); stage.append(env, seal);
       const sub = sent ? TX('Delivered to {n}').replace('{n}', inst.name || '') : inst.status === 'form_only' ? L1.dForm.replace('{n}', inst.name || '') : inst.status === 'failed' ? L1.dFail : L1.dSaved;
       const refEl = el('div','af1-fin-ref fx', calm ? ref : '');
@@ -669,7 +670,7 @@
       fin.appendChild(done);
       o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';
       scroll.scrollTo({ top:0, behavior: calm ? 'auto' : 'smooth' });
-      if (calm) { o_frame.classList.add('lit'); return; }
+      if (calm) { o_frame.classList.add('lit', 'settled'); return; }
       setTimeout(() => { brand.classList.add('burst'); setTimeout(() => brand.classList.remove('burst'), 1200); }, 1100);
       requestAnimationFrame(() => o_frame.classList.add('lit'));
       setTimeout(() => o_frame.classList.add('settled'), 2700);   // drop the sweep mask once the frame is fully lit

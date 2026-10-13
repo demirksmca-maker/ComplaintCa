@@ -408,3 +408,15 @@ textarea.af-in::placeholder{text-align:center}
 @keyframes afFinIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.af1-frame.lit::after{animation:none;-webkit-mask:none;mask:none}}
 .af1-frame.lit.settled::after{animation:none;-webkit-mask:none;mask:none}
+/* seal: white medallion with a red maple leaf; the lit wreath settles into Canada's red and white */
+.af1-wax,.af1-seal{background:radial-gradient(circle at 35% 30%,#ffffff,#f1f1f1 60%,#d9d9d9);color:transparent}
+.af1-wax{box-shadow:0 0 0 2px #d9b55a,0 3px 8px rgba(0,0,0,.35)}
+.af1-seal{box-shadow:0 0 0 3px #d9b55a,0 0 0 6px rgba(213,43,30,.85),0 8px 22px rgba(0,0,0,.5)}
+.af1-wax svg{width:70%;height:70%}.af1-seal svg{width:66%;height:66%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+/* Canada finish: leaves turn flag red over a white halo (WebKit/Blink mask-box-image; other browsers keep the gold glow) */
+@supports (-webkit-mask-box-image:none){
+ .af1-frame.lit.settled::before{filter:grayscale(1) brightness(2.6) drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px rgba(255,255,255,.6));transition:filter 1.2s ease}
+ .af1-frame.lit.settled::after{border-image:none;filter:none;background:linear-gradient(180deg,#ef4136,#d52b1e 50%,#a8170f);
+  -webkit-mask-box-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch;animation:afRed 1.2s ease both}
+}
+@keyframes afRed{from{opacity:0}to{opacity:1}}
