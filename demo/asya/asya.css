@@ -332,7 +332,7 @@ textarea.af-in::placeholder{text-align:center}
 .af1-sugi:hover,.af1-sugi:focus{background:rgba(230,201,138,.1)}
 .af1-frame>.af1-f:has(.af1-whobox){z-index:3}
 /* ASYA name under the scales: emergency-light style, blue left / red-pink right, double flash each (about 2.5 flashes a second, under the 3 Hz safety limit) */
-.af-brand{position:relative;z-index:2;width:max-content;margin:-2px auto 8px;text-align:center;font:700 1.75rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;padding:6px 0 6px .42em;color:#fff;
+.af-brand{position:relative;z-index:2;width:max-content;margin:-2px auto 8px;text-align:center;font:700 1.085rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;padding:6px 0 6px .42em;color:#fff;
  text-shadow:0 0 4px rgba(255,255,255,.6);animation:afSirenTxt 6.4s linear infinite}
 .af-brand::before,.af-brand::after{content:"";position:absolute;top:-18px;bottom:-18px;width:72%;border-radius:50%;z-index:-1;filter:blur(14px);opacity:0}
 .af-brand::before{left:-18%;background:radial-gradient(closest-side,#2f8bff,rgba(47,139,255,.55) 55%,transparent);animation:afSirenB 6.4s linear infinite}
@@ -526,7 +526,7 @@ a.af1-hico:hover{color:#ffe08a}
 .af-ov.af-fin-on .af-scene,.af-ov.af-fin-on .af-brand{display:none}
 .af1-fin-top{display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 0}
 .af1-fin-top img{width:62px;height:62px;object-fit:contain;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 72%);mask-image:radial-gradient(circle,#000 58%,transparent 72%)}
-.af1-fin-brand{font:700 1.2rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;padding-left:.3em;color:#fff;text-shadow:-2px 0 8px rgba(74,163,255,.7),2px 0 8px rgba(255,79,147,.5)}
+.af1-fin-brand{font:700 .745rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;padding-left:.3em;color:#fff;text-shadow:-2px 0 8px rgba(74,163,255,.7),2px 0 8px rgba(255,79,147,.5)}
 .af1-fin-top .af1-stage{flex:none;width:66px;height:66px;margin:0}
 .af1-fin-top .af1-seal{top:2px;width:56px;height:56px;margin-left:-28px}
 .af1-fin-top .af1-env{top:12px;width:60px;height:40px;margin-left:-30px}
