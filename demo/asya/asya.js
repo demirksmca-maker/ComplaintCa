@@ -540,10 +540,16 @@
         { h:'What I ask', b:asks.map(x => '• ' + x).join('\n') },
         ...(law ? [{ h:'Legal basis', b:law }] : []),
         { h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : ''), dl:true },
-        { h:'If there is no reply', b:esc },
+        { h:'If there is no reply', b:esc + reserve() },
         { h:'', b:'Sincerely,\n' + NAME_TOKEN }
       ];
     }
+    // Legal-rights case: one measured line in the letter, not a threat.
+    const reserve = () => { if (!V || !V.poolSuggest) return ''; const law = cleanLaw(V.law).replace(/\s*\(.*$/, '').replace(/[.;]+$/, ''); if (!law) return '';
+      return '\nI reserve my right to pursue this matter under the ' + law.replace(/^the\s+/i, '') + (V.claimDeadline ? ' within the legal time limit (' + V.claimDeadline.replace(/[.]+$/, '') + ')' : '') + '.'; };
+    // Link to the lawyer finder with province and area already chosen (home page: /?go=lawyer&lwp=on&lwa=employment).
+    const LW_AREA2 = { wrongful:'employment', wages:'employment', harassment:'humanrights', disc:'humanrights', race:'humanrights', gender:'humanrights', religion:'humanrights', disability:'humanrights', age:'humanrights', sexual:'humanrights', language:'humanrights', indigenous:'humanrights', property:'tenant', repairs:'tenant', immigration:'immigration', police:'criminal' };
+    const lawyerHref = () => { const pv = provOf(o_loc.value).toLowerCase(), ar = LW_AREA2[A && A.category] || ''; return '/?go=lawyer' + (pv ? '&lwp=' + pv : '') + (ar ? '&lwa=' + ar : ''); };
     const draftSubject = () => 'Formal complaint: ' + (A ? A.label : 'Complaint') + (o_org.value.trim() ? ' · ' + o_org.value.trim() : '');
     const draftPlain = () => draftSecs.map(s => (s.h ? s.h.toUpperCase() + '\n' : '') + s.b).join('\n\n');
     const draftText = () => (draftEdited || draftPlain());
@@ -659,7 +665,7 @@
       const two = el('div','af1-two'), cell = (k, v) => { const c = el('div','af1-cell'); c.append(el('small', null, TX(k)), el('b', null, v || '—')); return c; };
       two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); box.appendChild(two);
       box.appendChild(el('p','af1-rnote', TX('ASYA: this may be a legal-rights case.')));
-      const go = el('a','af-btn gold af1-rgo', TX('Talk to a lawyer')); go.href = '/?go=lawyer';
+      const go = el('a','af-btn gold af1-rgo', TX('Talk to a lawyer')); go.href = lawyerHref();
       go.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
       box.appendChild(go);
       const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
@@ -819,6 +825,14 @@
       fin.append(stage, el('h2','af1-fin-h fx', sent ? TX('Complaint sent') : TX('Complaint saved')), el('p','af1-fin-sub fx', sub),
         ...(d.test ? [el('span','af1-d-tag fx', L1.dTest)] : []), el('p','af1-fin-k fx', L1.dRef), refEl, el('div','af1-fin-rule fx', '◆'), rowsEl,
         ...(sent ? [el('p','af1-fin-note fx', TX('We’ll email you the moment they reply.'))] : []), track);
+      if (V && V.poolSuggest && (V.remedy || V.claimDeadline)) {
+        const rc = el('div','af1-rights af1-fin-rights fx'); rc.appendChild(el('h5', null, TX('Your rights')));
+        const two = el('div','af1-two'), cell = (k, v) => { const c = el('div','af1-cell'); c.append(el('small', null, TX(k)), el('b', null, v || '—')); return c; };
+        two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); rc.appendChild(two);
+        const lw = el('a','af1-fin-lawyer', TX('Talk to a lawyer') + ' →'); lw.href = lawyerHref();
+        lw.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
+        rc.append(lw, el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
+      }
       if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
       fin.appendChild(done);
       o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';

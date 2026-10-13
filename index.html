@@ -5008,7 +5008,7 @@ function _handleTrackLink(){
 // → doğrudan ilgili uygulama sekmesine düş.
 function _handleGoLink(){
   try{
-    var go=new URLSearchParams(location.search).get('go');
+    var _q=new URLSearchParams(location.search),go=_q.get('go');
     if(!go) return;
     history.replaceState(null,'',location.pathname);
     if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
@@ -5016,6 +5016,10 @@ function _handleGoLink(){
     var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
     if(go==='new'){ openAsyaPanel(); return; }
     if(allowed[go]) goApp(go);
+    // From the complaint panel: lawyer finder with province and area already chosen.
+    if(go==='lawyer'){ var _p=(_q.get('lwp')||'').replace(/[^a-z]/g,''),_a=(_q.get('lwa')||'').replace(/[^a-z]/g,'');
+      setTimeout(function(){ try{ var pe=_p&&document.querySelector('[onclick="selLwProv(\''+_p+'\',this)"]'); if(pe) pe.click();
+        var ae=_a&&document.querySelector('[onclick="selLwArea(\''+_a+'\',this)"]'); if(ae) ae.click(); if(pe&&ae&&typeof lwGoStep==='function') lwGoStep(3); }catch(e){} },900); }
   }catch(e){}
 }
 function _handleGuidePrefill(){

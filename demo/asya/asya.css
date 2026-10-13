@@ -473,3 +473,6 @@ textarea.af-in::placeholder{text-align:center}
 .af1-rgo{display:block;width:100%;margin-top:10px;text-decoration:none;text-align:center}
 .af1-rfree{display:block;margin-top:8px;color:#e6c98a;font-size:.8rem;text-decoration:none}.af1-rfree:hover{text-decoration:underline}
 .af1-rdisc{margin:8px 0 0;color:#7f8aa3;font-size:.66rem}
+.af1-fin-rights{margin-top:16px;animation-delay:2.7s!important}
+.af1-fin-lawyer{display:block;margin-top:10px;color:#ffe08a;font-weight:700;font-size:.86rem;text-decoration:none}.af1-fin-lawyer:hover{text-decoration:underline}
+.af1-frame.done>.af1-duo,.af1-frame.done>.af1-cap,.af1-frame.done>.af1-warn,.af1-frame.done>.af1-ask{display:none}
