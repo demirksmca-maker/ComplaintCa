@@ -551,7 +551,14 @@
     // Link to the lawyer finder with province and area already chosen (home page: /?go=lawyer&lwp=on&lwa=employment).
     const LW_AREA2 = { wrongful:'employment', wages:'employment', harassment:'humanrights', disc:'humanrights', race:'humanrights', gender:'humanrights', religion:'humanrights', disability:'humanrights', age:'humanrights', sexual:'humanrights', language:'humanrights', indigenous:'humanrights', property:'tenant', repairs:'tenant', immigration:'immigration', police:'criminal' };
     const lawyerHref = () => { const pv = provOf(o_loc.value).toLowerCase(), ar = LW_AREA2[A && A.category] || ''; return '/?go=lawyer' + (pv ? '&lwp=' + pv : '') + (ar ? '&lwa=' + ar : ''); };
-    const recip = () => (Rt && Rt.authorities && Rt.authorities[0] && Rt.authorities[0].name) || o_org.value.trim();
+    // One case file after analysis: every card, the letter and the send read from here, so a fact can't differ between them.
+    const caseFile = () => {
+      const auth = (Rt && Rt.authorities && Rt.authorities[0]) || null;
+      return { against:o_org.value.trim(), againstAddr:whoAddr, recipient:(auth && auth.name) || '', recipientEmail:(auth && auth.email) || '',
+        place:o_loc.value.trim(), province:provOf(o_loc.value), category:A ? routeCategory(A, val.who) : '', law:cleanLaw(V && V.law),
+        remedy:(V && V.remedy) || '', claimDeadline:(V && V.claimDeadline) || '', legal:!!(V && V.poolSuggest) };
+    };
+    const recip = () => caseFile().recipient || o_org.value.trim();
     const draftSubject = () => 'Formal complaint: ' + (A ? A.label : 'Complaint') + (o_org.value.trim() ? ' · ' + o_org.value.trim() : '');
     const draftPlain = () => draftSecs.map(s => (s.h ? s.h.toUpperCase() + '\n' : '') + s.b).join('\n\n');
     const draftText = () => (draftEdited || draftPlain());
@@ -858,6 +865,18 @@
           .then(() => { o_find.textContent = '✓'; o_find.disabled = false; setTimeout(() => { o_find.textContent = L1.find; }, 1500); });
       }, () => { if (done) return; done = true; clearTimeout(guard); fail(); }, { enableHighAccuracy:false, timeout:12000, maximumAge:60000 });
     });
+    let overrideCheck = false;
+    const PROV_ACT = { ON:/ontario|\bs\.o\.\s/i, BC:/british columbia|\brsbc\b|\bs\.b\.c\./i, AB:/alberta|\brsa\b/i, QC:/qu[eé]bec|\bcqlr\b/i, MB:/manitoba|c\.c\.s\.m/i, SK:/saskatchewan/i, NS:/nova scotia/i, NB:/new brunswick/i };
+    function checkCase(letter){
+      const c = caseFile(), out = [], low = s => String(s || '').toLowerCase().trim();
+      const greet = (letter.split('\n').find(l => /^dear\b/i.test(l.trim())) || '');
+      if (c.recipient && !low(greet).includes(low(c.recipient))) out.push(TX('The letter is not addressed to the institution it is sent to.'));
+      if (c.against && c.recipient && low(c.against) === low(c.recipient)) out.push(TX('The institution receiving the letter is the one you complain about.'));
+      if (/\[(your name|name|ref|date|deadline|address)\]/i.test(letter)) out.push(TX('The letter still has a blank to fill in.'));
+      const other = Object.keys(PROV_ACT).filter(k => k !== c.province && PROV_ACT[k].test(c.law));
+      if (c.province && other.length) out.push(TX('The law named is from another province.'));
+      return out;
+    }
     o_btn.addEventListener('click', async () => {
       o_err.textContent = '';
       const mail = o_mail.value.trim(), what_ = o_story.value.trim();
@@ -865,6 +884,10 @@
       if (!enough(what_)) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
       if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
+      // Consistency check before anything leaves: problems are listed; a second tap sends anyway (the person may have edited on purpose).
+      const issues = checkCase(draftText().replace(NAME_TOKEN, (oNeedName() || named) && (val.name || '').trim() ? val.name.trim() : 'Complainant'));
+      if (issues.length && !overrideCheck) { overrideCheck = true; o_err.textContent = '⚠ ' + issues.join(' ') + ' ' + TX('Fix it in card 1, or tap Send again to send as it is.'); return; }
+      overrideCheck = false;
       let last = 0; try { last = parseInt(localStorage.getItem('vc_last_submit') || '0', 10); } catch (e) {}
       if (Date.now() - last < COOLDOWN_MS) { o_err.textContent = ERR.cooldown; return; }
       if (A && A.priority === 'high' && !(await askHigh())) return;
