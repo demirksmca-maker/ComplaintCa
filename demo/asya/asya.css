@@ -318,10 +318,10 @@ textarea.af-in::placeholder{text-align:center}
 .af-ov input.af1-in:-webkit-autofill,.af-ov input.af1-in:-webkit-autofill:hover,.af-ov input.af1-in:-webkit-autofill:focus{-webkit-text-fill-color:#fff;caret-color:#fff;-webkit-box-shadow:0 0 0 1000px #0e1f40 inset;box-shadow:0 0 0 1000px #0e1f40 inset;transition:background-color 9999s}
 .af1-paper{direction:ltr;text-align:left}
 /* laurel frame around the one-page form (Figma artwork, transparent PNG, 740x1220) */
-.af1-frame{position:relative;padding:4px 28px 38px}
-.af1-frame::before{content:"";position:absolute;left:-8px;right:-8px;top:-72px;bottom:-22px;pointer-events:none;z-index:0;
- border-style:solid;border-color:transparent;border-width:60px 32px 76px;
- border-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 60px 32px 76px stretch}
+.af1-frame{position:relative;padding:4px 16px 22px}
+.af1-frame::before{content:"";position:absolute;left:-4px;right:-4px;top:-26px;bottom:-10px;pointer-events:none;z-index:0;
+ border-style:solid;border-color:transparent;border-width:20px 11px 25px;
+ border-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 20px 11px 25px stretch}
 .af1-frame>*{position:relative;z-index:1}
 .af1-whobox{position:relative}
 .af1-sug{position:absolute;left:0;right:0;top:100%;z-index:5;margin-top:4px;background:#0f2348;border:1px solid rgba(230,201,138,.4);border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.45)}
@@ -336,10 +336,10 @@ textarea.af-in::placeholder{text-align:center}
 .af-brand::before,.af-brand::after{content:"";position:absolute;top:-18px;bottom:-18px;width:72%;border-radius:50%;z-index:-1;filter:blur(14px);opacity:0}
 .af-brand::before{left:-18%;background:radial-gradient(closest-side,#2f8bff,rgba(47,139,255,.55) 55%,transparent);animation:afSirenB 1.6s linear infinite}
 .af-brand::after{right:-18%;background:radial-gradient(closest-side,#ff2d78,rgba(255,45,120,.55) 55%,transparent);animation:afSirenR 1.6s linear infinite}
-@keyframes afSirenB{0%,4%{opacity:1}12%,16%{opacity:.08}20%,26%{opacity:1}34%,100%{opacity:.08}}
-@keyframes afSirenR{0%,48%{opacity:.08}50%,54%{opacity:1}62%,66%{opacity:.08}70%,76%{opacity:1}84%,100%{opacity:.08}}
-@keyframes afSirenTxt{0%,26%{text-shadow:-3px 0 10px #4aa3ff,0 0 30px #2f8bff,0 0 2px #fff}34%,48%{text-shadow:0 0 4px rgba(255,255,255,.5)}50%,76%{text-shadow:3px 0 10px #ff4f93,0 0 30px #ff2d78,0 0 2px #fff}84%,100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
-@media (prefers-reduced-motion:reduce){.af-brand,.af-brand::before,.af-brand::after{animation:none}.af-brand::before,.af-brand::after{opacity:.6}}
+@keyframes afSirenB{0%,4%{opacity:.5}12%,16%{opacity:.04}20%,26%{opacity:.5}34%,100%{opacity:.04}}
+@keyframes afSirenR{0%,48%{opacity:.04}50%,54%{opacity:.5}62%,66%{opacity:.04}70%,76%{opacity:.5}84%,100%{opacity:.04}}
+@keyframes afSirenTxt{0%,26%{text-shadow:-2px 0 5px #4aa3ff,0 0 15px #2f8bff,0 0 2px #fff}34%,48%{text-shadow:0 0 4px rgba(255,255,255,.5)}50%,76%{text-shadow:2px 0 5px #ff4f93,0 0 15px #ff2d78,0 0 2px #fff}84%,100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
+@media (prefers-reduced-motion:reduce){.af-brand,.af-brand::before,.af-brand::after{animation:none}.af-brand::before,.af-brand::after{opacity:.3}}
 /* story sheet in the laurel theme: everything mirrored around the centre line */
 .af1-sheet{border-top:0}
 .af1-sheet::before{content:"";position:absolute;left:28px;right:28px;top:0;height:1.5px;background:linear-gradient(90deg,transparent,#e6c35c 25%,#f3dc8c 50%,#e6c35c 75%,transparent)}
@@ -369,8 +369,8 @@ textarea.af-in::placeholder{text-align:center}
 .af1-p .af1-law{text-align:center}.af1-nav>.af1-navn{margin:0!important}
 /* sealing ceremony + final screen inside the laurel frame */
 .af1-frame.done>.af1-f{display:none}
-.af1-frame::after{content:"";position:absolute;left:-8px;right:-8px;top:-72px;bottom:-22px;pointer-events:none;z-index:0;opacity:0;
- border-style:solid;border-color:transparent;border-width:60px 32px 76px;border-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 60px 32px 76px stretch;
+.af1-frame::after{content:"";position:absolute;left:-4px;right:-4px;top:-26px;bottom:-10px;pointer-events:none;z-index:0;opacity:0;
+ border-style:solid;border-color:transparent;border-width:20px 11px 25px;border-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 20px 11px 25px stretch;
  filter:drop-shadow(0 0 4px rgba(255,214,110,.5));
  -webkit-mask-image:linear-gradient(to top,#000 45%,transparent 55%);mask-image:linear-gradient(to top,#000 45%,transparent 55%);
  -webkit-mask-size:100% 220%;mask-size:100% 220%;-webkit-mask-position:0 0;mask-position:0 0}
@@ -400,7 +400,7 @@ textarea.af-in::placeholder{text-align:center}
 .af1-fin-more{border-bottom:1px solid rgba(230,201,138,.4);padding:2px 0}
 .af1-fin.calm *,.af1-fin.calm .fx{animation:none!important}.af1-fin.calm .af1-env{display:none}
 .af-brand.burst{animation:afBurst 1.2s ease-out}
-@keyframes afBurst{0%{text-shadow:0 0 4px #fff}30%{text-shadow:-6px 0 18px #4aa3ff,6px 0 18px #ff4f93,0 0 40px #b9a6ff}100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
+@keyframes afBurst{0%{text-shadow:0 0 4px #fff}30%{text-shadow:-3px 0 9px #4aa3ff,3px 0 9px #ff4f93,0 0 20px #b9a6ff}100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
 @keyframes afEnvIn{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
 @keyframes afWax{from{opacity:0;transform:translateY(-70px) scale(1.8)}to{opacity:1;transform:none}}
 @keyframes afEnvFly{to{opacity:0;transform:translateY(-230px) scale(.25)}}
@@ -417,7 +417,7 @@ textarea.af-in::placeholder{text-align:center}
 @supports (-webkit-mask-box-image:none){
  .af1-frame.lit.settled::before{filter:grayscale(1) brightness(2.6) drop-shadow(0 0 3px rgba(255,255,255,.8)) drop-shadow(0 0 8px rgba(255,255,255,.35));transition:filter 1.2s ease}
  .af1-frame.lit.settled::after{border-image:none;filter:none;background:linear-gradient(180deg,#ef4136,#d52b1e 50%,#a8170f);
-  -webkit-mask-box-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 60px 32px 76px stretch;animation:afRed 1.2s ease both}
+  -webkit-mask-box-image:url(/demo/asya/laurel-frame.webp) 250 135 320 / 20px 11px 25px stretch;animation:afRed 1.2s ease both}
 }
 @keyframes afRed{from{opacity:0}to{opacity:1}}
 
