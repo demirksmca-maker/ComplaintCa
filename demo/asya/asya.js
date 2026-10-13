@@ -851,6 +851,43 @@
       o_nav.hidden = true; o_body.innerHTML = ''; o_body.appendChild(o_done); sumDone = d.ref || ''; drawSum(); setSheet('hid'); emit({ type:'done', ref:d.ref });
       ceremony(d, rows.length + (lawyer ? 1 : 0));
     }
+    // Final screen help bars: lawyer support · civil society groups · help lines, one open at a time.
+    // Built from the site's verified LAWYERS list (province + case area), the legal-aid table and the routing result.
+    function helpBars(d, fin){
+      const pv = provOf(o_loc.value), area = LW_AREA2[A && A.category] || '';
+      const list = (window.LAWYERS && window.LAWYERS[pv.toLowerCase()] && window.LAWYERS[pv.toLowerCase()][area]) || [];
+      const seen = new Set(), uniq = a => a.filter(x => x && x.name && !seen.has(x.name) && seen.add(x.name));
+      const isLaw = x => /CONSULT|LEGAL AID|\$/.test(x.badge || '');
+      const aid = LEGAL_AID[pv];
+      const lawyers = uniq([{ name:TX('Find a lawyer on ComplaintCA'), note:TX('Lawyers for this kind of case'), href:lawyerHref(), flow:true },
+        ...list.filter(isLaw), ...(aid ? [{ name:aid[0], note:TX('Free legal help if your income qualifies'), url:aid[1] }] : [])]);
+      const groups = uniq(list.filter(x => !isLaw(x)));
+      const lines = uniq([...((d.authorities || []).slice(1)), ...((d.chain && d.chain.bodies) || []), ...list].filter(x => x.phone)
+        .concat([{ name:'211', phone:'211', note:TX('Community and social services, free, 24/7') }]));
+      const box = el('div','af1-rights af1-help fx'); box.appendChild(el('h5', null, TX('Help while you wait')));
+      const bars = [];
+      const bar = (title, items) => {
+        if (!items.length) return;
+        const b = el('button','af1-hb'); b.type = 'button';
+        const t = el('span'); t.append(el('b', null, title), el('small', null, items.length + ' ' + TX(items.length === 1 ? 'option' : 'options')));
+        b.append(t, el('i', null, '▾'));
+        const body = el('div','af1-hl'); body.hidden = true;
+        items.forEach(x => { const r = el('div','af1-hi'), info = el('span');
+          info.append(el('b', null, x.name), ...(x.phone || x.note ? [el('small', null, [x.phone, x.note].filter(Boolean).join(' · '))] : []));
+          const a = el('a', null, x.phone ? TX('Call') : TX('Open') + ' →');
+          if (x.phone) a.href = 'tel:' + x.phone.replace(/[^\d+]/g, ''); else { a.href = x.href || x.url || '#'; if (!x.flow) { a.target = '_blank'; a.rel = 'noopener'; } }
+          if (x.flow) a.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
+          r.append(info, a); body.appendChild(r); });
+        b.addEventListener('click', () => { const open = body.hidden; bars.forEach(([bb, bd]) => { bd.hidden = true; bb.classList.remove('on'); }); if (open) { body.hidden = false; b.classList.add('on'); } });
+        bars.push([b, body]); box.append(b, body);
+      };
+      bar(TX('Lawyer support'), lawyers);
+      bar(TX('Civil society groups'), groups);
+      bar(TX('Help lines'), lines);
+      if (!bars.length) return;
+      box.appendChild(el('p','af1-rdisc', TX('General information, not legal advice.')));
+      fin.appendChild(box);
+    }
     // Sealing ceremony (about 3 s, static when the user prefers reduced motion): the letter is sealed and flies to the
     // scales, the laurel frame lights up from the bottom, then the tracking number is engraved inside the frame.
     function ceremony(d, nOther){
@@ -878,8 +915,10 @@
         lw.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
         const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
         const free = el('a','af1-rfree', TX('Free help') + ': ' + (aid[0] === 'Legal aid in your province' ? TX(aid[0]) : aid[0]) + ' →'); free.href = aid[1]; free.target = '_blank'; free.rel = 'noopener';
-        rc.append(lw, free, el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
+        // With the help bars on, lawyer and legal aid live in the first bar instead.
+        rc.append(...(window._ccBars ? [] : [lw, free]), el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
       }
+      if (window._ccBars) helpBars(d, fin);
       if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
       fin.appendChild(done);
       o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';
