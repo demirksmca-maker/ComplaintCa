@@ -977,7 +977,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
 
         <!-- PUBLIC FEED -->
-        <div class="card" style="margin-top:16px">
+        <div class="card" id="trk-feed-card" style="margin-top:16px;display:none">
           <div class="ct"><div class="ci">🌍</div><span id="feed-card-t">Son Şikayetler (Canlı Akış)</span></div>
           <div id="trk-complaint-feed"><div class="empty">Yükleniyor...</div></div>
         </div>
@@ -2813,7 +2813,8 @@ function showTab(tab){
     var _sess=null; try{ _sess=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
     if(_sess&&_sess.email) switchAuthTab('login'); // signed-in users land on Hesabım, not Reference No.
   }
-  if(tab==='track'){renderRecent();loadPublicFeed();}
+  // Complaint lists on Track are for signed-in people only; without signing in, only the reference search shows.
+  if(tab==='track'){ renderRecent(); var _fc=document.getElementById('trk-feed-card'); if(_fc) _fc.style.display=_ccSignedIn()?'':'none'; if(_ccSignedIn()) loadPublicFeed(); }
   if(tab==='lawyer'){_lwProv='on';_lwArea='tenant';renderLwResults();}
   if(!_suppressNavPush){
     var _navState={tab:tab};
@@ -4426,8 +4427,10 @@ async function rqSave(r){
   if(st){st.style.color='#16a34a';st.textContent=V.t('rq_saved');}
   setTimeout(function(){var i=document.getElementById('trk-inp'); if(i){i.value=r;} if(typeof doTrack==='function') doTrack(); renderRecent();},900);
 }
+function _ccSignedIn(){ try{ var x=JSON.parse(localStorage.getItem('cc_session')||'null'); return !!(x&&x.email); }catch(e){ return false; } }
 function renderRecent(){
   const el=document.getElementById('trk-recent');
+  if(!_ccSignedIn()){ if(el) el.innerHTML=''; return; }
   if(!_complaints.length){el.innerHTML='';return;}
   el.innerHTML='<div class="ct" style="padding:0 4px;margin-bottom:10px"><div class="ci">🗂️</div><span>'+V.t('tkr')+'</span></div>'+_complaints.slice(0,5).map(c=>renderCard(c)).join('');
 }
@@ -4777,6 +4780,7 @@ function switchAuthTab(tab){
 // login form + Google button and show a "signed in as … / My Panel / Sign Out"
 // card plus the user's complaints; when signed out, show the form again.
 function _applyAuthUI(){
+  setTimeout(function(){ try{ if(typeof renderRecent==='function') renderRecent(); var fc=document.getElementById('trk-feed-card'); if(fc){ fc.style.display=_ccSignedIn()?'':'none'; if(_ccSignedIn()&&!fc.dataset.loaded){ fc.dataset.loaded='1'; loadPublicFeed(); } } }catch(e){} },0);
   var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
   var guest=document.getElementById('login-guest-block');
   var signed=document.getElementById('login-signedin');
