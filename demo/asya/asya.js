@@ -559,7 +559,48 @@
     o_org.addEventListener('input', () => { orgAuto = false; o_orgHint.textContent = ''; if (!draftEdited) { buildDraft(); } drawDraft(); });
     function fillOrg(){ const typed = o_who.value.trim(); orgAuto = !typed && !!(A && A.institution); o_org.value = typed || (orgAuto ? A.institution : ''); o_orgHint.textContent = orgAuto ? L2.found : ''; }
     const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TX('Auto-fill demo'))); if (!IS_DEMO) o_auto.style.display = 'none';
-    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story));
+    // Speak or show a photo: ASYA writes the story into the box (browser speech recognition / /api/vision).
+    const ICO_MIC = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>';
+    const ICO_CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.3" r="3.6"/></svg>';
+    const o_duo = el('div','af1-duo'), o_speak = el('button','af1-pill'), o_snap = el('button','af1-pill'), o_pfile = document.createElement('input');
+    o_speak.type = o_snap.type = 'button'; o_pfile.type = 'file'; o_pfile.accept = 'image/*'; o_pfile.hidden = true;
+    o_speak.innerHTML = ICO_MIC; o_speak.appendChild(el('span', null, TX('Speak'))); o_snap.innerHTML = ICO_CAM; o_snap.appendChild(el('span', null, TX('Photo')));
+    o_duo.append(o_speak, el('i','af1-dia','◆'), o_snap, o_pfile);
+    const o_cap = el('p','af1-cap', TX('Speak, or show ASYA a photo — it writes the complaint for you.')), o_warn = el('p','af1-warn'); o_warn.hidden = true;
+    let photoThreat = false;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition, SR_LANG = { en:'en-CA', fr:'fr-CA', es:'es-ES', tr:'tr-TR', ar:'ar-SA', zh:'zh-CN', pa:'pa-IN' };
+    let rec = null;
+    o_speak.addEventListener('click', () => {
+      if (!SR) { o_wait.hidden = false; o_wait.textContent = TX('Voice isn’t available in this browser — use the microphone on your keyboard.'); o_story.focus(); return; }
+      if (rec) { rec.stop(); return; }
+      const base = o_story.value.trim() ? o_story.value.trim() + ' ' : '';
+      rec = new SR(); rec.lang = SR_LANG[LG] || 'en-CA'; rec.interimResults = true; rec.continuous = true;
+      rec.onresult = e => { let s = ''; for (let i = 0; i < e.results.length; i++) s += e.results[i][0].transcript; o_story.value = (base + s).slice(0, 5000); o_story.dispatchEvent(new Event('input')); };
+      rec.onerror = () => {};
+      rec.onend = () => { rec = null; o_speak.classList.remove('on'); o_speak.lastChild.textContent = TX('Speak'); analyse(); };
+      try { rec.start(); o_speak.classList.add('on'); o_speak.lastChild.textContent = TX('Stop'); } catch (e) { rec = null; }
+    });
+    // data: URLs, not blob: (the site's CSP allows data: images only). Longest side 1280 px, JPEG 0.78.
+    const shrink = file => new Promise((ok, no) => { const fr = new FileReader(); fr.onerror = () => no(new Error('read'));
+      fr.onload = () => { const im = new Image();
+        im.onload = () => { const k = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas');
+          c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); ok(c.toDataURL('image/jpeg', 0.78)); };
+        im.onerror = () => no(new Error('image')); im.src = fr.result; };
+      fr.readAsDataURL(file); });
+    o_snap.addEventListener('click', () => o_pfile.click());
+    o_pfile.addEventListener('change', async () => {
+      const f = o_pfile.files[0]; o_pfile.value = ''; if (!f) return;
+      o_snap.disabled = true; o_snap.classList.add('on'); o_wait.hidden = false; o_wait.textContent = TX('ASYA is reading your photo…'); o_wait.appendChild(el('span','af1-bar'));
+      let v = null; try { const r = await post('/api/vision', { images:[await shrink(f)], lang:LG }); if (r.ok) v = await r.json(); } catch (e) {}
+      o_snap.disabled = false; o_snap.classList.remove('on');
+      if (!v || !v.story) { o_wait.textContent = TX('ASYA could not read this photo.'); return; }
+      o_story.value = ((o_story.value.trim() ? o_story.value.trim() + '\n\n' : '') + v.story).slice(0, 5000);
+      if (v.place && !o_who.value.trim()) { o_who.value = v.place; whoPicked = v.place; whoAddr = v.address || ''; }
+      photoThreat = photoThreat || !!v.threat;
+      o_warn.hidden = !photoThreat; if (photoThreat) o_warn.textContent = '⚠ ' + TX('This looks like a threat.') + ' ' + TX('If you are in danger now, call 911.');
+      oFor = ''; o_story.dispatchEvent(new Event('input')); clearTimeout(oTimer); analyse();
+    });
+    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story), o_duo, o_cap, o_warn);
     one.append(o_frame, o_wait, o_auto);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
@@ -622,7 +663,7 @@
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
-      if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
+      if (oFor !== d) return; if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
