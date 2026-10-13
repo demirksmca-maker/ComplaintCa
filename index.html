@@ -2711,6 +2711,8 @@ function goHome(){
 var _ccOldPanel=!/[?&]panel=new\b/.test(location.search);
 // ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
+// ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.
+var _ccPanelTest=/[?&]test=1\b/.test(location.search);
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ window.openComplaintFlow(); return; }
