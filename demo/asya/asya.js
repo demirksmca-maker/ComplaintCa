@@ -536,6 +536,10 @@
       draftSecs = [
         { h:'', b:'Dear ' + (org ? 'Sir or Madam at ' + org : 'Sir or Madam') + ',' },
         { h:'Incident', b:incident },
+        ...(photoFacts ? [{ h:'Evidence', b:[
+          photoFacts.kind === 'receipt' ? 'Receipt' + (photoFacts.place ? ' from ' + photoFacts.place : '') + (photoFacts.address ? ', ' + photoFacts.address : '') + (photoFacts.date ? ', ' + fmtDate(photoFacts.date) + (photoFacts.time ? ' ' + photoFacts.time : '') : '') + (photoFacts.amount ? ', total ' + photoFacts.amount : '') + (photoFacts.reference ? ', ref. ' + photoFacts.reference : '') + '.' : photoFacts.summary,
+          ...(photoFacts.threat && photoFacts.threatQuote ? ['The message says: "' + photoFacts.threatQuote + '". This may amount to uttering threats under section 264.1 of the Criminal Code.'] : []),
+          'Photos attached to this email: ' + photos.length + '.'].filter(Boolean).join('\n') }] : []),
         { h:'What I ask', b:asks.map(x => '• ' + x).join('\n') },
         ...(law ? [{ h:'Legal basis', b:law }] : []),
         { h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : ''), dl:true },
@@ -559,7 +563,67 @@
     o_org.addEventListener('input', () => { orgAuto = false; o_orgHint.textContent = ''; if (!draftEdited) { buildDraft(); } drawDraft(); });
     function fillOrg(){ const typed = o_who.value.trim(); orgAuto = !typed && !!(A && A.institution); o_org.value = typed || (orgAuto ? A.institution : ''); o_orgHint.textContent = orgAuto ? L2.found : ''; }
     const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TX('Auto-fill demo'))); if (!IS_DEMO) o_auto.style.display = 'none';
-    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story));
+    // Photos: receipts, damage, message screenshots, bills. ASYA reads them (/api/vision); nothing is used until the person taps "Use these".
+    const photos = []; let vision = null, photoFacts = null, photoThreat = false, visSeq = 0;
+    const o_photo = el('div','af1-photo'), o_addRow = el('div','af1-addrow'), o_add = el('label','af1-add'), o_file = document.createElement('input');
+    o_file.type = 'file'; o_file.accept = 'image/*'; o_file.multiple = true; o_file.hidden = true;
+    o_add.append(document.createTextNode('📷 ' + TX('Add photo / receipt')), o_file); o_addRow.append(o_add);
+    const o_thumbs = el('div','af1-thumbs'), o_vis = el('div','af1-vcard'); o_vis.hidden = true;
+    o_photo.append(o_addRow, o_thumbs, o_vis);
+    // data: URLs, not blob: — the site's CSP allows data: images only. Longest side 1280 px, JPEG 0.78 (about 150–300 KB).
+    const shrink = file => new Promise((ok, no) => { const fr = new FileReader();
+      fr.onerror = () => no(new Error('read'));
+      fr.onload = () => { const im = new Image();
+        im.onload = () => { const k = Math.min(1, 1280 / Math.max(im.width, im.height)), c = document.createElement('canvas');
+          c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+          ok(c.toDataURL('image/jpeg', 0.78)); };
+        im.onerror = () => no(new Error('image')); im.src = fr.result; };
+      fr.readAsDataURL(file); });
+    function drawThumbs(){
+      o_thumbs.innerHTML = '';
+      photos.forEach((ph, i) => { const d = el('div','af1-th'), x = el('button','af1-thx','✕'), img = document.createElement('img');
+        img.src = ph; img.alt = ''; x.type = 'button'; x.setAttribute('aria-label', 'Remove');
+        x.addEventListener('click', () => { photos.splice(i, 1); drawThumbs(); readPhotos(); }); d.append(img, x); o_thumbs.appendChild(d); });
+      if (photos.length && photos.length < 3) { const plus = el('button','af1-th af1-thplus','+'); plus.type = 'button'; plus.addEventListener('click', () => o_file.click()); o_thumbs.appendChild(plus); }
+      o_addRow.hidden = photos.length > 0;
+    }
+    o_file.addEventListener('change', async () => {
+      const files = [...o_file.files].slice(0, 3 - photos.length); o_file.value = '';
+      for (const f of files) { try { photos.push(await shrink(f)); } catch (e) {} }
+      drawThumbs(); readPhotos();
+    });
+    const fmtDate = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); return m ? (+m[3]) + ' ' + MON[+m[2] - 1] + ' ' + m[1] : ''; };
+    async function readPhotos(){
+      const my = ++visSeq; vision = null;
+      if (!photos.length) { o_vis.hidden = true; if (photoFacts) { photoFacts = null; photoThreat = false; if (!draftEdited) buildDraft(); drawDraft(); } return; }
+      o_vis.hidden = false; o_vis.className = 'af1-vcard busy'; o_vis.innerHTML = ''; o_vis.append(el('p','af1-vbusy', TX('ASYA is reading your photo…')), el('span','af1-bar'));
+      let v = null; try { const r = await post('/api/vision', { images:photos }); if (r.ok) v = await r.json(); } catch (e) {}
+      if (my !== visSeq) return; vision = v; drawVision();
+    }
+    function drawVision(){
+      o_vis.className = 'af1-vcard'; o_vis.innerHTML = '';
+      if (!vision) { o_vis.append(el('p','af1-vbusy', TX('ASYA could not read this photo.'))); return; }
+      if (vision.threat) { const w = el('div','af1-threat');
+        w.append(el('b', null, '⚠ ' + TX('This looks like a threat.')), ...(vision.threatQuote ? [el('q', null, vision.threatQuote)] : []), el('p', null, TX('If you are in danger now, call 911.')));
+        const acts = el('div','af1-threat-acts'), c911 = el('a', null, TX('Call 911')), vs = el('a', null, TX('Victim services'));
+        c911.href = 'tel:911'; vs.href = 'https://www.justice.gc.ca/eng/cj-jp/victims-victimes/vsd-rsv/index.html'; vs.target = '_blank'; vs.rel = 'noopener';
+        acts.append(c911, vs); w.append(acts, el('small', null, TX('Keep the original message — don’t delete it. Save a screenshot that shows the date.'))); o_vis.appendChild(w); }
+      o_vis.appendChild(el('h5', null, TX('ASYA found in your photo')));
+      const kv = el('div','af1-kv'), add = (k, v) => { if (v) kv.append(el('span', null, TX(k)), el('b', null, v)); };
+      add('Place', vision.place); add('Address', vision.address); add('Date', [fmtDate(vision.date), vision.time].filter(Boolean).join(' · '));
+      add('Amount', [vision.amount, vision.cardLast4 ? 'card ••' + vision.cardLast4 : ''].filter(Boolean).join(' · ')); add('Reference', vision.reference);
+      o_vis.appendChild(kv); if (vision.summary) o_vis.appendChild(el('p','af1-vsum', vision.summary));
+      const btns = el('div','af1-vbtns'), use = el('button','af-btn gold af1-vuse', TX('Use these ✓')), skip = el('button','af1-vskip', TX('Ignore')); use.type = skip.type = 'button';
+      use.addEventListener('click', () => {
+        photoFacts = vision; photoThreat = vision.threat;
+        if (vision.place && !o_who.value.trim()) { o_who.value = vision.place; whoPicked = vision.place; whoAddr = vision.address || ''; }
+        btns.replaceWith(el('p','af1-vok', '✓ ' + TX('Added to your letter')));
+        if (A) { fillOrg(); if (!draftEdited) buildDraft(); drawDraft(); refreshAnalysis(); }
+      });
+      skip.addEventListener('click', () => { photoFacts = null; photoThreat = false; o_vis.hidden = true; if (A && !draftEdited) { buildDraft(); drawDraft(); } });
+      btns.append(use, skip); o_vis.append(btns, el('p','af1-vpriv', TX('ASYA hides card numbers in the text. Photos go with your letter as evidence, so cover anything private first.')));
+    }
+    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story), o_photo);
     one.append(o_frame, o_wait, o_auto);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
@@ -622,7 +686,7 @@
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
-      if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
+      if (oFor !== d) return; if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -719,7 +783,7 @@
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
       await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
-        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
+        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:photos.length, photos:photoFacts ? photos : [], legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
       if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {} o_err.textContent = ERR[d.error] || L1.eFail; return; }

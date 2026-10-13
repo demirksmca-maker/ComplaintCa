@@ -432,3 +432,33 @@ textarea.af-in::placeholder{text-align:center}
 .af-ov .af-btn.gold:hover{box-shadow:0 0 18px rgba(230,195,92,.45)}
 .af-ov button:focus-visible,.af-ov a:focus-visible{outline:2px solid #e6c35c;outline-offset:2px}
 .af-ov .af1-in:focus-visible{outline:none}
+/* photo / receipt reading, mirrored around the centre like the rest of the frame */
+.af1-photo{margin-top:16px;text-align:center}
+.af1-addrow{display:flex;align-items:center;justify-content:center;gap:8px}
+.af1-addrow[hidden]{display:none}
+.af1-addrow::before,.af1-addrow::after{content:"";width:30px;height:10px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 14'%3E%3Cpath d='M2 7h40' stroke='%23d9b55a' stroke-width='1'/%3E%3Cg fill='%23d9b55a'%3E%3Cpath d='M30 7c3-5 8-6 11-5c-2 4-6 6-11 5z'/%3E%3Cpath d='M30 7c3 5 8 6 11 5c-2-4-6-6-11-5z'/%3E%3Cpath d='M18 7c3-4 7-5 9-4c-2 3-5 5-9 4z'/%3E%3Cpath d='M18 7c3 4 7 5 9 4c-2-3-5-5-9-4z'/%3E%3Ccircle cx='4' cy='7' r='1.6'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}.af1-addrow::after{transform:scaleX(-1)}
+.af1-add{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(230,201,138,.55);border-radius:999px;padding:8px 16px;color:#f2e6c4;font:700 .66rem Georgia,serif;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.04);cursor:pointer;transition:transform .12s,background-color .2s}
+.af1-add:hover{background:rgba(230,201,138,.1)}.af1-add:active{transform:scale(.96)}
+.af1-thumbs{display:flex;justify-content:center;gap:10px}.af1-thumbs:empty{display:none}
+.af1-th{position:relative;width:74px;height:92px;border-radius:6px;overflow:hidden;box-shadow:0 0 0 1.5px #d9b55a,0 6px 14px rgba(0,0,0,.4);background:#0f2348;padding:0;border:0}
+.af1-th img{width:100%;height:100%;object-fit:cover;display:block}
+.af1-thx{position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(7,15,34,.85);color:#fff;font-size:10px;cursor:pointer}
+.af1-thplus{display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1.5px rgba(230,201,138,.45);background:rgba(255,255,255,.03);color:#e6c98a;font-size:1.5rem;cursor:pointer}
+.af1-vcard{margin-top:14px;border:1px solid rgba(230,201,138,.45);border-radius:8px;padding:12px;text-align:center;
+ background:linear-gradient(#d9b55a,#d9b55a) left top/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) left top/2px 12px no-repeat,linear-gradient(#d9b55a,#d9b55a) right top/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) right top/2px 12px no-repeat,
+ linear-gradient(#d9b55a,#d9b55a) left bottom/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) left bottom/2px 12px no-repeat,linear-gradient(#d9b55a,#d9b55a) right bottom/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) right bottom/2px 12px no-repeat,rgba(255,255,255,.04)}
+.af1-vcard[hidden]{display:none}
+.af1-vcard h5{margin:0 0 8px;font:700 .64rem Georgia,serif;letter-spacing:.2em;color:#e6c98a;text-transform:uppercase}
+.af1-vbusy{margin:0;color:#a9b0c4;font-size:.84rem}
+.af1-kv{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;text-align:left;font-size:.8rem}.af1-kv span{color:#8f96ab}.af1-kv b{font-weight:500;color:#fff;overflow-wrap:anywhere}
+.af1-vsum{margin:8px 0 0;color:#c3c9da;font-size:.8rem;line-height:1.45}
+.af1-vbtns{display:flex;gap:8px;margin-top:10px}.af1-vbtns>*{flex:1 1 0;min-width:0}
+.af1-vuse{margin:0!important;padding:10px!important;font-size:.8rem!important}
+.af1-vskip{border:1px solid rgba(230,201,138,.45);border-radius:10px;background:none;color:#e6c98a;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
+.af1-vok{margin:10px 0 0;color:#8fe0b0;font-size:.84rem}
+.af1-vpriv{margin:8px 0 0;font-size:.66rem;color:#8f96ab;line-height:1.4}
+.af1-threat{margin:-2px -2px 12px;padding:10px 12px;border-radius:8px;background:rgba(200,16,46,.16);border:1px solid rgba(255,90,110,.55);text-align:center}
+.af1-threat b{display:block;color:#ffb4bf;font-size:.9rem}.af1-threat q{display:block;margin:6px 0;color:#fff;font-style:italic;font-size:.82rem}
+.af1-threat p{margin:4px 0 8px;color:#ffd7dd;font-size:.8rem}.af1-threat small{display:block;margin-top:8px;color:#c3c9da;font-size:.7rem;line-height:1.4}
+.af1-threat-acts{display:flex;gap:8px}.af1-threat-acts a{flex:1;padding:9px;border-radius:9px;font-weight:700;font-size:.8rem;text-decoration:none}
+.af1-threat-acts a:first-child{background:#c8102e;color:#fff}.af1-threat-acts a:last-child{border:1px solid rgba(255,180,191,.6);color:#ffd7dd}
