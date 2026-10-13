@@ -86,6 +86,8 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
+/* No rubber-band bounce or pull-to-refresh drag on phones: the page stays put at its ends. */
+html{overscroll-behavior:none}
 body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .2s,color .2s}
 
 :root{
