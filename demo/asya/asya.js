@@ -645,11 +645,34 @@
     function setSheet(st){ o_sheet.hidden = st === 'hid'; o_sheet.classList.toggle('open', st === 'open'); o_bd.hidden = st !== 'open'; if (st === 'open') o_body.scrollTop = 0; }
     const togSheet = () => setSheet(o_sheet.classList.contains('open') ? 'peek' : 'open');
     o_grab.addEventListener('click', togSheet); o_sum.addEventListener('click', togSheet); o_bd.addEventListener('click', () => setSheet('peek'));
+    // "Your rights": what the person may recover and the deadline to claim; only when ASYA sees a real legal-rights case.
+    const LEGAL_AID = { ON:['Legal Aid Ontario','https://www.legalaid.on.ca/'], BC:['Legal Aid BC','https://legalaid.bc.ca/'], AB:['Legal Aid Alberta','https://www.legalaid.ab.ca/'],
+      QC:['Commission des services juridiques','https://www.csj.qc.ca/'], MB:['Legal Aid Manitoba','https://www.legalaid.mb.ca/'], SK:['Legal Aid Saskatchewan','https://legalaid.sk.ca/'],
+      NS:['Nova Scotia Legal Aid','https://www.nslegalaid.ca/'], NB:['Legal Aid New Brunswick','https://www.legalaid.nb.ca/'] };
+    const provOf = s => { s = String(s || '').toLowerCase();
+      for (const [k, re] of [['ON',/ontario|\bon\b|toronto|ottawa|mississauga|hamilton|brampton/],['BC',/british columbia|\bbc\b|vancouver|victoria|surrey|burnaby/],['AB',/alberta|\bab\b|calgary|edmonton/],
+        ['QC',/qu[eé]bec|\bqc\b|montr[eé]al/],['MB',/manitoba|\bmb\b|winnipeg/],['SK',/saskatchewan|\bsk\b|regina|saskatoon/],['NS',/nova scotia|\bns\b|halifax/],['NB',/new brunswick|\bnb\b|moncton|fredericton/]])
+        if (re.test(s)) return k; return ''; };
+    function drawRights(){
+      if (!V || !V.poolSuggest || (!V.remedy && !V.claimDeadline)) return;
+      const box = el('div','af1-rights'); box.appendChild(el('h5', null, TX('Your rights')));
+      const two = el('div','af1-two'), cell = (k, v) => { const c = el('div','af1-cell'); c.append(el('small', null, TX(k)), el('b', null, v || '—')); return c; };
+      two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); box.appendChild(two);
+      box.appendChild(el('p','af1-rnote', TX('ASYA: this may be a legal-rights case.')));
+      const go = el('a','af-btn gold af1-rgo', TX('Talk to a lawyer')); go.href = '/?go=lawyer';
+      go.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
+      box.appendChild(go);
+      const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
+      const free = el('a','af1-rfree', TX('Free help') + ': ' + (aid[0] === 'Legal aid in your province' ? TX(aid[0]) : aid[0]) + ' →'); free.href = aid[1]; free.target = '_blank'; free.rel = 'noopener';
+      box.append(free, el('p','af1-rdisc', TX('General information, not legal advice.')));
+      o_an.appendChild(box);
+    }
     function drawRes(R){
       Rt = R; draftEdited = ''; editing = false; fillOrg(); o_wait.hidden = true; o_an.innerHTML = '';
       sumPr = A ? A.priority : 'medium'; sumTitle = A ? ((A.icon ? A.icon + ' ' : '') + TX(A.label)) : L1.unsure; sumDone = '';
       const law = cleanLaw(V && V.law); if (law) o_an.append(el('div','af1-q', L2.lawH), el('p','af1-law', law));
       const sanc = cleanLaw(V && V.sanctions); if (sanc) o_an.append(el('div','af1-q', L2.sancH), el('p','af1-law', sanc));
+      drawRights();
       o_list.innerHTML = ''; sel.length = 0;
       const rows = [];
       ((R && R.authorities) || []).slice(0, 2).forEach((a, i) => rows.push({ n:a.name, line:[a.phone, a.email].filter(Boolean).join(' · ') || a.note || '', url:a.url, primary:i === 0 }));
