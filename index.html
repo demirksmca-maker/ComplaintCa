@@ -2706,9 +2706,9 @@ function goHome(){
   window.scrollTo(0,0);
   if(!_suppressNavPush) _pushNav(null);
 }
-// New complaint panel (ASYA story view). Loaded on first tap so the home page stays light.
-// ?panel=old (or a load failure) keeps the classic form.
-var _ccOldPanel=/[?&]panel=old\b/.test(location.search);
+// New complaint panel (ASYA story view) is the working page for now: the classic form stays the default.
+// ?panel=new opens the new panel (loaded on first tap); a load failure falls back to the classic form.
+var _ccOldPanel=!/[?&]panel=new\b/.test(location.search);
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ window.openComplaintFlow(); return; }
