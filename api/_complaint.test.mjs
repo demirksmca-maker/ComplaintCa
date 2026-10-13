@@ -1,9 +1,10 @@
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import handler from './complaint.js';
+import { mailSecret, mailPass } from './_mailcode.js';
 import { validate, genRef, getAuthorities, getChain, buildRecord, toFirestore, titleFromDesc, replyAddress, parseReplyAddress } from './_complaint-core.js';
 
-const ENV = ['TURNSTILE_SECRET_KEY', 'GROQ_API_KEY', 'BREVO_API_KEY', 'COMPLAINT_LIVE', 'COMPLAINT_PILOT_TO', 'REPLY_SECRET', 'REPLY_DOMAIN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'];
+const ENV = ['TURNSTILE_SECRET_KEY', 'GROQ_API_KEY', 'BREVO_API_KEY', 'COMPLAINT_LIVE', 'COMPLAINT_PILOT_TO', 'REPLY_SECRET', 'REPLY_DOMAIN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'MAIL_CODE_SECRET'];
 let saved, calls, ipN = 0;
 
 function mockFetch({ firestoreStatus = 200 } = {}) {
@@ -16,7 +17,9 @@ function mockFetch({ firestoreStatus = 200 } = {}) {
     throw new Error('unexpected fetch ' + url);
   };
 }
-function call(body) {
+// Every filing carries a mail pass for its address, as the panel sends after the e-mailed code; noPass leaves it out.
+function call(body, { noPass = false } = {}) {
+  if (!noPass && body && body.mailPass === undefined && body.email) body = { ...body, mailPass: mailPass(mailSecret(), body.email) };
   return new Promise(resolve => {
     const res = { code: 0, status(c) { this.code = c; return this; }, json(d) { resolve({ code: this.code, data: d }); } };
     handler({ method: 'POST', body, headers: { 'x-forwarded-for': '10.0.0.' + (++ipN) } }, res);
@@ -226,5 +229,16 @@ describe('reply alias, consent and pilot mode', () => {
     assert.match(letter.replyTo.email, /^complaintcaca\+vc-/);
     assert.equal(mails.filter(m => m.to[0].email === 'me@example.com').length, 2); // confirmation + "sent"
     assert.ok(mails.every(m => !m.to[0].email.includes('toronto.ca')));
+  });
+});
+
+describe('e-mail check', () => {
+  test('a filing without a valid mail pass is refused before anything is saved or sent', async () => {
+    mockFetch();
+    const r = await call(good(), { noPass: true });
+    assert.equal(r.code, 403); assert.equal(r.data.error, 'email_unverified');
+    const r2 = await call({ ...good(), mailPass: mailPass(mailSecret(), 'someone@else.ca') });
+    assert.equal(r2.code, 403);
+    assert.equal(calls.length, 0);
   });
 });

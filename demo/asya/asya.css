@@ -488,3 +488,9 @@ textarea.af-in::placeholder{text-align:center}
 body.cc-panel-on .amain{display:none!important}
 /* No laurel frame around the form (owner request): both frame layers are off, the ceremony too. */
 .af1-frame::before,.af1-frame::after,.af1-frame.lit::after,.af1-frame.settled::after{display:none!important}
+/* e-mail code check, under the Send button */
+.af1-code{margin:14px auto 0;max-width:340px;text-align:center}
+.af1-codemsg{margin:0 0 10px;font-size:.86rem;line-height:1.5;color:#c9cfdd}
+.af1-codemsg b{color:#f6e7bf;word-break:break-all}
+.af-ov .af1-codein{display:block;width:100%;text-align:center;font-size:1.5rem;letter-spacing:.5em;padding-left:.5em}
+.af1-codeok{display:block;width:100%;margin-top:12px}

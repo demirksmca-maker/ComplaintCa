@@ -24,6 +24,7 @@ import {
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
 import { classify } from './_classify.js';
+import { mailSecret, checkPass } from './_mailcode.js';
 
 const FIREBASE_PROJECT = 'ajan-d6070';
 // Public web API key (already shipped in index.html). Writes still pass through
@@ -82,6 +83,9 @@ export default async function handler(req, res) {
     const { ok, errors, input } = validate(body);
     if (!ok) return res.status(400).json({ error: 'invalid', fields: errors });
     if (!(await verifyTurnstile(body.turnstileToken, ip))) return res.status(403).json({ error: 'verification' });
+    // The address must be confirmed with the e-mailed code (api/email-code.js) before a complaint is filed.
+    const sec = mailSecret();
+    if (sec && !checkPass(sec, input.email, body.mailPass)) return res.status(403).json({ error: 'email_unverified' });
 
     if (!input.category || !input.priority) {
       const ai = await classify(input.desc);
