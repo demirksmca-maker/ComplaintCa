@@ -607,7 +607,23 @@
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
     const GROUP2T = { municipal:'municipality', business:'business', landlord:'landlord', employer:'business', rights:'government', government:'government', healthcare:'health', other:'other' };
-    const guessTarget = (d, c) => /school|principal|teacher|student|okul|öğretmen|müdür|öğrenci/i.test(d) ? 'school' : (GROUP2T[c && c.group] || 'other');
+    const SCHOOL_RE = /school|principal|teacher|student|classroom|school board|bully|college|académie|école|okul|öğretmen|müdür|öğrenci/i;
+    const guessTarget = (d, c) => SCHOOL_RE.test(d) || SCHOOL_RE.test((c && c.institution) || '') || SCHOOL_RE.test(o_who.value) ? 'school' : (GROUP2T[c && c.group] || 'other');
+    // A school complaint goes to the school board / education authority, even when the small classifier picks a consumer
+    // category (that sent bullying cases to Consumer Protection). Human-rights cases keep their own category.
+    // "billing" lists banking bodies first: keep it for banks, send phone/internet bills to telecom, power/gas to utility,
+    // and everything else (a shop or restaurant overcharging) to consumer protection.
+    const routeCategory = (c, who) => {
+      const cat = c ? c.category : 'other', d = o_story.value;
+      if (who === 'school' && !(c && c.group === 'rights')) return 'education';
+      if (cat === 'billing') {
+        if (/\bbank|loan|mortgage|overdraft|interest rate|line of credit|banque|banka/i.test(d)) return 'billing';
+        if (/phone|internet|cell|mobile plan|rogers|bell|telus|freedom|fido|koodo|cable|téléphone|telefon/i.test(d)) return 'telecom';
+        if (/hydro|electric|power bill|gas bill|enbridge|energy|électricité|elektrik|doğalgaz/i.test(d)) return 'utility';
+        return 'service';
+      }
+      return cat;
+    };
     const sw = (on, locked) => { const s = el('button','af1-sw' + (on ? ' on' : '') + (locked ? ' lock' : '')); s.type = 'button'; s.setAttribute('role','switch'); s.setAttribute('aria-checked', on ? 'true' : 'false'); if (locked) s.disabled = true; return s; };
     const flip = (s, on) => { s.classList.toggle('on', on); s.setAttribute('aria-checked', on ? 'true' : 'false'); };
     const oNeedName = () => (A && A.priority === 'high') || pool;
@@ -719,7 +735,7 @@
       if (miss.some(m => NEED.includes(m))) { setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
       o_ask.hidden = true;
       if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
-      const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
+      const loc = o_loc.value.trim(), cat = routeCategory(c, val.who);
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
         post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:o_who.value.trim(), ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
@@ -814,7 +830,7 @@
       if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
-      await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? A.category : '', priority:A ? A.priority : '',
+      await Promise.all([post('/api/complaint', { test:false, title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
         ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
