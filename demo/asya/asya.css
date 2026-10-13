@@ -486,3 +486,5 @@ textarea.af-in::placeholder{text-align:center}
 .af-ov.cc-embedded .af-bar{padding-top:10px}
 .af-ov.cc-embedded .af-scroll{flex:none;overflow:visible}
 body.cc-panel-on .amain{display:none!important}
+/* No laurel frame around the form (owner request): both frame layers are off, the ceremony too. */
+.af1-frame::before,.af1-frame::after,.af1-frame.lit::after,.af1-frame.settled::after{display:none!important}
