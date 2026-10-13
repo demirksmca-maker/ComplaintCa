@@ -2733,7 +2733,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261013c';
+var _ccAsyaV='20261013d';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }
@@ -4954,6 +4954,8 @@ function selectLangDD(code,label,el){
   if(m) m.classList.remove('open');
 V.lang(code,null);
   try{if(['en','tr','fr','zh','es','ar','pa'].indexOf(code)>-1){_aLang=code;}}catch(e){}
+  // The open complaint panel follows the new language right away.
+  if(window._ccEmbedded&&window.openComplaintFlow) _ccEmbed();
 }
 document.addEventListener('click',function(e){
   var dd=document.getElementById('lang-dd');
