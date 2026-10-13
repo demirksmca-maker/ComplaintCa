@@ -367,3 +367,44 @@ textarea.af-in::placeholder{text-align:center}
 .af1-navb{flex:1}.af1-nav{justify-content:center}
 .af1-nav>.af1-navb,.af1-nav>.af1-navn{flex:1 1 0;min-width:0}
 .af1-p .af1-law{text-align:center}.af1-nav>.af1-navn{margin:0!important}
+/* sealing ceremony + final screen inside the laurel frame */
+.af1-frame.done>.af1-f{display:none}
+.af1-frame::after{content:"";position:absolute;left:-14px;right:-14px;top:-96px;bottom:-30px;pointer-events:none;z-index:0;opacity:0;
+ border-style:solid;border-color:transparent;border-width:84px 46px 106px;border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch;
+ filter:drop-shadow(0 0 7px rgba(255,214,110,.95)) drop-shadow(0 0 2px #fff3c4);
+ -webkit-mask-image:linear-gradient(to top,#000 45%,transparent 55%);mask-image:linear-gradient(to top,#000 45%,transparent 55%);
+ -webkit-mask-size:100% 220%;mask-size:100% 220%;-webkit-mask-position:0 0;mask-position:0 0}
+.af1-frame.lit::after{opacity:1;animation:afLit 1.1s ease-out 1.4s both}
+@keyframes afLit{from{-webkit-mask-position:0 0;mask-position:0 0}to{-webkit-mask-position:0 100%;mask-position:0 100%}}
+.af1-fin{position:relative;z-index:1;text-align:center;padding:2px 0 6px}
+.af1-stage{position:relative;height:86px;margin-bottom:4px}
+.af1-env{position:absolute;left:50%;top:10px;width:96px;height:64px;margin-left:-48px;border-radius:5px;background:linear-gradient(#f6eed8,#e2d3ad);box-shadow:0 8px 20px rgba(0,0,0,.45);
+ animation:afEnvIn .5s cubic-bezier(.2,.8,.2,1) both,afEnvFly .6s cubic-bezier(.6,0,.8,.4) 1.05s forwards}
+.af1-flap{position:absolute;left:0;right:0;top:0;height:38px;background:linear-gradient(#efe3c2,#d9c69a);clip-path:polygon(0 0,100% 0,50% 100%)}
+.af1-wax{position:absolute;left:50%;top:22px;width:30px;height:30px;margin-left:-15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4a0b0f;
+ background:radial-gradient(circle at 35% 30%,#d94a4a,#9b1c22 60%,#5e0d12);box-shadow:0 0 0 2px rgba(255,214,110,.55);animation:afWax .35s cubic-bezier(.3,1.6,.5,1) .55s both}
+.af1-seal{position:absolute;left:50%;top:8px;width:66px;height:66px;margin-left:-33px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:#4a0b0f;
+ background:radial-gradient(circle at 35% 30%,#d94a4a,#9b1c22 60%,#5e0d12);box-shadow:0 0 0 3px rgba(255,214,110,.6),0 6px 18px rgba(0,0,0,.5)}
+.af1-fin .fx{animation:afFinIn .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:2.05s}
+.af1-fin .af1-seal{animation-name:afSealIn;animation-delay:1.75s}
+.af1-fin-h{margin:10px 0 2px;font:700 1.15rem Georgia,'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:#f6e7bf;animation-delay:2.1s!important}
+.af1-fin-sub{margin:0;color:#a9b0c4;font-size:.84rem;line-height:1.45;animation-delay:2.15s!important}
+.af1-fin-k{margin:16px 0 4px;font:700 .64rem Georgia,serif;letter-spacing:.3em;color:#c9b27a;text-transform:uppercase;animation-delay:2.2s!important}
+.af1-fin-ref{min-height:2.1rem;font:700 1.75rem/1.2 Georgia,serif;letter-spacing:.06em;background:linear-gradient(180deg,#fff3c4,#e6c35c 55%,#a67c22);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(230,195,92,.45));animation-delay:2.2s!important}
+.af1-fin-rule{display:flex;align-items:center;gap:10px;margin:12px 0 8px;color:#e6c35c;font-size:.6rem;animation-delay:2.4s!important}
+.af1-fin-rule::before,.af1-fin-rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(230,201,138,.6))}.af1-fin-rule::after{background:linear-gradient(90deg,rgba(230,201,138,.6),transparent)}
+.af1-fin-dl{animation-delay:2.5s!important}.af1-fin-dl div{display:flex;justify-content:space-between;gap:10px;padding:3px 4px;font-size:.84rem;color:#e4e8f3}.af1-fin-dl b{color:#ffe08a;font-weight:600;white-space:nowrap}
+.af1-fin-note{margin:10px 0 0;color:#a9b0c4;font-size:.8rem;line-height:1.45;animation-delay:2.6s!important}
+.af1-fin-go{display:block;width:100%;margin-top:16px;text-decoration:none;text-align:center;animation-delay:2.75s!important}
+.af1-fin-more,.af1-fin-done{display:block;margin:10px auto 0;background:none;border:0;color:#e6c98a;font:inherit;font-size:.86rem;cursor:pointer;animation-delay:2.85s!important}
+.af1-fin-more{border-bottom:1px solid rgba(230,201,138,.4);padding:2px 0}
+.af1-fin.calm *,.af1-fin.calm .fx{animation:none!important}.af1-fin.calm .af1-env{display:none}
+.af-brand.burst{animation:afBurst 1.2s ease-out}
+@keyframes afBurst{0%{text-shadow:0 0 4px #fff}30%{text-shadow:-6px 0 18px #4aa3ff,6px 0 18px #ff4f93,0 0 40px #b9a6ff}100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
+@keyframes afEnvIn{from{opacity:0;transform:scale(.6) rotate(-6deg)}to{opacity:1;transform:none}}
+@keyframes afWax{from{opacity:0;transform:translateY(-70px) scale(1.8)}to{opacity:1;transform:none}}
+@keyframes afEnvFly{to{opacity:0;transform:translateY(-230px) scale(.25)}}
+@keyframes afSealIn{from{opacity:0;transform:scale(.3)}70%{transform:scale(1.12)}to{opacity:1;transform:none}}
+@keyframes afFinIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.af1-frame.lit::after{animation:none;-webkit-mask:none;mask:none}}
+.af1-frame.lit.settled::after{animation:none;-webkit-mask:none;mask:none}
