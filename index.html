@@ -565,6 +565,13 @@ textarea{resize:vertical;min-height:90px}
 #view-lawyerpanel .lex-cta-icon{font-size:1.1rem;color:var(--gold)}
 #view-lawyerpanel .lex-cta-t{font-family:'Cinzel',serif;text-transform:uppercase;font-size:.78rem;letter-spacing:1px;color:var(--text)}
 #view-lawyerpanel .lex-cta-s{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--sub);margin-top:2px}
+.rq{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.5)}
+.rqt{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:8px}
+.rqb{display:flex;gap:8px;flex-wrap:wrap}
+.rq button{flex:1;min-width:120px;border-radius:9px;padding:10px 12px;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
+.rqy{background:linear-gradient(145deg,#f3dc92,#c9a03c);border:0;color:#2a1f05}
+.rqn{background:transparent;border:1.5px solid rgba(201,168,76,.6);color:var(--text)}
+.rqi{width:100%;box-sizing:border-box;border-radius:8px;padding:9px 10px;font:inherit;font-size:.9rem;resize:vertical}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -685,7 +692,7 @@ textarea{resize:vertical;min-height:90px}
 
     <div class="hub-tiles">
       <button id="a-fab" onclick="_aToggle()"><span class="a-smoke a-smoke-blue"></span><span class="a-smoke a-smoke-pink"></span><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><rect x="9" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="4;10;4" dur="1.3s" repeatCount="indefinite" begin="0s"/><animate attributeName="y" values="14;11;14" dur="1.3s" repeatCount="indefinite" begin="0s"/></rect><rect x="14" y="9" width="3" height="14" rx="1.5" fill="white"><animate attributeName="height" values="5;14;5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/><animate attributeName="y" values="13.5;9;13.5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/></rect><rect x="19" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="3;10;3" dur="1.3s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="y" values="14.5;11;14.5" dur="1.3s" repeatCount="indefinite" begin="0.4s"/></rect></svg><span id="a-status">ASYA</span></button>
-      <a class="hub-tile hub-primary" onclick="goApp('new')">
+      <a class="hub-tile hub-primary" onclick="openAsyaPanel()">
         <div class="hub-numeral">I</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
         <div class="hub-tile-body">
@@ -2175,7 +2182,7 @@ const V = (function(){
       sub:"Submit Complaint",
       sut:"Complaint Submitted",sus:"Your complaint has been received.",sun:"Submit Another",
       tkt:"Track Your Complaint",tkb:"Track",tkr:"Recent Complaints",tke:"No complaints found.",
-      sr:"Received",sv:"Under Review",so:"Resolved",sj:"Rejected",
+      rq_q:"Has the institution replied?",rq_yes:"Yes, they replied",rq_no:"Not yet",rq_snoozed:"OK, we will ask again in 7 days.",rq_email:"Your email (the one you filed with)",rq_note:"What did they say? (optional)",rq_save:"Save",rq_cancel:"Cancel",rq_default_note:"The institution replied.",rq_saved:"Saved. Thank you.",rq_bad:"That email does not match this complaint.", sr:"Received",sv:"Under Review",so:"Resolved",sj:"Rejected",
       tr_r:"Received",tr_v:"Under Review",tr_o:"Resolved",tr_j:"Rejected",
       ld:"Detecting location...",ld2:"Location detected",
       lw_eyebrow:"LEGAL REFERRAL",lw_title:"Find a Lawyer in Canada",lw_sub:"Official referral services by province. Licensed, verified Canadian lawyers.",
@@ -2265,7 +2272,7 @@ const V = (function(){
       sub:"Şikayeti Gönder",
       sut:"Şikayet Gönderildi",sus:"Şikayetiniz alındı.",sun:"Yeni Şikayet",
       tkt:"Şikayetinizi Takip Edin",tkb:"Sorgula",tkr:"Son Şikayetler",tke:"Şikayet bulunamadı.",
-      sr:"Alındı",sv:"İncelemede",so:"Çözüldü",sj:"Reddedildi",
+      rq_q:"Kurum yanıt verdi mi?",rq_yes:"Evet, yanıt geldi",rq_no:"Henüz yok",rq_snoozed:"Tamam, 7 gün sonra tekrar soracağız.",rq_email:"E-postanız (şikâyeti yaptığınız adres)",rq_note:"Ne dediler? (isteğe bağlı)",rq_save:"Kaydet",rq_cancel:"Vazgeç",rq_default_note:"Kurum yanıt verdi.",rq_saved:"Kaydedildi. Teşekkürler.",rq_bad:"Bu e-posta bu şikâyetle eşleşmedi.", sr:"Alındı",sv:"İncelemede",so:"Çözüldü",sj:"Reddedildi",
       tr_r:"Alındı",tr_v:"İncelemeye alındı",tr_o:"Çözüldü",tr_j:"Reddedildi",
       ld:"Konum tespit ediliyor...",ld2:"Konum tespit edildi",
       lw_eyebrow:"HUKUKİ YÖNLENDİRME",lw_title:"Kanada'da Avukat Bul",lw_sub:"Eyaletlere göre resmi yönlendirme hizmetleri. Lisanslı, doğrulanmış Kanadalı avukatlar.",
@@ -2698,6 +2705,18 @@ function goHome(){
   var _ttb=document.getElementById('theme-toggle-btn'); if(_ttb) _ttb.style.display='none';
   window.scrollTo(0,0);
   if(!_suppressNavPush) _pushNav(null);
+}
+// New complaint panel (ASYA story view). Loaded on first tap so the home page stays light.
+// ?panel=old (or a load failure) keeps the classic form.
+var _ccOldPanel=/[?&]panel=old\b/.test(location.search);
+function openAsyaPanel(){
+  if(_ccOldPanel){ goApp('new'); return; }
+  if(window.openComplaintFlow){ window.openComplaintFlow(); return; }
+  if(window._asyaLoading) return; window._asyaLoading=true;
+  var fail=function(){ window._asyaLoading=false; _ccOldPanel=true; goApp('new'); };
+  var add=function(src,next){ var s=document.createElement('script'); s.src=src; s.onload=next; s.onerror=fail; document.head.appendChild(s); };
+  var l=document.createElement('link'); l.rel='stylesheet'; l.href='/demo/asya/asya.css'; document.head.appendChild(l);
+  add('/demo/asya/i18n.js',function(){ add('/demo/asya/asya.js',function(){ window._asyaLoading=false; if(window.openComplaintFlow) window.openComplaintFlow(); else fail(); }); });
 }
 function goApp(tab){
   document.getElementById('pg-land').style.display='none';
@@ -4334,7 +4353,45 @@ function renderCard(c){
     return '<div class="tli"><div class="tldot '+(i===lastStatusIdx?'cur':'done')+'"></div><div class="tlt"><div class="tll">'+V.t({received:'tr_r',review:'tr_v',resolved:'tr_o',rejected:'tr_j'}[item.status]||'tr_r')+'</div><div class="tld">'+new Date(item.date).toLocaleDateString()+'</div></div></div>';
   }).join('');
   var legalPill=c.isLegal?'<span style="display:inline-block;margin-top:4px;font-size:.62rem;font-weight:700;letter-spacing:.5px;color:#c9a84c;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.4);border-radius:20px;padding:2px 8px">⚖️ '+V.t('legal_track_badge')+'</span>':'';
-  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+escHtml(c.title)+'</div><div class="smeta">'+date+' · '+escHtml(c.targetName||c.target||'—')+'</div>'+legalPill+'</div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div></div>';
+  return '<div class="scard"><div class="shdr"><div><div class="sid">'+c.ref+'</div><div class="stitle">'+escHtml(c.title)+'</div><div class="smeta">'+date+' · '+escHtml(c.targetName||c.target||'—')+'</div>'+legalPill+'</div><span class="sbadge '+c.status+'">'+statusLabel(c.status)+'</span></div><div class="tl">'+tl+'</div>'+rqBlock(c)+'</div>';
+}
+// ── "Has the institution replied?" — one-tap follow-up on every open complaint ──
+function _rqRef(r){return String(r||'').replace(/[^A-Z0-9-]/g,'');}
+function rqBlock(c){
+  if(c.status!=='received'&&c.status!=='review') return '';
+  var r=_rqRef(c.ref),sn=0;
+  try{sn=parseInt(localStorage.getItem('rq_snooze_'+r)||'0',10);}catch(e){}
+  if(Date.now()<sn) return '';
+  return '<div class="rq" id="rq-'+r+'"><div class="rqt">'+V.t('rq_q')+'</div><div class="rqb">'+
+    '<button type="button" class="rqy" onclick="rqYes(\''+r+'\')">'+V.t('rq_yes')+'</button>'+
+    '<button type="button" class="rqn" onclick="rqNo(\''+r+'\')">'+V.t('rq_no')+'</button></div></div>';
+}
+function rqNo(r){
+  try{localStorage.setItem('rq_snooze_'+r,String(Date.now()+7*86400000));}catch(e){}
+  var b=document.getElementById('rq-'+r); if(b) b.innerHTML='<div class="rqt" style="font-weight:400">'+V.t('rq_snoozed')+'</div>';
+}
+function rqYes(r){
+  var b=document.getElementById('rq-'+r); if(!b) return;
+  var em=''; try{em=localStorage.getItem('rq_email')||'';}catch(e){}
+  b.innerHTML='<div class="rqt">'+V.t('rq_email')+'</div><input type="email" id="rq-em-'+r+'" class="rqi" autocomplete="email" value="'+escHtml(em)+'">'+
+    '<div class="rqt" style="margin-top:8px">'+V.t('rq_note')+'</div><textarea id="rq-nt-'+r+'" class="rqi" rows="2"></textarea>'+
+    '<div class="rqb" style="margin-top:8px"><button type="button" class="rqy" onclick="rqSave(\''+r+'\')">'+V.t('rq_save')+'</button>'+
+    '<button type="button" class="rqn" onclick="doTrack&&(document.getElementById(\'trk-inp\').value=\''+r+'\',doTrack())">'+V.t('rq_cancel')+'</button></div><div class="rqt" id="rq-st-'+r+'" style="margin-top:6px"></div>';
+}
+async function rqSave(r){
+  var em=(document.getElementById('rq-em-'+r)||{}).value||'', nt=((document.getElementById('rq-nt-'+r)||{}).value||'').trim(), st=document.getElementById('rq-st-'+r);
+  em=em.trim(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ if(st){st.style.color='#c8102e';st.textContent=V.t('del_need_email');} return; }
+  var ok=false;
+  try{ if(window._fbAddReply) ok=await window._fbAddReply(r,em,nt||V.t('rq_default_note')); }catch(e){ ok=false; }
+  if(!ok){ if(st){st.style.color='#c8102e';st.textContent=V.t('rq_bad');} return; }
+  try{ if(window._fbUpdateStatus) await window._fbUpdateStatus(r,em,'review'); }catch(e){}
+  try{ localStorage.setItem('rq_email',em);
+    var all=JSON.parse(localStorage.getItem('vc_comp')||'[]'), i=all.findIndex(function(c){return _rqRef(c.ref)===r;});
+    if(i>-1){ if(all[i].status==='received') all[i].status='review'; all[i].timeline=(all[i].timeline||[]).concat([{status:'reply',date:new Date().toISOString(),note:nt||V.t('rq_default_note')}]); localStorage.setItem('vc_comp',JSON.stringify(all)); _complaints=all; }
+  }catch(e){}
+  try{localStorage.setItem('rq_snooze_'+r,String(Date.now()+7*86400000));}catch(e){}
+  if(st){st.style.color='#16a34a';st.textContent=V.t('rq_saved');}
+  setTimeout(function(){var i=document.getElementById('trk-inp'); if(i){i.value=r;} if(typeof doTrack==='function') doTrack(); renderRecent();},900);
 }
 function renderRecent(){
   const el=document.getElementById('trk-recent');
@@ -4955,6 +5012,7 @@ function _handleGoLink(){
     if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
     if(go==='asya'){ if(typeof _aToggle==='function') _aToggle(); return; }
     var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
+    if(go==='new'){ openAsyaPanel(); return; }
     if(allowed[go]) goApp(go);
   }catch(e){}
 }
