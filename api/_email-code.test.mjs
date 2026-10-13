@@ -1,6 +1,6 @@
 import { test, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import handler from './email-code.js';
+import handler from './_email-code.js';
 import { mailSecret, checkPass } from './_mailcode.js';
 
 let sent, ipN = 0, saved;
@@ -27,4 +27,13 @@ test('send e-mails a code; the right code returns a pass for that address', asyn
 test('bad address is refused, no mail sent', async () => {
   const r = await call({ action: 'send', email: 'nope' });
   assert.equal(r.code, 400); assert.equal(sent.length, 0);
+});
+
+test('/api/email-code reaches the code handler through api/complaint.js (rewrite, one function)', async () => {
+  const { default: complaint } = await import('./complaint.js');
+  const r = await new Promise(resolve => {
+    const res = { code: 0, status(c) { this.code = c; return this; }, json(d) { resolve({ code: this.code, data: d }); } };
+    complaint({ method: 'POST', url: '/api/complaint?mailcode=1', query: { mailcode: '1' }, body: { action: 'send', email: 'me@example.ca' }, headers: { 'x-forwarded-for': '10.9.1.1' } }, res);
+  });
+  assert.equal(r.code, 200); assert.ok(r.data.token);
 });

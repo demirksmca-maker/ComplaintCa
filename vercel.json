@@ -23,6 +23,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/email-code",
+      "destination": "/api/complaint?mailcode=1"
+    },
+    {
       "source": "/.netlify/functions/claude-proxy",
       "destination": "/api/claude-proxy"
     }

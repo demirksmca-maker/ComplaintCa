@@ -1,3 +1,4 @@
+// Served at /api/email-code through api/complaint.js (vercel.json rewrite): the Hobby plan allows 12 functions.
 // POST { action:'send', email }            → e-mails a 6-digit code, returns { token }
 // POST { action:'check', email, code, token } → returns { pass } (30-day mail pass) or 400 { error:'code' }
 import { isRateLimited } from './_rateLimit.js';
