@@ -2732,14 +2732,16 @@ function _ccEmbed(){
 }
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
+// Bump on every panel change so phones never keep an old copy of the panel files.
+var _ccAsyaV='20261013c';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }
   if(window._asyaLoading) return; window._asyaLoading=true;
   var fail=function(){ window._asyaLoading=false; _ccOldPanel=true; goApp('new'); };
   var add=function(src,next){ var s=document.createElement('script'); s.src=src; s.onload=next; s.onerror=fail; document.head.appendChild(s); };
-  var l=document.createElement('link'); l.rel='stylesheet'; l.href='/demo/asya/asya.css'; document.head.appendChild(l);
-  add('/demo/asya/i18n.js',function(){ add('/demo/asya/asya.js',function(){ window._asyaLoading=false; if(window.openComplaintFlow) _ccEmbed(); else fail(); }); });
+  var l=document.createElement('link'); l.rel='stylesheet'; l.href='/demo/asya/asya.css?v='+_ccAsyaV; document.head.appendChild(l);
+  add('/demo/asya/i18n.js?v='+_ccAsyaV,function(){ add('/demo/asya/asya.js?v='+_ccAsyaV,function(){ window._asyaLoading=false; if(window.openComplaintFlow) _ccEmbed(); else fail(); }); });
 }
 function goApp(tab){
   document.getElementById('pg-land').style.display='none';
