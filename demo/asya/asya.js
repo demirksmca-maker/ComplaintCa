@@ -74,7 +74,8 @@
   const bar = el('div','af-bar'), title = el('span','af-title','File a Complaint'), x = el('button','af-close','✕');
   title.id = 'af-title'; x.type = 'button'; x.setAttribute('aria-label','Close'); bar.append(title, x);
   const scroll = el('div','af-scroll'), sceneHost = el('div','af-scene'), panel = el('div','af-panel');
-  const emblem = el('img','af-emblem'); emblem.src = '/demo/asya/emblem.jpg'; emblem.alt = ''; emblem.width = 360; emblem.height = 360; sceneHost.appendChild(emblem);
+  // emblem.webp is the 1024 px original: sharp on 3x phones and tablets
+  const emblem = el('img','af-emblem'); emblem.src = '/demo/asya/emblem.webp'; emblem.decoding = 'async'; emblem.alt = ''; emblem.width = 360; emblem.height = 360; sceneHost.appendChild(emblem);
   const brand = el('div','af-brand','ASYA'); brand.setAttribute('aria-hidden','true');
   scroll.append(sceneHost, brand, panel); ov.append(bar, scroll);
   document.body.appendChild(ov);

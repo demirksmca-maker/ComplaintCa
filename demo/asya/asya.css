@@ -476,3 +476,6 @@ textarea.af-in::placeholder{text-align:center}
 .af1-fin-rights{margin-top:16px;animation-delay:2.7s!important}
 .af1-fin-lawyer{display:block;margin-top:10px;color:#ffe08a;font-weight:700;font-size:.86rem;text-decoration:none}.af1-fin-lawyer:hover{text-decoration:underline}
 .af1-frame.done>.af1-duo,.af1-frame.done>.af1-cap,.af1-frame.done>.af1-warn,.af1-frame.done>.af1-ask{display:none}
+/* crisp artwork on high-density screens */
+.af-emblem{image-rendering:auto;transform:translateZ(0)}
+.af1-frame::before,.af1-frame::after{transform:translateZ(0)}
