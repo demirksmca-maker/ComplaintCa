@@ -452,27 +452,43 @@
     const o_loc = document.createElement('input'); o_loc.type = 'text'; o_loc.placeholder = L1.locPh; o_loc.className = 'af1-in'; o_loc.maxLength = 200;
     const o_find = el('button','af1-find', L1.find); o_find.type = 'button';
     const locRow = el('div','af1-locrow'); locRow.append(o_loc, o_find);
-    // Who the complaint is about: optional, with OpenStreetMap suggestions near the location.
-    const o_who = document.createElement('input'); o_who.type = 'text'; o_who.className = 'af1-in'; o_who.placeholder = TX('School, company, landlord…'); o_who.maxLength = 120; o_who.autocomplete = 'off';
-    const o_sug = el('div','af1-sug'); o_sug.hidden = true; let whoAddr = '', whoPicked = '', sugTimer = 0, sugFor = '';
-    const whoBox = el('div','af1-whobox'); whoBox.append(o_who, o_sug);
-    async function suggest(){
-      const q = o_who.value.trim(); if (q.length < 3 || q === whoPicked) { o_sug.hidden = true; return; } if (q === sugFor) return; sugFor = q;
-      let rows = [];
-      try { const loc = o_loc.value.trim();
-        const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=4&countrycodes=ca&q=' + encodeURIComponent(q + (loc ? ', ' + loc : '')), { headers:{ 'Accept-Language':'en' } });
-        if (r.ok) rows = await r.json(); } catch (e) {}
-      if (sugFor !== q) return;
-      o_sug.innerHTML = '';
-      rows.forEach(x => { const parts = String(x.display_name || '').split(', '), name = (x.name || parts[0] || '').trim(), addr = parts.slice(x.name ? 1 : 1, 5).join(', ');
-        if (!name) return; const b = el('button','af1-sugi'); b.type = 'button'; b.append(el('b', null, name), el('small', null, addr));
-        b.addEventListener('mousedown', e => e.preventDefault());
-        b.addEventListener('click', () => { o_who.value = name; whoPicked = name; whoAddr = addr; o_sug.hidden = true; if (A) { fillOrg(); if (!draftEdited) buildDraft(); drawDraft(); } });
-        o_sug.appendChild(b); });
-      o_sug.hidden = !o_sug.children.length;
+    // Location and "who is it about": OpenStreetMap suggestions, same source and rules as the live form
+    // (_locSearch / _tgtSearch / _tgtTypeFromOSM / _tgtAddr in index.html).
+    const osmCity = a => a.city || a.town || a.village || a.municipality || a.hamlet || '';
+    const osmAddr = r => { const a = r.address || {}; return [[a.house_number, a.road].filter(Boolean).join(' '), osmCity(a), a.state, a.postcode].filter(Boolean).join(', '); };
+    const osmShort = r => { const a = r.address || {}; return [osmCity(a) || String(r.display_name || '').split(',')[0].trim(), a.state].filter(Boolean).join(', '); };
+    function suggester(input, box, query, item, pick){
+      let timer = 0, seq = 0, picked = '';
+      const run = async () => {
+        const v = input.value.trim(); if (v.length < 3 || v === picked) { box.hidden = true; return; }
+        const my = ++seq; let rows = [];
+        try { const r = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=5&addressdetails=1&countrycodes=ca&dedupe=1&q=' + encodeURIComponent(query(v)), { headers:{ 'Accept-Language':'en' } }); if (r.ok) rows = await r.json(); } catch (e) {}
+        if (my !== seq) return;
+        box.innerHTML = '';
+        rows.forEach(r => { const [name, sub] = item(r); if (!name) return;
+          const b = el('button','af1-sugi'); b.type = 'button'; b.append(el('b', null, name), el('small', null, sub));
+          b.addEventListener('mousedown', ev => ev.preventDefault());
+          b.addEventListener('click', () => { box.hidden = true; picked = pick(r, name, sub) || input.value; });
+          box.appendChild(b); });
+        box.hidden = !box.children.length;
+      };
+      input.addEventListener('input', () => { picked = ''; clearTimeout(timer); timer = setTimeout(run, 450); });
+      input.addEventListener('blur', () => setTimeout(() => { box.hidden = true; }, 150));
+      input.addEventListener('keydown', ev => { if (ev.key === 'Escape') box.hidden = true; });
     }
-    o_who.addEventListener('input', () => { whoAddr = ''; whoPicked = ''; clearTimeout(sugTimer); sugTimer = setTimeout(suggest, 450); });
-    o_who.addEventListener('blur', () => setTimeout(() => { o_sug.hidden = true; }, 150));
+    const o_who = document.createElement('input'); o_who.type = 'text'; o_who.className = 'af1-in'; o_who.placeholder = TX('School, company, landlord…'); o_who.maxLength = 120; o_who.autocomplete = 'off';
+    const o_sug = el('div','af1-sug'); o_sug.hidden = true; let whoAddr = '', whoPicked = '', whoType = '';
+    const whoBox = el('div','af1-whobox'); whoBox.append(o_who, o_sug);
+    const o_locSug = el('div','af1-sug'); o_locSug.hidden = true; locRow.appendChild(o_locSug); o_loc.autocomplete = 'off';
+    const refreshAnalysis = () => { if (A && oFor) { oFor = ''; analyse(); } };
+    suggester(o_loc, o_locSug, v => v, r => { const parts = String(r.display_name || '').split(','); return [parts[0].trim(), osmShort(r) !== parts[0].trim() ? osmShort(r) : parts.slice(1, 3).join(',').trim()]; },
+      r => { o_loc.value = osmShort(r) || r.display_name; refreshAnalysis(); return o_loc.value; });
+    suggester(o_who, o_sug, v => { const near = o_loc.value.trim(); return near ? v + ', ' + near : v; },
+      r => { const parts = String(r.display_name || '').split(','); return [(r.name || parts[0] || '').trim(), osmAddr(r) || parts.slice(1, 4).join(',').trim()]; },
+      (r, name, addr) => { o_who.value = name; whoPicked = name; whoAddr = addr; whoType = typeFromOSM(r);
+        if (!o_loc.value.trim()) o_loc.value = osmShort(r);
+        if (A) { fillOrg(); if (!draftEdited) buildDraft(); drawDraft(); refreshAnalysis(); } return name; });
+    o_who.addEventListener('input', () => { whoAddr = ''; whoPicked = ''; whoType = ''; });
     const o_story = document.createElement('textarea'); o_story.className = 'af1-in af1-ta'; o_story.placeholder = L1.storyPh; o_story.maxLength = 5000;
     const o_wait = el('p','af1-wait', L1.wait);
     const o_sheet = el('div','af1-sheet'), o_grab = el('button','af1-grab'), o_sum = el('div','af1-sum'), o_body = el('div','af1-sbody'), o_bd = el('div','af1-bd');
@@ -606,7 +622,7 @@
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
-      if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = guessTarget(d, c);
+      if (oFor !== d) return; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -678,8 +694,17 @@
     }
     o_story.addEventListener('input', () => { clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
-    o_find.addEventListener('click', () => { if (!navigator.geolocation) return; o_find.textContent = '…';
-      navigator.geolocation.getCurrentPosition(p => { fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(r => r.json()).then(d => { const a = d.address || {}; o_loc.value = [a.city || a.town || a.village || a.municipality || '', a.state || ''].filter(Boolean).join(', '); }).catch(() => {}).then(() => { o_find.textContent = L1.find; }); }, () => { o_find.textContent = L1.find; }); });
+    o_find.addEventListener('click', () => {
+      const fail = () => { o_find.textContent = L1.find; o_find.disabled = false; o_wait.hidden = false; o_wait.textContent = TX('Location unavailable — type your city.'); o_loc.focus(); };
+      if (!navigator.geolocation) return fail();
+      o_find.textContent = '…'; o_find.disabled = true;
+      let done = false; const guard = setTimeout(() => { if (!done) { done = true; fail(); } }, 15000);   // some phones never call back
+      navigator.geolocation.getCurrentPosition(p => { if (done) return; done = true; clearTimeout(guard);
+        fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&addressdetails=1&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude)
+          .then(r => r.json()).then(d => { o_loc.value = osmShort(d); refreshAnalysis(); }).catch(() => {})
+          .then(() => { o_find.textContent = '✓'; o_find.disabled = false; setTimeout(() => { o_find.textContent = L1.find; }, 1500); });
+      }, () => { if (done) return; done = true; clearTimeout(guard); fail(); }, { enableHighAccuracy:false, timeout:12000, maximumAge:60000 });
+    });
     o_btn.addEventListener('click', async () => {
       o_err.textContent = '';
       const mail = o_mail.value.trim(), what_ = o_story.value.trim();

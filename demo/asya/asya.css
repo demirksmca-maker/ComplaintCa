@@ -423,3 +423,12 @@ textarea.af-in::placeholder{text-align:center}
 
 /* calmer gold: the resting frame is a little dimmer and less saturated */
 .af1-frame::before{filter:brightness(.8) saturate(.8);opacity:.9}
+/* suggestions under Location too; buttons answer to touch */
+.af1-locrow{position:relative}
+.af1-frame>.af1-f:has(.af1-locrow){z-index:4}.af1-frame>.af1-f:has(.af1-whobox){z-index:3}
+.af1-find,.af1-navb,.af1-link,.af1-fin-more,.af1-fin-done,.af1-sugi,.af-ov .af-btn{transition:transform .12s ease,background-color .2s,box-shadow .2s}
+.af1-find:active,.af1-navb:active,.af-ov .af-btn:active,.af1-fin-more:active,.af1-fin-done:active{transform:scale(.96)}
+.af1-find:hover,.af1-navb:hover{background:rgba(230,201,138,.1)}.af1-find:disabled{opacity:.7}
+.af-ov .af-btn.gold:hover{box-shadow:0 0 18px rgba(230,195,92,.45)}
+.af-ov button:focus-visible,.af-ov a:focus-visible{outline:2px solid #e6c35c;outline-offset:2px}
+.af-ov .af1-in:focus-visible{outline:none}
