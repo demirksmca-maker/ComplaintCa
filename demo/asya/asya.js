@@ -559,6 +559,7 @@
     o_org.addEventListener('input', () => { orgAuto = false; o_orgHint.textContent = ''; if (!draftEdited) { buildDraft(); } drawDraft(); });
     function fillOrg(){ const typed = o_who.value.trim(); orgAuto = !typed && !!(A && A.institution); o_org.value = typed || (orgAuto ? A.institution : ''); o_orgHint.textContent = orgAuto ? L2.found : ''; }
     const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TX('Auto-fill demo'))); if (!IS_DEMO) o_auto.style.display = 'none';
+    const o_ask = el('div','af1-ask'); o_ask.hidden = true;   // completeness questions (filled by drawAsk)
     // Speak or show a photo: ASYA writes the story into the box (browser speech recognition / /api/vision).
     const ICO_MIC = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></svg>';
     const ICO_CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.3" r="3.6"/></svg>';
@@ -594,13 +595,14 @@
       let v = null; try { const r = await post('/api/vision', { images:[await shrink(f)], lang:LG }); if (r.ok) v = await r.json(); } catch (e) {}
       o_snap.disabled = false; o_snap.classList.remove('on');
       if (!v || !v.story) { o_wait.textContent = TX('ASYA could not read this photo.'); return; }
+      if (v.isProblem === false) { o_wait.textContent = TX('This photo doesn’t show a problem. Tell ASYA what happened.'); return; }
       o_story.value = ((o_story.value.trim() ? o_story.value.trim() + '\n\n' : '') + v.story).slice(0, 5000);
       if (v.place && !o_who.value.trim()) { o_who.value = v.place; whoPicked = v.place; whoAddr = v.address || ''; }
       photoThreat = photoThreat || !!v.threat;
       o_warn.hidden = !photoThreat; if (photoThreat) o_warn.textContent = '⚠ ' + TX('This looks like a threat.') + ' ' + TX('If you are in danger now, call 911.');
       oFor = ''; o_story.dispatchEvent(new Event('input')); clearTimeout(oTimer); analyse();
     });
-    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story), o_duo, o_cap, o_warn);
+    const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story), o_ask, o_duo, o_cap, o_warn);
     one.append(o_frame, o_wait, o_auto);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
@@ -657,13 +659,55 @@
     }
     // A letter needs facts: at least 60 characters and 8 words before ASYA analyses or anything is sent.
     const MIN_STORY = 60, enough = s => s.length >= MIN_STORY && s.split(/\s+/).filter(Boolean).length >= 8;
+    // Completeness: before writing a letter ASYA needs what happened, when, where, who and what the person wants.
+    // Missing facts are asked right under the story; answers go into the story (or the Location / Who fields).
+    const NEED = ['when', 'where', 'who', 'want'], ASK_ORDER = ['when', 'where', 'who', 'want', 'contacted'];
+    const ASKQ = { when:['When did it happen?', 'e.g. 8 October 2026'], where:['Where did it happen?', 'City or address'], who:['Who is it about?', 'School, company, landlord…'],
+      want:['What do you want them to do?', 'e.g. a refund, an apology, a repair'], contacted:['Have you contacted them already?', 'e.g. emailed twice, no reply'] };
+    const answered = new Set();
+    function stillMissing(c){ return ((c && c.missing) || []).filter(m => !answered.has(m) && !(m === 'where' && o_loc.value.trim()) && !(m === 'who' && o_who.value.trim())); }
+    function drawAsk(miss){
+      o_ask.innerHTML = ''; o_ask.hidden = false;
+      o_ask.appendChild(el('div','af1-ask-h', TX('ASYA needs a little more')));
+      const ins = [];
+      // Location and Who already have fields above: point at those instead of asking twice.
+      const fieldOf = { where:o_loc, who:o_who };
+      Object.keys(fieldOf).forEach(m => fieldOf[m].closest('.af1-f').classList.toggle('af1-need', miss.includes(m)));
+      ASK_ORDER.filter(m => miss.includes(m) && !fieldOf[m]).forEach(m => {
+        const f = el('div','af1-f af1-askf'), lb = el('label'), inp = document.createElement('input');
+        lb.append(document.createTextNode(TX(ASKQ[m][0]))); if (!NEED.includes(m)) lb.appendChild(el('em', null, TX('optional')));
+        inp.type = 'text'; inp.className = 'af1-in'; inp.placeholder = TX(ASKQ[m][1]); inp.maxLength = 200; inp.dataset.m = m;
+        f.append(lb, inp); o_ask.appendChild(f); ins.push(inp);
+      });
+      const go = el('button','af-btn gold af1-askgo', TX('Continue')); go.type = 'button';
+      const err = el('p','af1-askerr');
+      go.addEventListener('click', () => {
+        const empty = [...ins.filter(i => NEED.includes(i.dataset.m) && !i.value.trim()), ...Object.keys(fieldOf).filter(m => miss.includes(m) && !fieldOf[m].value.trim()).map(m => fieldOf[m])];
+        if (empty.length) { err.textContent = TX('Please answer the questions above.'); empty[0].focus(); return; }
+        const lines = [];
+        Object.keys(fieldOf).forEach(m => { fieldOf[m].closest('.af1-f').classList.remove('af1-need'); if (miss.includes(m)) answered.add(m); });
+        ins.forEach(i => { const v = i.value.trim(), m = i.dataset.m; answered.add(m); if (!v) return;
+          if (m === 'where' && !o_loc.value.trim()) o_loc.value = v;
+          else if (m === 'who' && !o_who.value.trim()) { o_who.value = v; whoPicked = ''; whoAddr = ''; }
+          else lines.push(TX(ASKQ[m][0]) + ' ' + v); });
+        if (lines.length) o_story.value = (o_story.value.trim() + '\n' + lines.join('\n')).slice(0, 5000);
+        o_ask.hidden = true; o_ask.innerHTML = ''; oFor = ''; analyse();
+      });
+      o_ask.append(go, err);
+      const first = ins[0] || (miss.includes('where') && !o_loc.value.trim() ? o_loc : o_who); if (first && matchMedia('(pointer:fine)').matches) setTimeout(() => first.focus(), 50);
+    }
     async function analyse(){
       const d = o_story.value.trim(); if (d === oFor) return;
-      if (!enough(d)) { oFor = ''; setSheet('hid'); o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
+      if (!enough(d)) { oFor = ''; setSheet('hid'); o_ask.hidden = true; o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
-      if (oFor !== d) return; if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
+      if (oFor !== d) return;
+      if (c && c.isComplaint === false) { setSheet('hid'); o_ask.hidden = true; o_wait.textContent = TX('This doesn’t look like a problem yet. Tell ASYA what went wrong.'); return; }
+      const miss = stillMissing(c);
+      if (miss.some(m => NEED.includes(m))) { setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
+      o_ask.hidden = true;
+      if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = c ? c.category : 'other';
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -940,7 +984,7 @@
       }
     }
     // ── Auto-fill demo: fills email, place and story, lets ASYA analyse, taps through every card, stops before Send ──
-    const STORY = 'My daughter is in Grade 6 at Maple Public School in Toronto. Since September another student has bullied her, including repeated physical threats. The latest was on October 8. I told the principal twice and nobody has answered me.';
+    const STORY = 'My daughter is in Grade 6 at Maple Public School in Toronto. Since September another student has bullied her, including repeated physical threats. The latest was on October 8. I told the principal twice and nobody has answered me. I want the school to stop the bullying and tell me in writing what they will do.';
     const typeInto = async (f, text, ms) => { f.value = ''; for (const ch of text) { f.value += ch; f.dispatchEvent(new Event('input')); await wait(ms); } };
     async function autoplay(){
       if (auto.disabled) return; const ab = f => [auto, o_auto].forEach(f);
