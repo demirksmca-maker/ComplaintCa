@@ -769,7 +769,7 @@ textarea{resize:vertical;min-height:90px}
   <!-- NAV TABS -->
   <div class="nav-tabs">
     <div class="nav-inner" style="overflow-x:auto;scrollbar-width:none">
-      <div class="nav-tab active" tabindex="0" role="button" id="tab-new" onclick="showTab('new')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-new-lbl">File</span></div>
+      <div class="nav-tab active" tabindex="0" role="button" id="tab-new" onclick="ccFileTab()" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-new-lbl">File</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-feed" onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Havuz</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-track" onclick="showTab('track')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-track-lbl">Track</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-lawyer" onclick="showTab('lawyer')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-lawyer-lbl">Lawyer</span></div>
@@ -786,6 +786,7 @@ textarea{resize:vertical;min-height:90px}
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         </div>
         <div id="new-step-1">
+        <p style="text-align:center;margin:0 0 10px;font-size:.78rem"><a href="#" onclick="event.preventDefault();ccUsePanel('new')" style="color:var(--blue)">✨ Try the new ASYA panel</a></p>
         <div class="card" style="padding:14px 16px">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:8px">
@@ -2708,7 +2709,11 @@ function goHome(){
 }
 // New complaint panel (ASYA story view) is the working page for now: the classic form stays the default.
 // ?panel=new opens the new panel (loaded on first tap); a load failure falls back to the classic form.
-var _ccOldPanel=!/[?&]panel=new\b/.test(location.search);
+// New ASYA panel is the default for filing; ?panel=old or the person's saved choice keeps the classic form.
+var _ccPanelPref='';try{_ccPanelPref=localStorage.getItem('cc_panel')||'';}catch(e){}
+var _ccOldPanel=/[?&]panel=old\b/.test(location.search)||(_ccPanelPref==='old'&&!/[?&]panel=new\b/.test(location.search));
+function ccFileTab(){ if(_ccOldPanel) showTab('new'); else openAsyaPanel(); }
+function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e){} _ccOldPanel=(which==='old'); if(which==='old') goApp('new'); else openAsyaPanel(); }
 // ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
 // ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.

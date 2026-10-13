@@ -620,7 +620,11 @@
       oFor = ''; o_story.dispatchEvent(new Event('input')); clearTimeout(oTimer); analyse();
     });
     const o_frame = el('div','af1-frame'); o_frame.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(TX('Who is it about?'), whoBox, TX('optional')), fld(L1.story, o_story), o_ask, o_duo, o_cap, o_warn);
-    one.append(o_frame, o_wait, o_auto);
+    // Home page only: a quiet way back to the classic form (choice is remembered).
+    const o_classic = el('button','af1-classic', TX('Prefer the classic form?')); o_classic.type = 'button';
+    if (IS_DEMO || !window.ccUsePanel) o_classic.hidden = true;
+    o_classic.addEventListener('click', () => { close(); setTimeout(() => window.ccUsePanel('old'), 300); });
+    one.append(o_frame, o_wait, o_auto, o_classic);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
