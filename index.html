@@ -962,7 +962,7 @@ textarea{resize:vertical;min-height:90px}
           <div class="ct"><div class="ci">🔍</div><span id="trk-card-t">Track by Reference</span></div>
           <label id="trk-ref-lbl">Reference Number</label>
           <div class="tsearch">
-            <input type="text" id="trk-inp" placeholder="VC-2025-XXXXX" style="margin-bottom:0;text-transform:uppercase">
+            <input type="text" id="trk-inp" placeholder="VC-2026-XXXXXX" style="margin-bottom:0;text-transform:uppercase">
             <button onclick="doTrack()" id="a-trkb" style="white-space:nowrap">Track</button>
           </div>
         </div>
@@ -998,7 +998,7 @@ textarea{resize:vertical;min-height:90px}
             <button onclick="doLogout()" id="li-logout-btn" style="flex-shrink:0;background:none;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:7px 12px;font-size:.72rem;font-weight:600;cursor:pointer">Çıkış</button>
           </div>
           <div style="display:flex;gap:8px;margin-bottom:16px">
-            <input type="text" id="hs-trk-inp" placeholder="VC-2025-XXXXX" style="margin-bottom:0;flex:1;text-transform:uppercase;font-size:.8rem;padding:9px 12px">
+            <input type="text" id="hs-trk-inp" placeholder="VC-2026-XXXXXX" style="margin-bottom:0;flex:1;text-transform:uppercase;font-size:.8rem;padding:9px 12px">
             <button onclick="doTrack('hs-trk-inp','hs-trk-result')" style="flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:0 14px;font-size:.78rem;font-weight:600;cursor:pointer">🔍</button>
           </div>
           <div id="hs-trk-result"></div>
@@ -1013,7 +1013,7 @@ textarea{resize:vertical;min-height:90px}
           <label id="si-pass-lbl">Password</label>
           <input type="password" id="li-pass" placeholder="••••••••">
           <button onclick="doLogin()" class="sbtn" id="si-btn" style="margin-bottom:0">Sign In</button>
-        </div><div style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
+        </div><div class="or-sep" style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
 <button onclick="doGoogleSignIn(this)" id="google-si-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#fff;border:1.5px solid #dadce0;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;color:#3c4043;cursor:pointer">
   <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.96 10.7c-.18-.54-.29-1.11-.29-1.7s.11-1.16.29-1.7V4.96H.96C.35 6.18 0 7.55 0 9s.35 2.82.96 4.04l3-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l3 2.34C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
   <span id="google-si-label">Sign in with Google</span>
@@ -1041,7 +1041,7 @@ textarea{resize:vertical;min-height:90px}
           <input type="password" id="su-pass" placeholder="Min. 6 characters">
 <button onclick="doSignup()" class="sbtn" id="su-btn" style="margin-bottom:0">Create Free Account</button>
           <div id="su-free" style="text-align:center;margin-top:12px;font-size:.72rem;color:var(--muted)">Free forever · No credit card needed</div>
-        </div><div style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
+        </div><div class="or-sep" style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
 <button onclick="doGoogleSignIn(this)" id="google-su-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#fff;border:1.5px solid #dadce0;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;color:#3c4043;cursor:pointer">
   <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.96 10.7c-.18-.54-.29-1.11-.29-1.7s.11-1.16.29-1.7V4.96H.96C.35 6.18 0 7.55 0 9s.35 2.82.96 4.04l3-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l3 2.34C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
   <span>Sign up with Google</span>
@@ -2197,7 +2197,7 @@ const V = (function(){
       ar_immigration_t:"Immigration",ar_immigration_s:"PR, visa, refugee",
       ar_criminal_t:"Criminal",ar_criminal_s:"Defence, charges",
       ar_family_t:"Family Law",ar_family_s:"Divorce, custody",
-      auth_ref:"Reference No.",auth_signin:"Sign In",auth_register:"Register",
+      auth_ref:"Reference No.",auth_signin:"Sign In",auth_account:"My account",or_sep:"— or —",si_google:"Sign in with Google",auth_register:"Register",
       trk_card_t:"Track by Reference",trk_ref_lbl:"Reference Number",
       si_title:"Sign In",si_email:"Email",si_pass:"Password",si_btn:"Sign In",
       su_title:"Create Account",su_name:"Full Name",su_email:"Email",su_pass:"Password",su_min:"Min. 6 characters",su_btn:"Create Free Account",su_free:"Free forever · No credit card needed",
@@ -2287,7 +2287,7 @@ const V = (function(){
       ar_immigration_t:"Göçmenlik",ar_immigration_s:"PR, vize, mülteci",
       ar_criminal_t:"Ceza Hukuku",ar_criminal_s:"Savunma, suçlamalar",
       ar_family_t:"Aile Hukuku",ar_family_s:"Boşanma, velayet",
-      auth_ref:"Referans No.",auth_signin:"Giriş Yap",auth_register:"Kayıt Ol",
+      auth_ref:"Referans No.",auth_signin:"Giriş Yap",auth_account:"Hesabım",or_sep:"— veya —",si_google:"Google ile giriş yap",auth_register:"Kayıt Ol",
       trk_card_t:"Referansla Takip Et",trk_ref_lbl:"Referans Numarası",
       si_title:"Giriş Yap",si_email:"E-posta",si_pass:"Şifre",si_btn:"Giriş Yap",
       su_title:"Hesap Oluştur",su_name:"Ad Soyad",su_email:"E-posta",su_pass:"Şifre",su_min:"En az 6 karakter",su_btn:"Ücretsiz Hesap Oluştur",su_free:"Sonsuza dek ücretsiz · Kredi kartı gerekmez",
@@ -2635,6 +2635,12 @@ const V = (function(){
       cur=l;
       try{document.documentElement.setAttribute('lang',l==='zh'?'zh':l);}catch(e){}
       apply();
+      // Parts drawn by script follow the new language too, and the choice is kept for the next visit.
+      try{localStorage.setItem('cc_lang',l);}catch(e){}
+      document.querySelectorAll('.or-sep').forEach(function(e){e.textContent=t('or_sep');});
+      var gs=document.getElementById('google-si-label'); if(gs) gs.textContent=t('si_google');
+      if(typeof renderRecent==='function'&&document.getElementById('trk-recent')&&document.getElementById('trk-recent').innerHTML) renderRecent();
+      if(typeof _applyAuthUI==='function') try{_applyAuthUI();}catch(e){}
       if(typeof renderLwResults==='function'&&document.getElementById('lw-results')&&document.getElementById('lw-results').innerHTML) renderLwResults();
     },
     init(){apply();},
@@ -2733,7 +2739,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261013l';
+var _ccAsyaV='20261013m';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }
@@ -4785,7 +4791,7 @@ function _applyAuthUI(){
       var em=document.getElementById('li-signedin-email'); if(em) em.textContent=s.email;
       var av=document.getElementById('li-signedin-avatar'); if(av) av.textContent=(s.name||s.email||'?').charAt(0).toUpperCase();
     }
-    if(tabBtn) tabBtn.textContent='Hesabım';   // signed in → this tab is the account/panel
+    if(tabBtn) tabBtn.textContent=V.t('auth_account');   // signed in → this tab is the account/panel
     // Signed-in users get one clean tab (Hesabım) with a mini reference search
     // built in — the separate "Reference No." tab would be redundant clutter.
     if(refTabBtn) refTabBtn.style.display='none';
@@ -4794,7 +4800,7 @@ function _applyAuthUI(){
     if(guest) guest.style.display='';
     if(signed) signed.style.display='none';
     if(uc) uc.style.display='none';
-    if(tabBtn) tabBtn.textContent='Sign In';
+    if(tabBtn) tabBtn.textContent=V.t('auth_signin');
     if(refTabBtn) refTabBtn.style.display='';
   }
 }
@@ -4935,6 +4941,12 @@ async function doLogin(){
 }
 
 // ── LANG DROPDOWN ──
+// The language picked last time comes back on the next visit (and after an in-site reload such as a tracking link).
+function _restoreLang(){
+  try{var l=localStorage.getItem('cc_lang'); if(!l||l==='en') return;
+    var it=[].slice.call(document.querySelectorAll('.lang-dd-item')).find(function(i){return (i.getAttribute('onclick')||'').indexOf("'"+l+"'")>-1;});
+    if(it) it.click(); var m=document.getElementById('lang-dd-menu'); if(m) m.classList.remove('open');}catch(e){}
+}
 function toggleLangDD(){
   var m=document.getElementById('lang-dd-menu');
   if(m) m.classList.toggle('open');
@@ -4975,7 +4987,7 @@ document.addEventListener('keydown',function(e){
   el.click();
 });
 
-document.addEventListener('DOMContentLoaded',function(){V.init();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_updateThemeBtn();});
+document.addEventListener('DOMContentLoaded',function(){V.init();_restoreLang();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_updateThemeBtn();});
 // Light/dark toggle — the theme itself is applied at parse-time (see the inline
 // script in <head>, which avoids a flash of the wrong theme); this just flips it
 // and keeps the topbar icon in sync.

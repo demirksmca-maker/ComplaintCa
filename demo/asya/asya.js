@@ -914,6 +914,9 @@
       if (inst.name) row('Recipient agency', inst.name);
       const track = el('a','af1-plaque af1-fin-go fx'); track.href = '/?track=' + encodeURIComponent(ref);
       track.append(el('b', null, TX('View complaint status')), el('small', null, TX('(Secure link)')));
+      // On the site, open Track in place (no reload, the chosen language stays); the link still works on its own.
+      track.addEventListener('click', e => { if (!window.goApp) return; e.preventDefault(); close();
+        setTimeout(() => { window.goApp('track'); const i = document.getElementById('trk-inp'); if (i) i.value = ref; if (typeof window.doTrack === 'function') window.doTrack(); }, 60); });
       const done = el('button','af1-fin-done fx', L1.dFin); done.type = 'button';
       done.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
       // Gold maple seal: a small official mark at the right end of the record band.
