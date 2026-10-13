@@ -2709,6 +2709,8 @@ function goHome(){
 // New complaint panel (ASYA story view) is the working page for now: the classic form stays the default.
 // ?panel=new opens the new panel (loaded on first tap); a load failure falls back to the classic form.
 var _ccOldPanel=!/[?&]panel=new\b/.test(location.search);
+// ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
+var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ window.openComplaintFlow(); return; }
