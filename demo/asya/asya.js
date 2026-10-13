@@ -84,6 +84,7 @@
   let scene = null, registered = false, F = null;
 
   function build(){
+    ov.classList.remove('af-fin-on');
     panel.innerHTML = '';
     const val = { ctype:'notice' }, lab = {}, media = [];
     let cur = 0, ai = null, aiFor = '', aiState = 'idle', tsToken = '', tsWidget = null, sending = false, verdict = null, routeFor = '';
@@ -915,7 +916,10 @@
       track.append(el('b', null, TX('View complaint status')), el('small', null, TX('(Secure link)')));
       const done = el('button','af1-fin-done fx', L1.dFin); done.type = 'button';
       done.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
-      fin.append(stage, el('h2','af1-fin-h af1-rec-t fx', sent ? TX('Official record of complaint transmission') : TX('Official record of complaint')),
+      // Compact head: emblem · ASYA · seal side by side (the big emblem and title above are hidden on this screen).
+      const top = el('div','af1-fin-top fx'), mini = el('img'); mini.src = emblem.src; mini.alt = ''; mini.width = mini.height = 62;
+      top.append(mini, el('span','af1-fin-brand','ASYA'), stage); ov.classList.add('af-fin-on');
+      fin.append(top, el('h2','af1-fin-h af1-rec-t fx', sent ? TX('Official record of complaint transmission') : TX('Official record of complaint')),
         ...(d.test ? [el('span','af1-d-tag fx', L1.dTest)] : []), el('p','af1-rec-h fx', TX('Complaint and tracking information')), rec,
         el('p','af1-fin-note fx', sent ? TX('We’ll email you the moment they reply.') : sub), track);
       if (V && V.poolSuggest && (V.remedy || V.claimDeadline)) {
