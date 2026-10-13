@@ -522,3 +522,13 @@ body.cc-panel-on .amain{display:none!important}
 a.af1-hico{flex:none;width:30px;height:30px;color:#e6c98a;display:grid;place-items:center}a.af1-hico svg{width:24px;height:24px}
 a.af1-hico:hover{color:#ffe08a}
 .af1-fin-rights h5,.af1-help h5{letter-spacing:.12em;font-size:.6rem;line-height:1.4}
+/* final screen head: emblem · ASYA · seal in one row, tighter spacing */
+.af-ov.af-fin-on .af-scene,.af-ov.af-fin-on .af-brand{display:none}
+.af1-fin-top{display:flex;align-items:center;justify-content:center;gap:14px;margin:2px 0 0}
+.af1-fin-top img{width:62px;height:62px;object-fit:contain;-webkit-mask-image:radial-gradient(circle,#000 58%,transparent 72%);mask-image:radial-gradient(circle,#000 58%,transparent 72%)}
+.af1-fin-brand{font:700 1.2rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;padding-left:.3em;color:#fff;text-shadow:-2px 0 8px rgba(74,163,255,.7),2px 0 8px rgba(255,79,147,.5)}
+.af1-fin-top .af1-stage{flex:none;width:66px;height:66px;margin:0}
+.af1-fin-top .af1-seal{top:2px;width:56px;height:56px;margin-left:-28px}
+.af1-fin-top .af1-env{top:12px;width:60px;height:40px;margin-left:-30px}
+.af1-rec-t{margin-top:10px;font-size:clamp(.8rem,3.9vw,1rem);letter-spacing:.06em;overflow-wrap:anywhere}
+.af1-rec-h{margin:10px 0 6px}
