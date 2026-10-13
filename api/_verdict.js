@@ -12,7 +12,7 @@ export function verdictPrompt({ title = '', desc = '', category = '', location =
     (isFoi ? 'IMPORTANT — ACCESS TO INFORMATION REQUEST: This is NOT a complaint. The person is formally requesting records or information the institution holds, under access-to-information legislation. Under Canadian access-to-information law, the requester is NOT required to state a reason for the request. Do not frame this as a grievance, do not accuse the institution of wrongdoing, and do not demand a remedy — only request the specific records/information and a response within the statutory deadline.\n' : '') +
     (isAnon ? 'IMPORTANT — ANONYMOUS SUBMISSION: This complainant has chosen to remain anonymous. Most Canadian institutions cannot open a formal, identity-verified complaint file from an anonymous submission — it will typically be logged as an informational tip/advisory notice rather than a case requiring a mandated response. Do NOT state or imply a binding legal response deadline, and do NOT threaten "formal escalation." Frame everything as an advisory notice for the institution\'s awareness and internal record, not a formal demand.\n' : '') +
     '\nGiven a complaint, respond in this EXACT format:\n\n' +
-    'COMPLAINT:\n' + (isFoi ? '[Rewrite as a 1-2 sentence summary of exactly what records or information are being requested. Factual only. No assumptions.]' : '[Rewrite formally in 1-2 sentences. Factual only. No assumptions.]') + '\n\n' +
+    'COMPLAINT:\n' + (isFoi ? '[Rewrite in the first person ("I"), 2-4 sentences: exactly what records or information I am requesting, for which period, and why they matter to me if the complaint says so. Factual only. No assumptions.]' : '[Rewrite formally in the first person ("I"), 4-6 sentences: what happened, when and where, who was involved, what I have already done about it, and how it affects me. Use only facts in the complaint — if a detail is not given, leave it out; never invent dates, names or amounts.]') + '\n\n' +
     'LAW:\n' + (isFoi ? '[One line: the exact Act name from VERIFIED_FACTS, verbatim. Do not add a section number unless one is given.]' : '[One line: exact Act name + section only. e.g. Residential Tenancies Act 2006, s.20(1)]') + '\n\n' +
     'SANCTIONS:\n' + (isFoi ? '[One line: the recourse from VERIFIED_FACTS, verbatim, if present — this is the appeal path if the request is refused or the deadline is missed, not a punitive sanction.]' : '[One line: specific real penalty/remedy only. No elaboration.]') + '\n\n' +
     (isAnon ? 'RESPONSE_DEADLINE:\n[One line: state "Not applicable — anonymous submissions are not entitled to a mandated response" instead of a deadline.]\n\n' : 'RESPONSE_DEADLINE:\n[One line: exact regulatory deadline only.]\n\n') +
@@ -66,7 +66,7 @@ export async function runVerdict(input) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 800, system: p.system, messages: [{ role: 'user', content: p.user }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 1200, system: p.system, messages: [{ role: 'user', content: p.user }] }),
   });
   const d = await r.json();
   if (d.error) return null;

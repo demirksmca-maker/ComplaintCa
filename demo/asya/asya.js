@@ -562,7 +562,7 @@
     const NAME_TOKEN = '[Your name]';
     function buildDraft(){
       const story = o_story.value.trim(), org = o_org.value.trim(), high = !!(A && A.priority === 'high'), law = cleanLaw(V && V.law), sanc = cleanLaw(V && V.sanctions);
-      const incident = ((V && V.complaint) || story).replace(/[#*_`]+/g, '').replace(/^\s*-{3,}\s*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 700);
+      const incident = ((V && V.complaint) || story).replace(/[#*_`]+/g, '').replace(/^\s*-{3,}\s*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1500);
       const asks = high
         ? ['Investigate this report immediately.', 'Tell me in writing what steps you will take, including interim measures to keep the person affected safe.', 'Meet or speak with me within 3 business days.']
         : ['Review this complaint.', 'Tell me in writing what you will do to resolve it.', 'Confirm who is handling my file.'];
@@ -571,13 +571,14 @@
       const esc = next.length ? 'I will escalate this to ' + next.slice(0, 2).join(', then ') + '.' : (sanc || 'I will escalate this to the appropriate oversight body.');
       draftSecs = [
         // The letter goes to the first authority (e.g. the Ministry of Labour), not to the business complained about.
-        { h:'', b:'Dear Sir or Madam' + (recip() ? ' at ' + recip() : '') + ',' + (org && org !== recip() ? '\n\nRe: Complaint against ' + org + (whoAddr ? ', ' + whoAddr : '') : '') },
+        { h:'', b:'Dear Sir or Madam' + (recip() ? ' at ' + recip() : '') + ',' + (org && org !== recip() ? '\n\nRe: Complaint against ' + org + (whoAddr ? ', ' + whoAddr : '') : '')
+          + '\n\nI am writing to file a formal complaint' + (org && org !== recip() ? ' about ' + org : '') + ' and to ask for your help in resolving it. The details are set out below.' },
         { h:'Incident', b:incident },
         { h:'What I ask', b:asks.map(x => '• ' + x).join('\n') },
         ...(law ? [{ h:'Legal basis', b:law }] : []),
         { h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : ''), dl:true },
         { h:'If there is no reply', b:esc + reserve() },
-        { h:'', b:'Sincerely,\n' + NAME_TOKEN }
+        { h:'', b:'Thank you for your attention to this matter. I can provide further details or documents on request.\n\nSincerely,\n' + NAME_TOKEN }
       ];
     }
     // Legal-rights case: one measured line in the letter, not a threat.
