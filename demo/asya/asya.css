@@ -494,3 +494,30 @@ body.cc-panel-on .amain{display:none!important}
 .af1-codemsg b{color:#f6e7bf;word-break:break-all}
 .af-ov .af1-codein{display:block;width:100%;text-align:center;font-size:1.5rem;letter-spacing:.5em;padding-left:.5em}
 .af1-codeok{display:block;width:100%;margin-top:12px}
+/* final screen help bars: same thin gold card as "Your rights", rows split by hairlines */
+.af1-help{text-align:left;padding-bottom:6px}.af1-help h5{text-align:center}
+.af1-hb{all:unset;box-sizing:border-box;display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;padding:11px 2px;border-top:1px solid rgba(230,201,138,.18);cursor:pointer}
+.af1-hb b{display:block;font:600 .86rem Georgia,serif;letter-spacing:.03em;color:#f6e7bf}.af1-hb small{color:#a9b0c4;font-size:.72rem}
+.af1-hb i{font-style:normal;color:#e6c98a;font-size:.8rem;transition:transform .2s}.af1-hb.on i{transform:rotate(180deg)}
+.af1-hb:focus-visible{outline:2px solid #e6c35c;outline-offset:2px;border-radius:4px}
+.af1-hl{padding:0 2px 6px}
+.af1-hi{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0}
+.af1-hi b{display:block;font-weight:600;font-size:.82rem;color:#e4e8f3}.af1-hi small{display:block;color:#8f97ac;font-size:.72rem;line-height:1.35}
+.af1-hi a{flex:none;color:#ffe08a;font-size:.78rem;font-weight:600;text-decoration:none;white-space:nowrap}.af1-hi a:hover{text-decoration:underline}
+.af1-help .af1-rdisc{text-align:center}
+/* official record (final screen) */
+.af1-rec-t{font-size:1.02rem;line-height:1.35;letter-spacing:.1em;margin-top:6px}
+.af1-rec-h{margin:14px 0 8px;padding:7px 0;border-top:1px solid rgba(230,201,138,.45);border-bottom:1px solid rgba(230,201,138,.45);
+ font:700 .62rem Georgia,serif;letter-spacing:.2em;color:#e6c98a;text-transform:uppercase;box-shadow:0 -3px 0 -2px rgba(230,201,138,.25),0 3px 0 -2px rgba(230,201,138,.25)}
+.af1-rec{text-align:left}.af1-rec div{display:flex;justify-content:space-between;gap:12px;padding:4px 2px;font-size:.82rem;color:#c9cfdd}
+.af1-rec b{color:#f1f3f8;font-weight:600;text-align:right}.af1-rec .af1-rec-id{color:#ffe08a;letter-spacing:.04em}
+.af1-plaque{display:block;margin-top:16px;padding:10px 20px;text-align:center;text-decoration:none;color:#2a1d05;
+ background:linear-gradient(180deg,#f6e3a6,#d9b55a 55%,#b8913a);clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,16px 100%,0 50%);
+ filter:drop-shadow(0 4px 12px rgba(230,195,92,.25))}
+.af1-plaque b{display:block;font:700 .8rem Georgia,'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase}
+.af1-plaque small{display:block;font:600 .62rem Georgia,serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.af1-hi{border-top:1px solid rgba(255,255,255,.06)}
+.af1-hi b{color:#f0dba4}
+a.af1-hico{flex:none;width:30px;height:30px;color:#e6c98a;display:grid;place-items:center}a.af1-hico svg{width:24px;height:24px}
+a.af1-hico:hover{color:#ffe08a}
+.af1-fin-rights h5,.af1-help h5{letter-spacing:.12em;font-size:.6rem;line-height:1.4}
