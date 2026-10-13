@@ -9,6 +9,11 @@
       "source": "/(about|privacy|terms|start|presentation)",
       "destination": "/$1.html",
       "permanent": true
+    },
+    {
+      "source": "/new-complaint",
+      "destination": "/?go=new&panel=new",
+      "permanent": false
     }
   ],
   "rewrites": [
