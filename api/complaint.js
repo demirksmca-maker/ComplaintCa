@@ -17,7 +17,6 @@
 // Reply addresses: REPLY_SECRET signs them (required in production). Without REPLY_DOMAIN
 // they are Gmail plus-tags (complaintca+TAG@gmail.com); with it, TAG@REPLY_DOMAIN.
 import { isRateLimited } from './_rateLimit.js';
-import { parseImages } from './_vision.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
@@ -58,11 +57,10 @@ async function saveToFirestore(record) {
   return false;
 }
 
-async function sendEmail(toEmail, toName, subject, body, replyTo, attachment) {
+async function sendEmail(toEmail, toName, subject, body, replyTo) {
   if (!process.env.BREVO_API_KEY) return false;
   const payload = { sender: SENDER, to: [{ email: toEmail, name: toName || undefined }], subject, htmlContent: buildBrandedHtml(body), textContent: body };
   if (replyTo) payload.replyTo = { email: replyTo };
-  if (attachment && attachment.length) payload.attachment = attachment;
   try {
     const r = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -93,9 +91,6 @@ export default async function handler(req, res) {
       if (input.priority === 'high') input.anonymous = false;
     }
 
-    // Evidence photos go only with the institution letter; they are never stored.
-    const photos = parseImages(body.photos) || [];
-    const evidence = photos.map((im, i) => ({ name: 'evidence-' + (i + 1) + '.' + im.type.split('/')[1].replace('jpeg', 'jpg'), content: im.data }));
     const live = body.test === false && process.env.COMPLAINT_LIVE === '1';
     const record = buildRecord(input, { ref: genRef(), test: !live });
     const saved = await saveToFirestore(record);
@@ -113,13 +108,13 @@ export default async function handler(req, res) {
     if (top && pilotTo && !live) {
       // Pilot: the letter goes to the test mailbox, not to the real institution.
       const m = institutionEmail(record, top.name, input.emailDraft);
-      instSent = await sendEmail(pilotTo, top.name, '[PILOT → ' + top.name + '] ' + m.subject, m.body, m.replyTo, evidence);
+      instSent = await sendEmail(pilotTo, top.name, '[PILOT → ' + top.name + '] ' + m.subject, m.body, m.replyTo);
       institution = { status: instSent ? 'sent' : 'failed', name: top.name, pilot: true };
       if (instSent) { const n = institutionSentEmail(record, top.name); userNotified = await sendEmail(record.email, record.name || '', n.subject, n.body); }
     } else if (top && _isMail(top.email)) {
       const m = institutionEmail(record, top.name, input.emailDraft);
       if (live) {
-        instSent = await sendEmail(top.email, top.name, m.subject, m.body, m.replyTo, evidence);
+        instSent = await sendEmail(top.email, top.name, m.subject, m.body, m.replyTo);
         institution = { status: instSent ? 'sent' : 'failed', name: top.name };
         // Same fallback as the live form: the user can send it from their own mail app.
         if (!instSent) institution.fallback = { to: top.email, subject: m.subject, body: m.body };
