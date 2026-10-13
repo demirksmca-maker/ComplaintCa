@@ -47,7 +47,7 @@
     ai:'Please wait for ASYA, or choose the urgency yourself.', id:'Please choose one — and enter your name if you file with it.',
     mail:'Please enter a valid email address.', send:'Please confirm the statement above.' };
   const ERR = { cooldown:'Please wait a few minutes before sending another complaint.', verification:'Please complete the verification check above, then try again.',
-    save_failed:'We could not save your complaint. Please try again in a moment.' };
+    save_failed:'We could not save your complaint. Please try again in a moment.', email_unverified:'Please confirm your email again.' };
   const AGREEMENT = ['By submitting, I confirm the information I provide is accurate and that I am not filing a false or malicious report.',
     'ComplaintCA is an intermediary platform, not a law firm. It provides tools and information — not legal advice or representation — and does not guarantee any outcome or resolution.',
     'I understand my complaint is processed, including by automated and AI systems, solely to handle this matter. My personal information is never shared with a lawyer or any third party unless I explicitly choose to be contacted, and I may request deletion of my data at any time.',
@@ -516,7 +516,39 @@
     const o_mailLb = el('div','af1-q', L2.mailTo), o_paper = el('div','af1-paper'), o_edit = el('button','af1-link', L2.edit); o_edit.type = 'button';
     const p1 = el('div','af1-p'), p2 = el('div','af1-p'), p3 = el('div','af1-p'), p4 = el('div','af1-p'), o_dots = el('div','af1-dots'), panes = [p1, p2, p3, p4];
     for (let i = 0; i < 4; i++) o_dots.appendChild(el('i'));
-    p1.append(o_orgBox, o_mailLb, o_paper, o_edit); p2.append(o_an); p3.append(el('div','af1-q af1-who', L1.whom), o_list); p4.append(o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_err, o_note, o_sos);
+    // E-mail check: the first Send e-mails a 6-digit code; the right code earns a 30-day pass kept on this device.
+    const MP_KEY = 'cc_mail_pass';
+    const passFor = m => { try { const o = JSON.parse(localStorage.getItem(MP_KEY) || 'null'); return o && o.e === m.toLowerCase() && +String(o.p).split('.')[0] > Date.now() ? o.p : ''; } catch (e) { return ''; } };
+    const o_code = el('div','af1-code'); o_code.hidden = true;
+    const o_codeMsg = el('p','af1-codemsg'), o_codeIn = document.createElement('input');
+    o_codeIn.type = 'text'; o_codeIn.inputMode = 'numeric'; o_codeIn.autocomplete = 'one-time-code'; o_codeIn.maxLength = 6; o_codeIn.className = 'af1-in af1-codein'; o_codeIn.placeholder = '••••••';
+    const o_codeOk = el('button','af-btn gold af1-codeok', TX('Verify and send')), o_codeRe = el('button','af1-link', TX('Send the code again')), o_codeErr = el('p','af-hint af1-err');
+    o_codeOk.type = o_codeRe.type = 'button'; o_codeErr.setAttribute('role','status');
+    o_code.append(o_codeMsg, o_codeIn, o_codeOk, o_codeErr, o_codeRe);
+    let codeTok = '', codeFor = '';
+    async function sendCode(m){
+      o_codeErr.textContent = ''; o_codeRe.disabled = true;
+      let r, d = {}; try { r = await post('/api/email-code', { action:'send', email:m }); d = await r.json().catch(() => ({})); } catch (e) {}
+      o_codeRe.disabled = false;
+      if (!r || !r.ok) { o_code.hidden = false; o_codeErr.textContent = d.error === 'cooldown' ? TX('Too many codes. Please wait a few minutes.') : TX('Could not send the code. Please try again.'); return false; }
+      codeTok = d.token; codeFor = m; o_codeMsg.innerHTML = '';
+      o_codeMsg.append(el('span', null, TX('We sent a 6-digit code to')), document.createTextNode(' '), el('b', null, m), el('br'), el('span', null, TX('Check your spam folder too. Enter the code here:')));
+      o_code.hidden = false; o_codeIn.value = ''; o_codeIn.focus(); return true;
+    }
+    o_codeRe.addEventListener('click', () => sendCode(o_mail.value.trim()));
+    o_codeIn.addEventListener('input', () => { o_codeIn.value = o_codeIn.value.replace(/\D/g, '').slice(0, 6); });
+    o_codeOk.addEventListener('click', async () => {
+      const m = o_mail.value.trim(), c = o_codeIn.value.trim(); o_codeErr.textContent = '';
+      if (m !== codeFor) { sendCode(m); return; }
+      if (!/^\d{6}$/.test(c)) { o_codeErr.textContent = TX('Wrong or expired code.'); return; }
+      o_codeOk.disabled = true;
+      let r, d = {}; try { r = await post('/api/email-code', { action:'check', email:m, code:c, token:codeTok }); d = await r.json().catch(() => ({})); } catch (e) {}
+      o_codeOk.disabled = false;
+      if (!r || !r.ok || !d.pass) { o_codeErr.textContent = d.error === 'cooldown' ? TX('Too many codes. Please wait a few minutes.') : TX('Wrong or expired code.'); return; }
+      try { localStorage.setItem(MP_KEY, JSON.stringify({ e:m.toLowerCase(), p:d.pass })); } catch (e) {}
+      o_code.hidden = true; o_btn.click();
+    });
+    p1.append(o_orgBox, o_mailLb, o_paper, o_edit); p2.append(o_an); p3.append(el('div','af1-q af1-who', L1.whom), o_list); p4.append(o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_code, o_err, o_note, o_sos);
     o_body.append(o_dots, p1, p2, p3, p4);
     let step = 0, Rt = null, draftSecs = [], draftEdited = '', editing = false, orgAuto = false;
     function showStep(n){
@@ -891,6 +923,8 @@
       if (!enough(what_)) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
       if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
+      const mPass = passFor(mail);
+      if (!mPass) { if (!o_code.hidden && codeFor === mail) { o_codeIn.focus(); return; } o_btn.disabled = true; await sendCode(mail); o_btn.disabled = false; return; }
       // Consistency check before anything leaves: problems are listed; a second tap sends anyway (the person may have edited on purpose).
       const issues = checkCase(draftText().replace(NAME_TOKEN, (oNeedName() || named) && (val.name || '').trim() ? val.name.trim() : 'Complainant'));
       if (issues.length && !overrideCheck) { overrideCheck = true; o_err.textContent = '⚠ ' + issues.join(' ') + ' ' + TX('Fix it in card 1, or tap Send again to send as it is.'); return; }
@@ -902,10 +936,12 @@
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
       await Promise.all([post('/api/complaint', { test:!!(window._ccPanelTest || /[?&]test=1\b/.test(location.search)), title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
-        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
+        ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, mailPass:mPass, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
-      if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {} o_err.textContent = ERR[d.error] || L1.eFail; return; }
+      if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {}
+        if (d.error === 'email_unverified') { try { localStorage.removeItem(MP_KEY); } catch (e) {} codeTok = ''; }
+        o_err.textContent = ERR[d.error] || L1.eFail; return; }
       try { localStorage.setItem('vc_last_submit', String(Date.now())); } catch (e) {}
       try { const list = JSON.parse(localStorage.getItem('vc_comp') || '[]'), now = new Date().toISOString();
         list.unshift({ ref:d.ref, title:val.title, desc:what_, category:d.category, target:val.who, targetName:'', priority:d.priority, location:val.where, anonymous:!isNamed, ctype:val.ctype, isLegal:val.ctype === 'legal', photoCount:0, status:'received', date:now, timeline:[{ status:'received', date:now }], test:d.test });
