@@ -510,7 +510,7 @@
     const NAME_TOKEN = '[Your name]';
     function buildDraft(){
       const story = o_story.value.trim(), org = o_org.value.trim(), high = !!(A && A.priority === 'high'), law = cleanLaw(V && V.law), sanc = cleanLaw(V && V.sanctions);
-      const incident = ((V && V.complaint) || story).slice(0, 700);
+      const incident = ((V && V.complaint) || story).replace(/[#*_`]+/g, '').replace(/^\s*-{3,}\s*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 700);
       const asks = high
         ? ['Investigate this report immediately.', 'Tell me in writing what steps you will take, including interim measures to keep the person affected safe.', 'Meet or speak with me within 3 business days.']
         : ['Review this complaint.', 'Tell me in writing what you will do to resolve it.', 'Confirm who is handling my file.'];
@@ -560,7 +560,7 @@
         o_nameBox.append(...(oNeedName() ? [el('p','af1-why', L1.nameWhy)] : []), n); }
     }
     let sumTitle = '', sumPr = 'medium', sumCount = 0, sumDone = '';
-    const cleanLaw = s => String(s || '').replace(/[#*_`]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 260);
+    const cleanLaw = s => String(s || '').replace(/[#*_`]+|-{3,}/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 260);
     function drawSum(){
       o_sum.innerHTML = '';
       const t = el('div'); t.append(el('b', null, sumDone ? '✓ ' + L1.dTitle : sumTitle), el('small', null, sumDone ? sumDone : sumCount + ' ' + TX('institutions you can reach')));
