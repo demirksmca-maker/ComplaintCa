@@ -23,7 +23,9 @@ export function verdictPrompt({ title = '', desc = '', category = '', location =
         : isLegal
           ? 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual incident, applicable law, demand. End with: "Failure to respond by [deadline] will result in formal escalation." Sign as: Complainant — Ref: [REF]]'
           : 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual issue, expected resolution, response deadline. Firm but professional. Sign as: Complainant — Ref: [REF]]') +
-    '\n\nCASE_POOL_SUGGEST:\n[Answer YES or NO only. Always NO for access-to-information requests — they are not legal claims. Otherwise YES only if the facts describe a genuine legal-rights violation with a specific applicable law AND a realistic remedy/compensation claim a lawyer could pursue on this person\'s behalf (e.g. wrongful termination, unpaid wages, tenant rights violation, discrimination, personal injury, breach of contract with damages). NO for routine administrative/service complaints with no real legal claim (noise, garbage, minor service issues, general dissatisfaction).]';
+    '\n\nCASE_POOL_SUGGEST:\n[Answer YES or NO only. Always NO for access-to-information requests — they are not legal claims. Otherwise YES only if the facts describe a genuine legal-rights violation with a specific applicable law AND a realistic remedy/compensation claim a lawyer could pursue on this person\'s behalf (e.g. wrongful termination, unpaid wages, tenant rights violation, discrimination, personal injury, breach of contract with damages). NO for routine administrative/service complaints with no real legal claim (noise, garbage, minor service issues, general dissatisfaction).]' +
+    '\n\nREMEDY:\n[Max 8 words: what the person may be able to recover or obtain under that law (e.g. "Unpaid wages + vacation pay", "Full refund", "Compensation for lost wages"). Write NONE if no concrete remedy applies.]' +
+    '\n\nCLAIM_DEADLINE:\n[Max 8 words: the legal time limit to file a claim or application (e.g. "2 years from the date owed", "1 year from the incident"). Write NONE if not certain.]';
 
   const facts = isFoi ? _foiFactsFor(location) : _verifiedFactsFor(category);
   const factsBlock = isFoi
@@ -39,6 +41,9 @@ export function verdictPrompt({ title = '', desc = '', category = '', location =
 
 // Same parsing as runAI: strip markdown bold, and when a verified deadline exists
 // (and the submission is not anonymous) it replaces whatever the model wrote.
+// "NONE" / empty → '', otherwise one short line.
+const none = s => { const v = String(s || '').split('\n')[0].replace(/^[\s"\[]+|[\s"\]]+$/g, '').trim(); return /^none\b|^n\/a/i.test(v) ? '' : v.slice(0, 80); };
+
 export function parseVerdict(full, { facts, isAnon }) {
   const section = (key, next) => { const m = full.match(new RegExp(key + ':\\s*([\\s\\S]*?)(?=' + next + ':|$)', 'i')); return m ? m[1].replace(/\*\*/g, '').trim() : ''; };
   let deadline = section('RESPONSE_DEADLINE', 'EMAIL_DRAFT');
@@ -49,7 +54,9 @@ export function parseVerdict(full, { facts, isAnon }) {
     sanctions: section('SANCTIONS', 'RESPONSE_DEADLINE'),
     deadline,
     emailDraft: section('EMAIL_DRAFT', 'CASE_POOL_SUGGEST'),
-    poolSuggest: /^\s*yes/i.test(section('CASE_POOL_SUGGEST', 'XXXEND')),
+    poolSuggest: /^\s*yes/i.test(section('CASE_POOL_SUGGEST', 'REMEDY')),
+    remedy: none(section('REMEDY', 'CLAIM_DEADLINE')),
+    claimDeadline: none(section('CLAIM_DEADLINE', 'XXXEND')),
   };
 }
 

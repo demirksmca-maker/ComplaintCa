@@ -461,3 +461,15 @@ textarea.af-in::placeholder{text-align:center}
 /* field filled from the story: brief gold glow */
 .af1-frame .af1-f.af1-found .af1-in{border-bottom-color:#e6c35c;box-shadow:0 8px 14px -10px rgba(230,195,92,1);transition:box-shadow .6s}
 .af1-frame .af1-f.af1-found>label{color:#ffe08a}
+/* "Your rights" box on card 2: gold corner brackets, two mirrored columns */
+.af1-rights{margin-top:16px;border:1px solid rgba(230,201,138,.45);border-radius:8px;padding:12px 14px;text-align:center;
+ background:linear-gradient(#d9b55a,#d9b55a) left top/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) left top/2px 12px no-repeat,linear-gradient(#d9b55a,#d9b55a) right top/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) right top/2px 12px no-repeat,
+ linear-gradient(#d9b55a,#d9b55a) left bottom/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) left bottom/2px 12px no-repeat,linear-gradient(#d9b55a,#d9b55a) right bottom/12px 2px no-repeat,linear-gradient(#d9b55a,#d9b55a) right bottom/2px 12px no-repeat,rgba(255,255,255,.035)}
+.af1-rights h5{margin:0 0 10px;font:700 .64rem Georgia,serif;letter-spacing:.24em;color:#e6c98a;text-transform:uppercase}
+.af1-two{display:grid;grid-template-columns:1fr 1px 1fr;gap:10px;align-items:stretch}
+.af1-vr{background:linear-gradient(transparent,rgba(230,201,138,.5),transparent)}
+.af1-cell small{display:block;color:#8f96ab;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase}.af1-cell b{display:block;color:#ffe08a;font-size:.88rem;margin-top:4px;line-height:1.35}
+.af1-rnote{margin:12px 0 0;padding-top:10px;border-top:1px solid rgba(230,201,138,.18);color:#e4e8f3;font-size:.8rem}
+.af1-rgo{display:block;width:100%;margin-top:10px;text-decoration:none;text-align:center}
+.af1-rfree{display:block;margin-top:8px;color:#e6c98a;font-size:.8rem;text-decoration:none}.af1-rfree:hover{text-decoration:underline}
+.af1-rdisc{margin:8px 0 0;color:#7f8aa3;font-size:.66rem}
