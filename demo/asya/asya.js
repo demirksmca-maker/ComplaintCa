@@ -535,7 +535,8 @@
       const next = []; ((Rt && Rt.authorities) || []).slice(1, 3).forEach(a => next.push(a.name)); ((Rt && Rt.chain && Rt.chain.bodies) || []).slice(0, 2).forEach(x => next.push(x.name));
       const esc = next.length ? 'I will escalate this to ' + next.slice(0, 2).join(', then ') + '.' : (sanc || 'I will escalate this to the appropriate oversight body.');
       draftSecs = [
-        { h:'', b:'Dear ' + (org ? 'Sir or Madam at ' + org : 'Sir or Madam') + ',' },
+        // The letter goes to the first authority (e.g. the Ministry of Labour), not to the business complained about.
+        { h:'', b:'Dear Sir or Madam' + (recip() ? ' at ' + recip() : '') + ',' + (org && org !== recip() ? '\n\nRe: Complaint against ' + org + (whoAddr ? ', ' + whoAddr : '') : '') },
         { h:'Incident', b:incident },
         { h:'What I ask', b:asks.map(x => '• ' + x).join('\n') },
         ...(law ? [{ h:'Legal basis', b:law }] : []),
@@ -550,6 +551,7 @@
     // Link to the lawyer finder with province and area already chosen (home page: /?go=lawyer&lwp=on&lwa=employment).
     const LW_AREA2 = { wrongful:'employment', wages:'employment', harassment:'humanrights', disc:'humanrights', race:'humanrights', gender:'humanrights', religion:'humanrights', disability:'humanrights', age:'humanrights', sexual:'humanrights', language:'humanrights', indigenous:'humanrights', property:'tenant', repairs:'tenant', immigration:'immigration', police:'criminal' };
     const lawyerHref = () => { const pv = provOf(o_loc.value).toLowerCase(), ar = LW_AREA2[A && A.category] || ''; return '/?go=lawyer' + (pv ? '&lwp=' + pv : '') + (ar ? '&lwa=' + ar : ''); };
+    const recip = () => (Rt && Rt.authorities && Rt.authorities[0] && Rt.authorities[0].name) || o_org.value.trim();
     const draftSubject = () => 'Formal complaint: ' + (A ? A.label : 'Complaint') + (o_org.value.trim() ? ' · ' + o_org.value.trim() : '');
     const draftPlain = () => draftSecs.map(s => (s.h ? s.h.toUpperCase() + '\n' : '') + s.b).join('\n\n');
     const draftText = () => (draftEdited || draftPlain());
