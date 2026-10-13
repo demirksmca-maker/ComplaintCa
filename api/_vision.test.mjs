@@ -40,3 +40,10 @@ describe('parseVision', () => {
     assert.match(visionPrompt('tr'), /in Turkish/); assert.match(visionPrompt('xx'), /in English/);
   });
 });
+
+describe('isProblem', () => {
+  test('a guide or ad is not a problem; missing flag defaults to true', () => {
+    assert.equal(parseVision('{"kind":"other","isProblem":false,"story":"x"}').isProblem, false);
+    assert.equal(parseVision('{"kind":"receipt"}').isProblem, true);
+  });
+});

@@ -8,7 +8,7 @@ async function groq(sys, user) {
   const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.GROQ_API_KEY },
-    body: JSON.stringify({ model: 'llama-3.1-8b-instant', max_tokens: 220, temperature: 0, response_format: { type: 'json_object' },
+    body: JSON.stringify({ model: 'llama-3.1-8b-instant', max_tokens: 300, temperature: 0, response_format: { type: 'json_object' },
       messages: [{ role: 'system', content: sys }, { role: 'user', content: user }] }),
   });
   const d = await r.json();
@@ -21,7 +21,7 @@ async function claude(sys, user) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 220, temperature: 0, system: sys, messages: [{ role: 'user', content: user }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 300, temperature: 0, system: sys, messages: [{ role: 'user', content: user }] }),
   });
   const d = await r.json();
   if (d.error) return null;

@@ -445,3 +445,16 @@ textarea.af-in::placeholder{text-align:center}
 .af1-cap{margin:8px 0 0;text-align:center;color:#8f96ab;font-size:.74rem;line-height:1.45}
 .af1-warn{margin:10px 0 0;text-align:center;color:#ffb4bf;font-size:.8rem;line-height:1.45}.af1-warn[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.af1-pill.on{animation:none}}
+/* completeness questions: same centred, mirrored look as the rest of the frame */
+.af1-ask{margin-top:16px;text-align:center}.af1-ask[hidden]{display:none}
+.af1-ask-h{display:flex;align-items:center;justify-content:center;gap:8px;font:700 .66rem Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:#e6c98a}
+.af1-ask-h::before,.af1-ask-h::after{content:"";width:28px;height:10px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 14'%3E%3Cpath d='M2 7h40' stroke='%23d9b55a' stroke-width='1'/%3E%3Cg fill='%23d9b55a'%3E%3Cpath d='M30 7c3-5 8-6 11-5c-2 4-6 6-11 5z'/%3E%3Cpath d='M30 7c3 5 8 6 11 5c-2-4-6-6-11-5z'/%3E%3Cpath d='M18 7c3-4 7-5 9-4c-2 3-5 5-9 4z'/%3E%3Cpath d='M18 7c3 4 7 5 9 4c-2-3-5-5-9-4z'/%3E%3Ccircle cx='4' cy='7' r='1.6'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat}.af1-ask-h::after{transform:scaleX(-1)}
+.af1-askf{margin-top:12px}.af1-askf>label{display:flex;justify-content:center;align-items:baseline;text-align:center;gap:6px}.af1-askf>label em{float:none;margin-left:6px}
+.af1-askf>.af1-in{text-align:center}
+.af1-askgo{width:100%;margin-top:14px}
+.af1-askerr{margin:6px 0 0;min-height:1em;color:#ffb4bf;font-size:.78rem}
+.af1-frame .af1-f.af1-need>label{color:#ffe08a}
+.af1-frame .af1-f.af1-need .af1-in{border-bottom-color:#e6c35c;box-shadow:0 6px 10px -8px rgba(230,195,92,.9)}
+.af1-frame .af1-f.af1-need>label::after{content:"●";margin-left:6px;color:#e6c35c;font-size:.55rem;animation:afPulseDot 1.4s ease-in-out infinite}
+@keyframes afPulseDot{50%{opacity:.3}}
+.af1-frame .af1-f.af1-need>label em{display:none}

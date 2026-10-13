@@ -28,8 +28,8 @@ export function visionPrompt(lang = 'en') {
     '"date":"YYYY-MM-DD or empty","time":"HH:MM or empty","amount":"total with currency sign, or empty","cardLast4":"last 4 digits of a payment card, or empty",' +
     '"reference":"receipt, invoice, account or file number, or empty","summary":"one or two factual sentences in English describing what the photos show",' +
     '"threat":false,"threatQuote":"if a message contains a threat of violence or harm, the exact threatening words (max 140 characters), else empty",' +
-    '"story":"what happened, written as the person who took the photos would tell it: first person, 2 to 4 short sentences, in ' + (LANG[lang] || 'English') + ', using only what the photos show (place, date, amount, visible damage, what a message says); quote a threat word for word"}\n' +
-    'Set "threat" to true only when a message or letter in the photos threatens violence, harm, or intimidation toward a person.';
+    '"isProblem":true,"story":"what happened, written as the person who took the photos would tell it: first person, 2 to 4 short sentences, in ' + (LANG[lang] || 'English') + ', using only what the photos show (place, date, amount, visible damage, what a message says); quote a threat word for word"}\n' +
+    'Set "isProblem" to false when the photos show no problem or grievance at all (a guide, an article, an advertisement, an unrelated picture). Set "threat" to true only when a message or letter in the photos threatens violence, harm, or intimidation toward a person.';
 }
 
 const mask = s => String(s || '').replace(/\b(?:\d[ -]?){12,19}\b/g, m => '•••• ' + m.replace(/\D/g, '').slice(-4));
@@ -46,7 +46,7 @@ export function parseVision(text) {
     amount: clean(p.amount, 40), cardLast4: /^\d{4}$/.test(p.cardLast4 || '') ? p.cardLast4 : '',
     reference: clean(p.reference, 60), summary: clean(p.summary, 400),
     threat: p.threat === true, threatQuote: p.threat === true ? clean(p.threatQuote, 140) : '',
-    story: clean(p.story, 700),
+    story: clean(p.story, 700), isProblem: p.isProblem !== false,
   };
 }
 
