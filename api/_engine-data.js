@@ -12,25 +12,25 @@ export const AUTHORITIES = {
     default:    [{name:'Municipal Bylaw Office', email:'', phone:'311', note:'Contact your local 311'}]
   },
   property: {
-    toronto:    [{name:'RentSafeTO', email:'311@toronto.ca', phone:'311', note:'Apartment building standards'},{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'All Ontario'}],
-    scarborough:[{name:'RentSafeTO (Toronto)', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    toronto:    [{name:'RentSafeTO', email:'311@toronto.ca', phone:'311', note:'Apartment building standards'},{name:'Landlord & Tenant Board', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:'All Ontario'}],
+    scarborough:[{name:'RentSafeTO (Toronto)', email:'311@toronto.ca', phone:'311', note:'Scarborough = City of Toronto'},{name:'LTB Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:''}],
+    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:''}],
+    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:''}],
     bc:         [{name:'Residential Tenancy Branch BC', email:'HSRTO@gov.bc.ca', phone:'1-800-665-8779', note:''}],
     alberta:    [{name:'RTDRS Alberta', email:'rtdrs@gov.ab.ca', phone:'780-644-3000', note:'Under $100,000'}],
     quebec:     [{name:'Tribunal administratif du logement', email:'informations@tal.gouv.qc.ca', phone:'1-800-683-2245', note:''}],
-    default:    [{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Ontario'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'RTA Offences'}]
+    default:    [{name:'Landlord & Tenant Board', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:'Ontario'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'RTA Offences'}]
   },
   billing: {
-    default:    [{name:'FCAC — Banking', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banks & credit cards', deadline:'Bank must respond within 56 days', deadlineDays:56},{name:'OBSI — Banking Ombudsman', email:'ombudsman@obsi.ca', phone:'1-888-451-4519', note:'Free & independent — escalate if unresolved after 56 days', deadline:'File with OBSI within 180 days of the bank\'s final response'},{name:'CCTS — Telecom', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario businesses'},{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas'}],
-    bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:'Banking'}],
-    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}],
-    quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''},{name:'FCAC', email:'info@fcac-acfc.gc.ca', phone:'1-866-461-3222', note:''}]
+    default:    [{name:'FCAC — Banking', email:'www.canada.ca/en/financial-consumer-agency.html', phone:'1-866-461-3222', note:'Banks & credit cards', deadline:'Bank must respond within 56 days', deadlineDays:56},{name:'OBSI — Banking Ombudsman', email:'ombudsman@obsi.ca', phone:'1-888-451-4519', note:'Free & independent — escalate if unresolved after 56 days', deadline:'File with OBSI within 180 days of the bank\'s final response'},{name:'CCTS — Telecom', email:'www.ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus'},{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario businesses'},{name:'Ontario Energy Board', email:'consumerrelations@oeb.ca', phone:'1-877-632-2727', note:'Electricity & gas'}],
+    bc:         [{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''},{name:'FCAC', email:'www.canada.ca/en/financial-consumer-agency.html', phone:'1-866-461-3222', note:'Banking'}],
+    alberta:    [{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''},{name:'FCAC', email:'www.canada.ca/en/financial-consumer-agency.html', phone:'1-866-461-3222', note:''}],
+    quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''},{name:'FCAC', email:'www.canada.ca/en/financial-consumer-agency.html', phone:'1-866-461-3222', note:''}]
   },disc: {
-    toronto:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:''},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy guidance'}],
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Ontario', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    toronto:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:''},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy guidance'}],
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Ontario', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   garbage: {
@@ -49,7 +49,7 @@ export const AUTHORITIES = {
     bc:         [{name:'WorkSafeBC', email:'www.worksafebc.com/en/contact-us', phone:'1-888-621-7233', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'}],
     alberta:    [{name:'Alberta OHS', email:'alberta.ca/file-complaint-online', phone:'1-866-415-8690', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
     quebec:     [{name:'CNESST', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:'Workplace safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:''}],
-    default:    [{name:'TSSA Ontario', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:'Technical safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'},{name:'Ministry of Labour', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Workplace'}]
+    default:    [{name:'TSSA Ontario', email:'customerservices@tssa.org', phone:'1-877-682-8772', note:'Technical safety'},{name:'Health Canada', email:'CPS-SPC@hc-sc.gc.ca', phone:'1-866-662-0666', note:'Product safety'},{name:'Ministry of Labour', email:'www.ontario.ca/ESAclaims', phone:'1-800-531-5551', note:'Workplace'}]
   },
   service: {
     default:    [{name:'Consumer Protection Ontario', email:'consumer@ontario.ca', phone:'1-800-889-9768', note:'Ontario'},{name:'Competition Bureau', email:'competition-bureau.canada.ca/en/contact-competition-bureau-canada', phone:'1-800-348-5358', note:'Federal — false advertising'},{name:'BBB — Better Business Bureau', email:'bbb.org/file-a-complaint', phone:'', note:'Business disputes'}],
@@ -64,10 +64,10 @@ export const AUTHORITIES = {
     quebec:     [{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
   },
   telecom: {
-    default:    [{name:'CCTS — Telecom & TV Ombudsman', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus, Shaw, Videotron'},{name:'CRTC', email:'crtc.gc.ca/complaint', phone:'1-877-249-2782', note:'Telemarketing, DNCL, broadcast content', deadline:'Broadcast content complaints: within 4 weeks of airing', deadlineDays:28}],
-    bc:         [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:'All provinces'},{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
-    alberta:    [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
-    quebec:     [{name:'CCTS', email:'response@ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
+    default:    [{name:'CCTS — Telecom & TV Ombudsman', email:'www.ccts-cprst.ca', phone:'1-888-221-1687', note:'Rogers, Bell, Telus, Shaw, Videotron'},{name:'CRTC', email:'crtc.gc.ca/complaint', phone:'1-877-249-2782', note:'Telemarketing, DNCL, broadcast content', deadline:'Broadcast content complaints: within 4 weeks of airing', deadlineDays:28}],
+    bc:         [{name:'CCTS', email:'www.ccts-cprst.ca', phone:'1-888-221-1687', note:'All provinces'},{name:'Consumer Protection BC', email:'info@consumerprotectionbc.ca', phone:'1-888-564-9963', note:''}],
+    alberta:    [{name:'CCTS', email:'www.ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'Service Alberta', email:'alberta.ca/file-consumer-complaint', phone:'1-877-427-4088', note:''}],
+    quebec:     [{name:'CCTS', email:'www.ccts-cprst.ca', phone:'1-888-221-1687', note:''},{name:'OPC Quebec', email:'opc.gouv.qc.ca/contact/demande', phone:'1-888-672-2556', note:''}]
   },
   privacy: {
     default:    [{name:'OPC — Office of the Privacy Commissioner', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:'PIPEDA — federal companies'},{name:'IPC Ontario', email:'info@ipc.on.ca', phone:'1-800-387-0073', note:'Ontario provincial bodies'}],
@@ -76,29 +76,29 @@ export const AUTHORITIES = {
     quebec:     [{name:'Commission d\'accès à l\'information', email:'cai.communications@cai.gouv.qc.ca', phone:'1-888-528-7741', note:''},{name:'OPC — Office of the Privacy Commissioner of Canada', email:'priv.gc.ca/en/report-a-concern/', phone:'1-800-282-1376', note:''}]
   },
   repairs: {
-    toronto:    [{name:'RentSafeTO — Apartment Standards', email:'311@toronto.ca', phone:'311', note:'Building maintenance & repairs'},{name:'Landlord & Tenant Board', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'Withhold rent for repairs'}],
-    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
-    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:''}],
+    toronto:    [{name:'RentSafeTO — Apartment Standards', email:'311@toronto.ca', phone:'311', note:'Building maintenance & repairs'},{name:'Landlord & Tenant Board', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:'Withhold rent for repairs'}],
+    mississauga:[{name:'Mississauga Property Standards', email:'www.mississauga.ca/services-and-programs/home-and-yard/property-standards/', phone:'905-615-4311', note:''},{name:'LTB Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:''}],
+    brampton:   [{name:'Brampton Property Standards', email:'enforcement@brampton.ca', phone:'905-458-3424', note:''},{name:'LTB Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:''}],
     bc:         [{name:'Residential Tenancy Branch BC', email:'HSRTO@gov.bc.ca', phone:'1-800-665-8779', note:''}],
     alberta:    [{name:'RTDRS Alberta', email:'rtdrs@gov.ab.ca', phone:'780-644-3000', note:''}],
     quebec:     [{name:'Tribunal administratif du logement', email:'informations@tal.gouv.qc.ca', phone:'1-800-683-2245', note:''}],
-    default:    [{name:'Landlord & Tenant Board Ontario', email:'ltb@ontario.ca', phone:'1-888-332-3234', note:'File T6 application for repairs'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'Serious bylaw violations'}]
+    default:    [{name:'Landlord & Tenant Board Ontario', email:'tribunalsontario.ca/ltb/', phone:'1-888-332-3234', note:'File T6 application for repairs'},{name:'Rental Housing Enforcement Unit', email:'RHEU.info@ontario.ca', phone:'1-888-772-9277', note:'Serious bylaw violations'}]
   },
   harassment: {
-    default:    [{name:'Ontario Human Rights Tribunal', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Workplace harassment & discrimination', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Ministry of Labour Ontario', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Occupational Health & Safety Act'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''},{name:'WorkSafeBC', email:'www.worksafebc.com/en/contact-us', phone:'1-888-967-5377', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''},{name:'OHS Alberta', email:'alberta.ca/file-complaint-online', phone:'1-866-415-8690', note:''}],
+    default:    [{name:'Ontario Human Rights Tribunal', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Workplace harassment & discrimination', deadline:'File within 1 year of the last incident', deadlineDays:365},{name:'Ministry of Labour Ontario', email:'www.ontario.ca/ESAclaims', phone:'1-800-531-5551', note:'Occupational Health & Safety Act'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''},{name:'WorkSafeBC', email:'www.worksafebc.com/en/contact-us', phone:'1-888-967-5377', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''},{name:'OHS Alberta', email:'alberta.ca/file-complaint-online', phone:'1-866-415-8690', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   wages: {
-    default:    [{name:'Ministry of Labour Ontario — ESA', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'File ESA claim for unpaid wages', deadline:'Must file within 2 years of the wages becoming due', deadlineDays:730},{name:'Employment Standards Branch', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Minimum wage, overtime, vacation pay'}],
-    bc:         [{name:'Employment Standards Branch BC', email:'EmploymentStandards@esb.gov.bc.ca', phone:'1-833-236-3700', note:''}],
+    default:    [{name:'Ministry of Labour Ontario — ESA', email:'www.ontario.ca/ESAclaims', phone:'1-800-531-5551', note:'File ESA claim for unpaid wages', deadline:'Must file within 2 years of the wages becoming due', deadlineDays:730},{name:'Employment Standards Branch', email:'www.ontario.ca/ESAclaims', phone:'1-800-531-5551', note:'Minimum wage, overtime, vacation pay'}],
+    bc:         [{name:'Employment Standards Branch BC', email:'www.gov.bc.ca/employmentstandards', phone:'1-833-236-3700', note:''}],
     alberta:    [{name:'Alberta Employment Standards', email:'alberta.ca/file-employment-standards-complaint', phone:'780-427-3731', note:''}],
     quebec:     [{name:'CNESST Quebec', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:''}]
   },
   wrongful: {
-    default:    [{name:'Ministry of Labour Ontario', email:'webes@ontario.ca', phone:'1-800-531-5551', note:'Unjust dismissal — ESA severance', deadline:'Court claim: within 2 years of termination date', deadlineDays:730},{name:'Canadian Industrial Relations Board', email:'info@cirb-ccri.gc.ca', phone:'1-800-575-9696', note:'Federal sector employees'},{name:'Law Society of Ontario — Referral', email:'lawsociety@lso.ca', phone:'1-800-668-7380', note:'Find a wrongful dismissal lawyer'}],
-    bc:         [{name:'Employment Standards Branch BC', email:'EmploymentStandards@esb.gov.bc.ca', phone:'1-833-236-3700', note:''},{name:'BC Labour Relations Board', email:'information@lrb.bc.ca', phone:'604-660-1300', note:''}],
+    default:    [{name:'Ministry of Labour Ontario', email:'www.ontario.ca/ESAclaims', phone:'1-800-531-5551', note:'Unjust dismissal — ESA severance', deadline:'Court claim: within 2 years of termination date', deadlineDays:730},{name:'Canadian Industrial Relations Board', email:'info@cirb-ccri.gc.ca', phone:'1-800-575-9696', note:'Federal sector employees'},{name:'Law Society of Ontario — Referral', email:'lawsociety@lso.ca', phone:'1-800-668-7380', note:'Find a wrongful dismissal lawyer'}],
+    bc:         [{name:'Employment Standards Branch BC', email:'www.gov.bc.ca/employmentstandards', phone:'1-833-236-3700', note:''},{name:'BC Labour Relations Board', email:'information@lrb.bc.ca', phone:'604-660-1300', note:''}],
     alberta:    [{name:'Alberta Employment Standards', email:'alberta.ca/file-employment-standards-complaint', phone:'780-427-3731', note:''},{name:'Alberta Labour Relations Board', email:'alrb@gov.ab.ca', phone:'780-422-5926', note:''}],
     quebec:     [{name:'CNESST Quebec', email:'www.cnesst.gouv.qc.ca/en/client-services/contact-us', phone:'1-844-838-0808', note:''}]
   },
@@ -153,7 +153,7 @@ export const AUTHORITIES = {
     quebec:     [{name:'CMQ', email:'deonto@cmq.org', phone:'514-933-4441', note:'Quebec physicians'},{name:'OIIQ', email:'www.oiiq.org/en/customer-service', phone:'514-935-2501', note:'Quebec nurses'}]
   },
   delays: {
-    default:    [{name:'Ontario Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Government service delays Ontario'},{name:'Office of the Patient Ombudsman', email:'info@patientombudsman.ca', phone:'1-888-321-0339', note:'Healthcare wait times Ontario'}],
+    default:    [{name:'Ontario Ombudsman', email:'www.ombudsman.on.ca', phone:'1-800-263-1830', note:'Government service delays Ontario'},{name:'Office of the Patient Ombudsman', email:'info@patientombudsman.ca', phone:'1-888-321-0339', note:'Healthcare wait times Ontario'}],
     bc:         [{name:'BC Ombudsperson', email:'bcombudsperson.ca/complaints/', phone:'1-800-567-3247', note:''}],
     alberta:    [{name:'Alberta Ombudsman', email:'info@ombudsman.ab.ca', phone:'780-427-2756', note:''}],
     quebec:     [{name:'Protecteur du citoyen', email:'protecteur@protecteurducitoyen.qc.ca', phone:'1-800-463-5070', note:''}]
@@ -171,51 +171,51 @@ export const AUTHORITIES = {
     quebec:     [{name:'Bureau des enquêtes indépendantes', email:'info@bei.gouv.qc.ca', phone:'450-640-1350', note:''}]
   },
   race: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Ontario — race discrimination'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — race discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Ontario Human Rights Commission'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Ontario — race discrimination'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — race discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Ontario Human Rights Commission'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   gender: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Gender & sex discrimination'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Gender & sex discrimination'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal workplaces'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   religion: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Religious discrimination Ontario'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — religion & creed'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Religious discrimination Ontario'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal — religion & creed'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   disability: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Disability accommodation'},{name:'AODA — Accessibility Directorate', email:'', phone:'1-866-515-2025', note:'Accessibility for Ontarians with Disabilities'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal disability rights'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}]
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Disability accommodation'},{name:'AODA — Accessibility Directorate', email:'', phone:'1-866-515-2025', note:'Accessibility for Ontarians with Disabilities'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal disability rights'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}]
   },
   age: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Age discrimination (18+)'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal age discrimination'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}]
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Age discrimination (18+)'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal age discrimination'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}]
   },
   sexual: {
-    default:    [{name:'Human Rights Tribunal Ontario', email:'hrto.registrar@ontario.ca', phone:'1-866-598-0322', note:'Sexual orientation & gender identity'},{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal LGBTQ+ discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy & guidance'}],
-    bc:         [{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
-    alberta:    [{name:'Alberta Human Rights Commission', email:'AHRC.Registrar@gov.ab.ca', phone:'780-427-7661', note:''}],
+    default:    [{name:'Human Rights Tribunal Ontario', email:'tribunalsontario.ca/hrto/', phone:'1-866-598-0322', note:'Sexual orientation & gender identity'},{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Federal LGBTQ+ discrimination'},{name:'OHRC', email:'info@ohrc.on.ca', phone:'1-800-387-9080', note:'Policy & guidance'}],
+    bc:         [{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
+    alberta:    [{name:'Alberta Human Rights Commission', email:'www.albertahumanrights.ab.ca', phone:'780-427-7661', note:''}],
     quebec:     [{name:'Commission des droits de la personne', email:'plainte@cdpdj.qc.ca', phone:'1-800-361-6477', note:''}]
   },
   language: {
-    default:    [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:'English/French language rights — federal'},{name:'French Language Services Commissioner (Ontario Ombudsman)', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Ontario French language rights'}],
-    bc:         [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:''},{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:''}],
+    default:    [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:'English/French language rights — federal'},{name:'French Language Services Commissioner (Ontario Ombudsman)', email:'www.ombudsman.on.ca', phone:'1-800-263-1830', note:'Ontario French language rights'}],
+    bc:         [{name:'Office of the Commissioner of Official Languages', email:'clo-ocol.gc.ca/en/complaints-investigations/file-complaint/online-complaint-form', phone:'1-877-996-6368', note:''},{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:''}],
     quebec:     [{name:'Office québécois de la langue française', email:'www.oqlf.gouv.qc.ca/francisation/respect/plaintes/', phone:'514-873-6565', note:'French language protection QC'}]
   },
   indigenous: {
-    default:    [{name:'Canadian Human Rights Commission', email:'info.com@chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Indigenous rights — federal'},{name:'National Centre for Truth & Reconciliation', email:'nctr@umanitoba.ca', phone:'1-855-415-4534', note:'Residential school survivors'},{name:'Indigenous Services Canada', email:'sac-isc.gc.ca/eng/1291132820288/1603310905799', phone:'1-800-567-9604', note:'Federal Indigenous services'}]
+    default:    [{name:'Canadian Human Rights Commission', email:'www.chrc-ccdp.gc.ca', phone:'1-888-214-1090', note:'Indigenous rights — federal'},{name:'National Centre for Truth & Reconciliation', email:'nctr@umanitoba.ca', phone:'1-855-415-4534', note:'Residential school survivors'},{name:'Indigenous Services Canada', email:'sac-isc.gc.ca/eng/1291132820288/1603310905799', phone:'1-800-567-9604', note:'Federal Indigenous services'}]
   },
   education: {
-    toronto:    [{name:'TDSB — Toronto District School Board', email:'GeneralInquiries@tdsb.on.ca', phone:'416-397-3000', note:'Public school complaints'},{name:'TCDSB', email:'www.tcdsb.org/page/contact-us/', phone:'416-222-8282', note:'Catholic school board'},{name:'Ontario Education Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Escalated school complaints'}],
-    default:    [{name:'Ministry of Education Ontario', email:'minister.edu@ontario.ca', phone:'1-800-387-5514', note:'School board complaints'},{name:'Ontario Ombudsman', email:'info@ombudsman.on.ca', phone:'1-800-263-1830', note:'Unresolved school disputes'}],
-    bc:         [{name:'BC Ministry of Education and Child Care', email:'ECC.Minister@gov.bc.ca', phone:'1-800-663-7867', note:''},{name:'BC Human Rights Tribunal', email:'BCHumanRightsTribunal@gov.bc.ca', phone:'604-775-2000', note:'School discrimination'}],
+    toronto:    [{name:'TDSB — Toronto District School Board', email:'GeneralInquiries@tdsb.on.ca', phone:'416-397-3000', note:'Public school complaints'},{name:'TCDSB', email:'www.tcdsb.org/page/contact-us/', phone:'416-222-8282', note:'Catholic school board'},{name:'Ontario Education Ombudsman', email:'www.ombudsman.on.ca', phone:'1-800-263-1830', note:'Escalated school complaints'}],
+    default:    [{name:'Ministry of Education Ontario', email:'minister.edu@ontario.ca', phone:'1-800-387-5514', note:'School board complaints'},{name:'Ontario Ombudsman', email:'www.ombudsman.on.ca', phone:'1-800-263-1830', note:'Unresolved school disputes'}],
+    bc:         [{name:'BC Ministry of Education and Child Care', email:'ECC.Minister@gov.bc.ca', phone:'1-800-663-7867', note:''},{name:'BC Human Rights Tribunal', email:'www.bchrt.bc.ca', phone:'604-775-2000', note:'School discrimination'}],
     alberta:    [{name:'Alberta Education', email:'alberta.ca/contact-government', phone:'780-427-7219', note:''}],
     quebec:     [{name:'Ministère de l\'Éducation du Québec', email:'joindre.education.gouv.qc.ca', phone:'1-866-747-6626', note:''}]
   },
