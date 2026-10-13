@@ -480,4 +480,9 @@ textarea.af-in::placeholder{text-align:center}
 .af-emblem{image-rendering:auto;transform:translateZ(0)}
 .af1-frame::before,.af1-frame::after{transform:translateZ(0)}
 .af1-classic{display:block;margin:14px auto 0;background:none;border:0;color:#8f96ab;font:inherit;font-size:.78rem;text-decoration:underline;cursor:pointer}.af1-classic[hidden]{display:none}.af1-frame.done~.af1-classic{display:none}
-.af-ov.cc-embedded{z-index:150}.af-ov.cc-embedded .af-bar{padding-top:10px}
+/* In the site page: the tabs above are sticky under the fixed 46px top bar, so the panel starts 46px lower. */
+.af-ov.cc-embedded{position:relative;inset:auto;z-index:auto;margin-top:46px;min-height:calc(100dvh - 85px);transition:none}
+.af-ov.cc-embedded:not(.open){display:none}
+.af-ov.cc-embedded .af-bar{padding-top:10px}
+.af-ov.cc-embedded .af-scroll{flex:none;overflow:visible}
+body.cc-panel-on .amain{display:none!important}

@@ -778,6 +778,7 @@ textarea{resize:vertical;min-height:90px}
     </div>
   </div>
 
+  <div id="cc-panel-host"></div>
   <div class="amain">
     <div id="view-new">
       <div id="form-sec">
@@ -2719,15 +2720,16 @@ var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
 // ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.
 var _ccPanelTest=/[?&]test=1\b/.test(location.search);
 // Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
+// The panel sits in the page itself (#cc-panel-host), so the page scrolls as one and nothing floats over it.
 function _ccEmbed(){
   goApp('new');
-  window.openComplaintFlow();
-  var ov=document.getElementById('asya-flow'), nt=document.querySelector('.nav-tabs');
-  if(ov&&nt){ var top=Math.max(0,Math.round(nt.getBoundingClientRect().bottom)); ov.style.top=top+'px'; ov.classList.add('cc-embedded'); }
+  document.body.classList.add('cc-panel-on');
+  window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
   window._ccEmbedded=true;
+  window.scrollTo(0,0);
 }
 // Closing the panel goes back to the home screen (not to the classic form underneath).
-window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
+window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }

@@ -78,6 +78,8 @@
   const emblem = el('img','af-emblem'); emblem.src = '/demo/asya/emblem.webp'; emblem.decoding = 'async'; emblem.alt = ''; emblem.width = 360; emblem.height = 360; sceneHost.appendChild(emblem);
   const brand = el('div','af-brand','ASYA'); brand.setAttribute('aria-hidden','true');
   scroll.append(sceneHost, brand, panel); ov.append(bar, scroll);
+  // Inside the page the window scrolls, as a full-screen overlay the panel's own box does.
+  const toTop = o => (ov.classList.contains('cc-embedded') ? window : scroll).scrollTo(o);
   document.body.appendChild(ov);
   let scene = null, registered = false, F = null;
 
@@ -429,8 +431,8 @@
         types.querySelector('[data-v="access"]').hidden = true;
         setType(val.ctype === 'access' ? 'notice' : val.ctype);
         if (!o_story.value && what.value) { o_story.value = what.value; }
-        scroll.scrollTo({ top:0 }); if (matchMedia('(pointer:fine)').matches) setTimeout(() => o_mail.focus(), 300);   // no keyboard pop-up on phones
-      } else { emit({ type:'step', i:0, n:STEPS.length, key:m }); scroll.scrollTo({ top:0, behavior:'smooth' });
+        toTop({ top:0 }); if (matchMedia('(pointer:fine)').matches) setTimeout(() => o_mail.focus(), 300);   // no keyboard pop-up on phones
+      } else { emit({ type:'step', i:0, n:STEPS.length, key:m }); toTop({ top:0, behavior:'smooth' });
         if (talking) { openChat(m); if (matchMedia('(pointer:fine)').matches) setTimeout(() => cin.focus(), 300); } }
     }
 
@@ -850,7 +852,7 @@
       if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
       fin.appendChild(done);
       o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';
-      scroll.scrollTo({ top:0, behavior: calm ? 'auto' : 'smooth' });
+      toTop({ top:0, behavior: calm ? 'auto' : 'smooth' });
       if (calm) { o_frame.classList.add('lit', 'settled'); return; }
       setTimeout(() => { brand.classList.add('burst'); setTimeout(() => brand.classList.remove('burst'), 1200); }, 1100);
       requestAnimationFrame(() => o_frame.classList.add('lit'));
@@ -978,7 +980,7 @@
       if (k === 'ai') assess();
       if (k === 'send') { fillSum(); loadRoute(); loadTurnstile(); }
       refresh(); emit({ type:'step', i:cur, n:STEPS.length, key:k });
-      scroll.scrollTo({ top:0, behavior:'smooth' });
+      toTop({ top:0, behavior:'smooth' });
     }
     function go(d){
       if (sending) return;
@@ -1039,7 +1041,7 @@
       extra.innerHTML = '';
       lawyerSuggestion(d.category, d.priority);
       if (val.ctype === 'legal') legalOutreach(d);
-      wrap.classList.add('sent'); emit({ type:'done', ref:d.ref }); scroll.scrollTo({ top:0 });
+      wrap.classList.add('sent'); emit({ type:'done', ref:d.ref }); toTop({ top:0 });
     }
     // live showLawyerSuggestion
     function lawyerSuggestion(category, priority){
@@ -1111,7 +1113,7 @@
         restored.textContent = '↺ We restored what you typed before the page reloaded.'; restored.hidden = false; setTimeout(() => restored.hidden = true, 6000);
       } } catch (e) {}
     render(); setMode('choose');
-    return { go };
+    return { go, setMode, mode: () => mode };
   }
 
   // Home page (no host translator): translate the panel's fixed English text from i18n.js, never the letter or typed text.
@@ -1128,11 +1130,16 @@
     mo = new MutationObserver(list => list.forEach(m => m.type === 'childList' ? m.addedNodes.forEach(walk) : doNode(m.target)));
     mo.observe(ov, { subtree:true, childList:true, characterData:true });
   }
-  function open(){
+  // opts.host: put the panel inside the page (one scrolling page, site bar and tabs above it).
+  // opts.mode: skip the three-way chooser, e.g. 'complaint' from the site's File button.
+  function open(opts){
+    opts = opts || {};
     if (!F || builtLg !== pickLang()) F = build();
     localize();
     if (!registered && window.ccPanelRoot) { window.ccPanelRoot(ov); registered = true; }
-    ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
+    if (opts.host) { if (ov.parentNode !== opts.host) opts.host.appendChild(ov); ov.classList.add('cc-embedded'); }
+    if (opts.mode && F.setMode && F.mode() === 'choose') F.setMode(opts.mode);
+    ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); if (!opts.host) document.body.style.overflow = 'hidden';
   }
   function close(){ if (window.ccPanelClosed) setTimeout(window.ccPanelClosed, 0); ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }
   x.addEventListener('click', close);
