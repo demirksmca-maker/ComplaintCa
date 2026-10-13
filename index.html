@@ -2718,14 +2718,24 @@ function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e)
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
 // ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.
 var _ccPanelTest=/[?&]test=1\b/.test(location.search);
+// Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
+function _ccEmbed(){
+  goApp('new');
+  window.openComplaintFlow();
+  var ov=document.getElementById('asya-flow'), nt=document.querySelector('.nav-tabs');
+  if(ov&&nt){ var top=Math.max(0,Math.round(nt.getBoundingClientRect().bottom)); ov.style.top=top+'px'; ov.classList.add('cc-embedded'); }
+  window._ccEmbedded=true;
+}
+// Closing the panel goes back to the home screen (not to the classic form underneath).
+window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
-  if(window.openComplaintFlow){ window.openComplaintFlow(); return; }
+  if(window.openComplaintFlow){ _ccEmbed(); return; }
   if(window._asyaLoading) return; window._asyaLoading=true;
   var fail=function(){ window._asyaLoading=false; _ccOldPanel=true; goApp('new'); };
   var add=function(src,next){ var s=document.createElement('script'); s.src=src; s.onload=next; s.onerror=fail; document.head.appendChild(s); };
   var l=document.createElement('link'); l.rel='stylesheet'; l.href='/demo/asya/asya.css'; document.head.appendChild(l);
-  add('/demo/asya/i18n.js',function(){ add('/demo/asya/asya.js',function(){ window._asyaLoading=false; if(window.openComplaintFlow) window.openComplaintFlow(); else fail(); }); });
+  add('/demo/asya/i18n.js',function(){ add('/demo/asya/asya.js',function(){ window._asyaLoading=false; if(window.openComplaintFlow) _ccEmbed(); else fail(); }); });
 }
 function goApp(tab){
   document.getElementById('pg-land').style.display='none';
@@ -2747,6 +2757,8 @@ let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 let _authRedirectTab=null;
 
 function showTab(tab){
+  // Another tab while the embedded complaint panel is open: close the panel, stay in the app.
+  if(tab!=='new'&&window._ccEmbedded&&window.closeComplaintFlow){ window._ccTabSwitch=true; window.closeComplaintFlow(); }
   // "feed" (nav tab, labelled Havuz) and "lawyerpanel" (reached via the lawyer-
   // referral CTA) both show the same Case Pool view — sign-in required either way.
   // Wrapped defensively: if ANYTHING here throws (bad localStorage JSON, a

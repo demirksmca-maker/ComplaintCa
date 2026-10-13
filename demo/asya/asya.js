@@ -1134,8 +1134,9 @@
     if (!registered && window.ccPanelRoot) { window.ccPanelRoot(ov); registered = true; }
     ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
   }
-  function close(){ ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }
+  function close(){ if (window.ccPanelClosed) setTimeout(window.ccPanelClosed, 0); ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }
   x.addEventListener('click', close);
   addEventListener('keydown', e => { if (e.key === 'Escape' && ov.classList.contains('open')) close(); });
   window.openComplaintFlow = open;
+  window.closeComplaintFlow = () => { if (ov.classList.contains('open')) close(); };
 })();
