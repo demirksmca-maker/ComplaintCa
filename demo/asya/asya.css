@@ -318,10 +318,10 @@ textarea.af-in::placeholder{text-align:center}
 .af-ov input.af1-in:-webkit-autofill,.af-ov input.af1-in:-webkit-autofill:hover,.af-ov input.af1-in:-webkit-autofill:focus{-webkit-text-fill-color:#fff;caret-color:#fff;-webkit-box-shadow:0 0 0 1000px #0e1f40 inset;box-shadow:0 0 0 1000px #0e1f40 inset;transition:background-color 9999s}
 .af1-paper{direction:ltr;text-align:left}
 /* laurel frame around the one-page form (Figma artwork, transparent PNG, 740x1220) */
-.af1-frame{position:relative;padding:4px 36px 46px}
-.af1-frame::before{content:"";position:absolute;left:-14px;right:-14px;top:-96px;bottom:-30px;pointer-events:none;z-index:0;
- border-style:solid;border-color:transparent;border-width:84px 46px 106px;
- border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch}
+.af1-frame{position:relative;padding:4px 28px 38px}
+.af1-frame::before{content:"";position:absolute;left:-8px;right:-8px;top:-72px;bottom:-22px;pointer-events:none;z-index:0;
+ border-style:solid;border-color:transparent;border-width:60px 32px 76px;
+ border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 60px 32px 76px stretch}
 .af1-frame>*{position:relative;z-index:1}
 .af1-whobox{position:relative}
 .af1-sug{position:absolute;left:0;right:0;top:100%;z-index:5;margin-top:4px;background:#0f2348;border:1px solid rgba(230,201,138,.4);border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.45)}
@@ -369,9 +369,9 @@ textarea.af-in::placeholder{text-align:center}
 .af1-p .af1-law{text-align:center}.af1-nav>.af1-navn{margin:0!important}
 /* sealing ceremony + final screen inside the laurel frame */
 .af1-frame.done>.af1-f{display:none}
-.af1-frame::after{content:"";position:absolute;left:-14px;right:-14px;top:-96px;bottom:-30px;pointer-events:none;z-index:0;opacity:0;
- border-style:solid;border-color:transparent;border-width:84px 46px 106px;border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch;
- filter:drop-shadow(0 0 7px rgba(255,214,110,.95)) drop-shadow(0 0 2px #fff3c4);
+.af1-frame::after{content:"";position:absolute;left:-8px;right:-8px;top:-72px;bottom:-22px;pointer-events:none;z-index:0;opacity:0;
+ border-style:solid;border-color:transparent;border-width:60px 32px 76px;border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 60px 32px 76px stretch;
+ filter:drop-shadow(0 0 4px rgba(255,214,110,.5));
  -webkit-mask-image:linear-gradient(to top,#000 45%,transparent 55%);mask-image:linear-gradient(to top,#000 45%,transparent 55%);
  -webkit-mask-size:100% 220%;mask-size:100% 220%;-webkit-mask-position:0 0;mask-position:0 0}
 .af1-frame.lit::after{opacity:1;animation:afLit 1.1s ease-out 1.4s both}
@@ -415,8 +415,11 @@ textarea.af-in::placeholder{text-align:center}
 .af1-wax svg{width:70%;height:70%}.af1-seal svg{width:66%;height:66%;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
 /* Canada finish: leaves turn flag red over a white halo (WebKit/Blink mask-box-image; other browsers keep the gold glow) */
 @supports (-webkit-mask-box-image:none){
- .af1-frame.lit.settled::before{filter:grayscale(1) brightness(2.6) drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px rgba(255,255,255,.6));transition:filter 1.2s ease}
+ .af1-frame.lit.settled::before{filter:grayscale(1) brightness(2.6) drop-shadow(0 0 3px rgba(255,255,255,.8)) drop-shadow(0 0 8px rgba(255,255,255,.35));transition:filter 1.2s ease}
  .af1-frame.lit.settled::after{border-image:none;filter:none;background:linear-gradient(180deg,#ef4136,#d52b1e 50%,#a8170f);
-  -webkit-mask-box-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch;animation:afRed 1.2s ease both}
+  -webkit-mask-box-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 60px 32px 76px stretch;animation:afRed 1.2s ease both}
 }
 @keyframes afRed{from{opacity:0}to{opacity:1}}
+
+/* calmer gold: the resting frame is a little dimmer and less saturated */
+.af1-frame::before{filter:brightness(.8) saturate(.8);opacity:.9}
