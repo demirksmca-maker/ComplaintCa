@@ -62,7 +62,9 @@
   const pageLang = () => document.documentElement.lang || 'en';
   // Panel language: the site's chosen language among its 7 (en fr es tr ar zh pa); English by default.
   const LANGS = ['fr','es','tr','ar','zh','pa'];
-  const pickLang = () => { const p = String(pageLang()).slice(0, 2).toLowerCase(); return LANGS.includes(p) ? p : 'en'; };   // the site's chosen language only, never the browser's
+  // ?lang=tr (etc.) on the URL wins, for working in a language; otherwise the site's chosen language, never the browser's.
+  const urlLang = (window._ccPanelLang || new URLSearchParams(location.search).get('lang') || '').slice(0, 2).toLowerCase();
+  const pickLang = () => { if (LANGS.includes(urlLang)) return urlLang; const p = String(pageLang()).slice(0, 2).toLowerCase(); return LANGS.includes(p) ? p : 'en'; };
   const tx = (s, lg) => { const D = window.ccAsyaDict; return (lg && lg !== 'en' && D && D[lg] && D[lg][s]) || s; };
   const IS_DEMO = location.pathname.indexOf('/demo') === 0;
   let builtLg = 'en';
