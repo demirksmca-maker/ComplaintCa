@@ -2721,8 +2721,6 @@ function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e)
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
 // ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.
 var _ccPanelTest=/[?&]test=1\b/.test(location.search);
-// ?bars=1: preview of the help bars on the panel's final screen (lawyer · civil society · help lines).
-var _ccBars=/[?&]bars=1\b/.test(location.search);
 // Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
 // The panel sits in the page itself (#cc-panel-host), so the page scrolls as one and nothing floats over it.
 function _ccEmbed(){
@@ -2735,7 +2733,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261013h';
+var _ccAsyaV='20261013i';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }

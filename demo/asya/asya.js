@@ -864,9 +864,13 @@
       const groups = uniq(list.filter(x => !isLaw(x)));
       const lines = uniq([...((d.authorities || []).slice(1)), ...((d.chain && d.chain.bodies) || []), ...list].filter(x => x.phone)
         .concat([{ name:'211', phone:'211', note:TX('Community and social services, free, 24/7') }]));
-      const box = el('div','af1-rights af1-help fx'); box.appendChild(el('h5', null, TX('Help while you wait')));
+      const box = el('div','af1-rights af1-help fx'); box.appendChild(el('h5', null, TX('Resources for assistance during processing')));
       const bars = [];
-      const bar = (title, items) => {
+      const ICON = {
+        law:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M5 7h14M12 5l-7 2M12 5l7 2"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg>',
+        group:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11l4-4 4 2 3-2 4 1 5 4"/><path d="M6 7l-4 6 3 3M22 12l-4 5-3-1"/><path d="M9 13l2 2a1.4 1.4 0 0 0 2-2l-2-2M12 16l1 1a1.4 1.4 0 0 0 2-2M15 15a1.4 1.4 0 0 0 2-2l-3-3"/></svg>',
+        phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>' };
+      const bar = (title, items, kind) => {
         if (!items.length) return;
         const b = el('button','af1-hb'); b.type = 'button';
         const t = el('span'); t.append(el('b', null, title), el('small', null, items.length + ' ' + TX(items.length === 1 ? 'option' : 'options')));
@@ -874,17 +878,18 @@
         const body = el('div','af1-hl'); body.hidden = true;
         items.forEach(x => { const r = el('div','af1-hi'), info = el('span');
           info.append(el('b', null, x.name), ...(x.phone || x.note ? [el('small', null, [x.phone, x.note].filter(Boolean).join(' · '))] : []));
-          const a = el('a', null, x.phone ? TX('Call') : TX('Open') + ' →');
+          const a = el('a','af1-hico'); a.innerHTML = ICON[x.phone ? 'phone' : kind]; a.setAttribute('aria-label', (x.phone ? TX('Call') : TX('Open')) + ': ' + x.name);
           if (x.phone) a.href = 'tel:' + x.phone.replace(/[^\d+]/g, ''); else { a.href = x.href || x.url || '#'; if (!x.flow) { a.target = '_blank'; a.rel = 'noopener'; } }
           if (x.flow) a.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
           r.append(info, a); body.appendChild(r); });
         b.addEventListener('click', () => { const open = body.hidden; bars.forEach(([bb, bd]) => { bd.hidden = true; bb.classList.remove('on'); }); if (open) { body.hidden = false; b.classList.add('on'); } });
         bars.push([b, body]); box.append(b, body);
       };
-      bar(TX('Lawyer support'), lawyers);
-      bar(TX('Civil society groups'), groups);
-      bar(TX('Help lines'), lines);
+      bar(TX('Lawyer support'), lawyers, 'law');
+      bar(TX('Civil society groups'), groups, 'group');
+      bar(TX('Help lines'), lines, 'phone');
       if (!bars.length) return;
+      bars[0][1].hidden = false; bars[0][0].classList.add('on');
       box.appendChild(el('p','af1-rdisc', TX('General information, not legal advice.')));
       fin.appendChild(box);
     }
@@ -898,27 +903,33 @@
       const stage = el('div','af1-stage'), env = el('div','af1-env'), wax = el('b','af1-wax'), seal = el('div','af1-seal fx'); wax.innerHTML = MAPLE; seal.innerHTML = MAPLE;
       env.append(el('i','af1-flap'), wax); stage.append(env, seal);
       const sub = sent ? TX('Delivered to {n}').replace('{n}', inst.name || '') : inst.status === 'form_only' ? L1.dForm.replace('{n}', inst.name || '') : inst.status === 'failed' ? L1.dFail : L1.dSaved;
-      const refEl = el('div','af1-fin-ref fx', calm ? ref : '');
-      const rowsEl = el('div','af1-fin-dl fx');
-      if (sent) { const r1 = el('div'), r2 = el('div'); r1.append(el('span', null, TX('Confirm receipt by')), el('b', null, addBD(3))); r2.append(el('span', null, TX('Written reply by')), el('b', null, addBD(10))); rowsEl.append(r1, r2); }
-      const track = el('a','af-btn gold af1-fin-go fx', TX('Track my complaint')); track.href = '/?track=' + encodeURIComponent(ref);
+      // Official record: one table of the filing (ID, dates, recipient), then a plaque button to the status page.
+      const refEl = el('b','af1-rec-id', calm ? ref : '');
+      const rec = el('div','af1-rec fx');
+      const row = (k, v) => { const r = el('div'); r.append(el('span', null, TX(k)), typeof v === 'string' ? el('b', null, v) : v); rec.appendChild(r); };
+      row('Complaint ID', refEl);
+      row('Date of transmission', addBD(0));
+      if (sent) { row('Confirmation of receipt by', addBD(3)); row('Anticipated written reply by', addBD(10)); }
+      if (inst.name) row('Recipient agency', inst.name);
+      const track = el('a','af1-plaque af1-fin-go fx'); track.href = '/?track=' + encodeURIComponent(ref);
+      track.append(el('b', null, TX('View complaint status')), el('small', null, TX('(Secure link)')));
       const done = el('button','af1-fin-done fx', L1.dFin); done.type = 'button';
       done.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
-      fin.append(stage, el('h2','af1-fin-h fx', sent ? TX('Complaint sent') : TX('Complaint saved')), el('p','af1-fin-sub fx', sub),
-        ...(d.test ? [el('span','af1-d-tag fx', L1.dTest)] : []), el('p','af1-fin-k fx', L1.dRef), refEl, el('div','af1-fin-rule fx', '◆'), rowsEl,
-        ...(sent ? [el('p','af1-fin-note fx', TX('We’ll email you the moment they reply.'))] : []), track);
+      fin.append(stage, el('h2','af1-fin-h af1-rec-t fx', sent ? TX('Official record of complaint transmission') : TX('Official record of complaint')),
+        ...(d.test ? [el('span','af1-d-tag fx', L1.dTest)] : []), el('p','af1-rec-h fx', TX('Complaint and tracking information')), rec,
+        el('p','af1-fin-note fx', sent ? TX('We’ll email you the moment they reply.') : sub), track);
       if (V && V.poolSuggest && (V.remedy || V.claimDeadline)) {
-        const rc = el('div','af1-rights af1-fin-rights fx'); rc.appendChild(el('h5', null, TX('Your rights')));
+        const rc = el('div','af1-rights af1-fin-rights fx'); rc.appendChild(el('h5', null, TX('Statement of rights and general advisory')));
         const two = el('div','af1-two'), cell = (k, v) => { const c = el('div','af1-cell'); c.append(el('small', null, TX(k)), el('b', null, v || '—')); return c; };
         two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); rc.appendChild(two);
         const lw = el('a','af1-fin-lawyer', TX('Talk to a lawyer') + ' →'); lw.href = lawyerHref();
         lw.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
         const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
         const free = el('a','af1-rfree', TX('Free help') + ': ' + (aid[0] === 'Legal aid in your province' ? TX(aid[0]) : aid[0]) + ' →'); free.href = aid[1]; free.target = '_blank'; free.rel = 'noopener';
-        // With the help bars on, lawyer and legal aid live in the first bar instead.
-        rc.append(...(window._ccBars ? [] : [lw, free]), el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
+        // Lawyer and legal aid live in the first help bar below.
+        rc.append(el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
       }
-      if (window._ccBars) helpBars(d, fin);
+      helpBars(d, fin);
       if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
       fin.appendChild(done);
       o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';
