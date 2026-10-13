@@ -25,6 +25,7 @@ import {
 import { _isMail } from './_engine-data.js';
 import { classify } from './_classify.js';
 import { mailSecret, checkPass } from './_mailcode.js';
+import emailCode from './_email-code.js';
 
 const FIREBASE_PROJECT = 'ajan-d6070';
 // Public web API key (already shipped in index.html). Writes still pass through
@@ -73,6 +74,8 @@ async function sendEmail(toEmail, toName, subject, body, replyTo) {
 }
 
 export default async function handler(req, res) {
+  // /api/email-code is rewritten here (one function instead of two, see vercel.json).
+  if (/[?&]mailcode=1\b/.test(req.url || '') || (req.query && req.query.mailcode === '1')) return emailCode(req, res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   try {
