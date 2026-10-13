@@ -714,12 +714,8 @@
       const two = el('div','af1-two'), cell = (k, v) => { const c = el('div','af1-cell'); c.append(el('small', null, TX(k)), el('b', null, v || '—')); return c; };
       two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); box.appendChild(two);
       box.appendChild(el('p','af1-rnote', TX('ASYA: this may be a legal-rights case.')));
-      const go = el('a','af-btn gold af1-rgo', TX('Talk to a lawyer')); go.href = lawyerHref();
-      go.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
-      box.appendChild(go);
-      const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
-      const free = el('a','af1-rfree', TX('Free help') + ': ' + (aid[0] === 'Legal aid in your province' ? TX(aid[0]) : aid[0]) + ' →'); free.href = aid[1]; free.target = '_blank'; free.rel = 'noopener';
-      box.append(free, el('p','af1-rdisc', TX('General information, not legal advice.')));
+      // No lawyer button here: it would pull people out before the complaint is sent. Lawyer and legal aid come on the final screen.
+      box.append(el('p','af1-rdisc', TX('Send your complaint first — lawyer and free legal-aid options come right after.')), el('p','af1-rdisc', TX('General information, not legal advice.')));
       o_an.appendChild(box);
     }
     function drawRes(R){
@@ -880,7 +876,9 @@
         two.append(cell('You may recover', V.remedy), el('i','af1-vr'), cell('Deadline to claim', V.claimDeadline)); rc.appendChild(two);
         const lw = el('a','af1-fin-lawyer', TX('Talk to a lawyer') + ' →'); lw.href = lawyerHref();
         lw.addEventListener('click', e => { if (window.openLawyerFlow) { e.preventDefault(); close(); setTimeout(() => window.openLawyerFlow(), 300); } });
-        rc.append(lw, el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
+        const aid = LEGAL_AID[provOf(o_loc.value)] || ['Legal aid in your province','https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
+        const free = el('a','af1-rfree', TX('Free help') + ': ' + (aid[0] === 'Legal aid in your province' ? TX(aid[0]) : aid[0]) + ' →'); free.href = aid[1]; free.target = '_blank'; free.rel = 'noopener';
+        rc.append(lw, free, el('p','af1-rdisc', TX('General information, not legal advice.'))); fin.appendChild(rc);
       }
       if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
       fin.appendChild(done);
