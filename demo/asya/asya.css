@@ -1,5 +1,5 @@
 /* ASYA Core complaint panel — violet + gold, every line centred and symmetric. */
-.af-ov{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s;
+.af-ov{position:fixed;inset:0;z-index:10040;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s .35s;
   background:radial-gradient(75% 42% at 50% 22%,#16305c 0%,#0b1d3d 60%,#071326 100%);color:#eef0f6;font-family:-apple-system,'Segoe UI',Inter,system-ui,sans-serif}
 .af-ov.open{opacity:1;visibility:visible;transition:opacity .35s}
 .af-bar{position:relative;flex:none;display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 14px) 64px 8px}
@@ -310,3 +310,7 @@ textarea.af-in::placeholder{text-align:center}
 .af1-sbody .af1-send{position:static}
 .af1-auto{display:block;margin:18px auto 0}
 .af1-p .af1-an{display:block}.af1-p .af1-q{margin-top:18px}.af1-p .af1-an .af1-q:first-child{margin-top:4px}
+/* host-page reset: the home page styles bare label/input/textarea; zero-specificity guards so every .af rule still wins */
+:where(.af-ov) label{text-transform:none;letter-spacing:normal;font-size:inherit;font-weight:inherit;color:inherit;margin:0}
+:where(.af-ov) input,:where(.af-ov) textarea,:where(.af-ov) select{margin-bottom:0;box-shadow:none;-webkit-appearance:none;appearance:none}
+:where(.af-ov) input:where([type=checkbox],[type=radio]){-webkit-appearance:auto;appearance:auto;width:auto;padding:0;border:revert;border-radius:revert;background:revert}
