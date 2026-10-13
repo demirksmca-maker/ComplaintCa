@@ -317,3 +317,16 @@ textarea.af-in::placeholder{text-align:center}
 /* keep the dark fields when the browser autofills email / city */
 .af-ov input.af1-in:-webkit-autofill,.af-ov input.af1-in:-webkit-autofill:hover,.af-ov input.af1-in:-webkit-autofill:focus{-webkit-text-fill-color:#fff;caret-color:#fff;-webkit-box-shadow:0 0 0 1000px #0e1f40 inset;box-shadow:0 0 0 1000px #0e1f40 inset;transition:background-color 9999s}
 .af1-paper{direction:ltr;text-align:left}
+/* laurel frame around the one-page form (Figma artwork, transparent PNG, 740x1220) */
+.af1-frame{position:relative;padding:4px 36px 46px}
+.af1-frame::before{content:"";position:absolute;left:-14px;right:-14px;top:-96px;bottom:-30px;pointer-events:none;z-index:0;
+ border-style:solid;border-color:transparent;border-width:84px 46px 106px;
+ border-image:url(/demo/asya/laurel-frame.png) 250 135 320 / 84px 46px 106px stretch}
+.af1-frame>*{position:relative;z-index:1}
+.af1-whobox{position:relative}
+.af1-sug{position:absolute;left:0;right:0;top:100%;z-index:5;margin-top:4px;background:#0f2348;border:1px solid rgba(230,201,138,.4);border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.45)}
+.af1-sug[hidden]{display:none}
+.af1-sugi{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.07);padding:10px 12px;color:#fff;font:inherit;cursor:pointer}
+.af1-sugi:last-child{border-bottom:0}.af1-sugi b{display:block;font-size:.92rem;font-weight:600}.af1-sugi small{display:block;color:#8f96ab;font-size:.74rem;margin-top:2px}
+.af1-sugi:hover,.af1-sugi:focus{background:rgba(230,201,138,.1)}
+.af1-frame>.af1-f:has(.af1-whobox){z-index:3}
