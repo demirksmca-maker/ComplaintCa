@@ -60,6 +60,13 @@
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const post = (url, body) => fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(body) });
   const pageLang = () => document.documentElement.lang || 'en';
+  // Panel language: the page's chosen language, else the browser's, among the site's 7 (en fr es tr ar zh pa).
+  const LANGS = ['fr','es','tr','ar','zh','pa'];
+  const pickLang = () => { const p = String(pageLang()).slice(0, 2).toLowerCase(); if (LANGS.includes(p)) return p; if (p && p !== 'en') return 'en';
+    const n = String(navigator.language || '').slice(0, 2).toLowerCase(); return LANGS.includes(n) ? n : 'en'; };
+  const tx = (s, lg) => { const D = window.ccAsyaDict; return (lg && lg !== 'en' && D && D[lg] && D[lg][s]) || s; };
+  const IS_DEMO = location.pathname.indexOf('/demo') === 0;
+  let builtLg = 'en';
 
   // ── overlay shell ──
   const ov = el('div','af-ov'); ov.id = 'asya-flow'; ov.setAttribute('aria-hidden','true'); ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-labelledby','af-title');
@@ -78,7 +85,7 @@
     const wrap = el('div','af');
     const top = el('div','af-top'), dots = el('div','af-dots'), count = el('div','af-count');
     STEPS.forEach(() => dots.appendChild(el('i')));
-    const auto = el('button','af-auto'); auto.type = 'button'; auto.append(el('span', null, '▶ '), el('span', null, 'Auto-fill demo'));
+    const auto = el('button','af-auto'); auto.type = 'button'; auto.append(el('span', null, '▶ '), el('span', null, 'Auto-fill demo')); if (!IS_DEMO) auto.style.display = 'none';
     top.append(dots, count, auto);
     const restored = el('p','af-note af-restored'); restored.hidden = true;
     const stage = el('div','af-stage');
@@ -425,17 +432,9 @@
     }
 
     // ── One-page complaint (e-mail · location · story → ASYA analysis → who to reach → send) ──
-    const TR = /^tr/i.test(pageLang()) || /^tr/i.test(navigator.language || '');
-    const L1 = TR ? {
-      mail:'E-posta', req:'zorunlu', mailPh:'ornek@eposta.ca', loc:'Konum', locPh:'Şehir veya posta kodu', find:'📍 Bul', story:'Ne oldu?', storyPh:'Kendi cümlelerinizle anlatın…',
-      wait:'Yazmaya başlayın. ASYA analiz edip kimlere ulaşabileceğinizi burada gösterecek.', busy:'ASYA analiz ediyor… (yaklaşık 10 saniye)', short:'Biraz daha yazın (en az 10 karakter). ASYA otomatik analiz edecek.', unsure:'Şikâyetiniz', whom:'KİMLERE ULAŞILSIN?', all:'Hepsi',
-      primary:'ASYA gönderir', prep:'Hazır mektup + bağlantı', pool:'Avukat havuzu', poolSub:'Dosyanız adınız olmadan avukatlara açılır; adınız gerekir', name:'Adınız',
-      anon:'Adımı paylaşmak istemiyorum', nameWhy:'Bu dosya için adınız gerekli.', agree:'ComplaintCA’nın bu şikâyeti benim adıma kuruma göndermesine ve yanıtları almasına yetki veriyorum; bilgilerin doğru olduğunu onaylıyorum.', terms:'Beyan ve şartlar', send:'Şikâyeti gönder', sending:'Gönderiliyor…',
-      note:'İlk kuruma ASYA gönderir. Diğerleri için hazır mektup ve resmî bağlantı verilir.', sos:'Çocuğunuz veya biriniz tehlikedeyse 911’i arayın.',
-      eMail:'Geçerli bir e-posta yazın.', eStory:'Lütfen olanı biraz daha ayrıntılı yazın.', eName:'Lütfen adınızı yazın.', eAgree:'Lütfen beyanı onaylayın.', eFail:'Bir sorun oluştu. Lütfen tekrar deneyin.',
-      copy:'Mektubu kopyala', copied:'✓ Kopyalandı', open:'Aç →', also:'Bunlar için hazır mektup ve bağlantı',
-      dTitle:'Şikâyetiniz alındı', dRef:'Takip numaranız', dMail:'Takip numarası e-postanıza gönderildi.', dTest:'TEST · hiçbir kuruma e-posta gitmedi', dSent:'ASYA şikâyetinizi {n} kurumuna gönderdi.', dForm:'{n} yalnızca resmî formu kabul ediyor.', dFail:'Otomatik gönderim yapılamadı; e-posta uygulamanızdan kendiniz gönderin.', dMailBtn:'E-postayı aç', dSaved:'Şikâyetiniz kaydedildi.', dReach:'ULAŞABİLECEĞİNİZ KURUMLAR', dLetter:'Mektup', dOpen:'Aç', dLawyer:'Uzman avukat bul', dAgain:'Yeni şikâyet', dFin:'Bitti' }
-    : {
+    const LG = pickLang(); builtLg = LG; const TX = s => tx(s, LG);
+    const trObj = o => { const r = {}; for (const k in o) r[k] = Array.isArray(o[k]) ? o[k].map(TX) : TX(o[k]); return r; };
+    const L1 = trObj({
       mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
       wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Write a little more (at least 10 characters). ASYA will analyse automatically.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
       primary:'ASYA sends', prep:'Ready letter + link', pool:'Lawyer pool', poolSub:'Your case opens to lawyers without your name; your name is required', name:'Your name',
@@ -443,7 +442,7 @@
       note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
       eMail:'Enter a valid email address.', eStory:'Please describe what happened in a bit more detail.', eName:'Please enter your name.', eAgree:'Please confirm the statement.', eFail:'Something went wrong. Please try again.',
       copy:'Copy letter', copied:'✓ Copied', open:'Open →', also:'Ready letter and link for these',
-      dTitle:'Complaint received', dRef:'Your tracking number', dMail:'The tracking number was emailed to you.', dTest:'TEST · no institution was emailed', dSent:'ASYA sent your complaint to {n}.', dForm:'{n} only accepts its official form.', dFail:'Automatic sending failed; please send it from your email app.', dMailBtn:'Open email', dSaved:'Your complaint was saved.', dReach:'WHO YOU CAN REACH', dLetter:'Letter', dOpen:'Open', dLawyer:'Find a specialist lawyer', dAgain:'New complaint', dFin:'Done' };
+      dTitle:'Complaint received', dRef:'Your tracking number', dMail:'The tracking number was emailed to you.', dTest:'TEST · no institution was emailed', dSent:'ASYA sent your complaint to {n}.', dForm:'{n} only accepts its official form.', dFail:'Automatic sending failed; please send it from your email app.', dMailBtn:'Open email', dSaved:'Your complaint was saved.', dReach:'WHO YOU CAN REACH', dLetter:'Letter', dOpen:'Open', dLawyer:'Find a specialist lawyer', dAgain:'New complaint', dFin:'Done' });
     const one = el('div','af-one');
     const fld = (label, node, req) => { const w = el('div','af1-f'); const lb = el('label'); lb.append(document.createTextNode(label)); if (req) lb.appendChild(el('em', null, req)); w.append(lb, node); return w; };
     const o_mail = document.createElement('input'); o_mail.type = 'email'; o_mail.autocomplete = 'email'; o_mail.placeholder = L1.mailPh; o_mail.className = 'af1-in'; o_mail.maxLength = 254;
@@ -463,13 +462,10 @@
     const o_btn = el('button','af-btn gold af1-send', L1.send); o_btn.type = 'button';
     const o_note = el('p','af1-note', L1.note), o_sos = el('p','af1-sos', L1.sos), o_err = el('p','af-hint af1-err'); o_err.setAttribute('role','status');
     // ── Story view: 1 email draft · 2 law · 3 who to contact · 4 send (tap through, never autoplays) ──
-    const L2 = TR ? {
-      step:['E-posta taslağı','Yasa','Kime ulaşılır','Gönder'], against:'Şikâyet edilen', found:'hikâyeden bulundu', orgPh:'Kurumun adı', mailTo:'Kuruma giden e-posta', edit:'Taslağı düzenle', done:'Bitti', next:'Tamam · Devam', back:'Geri', nextN:'Devam',
-      lawH:'Yasal dayanak', sancH:'Kurum yanıt vermezse', autoOn:'Doldurma bitti. Göndermek için “Gönder”e dokunun.', autoMail:'E-postanızı bir kez yazın, sonra tekrar deneyin.', autoRun:'Dolduruluyor…', autoBtn:'Otomatik doldur', ready:'Hazır, “Gönder”e dokunun'
-    } : {
+    const L2 = trObj({
       step:['Email draft','Law','Who to contact','Send'], against:'Complaint against', found:'found in your story', orgPh:'Name of the organization', mailTo:'Your email to the institution', edit:'Edit draft', done:'Done', next:'Looks good · Next', back:'Back', nextN:'Next',
       lawH:'Legal basis', sancH:'If they do not reply', autoOn:'Filled in. Tap Send to finish.', autoMail:'Type your email once, then tap again.', autoRun:'Auto-filling…', autoBtn:'Auto-fill demo', ready:'Ready, tap Send'
-    };
+    });
     const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const addBD = (n) => { const x = new Date(); let k = 0; while (k < n) { x.setDate(x.getDate() + 1); const w = x.getDay(); if (w !== 0 && w !== 6) k++; } return x.getDate() + ' ' + MON[x.getMonth()] + ' ' + x.getFullYear(); };
     const o_org = document.createElement('input'); o_org.type = 'text'; o_org.className = 'af1-in'; o_org.placeholder = L2.orgPh; o_org.maxLength = 120;
@@ -503,7 +499,7 @@
         { h:'', b:'Dear ' + (org ? 'Sir or Madam at ' + org : 'Sir or Madam') + ',' },
         { h:'Incident', b:incident },
         { h:'What I ask', b:asks.map(x => '• ' + x).join('\n') },
-        ...(law ? [{ h:L2.lawH, b:law }] : []),
+        ...(law ? [{ h:'Legal basis', b:law }] : []),
         { h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : ''), dl:true },
         { h:'If there is no reply', b:esc },
         { h:'', b:'Sincerely,\n' + NAME_TOKEN }
@@ -524,7 +520,7 @@
     o_edit.addEventListener('click', () => { editing = !editing; if (editing && !draftEdited) draftEdited = draftPlain(); drawDraft(); });
     o_org.addEventListener('input', () => { orgAuto = false; o_orgHint.textContent = ''; if (!draftEdited) { buildDraft(); } drawDraft(); });
     function fillOrg(){ orgAuto = !!(A && A.institution); o_org.value = orgAuto ? A.institution : ''; o_orgHint.textContent = orgAuto ? L2.found : ''; }
-    const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TR ? 'Otomatik doldur' : 'Auto-fill demo'));
+    const o_auto = el('button','af-auto af1-auto'); o_auto.type = 'button'; o_auto.append(el('span', null, '▶ '), el('span', null, TX('Auto-fill demo'))); if (!IS_DEMO) o_auto.style.display = 'none';
     one.append(fld(L1.mail, o_mail, L1.req), fld(L1.loc, locRow), fld(L1.story, o_story), o_wait, o_auto);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
@@ -544,7 +540,7 @@
     const cleanLaw = s => String(s || '').replace(/[#*_`]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 260);
     function drawSum(){
       o_sum.innerHTML = '';
-      const t = el('div'); t.append(el('b', null, sumDone ? '✓ ' + L1.dTitle : sumTitle), el('small', null, sumDone ? sumDone : sumCount + (TR ? ' kuruma ulaşabilirsiniz' : ' institutions you can reach')));
+      const t = el('div'); t.append(el('b', null, sumDone ? '✓ ' + L1.dTitle : sumTitle), el('small', null, sumDone ? sumDone : sumCount + ' ' + TX('institutions you can reach')));
       o_sum.append(el('i','af1-dot ' + (sumDone ? 'low' : sumPr)), t, el('span','af1-chev','⌃'));
     }
     function setSheet(st){ o_sheet.hidden = st === 'hid'; o_sheet.classList.toggle('open', st === 'open'); o_bd.hidden = st !== 'open'; if (st === 'open') o_body.scrollTop = 0; }
@@ -552,7 +548,7 @@
     o_grab.addEventListener('click', togSheet); o_sum.addEventListener('click', togSheet); o_bd.addEventListener('click', () => setSheet('peek'));
     function drawRes(R){
       Rt = R; draftEdited = ''; editing = false; fillOrg(); o_wait.hidden = true; o_an.innerHTML = '';
-      sumPr = A ? A.priority : 'medium'; sumTitle = A ? ((A.icon ? A.icon + ' ' : '') + A.label) : L1.unsure; sumDone = '';
+      sumPr = A ? A.priority : 'medium'; sumTitle = A ? ((A.icon ? A.icon + ' ' : '') + TX(A.label)) : L1.unsure; sumDone = '';
       const law = cleanLaw(V && V.law); if (law) o_an.append(el('div','af1-q', L2.lawH), el('p','af1-law', law));
       const sanc = cleanLaw(V && V.sanctions); if (sanc) o_an.append(el('div','af1-q', L2.sancH), el('p','af1-law', sanc));
       o_list.innerHTML = ''; sel.length = 0;
@@ -857,8 +853,23 @@
     return { go };
   }
 
+  // Home page (no host translator): translate the panel's fixed English text from i18n.js, never the letter or typed text.
+  let mo = null;
+  function localize(){
+    const lg = pickLang(); ov.dir = lg === 'ar' ? 'rtl' : 'ltr';
+    if (window.ccPanelRoot) return;
+    const skip = n => { const p = n.nodeType === 1 ? n : n.parentElement; return !p || !!p.closest('.af1-paper,textarea,script,style'); };
+    const doNode = n => { if (n.nodeType === 3) { if (skip(n)) return; const s = n.nodeValue, k = s.trim(); if (!k) return; const v = tx(k, lg); if (v !== k) n.nodeValue = s.replace(k, v); }
+      else if (n.nodeType === 1 && n.hasAttribute('placeholder') && !skip(n)) { const k = n.getAttribute('placeholder'), v = tx(k, lg); if (v !== k) n.setAttribute('placeholder', v); } };
+    const walk = r => { doNode(r); if (r.nodeType !== 1) return; const w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT); let n; while ((n = w.nextNode())) doNode(n); };
+    if (mo) mo.disconnect(); if (lg === 'en') return;
+    walk(ov);
+    mo = new MutationObserver(list => list.forEach(m => m.type === 'childList' ? m.addedNodes.forEach(walk) : doNode(m.target)));
+    mo.observe(ov, { subtree:true, childList:true, characterData:true });
+  }
   function open(){
-    if (!F) F = build();
+    if (!F || builtLg !== pickLang()) F = build();
+    localize();
     if (!registered && window.ccPanelRoot) { window.ccPanelRoot(ov); registered = true; }
     ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
   }

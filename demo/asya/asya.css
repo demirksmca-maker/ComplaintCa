@@ -314,3 +314,6 @@ textarea.af-in::placeholder{text-align:center}
 :where(.af-ov) label{text-transform:none;letter-spacing:normal;font-size:inherit;font-weight:inherit;color:inherit;margin:0}
 :where(.af-ov) input,:where(.af-ov) textarea,:where(.af-ov) select{margin-bottom:0;box-shadow:none;-webkit-appearance:none;appearance:none}
 :where(.af-ov) input:where([type=checkbox],[type=radio]){-webkit-appearance:auto;appearance:auto;width:auto;padding:0;border:revert;border-radius:revert;background:revert}
+/* keep the dark fields when the browser autofills email / city */
+.af-ov input.af1-in:-webkit-autofill,.af-ov input.af1-in:-webkit-autofill:hover,.af-ov input.af1-in:-webkit-autofill:focus{-webkit-text-fill-color:#fff;caret-color:#fff;-webkit-box-shadow:0 0 0 1000px #0e1f40 inset;box-shadow:0 0 0 1000px #0e1f40 inset;transition:background-color 9999s}
+.af1-paper{direction:ltr;text-align:left}
