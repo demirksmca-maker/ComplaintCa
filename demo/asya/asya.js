@@ -74,7 +74,8 @@
   title.id = 'af-title'; x.type = 'button'; x.setAttribute('aria-label','Close'); bar.append(title, x);
   const scroll = el('div','af-scroll'), sceneHost = el('div','af-scene'), panel = el('div','af-panel');
   const emblem = el('img','af-emblem'); emblem.src = '/demo/asya/emblem.jpg'; emblem.alt = ''; emblem.width = 360; emblem.height = 360; sceneHost.appendChild(emblem);
-  scroll.append(sceneHost, panel); ov.append(bar, scroll);
+  const brand = el('div','af-brand','ASYA'); brand.setAttribute('aria-hidden','true');
+  scroll.append(sceneHost, brand, panel); ov.append(bar, scroll);
   document.body.appendChild(ov);
   let scene = null, registered = false, F = null;
 
@@ -426,7 +427,7 @@
         types.querySelector('[data-v="access"]').hidden = true;
         setType(val.ctype === 'access' ? 'notice' : val.ctype);
         if (!o_story.value && what.value) { o_story.value = what.value; }
-        scroll.scrollTo({ top:0 }); setTimeout(() => o_mail.focus(), 300);
+        scroll.scrollTo({ top:0 }); if (matchMedia('(pointer:fine)').matches) setTimeout(() => o_mail.focus(), 300);   // no keyboard pop-up on phones
       } else { emit({ type:'step', i:0, n:STEPS.length, key:m }); scroll.scrollTo({ top:0, behavior:'smooth' });
         if (talking) { openChat(m); if (matchMedia('(pointer:fine)').matches) setTimeout(() => cin.focus(), 300); } }
     }

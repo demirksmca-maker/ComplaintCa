@@ -330,3 +330,9 @@ textarea.af-in::placeholder{text-align:center}
 .af1-sugi:last-child{border-bottom:0}.af1-sugi b{display:block;font-size:.92rem;font-weight:600}.af1-sugi small{display:block;color:#8f96ab;font-size:.74rem;margin-top:2px}
 .af1-sugi:hover,.af1-sugi:focus{background:rgba(230,201,138,.1)}
 .af1-frame>.af1-f:has(.af1-whobox){z-index:3}
+/* ASYA name under the scales: gradient letters with a slow blue-pink glow */
+.af-brand{position:relative;z-index:2;text-align:center;font:700 1.75rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;padding-left:.42em;margin:-2px 0 8px;
+ background:linear-gradient(90deg,#4fb3ff,#b9a6ff 50%,#ff5fc8);-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 0 6px rgba(80,170,255,.95)) drop-shadow(0 0 16px rgba(255,90,200,.7));animation:afBrand 4s ease-in-out infinite}
+@keyframes afBrand{50%{filter:drop-shadow(0 0 9px rgba(255,90,200,.95)) drop-shadow(0 0 22px rgba(80,170,255,.8))}}
+@media (prefers-reduced-motion:reduce){.af-brand{animation:none}}
