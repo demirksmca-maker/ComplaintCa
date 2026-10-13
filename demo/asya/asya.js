@@ -1118,15 +1118,18 @@
 
   // Home page (no host translator): translate the panel's fixed English text from i18n.js, never the letter or typed text.
   let mo = null;
+  const ORIG = new WeakMap();
   function localize(){
     const lg = pickLang(); ov.dir = lg === 'ar' ? 'rtl' : 'ltr';
     if (window.ccPanelRoot) return;
     const skip = n => { const p = n.nodeType === 1 ? n : n.parentElement; return !p || !!p.closest('.af1-paper,textarea,script,style'); };
-    const doNode = n => { if (n.nodeType === 3) { if (skip(n)) return; const s = n.nodeValue, k = s.trim(); if (!k) return; const v = tx(k, lg); if (v !== k) n.nodeValue = s.replace(k, v); }
-      else if (n.nodeType === 1 && n.hasAttribute('placeholder') && !skip(n)) { const k = n.getAttribute('placeholder'), v = tx(k, lg); if (v !== k) n.setAttribute('placeholder', v); } };
+    // Translate from the English original kept per node, so switching language (or back to English) never leaves the old one behind.
+    const doNode = n => { const ph = n.nodeType === 1; if (ph ? !n.hasAttribute('placeholder') : n.nodeType !== 3) return; if (skip(n)) return;
+      const cur = ph ? n.getAttribute('placeholder') : n.nodeValue; let rec = ORIG.get(n); if (!rec || rec[1] !== cur) rec = [cur, cur];
+      const k = rec[0].trim(); if (!k) return; const out = rec[0].replace(k, lg === 'en' ? k : tx(k, lg)); rec[1] = out; ORIG.set(n, rec);
+      if (out !== cur) { if (ph) n.setAttribute('placeholder', out); else n.nodeValue = out; } };
     const walk = r => { doNode(r); if (r.nodeType !== 1) return; const w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT); let n; while ((n = w.nextNode())) doNode(n); };
-    if (mo) mo.disconnect(); if (lg === 'en') return;
-    walk(ov);
+    if (mo) mo.disconnect(); walk(ov); if (lg === 'en') return;
     mo = new MutationObserver(list => list.forEach(m => m.type === 'childList' ? m.addedNodes.forEach(walk) : doNode(m.target)));
     mo.observe(ov, { subtree:true, childList:true, characterData:true });
   }
