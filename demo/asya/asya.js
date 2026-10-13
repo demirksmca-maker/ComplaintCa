@@ -644,7 +644,36 @@
       fin.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
       again.addEventListener('click', () => { emit({ type:'reset' }); F = build(); });
       o_done.append(fin, again);
-      o_nav.hidden = true; o_body.innerHTML = ''; o_body.appendChild(o_done); sumDone = d.ref || ''; drawSum(); setSheet('open'); emit({ type:'done', ref:d.ref });
+      o_nav.hidden = true; o_body.innerHTML = ''; o_body.appendChild(o_done); sumDone = d.ref || ''; drawSum(); setSheet('hid'); emit({ type:'done', ref:d.ref });
+      ceremony(d, rows.length + (lawyer ? 1 : 0));
+    }
+    // Sealing ceremony (about 3 s, static when the user prefers reduced motion): the letter is sealed and flies to the
+    // scales, the laurel frame lights up from the bottom, then the tracking number is engraved inside the frame.
+    function ceremony(d, nOther){
+      const inst = d.institution || {}, sent = inst.status === 'sent', ref = d.ref || '';
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const fin = el('div','af1-fin' + (calm ? ' calm' : ''));
+      const stage = el('div','af1-stage'), env = el('div','af1-env'), wax = el('b','af1-wax','⚖'), seal = el('div','af1-seal fx', '⚖');
+      env.append(el('i','af1-flap'), wax); stage.append(env, seal);
+      const sub = sent ? TX('Delivered to {n}').replace('{n}', inst.name || '') : inst.status === 'form_only' ? L1.dForm.replace('{n}', inst.name || '') : inst.status === 'failed' ? L1.dFail : L1.dSaved;
+      const refEl = el('div','af1-fin-ref fx', calm ? ref : '');
+      const rowsEl = el('div','af1-fin-dl fx');
+      if (sent) { const r1 = el('div'), r2 = el('div'); r1.append(el('span', null, TX('Confirm receipt by')), el('b', null, addBD(3))); r2.append(el('span', null, TX('Written reply by')), el('b', null, addBD(10))); rowsEl.append(r1, r2); }
+      const track = el('a','af-btn gold af1-fin-go fx', TX('Track my complaint')); track.href = '/?track=' + encodeURIComponent(ref);
+      const done = el('button','af1-fin-done fx', L1.dFin); done.type = 'button';
+      done.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
+      fin.append(stage, el('h2','af1-fin-h fx', sent ? TX('Complaint sent') : TX('Complaint saved')), el('p','af1-fin-sub fx', sub),
+        ...(d.test ? [el('span','af1-d-tag fx', L1.dTest)] : []), el('p','af1-fin-k fx', L1.dRef), refEl, el('div','af1-fin-rule fx', '◆'), rowsEl,
+        ...(sent ? [el('p','af1-fin-note fx', TX('We’ll email you the moment they reply.'))] : []), track);
+      if (nOther) { const more = el('button','af1-fin-more fx', TX('Other places you can reach')); more.type = 'button'; more.addEventListener('click', () => setSheet('open')); fin.appendChild(more); }
+      fin.appendChild(done);
+      o_frame.classList.add('done'); o_frame.appendChild(fin); o_wait.hidden = true; o_auto.style.display = 'none';
+      scroll.scrollTo({ top:0, behavior: calm ? 'auto' : 'smooth' });
+      if (calm) { o_frame.classList.add('lit'); return; }
+      setTimeout(() => { brand.classList.add('burst'); setTimeout(() => brand.classList.remove('burst'), 1200); }, 1100);
+      requestAnimationFrame(() => o_frame.classList.add('lit'));
+      setTimeout(() => o_frame.classList.add('settled'), 2700);   // drop the sweep mask once the frame is fully lit
+      setTimeout(() => { let i = 0; const tick = () => { refEl.textContent = ref.slice(0, ++i); if (i < ref.length) setTimeout(tick, 45); }; tick(); }, 2300);
     }
     o_story.addEventListener('input', () => { clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
