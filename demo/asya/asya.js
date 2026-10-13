@@ -436,7 +436,7 @@
     const trObj = o => { const r = {}; for (const k in o) r[k] = Array.isArray(o[k]) ? o[k].map(TX) : TX(o[k]); return r; };
     const L1 = trObj({
       mail:'Email', req:'required', mailPh:'you@example.ca', loc:'Location', locPh:'City or postal code', find:'📍 Find', story:'What happened?', storyPh:'Tell it in your own words…',
-      wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Write a little more (at least 10 characters). ASYA will analyse automatically.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
+      wait:'Start writing. ASYA will analyse it and show who you can reach right here.', busy:'ASYA is analysing… (about 10 seconds)', short:'Tell ASYA a bit more: what happened, when, where and who.', unsure:'Your complaint', whom:'WHO SHOULD WE REACH?', all:'All',
       primary:'ASYA sends', prep:'Ready letter + link', pool:'Lawyer pool', poolSub:'Your case opens to lawyers without your name; your name is required', name:'Your name',
       anon:'I don’t want to share my name', nameWhy:'Your name is required for this file.', agree:'I authorize ComplaintCA to send this complaint to the institution on my behalf and to receive the replies; I confirm the information is accurate.', terms:'Statement and terms', send:'Send complaint', sending:'Sending…',
       note:'ASYA sends to the first institution. For the others you get a ready letter and the official link.', sos:'If anyone is in danger, call 911.',
@@ -575,9 +575,11 @@
       if (window.turnstile) return render();
       const sc = document.createElement('script'); sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'; sc.async = true; sc.onload = render; document.head.appendChild(sc);
     }
+    // A letter needs facts: at least 60 characters and 8 words before ASYA analyses or anything is sent.
+    const MIN_STORY = 60, enough = s => s.length >= MIN_STORY && s.split(/\s+/).filter(Boolean).length >= 8;
     async function analyse(){
       const d = o_story.value.trim(); if (d === oFor) return;
-      if (d.length < 10) { if (d.length) { o_wait.hidden = false; o_wait.textContent = L1.short; } return; }
+      if (!enough(d)) { oFor = ''; setSheet('hid'); o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
@@ -629,7 +631,7 @@
       o_err.textContent = '';
       const mail = o_mail.value.trim(), what_ = o_story.value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; setSheet('peek'); o_mail.focus(); return; }
-      if (what_.length < 10) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
+      if (!enough(what_)) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
       if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
       let last = 0; try { last = parseInt(localStorage.getItem('vc_last_submit') || '0', 10); } catch (e) {}
