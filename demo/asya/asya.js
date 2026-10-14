@@ -955,6 +955,13 @@
     }
     o_story.addEventListener('input', () => { clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
+    // What was typed survives a page refresh (this tab only); cleared once the complaint is sent.
+    const ONE_KEY = 'cc_asya_one';
+    const saveOne = () => { try { sessionStorage.setItem(ONE_KEY, JSON.stringify({ s:o_story.value, l:o_loc.value, w:o_who.value })); } catch (e) {} };
+    [o_story, o_loc, o_who].forEach(i => i.addEventListener('input', saveOne));
+    try { const d = JSON.parse(sessionStorage.getItem(ONE_KEY) || 'null');
+      if (d) { if (d.l && !o_loc.value) o_loc.value = d.l; if (d.w && !o_who.value) { o_who.value = d.w; whoPicked = d.w; }
+        if (d.s && !o_story.value) { o_story.value = d.s; setTimeout(() => o_story.dispatchEvent(new Event('input')), 0); } } } catch (e) {}
     o_find.addEventListener('click', () => {
       const fail = () => { o_find.textContent = L1.find; o_find.disabled = false; o_wait.hidden = false; o_wait.textContent = TX('Location unavailable — type your city.'); o_loc.focus(); };
       if (!navigator.geolocation) return fail();
@@ -1005,6 +1012,7 @@
         if (d.error === 'email_unverified') { try { localStorage.removeItem(MP_KEY); } catch (e) {} codeTok = ''; }
         o_err.textContent = ERR[d.error] || L1.eFail; return; }
       try { localStorage.setItem('vc_last_submit', String(Date.now())); } catch (e) {}
+      try { sessionStorage.removeItem(ONE_KEY); } catch (e) {}
       try { const list = JSON.parse(localStorage.getItem('vc_comp') || '[]'), now = new Date().toISOString();
         list.unshift({ ref:d.ref, title:val.title, desc:what_, category:d.category, target:val.who, targetName:'', priority:d.priority, location:val.where, anonymous:!isNamed, ctype:val.ctype, isLegal:val.ctype === 'legal', photoCount:0, status:'received', date:now, timeline:[{ status:'received', date:now }], test:d.test });
         localStorage.setItem('vc_comp', JSON.stringify(list.slice(0, 50))); } catch (e) {}
