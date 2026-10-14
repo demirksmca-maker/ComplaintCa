@@ -86,8 +86,6 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-/* No rubber-band bounce or pull-to-refresh drag on phones: the page stays put at its ends. */
-html{overscroll-behavior:none}
 body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .2s,color .2s}
 
 :root{
@@ -2672,8 +2670,9 @@ window.addEventListener('popstate',function(e){
     if(!s||!s.tab){
       goHome();
     }else{
-      goApp(s.tab);
-      if(s.step){
+      // A refresh on the complaint panel reopens the panel (with what was typed), not the classic form.
+      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') openAsyaPanel(); else goApp(s.tab);
+      if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
         else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
@@ -2691,8 +2690,8 @@ document.addEventListener('DOMContentLoaded',function(){
   if(s&&s.tab){
     _suppressNavPush=true;
     try{
-      goApp(s.tab);
-      if(s.step){
+      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') openAsyaPanel(); else goApp(s.tab);
+      if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
         else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
@@ -2730,7 +2729,9 @@ var _ccPanelTest=/[?&]test=1\b/.test(location.search);
 // Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
 // The panel sits in the page itself (#cc-panel-host), so the page scrolls as one and nothing floats over it.
 function _ccEmbed(){
-  goApp('new');
+  // Already on File (e.g. after a refresh): don't add a second history entry.
+  var _same=history.state&&history.state.tab==='new', _was=_suppressNavPush; if(_same) _suppressNavPush=true;
+  try{ goApp('new'); }finally{ _suppressNavPush=_was; }
   document.body.classList.add('cc-panel-on');
   window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
   window._ccEmbedded=true;
@@ -2739,7 +2740,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261014a';
+var _ccAsyaV='20261014b';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }
