@@ -36,16 +36,18 @@ service cloud.firestore {
 
     match /complaints/{complaintId} {
 
-      // Legal-track complaints (isLegal==true) are meant to be seen only by
-      // signed-in users (the Lawyer Panel), not the general public feed —
-      // everything else keeps the same open read as before.
-      allow read: if resource.data.get('isLegal', false) != true || request.auth != null;
+      // Oct 2026: complaints hold names, e-mails and stories, so the public can no
+      // longer read or list them. Only signed-in users can read legal-track
+      // complaints (the Lawyer Panel). Tracking falls back to the copy kept on
+      // the person's own device until server-side reads (service account) are in.
+      allow read: if resource.data.get('isLegal', false) == true && request.auth != null;
 
       allow create: if isValidNewComplaint(request.resource.data);
 
       allow update: if isStatusOnlyUpdate(resource.data, request.resource.data);
 
-      allow delete: if resource.data.keys().hasAll(['ref', 'email']);
+      // Nobody can delete from the client (anyone could before).
+      allow delete: if false;
     }
 
     // Partner Lawyer allowlist — each doc has an `email` field (lowercased).
