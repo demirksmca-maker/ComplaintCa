@@ -2,11 +2,13 @@
 // wrote, using data/on-schools.json (Ontario Ministry of Education open data,
 // refreshed monthly by .github/workflows/on-schools-data.yml).
 import fs from 'node:fs';
+import path from 'node:path';
 
 let DATA;
 function load() {
   if (DATA !== undefined) return DATA;
-  try { DATA = JSON.parse(fs.readFileSync(new URL('../data/on-schools.json', import.meta.url), 'utf8')); }
+  // Vercel bundles api/ as CommonJS (no import.meta); the file sits at the project root (vercel.json includeFiles).
+  try { DATA = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'on-schools.json'), 'utf8')); }
   catch { DATA = null; }
   return DATA;
 }
