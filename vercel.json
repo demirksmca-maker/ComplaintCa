@@ -27,6 +27,10 @@
   },
   "rewrites": [
     {
+      "source": "/api/precedents",
+      "destination": "/api/route?precedents=1"
+    },
+    {
       "source": "/api/email-code",
       "destination": "/api/complaint?mailcode=1"
     },
