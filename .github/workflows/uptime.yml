@@ -1,0 +1,39 @@
+name: Uptime Check
+
+# Every 30 minutes: the home page loads and the complaint/routing server
+# answers. A failed run makes GitHub email the repository owner.
+# No secrets; read-only requests (the route check sends nothing anywhere).
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Home page loads
+        run: |
+          code=$(curl -sS -o page.html -w '%{http_code}' --retry 2 --retry-delay 20 https://www.complaintca.ca/)
+          echo "home: $code"
+          test "$code" = 200
+          grep -q 'ComplaintCA' page.html
+      - name: Routing server answers
+        run: |
+          code=$(curl -sS -o route.json -w '%{http_code}' --retry 2 --retry-delay 20 \
+            -H 'Content-Type: application/json' \
+            -d '{"category":"education","target":"school","location":"Toronto, ON"}' \
+            https://www.complaintca.ca/api/route)
+          echo "route: $code"; head -c 300 route.json; echo
+          test "$code" = 200
+          grep -q '"authorities"' route.json
+      - name: Complaint server is up
+        run: |
+          # GET is not allowed, so a healthy function answers 405; a crash gives 500.
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 20 https://www.complaintca.ca/api/complaint)
+          echo "complaint: $code"
+          test "$code" = 405
