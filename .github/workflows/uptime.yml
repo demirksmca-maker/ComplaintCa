@@ -37,3 +37,8 @@ jobs:
           code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 20 https://www.complaintca.ca/api/complaint)
           echo "complaint: $code"
           test "$code" = 405
+      - name: Server can reach the database
+        run: |
+          code=$(curl -sS -o adm.json -w '%{http_code}' --retry 2 --retry-delay 20 https://www.complaintca.ca/api/reply-view)
+          echo "reply-view: $code"; cat adm.json; echo
+          test "$code" = 200
