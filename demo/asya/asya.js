@@ -704,7 +704,7 @@
     // "Your rights": what the person may recover and the deadline to claim; only when ASYA sees a real legal-rights case.
     const LEGAL_AID = { ON:['Legal Aid Ontario','https://www.legalaid.on.ca/'], BC:['Legal Aid BC','https://legalaid.bc.ca/'], AB:['Legal Aid Alberta','https://www.legalaid.ab.ca/'],
       QC:['Commission des services juridiques','https://www.csj.qc.ca/'], MB:['Legal Aid Manitoba','https://www.legalaid.mb.ca/'], SK:['Legal Aid Saskatchewan','https://legalaid.sk.ca/'],
-      NS:['Nova Scotia Legal Aid','https://www.nslegalaid.ca/'], NB:['Legal Aid New Brunswick','https://www.legalaid.nb.ca/'] };
+      NS:['Nova Scotia Legal Aid','https://www.nslegalaid.ca/'], NB:['Legal Aid New Brunswick','https://www.legalaid-aidejuridique-nb.ca/'] };
     const provOf = s => { s = String(s || '').toLowerCase();
       for (const [k, re] of [['ON',/ontario|\bon\b|toronto|ottawa|mississauga|hamilton|brampton/],['BC',/british columbia|\bbc\b|vancouver|victoria|surrey|burnaby/],['AB',/alberta|\bab\b|calgary|edmonton/],
         ['QC',/qu[eé]bec|\bqc\b|montr[eé]al/],['MB',/manitoba|\bmb\b|winnipeg/],['SK',/saskatchewan|\bsk\b|regina|saskatoon/],['NS',/nova scotia|\bns\b|halifax/],['NB',/new brunswick|\bnb\b|moncton|fredericton/]])
