@@ -20,7 +20,7 @@ import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
-  institutionEmail, institutionSentEmail, adminEmail, publicAuthority, toFirestore, publicSummary
+  institutionEmail, institutionSentEmail, adminEmail, publicAuthority, toFirestore, publicSummary, withSchool
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
 import { classify } from './_classify.js';
@@ -116,7 +116,8 @@ export default async function handler(req, res) {
     const conf = confirmationEmail(record);
     const confirmationSent = await sendEmail(record.email, record.name || '', conf.subject, conf.body);
 
-    const auths = getAuthorities(record.category, record.location, record.targetAddress) || [];
+    const { auths } = withSchool(getAuthorities(record.category, record.location, record.targetAddress) || [],
+      { category: record.category, target: record.target, targetName: record.targetName, location: record.location, targetAddress: record.targetAddress, place: input.place });
     const top = auths[0];
     let institution = { status: 'none' };
     let instSent = false;
