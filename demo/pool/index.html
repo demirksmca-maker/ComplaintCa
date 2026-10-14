@@ -17,14 +17,13 @@ body{margin:0;min-height:100vh;color:#eef0f6;font-family:-apple-system,'Segoe UI
 .eyebrow{font:700 .66rem/1 'Cinzel',Georgia,serif;letter-spacing:.32em;text-transform:uppercase;color:#f6e7bf}
 h1{font:700 1.35rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.06em;color:var(--cream);margin:10px 0 6px}
 .sub{color:var(--mute);font-size:.84rem;margin:0}
-.rule{height:1.5px;margin:16px 28px 0;background:linear-gradient(90deg,transparent,var(--gold) 25%,#f3dc8c 50%,var(--gold) 75%,transparent)}
+.rule{height:1.5px;margin:12px 28px 0;background:linear-gradient(90deg,transparent,var(--gold) 25%,#f3dc8c 50%,var(--gold) 75%,transparent)}
 
-.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 2px 6px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--mute);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:600;cursor:pointer}
-.chip.on{border-color:var(--gold);color:var(--cream);background:rgba(230,195,92,.12)}
-.chip b{color:var(--gold2);font-weight:700;margin-left:4px}
-
+.filter{position:relative;display:block;margin-top:14px}
+.filter select{width:100%;appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:999px;color:var(--cream);font:600 .84rem/1 -apple-system,'Segoe UI',Inter,sans-serif;padding:11px 40px 11px 16px;outline:0;cursor:pointer}
+.filter select:focus{border-color:var(--gold)}
+.filter option{background:#0b1d3d;color:#eef0f6}
+.filter .chev{position:absolute;right:16px;top:50%;transform:translateY(-55%);pointer-events:none}
 .list{margin-top:10px;border-top:1px solid var(--line)}
 .row{border-bottom:1px solid var(--line)}
 .sum{width:100%;display:flex;align-items:center;gap:12px;padding:14px 4px;background:none;border:0;color:inherit;text-align:left;cursor:pointer;font:inherit}
@@ -58,11 +57,10 @@ h1{font:700 1.35rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.06em;color:var(--
   <div class="top">
     <div class="eyebrow">For legal professionals</div>
     <h1>The Case Pool</h1>
-    <p class="sub">Anonymized complaints. Tap a case to read the summary.</p>
     <div class="rule"></div>
   </div>
 
-  <div class="chips" id="chips"></div>
+  <label class="filter"><select id="chips" aria-label="Category"></select><span class="chev">⌄</span></label>
   <div class="list" id="list"></div>
 
   <div class="cta">
@@ -93,9 +91,9 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 function chips(){
   const counts = {};
   CASES.forEach(c => counts[c.label] = (counts[c.label] || 0) + 1);
-  const all = [['', 'All', CASES.length], ...Object.entries(counts).map(([l, n]) => [l, l, n])];
+  const all = [['', 'All categories', CASES.length], ...Object.entries(counts).map(([l, n]) => [l, l, n])];
   document.getElementById('chips').innerHTML = all.map(([v, l, n]) =>
-    '<button class="chip' + (v === filter ? ' on' : '') + '" data-v="' + esc(v) + '">' + esc(l) + '<b>' + n + '</b></button>').join('');
+    '<option value="' + esc(v) + '"' + (v === filter ? ' selected' : '') + '>' + esc(l) + ' (' + n + ')</option>').join('');
 }
 function list(){
   document.getElementById('list').innerHTML = CASES.filter(c => !filter || c.label === filter).map(c =>
@@ -113,11 +111,10 @@ function list(){
     '</div>').join('');
 }
 document.addEventListener('click', e => {
-  const ch = e.target.closest('.chip');
-  if (ch) { filter = ch.dataset.v; chips(); list(); return; }
   const s = e.target.closest('.sum');
   if (s) { const r = s.parentElement, on = !r.classList.contains('open'); r.classList.toggle('open', on); s.setAttribute('aria-expanded', on); }
 });
+document.getElementById('chips').addEventListener('change', e => { filter = e.target.value; list(); });
 chips(); list();
 </script>
 </body>
