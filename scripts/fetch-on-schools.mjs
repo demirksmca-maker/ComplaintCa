@@ -20,8 +20,10 @@ async function pkg(id) {
 
 // Newest English CSV/XLSX resource (French files are skipped).
 function pickResource(p) {
-  const ok = p.resources.filter(r => /csv|xlsx?/i.test(r.format || r.url) && !/fran|french|\bfr\b/i.test(r.name || ''));
-  ok.sort((a, b) => String(b.last_modified || b.created).localeCompare(String(a.last_modified || a.created)));
+  const isFr = r => /fran|french|\bfr\b/i.test(r.name || '') || /_fr\.(csv|xlsx?)$/i.test(r.url || '');
+  const ok = p.resources.filter(r => /csv|xlsx?/i.test(r.format || r.url) && !isFr(r));
+  const when = r => String(r.last_modified || r.created || '');
+  ok.sort((a, b) => when(b).localeCompare(when(a)) || /_en\./i.test(b.url) - /_en\./i.test(a.url));
   if (!ok.length) throw new Error(p.name + ': no CSV/XLSX resource');
   return ok[0];
 }
@@ -58,7 +60,8 @@ async function readTable(res) {
     if (text.includes('�')) text = new TextDecoder('windows-1252').decode(buf);
     rows = parseCsv(text.replace(/^﻿/, ''));
   }
-  const h = rows.findIndex(x => x.some(c => /board/i.test(c)) && x.length > 3);
+  const h = rows.findIndex(x => x.some(c => /^\s*board (number|name)\s*$/i.test(c)));
+  if (h < 0) throw new Error(res.url + ': no English header row');
   const head = rows[h].map(c => String(c).trim());
   return { head, rows: rows.slice(h + 1).filter(x => x.some(c => String(c).trim())) };
 }
