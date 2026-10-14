@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-adsense-account" content="ca-pub-9028242050629048">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9028242050629048" crossorigin="anonymous"></script>
@@ -2990,14 +2991,18 @@ function toggleFeedCard(id){
   el.style.display=open?'none':'block';
   if(arr) arr.style.transform=open?'':'rotate(180deg)';
 }
+// "11 hours ago" in the page's current language.
 function timeAgo(iso){
   var diff=Date.now()-new Date(iso).getTime();
-  var m=Math.floor(diff/60000);
-  if(m<1) return 'şimdi';
-  if(m<60) return m+'dk önce';
-  var h=Math.floor(m/60);
-  if(h<24) return h+'sa önce';
-  return Math.floor(h/24)+'g önce';
+  var m=Math.floor(diff/60000), h=Math.floor(m/60), d=Math.floor(h/24);
+  var l='en'; try{ l=_aLang||document.documentElement.lang||'en'; }catch(e){ l=document.documentElement.lang||'en'; }
+  try{
+    var f=new Intl.RelativeTimeFormat(l,{numeric:'auto',style:'short'});
+    if(m<1) return f.format(0,'minute');
+    if(m<60) return f.format(-m,'minute');
+    if(h<24) return f.format(-h,'hour');
+    return f.format(-d,'day');
+  }catch(e){ return m<60?m+' min':h<24?h+' h':d+' d'; }
 }
 window._timeAgo=timeAgo;
 
@@ -5575,7 +5580,9 @@ try{
     paint();
   }
   // Language switch: redraw the pool and its filter in the new language.
+  var _lastUpdatesSnapshot=null;
   window._ccRerenderPool=function(){
+    var ul=document.getElementById('lwp-updates-list'); if(ul&&_lastUpdatesSnapshot) ul.innerHTML=renderLegalUpdatesHTML(_lastUpdatesSnapshot);
     if(!_lastLawyerSnapshot) return;
     var lpbox=document.getElementById('lawyer-panel-feed'); if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(_lastLawyerSnapshot);
     var f=document.getElementById('lwp-filter'); if(f) f.innerHTML=renderLawyerStatsHTML(_lastLawyerSnapshot);
@@ -5670,10 +5677,12 @@ try{
     // written (see firestore.rules), no client write path.
     var updatesQ=query(collection(db,'legalUpdates'),orderBy('date','desc'),limit(5));
     onSnapshot(updatesQ,function(snapshot){
+      _lastUpdatesSnapshot=snapshot;
       var box=document.getElementById('lwp-updates-box');
       var list=document.getElementById('lwp-updates-list');
       if(list) list.innerHTML=renderLegalUpdatesHTML(snapshot);
-      if(box) box.style.display='';
+      // Nothing published yet: no empty box.
+      if(box) box.style.display=snapshot.empty?'none':'';
     },function(err){
       var box=document.getElementById('lwp-updates-box');
       if(box) box.style.display='none';
