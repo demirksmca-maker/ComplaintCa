@@ -50,6 +50,21 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Public, anonymous list of filed complaints (written by api/complaint.js):
+    // only ref, category, city, date and status — never a name, e-mail or story.
+    match /publicFeed/{ref} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['ref', 'category', 'city', 'date', 'status'])
+        && request.resource.data.keys().hasAll(['ref', 'category', 'city', 'date', 'status'])
+        && request.resource.data.ref == ref
+        && ref.matches('^(VC|CY)-[0-9]{4}-[A-Z0-9]{6}$')
+        && request.resource.data.category is string && request.resource.data.category.size() <= 40
+        && request.resource.data.city is string && request.resource.data.city.size() <= 60
+        && request.resource.data.date is string && request.resource.data.date.size() <= 40
+        && request.resource.data.status == 'received';
+      allow update, delete: if false;
+    }
+
     // Partner Lawyer allowlist — each doc has an `email` field (lowercased).
     // Existence of a doc with the signed-in user's email means "verified
     // partner"; a lawyer may only read their own status, never the full

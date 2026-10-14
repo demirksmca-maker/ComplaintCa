@@ -199,6 +199,28 @@ describe('delete', () => {
 });
 
 
+describe('publicFeed (anonymous public list)', () => {
+  const ok = { ref: 'VC-2026-PUB777', category: 'education', city: 'Blenheim, ON', date: '2026-10-14T04:11:52Z', status: 'received' };
+  test('anyone can read it', async () => {
+    await assertSucceeds(testEnv.unauthenticatedContext().firestore().collection('publicFeed').get());
+  });
+  test('a well-formed anonymous entry can be created under its own ref', async () => {
+    await assertSucceeds(testEnv.unauthenticatedContext().firestore().collection('publicFeed').doc(ok.ref).set(ok));
+  });
+  test('extra fields (name, email, story) are rejected', async () => {
+    const db = testEnv.unauthenticatedContext().firestore();
+    await assertFails(db.collection('publicFeed').doc(ok.ref).set({ ...ok, email: 'a@b.ca' }));
+    await assertFails(db.collection('publicFeed').doc(ok.ref).set({ ...ok, desc: 'story' }));
+  });
+  test('doc id must match the ref; no updates or deletes', async () => {
+    const db = testEnv.unauthenticatedContext().firestore();
+    await assertFails(db.collection('publicFeed').doc('other').set(ok));
+    await testEnv.withSecurityRulesDisabled(async (ctx) => { await ctx.firestore().collection('publicFeed').doc(ok.ref).set(ok); });
+    await assertFails(db.collection('publicFeed').doc(ok.ref).update({ status: 'resolved' }));
+    await assertFails(db.collection('publicFeed').doc(ok.ref).delete());
+  });
+});
+
 describe('default deny', () => {
   test('denies read/write on any collection other than complaints', async () => {
     const db = testEnv.unauthenticatedContext().firestore();

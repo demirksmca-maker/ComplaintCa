@@ -242,3 +242,24 @@ describe('e-mail check', () => {
     assert.equal(calls.length, 0);
   });
 });
+
+describe('public summary (publicFeed)', () => {
+  test('keeps only category, a general place, date and status — no name, e-mail or story', async () => {
+    const { publicSummary } = await import('./_complaint-core.js');
+    const s = publicSummary({ ref: 'VC-2026-ABC123', category: 'education', location: '183 Snow Ave, Blenheim, ON', date: '2026-10-14T04:11:52Z', name: 'W', email: 'w@x.ca', desc: 'story', title: 't' });
+    assert.deepEqual(Object.keys(s).sort(), ['category', 'city', 'date', 'ref', 'status']);
+    assert.equal(s.city, 'Blenheim, ON');
+    assert.equal(publicSummary({ ref: 'VC-2026-ABC123', location: '' }).city, 'Canada');
+  });
+  test('test filings are not published; live filings are', async () => {
+    mockFetch();
+    await call(good());
+    assert.equal(calls.filter(c => c.url.includes('/publicFeed')).length, 0);
+    process.env.COMPLAINT_LIVE = '1';
+    mockFetch();
+    await call({ ...good(), test: false });
+    const pub = calls.filter(c => c.url.includes('/publicFeed'));
+    assert.equal(pub.length, 1);
+    assert.ok(!/me@example\.com|heating/.test(pub[0].body));
+  });
+});
