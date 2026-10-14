@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>Case Pool — demo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#e6c35c;--gold2:#e6c98a;--cream:#fff6dc;--mute:#a9b0c4;--line:rgba(230,201,138,.22)}
 *{box-sizing:border-box}
@@ -39,22 +39,37 @@ h1{font:700 1.35rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.06em;color:var(--
 .body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
 .row.open .body{grid-template-rows:1fr}
 .body>div{overflow:hidden}
-.inner{padding:0 4px 16px 52px}
-.desc{color:#d9deea;font-size:.88rem;line-height:1.55;margin:0 0 12px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.tag{font-size:.7rem;font-weight:700;letter-spacing:.04em;color:var(--gold2);border:1px solid var(--line);border-radius:999px;padding:4px 9px}
-.odds{margin:0 0 14px;padding:12px 12px 10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.inner{padding:2px 2px 18px}
+/* The expanded case reads like an old writing tablet: parchment, ink, a bronze double frame. */
+.tab{position:relative;padding:20px 18px 16px;border-radius:6px;color:#2b2214;font-family:'EB Garamond',Georgia,serif;
+  background:radial-gradient(120% 80% at 20% 10%,rgba(255,255,255,.35),transparent 60%),radial-gradient(90% 70% at 85% 95%,rgba(120,84,30,.18),transparent 70%),
+    repeating-linear-gradient(0deg,rgba(90,60,20,.035) 0 1px,transparent 1px 4px),linear-gradient(180deg,#f2e7c9,#e6d4a8);
+  box-shadow:inset 0 0 0 1px #b48a3c,inset 0 0 0 4px #f2e7c9,inset 0 0 0 5px rgba(140,100,40,.55),inset 0 0 28px rgba(110,70,20,.28),0 10px 26px rgba(0,0,0,.45)}
+.tab::before,.tab::after{content:"\2766";position:absolute;top:7px;font-size:.8rem;color:#9a7330}
+.tab::before{left:10px}.tab::after{right:10px;transform:scaleX(-1)}
+.tab-h{text-align:center;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:#7a5a22;margin:0 0 4px}
+.tab-ref{text-align:center;font-style:italic;font-size:.78rem;color:#6b5634;margin-bottom:12px}
+.sec{display:flex;align-items:center;gap:8px;font:700 .6rem/1 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#7a5a22;margin:14px 0 8px}
+.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(122,90,34,.6),transparent)}
+.desc{font-size:1.02rem;line-height:1.5;margin:0;color:#2b2214}
+.desc::first-letter{float:left;font:700 2.5rem/.85 'Cinzel',Georgia,serif;color:#8a2a1f;margin:4px 6px 0 0}
 .odds-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
-.odds-h small{color:var(--mute);font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
-.odds-h b{font:700 1.05rem/1 'Cinzel',Georgia,serif;color:var(--cream)}
-.bar{position:relative;height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:visible}
-.bar i{display:block;height:100%;border-radius:99px;width:0;transition:width .8s cubic-bezier(.2,.8,.2,1)}
-.bar i.hi{background:linear-gradient(90deg,#3fbf86,#5fe0a0)}.bar i.mid{background:linear-gradient(90deg,#d9b55a,#f3dc8c)}.bar i.lo{background:linear-gradient(90deg,#d8485c,#ff7a8a)}
-.bar u{position:absolute;top:-4px;width:2px;height:16px;background:#fff6dc;opacity:.7;border-radius:2px}
-.odds-f{display:flex;justify-content:space-between;gap:8px;margin-top:8px;color:var(--mute);font-size:.72rem}
-.odds-n{color:#6f7891;font-size:.66rem;margin-top:6px;line-height:1.4}
-.lock{display:flex;align-items:center;gap:8px;color:var(--gold2);font:600 .66rem/1.3 'Cinzel',Georgia,serif;letter-spacing:.12em;text-transform:uppercase}
-.lock svg{width:14px;height:14px;flex:none}
+.odds-h small{font-style:italic;font-size:.86rem;color:#5a4728}
+.odds-h b{font:700 1.15rem/1 'Cinzel',Georgia,serif;color:#2b2214}
+.odds-h b em{font:italic 600 .85rem 'EB Garamond',Georgia,serif;color:#7a5a22;margin-left:4px}
+.bar{position:relative;height:9px;border-radius:2px;background:rgba(90,60,20,.14);box-shadow:inset 0 1px 2px rgba(60,40,10,.35)}
+.bar i{display:block;height:100%;border-radius:2px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.bar i.hi{background:linear-gradient(90deg,#3c6b3f,#5d8f52)}.bar i.mid{background:linear-gradient(90deg,#9a7330,#c9a052)}.bar i.lo{background:linear-gradient(90deg,#7d2a20,#a8432f)}
+.bar u{position:absolute;top:-5px;width:2px;height:19px;background:#2b2214;border-radius:1px}
+.bar u::after{content:"avg";position:absolute;top:20px;left:50%;transform:translateX(-50%);font:italic .7rem 'EB Garamond',Georgia,serif;color:#5a4728}
+.odds-f{display:flex;justify-content:space-between;gap:8px;margin-top:18px;font-size:.84rem;color:#4a3a20}
+.odds-n{font-style:italic;font-size:.76rem;color:#6b5634;margin-top:6px;line-height:1.35}
+.tab-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:10px;border-top:1px dashed rgba(122,90,34,.45)}
+.tags{font-style:italic;font-size:.86rem;color:#4a3a20}
+.seal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#f6dccb;
+  background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%);box-shadow:0 2px 4px rgba(60,10,5,.5),inset 0 0 0 3px rgba(255,255,255,.12),inset 0 0 0 5px rgba(80,10,5,.35);transform:rotate(-8deg)}
+.seal svg{width:18px;height:18px}
+.lock{font:700 .56rem/1.35 'Cinzel',Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:#7e2219;text-align:right}
 
 .cta{margin-top:22px;text-align:center;padding:18px 16px;border-radius:18px;background:linear-gradient(180deg,#12294f,#0a1a38);border:1px solid var(--line)}
 .cta p{margin:0 0 12px;color:#d9deea;font-size:.86rem;line-height:1.5}
@@ -109,10 +124,10 @@ function chips(){
 function odds(c){
   const k = c.odds >= 60 ? 'hi' : c.odds >= 40 ? 'mid' : 'lo';
   const word = { hi:'Strong', mid:'Moderate', lo:'Weak' }[k];
-  return '<div class="odds"><div class="odds-h"><small>Estimated success</small><b>' + c.odds + '% · ' + word + '</b></div>' +
+  return '<div class="odds"><div class="odds-h"><small>Estimated chance of success</small><b>' + c.odds + '%<em>' + word + '</em></b></div>' +
     '<div class="bar"><i class="' + k + '" data-w="' + c.odds + '"></i><u style="left:' + c.avg + '%" title="Average of similar cases"></u></div>' +
-    '<div class="odds-f"><span>Similar cases avg: ' + c.avg + '%</span><span>' + c.n + ' comparable decisions</span></div>' +
-    '<div class="odds-n">Estimate from similar published decisions — not a guarantee or legal advice.</div></div>';
+    '<div class="odds-f"><span>Precedent average ' + c.avg + '%</span><span>' + c.n + ' comparable decisions</span></div>' +
+    '<div class="odds-n">An estimate drawn from similar published decisions — not a guarantee, not legal advice.</div></div>';
 }
 function list(){
   document.getElementById('list').innerHTML = CASES.filter(c => !filter || c.label === filter).map(c =>
@@ -122,12 +137,14 @@ function list(){
         '<span class="txt"><span class="t">' + esc(c.title) + '</span><span class="m">' + esc(c.label) + ' · ' + esc(c.where) + ' · ' + esc(c.ago) + '</span></span>' +
         '<i class="dot ' + c.pr + '"></i><span class="chev">⌄</span>' +
       '</button>' +
-      '<div class="body"><div><div class="inner">' +
+      '<div class="body"><div><div class="inner"><div class="tab">' +
+        '<div class="tab-h">Case record</div><div class="tab-ref">' + esc(c.label) + ' — ' + esc(c.where) + '</div>' +
+        '<div class="sec">I · The facts</div>' +
         '<p class="desc">' + esc(c.desc) + '</p>' +
-        odds(c) +
-        '<div class="tags"><span class="tag">' + esc(c.label) + '</span><span class="tag">' + esc(c.where) + '</span></div>' +
-        '<div class="lock">' + svg(IC.lock) + 'Contact details locked — Partner lawyers only</div>' +
-      '</div></div></div>' +
+        '<div class="sec">II · Assessment</div>' + odds(c) +
+        '<div class="tab-foot"><div class="tags">Filed ' + esc(c.ago) + '</div>' +
+          '<div class="lock">Contact details sealed<br>Partner lawyers only</div><span class="seal">' + svg(IC.lock) + '</span></div>' +
+      '</div></div></div></div>' +
     '</div>').join('');
 }
 document.addEventListener('click', e => {
