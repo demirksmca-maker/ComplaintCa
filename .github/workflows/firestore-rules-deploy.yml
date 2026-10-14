@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'firestore.rules'
+      - 'firebase.json'
+      - '.github/workflows/firestore-rules-deploy.yml'
   workflow_dispatch: {}
 
 jobs:
