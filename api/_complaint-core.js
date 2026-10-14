@@ -283,3 +283,12 @@ export function decideClass(parsed) {
     missing: Array.isArray(p.missing) ? [...new Set(p.missing.filter(m => MISSING_FACTS.includes(m)))] : [],
   };
 }
+
+// Public, anonymous summary of a filed complaint for the site's "Recent complaints" list:
+// no name, e-mail, title or story — only category, a general place, date and status.
+export function publicSummary(c) {
+  const loc = String(c.location || '').split(',').map(x => x.trim()).filter(Boolean);
+  // Keep a city/province only; anything with digits looks like a street address and is dropped.
+  const place = loc.filter(x => !/\d/.test(x)).slice(-2).join(', ').slice(0, 60) || 'Canada';
+  return { ref: c.ref, category: String(c.category || 'other').slice(0, 40), city: place, date: c.date, status: 'received' };
+}

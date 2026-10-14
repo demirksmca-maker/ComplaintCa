@@ -975,7 +975,7 @@ textarea{resize:vertical;min-height:90px}
         </div>
 
         <!-- PUBLIC FEED -->
-        <div class="card" id="trk-feed-card" style="margin-top:16px;display:none">
+        <div class="card" id="trk-feed-card" style="margin-top:16px">
           <div class="ct"><div class="ci">🌍</div><span id="feed-card-t">Son Şikayetler (Canlı Akış)</span></div>
           <div id="trk-complaint-feed"><div class="empty">Yükleniyor...</div></div>
         </div>
@@ -2856,7 +2856,7 @@ function showTab(tab){
     if(_sess&&_sess.email) switchAuthTab('login'); // signed-in users land on Hesabım, not Reference No.
   }
   // Complaint lists on Track are for signed-in people only; without signing in, only the reference search shows.
-  if(tab==='track'){ renderRecent(); var _fc=document.getElementById('trk-feed-card'); if(_fc) _fc.style.display=_ccSignedIn()?'':'none'; if(_ccSignedIn()) loadPublicFeed(); }
+  if(tab==='track'){ renderRecent(); var _fc=document.getElementById('trk-feed-card'); if(_fc) _fc.style.display=''; loadPublicFeed(); }
   if(tab==='lawyer'){_lwProv='on';_lwArea='tenant';renderLwResults();}
   if(!_suppressNavPush){
     var _navState={tab:tab};
@@ -2873,9 +2873,18 @@ async function loadPublicFeed(){
   // (Removed dead gstatic dynamic-imports here — they loaded modules but never
   // used them. The live feed reads from localStorage below; the real Firestore
   // listeners live in the bundled module block.)
-  // localStorage'dan al (her zaman çalışır)
-  var all=JSON.parse(localStorage.getItem('vc_comp')||'[]');
-  items=all.slice(0,10);
+  // Public, anonymous list (Firestore publicFeed: category, city, date, status only) plus this device's own complaints.
+  var pub=[];
+  try{
+    var r=await fetch('https://firestore.googleapis.com/v1/projects/ajan-d6070/databases/(default)/documents/publicFeed?pageSize=10&orderBy=date%20desc&key=AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g');
+    if(r.ok){ var j=await r.json(); pub=(j.documents||[]).map(function(d){ var f=d.fields||{}, g=function(k){return f[k]&&f[k].stringValue||'';};
+      return {ref:g('ref'),category:g('category'),location:g('city'),date:g('date'),status:g('status'),pub:true}; }); }
+  }catch(e){}
+  var all=[];
+  try{ all=JSON.parse(localStorage.getItem('vc_comp')||'[]'); }catch(e){}
+  var seen={};
+  items=all.concat(pub).filter(function(c){ if(!c||!c.ref||seen[c.ref]) return false; seen[c.ref]=1; return true; })
+    .sort(function(a,b){ return String(b.date||'').localeCompare(String(a.date||'')); }).slice(0,10);
 
   if(!items.length){
     var emptyHtml='<div style="text-align:center;padding:40px 20px">'+
@@ -2892,7 +2901,7 @@ async function loadPublicFeed(){
   var html=items.map(function(c){
     var color=catColors[c.category]||catColors.default;
     var ago=c.date?timeAgo(c.date):'';
-    var title=escHtml(c.anonymous?c.title:'['+V.t('t1')+']');
+    var title=escHtml(c.pub?('['+V.t('t1')+']'):(c.anonymous?c.title:'['+V.t('t1')+']'));
     var loc=escHtml(c.location?c.location.split(',')[0]:'Canada');
     var catRaw=c.category||'general';
     var catK=catKeyMap[catRaw];
@@ -4822,7 +4831,7 @@ function switchAuthTab(tab){
 // login form + Google button and show a "signed in as … / My Panel / Sign Out"
 // card plus the user's complaints; when signed out, show the form again.
 function _applyAuthUI(){
-  setTimeout(function(){ try{ if(typeof renderRecent==='function') renderRecent(); var fc=document.getElementById('trk-feed-card'); if(fc){ fc.style.display=_ccSignedIn()?'':'none'; if(_ccSignedIn()&&!fc.dataset.loaded){ fc.dataset.loaded='1'; loadPublicFeed(); } } }catch(e){} },0);
+  setTimeout(function(){ try{ if(typeof renderRecent==='function') renderRecent();  }catch(e){} },0);
   var s=null; try{ s=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
   var guest=document.getElementById('login-guest-block');
   var signed=document.getElementById('login-signedin');

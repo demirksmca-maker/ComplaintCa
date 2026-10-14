@@ -20,7 +20,7 @@ import { isRateLimited } from './_rateLimit.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
 import {
   validate, genRef, buildRecord, getAuthorities, getChain, confirmationEmail,
-  institutionEmail, institutionSentEmail, adminEmail, publicAuthority, toFirestore
+  institutionEmail, institutionSentEmail, adminEmail, publicAuthority, toFirestore, publicSummary
 } from './_complaint-core.js';
 import { _isMail } from './_engine-data.js';
 import { classify } from './_classify.js';
@@ -57,6 +57,15 @@ async function saveToFirestore(record) {
     if (attempt < 3) await new Promise(res => setTimeout(res, 600 * attempt));
   }
   return false;
+}
+
+// Anonymous copy for the public list (publicFeed/{ref}); a failure here never blocks the filing.
+async function savePublicSummary(record) {
+  const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/publicFeed?documentId=${encodeURIComponent(record.ref)}&key=${FIREBASE_API_KEY}`;
+  try {
+    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: toFirestore(publicSummary(record)).mapValue.fields }) });
+    return r.ok;
+  } catch { return false; }
 }
 
 async function sendEmail(toEmail, toName, subject, body, replyTo) {
@@ -102,6 +111,7 @@ export default async function handler(req, res) {
     const record = buildRecord(input, { ref: genRef(), test: !live });
     const saved = await saveToFirestore(record);
     if (!saved) return res.status(502).json({ error: 'save_failed' });
+    if (!record.test) await savePublicSummary(record);
 
     const conf = confirmationEmail(record);
     const confirmationSent = await sendEmail(record.email, record.name || '', conf.subject, conf.body);
