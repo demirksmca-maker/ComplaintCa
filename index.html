@@ -626,6 +626,20 @@ textarea{resize:vertical;min-height:90px}
 .lex-joint{display:flex;align-items:center;gap:12px}.lex-joint b{display:block;font-size:.98rem;color:#2b2214}.lex-joint small{display:block;font-style:italic;font-size:.82rem;color:#5a4728}
 .lex-tick{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:1.05rem;border:2px solid currentColor}
 .lex-joint.yes .lex-tick{color:#3c6b3f;background:rgba(60,107,63,.1)}.lex-joint.no .lex-tick{color:#8a2a1f;background:rgba(138,42,31,.08)}
+.rv-ov{position:fixed;inset:0;z-index:10050;background:rgba(4,10,22,.78);display:flex;align-items:center;justify-content:center;padding:16px}
+.rv-card{position:relative;width:100%;max-width:460px;max-height:88vh;overflow:auto;background:radial-gradient(90% 60% at 50% 0%,#16305c,#0b1d3d 70%,#071326);border:1px solid rgba(230,201,138,.35);border-radius:18px;padding:22px 20px;color:#eef0f6;font-family:Inter,-apple-system,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.rv-x{position:absolute;top:8px;right:10px;background:none;border:0;color:#e6c98a;font-size:1.6rem;cursor:pointer}
+.rv-h{font:700 1.05rem/1.2 'Cinzel',Georgia,serif;color:#fff6dc;text-align:center;letter-spacing:.04em}
+.rv-ref{text-align:center;color:#e6c98a;font-size:.8rem;letter-spacing:.08em;margin:6px 0 14px}
+.rv-note{color:#a9b0c4;font-size:.86rem;line-height:1.5;margin:0 0 10px}
+.rv-in{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid rgba(230,201,138,.3);border-radius:10px;color:#fff;padding:11px 12px;font-size:1rem;margin:0 0 10px}
+.rv-btn{width:100%;border:0;border-radius:999px;padding:12px;font-weight:700;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a);cursor:pointer;margin-bottom:10px}
+.rv-err{color:#ff8a98;font-size:.84rem;min-height:1em;margin:0}
+.rv-title{color:#fff6dc;font-weight:600;margin-bottom:10px}
+.rv-msg{background:linear-gradient(180deg,#f2e7c9,#e6d4a8);color:#2b2214;border-radius:8px;padding:14px;margin-bottom:12px;box-shadow:inset 0 0 0 1px #b48a3c}
+.rv-meta{font-size:.8rem;color:#5a4728;margin-bottom:8px}
+.rv-text{font-family:'EB Garamond',Georgia,serif;font-size:1rem;line-height:1.5;white-space:pre-wrap}
+.rv-msg .rv-note{color:#6b5634;margin:8px 0 0}
 #view-lawyerpanel .lex-partner{background:linear-gradient(180deg,#12294f,#0a1a38);border:1px solid rgba(230,201,138,.22);border-radius:18px;margin-top:22px}
 #view-lawyerpanel .lex-cta-s{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--sub);margin-top:2px}
 .rq{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.5)}
@@ -5109,7 +5123,7 @@ document.addEventListener('keydown',function(e){
   el.click();
 });
 
-document.addEventListener('DOMContentLoaded',function(){V.init();_restoreLang();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_updateThemeBtn();});
+document.addEventListener('DOMContentLoaded',function(){V.init();_restoreLang();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_handleReplyLink();_updateThemeBtn();});
 // Light/dark toggle — the theme itself is applied at parse-time (see the inline
 // script in <head>, which avoids a flash of the wrong theme); this just flips it
 // and keeps the topbar icon in sync.
@@ -5164,6 +5178,65 @@ function _handleTrackLink(){
     var inp=document.getElementById('trk-inp');
     if(inp){ inp.value=ref.toUpperCase(); if(typeof doTrack==='function') doTrack(); }
   }catch(e){}
+}
+// /?reply=REF (link in the "you have a reply" e-mail): the person confirms the e-mail they filed
+// with (6-digit code, or a still-valid pass on this device), then reads the institution's reply.
+function _handleReplyLink(){
+  var ref; try{ ref=(new URLSearchParams(location.search).get('reply')||'').toUpperCase(); }catch(e){ return; }
+  if(!/^(VC|CY)-\d{4}-[A-Z0-9]{6}$/.test(ref)) return;
+  try{ history.replaceState(null,'',location.pathname); }catch(e){}
+  var L=(function(){ var l='en'; try{ l=localStorage.getItem('cc_lang')||document.documentElement.lang||'en'; }catch(e){} return l; })();
+  var D={
+    en:{t:'Reply to your complaint',i:'For your privacy, confirm the e-mail you used for complaint {ref}.',send:'Send code',sent:'We sent a 6-digit code to {e}.',open:'Open reply',bad:'Wrong or expired code.',nf:"We couldn't find this complaint for that e-mail.",err:'Something went wrong. Please try again.',cd:'Too many attempts. Please wait a few minutes.',from:'From',none:'No reply yet.',att:'{n} attachment(s) not shown here.',close:'Close'},
+    fr:{t:'Réponse à votre plainte',i:'Pour protéger votre vie privée, confirmez le courriel utilisé pour la plainte {ref}.',send:'Envoyer le code',sent:'Nous avons envoyé un code à 6 chiffres à {e}.',open:'Voir la réponse',bad:'Code erroné ou expiré.',nf:'Plainte introuvable pour ce courriel.',err:'Une erreur est survenue. Réessayez.',cd:'Trop de tentatives. Patientez quelques minutes.',from:'De',none:'Pas encore de réponse.',att:'{n} pièce(s) jointe(s) non affichée(s).',close:'Fermer'},
+    tr:{t:'Şikâyetinize yanıt',i:'Gizliliğiniz için {ref} şikâyetinde kullandığınız e-postayı doğrulayın.',send:'Kod gönder',sent:'{e} adresine 6 haneli bir kod gönderdik.',open:'Yanıtı aç',bad:'Kod yanlış ya da süresi dolmuş.',nf:'Bu e-postayla bu şikâyet bulunamadı.',err:'Bir hata oldu. Lütfen tekrar deneyin.',cd:'Çok fazla deneme. Birkaç dakika bekleyin.',from:'Kimden',none:'Henüz yanıt yok.',att:'{n} ek dosya burada gösterilmiyor.',close:'Kapat'},
+    zh:{t:'您的投诉回复',i:'为保护隐私，请确认投诉 {ref} 所用的电子邮箱。',send:'发送验证码',sent:'我们已向 {e} 发送6位验证码。',open:'查看回复',bad:'验证码错误或已过期。',nf:'找不到与该邮箱对应的投诉。',err:'出现错误，请重试。',cd:'尝试次数过多，请稍后再试。',from:'来自',none:'暂无回复。',att:'{n} 个附件未在此显示。',close:'关闭'},
+    es:{t:'Respuesta a su queja',i:'Por su privacidad, confirme el correo usado en la queja {ref}.',send:'Enviar código',sent:'Enviamos un código de 6 dígitos a {e}.',open:'Ver respuesta',bad:'Código incorrecto o vencido.',nf:'No encontramos esta queja para ese correo.',err:'Algo salió mal. Inténtelo de nuevo.',cd:'Demasiados intentos. Espere unos minutos.',from:'De',none:'Aún no hay respuesta.',att:'{n} archivo(s) adjunto(s) no se muestran aquí.',close:'Cerrar'},
+    ar:{t:'الرد على شكواك',i:'لحماية خصوصيتك، أكّد البريد الإلكتروني المستخدم في الشكوى {ref}.',send:'إرسال الرمز',sent:'أرسلنا رمزًا من 6 أرقام إلى {e}.',open:'عرض الرد',bad:'الرمز غير صحيح أو منتهي الصلاحية.',nf:'لم نجد هذه الشكوى لهذا البريد.',err:'حدث خطأ. حاول مرة أخرى.',cd:'محاولات كثيرة. انتظر بضع دقائق.',from:'من',none:'لا يوجد رد بعد.',att:'{n} مرفق(ات) غير معروضة هنا.',close:'إغلاق'},
+    pa:{t:'ਤੁਹਾਡੀ ਸ਼ਿਕਾਇਤ ਦਾ ਜਵਾਬ',i:'ਨਿੱਜਤਾ ਲਈ, ਸ਼ਿਕਾਇਤ {ref} ਵਿੱਚ ਵਰਤੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।',send:'ਕੋਡ ਭੇਜੋ',sent:'ਅਸੀਂ {e} ਨੂੰ 6 ਅੰਕਾਂ ਦਾ ਕੋਡ ਭੇਜਿਆ ਹੈ।',open:'ਜਵਾਬ ਖੋਲ੍ਹੋ',bad:'ਕੋਡ ਗਲਤ ਜਾਂ ਮਿਆਦ ਪੁੱਗ ਚੁੱਕੀ।',nf:'ਇਸ ਈਮੇਲ ਲਈ ਇਹ ਸ਼ਿਕਾਇਤ ਨਹੀਂ ਮਿਲੀ।',err:'ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।',cd:'ਬਹੁਤ ਕੋਸ਼ਿਸ਼ਾਂ। ਕੁਝ ਮਿੰਟ ਉਡੀਕ ਕਰੋ।',from:'ਵੱਲੋਂ',none:'ਹਾਲੇ ਕੋਈ ਜਵਾਬ ਨਹੀਂ।',att:'{n} ਅਟੈਚਮੈਂਟ ਇੱਥੇ ਨਹੀਂ ਦਿਖਾਏ।',close:'ਬੰਦ ਕਰੋ'}
+  }, R=D[L]||D.en;
+  var esc=function(x){ return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+  var post=function(u,b){ return fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){ return r.json().catch(function(){return {};}).then(function(d){ d._ok=r.ok; return d; }); }); };
+  var ov=document.createElement('div'); ov.className='rv-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
+  ov.innerHTML='<div class="rv-card"><button type="button" class="rv-x" aria-label="'+esc(R.close)+'">×</button><div class="rv-h">'+esc(R.t)+'</div><div class="rv-ref">'+esc(ref)+'</div><div class="rv-body"></div></div>';
+  document.body.appendChild(ov);
+  var body=ov.querySelector('.rv-body');
+  ov.querySelector('.rv-x').onclick=function(){ ov.remove(); };
+  var passFor=function(m){ try{ var o=JSON.parse(localStorage.getItem('cc_mail_pass')||'null'); return o&&o.e===m&&+String(o.p).split('.')[0]>Date.now()?o.p:''; }catch(e){ return ''; } };
+  var show=function(d){
+    var h='<div class="rv-title">'+esc(d.title||'')+'</div>';
+    if(!d.replies||!d.replies.length) h+='<p class="rv-note">'+esc(R.none)+'</p>';
+    (d.replies||[]).forEach(function(x){
+      h+='<div class="rv-msg"><div class="rv-meta"><b>'+esc(R.from)+':</b> '+esc(x.from)+'<br>'+esc(x.date)+'</div><div class="rv-text">'+esc(x.text)+'</div>'+(x.attachments?'<div class="rv-note">'+esc(R.att.replace('{n}',x.attachments))+'</div>':'')+'</div>';
+    });
+    body.innerHTML=h;
+  };
+  var open=function(email,pass,errBox){
+    return post('/api/reply-view',{ref:ref,email:email,pass:pass}).then(function(d){
+      if(d._ok){ show(d); return true; }
+      if(errBox) errBox.textContent=d.error==='not_found'?R.nf:d.error==='cooldown'?R.cd:d.error==='email_unverified'?R.bad:R.err;
+      return false;
+    }).catch(function(){ if(errBox) errBox.textContent=R.err; return false; });
+  };
+  body.innerHTML='<p class="rv-note">'+esc(R.i.replace('{ref}',ref))+'</p><input class="rv-in" type="email" autocomplete="email" placeholder="your@email.com"><button type="button" class="rv-btn rv-send">'+esc(R.send)+'</button>'+
+    '<div class="rv-code" hidden><p class="rv-note rv-sent"></p><input class="rv-in rv-codein" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"><button type="button" class="rv-btn rv-open">'+esc(R.open)+'</button></div><p class="rv-err" role="status"></p>';
+  var inp=body.querySelector('.rv-in'), err=body.querySelector('.rv-err'), codeBox=body.querySelector('.rv-code'), tok='';
+  body.querySelector('.rv-send').onclick=function(){
+    var m=inp.value.trim().toLowerCase(); err.textContent=''; if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) return;
+    var p=passFor(m); if(p){ open(m,p,err); return; }
+    post('/api/email-code',{action:'send',email:m}).then(function(d){
+      if(!d._ok){ err.textContent=d.error==='cooldown'?R.cd:R.err; return; }
+      tok=d.token; codeBox.hidden=false; body.querySelector('.rv-sent').textContent=R.sent.replace('{e}',m); body.querySelector('.rv-codein').focus();
+    }).catch(function(){ err.textContent=R.err; });
+  };
+  body.querySelector('.rv-open').onclick=function(){
+    var m=inp.value.trim().toLowerCase(), c=body.querySelector('.rv-codein').value.trim(); err.textContent='';
+    post('/api/email-code',{action:'check',email:m,code:c,token:tok}).then(function(d){
+      if(!d._ok||!d.pass){ err.textContent=d.error==='cooldown'?R.cd:R.bad; return; }
+      try{ localStorage.setItem('cc_mail_pass',JSON.stringify({e:m,p:d.pass})); }catch(e){}
+      open(m,d.pass,err);
+    }).catch(function(){ err.textContent=R.err; });
+  };
 }
 // /start sayfasındaki "araca köprü" kartları: /?go=new|lawyer|cyber|verify|track|rep
 // → doğrudan ilgili uygulama sekmesine düş.

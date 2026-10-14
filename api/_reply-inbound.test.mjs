@@ -2,8 +2,12 @@ import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import handler, { cleanReply } from './reply-inbound.js';
 import { replyAddress } from './_complaint-core.js';
+import { generateKeyPairSync } from 'node:crypto';
 
-const ENV = ['INBOUND_SECRET', 'REPLY_SECRET', 'REPLY_DOMAIN', 'BREVO_API_KEY'];
+const { privateKey } = generateKeyPairSync('rsa', { modulusLength: 2048 });
+const SA = JSON.stringify({ client_email: 'sa@p.iam.gserviceaccount.com', private_key: privateKey.export({ type: 'pkcs8', format: 'pem' }), token_uri: 'https://oauth2.googleapis.com/token' });
+
+const ENV = ['INBOUND_SECRET', 'REPLY_SECRET', 'REPLY_DOMAIN', 'BREVO_API_KEY', 'FIREBASE_SERVICE_ACCOUNT'];
 let saved, calls;
 
 const doc = (over = {}) => ({ document: { name: 'projects/p/databases/(default)/documents/complaints/abc', fields: {
@@ -11,11 +15,13 @@ const doc = (over = {}) => ({ document: { name: 'projects/p/databases/(default)/
   lang: { stringValue: 'en' }, test: { booleanValue: true }, status: { stringValue: 'received' },
   timeline: { arrayValue: { values: [{ mapValue: { fields: { status: { stringValue: 'received' }, date: { stringValue: 'x' } } } }] } }, ...over } } });
 
-function mockFetch({ rows = [doc()], brevoOk = true } = {}) {
+function mockFetch({ rows = [doc()], brevoOk = true, storeOk = true } = {}) {
   calls = [];
   globalThis.fetch = async (url, opts = {}) => {
     const u = String(url); calls.push({ url: u, method: opts.method, body: opts.body });
+    if (u.includes('oauth2.googleapis.com/token')) return Response.json({ access_token: 'tok', expires_in: 3600 });
     if (u.includes(':runQuery')) return Response.json(rows);
+    if (u.includes('/replies?documentId=') && opts.method === 'POST') return new Response('{}', { status: storeOk ? 200 : 500 });
     if (u.includes('firestore.googleapis.com') && opts.method === 'PATCH') return new Response('{}', { status: 200 });
     if (u.includes('api.brevo.com')) return new Response('{}', { status: brevoOk ? 201 : 500 });
     throw new Error('unexpected fetch ' + u);
@@ -29,7 +35,7 @@ function call(body, secret = 's3cret') {
 }
 const msg = (over = {}) => ({ to: replyAddress('VC-2026-ABC234'), from: 'Clerk <clerk@school.ca>', subject: 'Re: complaint', date: '2026-10-12T21:50:00Z', text: 'We will act on this.\n\nOn Mon, ComplaintCA wrote:\n> old text', attachments: 0, messageId: 'm1', ...over });
 
-beforeEach(() => { saved = Object.fromEntries(ENV.map(k => [k, process.env[k]])); process.env.INBOUND_SECRET = 's3cret'; process.env.REPLY_SECRET = 'r1'; process.env.BREVO_API_KEY = 'k'; delete process.env.REPLY_DOMAIN; });
+beforeEach(() => { saved = Object.fromEntries(ENV.map(k => [k, process.env[k]])); process.env.INBOUND_SECRET = 's3cret'; process.env.REPLY_SECRET = 'r1'; process.env.BREVO_API_KEY = 'k'; process.env.FIREBASE_SERVICE_ACCOUNT = SA; delete process.env.REPLY_DOMAIN; });
 afterEach(() => { ENV.forEach(k => saved[k] === undefined ? delete process.env[k] : (process.env[k] = saved[k])); delete globalThis.fetch; });
 
 describe('cleanReply', () => {
@@ -54,21 +60,31 @@ describe('POST /api/reply-inbound', () => {
     assert.equal((await call(msg({ to: 'someone@else.com' }))).data.matched, false);
     assert.equal(calls.length, 0);
   });
-  test('emails the reply to the complainant and stamps the timeline without the text', async () => {
+  test('keeps the reply server-side, emails only a notice with a link, and stamps the timeline without the text', async () => {
     mockFetch();
     const { code, data } = await call(msg());
     assert.equal(code, 200); assert.equal(data.matched, true); assert.equal(data.notified, true);
+    const store = calls.find(c => c.url.includes('/replies?documentId='));
+    assert.match(JSON.parse(store.body).fields.text.stringValue, /We will act on this\./);
+    assert.ok(!store.body.includes('old text'));
+    assert.match(calls.find(c => c.url.includes(':runQuery')).url, /^https:\/\/firestore/);
     const mail = JSON.parse(calls.find(c => c.url.includes('brevo')).body);
     assert.equal(mail.to[0].email, 'me@example.com');
-    assert.match(mail.subject, /^\[TEST\] The institution replied — VC-2026-ABC234/);
-    assert.match(mail.textContent, /We will act on this\./);
-    assert.ok(!mail.textContent.includes('old text'));
+    assert.match(mail.subject, /^\[TEST\] You have a reply — VC-2026-ABC234/);
+    assert.match(mail.textContent, /complaintca\.ca\/\?reply=VC-2026-ABC234/);
+    assert.ok(!mail.textContent.includes('We will act on this'), 'the reply itself is not e-mailed');
     const patch = calls.find(c => c.method === 'PATCH');
     assert.match(patch.url, /updateMask\.fieldPaths=status&updateMask\.fieldPaths=timeline/);
     const sent = JSON.parse(patch.body);
     assert.equal(sent.fields.status.stringValue, 'review');
-    assert.ok(!patch.body.includes('We will act on this'), 'reply text must not be written to Firestore');
+    assert.ok(!patch.body.includes('We will act on this'), 'reply text must not be written to the complaint');
     assert.equal(sent.fields.timeline.arrayValue.values.length, 2);
+  });
+  test('a failed store answers 502 before any e-mail', async () => {
+    mockFetch({ storeOk: false });
+    const { code } = await call(msg());
+    assert.equal(code, 502);
+    assert.equal(calls.filter(c => c.url.includes('brevo')).length, 0);
   });
   test('the same message is not forwarded twice', async () => {
     const first = doc();
