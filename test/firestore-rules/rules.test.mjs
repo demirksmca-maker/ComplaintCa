@@ -130,9 +130,10 @@ describe('read (isLegal gating)', () => {
     });
   });
 
-  test('anyone can read a non-legal complaint', async () => {
-    const db = testEnv.unauthenticatedContext().firestore();
-    await assertSucceeds(db.collection('complaints').doc('public').get());
+  test('nobody can read or list a non-legal complaint from the client', async () => {
+    await assertFails(testEnv.unauthenticatedContext().firestore().collection('complaints').doc('public').get());
+    await assertFails(testEnv.authenticatedContext('some-uid').firestore().collection('complaints').doc('public').get());
+    await assertFails(testEnv.unauthenticatedContext().firestore().collection('complaints').get());
   });
 
   test('signed-out users cannot read an isLegal complaint', async () => {
@@ -188,22 +189,15 @@ describe('update (isStatusOnlyUpdate)', () => {
 });
 
 describe('delete', () => {
-  test('allows deleting a document that has ref and email', async () => {
+  test('nobody can delete a complaint from the client', async () => {
     await testEnv.withSecurityRulesDisabled(async (ctx) => {
       await ctx.firestore().collection('complaints').doc('c1').set(validComplaint());
     });
-    const db = testEnv.unauthenticatedContext().firestore();
-    await assertSucceeds(db.collection('complaints').doc('c1').delete());
-  });
-
-  test('rejects deleting a document missing ref/email', async () => {
-    await testEnv.withSecurityRulesDisabled(async (ctx) => {
-      await ctx.firestore().collection('complaints').doc('c1').set({ status: 'received' });
-    });
-    const db = testEnv.unauthenticatedContext().firestore();
-    await assertFails(db.collection('complaints').doc('c1').delete());
+    await assertFails(testEnv.unauthenticatedContext().firestore().collection('complaints').doc('c1').delete());
+    await assertFails(testEnv.authenticatedContext('some-uid').firestore().collection('complaints').doc('c1').delete());
   });
 });
+
 
 describe('default deny', () => {
   test('denies read/write on any collection other than complaints', async () => {
