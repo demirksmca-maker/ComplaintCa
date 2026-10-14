@@ -538,3 +538,5 @@ a.af1-hico:hover{color:#ffe08a}
 /* No "File a complaint" caption above the emblem: kept for screen readers only, the scales move up */
 .af-ov .af-title{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .af-ov .af-bar,.af-ov.cc-embedded .af-bar{padding-top:calc(env(safe-area-inset-top,0px) + 4px);padding-bottom:0;min-height:0}
+/* Inside the site page the tabs are the way out, so no close button */
+.af-ov.cc-embedded .af-close{display:none}
