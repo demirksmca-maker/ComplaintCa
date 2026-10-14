@@ -564,6 +564,53 @@ textarea{resize:vertical;min-height:90px}
 }
 #view-lawyerpanel .lex-cta-icon{font-size:1.1rem;color:var(--gold)}
 #view-lawyerpanel .lex-cta-t{font-family:'Cinzel',serif;text-transform:uppercase;font-size:.78rem;letter-spacing:1px;color:var(--text)}
+/* Case Pool, panel look: navy, gold, one line per case; a case opens as a parchment tablet. */
+#view-lawyerpanel{background:radial-gradient(75% 42% at 50% 8%,#16305c 0%,#0b1d3d 60%,#071326 100%);color:#eef0f6}
+#view-lawyerpanel .lex-banner{background:none;border:0;box-shadow:none;padding:14px 8px 4px}
+#view-lawyerpanel .lex-eyebrow{color:#f6e7bf;letter-spacing:.32em;font-size:.62rem}
+#view-lawyerpanel .lex-title{color:#fff6dc;text-transform:none;letter-spacing:.06em;font-size:1.35rem}
+#view-lawyerpanel .lex-sub,#view-lawyerpanel .lex-ledger{display:none!important}
+#view-lawyerpanel .lex-rule{width:auto;height:1.5px;margin:12px 28px 0;border-radius:0;background:linear-gradient(90deg,transparent,#e6c35c 25%,#f3dc8c 50%,#e6c35c 75%,transparent)}
+#view-lawyerpanel .lex-stats{background:none;border:0;box-shadow:none;padding:0;margin:4px 0 10px}
+.lex-filter{position:relative;display:block}
+.lex-filter select{width:100%;appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.03);border:1px solid rgba(230,201,138,.22);border-radius:999px;color:#fff6dc;font:600 .84rem/1 'Inter',sans-serif;padding:11px 40px 11px 16px;outline:0;cursor:pointer}
+.lex-filter select:focus{border-color:#e6c35c}
+.lex-filter option{background:#0b1d3d;color:#eef0f6}
+.lex-fchev{position:absolute;right:16px;top:50%;transform:translateY(-55%);pointer-events:none;color:#e6c98a}
+#lawyer-panel-feed{border-top:1px solid rgba(230,201,138,.22)}
+.lex-row{border-bottom:1px solid rgba(230,201,138,.22)}
+.lex-sum{width:100%;display:flex;align-items:center;gap:12px;padding:14px 2px;background:none;border:0;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.lex-ico{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(230,201,138,.45);color:#e6c98a;background:rgba(230,195,92,.06)}
+.lex-ico svg,.lex-seal svg{width:18px;height:18px}
+.lex-txt{flex:1;min-width:0}
+.lex-t{display:block;color:#fff6dc;font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lex-m{display:block;color:#a9b0c4;font-size:.76rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lex-dot{flex:none;width:10px;height:10px;border-radius:50%;background:#e6c35c;box-shadow:0 0 10px #e6c35c}
+.lex-dot.high{background:#ff5a6e;box-shadow:0 0 10px #ff5a6e}.lex-dot.low{background:#5fe0a0;box-shadow:0 0 10px #5fe0a0}
+.lex-chev{flex:none;color:#e6c98a;font-size:1.1rem;transition:transform .25s}
+.lex-row.open .lex-chev{transform:rotate(180deg)}
+.lex-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.lex-row.open .lex-body{grid-template-rows:1fr}
+.lex-body>div{overflow:hidden}
+.lex-inner{padding:2px 2px 18px}
+.lex-tab{position:relative;padding:20px 18px 16px;border-radius:6px;color:#2b2214;font-family:'EB Garamond',Georgia,serif;
+  background:radial-gradient(120% 80% at 20% 10%,rgba(255,255,255,.35),transparent 60%),radial-gradient(90% 70% at 85% 95%,rgba(120,84,30,.18),transparent 70%),repeating-linear-gradient(0deg,rgba(90,60,20,.035) 0 1px,transparent 1px 4px),linear-gradient(180deg,#f2e7c9,#e6d4a8);
+  box-shadow:inset 0 0 0 1px #b48a3c,inset 0 0 0 4px #f2e7c9,inset 0 0 0 5px rgba(140,100,40,.55),inset 0 0 28px rgba(110,70,20,.28),0 10px 26px rgba(0,0,0,.45)}
+.lex-tab::before,.lex-tab::after{content:"\2766";position:absolute;top:7px;font-size:.8rem;color:#9a7330}
+.lex-tab::before{left:10px}.lex-tab::after{right:10px;transform:scaleX(-1)}
+.lex-tab-h{text-align:center;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:#7a5a22;margin:0 0 4px}
+.lex-tab-ref{text-align:center;font-style:italic;font-size:.82rem;color:#6b5634;margin-bottom:12px}
+.lex-sec{display:flex;align-items:center;gap:8px;font:700 .6rem/1 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#7a5a22;margin:14px 0 8px}
+.lex-sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(122,90,34,.6),transparent)}
+.lex-facts{font-size:1.02rem;line-height:1.5;margin:0;color:#2b2214;white-space:pre-line}
+.lex-facts::first-letter{float:left;font:700 2.5rem/.85 'Cinzel',Georgia,serif;color:#8a2a1f;margin:4px 6px 0 0}
+.lex-note{font-style:italic;font-size:.9rem;color:#4a3a20}
+.lex-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:10px;border-top:1px dashed rgba(122,90,34,.45)}
+.lex-filed{font-style:italic;font-size:.86rem;color:#4a3a20}
+.lex-seal{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#f6dccb;background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%);box-shadow:0 2px 4px rgba(60,10,5,.5),inset 0 0 0 3px rgba(255,255,255,.12),inset 0 0 0 5px rgba(80,10,5,.35);transform:rotate(-8deg)}
+.lex-sealed{font:700 .56rem/1.35 'Cinzel',Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:#7e2219;text-align:right;flex:1}
+.lex-open{font-size:.88rem;color:#2b2214;text-align:right;flex:1}.lex-open a{color:#7e2219}
+#view-lawyerpanel .lex-partner{background:linear-gradient(180deg,#12294f,#0a1a38);border:1px solid rgba(230,201,138,.22);border-radius:18px;margin-top:22px}
 #view-lawyerpanel .lex-cta-s{font-family:'Inter',sans-serif;font-size:.78rem;color:var(--sub);margin-top:2px}
 .rq{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.5)}
 .rqt{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:8px}
@@ -1133,8 +1180,7 @@ textarea{resize:vertical;min-height:90px}
         <div class="lex-ledger-pill"><span class="lex-ledger-ico">📋</span><div><div class="n" id="lwp-ledger-n">0</div><div class="l" id="lwp-ledger-l">Open Cases</div></div></div>
       </div>
       <div class="lex-stats" id="lwp-stats-box" style="display:none">
-        <div class="lex-stats-title" id="lwp-stats-title">Similar Cases by Category</div>
-        <div class="lex-stats-row" id="lwp-stats-row"></div>
+        <label class="lex-filter"><select id="lwp-filter" aria-label="Category"></select><span class="lex-fchev">⌄</span></label>
       </div>
       <div id="lawyer-panel-feed"></div>
       <div class="lex-partner" id="lwp-partner-box">
@@ -5381,17 +5427,47 @@ try{
       if(lpbox) lpbox.innerHTML=renderLawyerPanelHTML(_lastLawyerSnapshot);
     }
   }
+  var _lexFilter='';
+  var LEX_IC={
+    education:'<path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5v-4.5"/>',
+    rights:'<path d="M12 3v18M5 7h14"/><path d="M5 7l-3 6a3 3 0 006 0L5 7zM19 7l-3 6a3 3 0 006 0l-3-6z"/>',
+    money:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>',
+    home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
+    work:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2"/>',
+    health:'<path d="M12 20s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.5-7 10-7 10z"/>',
+    doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/>',
+    lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>'
+  };
+  function lexSvg(k){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(LEX_IC[k]||LEX_IC.doc)+'</svg>'; }
+  function lexIcon(cat){
+    cat=String(cat||'');
+    if(/educ|school/.test(cat)) return 'education';
+    if(/disc|right|harass|police|privacy/.test(cat)) return 'rights';
+    if(/bill|bank|debt|money|insur|telecom|utility|consumer|service/.test(cat)) return 'money';
+    if(/landlord|tenan|rent|property|condo|housing/.test(cat)) return 'home';
+    if(/wage|employ|work/.test(cat)) return 'work';
+    if(/health|hospital|doctor/.test(cat)) return 'health';
+    return 'doc';
+  }
+  // City and province only: a street address is never shown in the pool.
+  function lexPlace(loc){
+    var parts=String(loc||'').split(',').map(function(x){return x.trim();}).filter(Boolean);
+    var keep=parts.filter(function(x){return !/\d/.test(x);});
+    if(!keep.length && parts.length){
+      var m=parts[parts.length-1].match(/\b(?:st|street|ave|avenue|rd|road|dr|drive|blvd|way|cres|crescent|ct|court|lane|ln|pl|place)\.?\s+([a-z .'-]+)$/i);
+      if(m) keep=[m[1].replace(/\b([a-z]{2})$/i,function(p){return p.toUpperCase();}).replace(/\b[a-z]/g,function(c){return c.toUpperCase();})];
+    }
+    return keep.slice(-2).join(', ')||'Canada';
+  }
   function renderLawyerPanelHTML(snapshot){
-    if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:var(--muted);font-size:.82rem;font-family:\'Inter\',sans-serif">'+V.t('feed_none')+'</div>';
+    if(snapshot.empty) return '<div style="text-align:center;padding:30px;color:#a9b0c4;font-size:.82rem;font-family:\'Inter\',sans-serif">'+V.t('feed_none')+'</div>';
     var partner=_isPartnerLawyer();
     var priWeight={high:0,medium:1,low:2};
-    var priBadge={high:'🔴',medium:'🟡',low:'🟢'};
     var items=[];
     snapshot.forEach(function(doc){ items.push(doc.data()); });
     // Cases sharing a category are each other's closest available "precedent"
     // in this MVP — there's no external case-law database wired in, just the
-    // pool's own live composition (see categoryCounts, shared with the stats
-    // bar above the feed).
+    // pool's own live composition (see categoryCounts, shared with the filter).
     var catCounts=categoryCounts(items);
     items.sort(function(a,b){
       var pa=priWeight[a.priority]!==undefined?priWeight[a.priority]:1;
@@ -5399,38 +5475,50 @@ try{
       if(pa!==pb) return pa-pb;
       return (new Date(b.date||0))-(new Date(a.date||0));
     });
+    if(_lexFilter) items=items.filter(function(d){ return (d.category||'general')===_lexFilter; });
     var html='';
     items.forEach(function(d){
-      var pri=priBadge[d.priority]||priBadge.medium;
+      var pr=priWeight[d.priority]!==undefined?d.priority:'medium';
       var ago=d.date?window._timeAgo(d.date):'';
       var title=escHtml(d.title||(d.desc?d.desc.substring(0,45)+'…':V.t('feed_default_title')));
-      var loc=escHtml(d.location?d.location.split(',')[0]:'Canada');
+      var loc=escHtml(lexPlace(d.location));
       var cat=escHtml(catLabel(d.category||'general'));
-      var desc=escHtml(d.desc?(d.desc.length>90?d.desc.substring(0,90)+'…':d.desc):'');
-      var meta=loc+(ago?' · '+ago:'');
+      var facts=escHtml(d.desc||'');
       var simN=(catCounts[d.category||'general']||1)-1;
-      var simLine=simN>0?'<div class="lex-similar">📊 '+escHtml(V.t('lwp_similar').replace('{n}',simN))+'</div>':'';
-      var contactLine;
+      var contact;
       if(partner && !d.anonymous && d.email){
-        var nm=escHtml(d.name||'—');
         var em=escHtml(d.email);
-        contactLine='<div class="lex-unlocked">✓ '+nm+' · <a href="mailto:'+em+'" style="color:inherit">'+em+'</a></div>';
+        contact='<div class="lex-open">✓ '+escHtml(d.name||'—')+'<br><a href="mailto:'+em+'">'+em+'</a></div>';
       }else{
-        contactLine='<div class="lex-locked">🔒 '+V.t('lwp_locked')+'</div>';
+        contact='<div class="lex-sealed">'+escHtml(V.t('lwp_locked'))+'</div><span class="lex-seal">'+lexSvg('lock')+'</span>';
       }
-      html+='<div class="lex-card">'+
-        '<div class="lex-tags">'+
-          '<span class="lex-tags-left"><span class="lex-cat">'+cat+'</span><span>'+pri+'</span></span>'+
-          '<span class="lex-meta">'+meta+'</span>'+
-        '</div>'+
-        '<div class="lex-ctitle">'+title+'</div>'+
-        (desc?'<div class="lex-desc">'+desc+'</div>':'')+
-        simLine+
-        contactLine+
+      html+='<div class="lex-row">'+
+        '<button class="lex-sum" type="button" aria-expanded="false">'+
+          '<span class="lex-ico">'+lexSvg(lexIcon(d.category))+'</span>'+
+          '<span class="lex-txt"><span class="lex-t">'+title+'</span><span class="lex-m">'+cat+' · '+loc+(ago?' · '+escHtml(ago):'')+'</span></span>'+
+          '<i class="lex-dot '+pr+'"></i><span class="lex-chev">⌄</span>'+
+        '</button>'+
+        '<div class="lex-body"><div><div class="lex-inner"><div class="lex-tab">'+
+          '<div class="lex-tab-h">Case record</div><div class="lex-tab-ref">'+cat+' — '+loc+'</div>'+
+          '<div class="lex-sec">I · The facts</div><p class="lex-facts">'+facts+'</p>'+
+          (simN>0?'<div class="lex-sec">II · Similar cases</div><div class="lex-note">'+escHtml(V.t('lwp_similar').replace('{n}',simN))+'</div>':'')+
+          '<div class="lex-foot"><div class="lex-filed">'+(ago?'Filed '+escHtml(ago):'')+'</div>'+contact+'</div>'+
+        '</div></div></div></div>'+
       '</div>';
     });
-    return html;
+    return html||'<div style="text-align:center;padding:30px;color:#a9b0c4;font-size:.82rem">'+V.t('feed_none')+'</div>';
   }
+  document.addEventListener('click',function(e){
+    var s=e.target.closest&&e.target.closest('#lawyer-panel-feed .lex-sum'); if(!s) return;
+    var r=s.parentElement, on=!r.classList.contains('open');
+    r.classList.toggle('open',on); s.setAttribute('aria-expanded',on?'true':'false');
+  });
+  document.addEventListener('change',function(e){
+    if(!e.target||e.target.id!=='lwp-filter') return;
+    _lexFilter=e.target.value;
+    var lpbox=document.getElementById('lawyer-panel-feed');
+    if(lpbox&&_lastLawyerSnapshot) lpbox.innerHTML=renderLawyerPanelHTML(_lastLawyerSnapshot);
+  });
   // Shared by renderLawyerPanelHTML (per-card "similar cases" line) and
   // renderLawyerStatsHTML (the category breakdown bar) so both read the same
   // counts off one pass over the live pool.
@@ -5448,8 +5536,9 @@ try{
     var counts=categoryCounts(items);
     var cats=Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
     if(!cats.length) return '';
-    return cats.map(function(c){
-      return '<span class="lex-stat-pill">'+escHtml(catLabel(c))+' · '+counts[c]+'</span>';
+    if(_lexFilter && !counts[_lexFilter]) _lexFilter='';
+    return '<option value="">All categories ('+items.length+')</option>'+cats.map(function(c){
+      return '<option value="'+escHtml(c)+'"'+(c===_lexFilter?' selected':'')+'>'+escHtml(catLabel(c))+' ('+counts[c]+')</option>';
     }).join('');
   }
   function renderLegalUpdatesHTML(snapshot){
@@ -5497,7 +5586,7 @@ try{
       var ledgerN=document.getElementById('lwp-ledger-n');
       if(ledger&&ledgerN){ ledgerN.textContent=snapshot.size; ledger.style.display=snapshot.empty?'none':'flex'; }
       var statsBox=document.getElementById('lwp-stats-box');
-      var statsRow=document.getElementById('lwp-stats-row');
+      var statsRow=document.getElementById('lwp-filter');
       if(statsBox&&statsRow){
         var pills=renderLawyerStatsHTML(snapshot);
         statsRow.innerHTML=pills;
