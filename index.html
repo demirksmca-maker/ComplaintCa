@@ -1076,6 +1076,8 @@ textarea{resize:vertical;min-height:90px}
           <div class="lw-prov" tabindex="0" role="button" data-prov="ab" onclick="selLwProv('ab',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Alberta</div>
           <div class="lw-prov" tabindex="0" role="button" data-prov="mb" onclick="selLwProv('mb',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Manitoba</div>
           <div class="lw-prov" tabindex="0" role="button" data-prov="sk" onclick="selLwProv('sk',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Saskatchewan</div>
+          <div class="lw-prov" tabindex="0" role="button" data-prov="ns" onclick="selLwProv('ns',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Nova Scotia</div>
+          <div class="lw-prov" tabindex="0" role="button" data-prov="nb" onclick="selLwProv('nb',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">New Brunswick</div>
         </div>
       </div>
       <button onclick="lwGoStep(2)" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
@@ -1671,6 +1673,45 @@ var LAWYERS = {
     family:[{name:'Law Society of Saskatchewan',phone:'306-569-8242',url:'https://www.lawsociety.sk.ca',note:'Find a family lawyer in Saskatchewan.',badge:'REFERRAL'},{name:'Legal Aid Saskatchewan',phone:'1-800-667-3764',url:'https://www.legalaid.sk.ca',note:'Family legal aid if income-eligible.',badge:'LEGAL AID'}]
   }
 };
+// Free and low-cost legal help added Oct 2026. Every phone number and link below was checked against the
+// organisation's own site or an official government page; anything that could not be confirmed was left out.
+(function(){
+  var CLEA_MB={name:'CLEA Manitoba — Law Phone-In & Lawyer Referral',phone:'1-800-262-8800',url:'https://www.communitylegal.mb.ca/programs/law-phone-in-and-lawyer-referral-program/',note:'Free legal information by phone; Winnipeg 204-943-2305, lawyer referral 204-943-3602. Mon–Fri 9–4.',badge:'FREE'};
+  var PBL_SK={name:'Pro Bono Law Saskatchewan',phone:'1-855-833-7257',url:'',note:'Up to one hour of free advice from a volunteer lawyer for low-income residents; phone appointments for rural areas.',badge:'FREE'};
+  var add=function(p,a,x){ var l=LAWYERS[p][a]=LAWYERS[p][a]||[]; if(!l.some(function(y){return y.name===x.name;})) l.push(x); };
+  // Manitoba
+  LAWYERS.mb.tenant=LAWYERS.mb.tenant.filter(function(x){return x.name!=='Community Legal Education Association MB';});
+  ['tenant','employment','humanrights','immigration','criminal','family'].forEach(function(a){ add('mb',a,CLEA_MB); add('sk',a,PBL_SK); });
+  add('mb','tenant',{name:'Residential Tenancies Branch (Manitoba)',phone:'1-800-782-8403',url:'https://www.gov.mb.ca/cca/rtb/',note:'Official landlord–tenant help and dispute resolution; Winnipeg 204-945-2476.',badge:'OFFICIAL'});
+  add('mb','employment',{name:'Manitoba Employment Standards',phone:'1-800-821-4307',url:'https://www.gov.mb.ca/labour/standards/',note:'Unpaid wages, termination, vacation pay; Winnipeg 204-945-3352.',badge:'OFFICIAL'});
+  LAWYERS.mb.humanrights.forEach(function(x){ if(x.name==='Manitoba Human Rights Commission'){ x.phone='1-888-884-8681'; } });
+  // Saskatchewan
+  add('sk','tenant',{name:'Office of Residential Tenancies (Saskatchewan)',phone:'1-888-215-2222',url:'',note:'Official landlord–tenant hearings and information.',badge:'OFFICIAL'});
+  add('sk','employment',{name:'Saskatchewan Employment Standards',phone:'1-800-667-1783',url:'',note:'Wage and employment standards complaints; inquiry line 306-787-2438.',badge:'OFFICIAL'});
+  // Nova Scotia
+  var NSLA={name:'Nova Scotia Legal Aid',phone:'',url:'https://www.nslegalaid.ca/what-we-do/how-to-apply/',note:'Free lawyer if your income qualifies — apply online, in person or by phone at a regional office.',badge:'LEGAL AID'};
+  var LIS_NS={name:'Legal Information Society of Nova Scotia — Lawyer Referral',phone:'1-800-665-9779',url:'https://www.legalinfo.org/lawyers-legal-help/lawyer-referral-service',note:'First meeting with a lawyer, up to 30 min, for $20 or less; Legal Information Line in Halifax 902-455-3135.',badge:'$20 CONSULT'};
+  LAWYERS.ns={
+    tenant:[{name:'Dalhousie Legal Aid — Tenant Rights Line',phone:'902-423-8105',url:'https://www.dal.ca/life-at-dal/off-campus-living/renting/tenancy-resources.html',note:'Free, confidential help with tenancy problems (Halifax).',badge:'FREE'},NSLA,LIS_NS],
+    employment:[{name:'Nova Scotia Labour Standards',phone:'1-888-315-0110',url:'https://novascotia.ca/lae/labourstandards/contact.asp',note:'Unpaid wages and work rules; complaints within 6 months. Halifax 902-424-4311.',badge:'OFFICIAL'},LIS_NS],
+    humanrights:[{name:'Nova Scotia Human Rights Commission',phone:'1-877-269-7699',url:'https://humanrights.novascotia.ca/',note:'Discrimination inquiries; online inquiry form. Halifax 902-424-4111.',badge:'OFFICIAL'},LIS_NS],
+    immigration:[{name:'Halifax Refugee Clinic',phone:'902-422-6736',url:'',note:'Free legal and settlement help for refugee claimants who cannot afford a lawyer.',badge:'FREE'},LIS_NS],
+    criminal:[NSLA,LIS_NS],
+    family:[NSLA,LIS_NS]
+  };
+  // New Brunswick
+  var LA_NB={name:'Legal Aid New Brunswick',phone:'506-444-2777',url:'https://www.legalaid-aidejuridique-nb.ca/',note:'Criminal and family legal aid if your income qualifies; 24-hour line for anyone arrested. Number is the Fredericton office.',badge:'LEGAL AID'};
+  var PLEIS={name:'PLEIS-NB — Free and Low-Cost Legal Services',phone:'',url:'https://legalinfonb.ca/',note:'Public legal information and a list of free and low-cost legal help in New Brunswick.',badge:'FREE'};
+  LAWYERS.nb={
+    tenant:[{name:'Residential Tenancies Tribunal (NB)',phone:'1-888-762-8600',url:'https://www2.gnb.ca/content/gnb/en/contacts/dept_renderer.173.1784.1821.200586.html',note:'Official landlord–tenant disputes, Mon–Fri 9–5.',badge:'OFFICIAL'},PLEIS],
+    employment:[{name:'NB Employment Standards',phone:'1-888-452-2687',url:'',note:'Wages and employment standards; Fredericton 506-453-2725.',badge:'OFFICIAL'},PLEIS],
+    humanrights:[{name:'New Brunswick Human Rights Commission',phone:'1-888-471-2233',url:'',note:'Discrimination complaints in English or French; 506-453-2301.',badge:'OFFICIAL'},PLEIS],
+    immigration:[PLEIS],
+    criminal:[LA_NB,PLEIS],
+    family:[{name:'PLEIS-NB — Family Law Information Line',phone:'1-888-236-2444',url:'https://legalinfonb.ca/',note:'Free family law information (not advice); voicemail answered within 2 business days.',badge:'FREE'},{name:'Family Law Advice Lawyer Service (NB)',phone:'1-855-266-0266',url:'',note:'Free family law advice from a lawyer by phone.',badge:'FREE'},LA_NB]
+  };
+})();
+
 
 function lwGoStep(n){
   for(var i=1;i<=3;i++){
@@ -1756,7 +1797,7 @@ function renderLwResults() {
   var container = document.getElementById('lw-results');
   var list = (LAWYERS[_lwProv] && LAWYERS[_lwProv][_lwArea]) || [];
   if (!list.length) { container.innerHTML = '<div class="empty">'+V.t('lw_none')+'</div>'; return; }
-  var badgeColors = { 'FREE':'#16a34a','FREE CONSULT':'#1a4fa0','LEGAL AID':'#7c3aed','$25 CONSULT':'#d97706','$30 CONSULT':'#d97706','OFFICIAL':'#c8102e','REFERRAL':'#1a4fa0','DIRECTORY':'var(--sub)','RESOURCE':'var(--sub)' };
+  var badgeColors = { 'FREE':'#16a34a','$20 CONSULT':'#d97706','FREE CONSULT':'#1a4fa0','LEGAL AID':'#7c3aed','$25 CONSULT':'#d97706','$30 CONSULT':'#d97706','OFFICIAL':'#c8102e','REFERRAL':'#1a4fa0','DIRECTORY':'var(--sub)','RESOURCE':'var(--sub)' };
   var html = '';
   list.forEach(function(lw) {
     var bc = badgeColors[lw.badge] || 'var(--sub)';
@@ -2740,7 +2781,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261014b';
+var _ccAsyaV='20261014c';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }
