@@ -3,6 +3,7 @@
 // so complaints filed through /api/complaint are indistinguishable from the
 // current form's (Track My Complaint, the lawyer pool and emails keep working).
 import { randomInt, createHmac, timingSafeEqual } from 'node:crypto';
+import { findSchool } from './_school.js';
 import {
   AUTHORITIES, CHAIN, CAT_SUBS, CAT_GROUPS, _CAT_TOPIC, _TGT_TOPIC, _PROV_LABEL,
   _detectProvince, _isFederalAuth, _isMail, _authUrl, CONF_SUBJ, CONF_BODY
@@ -44,6 +45,7 @@ export function validate(body) {
     targetName: str(b.targetName, 200),
     targetAddress: str(b.targetAddress, 300),
     location: str(b.location, 200),
+    place: str(b.place, 300),
     priority: PRIORITIES.includes(b.priority) ? b.priority : '',
     category: isValidCategory(b.category) ? b.category : '',
     ctype: CTYPES.includes(b.ctype) ? b.ctype : 'notice',
@@ -89,6 +91,27 @@ export function getAuthorities(category, location, targetAddress = '') {
   if (pv === 'ON') return dflt;
   if (pv && CHAIN[pv]) return _CAT_TOPIC[category] ? [] : fed();
   return dflt;
+}
+
+// Ontario school complaints: when the named school is found in the Ministry's
+// open data, the school itself (principal) comes first and its school board
+// second, ahead of the general education bodies.
+const BOARD_ABBR = [[/\bCDSB\b/, 'Catholic District School Board'], [/\bDSB\b/, 'District School Board'], [/\bCSB\b/, 'Catholic School Board'], [/\bSB\b/, 'School Board']];
+export function boardName(n) { return BOARD_ABBR.reduce((s, [re, v]) => s.replace(re, v), String(n || '')); }
+export function withSchool(auths, { category, target, targetName, location, targetAddress, place } = {}) {
+  if (category !== 'education' && target !== 'school') return { auths, school: null };
+  const pv = _detectProvince(location) || _detectProvince(targetAddress);
+  if (pv && pv !== 'ON') return { auths, school: null };
+  const hit = findSchool(targetName, [location, targetAddress, place].filter(Boolean).join(' '));
+  if (!hit) return { auths, school: null };
+  const s = hit.school, b = hit.board, bn = boardName(b.name);
+  const web = u => (u && !/^https?:/i.test(u) ? 'https://' + u : u || '');
+  const mine = [
+    { name: s.name + ' (Principal)', email: s.email || web(s.web), phone: s.phone, note: bn ? 'School board: ' + bn : '' },
+    ...(bn ? [{ name: bn, email: web(b.web), phone: b.phone || '', note: 'If the school does not resolve it' }] : [])
+  ];
+  const seen = new Set(mine.map(a => a.name.toLowerCase()));
+  return { auths: [...mine, ...auths.filter(a => !seen.has(String(a.name).toLowerCase()))], school: { name: s.name, city: s.city, board: bn, source: hit.source } };
 }
 
 // Port of _chainTopic + the CHAIN lookup: the verified "where to go next" bodies

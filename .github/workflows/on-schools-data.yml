@@ -1,0 +1,36 @@
+name: Ontario Schools Data
+
+# Refreshes data/on-schools.json from the Ontario Ministry of Education open
+# data (schools + their school boards). No secrets; public data only.
+on:
+  schedule:
+    - cron: '17 6 3 * *' # monthly
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/fetch-on-schools.mjs'
+      - '.github/workflows/on-schools-data.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install XLSX reader
+        run: npm install --no-save --no-package-lock xlsx@0.18.5
+      - name: Fetch and build
+        run: node scripts/fetch-on-schools.mjs
+      - name: Commit if changed
+        run: |
+          git add data/on-schools.json
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898099+github-actions[bot]@users.noreply.github.com"
+          git commit -m "data: refresh Ontario schools list"
+          git push

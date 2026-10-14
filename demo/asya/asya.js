@@ -814,7 +814,7 @@
       if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = routeCategory(c, val.who);
       const [R, Vv] = await Promise.all([
-        post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr }).then(r => r.ok ? r.json() : null).catch(() => null),
+        post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr, targetName:o_who.value.trim() || (c && c.institution) || '', place:c ? [c.city, c.address].filter(Boolean).join(' ') : '' }).then(r => r.ok ? r.json() : null).catch(() => null),
         post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:o_who.value.trim(), ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
       if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
     }
@@ -1004,7 +1004,7 @@
       if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
-      await Promise.all([post('/api/complaint', { test:!!(window._ccPanelTest || /[?&]test=1\b/.test(location.search)), title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
+      await Promise.all([post('/api/complaint', { test:!!(window._ccPanelTest || /[?&]test=1\b/.test(location.search)), title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, place:A ? [A.city, A.address].filter(Boolean).join(' ') : '', category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
         ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, mailPass:mPass, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
