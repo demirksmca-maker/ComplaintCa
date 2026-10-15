@@ -4907,7 +4907,14 @@ function switchAuthTab(tab){
       btn.style.borderBottomColor=t===tab?'var(--blue)':'transparent';
     }
   });
-  if(tab==='login') _applyAuthUI();
+  if(tab==='login'){
+    // Signed in: "My account" is /account itself — go straight there (only on a
+    // real tap, so Back from /account does not bounce the user forward again).
+    var ss=null; try{ ss=JSON.parse(localStorage.getItem('cc_session')||'null'); }catch(e){}
+    var tap=!navigator.userActivation||navigator.userActivation.isActive;
+    if(ss&&ss.email&&!_authRedirectTab&&tap&&typeof _openAccount==='function'){ _openAccount(); return; }
+    _applyAuthUI();
+  }
 }
 // Reflects the real auth state in the Sign In tab: when signed in, hide the
 // login form + Google button and show a "signed in as … / My Panel / Sign Out"
@@ -5351,6 +5358,7 @@ try{
     try{ localStorage.setItem('cc_session',JSON.stringify(googleUser)); }catch(e){}
     // Land on the inline signed-in view (Track > Sign In), which IS the user
     // panel now — no separate overlay to open.
+    if(!_authRedirectTab&&typeof _openAccount==='function'){ _openAccount(); return; } // signed in → the account page
     try{ if(typeof goApp==='function') goApp('track'); if(typeof switchAuthTab==='function') switchAuthTab('login'); }catch(e){}
     if(typeof _applyAuthUI==='function') _applyAuthUI();
     if(typeof _continueAfterAuth==='function') setTimeout(_continueAfterAuth,700);
