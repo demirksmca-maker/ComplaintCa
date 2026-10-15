@@ -18,6 +18,7 @@ function mock() {
   queries = [];
   globalThis.fetch = async (url, opts = {}) => {
     if (String(url).includes('oauth2')) return Response.json({ access_token: 't', expires_in: 3600 });
+    if (String(url).includes('accounts:lookup')) return Response.json({ users: [{ email: 'me@example.com', emailVerified: JSON.parse(opts.body).idToken === 'good' }] });
     const q = JSON.parse(opts.body).structuredQuery; const f = q.where.fieldFilter;
     queries.push(q.from[0].collectionId + ':' + f.field.fieldPath);
     if (q.from[0].collectionId === 'replies') return Response.json(f.value.stringValue === 'VC-2026-AAAAAA' ? [{ document: { fields: { text: { stringValue: 'We will act' }, createdAt: { stringValue: '1' } } } }] : []);
@@ -25,9 +26,9 @@ function mock() {
     return Response.json([doc('VC-2026-AAAAAA', '2026-10-14', ['received']), doc('VC-2026-BBBBBB', '2026-09-30', ['received', 'form'])]);
   };
 }
-const call = body => new Promise(resolve => {
+const call = (body, auth) => new Promise(resolve => {
   const res = { code: 0, status(c) { this.code = c; return this; }, json(d) { resolve({ code: this.code, data: d }); } };
-  handler({ method: 'POST', body, headers: { 'x-forwarded-for': '10.1.0.' + Math.random() } }, res);
+  handler({ method: 'POST', body, headers: { 'x-forwarded-for': '10.1.0.' + Math.random(), ...(auth ? { authorization: 'Bearer ' + auth } : {}) } }, res);
 });
 
 test('lists the owner\'s complaints once each, newest first, with replies and steps', async () => {
@@ -44,6 +45,15 @@ test('lists the owner\'s complaints once each, newest first, with replies and st
 test('no valid pass: refused before any database query', async () => {
   mock();
   assert.equal((await call({ email: 'me@example.com', pass: 'nope' })).code, 403);
+  assert.equal(queries.length, 0);
+});
+test('signed-in site user: a verified ID token works instead of a pass', async () => {
+  mock();
+  const ok = await call({}, 'good');
+  assert.equal(ok.code, 200);
+  assert.equal(ok.data.complaints.length, 2);
+  mock();
+  assert.equal((await call({ email: 'me@example.com' }, 'unverified')).code, 403);
   assert.equal(queries.length, 0);
 });
 test('helpers', () => {
