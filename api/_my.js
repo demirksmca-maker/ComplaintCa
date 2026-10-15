@@ -4,7 +4,7 @@
 // A signed-in site user (Google / Firebase) may send their ID token instead
 // (Authorization: Bearer …); its e-mail must be verified.
 import { isRateLimited } from './_rateLimit.js';
-import { mailSecret, checkPass } from './_mailcode.js';
+import { mailSecret, checkPass, mailPass } from './_mailcode.js';
 import { FS, fsAdmin } from './_gauth.js';
 
 const sv = f => (f && (f.stringValue ?? '')) || '';
@@ -79,6 +79,8 @@ export default async function handler(req, res) {
     if (!email) return res.status(bearer ? 403 : 400).json({ error: bearer ? 'email_unverified' : 'invalid' });
     const sec = mailSecret();
     if (!bearer && (!sec || !checkPass(sec, email, b.pass))) return res.status(403).json({ error: 'email_unverified' });
+    // Signed in on the home page → hand over a mail pass so /account opens without a code.
+    if (bearer && b.handoff) return sec ? res.status(200).json({ email, pass: mailPass(sec, email) }) : res.status(500).json({ error: 'server' });
     // New records carry emailLower; older ones only the e-mail as typed, often with a
     // capital first letter (phone keyboards), so those variants are looked up too.
     const variants = [...new Set([email, typed, email.charAt(0).toUpperCase() + email.slice(1)])];

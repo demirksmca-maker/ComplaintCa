@@ -53,6 +53,10 @@ test('signed-in site user: a verified ID token works instead of a pass', async (
   assert.equal(ok.code, 200);
   assert.equal(ok.data.complaints.length, 2);
   mock();
+  const h = await call({ handoff: 1 }, 'good');
+  assert.equal(h.data.email, 'me@example.com');
+  assert.ok(h.data.pass && queries.length === 0);
+  mock();
   assert.equal((await call({ email: 'me@example.com' }, 'unverified')).code, 403);
   assert.equal(queries.length, 0);
 });
