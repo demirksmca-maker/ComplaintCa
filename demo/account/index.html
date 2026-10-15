@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>My ComplaintCA — demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#e6c35c;--gold2:#e6c98a;--cream:#fff6dc;--mute:#a9b0c4;--line:rgba(230,201,138,.22)}
+*{box-sizing:border-box}
+html{background:#071326}
+body{margin:0;min-height:100vh;color:#eef0f6;font-family:-apple-system,'Segoe UI',Inter,system-ui,sans-serif;
+  background:radial-gradient(75% 42% at 50% 8%,#16305c 0%,#0b1d3d 60%,#071326 100%) fixed}
+.wrap{max-width:560px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 18px) 16px 40px}
+.top{display:flex;align-items:center;gap:14px}
+.mark{width:52px;height:52px;flex:none;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--gold);background:radial-gradient(circle at 35% 30%,#1d3a6b,#0b1d3d);box-shadow:0 0 18px rgba(230,195,92,.25)}
+.mark svg{width:26px;height:26px;color:var(--gold2)}
+.hi small{display:block;font:700 .6rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:#f6e7bf}
+.hi b{display:block;font:700 1.3rem/1.2 'Cinzel',Georgia,serif;color:var(--cream);margin-top:6px}
+.rule{height:1.5px;margin:16px 28px;background:linear-gradient(90deg,transparent,var(--gold) 25%,#f3dc8c 50%,var(--gold) 75%,transparent)}
+
+.alert{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;margin-bottom:16px;background:linear-gradient(180deg,#f2e7c9,#e6d4a8);color:#2b2214;box-shadow:inset 0 0 0 1px #b48a3c,0 8px 20px rgba(0,0,0,.35);cursor:pointer}
+.alert .seal{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#f6dccb;background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%);transform:rotate(-8deg);box-shadow:0 2px 4px rgba(60,10,5,.5)}
+.alert .seal svg{width:18px;height:18px}
+.alert b{display:block;font-family:'EB Garamond',Georgia,serif;font-size:1.05rem}
+.alert small{color:#5a4728;font-style:italic;font-family:'EB Garamond',Georgia,serif}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{text-align:center;padding:12px 6px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.stat b{display:block;font:700 1.4rem/1 'Cinzel',Georgia,serif;color:var(--cream)}
+.stat small{display:block;margin-top:6px;color:var(--mute);font-size:.72rem}
+
+.sec{display:flex;align-items:center;gap:8px;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;text-transform:uppercase;color:var(--gold2);margin:20px 0 10px}
+.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+.row{border-bottom:1px solid var(--line)}
+.row:first-of-type{border-top:1px solid var(--line)}
+.sum{width:100%;display:flex;align-items:center;gap:12px;padding:14px 2px;background:none;border:0;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.ico{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(230,201,138,.45);color:var(--gold2);background:rgba(230,195,92,.06)}
+.ico svg{width:18px;height:18px}
+.txt{flex:1;min-width:0}
+.t{display:block;color:var(--cream);font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m{display:block;color:var(--mute);font-size:.76rem;margin-top:3px}
+.badge{flex:none;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid currentColor}
+.b-reply{color:#5fe0a0}.b-sent{color:var(--gold)}.b-review{color:#8fb4ff}.b-closed{color:var(--mute)}
+.chev{flex:none;color:var(--gold2);transition:transform .25s}
+.row.open .chev{transform:rotate(180deg)}
+.body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.row.open .body{grid-template-rows:1fr}
+.body>div{overflow:hidden}
+.inner{padding:0 2px 16px}
+
+/* Journey: the complaint's path as wax seals on a gold thread */
+.journey{position:relative;display:flex;justify-content:space-between;margin:6px 4px 14px}
+.journey::before{content:"";position:absolute;left:14px;right:14px;top:13px;height:2px;background:rgba(230,201,138,.25)}
+.journey .fill{position:absolute;left:14px;top:13px;height:2px;background:linear-gradient(90deg,var(--gold),#f3dc8c)}
+.step{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;width:25%}
+.dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;border:1.5px solid rgba(230,201,138,.35);background:#0b1d3d;color:var(--mute)}
+.step.done .dot{border-color:var(--gold);background:radial-gradient(circle at 35% 30%,#f3dc8c,#c9a052);color:#2b2214}
+.step.now .dot{border-color:#5fe0a0;box-shadow:0 0 12px rgba(95,224,160,.6);color:#5fe0a0}
+.step small{font-size:.66rem;color:var(--mute);text-align:center}
+.step.done small,.step.now small{color:var(--cream)}
+
+.paper{padding:14px 16px;border-radius:6px;color:#2b2214;font-family:'EB Garamond',Georgia,serif;background:linear-gradient(180deg,#f2e7c9,#e6d4a8);box-shadow:inset 0 0 0 1px #b48a3c;margin-bottom:12px}
+.paper h4{margin:0 0 6px;font:700 .58rem/1 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#7a5a22}
+.paper p{margin:0;font-size:1rem;line-height:1.45}
+.paper small{display:block;margin-top:8px;font-style:italic;color:#6b5634}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.btn{flex:1;min-width:120px;border-radius:999px;padding:10px 12px;font-weight:700;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--cream)}
+.btn.gold{border:0;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a)}
+
+.new{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:18px;padding:14px;border-radius:16px;border:1.5px dashed rgba(230,201,138,.45);background:none;color:var(--gold2);font:700 .78rem/1 'Cinzel',Georgia,serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tool{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--cream);font-size:.84rem;cursor:pointer}
+.tool svg{width:18px;height:18px;color:var(--gold2);flex:none}
+
+.foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;color:var(--mute);font-size:.74rem}
+.foot a{color:var(--mute)}
+.demo{margin-top:16px;text-align:center;color:#6f7891;font-size:.7rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7h14"/><path d="M5 7l-3 6a3 3 0 006 0L5 7zM19 7l-3 6a3 3 0 006 0l-3-6z"/></svg></div>
+    <div class="hi"><small>My ComplaintCA</small><b>Welcome back, Wendy</b></div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="alert" id="alert">
+    <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg></span>
+    <div><b>The school replied to your complaint</b><small>St Anne Catholic School · today, 09:12 — tap to read</small></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>2</b><small>Complaints</small></div>
+    <div class="stat"><b>1</b><small>Replies</small></div>
+    <div class="stat"><b>3</b><small>Days avg. reply</small></div>
+  </div>
+
+  <div class="sec">My complaints</div>
+  <div id="list"></div>
+
+  <button class="new" type="button">＋ File a new complaint</button>
+
+  <div class="sec">Help for my case</div>
+  <div class="tools">
+    <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M5 7h14"/><path d="M5 7l-3 6a3 3 0 006 0L5 7zM19 7l-3 6a3 3 0 006 0l-3-6z"/></svg>Free legal help</div>
+    <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z"/></svg>Support lines</div>
+    <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg>Download my letters</div>
+    <div class="tool"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>Check a document</div>
+  </div>
+
+  <div class="foot"><span>wendy•••@gmail.com · English</span><span><a href="#">Settings</a> · <a href="#">Delete account</a></span></div>
+  <p class="demo">DEMO · sample data, nothing is saved</p>
+</div>
+
+<script>
+const IC = {
+  education:'<path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5v-4.5"/>',
+  money:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>'
+};
+const svg = p => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + p + '</svg>';
+const STEPS = ['Filed', 'Sent', 'Reply', 'Closed'];
+const CASES = [
+  { ref:'VC-2026-E8BKAK', icon:'education', title:'School broke promise of class change', to:'St Anne Catholic School → St. Clair CDSB', when:'Oct 14', step:2, badge:['b-reply','Reply'],
+    reply:{ from:'St Anne Catholic School', text:'Thank you for your message. We will review the class placement with the support team and contact you by Friday.' },
+    acts:['Read full reply','Escalate to the board'] },
+  { ref:'VC-2026-K2QM7D', icon:'money', title:'Collection agency keeps calling at work', to:'Consumer Protection Ontario', when:'Sep 30', step:1, badge:['b-sent','Sent'],
+    note:'Most offices answer within 30 days. We will e-mail you when they reply.', acts:['Add information','Withdraw'] }
+];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function journey(n){
+  const pct = (n / (STEPS.length - 1)) * 100;
+  return '<div class="journey"><div class="fill" style="width:calc((100% - 28px) * ' + pct / 100 + ')"></div>' +
+    STEPS.map((s, i) => '<div class="step ' + (i < n ? 'done' : i === n ? 'now' : '') + '"><span class="dot">' + (i < n ? '✓' : i + 1) + '</span><small>' + s + '</small></div>').join('') + '</div>';
+}
+document.getElementById('list').innerHTML = CASES.map((c, i) =>
+  '<div class="row' + (i === 0 ? ' open' : '') + '">' +
+    '<button class="sum" type="button"><span class="ico">' + svg(IC[c.icon]) + '</span>' +
+      '<span class="txt"><span class="t">' + esc(c.title) + '</span><span class="m">' + esc(c.ref) + ' · ' + esc(c.when) + '</span></span>' +
+      '<span class="badge ' + c.badge[0] + '">' + c.badge[1] + '</span><span class="chev">⌄</span></button>' +
+    '<div class="body"><div><div class="inner">' + journey(c.step) +
+      (c.reply ? '<div class="paper"><h4>Reply from ' + esc(c.reply.from) + '</h4><p>' + esc(c.reply.text) + '</p><small>Sent to: ' + esc(c.to) + '</small></div>'
+               : '<div class="paper"><h4>Sent to</h4><p>' + esc(c.to) + '</p><small>' + esc(c.note) + '</small></div>') +
+      '<div class="acts">' + c.acts.map((a, j) => '<button class="btn' + (j === 0 ? ' gold' : '') + '" type="button">' + esc(a) + '</button>').join('') + '</div>' +
+    '</div></div></div>' +
+  '</div>').join('');
+document.addEventListener('click', e => { const s = e.target.closest('.sum'); if (s) s.parentElement.classList.toggle('open'); });
+document.getElementById('alert').onclick = () => { const r = document.querySelector('.row'); r.classList.add('open'); r.scrollIntoView({ behavior:'smooth' }); };
+</script>
+</body>
+</html>
