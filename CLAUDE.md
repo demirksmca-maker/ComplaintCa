@@ -9,3 +9,6 @@
 - Seçenekleri uzun uzun listeleme; tek bir öneri ver.
 - Sorulmadıkça kodu satır satır açıklama.
 - Sadece gerçekten karar gerekiyorsa soru sor.
+
+## Kısa komutlar
+- **AXX**: Canlıya almadan önce değişikliğin Google sıralamasına zarar verip vermeyeceğini kontrol et (URL, başlık, içerik silme, yönlendirme). Sonucu 1 satırda söyle, sonra devam et.
