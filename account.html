@@ -368,7 +368,7 @@ $('skip').onclick = endIntro;
 
 applyLang();
 const sp = savedPass();
-if (sp) { $('em').value = sp.e; load(sp.e, sp.p); }
+if (sp) { $('em').value = sp.e; load(sp.e, sp.p).then(r => { if (!r._ok && r.error !== 'email_unverified') $('err').textContent = r.error === 'cooldown' ? T.cd : T.err; }); }
 </script>
 </body>
 </html>
