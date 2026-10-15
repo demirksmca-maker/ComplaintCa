@@ -2951,17 +2951,16 @@ async function loadPublicFeed(){
   // (Removed dead gstatic dynamic-imports here — they loaded modules but never
   // used them. The live feed reads from localStorage below; the real Firestore
   // listeners live in the bundled module block.)
-  // Public, anonymous list (Firestore publicFeed: category, city, date, status only) plus this device's own complaints.
+  // Public, anonymous list (Firestore publicFeed: category, city, date, status only).
   var pub=[];
   try{
     var r=await fetch('https://firestore.googleapis.com/v1/projects/ajan-d6070/databases/(default)/documents/publicFeed?pageSize=10&orderBy=date%20desc&key=AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g');
     if(r.ok){ var j=await r.json(); pub=(j.documents||[]).map(function(d){ var f=d.fields||{}, g=function(k){return f[k]&&f[k].stringValue||'';};
       return {ref:g('ref'),category:g('category'),location:g('city'),date:g('date'),status:g('status'),pub:true}; }); }
   }catch(e){}
-  var all=[];
-  try{ all=JSON.parse(localStorage.getItem('vc_comp')||'[]'); }catch(e){}
+  // Public list only: this device's own complaints (with titles and addresses) live in /account.
   var seen={};
-  items=all.concat(pub).filter(function(c){ if(!c||!c.ref||seen[c.ref]) return false; seen[c.ref]=1; return true; })
+  items=pub.filter(function(c){ if(!c||!c.ref||seen[c.ref]) return false; seen[c.ref]=1; return true; })
     .sort(function(a,b){ return String(b.date||'').localeCompare(String(a.date||'')); }).slice(0,10);
 
   if(!items.length){
