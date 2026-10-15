@@ -121,7 +121,23 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .head .title{margin:8px 0 4px;font-size:1.25rem;padding-left:0}
 .head .since{font-size:.92rem}
 .head .emblem{width:96px;height:96px;margin:0;flex:none}
-#records .record{display:block;margin:0 auto 16px}
+/* One line per complaint; the record opens below on tap */
+#records{border-top:1px solid rgba(230,201,138,.22);text-align:left}
+.rr{border-bottom:1px solid rgba(230,201,138,.22)}
+.rr-sum{width:100%;display:flex;align-items:center;gap:10px;padding:15px 2px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.rr-txt{flex:1;min-width:0}
+.rr-txt b{display:block;color:var(--cream);font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr-txt small{display:block;margin-top:3px;color:var(--mute);font-size:.74rem}
+.rr-new{flex:none;width:9px;height:9px;border-radius:50%;background:#ff5a6e;box-shadow:0 0 8px #ff5a6e}
+.pill{flex:none;font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;padding:5px 8px;border-radius:999px;border:1px solid currentColor}
+.p-reply{color:#5fe0a0}.p-sent{color:var(--gold)}.p-closed{color:var(--mute)}
+.rr-chev{flex:none;color:var(--gold2);transition:transform .25s}
+.rr.open .rr-chev{transform:rotate(180deg)}
+.rr-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.rr.open .rr-body{grid-template-rows:1fr}
+.rr-body>div{overflow:hidden}
+.rr .record{display:block;margin:0 0 16px;padding:16px 16px 14px;text-align:center}
+.rr .path{margin:4px 0 14px}
 </style>
 </head>
 <body>
@@ -182,12 +198,19 @@ function path(n){
   STEPS.forEach((s, i) => { if (i) h += '<span class="link' + (i <= n ? ' done' : '') + '"></span>'; h += '<span class="node ' + (i < n ? 'done' : i === n ? 'now' : '') + '">' + ['I','II','III','IV'][i] + '</span>'; });
   return '<div class="path">' + h + '</div><div class="labels">' + STEPS.map(s => '<span>' + s + '</span>').join('') + '</div>';
 }
-function record(c){
-  return '<div class="record"><div class="rec-h">RESMÎ KAYIT</div><div class="rec-t">' + esc(c.title) + '</div><div class="rec-ref">' + esc(c.ref) + ' · ' + esc(c.when) + '</div>' + path(c.step) +
-    (c.reply ? '<p class="quote">' + esc(c.reply) + '</p><div class="from">— ' + esc(c.to.split(' → ')[0]) + '</div>'
-             : '<p class="quote">' + esc(c.note) + '</p><div class="from">— ' + esc(c.to) + '</div>') +
-    '<div class="acts">' + c.acts.map((a, j) => '<button class="btn' + (j === 0 ? ' gold' : '') + '" type="button">' + a + '</button>').join('') + '</div></div>';
+const PILL = { 2:['YANIT GELDİ','p-reply'], 1:['GÖNDERİLDİ','p-sent'], 3:['KAPANDI','p-closed'] };
+function record(c, i){
+  const pill = PILL[c.step] || PILL[1];
+  return '<div class="rr' + (i === 0 ? ' open' : '') + '">' +
+    '<button class="rr-sum" type="button"><span class="rr-txt"><b>' + esc(c.title) + '</b><small>' + esc(c.ref) + ' · ' + esc(c.when) + '</small></span>' +
+      (c.isNew ? '<i class="rr-new"></i>' : '') + '<span class="pill ' + pill[1] + '">' + pill[0] + '</span><span class="rr-chev">⌄</span></button>' +
+    '<div class="rr-body"><div><div class="record">' + path(c.step) +
+      (c.reply ? '<p class="quote">' + esc(c.reply) + '</p><div class="from">— ' + esc(c.to.split(' → ')[0]) + '</div>'
+               : '<p class="quote">' + esc(c.note) + '</p><div class="from">— ' + esc(c.to) + '</div>') +
+      '<div class="acts">' + c.acts.map((a, j) => '<button class="btn' + (j === 0 ? ' gold' : '') + '" type="button">' + a + '</button>').join('') + '</div></div></div></div>' +
+  '</div>';
 }
+document.addEventListener('click', e => { const s = e.target.closest('.rr-sum'); if (s) s.parentElement.classList.toggle('open'); });
 document.getElementById('records').innerHTML = CASES.map(record).join('');
 
 // ---- Lapel pin (SVG) ----
