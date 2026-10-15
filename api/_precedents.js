@@ -6,9 +6,30 @@
 // looks for up to 10 similar Canadian decisions on CanLII; a decision is kept
 // only when its link really came back from the search (no invented cases).
 
+import { FS, fsAdmin } from './_gauth.js';
+
 const PROJECT = 'ajan-d6070';
 const MAX = 10;
 const cache = new Map(); // warm-instance cache: complaint id → result
+const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // a case is searched again after a month
+
+// Saved results (server-only `precedents` collection) so each case is searched about once a month.
+async function loadSaved(id, now = Date.now()) {
+  try {
+    const r = await fsAdmin(`${FS}/precedents/${id}`);
+    if (!r || !r.ok) return null;
+    const f = (await r.json()).fields || {};
+    const at = Date.parse((f.savedAt && f.savedAt.stringValue) || '');
+    if (!at || now - at > MAX_AGE_MS) return null;
+    return JSON.parse((f.data && f.data.stringValue) || 'null');
+  } catch { return null; }
+}
+async function save(id, out) {
+  try {
+    await fsAdmin(`${FS}/precedents/${id}`, { method: 'PATCH',
+      body: JSON.stringify({ fields: { data: { stringValue: JSON.stringify(out) }, savedAt: { stringValue: new Date().toISOString() } } }) });
+  } catch {}
+}
 
 export const CANLII_RE = /^https:\/\/(www\.)?canlii\.org\/(en|fr)\/[a-z]{2,3}\/[^\s"'<>]+$/i;
 export const normUrl = u => String(u || '').trim().replace(/[?#].*$/, '').replace(/\/+$/, '').replace(/^https:\/\/canlii/i, 'https://www.canlii').toLowerCase();
@@ -111,6 +132,8 @@ export async function precedentsFor(id, idToken) {
   const c = await readCase(id, idToken);
   if (!c) { console.error('precedents: case not readable', id); return { error: 'forbidden' }; }
   if (cache.has(id)) return cache.get(id);
+  const saved = await loadSaved(id);
+  if (saved) { cache.set(id, saved); return saved; }
   let res = null;
   try { res = await groqSearch(c); } catch (e) { console.error('precedents: groq failed:', e.message); }
   if (!res || !verify(res.list, res.found).decisions.length) {
@@ -120,6 +143,6 @@ export async function precedentsFor(id, idToken) {
   if (!res) return { error: 'search_failed' };
   const out = { ...verify(res.list, res.found), checked: new Date().toISOString().slice(0, 10) };
   console.log('precedents:', id, 'found', res.found.size, 'listed', res.list.length, 'kept', out.decisions.length);
-  if (out.decisions.length) cache.set(id, out);
+  if (out.decisions.length) { cache.set(id, out); await save(id, out); }
   return out;
 }
