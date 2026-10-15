@@ -88,14 +88,50 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .foot{margin-top:26px;color:var(--mute);font-size:.74rem;line-height:1.8}
 .foot a{color:var(--mute)}
 .demo{margin-top:14px;color:#6f7891;font-size:.68rem}
+
+/* Lapel pin: knurled gold rim, cream enamel ring with lettering, red enamel centre with a gold maple leaf */
+.pin-slot{margin:20px auto 0;width:150px;height:150px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.pin{width:100%;height:100%;display:block}
+
+/* Opening scene (3 s) */
+.intro{position:fixed;inset:0;z-index:50;background:#03070f;display:grid;place-items:center;overflow:hidden;transition:opacity .6s ease}
+.intro.out{opacity:0;pointer-events:none}
+.intro::before,.intro::after{content:"";position:absolute;left:0;right:0;height:11vh;background:#000;z-index:3;transition:transform .8s ease}
+.intro::before{top:0}.intro::after{bottom:0}
+.intro.play::before{transform:translateY(-30%)}.intro.play::after{transform:translateY(30%)}
+.spot{position:absolute;inset:0;background:radial-gradient(38% 30% at 50% 46%,rgba(255,236,190,.22),transparent 70%);opacity:0;transition:opacity 1s ease}
+.intro.play .spot{opacity:1}
+.stage{position:relative;z-index:2;text-align:center;perspective:900px}
+.stage .pin{width:230px;height:230px;margin:0 auto;opacity:0;transform:rotateY(100deg) scale(.55);filter:drop-shadow(0 14px 26px rgba(0,0,0,.7))}
+.intro.play .stage .pin{animation:pinIn 1.5s cubic-bezier(.2,.8,.2,1) .25s forwards}
+@keyframes pinIn{0%{opacity:0;transform:rotateY(100deg) scale(.55)}60%{opacity:1}100%{opacity:1;transform:rotateY(0) scale(1)}}
+.shine{position:absolute;left:50%;top:0;width:230px;height:230px;margin-left:-115px;border-radius:50%;overflow:hidden;pointer-events:none}
+.shine::after{content:"";position:absolute;top:-20%;left:-60%;width:40%;height:140%;transform:rotate(20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);opacity:0}
+.intro.play .shine::after{animation:sweep .7s ease-in-out 1.6s forwards}
+@keyframes sweep{0%{left:-60%;opacity:1}100%{left:130%;opacity:1}}
+.who{margin-top:22px;font:700 1.1rem/1 'Cinzel',Georgia,serif;letter-spacing:.5em;padding-left:.5em;color:var(--cream);opacity:0;transform:translateY(8px);transition:all .6s ease 1.9s}
+.intro.play .who{opacity:1;transform:none}
+.tap{position:relative;z-index:4;margin-top:30px;padding:14px 26px;border-radius:999px;border:1px solid rgba(230,201,138,.5);background:rgba(255,255,255,.04);color:var(--cream);font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;cursor:pointer}
+.intro.play .tap{display:none}
+.skip{position:absolute;right:16px;bottom:calc(11vh + 12px);z-index:4;background:none;border:0;color:#6f7891;font-size:.72rem;cursor:pointer}
 </style>
 </head>
 <body>
+<div class="intro" id="intro">
+  <div class="spot"></div>
+  <div class="stage">
+    <svg class="pin" id="pinIntro" viewBox="0 0 200 200" aria-hidden="true"></svg>
+    <div class="shine"></div>
+    <div class="who">WENDY</div>
+    <button class="tap" id="tap" type="button">▶ KAYDINI AÇ</button>
+  </div>
+  <button class="skip" id="skip" type="button">Geç</button>
+</div>
 <div class="wrap">
   <div class="kicker">HESABIM</div>
   <img class="emblem" src="../asya/emblem.webp" alt="">
   <div class="name">WENDY</div>
-  <div class="seal" aria-hidden="true"><svg viewBox="0 0 100 100"><path fill="#d52b1e" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></svg></div>
+  <div class="pin-slot"><svg class="pin" id="pinMain" viewBox="0 0 200 200" aria-label="ComplaintCA vatandaş rozeti"></svg></div>
   <div class="title">VATANDAŞ KAYDI</div>
   <div class="since">Ekim 2026'dan beri · 2 şikâyet · 1 yanıt</div>
   <div class="rule"></div>
@@ -154,6 +190,68 @@ function open(i){
 }
 document.addEventListener('click', e => { const m = e.target.closest('.medal'); if (m) open(+m.dataset.i); });
 open(0);
+
+// ---- Lapel pin (SVG) ----
+function drawPin(el, id){
+  const ticks = Array.from({ length: 72 }, (_, i) => '<rect x="98.6" y="3" width="2.8" height="11" rx="1" transform="rotate(' + (i * 5) + ' 100 100) skewX(-28)" fill="url(#rimDark' + id + ')"/>').join('');
+  el.innerHTML =
+    '<defs>' +
+      '<linearGradient id="rim' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#d9b55a"/><stop offset=".65" stop-color="#8a6a1e"/><stop offset="1" stop-color="#f3dc8c"/></linearGradient>' +
+      '<linearGradient id="rimDark' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5a18"/><stop offset="1" stop-color="#3b2a0c"/></linearGradient>' +
+      '<radialGradient id="enamel' + id + '" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fffdf6"/><stop offset="1" stop-color="#e9e2cf"/></radialGradient>' +
+      '<radialGradient id="red' + id + '" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#e2453a"/><stop offset=".7" stop-color="#b3211a"/><stop offset="1" stop-color="#7e1510"/></radialGradient>' +
+      '<path id="arc' + id + '" d="M100 100 m-61 0 a61 61 0 1 1 122 0 a61 61 0 1 1 -122 0"/>' +
+    '</defs>' +
+    '<circle cx="100" cy="100" r="97" fill="url(#rim' + id + ')"/>' + ticks +
+    '<circle cx="100" cy="100" r="80" fill="url(#rim' + id + ')"/>' +
+    '<circle cx="100" cy="100" r="76" fill="url(#enamel' + id + ')"/>' +
+    '<text font-family="Cinzel,Georgia,serif" font-weight="700" font-size="12.5" letter-spacing="2.2" fill="#2b2214"><textPath href="#arc' + id + '" startOffset="0">COMPLAINTCA ★ VATANDAŞ KAYDI ★ 2026 ★</textPath></text>' +
+    '<circle cx="100" cy="100" r="49" fill="url(#rim' + id + ')"/>' +
+    '<circle cx="100" cy="100" r="46" fill="url(#red' + id + ')"/>' +
+    '<g transform="translate(100 98) scale(.62) translate(-50 -50)"><path fill="url(#rim' + id + ')" stroke="#7a5a18" stroke-width="1.2" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></g>' +
+    '<path d="M38 64 A70 70 0 0 1 96 30" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
+}
+drawPin(document.getElementById('pinMain'), 'a');
+drawPin(document.getElementById('pinIntro'), 'b');
+
+// ---- Piano intro (7 s), synthesised with Web Audio: no audio files ----
+function playPiano(){
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+  const ac = new AC(), now = ac.currentTime + 0.05;
+  const master = ac.createGain(); master.gain.setValueAtTime(0.0001, now); master.gain.exponentialRampToValueAtTime(1.8, now + 0.08);
+  master.gain.setValueAtTime(1.8, now + 6.2); master.gain.exponentialRampToValueAtTime(0.0001, now + 7);
+  // Small hall: a decaying-noise impulse response
+  const rev = ac.createConvolver(), len = ac.sampleRate * 2.4, ir = ac.createBuffer(2, len, ac.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+  rev.buffer = ir;
+  const wet = ac.createGain(); wet.gain.value = 0.32; const dry = ac.createGain(); dry.gain.value = 0.75;
+  const tone = ac.createBiquadFilter(); tone.type = 'lowpass'; tone.frequency.value = 3200;
+  tone.connect(dry); tone.connect(rev); rev.connect(wet); dry.connect(master); wet.connect(master); master.connect(ac.destination);
+  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
+  function note(midi, t, vel = 0.22, len = 3){
+    [[1, 1], [2, 0.35], [3, 0.12], [4, 0.06]].forEach(([h, a]) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = h === 1 ? 'triangle' : 'sine'; o.frequency.value = hz(midi) * h; o.detune.value = (h - 1) * 1.5;
+      g.gain.setValueAtTime(0.0001, now + t); g.gain.exponentialRampToValueAtTime(vel * a, now + t + 0.006);
+      g.gain.exponentialRampToValueAtTime(vel * a * 0.35, now + t + 0.35); g.gain.exponentialRampToValueAtTime(0.0001, now + t + len / h);
+      o.connect(g); g.connect(tone); o.start(now + t); o.stop(now + t + len + 0.1);
+    });
+  }
+  // D – Bm – G – A – D, a slow arpeggio that resolves at 5.6 s
+  const bars = [[50, [62, 66, 69, 74]], [47, [62, 66, 71, 74]], [43, [62, 67, 71, 74]], [45, [61, 64, 69, 73]]];
+  bars.forEach(([bass, up], b) => { const t = b * 1.4; note(bass, t, 0.26, 3.2); note(bass + 12, t, 0.12, 3); up.forEach((n, i) => note(n, t + 0.18 + i * 0.27, 0.17, 2.6)); });
+  [50, 57, 62, 66, 69, 74, 78].forEach((n, i) => note(n, 5.6 + i * 0.03, i < 2 ? 0.22 : 0.15, 1.6));
+}
+
+// ---- Scene: 3 s, then the panel ----
+const intro = document.getElementById('intro');
+function endIntro(){ intro.classList.add('out'); setTimeout(() => intro.remove(), 700); }
+document.getElementById('tap').onclick = () => {
+  intro.classList.add('play');
+  try { playPiano(); } catch (e) {}
+  setTimeout(endIntro, 3000);
+};
+document.getElementById('skip').onclick = endIntro;
 </script>
 </body>
 </html>
