@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="google" content="notranslate">
+<title>My Account — ComplaintCA</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#d9b55a;--gold2:#e6c98a;--cream:#f6e7bf;--mute:#a9b0c4;--red:#d52b1e}
+*{box-sizing:border-box}
+html{background:#0a1a38}
+body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-apple-system,'Segoe UI',Inter,system-ui,sans-serif;
+  background:radial-gradient(75% 40% at 50% 18%,#16305c 0%,#0b1d3d 60%,#071326 100%) fixed}
+.wrap{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 26px) 18px 44px}
+
+/* Head: everything on the centre line, like the complaint panel */
+.kicker{font:700 1.05rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;padding-left:.42em;color:var(--cream)}
+.emblem{display:block;width:190px;height:190px;margin:22px auto 6px;border-radius:50%;object-fit:cover;
+  -webkit-mask-image:radial-gradient(circle,#000 58%,transparent 72%);mask-image:radial-gradient(circle,#000 58%,transparent 72%);
+  filter:drop-shadow(0 0 22px rgba(230,195,92,.35))}
+.name{position:relative;width:max-content;margin:6px auto 0;padding:6px 0 6px .42em;font:700 1.9rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;color:#fff;animation:sirenTxt 6.4s linear infinite}
+.name::before,.name::after{content:"";position:absolute;top:-22px;bottom:-22px;width:72%;border-radius:50%;z-index:-1;filter:blur(16px);opacity:0}
+.name::before{left:-20%;background:radial-gradient(closest-side,#2f8bff,rgba(47,139,255,.5) 55%,transparent);animation:sirenB 6.4s linear infinite}
+.name::after{right:-20%;background:radial-gradient(closest-side,#ff2d78,rgba(255,45,120,.5) 55%,transparent);animation:sirenR 6.4s linear infinite}
+@keyframes sirenB{0%,4%{opacity:.9}12%,16%{opacity:.08}20%,26%{opacity:.9}34%,100%{opacity:.08}}
+@keyframes sirenR{0%,48%{opacity:.08}50%,54%{opacity:.9}62%,66%{opacity:.08}70%,76%{opacity:.9}84%,100%{opacity:.08}}
+@keyframes sirenTxt{0%,26%{text-shadow:-3px 0 10px #4aa3ff,0 0 28px #2f8bff}34%,48%{text-shadow:0 0 4px rgba(255,255,255,.5)}50%,76%{text-shadow:3px 0 10px #ff4f93,0 0 28px #ff2d78}84%,100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
+@media (prefers-reduced-motion:reduce){.name,.name::before,.name::after{animation:none}}
+.seal{width:84px;height:84px;margin:22px auto 0;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,#fff,#f1f1f1 60%,#d9d9d9);box-shadow:0 0 0 3px var(--gold),0 0 0 6px rgba(213,43,30,.85),0 8px 22px rgba(0,0,0,.5)}
+.seal svg{width:62%;height:62%}
+.title{margin:22px 0 4px;font:700 1.35rem/1.1 'Cinzel',Georgia,serif;letter-spacing:.22em;padding-left:.22em;color:var(--cream)}
+.since{font:italic 1rem 'EB Garamond',Georgia,serif;color:var(--gold2)}
+.rule{height:1.5px;margin:20px 30px;background:linear-gradient(90deg,transparent,var(--gold) 25%,#f3dc8c 50%,var(--gold) 75%,transparent)}
+.sec{font:700 .66rem/1 'Cinzel',Georgia,serif;letter-spacing:.34em;padding-left:.34em;color:var(--gold2);margin:26px 0 16px}
+
+/* Complaints as medals: gold rim, icon, a ribbon in the status colour */
+.medals{display:flex;justify-content:center;flex-wrap:wrap;gap:26px}
+.medal{position:relative;width:118px;background:none;border:0;padding:0;color:inherit;cursor:pointer}
+.ribbon{width:46px;height:34px;margin:0 auto -6px;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
+.r-reply{background:repeating-linear-gradient(90deg,#1d7a52 0 8px,#5fe0a0 8px 12px)}
+.r-sent{background:repeating-linear-gradient(90deg,#8a6a1e 0 8px,#f3dc8c 8px 12px)}
+.r-closed{background:repeating-linear-gradient(90deg,#3a4256 0 8px,#8a92a6 8px 12px)}
+.disc{position:relative;width:96px;height:96px;margin:0 auto;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 28%,#fbe9a6,#d9b55a 45%,#8a6a1e 100%);box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(138,106,30,.55),0 8px 20px rgba(0,0,0,.5)}
+.disc::after{content:"";position:absolute;inset:13px;border-radius:50%;border:1.5px dashed rgba(60,40,10,.45)}
+.disc svg{width:38px;height:38px;color:#3b2a0c}
+.medal.on .disc{box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(138,106,30,.55),0 0 0 3px #fff6dc,0 0 26px rgba(243,220,140,.6)}
+.pip{position:absolute;top:4px;right:6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.medal b{display:block;margin-top:10px;font:700 .62rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.14em;color:var(--cream)}
+.medal small{display:block;margin-top:4px;font:italic .9rem 'EB Garamond',Georgia,serif;color:var(--gold2)}
+
+/* The opened record: centred parchment */
+.record{display:none;margin:26px auto 0;max-width:440px;padding:22px 20px 18px;border-radius:6px;color:#2b2214;font-family:'EB Garamond',Georgia,serif;
+  background:radial-gradient(120% 80% at 20% 10%,rgba(255,255,255,.35),transparent 60%),repeating-linear-gradient(0deg,rgba(90,60,20,.035) 0 1px,transparent 1px 4px),linear-gradient(180deg,#f2e7c9,#e6d4a8);
+  box-shadow:inset 0 0 0 1px #b48a3c,inset 0 0 0 4px #f2e7c9,inset 0 0 0 5px rgba(140,100,40,.55),0 12px 28px rgba(0,0,0,.45)}
+.record.show{display:block;animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.rec-h{font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.32em;padding-left:.32em;color:#7a5a22}
+.rec-t{margin:8px 0 2px;font-size:1.25rem;font-weight:600}
+.rec-ref{font-style:italic;color:#6b5634}
+.path{display:flex;justify-content:center;align-items:center;margin:18px 0}
+.node{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 .72rem 'Cinzel',Georgia,serif;border:1.5px solid rgba(122,90,34,.45);color:#7a5a22;background:#efe2bf}
+.node.done{border:0;color:#2b2214;background:radial-gradient(circle at 35% 30%,#f3dc8c,#c9a052)}
+.node.now{border:0;color:#f6dccb;background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%)}
+.link{width:34px;height:2px;background:rgba(122,90,34,.35)}.link.done{background:#c9a052}
+.labels{display:flex;justify-content:center;gap:12px;font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;color:#7a5a22;margin:-8px 0 16px}
+.labels span{width:52px}
+.quote{font-size:1.05rem;line-height:1.5;margin:0 0 6px}
+.quote::before{content:"“";font:700 2rem/0 'Cinzel',Georgia,serif;color:#8a2a1f;vertical-align:-.45em;margin-right:4px}
+.from{font-style:italic;color:#6b5634;font-size:.9rem}
+.acts{display:flex;justify-content:center;gap:10px;margin-top:16px}
+.btn{border-radius:999px;padding:10px 16px;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.14em;cursor:pointer;border:1px solid #b48a3c;background:transparent;color:#5b1e14}
+.btn.gold{border:0;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a)}
+
+/* Honours: badges earned by using the platform */
+.honours{display:flex;justify-content:center;gap:18px}
+.hon{width:74px}
+.hon i{display:grid;place-items:center;width:58px;height:58px;margin:0 auto;border-radius:50%;font-style:normal;font-size:1.3rem;
+  background:radial-gradient(circle at 35% 28%,#fff,#e9e9e9 60%,#cfcfcf);box-shadow:0 0 0 2px var(--gold),0 0 0 4px rgba(213,43,30,.8)}
+.hon.off i{filter:grayscale(1) brightness(.45);box-shadow:0 0 0 2px #4a5266}
+.hon small{display:block;margin-top:8px;font:700 .5rem/1.3 'Cinzel',Georgia,serif;letter-spacing:.1em;color:var(--cream)}
+.hon.off small{color:#6f7891}
+
+.cta{display:inline-block;margin-top:30px;padding:14px 30px;border-radius:999px;border:0;font:700 .72rem/1 'Cinzel',Georgia,serif;letter-spacing:.2em;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a);box-shadow:0 8px 20px rgba(0,0,0,.4);cursor:pointer}
+.foot{margin-top:26px;color:var(--mute);font-size:.74rem;line-height:1.8}
+.foot a{color:var(--mute)}
+.demo{margin-top:14px;color:#6f7891;font-size:.68rem}
+
+/* Lapel pin: knurled gold rim, cream enamel ring with lettering, red enamel centre with a gold maple leaf */
+.pin-slot{margin:20px auto 0;width:150px;height:150px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.pin{width:100%;height:100%;display:block}
+
+/* Opening scene (3 s) */
+.intro{position:fixed;inset:0;z-index:50;background:#03070f;display:grid;place-items:center;overflow:hidden;transition:opacity .6s ease}
+.intro.out{opacity:0;pointer-events:none}
+.intro::before,.intro::after{content:"";position:absolute;left:0;right:0;height:11vh;background:#000;z-index:3;transition:transform .8s ease}
+.intro::before{top:0}.intro::after{bottom:0}
+.intro.play::before{transform:translateY(-30%)}.intro.play::after{transform:translateY(30%)}
+.spot{position:absolute;inset:0;background:radial-gradient(38% 30% at 50% 46%,rgba(255,236,190,.22),transparent 70%);opacity:0;transition:opacity 1s ease}
+.intro.play .spot{opacity:1}
+.stage{position:relative;z-index:2;text-align:center;perspective:900px}
+.stage .pin{width:230px;height:230px;margin:0 auto;opacity:0;transform:rotateY(100deg) scale(.55);filter:drop-shadow(0 14px 26px rgba(0,0,0,.7))}
+.intro.play .stage .pin{animation:pinIn 1.5s cubic-bezier(.2,.8,.2,1) .25s forwards}
+@keyframes pinIn{0%{opacity:0;transform:rotateY(100deg) scale(.55)}60%{opacity:1}100%{opacity:1;transform:rotateY(0) scale(1)}}
+.shine{position:absolute;left:50%;top:0;width:230px;height:230px;margin-left:-115px;border-radius:50%;overflow:hidden;pointer-events:none}
+.shine::after{content:"";position:absolute;top:-20%;left:-60%;width:40%;height:140%;transform:rotate(20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);opacity:0}
+.intro.play .shine::after{animation:sweep .7s ease-in-out 1.6s forwards}
+@keyframes sweep{0%{left:-60%;opacity:1}100%{left:130%;opacity:1}}
+.who{margin-top:22px;font:700 1.1rem/1 'Cinzel',Georgia,serif;letter-spacing:.5em;padding-left:.5em;color:var(--cream);opacity:0;transform:translateY(8px);transition:all .6s ease 1.9s}
+.intro.play .who{opacity:1;transform:none}
+.tap{position:relative;z-index:4;margin-top:30px;padding:14px 26px;border-radius:999px;border:1px solid rgba(230,201,138,.5);background:rgba(255,255,255,.04);color:var(--cream);font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;cursor:pointer}
+.intro.play .tap{display:none}
+.skip{position:absolute;right:16px;bottom:calc(11vh + 12px);z-index:4;background:none;border:0;color:#6f7891;font-size:.72rem;cursor:pointer}
+
+/* Simple head: title left, emblem right */
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.head .kicker{font-size:.7rem;letter-spacing:.38em;padding-left:0}
+.head .title{margin:8px 0 4px;font-size:1.25rem;padding-left:0}
+.head .since{font-size:.92rem}
+.head .emblem{width:96px;height:96px;margin:0;flex:none}
+/* One line per complaint; the record opens below on tap */
+#records{border-top:1px solid rgba(230,201,138,.22);text-align:left}
+.rr{border-bottom:1px solid rgba(230,201,138,.22)}
+.rr-sum{width:100%;display:flex;align-items:center;gap:10px;padding:15px 2px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.rr-txt{flex:1;min-width:0}
+.rr-txt b{display:block;color:var(--cream);font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr-txt small{display:block;margin-top:3px;color:var(--mute);font-size:.74rem}
+.rr-new{flex:none;width:9px;height:9px;border-radius:50%;background:#ff5a6e;box-shadow:0 0 8px #ff5a6e}
+.pill{flex:none;font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;padding:5px 8px;border-radius:999px;border:1px solid currentColor}
+.p-reply{color:#5fe0a0}.p-sent{color:var(--gold)}.p-closed{color:var(--mute)}
+.rr-chev{flex:none;color:var(--gold2);transition:transform .25s}
+.rr.open .rr-chev{transform:rotate(180deg)}
+.rr-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.rr.open .rr-body{grid-template-rows:1fr}
+.rr-body>div{overflow:hidden}
+.rr .record{display:block;margin:0 0 16px;padding:16px 16px 14px;text-align:center}
+.rr .path{margin:4px 0 14px}
+
+.intro[hidden]{display:none}
+a.btn,a.cta{text-decoration:none;display:inline-block}
+.login{max-width:420px;margin:30px auto 0;padding:22px 20px;border-radius:18px;border:1px solid rgba(230,201,138,.3);background:rgba(255,255,255,.03);text-align:center}
+.login h2{margin:0 0 8px;font:700 1rem/1.3 'Cinzel',Georgia,serif;letter-spacing:.1em;color:var(--cream)}
+.login p{margin:0 0 14px;color:var(--mute);font-size:.88rem;line-height:1.5}
+.in{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(230,201,138,.3);border-radius:10px;color:#fff;padding:12px;font-size:1rem;margin:0 0 10px}
+.gbtn{width:100%;border:0;border-radius:999px;padding:13px;font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.16em;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a);cursor:pointer}
+.gbtn:disabled{opacity:.6}
+.err{color:#ff8a98;font-size:.84rem;min-height:1.2em;margin:10px 0 0}
+.empty{color:var(--mute);font-style:italic;padding:18px 0}
+.tag{font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;color:#ff8a98;margin-left:6px}
+.rr .quote{white-space:pre-wrap}
+.langs{margin-top:10px}
+.langs select{background:transparent;border:1px solid rgba(230,201,138,.3);border-radius:8px;color:var(--mute);padding:4px 8px;font-size:.74rem}
+.langs option{background:#0b1d3d}
+html[dir=rtl] .head,html[dir=rtl] #records{text-align:right}
+</style>
+</head>
+<body translate="no">
+<div class="intro" id="intro" hidden>
+  <div class="spot"></div>
+  <div class="stage">
+    <svg class="pin" id="pinIntro" viewBox="0 0 200 200" aria-hidden="true"></svg>
+    <div class="shine"></div>
+    <div class="who" id="who"></div>
+    <button class="tap" id="tap" type="button"></button>
+  </div>
+  <button class="skip" id="skip" type="button"></button>
+</div>
+<div class="wrap">
+  <header class="head">
+    <div class="head-t">
+      <div class="kicker" data-t="kicker"></div>
+      <div class="title" data-t="title"></div>
+      <div class="since" id="since"></div>
+    </div>
+    <a href="/"><img class="emblem" src="/demo/asya/emblem.webp" alt="ComplaintCA"></a>
+  </header>
+  <div class="rule"></div>
+
+  <section class="login" id="login">
+    <h2 data-t="si_t"></h2>
+    <p data-t="si_i"></p>
+    <input class="in" id="em" type="email" autocomplete="email" placeholder="you@example.com">
+    <button class="gbtn" id="send" type="button" data-t="send"></button>
+    <div id="codeBox" hidden>
+      <p id="sentMsg" style="margin:14px 0 10px"></p>
+      <input class="in" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+      <button class="gbtn" id="openBtn" type="button" data-t="open"></button>
+    </div>
+    <p class="err" id="err" role="status"></p>
+  </section>
+
+  <section id="panel" hidden>
+    <div id="records"></div>
+    <div class="sec" data-t="bsec"></div>
+    <div class="honours" id="honours"></div>
+    <a class="cta" href="/?go=new" data-t="newc"></a>
+  </section>
+
+  <div class="foot">
+    <span id="who2"></span>
+    <div><a href="/guides/free-legal-help-canada-guide.html" data-t="legal"></a><span id="soWrap" hidden> · <a href="#" id="signout" data-t="signout"></a></span></div>
+    <div class="langs"><select id="lang" aria-label="Language">
+      <option value="en">English</option><option value="fr">Français</option><option value="tr">Türkçe</option><option value="zh">中文</option><option value="es">Español</option><option value="ar">العربية</option><option value="pa">ਪੰਜਾਬੀ</option>
+    </select></div>
+  </div>
+</div>
+
+<script>
+const I18N = {"en": {"kicker": "MY ACCOUNT", "title": "CITIZEN RECORD", "since": "{n} complaints · {r} replies", "si_t": "Sign in to your record", "si_i": "Enter the e-mail you used for your complaints. We will send you a 6-digit code.", "send": "Send code", "sent": "We sent a code to {e}.", "open": "Open my record", "bad": "Wrong or expired code.", "err": "Something went wrong. Please try again.", "cd": "Too many attempts. Please wait a few minutes.", "steps": ["FILED", "SENT", "REPLY", "CLOSED"], "p": ["FILED", "SENT", "REPLY", "CLOSED"], "noreply": "No reply yet. Most offices answer within 30 days — we will e-mail you when they do.", "form": "This office takes complaints only through its own online form — the link is in your confirmation e-mail.", "notsent": "Not sent to an office automatically — see your confirmation e-mail for where to file.", "sentto": "Sent to", "from_": "From", "track": "Track", "newc": "NEW COMPLAINT", "badges": ["FIRST<br>COMPLAINT", "FIRST<br>REPLY", "CASE<br>CLOSED", "3<br>PROVINCES"], "bsec": "HONOURS", "empty": "No complaints with this e-mail yet.", "signout": "Sign out", "legal": "Free legal help", "tap": "▶ OPEN MY RECORD", "skip": "Skip", "test": "TEST", "pin": "COMPLAINTCA ★ CITIZEN RECORD ★ 2026 ★"}, "fr": {"kicker": "MON COMPTE", "title": "DOSSIER CITOYEN", "since": "{n} plaintes · {r} réponses", "si_t": "Accéder à votre dossier", "si_i": "Entrez le courriel utilisé pour vos plaintes. Nous vous enverrons un code à 6 chiffres.", "send": "Envoyer le code", "sent": "Code envoyé à {e}.", "open": "Ouvrir mon dossier", "bad": "Code erroné ou expiré.", "err": "Une erreur est survenue. Réessayez.", "cd": "Trop de tentatives. Patientez quelques minutes.", "steps": ["DÉPOSÉE", "ENVOYÉE", "RÉPONSE", "CLOSE"], "p": ["DÉPOSÉE", "ENVOYÉE", "RÉPONSE", "CLOSE"], "noreply": "Pas encore de réponse. La plupart des organismes répondent sous 30 jours — nous vous écrirons.", "form": "Cet organisme n'accepte que son propre formulaire en ligne — le lien est dans votre courriel de confirmation.", "notsent": "Non envoyée automatiquement — voir votre courriel de confirmation pour savoir où la déposer.", "sentto": "Envoyée à", "from_": "De", "track": "Suivre", "newc": "NOUVELLE PLAINTE", "badges": ["PREMIÈRE<br>PLAINTE", "PREMIÈRE<br>RÉPONSE", "DOSSIER<br>CLOS", "3<br>PROVINCES"], "bsec": "DISTINCTIONS", "empty": "Aucune plainte avec ce courriel.", "signout": "Se déconnecter", "legal": "Aide juridique gratuite", "tap": "▶ OUVRIR MON DOSSIER", "skip": "Passer", "test": "TEST", "pin": "COMPLAINTCA ★ DOSSIER CITOYEN ★ 2026 ★"}, "tr": {"kicker": "HESABIM", "title": "VATANDAŞ KAYDI", "since": "{n} şikâyet · {r} yanıt", "si_t": "Kaydınıza giriş yapın", "si_i": "Şikâyetlerinizde kullandığınız e-postayı yazın. 6 haneli bir kod göndereceğiz.", "send": "Kod gönder", "sent": "{e} adresine kod gönderdik.", "open": "Kaydımı aç", "bad": "Kod yanlış ya da süresi dolmuş.", "err": "Bir hata oldu. Lütfen tekrar deneyin.", "cd": "Çok fazla deneme. Birkaç dakika bekleyin.", "steps": ["BAŞVURU", "GÖNDERİLDİ", "YANIT", "KAPANDI"], "p": ["BAŞVURU", "GÖNDERİLDİ", "YANIT GELDİ", "KAPANDI"], "noreply": "Henüz yanıt yok. Kurumlar genelde 30 gün içinde yanıt verir; gelince size e-posta atacağız.", "form": "Bu kurum şikâyeti yalnızca kendi çevrimiçi formuyla alıyor; bağlantı onay e-postanızda.", "notsent": "Kuruma otomatik gönderilmedi; nereye başvuracağınız onay e-postanızda.", "sentto": "Gönderildi", "from_": "Kimden", "track": "Takip et", "newc": "YENİ ŞİKÂYET", "badges": ["İLK<br>ŞİKÂYET", "İLK<br>YANIT", "DAVA<br>KAPANDI", "3 İLDE<br>SES"], "bsec": "ROZETLER", "empty": "Bu e-postayla henüz şikâyet yok.", "signout": "Çıkış yap", "legal": "Ücretsiz hukuki yardım", "tap": "▶ KAYDINI AÇ", "skip": "Geç", "test": "TEST", "pin": "COMPLAINTCA ★ VATANDAŞ KAYDI ★ 2026 ★"}, "zh": {"kicker": "我的账户", "title": "公民记录", "since": "{n} 项投诉 · {r} 条回复", "si_t": "登录您的记录", "si_i": "请输入您投诉时使用的电子邮箱，我们将发送6位验证码。", "send": "发送验证码", "sent": "验证码已发送至 {e}。", "open": "打开我的记录", "bad": "验证码错误或已过期。", "err": "出现错误，请重试。", "cd": "尝试次数过多，请稍后再试。", "steps": ["已提交", "已发送", "已回复", "已结案"], "p": ["已提交", "已发送", "已回复", "已结案"], "noreply": "尚无回复。多数机构会在30天内答复，届时我们会发邮件通知您。", "form": "该机构只接受其网上表格，链接在您的确认邮件中。", "notsent": "未自动发送给机构，请查看确认邮件了解投诉途径。", "sentto": "已发送至", "from_": "来自", "track": "跟踪", "newc": "新投诉", "badges": ["首次<br>投诉", "首次<br>回复", "案件<br>结案", "3个<br>省份"], "bsec": "荣誉", "empty": "此邮箱暂无投诉。", "signout": "退出", "legal": "免费法律援助", "tap": "▶ 打开我的记录", "skip": "跳过", "test": "测试", "pin": "COMPLAINTCA ★ CITIZEN RECORD ★ 2026 ★"}, "es": {"kicker": "MI CUENTA", "title": "REGISTRO CIUDADANO", "since": "{n} quejas · {r} respuestas", "si_t": "Acceda a su registro", "si_i": "Escriba el correo que usó en sus quejas. Le enviaremos un código de 6 dígitos.", "send": "Enviar código", "sent": "Enviamos un código a {e}.", "open": "Abrir mi registro", "bad": "Código incorrecto o vencido.", "err": "Algo salió mal. Inténtelo de nuevo.", "cd": "Demasiados intentos. Espere unos minutos.", "steps": ["PRESENTADA", "ENVIADA", "RESPUESTA", "CERRADA"], "p": ["PRESENTADA", "ENVIADA", "RESPUESTA", "CERRADA"], "noreply": "Aún no hay respuesta. La mayoría responde en 30 días; le avisaremos por correo.", "form": "Este organismo solo acepta su propio formulario en línea; el enlace está en su correo de confirmación.", "notsent": "No se envió automáticamente; vea su correo de confirmación para saber dónde presentarla.", "sentto": "Enviada a", "from_": "De", "track": "Seguir", "newc": "NUEVA QUEJA", "badges": ["PRIMERA<br>QUEJA", "PRIMERA<br>RESPUESTA", "CASO<br>CERRADO", "3<br>PROVINCIAS"], "bsec": "DISTINCIONES", "empty": "Aún no hay quejas con este correo.", "signout": "Cerrar sesión", "legal": "Ayuda legal gratuita", "tap": "▶ ABRIR MI REGISTRO", "skip": "Saltar", "test": "PRUEBA", "pin": "COMPLAINTCA ★ REGISTRO CIUDADANO ★ 2026 ★"}, "ar": {"kicker": "حسابي", "title": "سجل المواطن", "since": "{n} شكاوى · {r} ردود", "si_t": "سجّل الدخول إلى سجلك", "si_i": "أدخل البريد الإلكتروني الذي استخدمته في شكاواك. سنرسل رمزًا من 6 أرقام.", "send": "إرسال الرمز", "sent": "أرسلنا رمزًا إلى {e}.", "open": "افتح سجلي", "bad": "الرمز غير صحيح أو منتهي الصلاحية.", "err": "حدث خطأ. حاول مرة أخرى.", "cd": "محاولات كثيرة. انتظر بضع دقائق.", "steps": ["قُدّمت", "أُرسلت", "الرد", "أُغلقت"], "p": ["قُدّمت", "أُرسلت", "ورد رد", "أُغلقت"], "noreply": "لا يوجد رد بعد. معظم الجهات ترد خلال 30 يومًا وسنراسلك عند الرد.", "form": "هذه الجهة تقبل الشكاوى عبر نموذجها الإلكتروني فقط؛ الرابط في بريد التأكيد.", "notsent": "لم تُرسل تلقائيًا؛ راجع بريد التأكيد لمعرفة الجهة.", "sentto": "أُرسلت إلى", "from_": "من", "track": "تتبّع", "newc": "شكوى جديدة", "badges": ["أول<br>شكوى", "أول<br>رد", "أُغلقت<br>القضية", "3<br>مقاطعات"], "bsec": "الأوسمة", "empty": "لا توجد شكاوى بهذا البريد بعد.", "signout": "تسجيل الخروج", "legal": "مساعدة قانونية مجانية", "tap": "▶ افتح سجلي", "skip": "تخطٍّ", "test": "تجربة", "pin": "COMPLAINTCA ★ CITIZEN RECORD ★ 2026 ★"}, "pa": {"kicker": "ਮੇਰਾ ਖਾਤਾ", "title": "ਨਾਗਰਿਕ ਰਿਕਾਰਡ", "since": "{n} ਸ਼ਿਕਾਇਤਾਂ · {r} ਜਵਾਬ", "si_t": "ਆਪਣੇ ਰਿਕਾਰਡ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ", "si_i": "ਸ਼ਿਕਾਇਤਾਂ ਵਿੱਚ ਵਰਤੀ ਈਮੇਲ ਲਿਖੋ। ਅਸੀਂ 6 ਅੰਕਾਂ ਦਾ ਕੋਡ ਭੇਜਾਂਗੇ।", "send": "ਕੋਡ ਭੇਜੋ", "sent": "{e} ਨੂੰ ਕੋਡ ਭੇਜਿਆ।", "open": "ਮੇਰਾ ਰਿਕਾਰਡ ਖੋਲ੍ਹੋ", "bad": "ਕੋਡ ਗਲਤ ਜਾਂ ਮਿਆਦ ਪੁੱਗ ਚੁੱਕੀ।", "err": "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।", "cd": "ਬਹੁਤ ਕੋਸ਼ਿਸ਼ਾਂ। ਕੁਝ ਮਿੰਟ ਉਡੀਕ ਕਰੋ।", "steps": ["ਦਰਜ", "ਭੇਜੀ", "ਜਵਾਬ", "ਬੰਦ"], "p": ["ਦਰਜ", "ਭੇਜੀ", "ਜਵਾਬ ਆਇਆ", "ਬੰਦ"], "noreply": "ਹਾਲੇ ਜਵਾਬ ਨਹੀਂ। ਜ਼ਿਆਦਾਤਰ ਦਫ਼ਤਰ 30 ਦਿਨਾਂ ਵਿੱਚ ਜਵਾਬ ਦਿੰਦੇ ਹਨ; ਅਸੀਂ ਈਮੇਲ ਕਰਾਂਗੇ।", "form": "ਇਹ ਦਫ਼ਤਰ ਸਿਰਫ਼ ਆਪਣੇ ਔਨਲਾਈਨ ਫਾਰਮ ਰਾਹੀਂ ਸ਼ਿਕਾਇਤ ਲੈਂਦਾ ਹੈ; ਲਿੰਕ ਪੁਸ਼ਟੀ ਈਮੇਲ ਵਿੱਚ ਹੈ।", "notsent": "ਆਪਣੇ ਆਪ ਨਹੀਂ ਭੇਜੀ ਗਈ; ਪੁਸ਼ਟੀ ਈਮੇਲ ਵੇਖੋ।", "sentto": "ਭੇਜੀ ਗਈ", "from_": "ਵੱਲੋਂ", "track": "ਟ੍ਰੈਕ ਕਰੋ", "newc": "ਨਵੀਂ ਸ਼ਿਕਾਇਤ", "badges": ["ਪਹਿਲੀ<br>ਸ਼ਿਕਾਇਤ", "ਪਹਿਲਾ<br>ਜਵਾਬ", "ਕੇਸ<br>ਬੰਦ", "3<br>ਸੂਬੇ"], "bsec": "ਸਨਮਾਨ", "empty": "ਇਸ ਈਮੇਲ ਨਾਲ ਹਾਲੇ ਕੋਈ ਸ਼ਿਕਾਇਤ ਨਹੀਂ।", "signout": "ਸਾਈਨ ਆਉਟ", "legal": "ਮੁਫ਼ਤ ਕਾਨੂੰਨੀ ਮਦਦ", "tap": "▶ ਮੇਰਾ ਰਿਕਾਰਡ ਖੋਲ੍ਹੋ", "skip": "ਛੱਡੋ", "test": "ਟੈਸਟ", "pin": "COMPLAINTCA ★ CITIZEN RECORD ★ 2026 ★"}};
+let LANG = 'en';
+try { LANG = localStorage.getItem('cc_lang') || ''; } catch (e) {}
+if (!I18N[LANG]) { const n = (navigator.language || 'en').slice(0, 2); LANG = I18N[n] ? n : 'en'; }
+let T = I18N[LANG], PIN_TEXT = T.pin, DATA = null, EMAIL = '';
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const post = (u, b) => fetch(u, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(b) })
+  .then(r => r.json().catch(() => ({})).then(d => (d._ok = r.ok, d)));
+const fmtDate = iso => { try { return new Date(iso).toLocaleDateString(LANG === 'zh' ? 'zh-CN' : LANG, { day:'numeric', month:'short', year:'numeric' }); } catch (e) { return String(iso).slice(0, 10); } };
+const mask = e => e.replace(/^(.{2}).*(@.*)$/, '$1•••$2');
+
+function applyLang(){
+  T = I18N[LANG]; PIN_TEXT = T.pin;
+  document.documentElement.lang = LANG; document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = T[el.dataset.t]; });
+  $('tap').textContent = T.tap; $('skip').textContent = T.skip; $('lang').value = LANG;
+  drawPin($('pinIntro'), 'b');
+  if (DATA) render();
+}
+$('lang').onchange = e => { LANG = e.target.value; try { localStorage.setItem('cc_lang', LANG); } catch (x) {} applyLang(); };
+
+// ---- Lapel pin (SVG) ----
+function drawPin(el, id){
+  const ticks = Array.from({ length: 72 }, (_, i) => '<rect x="98.6" y="3" width="2.8" height="11" rx="1" transform="rotate(' + (i * 5) + ' 100 100) skewX(-28)" fill="url(#rimDark' + id + ')"/>').join('');
+  el.innerHTML =
+    '<defs>' +
+      '<linearGradient id="rim' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#d9b55a"/><stop offset=".65" stop-color="#8a6a1e"/><stop offset="1" stop-color="#f3dc8c"/></linearGradient>' +
+      '<linearGradient id="rimDark' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5a18"/><stop offset="1" stop-color="#3b2a0c"/></linearGradient>' +
+      '<radialGradient id="enamel' + id + '" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fffdf6"/><stop offset="1" stop-color="#e9e2cf"/></radialGradient>' +
+      '<radialGradient id="red' + id + '" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#e2453a"/><stop offset=".7" stop-color="#b3211a"/><stop offset="1" stop-color="#7e1510"/></radialGradient>' +
+      '<path id="arc' + id + '" d="M100 100 m-61 0 a61 61 0 1 1 122 0 a61 61 0 1 1 -122 0"/>' +
+    '</defs>' +
+    '<circle cx="100" cy="100" r="97" fill="url(#rim' + id + ')"/>' + ticks +
+    '<circle cx="100" cy="100" r="80" fill="url(#rim' + id + ')"/>' +
+    '<circle cx="100" cy="100" r="76" fill="url(#enamel' + id + ')"/>' +
+    '<text font-family="Cinzel,Georgia,serif" font-weight="700" font-size="12.5" letter-spacing="2.2" fill="#2b2214"><textPath href="#arc' + id + '" startOffset="0">' + PIN_TEXT + '</textPath></text>' +
+    '<circle cx="100" cy="100" r="49" fill="url(#rim' + id + ')"/>' +
+    '<circle cx="100" cy="100" r="46" fill="url(#red' + id + ')"/>' +
+    '<g transform="translate(100 98) scale(.62) translate(-50 -50)"><path fill="url(#rim' + id + ')" stroke="#7a5a18" stroke-width="1.2" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></g>' +
+    '<path d="M38 64 A70 70 0 0 1 96 30" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
+}
+drawPin(document.getElementById('pinIntro'), 'b');
+
+// ---- Piano intro (7 s), synthesised with Web Audio: no audio files ----
+function playPiano(){
+  const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+  const ac = new AC(), now = ac.currentTime + 0.05;
+  const master = ac.createGain(); master.gain.setValueAtTime(0.0001, now); master.gain.exponentialRampToValueAtTime(1.8, now + 0.08);
+  master.gain.setValueAtTime(1.8, now + 6.2); master.gain.exponentialRampToValueAtTime(0.0001, now + 7);
+  // Small hall: a decaying-noise impulse response
+  const rev = ac.createConvolver(), len = ac.sampleRate * 2.4, ir = ac.createBuffer(2, len, ac.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+  rev.buffer = ir;
+  const wet = ac.createGain(); wet.gain.value = 0.32; const dry = ac.createGain(); dry.gain.value = 0.75;
+  const tone = ac.createBiquadFilter(); tone.type = 'lowpass'; tone.frequency.value = 3200;
+  tone.connect(dry); tone.connect(rev); rev.connect(wet); dry.connect(master); wet.connect(master); master.connect(ac.destination);
+  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
+  function note(midi, t, vel = 0.22, len = 3){
+    [[1, 1], [2, 0.35], [3, 0.12], [4, 0.06]].forEach(([h, a]) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = h === 1 ? 'triangle' : 'sine'; o.frequency.value = hz(midi) * h; o.detune.value = (h - 1) * 1.5;
+      g.gain.setValueAtTime(0.0001, now + t); g.gain.exponentialRampToValueAtTime(vel * a, now + t + 0.006);
+      g.gain.exponentialRampToValueAtTime(vel * a * 0.35, now + t + 0.35); g.gain.exponentialRampToValueAtTime(0.0001, now + t + len / h);
+      o.connect(g); g.connect(tone); o.start(now + t); o.stop(now + t + len + 0.1);
+    });
+  }
+  // D – Bm – G – A – D, a slow arpeggio that resolves at 5.6 s
+  const bars = [[50, [62, 66, 69, 74]], [47, [62, 66, 71, 74]], [43, [62, 67, 71, 74]], [45, [61, 64, 69, 73]]];
+  bars.forEach(([bass, up], b) => { const t = b * 1.4; note(bass, t, 0.26, 3.2); note(bass + 12, t, 0.12, 3); up.forEach((n, i) => note(n, t + 0.18 + i * 0.27, 0.17, 2.6)); });
+  [50, 57, 62, 66, 69, 74, 78].forEach((n, i) => note(n, 5.6 + i * 0.03, i < 2 ? 0.22 : 0.15, 1.6));
+}
+
+
+// ---- Record ----
+const IC = {
+  education:'<path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5v-4.5"/>'
+};
+function path(n){
+  let h = '';
+  T.steps.forEach((s, i) => { if (i) h += '<span class="link' + (i <= n ? ' done' : '') + '"></span>'; h += '<span class="node ' + (i < n ? 'done' : i === n ? 'now' : '') + '">' + ['I','II','III','IV'][i] + '</span>'; });
+  return '<div class="path">' + h + '</div><div class="labels">' + T.steps.map(s => '<span>' + s + '</span>').join('') + '</div>';
+}
+const PILL = ['p-sent', 'p-sent', 'p-reply', 'p-closed'];
+function record(c, i){
+  const last = c.replies[c.replies.length - 1];
+  const where = c.routedTo ? '<div class="from">' + esc(T.sentto) + ': ' + esc(c.routedTo) + '</div>' : '';
+  let body;
+  if (last) body = '<p class="quote">' + esc(last.text) + '</p><div class="from">— ' + esc(last.from.replace(/<.*>/, '').trim() || c.routedTo) + '</div>';
+  else if (c.routeStatus === 'form_only') body = '<p class="quote">' + esc(T.form) + '</p>' + where;
+  else if (c.step === 0) body = '<p class="quote">' + esc(T.notsent) + '</p>';
+  else body = '<p class="quote">' + esc(T.noreply) + '</p>' + where;
+  const fresh = !!last && i === 0;
+  return '<div class="rr' + (fresh ? ' open' : '') + '">' +
+    '<button class="rr-sum" type="button"><span class="rr-txt"><b>' + esc(c.title || c.ref) + (c.test ? '<span class="tag">' + esc(T.test) + '</span>' : '') + '</b><small>' + esc(c.ref) + ' · ' + esc(fmtDate(c.date)) + (c.place ? ' · ' + esc(c.place) : '') + '</small></span>' +
+      (last ? '<i class="rr-new"></i>' : '') + '<span class="pill ' + PILL[c.step] + '">' + esc(T.p[c.step]) + '</span><span class="rr-chev">⌄</span></button>' +
+    '<div class="rr-body"><div><div class="record">' + path(c.step) + body +
+      '<div class="acts"><a class="btn gold" href="/?track=' + encodeURIComponent(c.ref) + '">' + esc(T.track) + '</a></div></div></div></div></div>';
+}
+function render(){
+  const list = DATA.complaints || [];
+  const replies = list.reduce((n, c) => n + c.replies.length, 0);
+  $('since').textContent = T.since.replace('{n}', list.length).replace('{r}', replies);
+  $('records').innerHTML = list.length ? list.map(record).join('') : '<p class="empty">' + esc(T.empty) + '</p>';
+  const provs = new Set(list.map(c => (c.place.match(/\b(ON|BC|AB|QC|MB|SK|NS|NB|PE|NL|YT|NT|NU)\b/i) || [])[1]).filter(Boolean).map(x => x.toUpperCase()));
+  const earned = [list.length > 0, replies > 0, list.some(c => c.step === 3), provs.size >= 3];
+  $('honours').innerHTML = ['✒️', '✉️', '⚖️', '🍁'].map((e, i) => '<div class="hon' + (earned[i] ? '' : ' off') + '"><i>' + e + '</i><small>' + T.badges[i] + '</small></div>').join('');
+  $('who2').textContent = mask(EMAIL);
+}
+document.addEventListener('click', e => { const s = e.target.closest('.rr-sum'); if (s) s.parentElement.classList.toggle('open'); });
+
+// ---- Sign-in: e-mail code (same 30-day pass as the complaint form) ----
+const PASS_KEY = 'cc_mail_pass';
+const savedPass = () => { try { const o = JSON.parse(localStorage.getItem(PASS_KEY) || 'null'); return o && o.e && +String(o.p).split('.')[0] > Date.now() ? o : null; } catch (e) { return null; } };
+let tok = '';
+async function load(email, pass){
+  const d = await post('/api/my', { email, pass });
+  if (!d._ok) { if (d.error === 'email_unverified') { try { localStorage.removeItem(PASS_KEY); } catch (e) {} } return d; }
+  DATA = d; EMAIL = email;
+  $('login').hidden = true; $('panel').hidden = false; $('soWrap').hidden = false;
+  render(); return d;
+}
+$('send').onclick = async () => {
+  const m = $('em').value.trim().toLowerCase(); $('err').textContent = '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) return;
+  $('send').disabled = true;
+  const d = await post('/api/email-code', { action:'send', email:m }).catch(() => ({}));
+  $('send').disabled = false;
+  if (!d._ok) { $('err').textContent = d.error === 'cooldown' ? T.cd : T.err; return; }
+  tok = d.token; $('codeBox').hidden = false; $('sentMsg').textContent = T.sent.replace('{e}', m); $('code').focus();
+};
+$('openBtn').onclick = async () => {
+  const m = $('em').value.trim().toLowerCase(), c = $('code').value.trim(); $('err').textContent = '';
+  $('openBtn').disabled = true;
+  const d = await post('/api/email-code', { action:'check', email:m, code:c, token:tok }).catch(() => ({}));
+  if (!d._ok || !d.pass) { $('openBtn').disabled = false; $('err').textContent = d.error === 'cooldown' ? T.cd : T.bad; return; }
+  try { localStorage.setItem(PASS_KEY, JSON.stringify({ e:m, p:d.pass })); } catch (e) {}
+  const r = await load(m, d.pass); $('openBtn').disabled = false;
+  if (!r._ok) { $('err').textContent = T.err; return; }
+  firstVisitScene();
+};
+$('signout').onclick = e => { e.preventDefault(); try { localStorage.removeItem(PASS_KEY); } catch (x) {} location.reload(); };
+
+// ---- Opening scene: once per device, right after the first sign-in ----
+function firstVisitScene(){
+  let seen = false; try { seen = localStorage.getItem('cc_intro_seen') === '1'; } catch (e) {}
+  if (seen) return;
+  try { localStorage.setItem('cc_intro_seen', '1'); } catch (e) {}
+  $('who').textContent = mask(EMAIL); $('intro').hidden = false;
+}
+const intro = $('intro');
+function endIntro(){ intro.classList.add('out'); setTimeout(() => { intro.hidden = true; }, 700); }
+$('tap').onclick = () => { intro.classList.add('play'); try { playPiano(); } catch (e) {} setTimeout(endIntro, 3000); };
+$('skip').onclick = endIntro;
+
+applyLang();
+const sp = savedPass();
+if (sp) { $('em').value = sp.e; load(sp.e, sp.p); }
+</script>
+</body>
+</html>

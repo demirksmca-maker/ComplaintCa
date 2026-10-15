@@ -6,7 +6,7 @@
       "permanent": true
     },
     {
-      "source": "/(about|privacy|terms|start|presentation)",
+      "source": "/(about|privacy|terms|start|presentation|account)",
       "destination": "/$1.html",
       "permanent": true
     },
@@ -29,6 +29,10 @@
     {
       "source": "/api/precedents",
       "destination": "/api/route?precedents=1"
+    },
+    {
+      "source": "/api/my",
+      "destination": "/api/complaint?my=1"
     },
     {
       "source": "/api/reply-view",

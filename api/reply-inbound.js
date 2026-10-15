@@ -59,7 +59,8 @@ export function noticeEmail(c) {
     fr: { s: 'Vous avez une réponse — ' + c.ref, b: 'L\'organisme a répondu à votre plainte ' + c.ref + (c.title ? ' (« ' + c.title + ' »)' : '') + '.\n\nPour protéger votre vie privée, la réponse n\'est pas incluse dans ce courriel. Consultez-la en toute sécurité ici — nous enverrons un court code à cette adresse pour confirmer votre identité :\n' },
     tr: { s: 'Yanıt geldi — ' + c.ref, b: 'Kurum ' + c.ref + (c.title ? ' ("' + c.title + '")' : '') + ' numaralı şikâyetinize yanıt verdi.\n\nGizliliğiniz için yanıt bu e-postada yer almıyor. Güvenle buradan okuyun — siz olduğunuzu doğrulamak için bu adrese kısa bir kod göndereceğiz:\n' },
   }[c.lang === 'fr' ? 'fr' : c.lang === 'tr' ? 'tr' : 'en'];
-  return { subject: (c.test ? '[TEST] ' : '') + T.s, body: T.b + link };
+  const all = { en: '\n\nAll your complaints: ', fr: '\n\nToutes vos plaintes : ', tr: '\n\nTüm şikâyetleriniz: ' }[c.lang === 'fr' ? 'fr' : c.lang === 'tr' ? 'tr' : 'en'];
+  return { subject: (c.test ? '[TEST] ' : '') + T.s, body: T.b + link + all + 'https://www.complaintca.ca/account' };
 }
 
 async function sendMail(to, name, subject, body) {
