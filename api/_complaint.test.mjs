@@ -263,3 +263,20 @@ describe('public summary (publicFeed)', () => {
     assert.ok(!/me@example\.com|heating/.test(pub[0].body));
   });
 });
+
+import { withOwnWords } from './_complaint-core.js';
+import { emailDraftSpec } from './_verdict.js';
+test('own words go in unedited, before the law section', () => {
+  const d = 'Dear Principal,\nText.\n\nSUMMARY OF EVENTS\n- When: Oct 6\n\nAPPLICABLE LAW AND OBLIGATIONS\n- Education Act\n\nSincerely,';
+  const out = withOwnWords(d, 'Kızım 1. sınıfta.', false);
+  assert.ok(out.indexOf("IN THE COMPLAINANT'S OWN WORDS") < out.indexOf('APPLICABLE LAW'));
+  assert.ok(out.includes('"Kızım 1. sınıfta."'));
+  assert.ok(withOwnWords('Short letter.', 'My story', false).endsWith('"My story"'));
+  assert.equal(withOwnWords(d, '', false), d);
+});
+test('letter layout asks for the sections in order', () => {
+  const s = emailDraftSpec({ lang: 'en' });
+  for (const h of ['SUMMARY OF EVENTS', 'APPLICABLE LAW AND OBLIGATIONS', 'REQUESTS', 'RESPONSE DEADLINE AND NEXT STEPS']) assert.ok(s.includes(h));
+  assert.ok(emailDraftSpec({ lang: 'fr' }).includes('LOIS APPLICABLES ET OBLIGATIONS'));
+  assert.ok(!emailDraftSpec({ isAnon: true, lang: 'en' }).includes('REQUESTS"'));
+});

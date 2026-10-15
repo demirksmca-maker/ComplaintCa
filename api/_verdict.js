@@ -3,6 +3,19 @@
 // via the same id the live claude-proxy uses) and the same section parsing.
 import { _foiFactsFor, _verifiedFactsFor } from './_engine-data.js';
 
+// The institution letter's layout (EMAIL_DRAFT); index.html has the same function.
+export function emailDraftSpec(o) {
+  var fr = o.lang === 'fr';
+  var H = fr ? { facts: 'RÉSUMÉ DES FAITS', law: 'LOIS APPLICABLES ET OBLIGATIONS', req: 'DEMANDES', next: 'DÉLAI DE RÉPONSE ET PROCHAINES ÉTAPES' }
+             : { facts: 'SUMMARY OF EVENTS', law: 'APPLICABLE LAW AND OBLIGATIONS', req: 'REQUESTS', next: 'RESPONSE DEADLINE AND NEXT STEPS' };
+  var plain = 'Plain text only: no markdown, no asterisks, no "#". Use the headings exactly as written, in capitals, each on its own line. ';
+  var facts = 'the heading "' + H.facts + '" followed by short "- " lines: when, where, who was involved, who has already been contacted and how, and the current situation. Write only lines whose facts are stated in the complaint; never invent dates, names, places or amounts';
+  var law = 'the heading "' + H.law + '" followed by 1-3 "- " lines, each naming a real Canadian Act, regulation or policy (use LAW and VERIFIED_FACTS) and saying in plain words what it requires of the institution. If unsure, write "- Requires specific legal counsel"';
+  if (o.isAnon) return 'EMAIL_DRAFT:\n[An ANONYMOUS ADVISORY NOTICE, not a formal complaint. ' + plain + 'Parts in this order: (1) a greeting and a 3-5 sentence paragraph stating the factual issue and that it is submitted anonymously for the institution\'s awareness; (2) ' + facts + ', leaving out anything that could identify the complainant; (3) ' + law + '; (4) one closing sentence suggesting they may wish to look into it. No demand, no deadline, no escalation threat. Sign as: "Anonymous Notice — Ref: [REF]"]';
+  if (o.isFoi) return 'EMAIL_DRAFT:\n[A formal access-to-information request, NOT a complaint. ' + plain + 'Parts in this order: (1) a greeting and a 3-5 sentence paragraph stating this is a request under the Act named in VERIFIED_FACTS and that no reason is required; (2) the heading "' + (fr ? 'DOCUMENTS DEMANDÉS' : 'RECORDS REQUESTED') + '" followed by numbered lines describing exactly the records or information requested and the period, based on the complaint; (3) the heading "' + H.next + '" followed by 1-2 sentences asking for a written response within the statutory deadline and naming the recourse from VERIFIED_FACTS if given. No accusation, no demand for a remedy. Sign as: Requester — Ref: [REF]]';
+  return 'EMAIL_DRAFT:\n[A complete, well-structured formal letter. ' + plain + 'Parts in this order: (1) a greeting to the institution and an opening paragraph of 4-6 sentences in the first person: who I am in relation to the matter, what happened, when and where, what I have done so far, and how it affects me; (2) ' + facts + '; (3) ' + law + '; (4) the heading "' + H.req + '" followed by numbered lines (1., 2., ...) with the concrete, reasonable things I ask for, based on the complaint; (5) the heading "' + H.next + '" followed by 1-3 sentences: the response deadline (from VERIFIED_FACTS if given, otherwise a written response within 30 days) and the oversight body I will turn to if there is no answer' + (o.isLegal ? ', ending with "Failure to respond by [deadline] will result in formal escalation."' : '') + '; (6) "' + (fr ? 'Veuillez agréer mes salutations distinguées,' : 'Sincerely,') + '" then "Complainant — Ref: [REF]". Firm but professional.]';
+}
+
 export function verdictPrompt({ title = '', desc = '', category = '', location = '', targetName = '', ctype = 'notice', anonymous = true, lang = 'en', today = new Date().toLocaleDateString('en-CA') }) {
   const L = lang === 'fr' ? 'French' : 'English';
   const isLegal = ctype === 'legal', isFoi = ctype === 'access', isAnon = !!anonymous;
@@ -16,13 +29,7 @@ export function verdictPrompt({ title = '', desc = '', category = '', location =
     'LAW:\n' + (isFoi ? '[One line: the exact Act name from VERIFIED_FACTS, verbatim. Do not add a section number unless one is given.]' : '[One line: exact Act name + section only. e.g. Residential Tenancies Act 2006, s.20(1)]') + '\n\n' +
     'SANCTIONS:\n' + (isFoi ? '[One line: the recourse from VERIFIED_FACTS, verbatim, if present — this is the appeal path if the request is refused or the deadline is missed, not a punitive sanction.]' : '[One line: specific real penalty/remedy only. No elaboration.]') + '\n\n' +
     (isAnon ? 'RESPONSE_DEADLINE:\n[One line: state "Not applicable — anonymous submissions are not entitled to a mandated response" instead of a deadline.]\n\n' : 'RESPONSE_DEADLINE:\n[One line: exact regulatory deadline only.]\n\n') +
-    (isAnon
-      ? 'EMAIL_DRAFT:\n[3-4 sentences max. Frame as an ANONYMOUS ADVISORY NOTICE, not a formal complaint: state the factual issue, note it is submitted anonymously for the institution\'s awareness, and suggest they may wish to investigate. No demand, no deadline, no escalation threat. Sign as: "Anonymous Notice — Ref: [REF]"]'
-      : isFoi
-        ? 'EMAIL_DRAFT:\n[3-4 sentences max. Format as a formal access-to-information/freedom-of-information request, NOT a complaint: state this is a request under the Act named in VERIFIED_FACTS, specifically describe the records/information requested (based on the complaint text), note that no reason is required to be given for the request, and ask for a written response within the statutory deadline. No accusation, no demand for a remedy. Sign as: Requester — Ref: [REF]]'
-        : isLegal
-          ? 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual incident, applicable law, demand. End with: "Failure to respond by [deadline] will result in formal escalation." Sign as: Complainant — Ref: [REF]]'
-          : 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual issue, expected resolution, response deadline. Firm but professional. Sign as: Complainant — Ref: [REF]]') +
+    emailDraftSpec({ isAnon, isFoi, isLegal, lang }) +
     '\n\nCASE_POOL_SUGGEST:\n[Answer YES or NO only. Always NO for access-to-information requests — they are not legal claims. Otherwise YES only if the facts describe a genuine legal-rights violation with a specific applicable law AND a realistic remedy/compensation claim a lawyer could pursue on this person\'s behalf (e.g. wrongful termination, unpaid wages, tenant rights violation, discrimination, personal injury, breach of contract with damages). NO for routine administrative/service complaints with no real legal claim (noise, garbage, minor service issues, general dissatisfaction).]' +
     '\n\nREMEDY:\n[Max 8 words: what the person may be able to recover or obtain under that law (e.g. "Unpaid wages + vacation pay", "Full refund", "Compensation for lost wages"). Write NONE if no concrete remedy applies.]' +
     '\n\nCLAIM_DEADLINE:\n[Max 8 words: the legal time limit to file a claim or application (e.g. "2 years from the date owed", "1 year from the incident"). Write NONE if not certain.]';
@@ -66,7 +73,7 @@ export async function runVerdict(input) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 1200, system: p.system, messages: [{ role: 'user', content: p.user }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 2400, system: p.system, messages: [{ role: 'user', content: p.user }] }),
   });
   const d = await r.json();
   if (d.error) return null;

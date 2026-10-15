@@ -3681,14 +3681,7 @@ async function runAI(){
     (isAnon
       ? 'RESPONSE_DEADLINE:\n[One line: state "Not applicable — anonymous submissions are not entitled to a mandated response" instead of a deadline.]\n\n'
       : 'RESPONSE_DEADLINE:\n[One line: exact regulatory deadline only.]\n\n')+
-    (isAnon
-      ? 'EMAIL_DRAFT:\n[3-4 sentences max. Frame as an ANONYMOUS ADVISORY NOTICE, not a formal complaint: state the factual issue, note it is submitted anonymously for the institution\'s awareness, and suggest they may wish to investigate. No demand, no deadline, no escalation threat. Sign as: "Anonymous Notice — Ref: [REF]"]'
-      : isFoi
-        ? 'EMAIL_DRAFT:\n[3-4 sentences max. Format as a formal access-to-information/freedom-of-information request, NOT a complaint: state this is a request under the Act named in VERIFIED_FACTS, specifically describe the records/information requested (based on the complaint text), note that no reason is required to be given for the request, and ask for a written response within the statutory deadline. No accusation, no demand for a remedy. Sign as: Requester — Ref: [REF]]'
-      : isLegal
-        ? 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual incident, applicable law, demand. End with: "Failure to respond by [deadline] will result in formal escalation." Sign as: Complainant — Ref: [REF]]'
-        : 'EMAIL_DRAFT:\n[3-4 sentences max. State: identity, factual issue, expected resolution, response deadline. Firm but professional. Sign as: Complainant — Ref: [REF]]'
-    )+
+    emailDraftSpec({isAnon:isAnon,isFoi:isFoi,isLegal:isLegal,lang:_aLang})+
     '\n\nCASE_POOL_SUGGEST:\n[Answer YES or NO only. Always NO for access-to-information requests — they are not legal claims. Otherwise YES only if the facts describe a genuine legal-rights violation with a specific applicable law AND a realistic remedy/compensation claim a lawyer could pursue on this person\'s behalf (e.g. wrongful termination, unpaid wages, tenant rights violation, discrimination, personal injury, breach of contract with damages). NO for routine administrative/service complaints with no real legal claim (noise, garbage, minor service issues, general dissatisfaction).]';
 
   var facts=isFoi ? _foiFactsFor(loc) : _verifiedFactsFor(cat);
@@ -3711,7 +3704,7 @@ async function runAI(){
       var r=await fetch('/api/claude-proxy',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({max_tokens:800,system:sys,messages:[{role:'user',content:msg}]})
+        body:JSON.stringify({max_tokens:2400,system:sys,messages:[{role:'user',content:msg}]})
       });
       var d=await r.json();
       if(d.error) return null;
@@ -3755,6 +3748,8 @@ async function runAI(){
     var poolSuggest=parseSection(full,'CASE_POOL_SUGGEST','XXXEND');
 
     var descEl=document.getElementById('inp-desc');
+    // Keep what the person first wrote: it goes into the letter unedited (withOwnWords).
+    if(descEl&&!window._ccOrigDesc) window._ccOrigDesc=descEl.value;
     if(descEl&&complaintText){descEl.value=complaintText;updateCC();suggestCategoryAI();}
     if(descEl){descEl.style.borderColor='#16a34a';setTimeout(function(){descEl.style.borderColor='';},2000);}
 
@@ -3870,6 +3865,28 @@ function _basicComplaintEmail(c, authorityName){
   return body;
 }
 
+// The institution letter's layout (EMAIL_DRAFT); api/_verdict.js has the same function.
+function emailDraftSpec(o) {
+  var fr = o.lang === 'fr';
+  var H = fr ? { facts: 'RÉSUMÉ DES FAITS', law: 'LOIS APPLICABLES ET OBLIGATIONS', req: 'DEMANDES', next: 'DÉLAI DE RÉPONSE ET PROCHAINES ÉTAPES' }
+             : { facts: 'SUMMARY OF EVENTS', law: 'APPLICABLE LAW AND OBLIGATIONS', req: 'REQUESTS', next: 'RESPONSE DEADLINE AND NEXT STEPS' };
+  var plain = 'Plain text only: no markdown, no asterisks, no "#". Use the headings exactly as written, in capitals, each on its own line. ';
+  var facts = 'the heading "' + H.facts + '" followed by short "- " lines: when, where, who was involved, who has already been contacted and how, and the current situation. Write only lines whose facts are stated in the complaint; never invent dates, names, places or amounts';
+  var law = 'the heading "' + H.law + '" followed by 1-3 "- " lines, each naming a real Canadian Act, regulation or policy (use LAW and VERIFIED_FACTS) and saying in plain words what it requires of the institution. If unsure, write "- Requires specific legal counsel"';
+  if (o.isAnon) return 'EMAIL_DRAFT:\n[An ANONYMOUS ADVISORY NOTICE, not a formal complaint. ' + plain + 'Parts in this order: (1) a greeting and a 3-5 sentence paragraph stating the factual issue and that it is submitted anonymously for the institution\'s awareness; (2) ' + facts + ', leaving out anything that could identify the complainant; (3) ' + law + '; (4) one closing sentence suggesting they may wish to look into it. No demand, no deadline, no escalation threat. Sign as: "Anonymous Notice — Ref: [REF]"]';
+  if (o.isFoi) return 'EMAIL_DRAFT:\n[A formal access-to-information request, NOT a complaint. ' + plain + 'Parts in this order: (1) a greeting and a 3-5 sentence paragraph stating this is a request under the Act named in VERIFIED_FACTS and that no reason is required; (2) the heading "' + (fr ? 'DOCUMENTS DEMANDÉS' : 'RECORDS REQUESTED') + '" followed by numbered lines describing exactly the records or information requested and the period, based on the complaint; (3) the heading "' + H.next + '" followed by 1-2 sentences asking for a written response within the statutory deadline and naming the recourse from VERIFIED_FACTS if given. No accusation, no demand for a remedy. Sign as: Requester — Ref: [REF]]';
+  return 'EMAIL_DRAFT:\n[A complete, well-structured formal letter. ' + plain + 'Parts in this order: (1) a greeting to the institution and an opening paragraph of 4-6 sentences in the first person: who I am in relation to the matter, what happened, when and where, what I have done so far, and how it affects me; (2) ' + facts + '; (3) ' + law + '; (4) the heading "' + H.req + '" followed by numbered lines (1., 2., ...) with the concrete, reasonable things I ask for, based on the complaint; (5) the heading "' + H.next + '" followed by 1-3 sentences: the response deadline (from VERIFIED_FACTS if given, otherwise a written response within 30 days) and the oversight body I will turn to if there is no answer' + (o.isLegal ? ', ending with "Failure to respond by [deadline] will result in formal escalation."' : '') + '; (6) "' + (fr ? 'Veuillez agréer mes salutations distinguées,' : 'Sincerely,') + '" then "Complainant — Ref: [REF]". Firm but professional.]';
+}
+// The complainant's own text, unedited, goes into the letter before the law section (same as api/_complaint-core.js).
+function withOwnWords(draft, own, fr) {
+  own = String(own || '').trim().slice(0, 3000);
+  if (!draft || !own || draft.indexOf(own) > -1) return draft;
+  var block = (fr
+    ? 'DANS LES MOTS DU PLAIGNANT (non modifié)\nLe texte ci-dessous est ce que le plaignant a écrit à ComplaintCA, dans ses propres mots et sa langue, sans modification. La lettre ci-dessus en découle.\n\n« ' + own + ' »'
+    : 'IN THE COMPLAINANT\'S OWN WORDS (unedited)\nThe text below is what the complainant wrote to ComplaintCA, in their own words and language, without changes. The letter above is based on it.\n\n"' + own + '"') + '\n\n';
+  var at = draft.search(/^(APPLICABLE LAW AND OBLIGATIONS|LOIS APPLICABLES ET OBLIGATIONS)\s*$/m);
+  return at > -1 ? draft.slice(0, at) + block + draft.slice(at) : draft.replace(/\s*$/, '') + '\n\n' + block.trim();
+}
 async function sendComplaintEmail(complaint, authorityEmail, authorityName, emailDraft){
   var ref = complaint.ref;
   var fr = _aLang==='fr';
@@ -3907,7 +3924,8 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   var replyAlias = 'complaintcaca+'+ref+'@gmail.com';
   var instSent = false;
   if(emailDraft && authorityEmail){
-    var instBody = emailDraft + footer + privacyNotice;
+    var ownText = (!complaint.anonymous && !isFoiEmail && emailDraft !== _basicComplaintEmail(complaint, authorityName)) ? (window._ccOrigDesc || complaint.desc) : '';
+    var instBody = withOwnWords(emailDraft, ownText, fr) + footer + privacyNotice;
     instSent = await sendBrevoEmail(
       authorityEmail,
       authorityName,
@@ -4182,7 +4200,9 @@ async function doSubmit(){
   }
   if(auths&&auths.length&&_isMail(auths[0].email)){
     var auth=auths[0];
-    sendComplaintEmail(c,auth.email,auth.name,emailDraft).then(function(result){
+    var _sent=sendComplaintEmail(c,auth.email,auth.name,emailDraft);
+    window._ccOrigDesc=null; // read synchronously above; the next complaint starts fresh
+    _sent.then(function(result){
       if(!emailStatus) return;
       emailStatus.style.display='block';
       if(result.institution){
