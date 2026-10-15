@@ -114,6 +114,14 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .tap{position:relative;z-index:4;margin-top:30px;padding:14px 26px;border-radius:999px;border:1px solid rgba(230,201,138,.5);background:rgba(255,255,255,.04);color:var(--cream);font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;cursor:pointer}
 .intro.play .tap{display:none}
 .skip{position:absolute;right:16px;bottom:calc(11vh + 12px);z-index:4;background:none;border:0;color:#6f7891;font-size:.72rem;cursor:pointer}
+
+/* Simple head: title left, emblem right */
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.head .kicker{font-size:.7rem;letter-spacing:.38em;padding-left:0}
+.head .title{margin:8px 0 4px;font-size:1.25rem;padding-left:0}
+.head .since{font-size:.92rem}
+.head .emblem{width:96px;height:96px;margin:0;flex:none}
+#records .record{display:block;margin:0 auto 16px}
 </style>
 </head>
 <body>
@@ -128,17 +136,16 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
   <button class="skip" id="skip" type="button">Geç</button>
 </div>
 <div class="wrap">
-  <div class="kicker">HESABIM</div>
-  <img class="emblem" src="../asya/emblem.webp" alt="">
-  <div class="name">WENDY</div>
-  <div class="pin-slot"><svg class="pin" id="pinMain" viewBox="0 0 200 200" aria-label="ComplaintCA vatandaş rozeti"></svg></div>
-  <div class="title">VATANDAŞ KAYDI</div>
-  <div class="since">Ekim 2026'dan beri · 2 şikâyet · 1 yanıt</div>
+  <header class="head">
+    <div class="head-t">
+      <div class="kicker">HESABIM</div>
+      <div class="title">VATANDAŞ KAYDI</div>
+      <div class="since">Ekim 2026'dan beri · 2 şikâyet · 1 yanıt</div>
+    </div>
+    <img class="emblem" src="../asya/emblem.webp" alt="">
+  </header>
   <div class="rule"></div>
-
-  <div class="sec">ŞİKÂYETLERİM</div>
-  <div class="medals" id="medals"></div>
-  <div class="record" id="record"></div>
+  <div id="records"></div>
 
   <div class="sec">ROZETLER</div>
   <div class="honours">
@@ -170,26 +177,18 @@ const CASES = [
     note:'Kurumlar genelde 30 gün içinde yanıt verir. Yanıt gelince size e-posta atacağız.', acts:['BİLGİ EKLE','GERİ ÇEK'] }
 ];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-document.getElementById('medals').innerHTML = CASES.map((c, i) =>
-  '<button class="medal" type="button" data-i="' + i + '"><div class="ribbon ' + c.ribbon + '"></div><div class="disc">' + svg(IC[c.icon]) + '</div>' +
-  (c.isNew ? '<span class="pip">1</span>' : '') + '<b>' + c.label + '</b><small>' + esc(c.when) + '</small></button>').join('');
 function path(n){
   let h = '';
   STEPS.forEach((s, i) => { if (i) h += '<span class="link' + (i <= n ? ' done' : '') + '"></span>'; h += '<span class="node ' + (i < n ? 'done' : i === n ? 'now' : '') + '">' + ['I','II','III','IV'][i] + '</span>'; });
   return '<div class="path">' + h + '</div><div class="labels">' + STEPS.map(s => '<span>' + s + '</span>').join('') + '</div>';
 }
-const rec = document.getElementById('record');
-function open(i){
-  const c = CASES[i];
-  document.querySelectorAll('.medal').forEach((m, j) => m.classList.toggle('on', j === i));
-  rec.innerHTML = '<div class="rec-h">RESMÎ KAYIT</div><div class="rec-t">' + esc(c.title) + '</div><div class="rec-ref">' + esc(c.ref) + '</div>' + path(c.step) +
+function record(c){
+  return '<div class="record"><div class="rec-h">RESMÎ KAYIT</div><div class="rec-t">' + esc(c.title) + '</div><div class="rec-ref">' + esc(c.ref) + ' · ' + esc(c.when) + '</div>' + path(c.step) +
     (c.reply ? '<p class="quote">' + esc(c.reply) + '</p><div class="from">— ' + esc(c.to.split(' → ')[0]) + '</div>'
              : '<p class="quote">' + esc(c.note) + '</p><div class="from">— ' + esc(c.to) + '</div>') +
-    '<div class="acts">' + c.acts.map((a, j) => '<button class="btn' + (j === 0 ? ' gold' : '') + '" type="button">' + a + '</button>').join('') + '</div>';
-  rec.classList.remove('show'); void rec.offsetWidth; rec.classList.add('show');
+    '<div class="acts">' + c.acts.map((a, j) => '<button class="btn' + (j === 0 ? ' gold' : '') + '" type="button">' + a + '</button>').join('') + '</div></div>';
 }
-document.addEventListener('click', e => { const m = e.target.closest('.medal'); if (m) open(+m.dataset.i); });
-open(0);
+document.getElementById('records').innerHTML = CASES.map(record).join('');
 
 // ---- Lapel pin (SVG) ----
 function drawPin(el, id){
@@ -211,7 +210,6 @@ function drawPin(el, id){
     '<g transform="translate(100 98) scale(.62) translate(-50 -50)"><path fill="url(#rim' + id + ')" stroke="#7a5a18" stroke-width="1.2" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></g>' +
     '<path d="M38 64 A70 70 0 0 1 96 30" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
 }
-drawPin(document.getElementById('pinMain'), 'a');
 drawPin(document.getElementById('pinIntro'), 'b');
 
 // ---- Piano intro (7 s), synthesised with Web Audio: no audio files ----
