@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       if (await isRateLimited(ip, { limit: 12, windowMs: 10 * 60 * 1000, bucket: 'precedents' })) return res.status(429).json({ error: 'cooldown' });
       const tok = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '');
       const out = await precedentsFor(str(b.id, 64), tok);
-      return res.status(out.error ? 403 : 200).json(out);
+      return res.status(out.error === 'forbidden' ? 403 : out.error ? 502 : 200).json(out);
     }
     if (await isRateLimited(ip, { limit: 40, windowMs: 5 * 60 * 1000, bucket: 'route' })) return res.status(429).json({ error: 'cooldown' });
     const category = isValidCategory(b.category) ? b.category : 'other';
@@ -30,6 +30,7 @@ export default async function handler(req, res) {
       chain: getChain(category, target, location, targetAddress),
     });
   } catch (err) {
+    console.error('route error:', err && err.message);
     return res.status(500).json({ error: 'server' });
   }
 }

@@ -91,12 +91,35 @@ async function groqSearch(c) {
   return { list: parseList(msg.content), found: foundUrls(msg.executed_tools) };
 }
 
+// Fallback: Claude with web search limited to canlii.org. The search results it
+// returns (web_search_tool_result blocks) are the "found" set for verification.
+async function claudeSearch(c) {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 2000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 4, allowed_domains: ['canlii.org'] }],
+      messages: [{ role: 'user', content: prompt(c) }] })
+  });
+  const d = await r.json();
+  if (!r.ok || !Array.isArray(d.content)) throw new Error('claude: ' + ((d.error && d.error.message) || r.status));
+  const text = d.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
+  return { list: parseList(text), found: foundUrls(d.content.filter(b => b.type === 'web_search_tool_result')) };
+}
+
 export async function precedentsFor(id, idToken) {
   const c = await readCase(id, idToken);
-  if (!c) return { error: 'forbidden' };
+  if (!c) { console.error('precedents: case not readable', id); return { error: 'forbidden' }; }
   if (cache.has(id)) return cache.get(id);
-  const { list, found } = await groqSearch(c);
-  const out = { ...verify(list, found), checked: new Date().toISOString().slice(0, 10) };
-  cache.set(id, out);
+  let res = null;
+  try { res = await groqSearch(c); } catch (e) { console.error('precedents: groq failed:', e.message); }
+  if (!res || !verify(res.list, res.found).decisions.length) {
+    try { const alt = await claudeSearch(c); if (!res || verify(alt.list, alt.found).decisions.length) res = alt; }
+    catch (e) { console.error('precedents: claude failed:', e.message); }
+  }
+  if (!res) return { error: 'search_failed' };
+  const out = { ...verify(res.list, res.found), checked: new Date().toISOString().slice(0, 10) };
+  console.log('precedents:', id, 'found', res.found.size, 'listed', res.list.length, 'kept', out.decisions.length);
+  if (out.decisions.length) cache.set(id, out);
   return out;
 }
