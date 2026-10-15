@@ -23,7 +23,7 @@
   ],
   "functions": {
     "api/complaint.js": { "includeFiles": "data/on-schools.json" },
-    "api/route.js": { "includeFiles": "data/on-schools.json" }
+    "api/route.js": { "includeFiles": "data/on-schools.json", "maxDuration": 60 }
   },
   "rewrites": [
     {
