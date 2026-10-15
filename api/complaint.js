@@ -27,6 +27,8 @@ import { classify } from './_classify.js';
 import { mailSecret, checkPass } from './_mailcode.js';
 import emailCode from './_email-code.js';
 import replyView from './_reply-view.js';
+import myAccount from './_my.js';
+import { fsAdmin } from './_gauth.js';
 
 const FIREBASE_PROJECT = 'ajan-d6070';
 // Public web API key (already shipped in index.html). Writes still pass through
@@ -46,13 +48,23 @@ async function verifyTurnstile(token, ip) {
   } catch { return false; }
 }
 
+async function noteRouting(docName, record, inst) {
+  const step = inst.status === 'sent' ? 'sent' : inst.status === 'form_only' ? 'form' : null;
+  const tl = [...record.timeline, ...(step ? [{ status: step, date: new Date().toISOString() }] : [])];
+  const fields = toFirestore({ routedTo: inst.name || '', routeStatus: inst.status, timeline: tl }).mapValue.fields;
+  try {
+    await fsAdmin(`https://firestore.googleapis.com/v1/${docName}?updateMask.fieldPaths=routedTo&updateMask.fieldPaths=routeStatus&updateMask.fieldPaths=timeline`,
+      { method: 'PATCH', body: JSON.stringify({ fields }) });
+  } catch {}
+}
+
 async function saveToFirestore(record) {
   const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/complaints?key=${FIREBASE_API_KEY}`;
   const body = JSON.stringify({ fields: toFirestore(record).mapValue.fields });
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
-      if (r.ok) return true;
+      if (r.ok) { const d = await r.json().catch(() => ({})); return d.name || true; } // the document path, for the routing note below
       if (r.status < 500) return false; // rule rejection — retrying won't help
     } catch {}
     if (attempt < 3) await new Promise(res => setTimeout(res, 600 * attempt));
@@ -87,6 +99,7 @@ export default async function handler(req, res) {
   // /api/email-code is rewritten here (one function instead of two, see vercel.json).
   if (/[?&]mailcode=1\b/.test(req.url || '') || (req.query && req.query.mailcode === '1')) return emailCode(req, res);
   if (/[?&]replyview=1\b/.test(req.url || '') || (req.query && req.query.replyview === '1')) return replyView(req, res);
+  if (/[?&]my=1\b/.test(req.url || '') || (req.query && req.query.my === '1')) return myAccount(req, res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   try {
@@ -146,6 +159,9 @@ export default async function handler(req, res) {
     } else if (top) {
       institution = { status: 'form_only', name: top.name };
     }
+
+    // Note where it went, for "My account" (server-only write; the outcome is not something the user can set).
+    if (typeof saved === 'string' && institution.status !== 'none') await noteRouting(saved, record, institution);
 
     // Admin heads-up for high-priority complaints (live only, like the institution email).
     let admin = 'none';

@@ -135,6 +135,7 @@ export function buildRecord(input, { ref, now = new Date().toISOString(), test =
     target: input.target, targetName: input.targetName, targetAddress: input.targetAddress,
     priority: input.priority || 'medium', location: input.location,
     anonymous: input.anonymous, name: input.anonymous ? null : input.name, email: input.email,
+    emailLower: String(input.email || '').trim().toLowerCase(), // lets "My account" find a person's complaints
     ctype: input.ctype, isLegal: input.ctype === 'legal',
     photoCount: input.photoCount, status: 'received', date: now,
     timeline: [{ status: 'received', date: now }],
