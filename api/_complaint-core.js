@@ -231,6 +231,17 @@ export function fixDraftRef(draft, ref) {
 
 // Port of sendComplaintEmail (index.html): draft + contact footer + privacy notice.
 // Replies go to a per-complaint alias, never to the complainant's own address.
+// The complainant's own text, unedited, goes into the letter before the law section (index.html has the same function).
+export function withOwnWords(draft, own, fr) {
+  own = String(own || '').trim().slice(0, 3000);
+  if (!draft || !own || draft.indexOf(own) > -1) return draft;
+  var block = (fr
+    ? 'DANS LES MOTS DU PLAIGNANT (non modifié)\nLe texte ci-dessous est ce que le plaignant a écrit à ComplaintCA, dans ses propres mots et sa langue, sans modification. La lettre ci-dessus en découle.\n\n« ' + own + ' »'
+    : 'IN THE COMPLAINANT\'S OWN WORDS (unedited)\nThe text below is what the complainant wrote to ComplaintCA, in their own words and language, without changes. The letter above is based on it.\n\n"' + own + '"') + '\n\n';
+  var at = draft.search(/^(APPLICABLE LAW AND OBLIGATIONS|LOIS APPLICABLES ET OBLIGATIONS)\s*$/m);
+  return at > -1 ? draft.slice(0, at) + block + draft.slice(at) : draft.replace(/\s*$/, '') + '\n\n' + block.trim();
+}
+
 export function institutionEmail(c, authorityName, draft, now = new Date()) {
   const fr = c.lang === 'fr';
   const ref = c.ref;
@@ -249,7 +260,8 @@ export function institutionEmail(c, authorityName, draft, now = new Date()) {
   const subject = c.ctype === 'access'
     ? (fr ? 'Demande d\'Accès à l\'Information — ' : 'Access to Information Request — ') + ref + ' — ' + c.title
     : (fr ? 'Plainte Officielle — ' : 'Formal Complaint — ') + ref + ' — ' + c.title;
-  const text = draft ? fixDraftRef(draft, ref) : basicComplaintEmail(c, authorityName);
+  const own = !c.anonymous && c.ctype !== 'access' ? c.desc : '';
+  const text = draft ? withOwnWords(fixDraftRef(draft, ref), own, fr) : basicComplaintEmail(c, authorityName);
   return { subject, body: text + footer + privacy, replyTo: replyAddress(ref) };
 }
 
