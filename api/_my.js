@@ -1,6 +1,8 @@
 // Served at /api/my through api/complaint.js (vercel.json rewrite; Hobby allows 12 functions).
 // POST { email, pass } → the complaints filed with that e-mail, for the "My account" page.
 // pass is the 30-day mail pass from /api/email-code, so only the owner of the inbox gets the list.
+// A signed-in site user (Google / Firebase) may send their ID token instead
+// (Authorization: Bearer …); its e-mail must be verified.
 import { isRateLimited } from './_rateLimit.js';
 import { mailSecret, checkPass } from './_mailcode.js';
 import { FS, fsAdmin } from './_gauth.js';
@@ -51,17 +53,32 @@ export function shape(f, replies) {
   };
 }
 
+const WEB_KEY = 'AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g'; // public Firebase web key (also in index.html)
+
+// The verified e-mail behind a Firebase ID token, or ''.
+export async function tokenEmail(idToken) {
+  if (!idToken) return '';
+  try {
+    const r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' + WEB_KEY,
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) });
+    if (!r.ok) return '';
+    const u = ((await r.json()).users || [])[0];
+    return u && u.email && u.emailVerified ? String(u.email) : '';
+  } catch { return ''; }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   const b = req.body || {};
-  const typed = String(b.email || '').trim().slice(0, 254);
-  const email = typed.toLowerCase();
-  if (!email) return res.status(400).json({ error: 'invalid' });
+  const bearer = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '');
   try {
     if (await isRateLimited(ip, { limit: 30, windowMs: 15 * 60 * 1000, bucket: 'my' })) return res.status(429).json({ error: 'cooldown' });
+    const typed = (bearer ? await tokenEmail(bearer) : String(b.email || '')).trim().slice(0, 254);
+    const email = typed.toLowerCase();
+    if (!email) return res.status(bearer ? 403 : 400).json({ error: bearer ? 'email_unverified' : 'invalid' });
     const sec = mailSecret();
-    if (!sec || !checkPass(sec, email, b.pass)) return res.status(403).json({ error: 'email_unverified' });
+    if (!bearer && (!sec || !checkPass(sec, email, b.pass))) return res.status(403).json({ error: 'email_unverified' });
     // New records carry emailLower; older ones only the e-mail as typed, often with a
     // capital first letter (phone keyboards), so those variants are looked up too.
     const variants = [...new Set([email, typed, email.charAt(0).toUpperCase() + email.slice(1)])];

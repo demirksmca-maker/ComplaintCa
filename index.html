@@ -4958,11 +4958,15 @@ async function _renderMyComplaints(email){
   uc.style.display='block';
   ul.innerHTML='<div class="empty" style="padding:20px">Loading…</div>';
   var myComplaints=[];
-  try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
+  var fromServer=null;
+  try{ if(window._fbMyComplaintsServer){ fromServer=await window._fbMyComplaintsServer(); } }catch(e){}
+  if(fromServer) myComplaints=fromServer;
+  else try{ if(window._fbMyComplaints){ myComplaints=await window._fbMyComplaints(email); } }catch(e){}
   if(!myComplaints.length){ myComplaints=_complaints.filter(function(c){return!c.anonymous&&c.email===email;}); }
   ul.innerHTML=myComplaints.length
     ? myComplaints.map(_complaintCardWithDelete).join('')
     : '<div class="empty" style="padding:20px">No complaints linked to this account yet.</div>';
+  ul.innerHTML+='<a href="/account" style="display:block;text-align:center;margin-top:6px;padding:11px;border:1px solid var(--border);border-radius:10px;color:var(--gold,#c9a84c);font-family:Cinzel,serif;font-weight:700;font-size:.78rem;letter-spacing:1px;text-decoration:none">'+escHtml(V.t('auth_account'))+' →</a>';
 }
 function _authErrorMessage(e){
   switch(e&&e.code){
@@ -5428,6 +5432,14 @@ try{
   });
   window._fbSave=async function(c){return await addDoc(collection(db,'complaints'),c);};
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
+  // The server list (/api/my) sees every complaint filed with this e-mail; the
+  // direct Firestore query below only sees what the rules allow, so it is the fallback.
+  window._fbMyComplaintsServer=async function(){
+    const u=authInst.currentUser; if(!u) return null;
+    const r=await fetch('/api/my',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(await u.getIdToken())},body:'{}'});
+    if(!r.ok) return null;
+    return ((await r.json()).complaints||[]).map(function(c){return {ref:c.ref,title:c.title,category:c.category,date:c.date,status:c.status,isLegal:c.legal,targetName:c.routedTo||c.place,timeline:[]};});
+  };
   window._fbMyComplaints=async function(email){const q=query(collection(db,'complaints'),where('email','==',email),limit(20));const s=await getDocs(q);var arr=[];s.forEach(function(d){arr.push(d.data());});return arr;};
   window._fbDelete=async function(ref,email){
     const q=query(collection(db,'complaints'),where('ref','==',ref),where('email','==',email),limit(1));
