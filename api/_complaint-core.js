@@ -320,11 +320,26 @@ export function decideClass(parsed) {
   };
 }
 
-// Public, anonymous summary of a filed complaint for the site's "Recent complaints" list:
-// no name, e-mail, title or story — only category, a general place, date and status.
+// Short public headline, like the Lawyer Panel rows: the title with e-mails, links and
+// phone/long numbers taken out, cut to 80 characters. Empty when nothing is left.
+export function publicTitle(t) {
+  const s = String(t || '')
+    .replace(/\S+@\S+/g, '')
+    .replace(/https?:\/\/\S+|www\.\S+/gi, '')
+    .replace(/\+?\d[\d\s().-]{5,}\d/g, '')
+    .replace(/[<>\n\r]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  return s.length > 80 ? s.slice(0, 79).trimEnd() + '…' : s;
+}
+
+// Public summary of a filed complaint for the site's "Recent complaints" list:
+// a short headline, category, a general place, date and status — never a name, e-mail or story.
 export function publicSummary(c) {
   const loc = String(c.location || '').split(',').map(x => x.trim()).filter(Boolean);
   // Keep a city/province only; anything with digits looks like a street address and is dropped.
   const place = loc.filter(x => !/\d/.test(x)).slice(-2).join(', ').slice(0, 60) || 'Canada';
-  return { ref: c.ref, category: String(c.category || 'other').slice(0, 40), city: place, date: c.date, status: 'received' };
+  const s = { ref: c.ref, category: String(c.category || 'other').slice(0, 40), city: place, date: c.date, status: 'received' };
+  const title = publicTitle(c.title || (c.desc ? titleFromDesc(String(c.desc)) : ''));
+  if (title) s.title = title;
+  return s;
 }
