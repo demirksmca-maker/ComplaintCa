@@ -212,6 +212,11 @@ describe('publicFeed (anonymous public list)', () => {
     await assertFails(db.collection('publicFeed').doc(ok.ref).set({ ...ok, email: 'a@b.ca' }));
     await assertFails(db.collection('publicFeed').doc(ok.ref).set({ ...ok, desc: 'story' }));
   });
+  test('a short title is allowed, a long one is not', async () => {
+    const db = testEnv.unauthenticatedContext().firestore();
+    await assertSucceeds(db.collection('publicFeed').doc(ok.ref).set({ ...ok, title: 'School reversed a class move' }));
+    await assertFails(db.collection('publicFeed').doc('VC-2026-PUB778').set({ ...ok, ref: 'VC-2026-PUB778', title: 'x'.repeat(81) }));
+  });
   test('doc id must match the ref; no updates or deletes', async () => {
     const db = testEnv.unauthenticatedContext().firestore();
     await assertFails(db.collection('publicFeed').doc('other').set(ok));

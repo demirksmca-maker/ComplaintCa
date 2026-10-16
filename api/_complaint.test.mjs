@@ -244,12 +244,20 @@ describe('e-mail check', () => {
 });
 
 describe('public summary (publicFeed)', () => {
-  test('keeps only category, a general place, date and status — no name, e-mail or story', async () => {
+  test('keeps a short title, category, a general place, date and status — no name, e-mail or story', async () => {
     const { publicSummary } = await import('./_complaint-core.js');
     const s = publicSummary({ ref: 'VC-2026-ABC123', category: 'education', location: '183 Snow Ave, Blenheim, ON', date: '2026-10-14T04:11:52Z', name: 'W', email: 'w@x.ca', desc: 'story', title: 't' });
-    assert.deepEqual(Object.keys(s).sort(), ['category', 'city', 'date', 'ref', 'status']);
+    assert.deepEqual(Object.keys(s).sort(), ['category', 'city', 'date', 'ref', 'status', 'title']);
+    assert.equal(s.title, 't');
     assert.equal(s.city, 'Blenheim, ON');
     assert.equal(publicSummary({ ref: 'VC-2026-ABC123', location: '' }).city, 'Canada');
+  });
+  test('title drops e-mails, links and phone numbers, and is cut to 80 characters', async () => {
+    const { publicTitle, publicSummary } = await import('./_complaint-core.js');
+    assert.equal(publicTitle('Call me at 519-555-0123 or a@b.ca see https://x.ca now'), 'Call me at or see now');
+    assert.ok(publicTitle('x'.repeat(200)).length <= 80);
+    assert.equal(publicSummary({ ref: 'VC-2026-ABC123', desc: 'Dealer kept my deposit. More text.' }).title, 'Dealer kept my deposit.');
+    assert.ok(!('title' in publicSummary({ ref: 'VC-2026-ABC123' })));
   });
   test('test filings are not published; live filings are', async () => {
     mockFetch();
@@ -257,10 +265,10 @@ describe('public summary (publicFeed)', () => {
     assert.equal(calls.filter(c => c.url.includes('/publicFeed')).length, 0);
     process.env.COMPLAINT_LIVE = '1';
     mockFetch();
-    await call({ ...good(), test: false });
+    await call({ ...good(), desc: good().desc + ' The tenant next door is Jane Roe.', test: false });
     const pub = calls.filter(c => c.url.includes('/publicFeed'));
     assert.equal(pub.length, 1);
-    assert.ok(!/me@example\.com|heating/.test(pub[0].body));
+    assert.ok(!/me@example\.com|Jane Roe/.test(pub[0].body));
   });
 });
 
