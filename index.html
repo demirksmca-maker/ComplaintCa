@@ -217,6 +217,15 @@ html[data-restoring-tab] #pg-app{display:block}
 .back-btn{display:none;align-items:center;gap:6px;color:rgba(255,255,255,.7);font-size:.8rem;font-weight:600;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
 .back-btn:hover{color:white}
 .back-btn.show{display:flex}
+.topbar-inner{position:relative}
+.topbar .logo-btn,.topbar .back-btn{display:none!important}
+.topbar-right{margin-left:auto}
+.topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;white-space:nowrap}
+.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 0 #3a2506) drop-shadow(0 2px 2px rgba(0,0,0,.6)) drop-shadow(0 0 8px rgba(240,200,90,.45));font-size:1.15rem;background:linear-gradient(180deg,#fff6c8 0%,#f5d77a 22%,#c9962e 48%,#7a5212 52%,#b8862a 70%,#f0cf6e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.topbar-ca{font-size:1.4rem;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;line-height:1}
+.topbar-title .lang-dd-btn{padding:2px 2px 2px 0;gap:3px}
+.topbar-caret{margin-top:4px}
+.topbar-title .lang-dd-menu{right:auto;left:50%;transform:translateX(-50%);letter-spacing:0;font-weight:400}
 
 
 
@@ -710,16 +719,17 @@ textarea{resize:vertical;min-height:90px}
         <span class="logo-text" style="font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;font-kerning:none;font-feature-settings:'kern' 0;line-height:1;white-space:nowrap">Complaint<span style="color:#ff5a5a;-webkit-text-fill-color:#ff5a5a;background:none">CA</span></span>
       </span>
     </button>
-    <div class="topbar-right">
-      <button class="back-btn" id="back-btn" onclick="goHome()">← Home</button>
-      <button id="theme-toggle-btn" onclick="toggleTheme()" title="Switch theme" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;width:28px;height:28px;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:.82rem;line-height:1;flex-shrink:0">🌙</button>
+    <div class="topbar-title"><span class="topbar-word">Complaint</span>
       <div class="lang-dd" id="lang-dd">
-        <button class="lang-dd-btn" onclick="toggleLangDD()" id="lang-dd-btn">
+        <button class="lang-dd-btn" onclick="toggleLangDD()" id="lang-dd-btn" aria-label="Language / Langue">
+          <span class="topbar-ca">CA</span>
+          <span class="lang-old" style="display:none">
           <span id="lang-flag-display" style="display:flex;align-items:center;line-height:0">
             <svg width="22" height="15" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="7.5" height="20" fill="#c8102e"/><rect x="22.5" width="7.5" height="20" fill="#c8102e"/><path d="M15 5l.8 2.2 2.2-.7-1.4 1.8 1.8 1.1-2.3.2.5 2.3-1.6-1.7-1.6 1.7.5-2.3-2.3-.2 1.8-1.1-1.4-1.8 2.2.7z" fill="#c8102e"/></svg>
           </span>
           <span id="lang-label" style="font-size:.72rem;color:rgba(255,255,255,.75);font-family:Inter,sans-serif;font-weight:600;margin-left:6px">EN</span>
-          <svg width="8" height="5" viewBox="0 0 10 6" fill="none" style="margin-left:4px"><path d="M1 1l4 4 4-4" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <svg class="topbar-caret" width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#e8c463" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-dd-menu" id="lang-dd-menu">
           <div class="lang-dd-item active" tabindex="0" role="button" onclick="selectLangDD('en','EN',this)">
@@ -752,6 +762,10 @@ textarea{resize:vertical;min-height:90px}
           </div>
         </div>
       </div>
+    </div>
+    <div class="topbar-right">
+      <button class="back-btn" id="back-btn" onclick="goHome()">← Home</button>
+      <button id="theme-toggle-btn" onclick="toggleTheme()" title="Switch theme" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:7px;width:28px;height:28px;cursor:pointer;display:none;align-items:center;justify-content:center;font-size:.82rem;line-height:1;flex-shrink:0">🌙</button>
     </div>
   </div>
 </header>
@@ -839,6 +853,7 @@ textarea{resize:vertical;min-height:90px}
       <div class="ht-item"><span class="ht-dot"></span><span id="l-t7">7 Languages</span></div>
 <div class="ht-item"><span class="ht-dot"></span><span id="l-t4">Live Tracking</span></div>
     </div>
+    <p id="l-disc" style="margin:14px 0 0;font-size:.72rem;color:rgba(255,255,255,.5);font-family:Inter,sans-serif">ComplaintCA is an independent platform. It is not a government agency.</p>
   </section>
 </div>
 <!-- APP -->
@@ -2277,7 +2292,7 @@ const V = (function(){
       ht:"Your Complaint.\u003cbr\u003e\u003cem\u003eHeard. Tracked. Resolved.\u003c/em\u003e",
       hs:"Submit complaints to municipalities, businesses, or landlords across Canada.",
       c1:"File a Complaint",c2:"Track My Complaint",
-      t1:"Anonymous",t2:"AI Routing",t3:"3 Languages",t4:"Live Tracking",
+      disc:"ComplaintCA is an independent platform. It is not a government agency.",t1:"Anonymous",t2:"AI Routing",t3:"3 Languages",t4:"Live Tracking",
       hub_kicker:"Six Paths to Justice",hub_file_d:"Turn your voice into a formal complaint.",hub_lawyer_t:"Free Lawyer &amp; Civil Society",hub_lawyer_d:"AI-matched lawyer &amp; NGO, ready-to-send drafts.",hub_mv_d:"Locate your representative by address.",hub_cyber_t:"Cyber Crime Report",hub_cyber_d:"Report harassment, threats, and identity theft.",hub_verify_t:"Verify a Document",hub_verify_d:"Get an AI risk check on a suspicious email or file.",hub_guides_t:"Guides",hub_guides_d:"Find the right authority by province and topic.",
       who:"About You",anl:"Submit anonymously",ans:"Your identity will not be shared",
       lnm:"Full Name",lem:"Email",lph:"Phone (optional)",anonemailnote:"Required even for anonymous reports — used only for verification, never shared with the institution.",
@@ -2367,7 +2382,7 @@ const V = (function(){
       ht:"Şikayetiniz.\u003cbr\u003e\u003cem\u003eDuyuldu. Takip edildi. Çözüldü.\u003c/em\u003e",
       hs:"Kanada genelinde belediyelere, işletmelere veya ev sahiplerine şikayet iletin.",
       c1:"Şikayet Gönder",c2:"Şikayetimi Takip Et",
-      t1:"Anonim",t2:"Yapay Zeka",t3:"3 Dil",t4:"Canlı Takip",
+      disc:"ComplaintCA bağımsız bir platformdur. Devlet kurumu değildir.",t1:"Anonim",t2:"Yapay Zeka",t3:"3 Dil",t4:"Canlı Takip",
       hub_kicker:"Adalete Giden Altı Yol",hub_file_d:"Sesini resmi bir şikayete dönüştür.",hub_lawyer_t:"Ücretsiz Avukat &amp; STK",hub_lawyer_d:"Yapay zekayla eşleşen avukat &amp; STK, gönderime hazır taslaklar.",hub_mv_d:"Adresine göre temsilcini bul.",hub_cyber_t:"Cyber Şikayet",hub_cyber_d:"Taciz, tehdit ve kimlik hırsızlığını bildir.",hub_verify_t:"Şüpheli Belge Sorgula",hub_verify_d:"Şüpheli e-posta ya da belgeyi yapay zekaya doğrulat.",hub_guides_t:"Rehber",hub_guides_d:"Eyalete ve konuya göre doğru kurumu öğren.",
       who:"Hakkınızda",anl:"Anonim gönder",ans:"Kimliğiniz paylaşılmayacak",
       lnm:"Ad Soyad",lem:"E-posta",lph:"Telefon (isteğe bağlı)",anonemailnote:"Anonim bildirimlerde bile zorunludur — yalnızca doğrulama için kullanılır, kuruma asla paylaşılmaz.",
@@ -2457,7 +2472,7 @@ const V = (function(){
       ht:"Votre plainte.\u003cbr\u003e\u003cem\u003eEntendue. Suivie. Résolue.\u003c/em\u003e",
       hs:"Soumettez des plaintes aux municipalités, entreprises ou propriétaires partout au Canada.",
       c1:"Déposer une plainte",c2:"Suivre ma plainte",
-      t1:"Anonyme",t2:"IA",t3:"3 Langues",t4:"Suivi en direct",
+      disc:"ComplaintCA est une plateforme indépendante. Ce n'est pas un organisme gouvernemental.",t1:"Anonyme",t2:"IA",t3:"3 Langues",t4:"Suivi en direct",
       hub_kicker:"Six Chemins Vers la Justice",hub_file_d:"Transformez votre voix en plainte officielle.",hub_lawyer_t:"Avocat Gratuit &amp; Société Civile",hub_lawyer_d:"Avocat et ONG assortis par IA, brouillons prêts à envoyer.",hub_mv_d:"Trouvez votre représentant par adresse.",hub_cyber_t:"Signalement Cybercriminalité",hub_cyber_d:"Signalez harcèlement, menaces et usurpation d'identité.",hub_verify_t:"Vérifier un Document",hub_verify_d:"Faites vérifier un e-mail ou fichier suspect par l'IA.",hub_guides_t:"Guides",hub_guides_d:"Trouvez la bonne autorité par province et sujet.",
       who:"À votre sujet",anl:"Soumettre anonymement",ans:"Votre identité ne sera pas partagée",
       lnm:"Nom complet",lem:"Courriel",lph:"Téléphone (optionnel)",anonemailnote:"Obligatoire même pour les signalements anonymes — utilisé uniquement pour la vérification, jamais partagé avec l'institution.",
@@ -2503,7 +2518,7 @@ const V = (function(){
       ht:"您的投诉。<br><em>被倾听。被追踪。被解决。</em>",
       hs:"向加拿大各地的市政机构、企业或房东提交投诉。",
       c1:"提交投诉",c2:"追踪我的投诉",
-      t1:"匿名",t2:"AI路由",t3:"多语言",t4:"实时追踪",
+      disc:"ComplaintCA 是一个独立平台，不是政府机构。",t1:"匿名",t2:"AI路由",t3:"多语言",t4:"实时追踪",
       hub_kicker:"通往正义的六条路径",hub_file_d:"把你的声音变成正式投诉。",hub_lawyer_t:"免费律师与民间组织",hub_lawyer_d:"AI匹配律师与民间组织，附现成邮件草稿。",hub_mv_d:"按地址查找你的代表。",hub_cyber_t:"网络犯罪举报",hub_cyber_d:"举报骚扰、威胁和身份盗窃。",hub_verify_t:"核查可疑文件",hub_verify_d:"让AI检查可疑邮件或文件的风险。",hub_guides_t:"指南",hub_guides_d:"按省份和主题查找正确机构。",
       who:"关于您",anl:"匿名提交",ans:"您的身份不会被共享",
       lnm:"全名",lem:"电子邮件",lph:"电话（可选）",anonemailnote:"即使是匿名举报也是必填项——仅用于验证，绝不会与机构共享。",
@@ -2549,7 +2564,7 @@ const V = (function(){
       ht:"Presentar una <em>Queja</em> Oficial",
       hs:"Plataforma segura y rápida para realizar sus denuncias en Canadá.",
       c1:"Comenzar Queja",c2:"Rastrear mi queja",
-      t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
+      disc:"ComplaintCA es una plataforma independiente. No es una agencia gubernamental.",t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
       hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Abogado y ONG emparejados por IA, borradores listos para enviar.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Guías",hub_guides_d:"Encuentra la autoridad correcta por provincia y tema.",
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
@@ -2595,7 +2610,7 @@ const V = (function(){
       ht:"شكواك.<br><em>مسموعة. مُتابَعة. محلولة.</em>",
       hs:"قدّم شكاوى إلى البلديات والشركات وأصحاب العقارات في جميع أنحاء كندا.",
       c1:"تقديم شكوى",c2:"تتبع شكواي",
-      t1:"مجهول",t2:"ذكاء اصطناعي",t3:"لغات",t4:"تتبع مباشر",
+      disc:"ComplaintCA منصة مستقلة وليست جهة حكومية.",t1:"مجهول",t2:"ذكاء اصطناعي",t3:"لغات",t4:"تتبع مباشر",
       hub_kicker:"ستة طرق نحو العدالة",hub_file_d:"حوّل صوتك إلى شكوى رسمية.",hub_lawyer_t:"محامٍ مجاني ومنظمات المجتمع المدني",hub_lawyer_d:"محامٍ ومنظمة يُطابقهما الذكاء الاصطناعي، مع مسودات جاهزة للإرسال.",hub_mv_d:"حدد ممثلك حسب العنوان.",hub_cyber_t:"بلاغ جريمة إلكترونية",hub_cyber_d:"أبلغ عن التحرش والتهديدات وسرقة الهوية.",hub_verify_t:"التحقق من مستند",hub_verify_d:"احصل على فحص مخاطر بالذكاء الاصطناعي لبريد أو ملف مشبوه.",hub_guides_t:"أدلة",hub_guides_d:"اعثر على الجهة المختصة حسب المقاطعة والموضوع.",
       who:"معلوماتك",anl:"إرسال بشكل مجهول",ans:"لن يتم مشاركة هويتك",
       lnm:"الاسم الكامل",lem:"البريد الإلكتروني",lph:"الهاتف (اختياري)",anonemailnote:"مطلوب حتى في البلاغات المجهولة - يُستخدم فقط للتحقق ولا يُشارك أبدًا مع المؤسسة.",
@@ -2641,7 +2656,7 @@ const V = (function(){
       ht:"ਤੁਹਾਡੀ ਸ਼ਿਕਾਇਤ।<br><em>ਸੁਣੀ। ਟਰੈਕ ਕੀਤੀ। ਹੱਲ ਕੀਤੀ।</em>",
       hs:"ਕੈਨੇਡਾ ਭਰ ਵਿੱਚ ਮਿਉਂਸਪੈਲਿਟੀਆਂ, ਕਾਰੋਬਾਰਾਂ ਜਾਂ ਮਕਾਨ ਮਾਲਕਾਂ ਵਿਰੁੱਧ ਸ਼ਿਕਾਇਤ ਕਰੋ।",
       c1:"ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰੋ",c2:"ਮੇਰੀ ਸ਼ਿਕਾਇਤ ਟਰੈਕ ਕਰੋ",
-      t1:"ਗੁਮਨਾਮ",t2:"AI",t3:"ਭਾਸ਼ਾਵਾਂ",t4:"ਲਾਈਵ ਟਰੈਕਿੰਗ",
+      disc:"ComplaintCA ਇੱਕ ਸੁਤੰਤਰ ਪਲੇਟਫਾਰਮ ਹੈ। ਇਹ ਸਰਕਾਰੀ ਏਜੰਸੀ ਨਹੀਂ ਹੈ।",t1:"ਗੁਮਨਾਮ",t2:"AI",t3:"ਭਾਸ਼ਾਵਾਂ",t4:"ਲਾਈਵ ਟਰੈਕਿੰਗ",
       hub_kicker:"ਨਿਆਂ ਵੱਲ ਛੇ ਰਸਤੇ",hub_file_d:"ਆਪਣੀ ਆਵਾਜ਼ ਨੂੰ ਰਸਮੀ ਸ਼ਿਕਾਇਤ ਵਿੱਚ ਬਦਲੋ।",hub_lawyer_t:"ਮੁਫ਼ਤ ਵਕੀਲ ਅਤੇ ਸਿਵਲ ਸੁਸਾਇਟੀ",hub_lawyer_d:"AI ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਵਕੀਲ ਅਤੇ NGO, ਭੇਜਣ ਲਈ ਤਿਆਰ ਡਰਾਫਟ।",hub_mv_d:"ਪਤੇ ਦੇ ਆਧਾਰ 'ਤੇ ਆਪਣਾ ਨੁਮਾਇੰਦਾ ਲੱਭੋ।",hub_cyber_t:"ਸਾਈਬਰ ਕ੍ਰਾਈਮ ਰਿਪੋਰਟ",hub_cyber_d:"ਪਰੇਸ਼ਾਨੀ, ਧਮਕੀਆਂ ਅਤੇ ਪਛਾਣ ਚੋਰੀ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।",hub_verify_t:"ਦਸਤਾਵੇਜ਼ ਦੀ ਜਾਂਚ ਕਰੋ",hub_verify_d:"ਸ਼ੱਕੀ ਈਮੇਲ ਜਾਂ ਫਾਈਲ ਦੀ AI ਜਾਂਚ ਕਰਵਾਓ।",hub_guides_t:"ਗਾਈਡਾਂ",hub_guides_d:"ਸੂਬੇ ਅਤੇ ਵਿਸ਼ੇ ਅਨੁਸਾਰ ਸਹੀ ਅਥਾਰਟੀ ਲੱਭੋ।",
       who:"ਤੁਹਾਡੇ ਬਾਰੇ",anl:"ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਜਮ੍ਹਾ ਕਰੋ",ans:"ਤੁਹਾਡੀ ਪਛਾਣ ਸਾਂਝੀ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ",
       lnm:"ਪੂਰਾ ਨਾਮ",lem:"ਈਮੇਲ",lph:"ਫ਼ੋਨ (ਵਿਕਲਪਿਕ)",anonemailnote:"ਅਗਿਆਤ ਰਿਪੋਰਟਾਂ ਲਈ ਵੀ ਲਾਜ਼ਮੀ ਹੈ — ਸਿਰਫ਼ ਤਸਦੀਕ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ, ਸੰਸਥਾ ਨਾਲ ਕਦੇ ਸਾਂਝਾ ਨਹੀਂ ਕੀਤਾ ਜਾਂਦਾ।",
@@ -2693,7 +2708,7 @@ const V = (function(){
       'cy-sub-lbl':'cy_sbtn','cy-suc-title':'cy_suct','cy-suc-sub':'cy_sucs','cy-another-btn':'cy_anoth',
       'l-eyebrow':'ey','l-hero-title':'ht','l-hero-sub':'hs',
       'l-cta1':'c1','l-cta2':'c2',
-      'l-t1':'t1','l-t2':'t2','l-t3':'t3','l-t4':'t4',
+      'l-t1':'t1','l-t2':'t2','l-t3':'t3','l-t4':'t4','l-disc':'disc',
       'tab-new':'nw','tab-track':'tr',
       'a-who':'who','a-anon-l':'anl','a-anon-s':'ans',
       'a-lname':'lnm','a-lemail':'lem','a-lphone':'lph','a-anon-email-note':'anonemailnote',
