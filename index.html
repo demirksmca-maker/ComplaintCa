@@ -5789,7 +5789,9 @@ try{
     var legal={};
     if(_lastLawyerSnapshot) _lastLawyerSnapshot.forEach(function(d){ var r=d.data().ref; if(r) legal[r]=1; });
     var items=_noticeItems.filter(function(c){ return c.ref&&!legal[c.ref]; });
-    if(!items.length){ box.style.display='none'; return; }
+    h.textContent=V.t('lwp_notices')+' ('+items.length+')';
+    box.style.display='';
+    if(!items.length){ list.innerHTML='<div class="lex-ncat" style="text-transform:none;letter-spacing:0;font-weight:400">'+escHtml(V.t('feed_none'))+'</div>'; return; }
     var groups={};
     items.forEach(function(c){ var k=c.category||'general'; (groups[k]=groups[k]||[]).push(c); });
     var cats=Object.keys(groups).sort(function(a,b){ return groups[b].length-groups[a].length; });
