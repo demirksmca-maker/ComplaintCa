@@ -615,6 +615,7 @@ textarea{resize:vertical;min-height:90px}
 .lex-tab::before,.lex-tab::after{content:"\2766";position:absolute;top:7px;font-size:.8rem;color:#9a7330}
 .lex-tab::before{left:10px}.lex-tab::after{display:none}
 .lex-mark{position:absolute;top:10px;right:12px;width:46px;height:46px;filter:sepia(.25) saturate(.85) drop-shadow(0 1px 1px rgba(90,60,20,.25));pointer-events:none}
+.lex-mark.high{filter:sepia(1) hue-rotate(-40deg) saturate(3.2) brightness(.72) contrast(1.15) drop-shadow(0 1px 1px rgba(90,20,20,.3))}
 .lex-tab-h{text-align:center;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:#7a5a22;margin:0 0 4px}
 .lex-tab-ref{text-align:center;font-style:italic;font-size:.82rem;color:#6b5634;margin-bottom:12px}
 .lex-sec{display:flex;align-items:center;gap:8px;font:700 .6rem/1 'Cinzel',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;color:#7a5a22;margin:14px 0 8px}
@@ -5656,7 +5657,7 @@ try{
           '<span class="lex-txt"><span class="lex-t">'+title+'</span><span class="lex-m">'+cat+' · '+loc+(ago?' · '+escHtml(ago):'')+'</span></span>'+
           '<i class="lex-dot '+pr+'"></i><span class="lex-chev">⌄</span>'+
         '</button>'+
-        '<div class="lex-body"><div><div class="lex-inner"><div class="lex-tab"><img class="lex-mark" src="/demo/asya/emblem-mark.webp" alt="" width="46" height="46" loading="lazy">'+
+        '<div class="lex-body"><div><div class="lex-inner"><div class="lex-tab"><img class="lex-mark '+pr+'" src="/demo/asya/emblem-mark.webp" alt="" width="46" height="46" loading="lazy">'+
           '<div class="lex-tab-h">'+escHtml(V.t('lwp_record'))+'</div><div class="lex-tab-ref">'+cat+' — '+loc+'</div>'+
           '<div class="lex-sec">'+escHtml(V.t('lwp_facts'))+'</div><p class="lex-facts">'+facts+'</p>'+
           '<div class="lex-prec">'+(_lexPrec[d._id]?lexPrecHTML(_lexPrec[d._id],simN):'')+'</div>'+
