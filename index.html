@@ -297,7 +297,9 @@ html[data-restoring-tab] #pg-app{display:block}
 .hub-tile-desc{display:none}
 .hub-tile-arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.75rem;transition:transform .18s}
 .hub-tile:hover .hub-tile-arrow{transform:translateX(2px);opacity:1}
-.hub-links{display:flex;align-items:baseline;justify-content:center;gap:8px}
+.hub-links{display:flex;align-items:baseline;justify-content:center;gap:8px;flex-wrap:wrap}
+.hub-rate{margin-left:auto;text-decoration:none;color:#a9b4c9;font-size:clamp(.62rem,1.5vh,.72rem);font-weight:600;white-space:nowrap}
+.hub-rate b{color:#e9edf5}.hub-rate .st{color:#c9a84c}
 .hub-links-sep{color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem)}
 .hub-track-link{display:inline-block;color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem);font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(124,92,255,.5);padding-bottom:1px;margin-bottom:8px}
 
@@ -849,7 +851,7 @@ textarea{resize:vertical;min-height:90px}
       </a>
     </div>
 
-    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a></div>
+    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a><a href="/blog/" class="hub-rate" id="hub-rate" hidden></a></div>
 
     <div class="hero-trust">
       <div class="ht-item"><span class="ht-dot"></span><span id="l-t1">Anonymous</span></div>
@@ -2779,6 +2781,7 @@ const V = (function(){
       if(typeof _applyAuthUI==='function') try{_applyAuthUI();}catch(e){}
       if(typeof renderLwResults==='function'&&document.getElementById('lw-results')&&document.getElementById('lw-results').innerHTML) renderLwResults();
       if(window._ccRerenderPool) try{window._ccRerenderPool();}catch(e){}
+      if(window._ccRenderRate) try{window._ccRenderRate();}catch(e){}
     },
     init(){apply();},
     t,
@@ -6197,6 +6200,21 @@ async function doLogout(){
 }
 </script>
 <script defer src="/assets/site-footer.js"></script>
+<script>
+// Home strip: how many readers rated blog posts today (from /api/blog-rating). Hidden until someone has.
+(function(){
+  var el=document.getElementById('hub-rate'); if(!el) return;
+  var W={en:'rated today',tr:'bugün puan verdi',fr:"notes aujourd'hui",zh:'今日评分',es:'valoraciones hoy',ar:'تقييم اليوم',pa:'ਅੱਜ ਰੇਟਿੰਗਾਂ'};
+  var d=null;
+  window._ccRenderRate=function(){
+    if(!d||!d.count||!d.avg) return;
+    var l=(document.documentElement.lang||'en').slice(0,2);
+    el.innerHTML='<span class="st">★</span> <b>'+d.count+'</b> '+(W[l]||W.en)+' · <b>'+Number(d.avg).toFixed(1)+'</b>/5';
+    el.hidden=false;
+  };
+  fetch('/api/blog-rating').then(function(r){return r.ok?r.json():null;}).then(function(j){d=j;window._ccRenderRate();}).catch(function(){});
+})();
+</script>
 </body>
 </html>
 <!-- cf deploy trigger -->

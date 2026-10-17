@@ -1,6 +1,6 @@
 // Blog rating: a small fixed "Rate ★★★★★" pill on blog posts.
-// Only sends a GA4 event (article_rating). Nothing is stored on a server and
-// no review/rating schema is added, so search results are not affected.
+// Sends a GA4 event (article_rating) and adds one to today's anonymous counter
+// (/api/blog-rating). No review/rating schema is added, so search results are not affected.
 (function(){
   if (document.getElementById('cc-rate')) return;
   var path = location.pathname;
@@ -44,6 +44,10 @@
       if (typeof gtag === 'function') {
         gtag('event', 'article_rating', { rating: n, value: n, page_path: path, page_title: document.title });
       }
+      // Also counted (no personal data) for the "rated today" line on the home page.
+      try {
+        fetch('/api/blog-rating', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: path, rating: n }) }).catch(function(){});
+      } catch (e) {}
       try { localStorage.setItem(key, String(n)); } catch (e) {}
       box.textContent = 'Thanks ✓';
       setTimeout(function(){ box.style.opacity = '0'; }, 2000);

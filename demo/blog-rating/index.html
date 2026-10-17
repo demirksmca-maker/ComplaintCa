@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<title>Blog Rating Test | ComplaintCA</title>
+<style>
+  :root{--navy:#0f2952;--gold:#c9a84c;--track:#eef2f7;--ink:#0f2952;--muted:#64748b;--line:#dbeafe;--bg:#f8fafc}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Inter,system-ui,sans-serif}
+  main{max-width:640px;margin:0 auto;padding:32px 16px}
+  h1{font:700 24px/1.3 Inter,system-ui,sans-serif;margin:0 0 6px}
+  .note{color:var(--muted);font-size:13px;margin:0 0 24px}
+  p.body{margin:0 0 16px}
+
+  /* Rating summary box */
+  .cc-rs{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:24px 0;display:flex;gap:24px;align-items:center}
+  .cc-rs .hero{text-align:center;min-width:96px}
+  .cc-rs .avg{font:700 38px/1 Inter,system-ui,sans-serif}
+  .cc-rs .stars{color:var(--gold);font-size:16px;letter-spacing:1px;margin:6px 0 2px;position:relative;display:inline-block}
+  .cc-rs .stars .bg{color:#cbd5e1}
+  .cc-rs .stars .fg{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap}
+  .cc-rs .cnt{color:var(--muted);font-size:12px}
+  .cc-rs .bars{flex:1;display:grid;gap:6px}
+  .cc-rs .row{display:grid;grid-template-columns:28px 1fr 36px;align-items:center;gap:8px;font-size:12px;color:var(--muted);position:relative;padding:2px 0;cursor:default}
+  .cc-rs .trk{height:8px;background:var(--track);border-radius:4px;overflow:hidden}
+  .cc-rs .fill{height:100%;background:var(--gold);border-radius:0 4px 4px 0}
+  .cc-rs .row:hover .fill{background:#b38f2e}
+  .cc-rs .pct{text-align:right;font-variant-numeric:tabular-nums}
+  .cc-rs .tip{position:absolute;right:44px;top:-26px;background:var(--navy);color:#fff;font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+  .cc-rs .row:hover .tip,.cc-rs .row:focus .tip{opacity:1}
+  .cc-rs .title{font:700 10px Cinzel,serif;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  /* Home page strip (same look as index.html .hub-links) */
+  .home{background:#0b0d14;border-radius:14px;padding:18px 16px 10px;margin:0 0 28px}
+  .hub-links{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .hub-links-sep{color:#8991a3;font-size:.72rem}
+  .hub-track-link{display:inline-block;color:#8991a3;font-size:.72rem;font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(124,92,255,.5);padding-bottom:1px;margin-bottom:8px}
+  .hub-rate{margin-left:auto;color:#a9b4c9;font-size:.72rem;font-weight:600;white-space:nowrap}
+  .hub-rate b{color:#e9edf5}
+  .hub-rate .st{color:var(--gold)}
+  .home .lbl{color:#7c8aa3;font-size:11px;margin:0 0 10px}
+  @media (max-width:480px){.cc-rs{flex-direction:column;align-items:stretch;gap:14px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="home">
+    <p class="lbl">Home page preview</p>
+    <div class="hub-links"><a href="#" class="hub-track-link">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a><span class="hub-rate" id="hub-rate" hidden></span></div>
+  </div>
+
+  <h1>How to Report a Teacher to the School Board</h1>
+  <p class="note">Test page. Numbers below are sample data, not real GA4 ratings.</p>
+  <p class="body">Article text goes here. The rating summary sits near the end of the post, before related links.</p>
+
+  <section class="cc-rs" id="cc-rs" aria-label="Reader ratings"></section>
+
+  <p class="body">More article text…</p>
+</main>
+
+<script>
+// Sample data. Later this comes from /data/blog-ratings.json (built from GA4 article_rating events).
+var SAMPLE = { "/blog/report-a-teacher-canada.html": { 5: 24, 4: 9, 3: 3, 2: 1, 1: 1 } };
+
+(function(){
+  var box = document.getElementById('cc-rs');
+  var d = SAMPLE["/blog/report-a-teacher-canada.html"];
+  var total = 0, sum = 0;
+  for (var s = 1; s <= 5; s++) { total += d[s] || 0; sum += s * (d[s] || 0); }
+  if (!total) { box.remove(); return; }
+  var avg = sum / total;
+
+  var html = '<div class="hero"><div class="title">Readers</div>'
+    + '<div class="avg">' + avg.toFixed(1) + '</div>'
+    + '<div class="stars" aria-hidden="true"><span class="bg">★★★★★</span><span class="fg" style="width:' + (avg / 5 * 100) + '%">★★★★★</span></div>'
+    + '<div class="cnt">' + total + ' ratings</div></div><div class="bars">';
+  for (var n = 5; n >= 1; n--) {
+    var c = d[n] || 0, p = Math.round(c / total * 100);
+    html += '<div class="row" tabindex="0" aria-label="' + n + ' stars: ' + c + ' ratings, ' + p + '%">'
+      + '<span>' + n + ' ★</span>'
+      + '<div class="trk"><div class="fill" style="width:' + p + '%"></div></div>'
+      + '<span class="pct">' + p + '%</span>'
+      + '<span class="tip">' + c + ' of ' + total + ' readers</span></div>';
+  }
+  box.innerHTML = html + '</div>';
+})();
+</script>
+<script>
+// Home strip: today's ratings from /api/blog-rating. Hidden when nobody rated yet.
+// On this test page it falls back to sample numbers if the API is not reachable.
+(function(){
+  var el = document.getElementById('hub-rate');
+  function show(d, sample){
+    if (!d || !d.count) return;
+    el.innerHTML = '<span class="st">★</span> <b>' + d.count + '</b> rated today · <b>' + d.avg.toFixed(1) + '</b>/5';
+    el.title = sample ? 'Sample data' : 'Blog ratings today';
+    el.hidden = false;
+  }
+  fetch('/api/blog-rating').then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+    .then(function(d){ show(d, false); })
+    .catch(function(){ show({ count: 12, avg: 4.6 }, true); });
+})();
+</script>
+</body>
+</html>
