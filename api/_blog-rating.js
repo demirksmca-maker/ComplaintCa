@@ -1,5 +1,6 @@
 import { isRateLimited } from './_rateLimit.js';
 import { FS, fsAdmin } from './_gauth.js';
+import { SENDER, buildBrandedHtml } from './send-email.js';
 
 // GET|POST /api/blog-rating (rewritten to /api/route?blograting=1). Blog article ratings, counted per day (Toronto time) in Firestore
 // blogRatings/{YYYY-MM-DD}: count, sum, r1..r5. No personal data is kept.
@@ -24,6 +25,27 @@ export function summary(doc, date) {
   const count = Number(f.count && f.count.integerValue) || 0;
   const sum = Number(f.sum && f.sum.integerValue) || 0;
   return { date, count, avg: count ? Math.round(sum / count * 10) / 10 : null };
+}
+
+export function ratingMail({ rating, path }) {
+  const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  return {
+    subject: `New blog rating: ${rating}/5 ${stars}`,
+    body: `A reader rated a blog article.\n\nRating: ${rating}/5 ${stars}\nPage: https://www.complaintca.ca${path}`
+  };
+}
+
+// Tells the owner about each new rating. Never fails the rating itself.
+async function notifyOwner(ok) {
+  if (!process.env.BREVO_API_KEY) return;
+  const { subject, body } = ratingMail(ok);
+  try {
+    await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { accept: 'application/json', 'api-key': process.env.BREVO_API_KEY, 'content-type': 'application/json' },
+      body: JSON.stringify({ sender: SENDER, to: [{ email: SENDER.email }], subject, htmlContent: buildBrandedHtml(body), textContent: body })
+    });
+  } catch {}
 }
 
 export async function blogRating(req, res) {
@@ -57,5 +79,6 @@ export async function blogRating(req, res) {
   const r = await fsAdmin(`${FS}:commit`, { method: 'POST', body: JSON.stringify(body) });
   if (!r) return res.status(503).json({ error: 'Not configured' });
   if (!r.ok) return res.status(502).json({ error: 'Write failed' });
+  await notifyOwner(ok);
   return res.status(200).json({ ok: true });
 }
