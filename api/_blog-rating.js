@@ -5,7 +5,7 @@ import { FS, fsAdmin } from './_gauth.js';
 // blogRatings/{YYYY-MM-DD}: count, sum, r1..r5. No personal data is kept.
 //   POST { path, rating }  -> adds one rating
 //   GET                    -> today's { date, count, avg }
-const PATH_RE = /^\/blog\/[a-z0-9-]{1,120}\.html$/;
+const PATH_RE = /^\/blog\/[a-z0-9-]{1,120}(\.html)?$/;
 
 export function today(now = new Date()) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
