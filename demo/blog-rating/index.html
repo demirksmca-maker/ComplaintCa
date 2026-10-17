@@ -32,11 +32,25 @@
   .cc-rs .tip{position:absolute;right:44px;top:-26px;background:var(--navy);color:#fff;font-size:11px;padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
   .cc-rs .row:hover .tip,.cc-rs .row:focus .tip{opacity:1}
   .cc-rs .title{font:700 10px Cinzel,serif;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  /* Home page strip (same look as index.html .hub-links) */
+  .home{background:#0b0d14;border-radius:14px;padding:18px 16px 10px;margin:0 0 28px}
+  .hub-links{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .hub-links-sep{color:#8991a3;font-size:.72rem}
+  .hub-track-link{display:inline-block;color:#8991a3;font-size:.72rem;font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(124,92,255,.5);padding-bottom:1px;margin-bottom:8px}
+  .hub-rate{margin-left:auto;color:#a9b4c9;font-size:.72rem;font-weight:600;white-space:nowrap}
+  .hub-rate b{color:#e9edf5}
+  .hub-rate .st{color:var(--gold)}
+  .home .lbl{color:#7c8aa3;font-size:11px;margin:0 0 10px}
   @media (max-width:480px){.cc-rs{flex-direction:column;align-items:stretch;gap:14px}}
 </style>
 </head>
 <body>
 <main>
+  <div class="home">
+    <p class="lbl">Home page preview</p>
+    <div class="hub-links"><a href="#" class="hub-track-link">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a><span class="hub-rate" id="hub-rate" hidden></span></div>
+  </div>
+
   <h1>How to Report a Teacher to the School Board</h1>
   <p class="note">Test page. Numbers below are sample data, not real GA4 ratings.</p>
   <p class="body">Article text goes here. The rating summary sits near the end of the post, before related links.</p>
@@ -71,6 +85,22 @@ var SAMPLE = { "/blog/report-a-teacher-canada.html": { 5: 24, 4: 9, 3: 3, 2: 1, 
       + '<span class="tip">' + c + ' of ' + total + ' readers</span></div>';
   }
   box.innerHTML = html + '</div>';
+})();
+</script>
+<script>
+// Home strip: today's ratings from /api/blog-rating. Hidden when nobody rated yet.
+// On this test page it falls back to sample numbers if the API is not reachable.
+(function(){
+  var el = document.getElementById('hub-rate');
+  function show(d, sample){
+    if (!d || !d.count) return;
+    el.innerHTML = '<span class="st">★</span> <b>' + d.count + '</b> rated today · <b>' + d.avg.toFixed(1) + '</b>/5';
+    el.title = sample ? 'Sample data' : 'Blog ratings today';
+    el.hidden = false;
+  }
+  fetch('/api/blog-rating').then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+    .then(function(d){ show(d, false); })
+    .catch(function(){ show({ count: 12, avg: 4.6 }, true); });
 })();
 </script>
 </body>

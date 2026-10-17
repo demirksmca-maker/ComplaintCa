@@ -32,6 +32,10 @@
       "destination": "/api/route?precedents=1"
     },
     {
+      "source": "/api/blog-rating",
+      "destination": "/api/route?blograting=1"
+    },
+    {
       "source": "/api/my",
       "destination": "/api/complaint?my=1"
     },
