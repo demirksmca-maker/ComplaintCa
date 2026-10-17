@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Peri Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:28px;
+    background:#0a1530;font-family:'Cinzel',serif}
+  .peri{width:240px;height:240px;border-radius:50%;object-fit:cover;
+    box-shadow:0 0 40px 8px rgba(212,175,55,.45);
+    opacity:0;transform:scale(.2);filter:blur(12px);
+    animation:pop 1.2s .3s ease-out forwards,float 4s 1.5s ease-in-out infinite}
+  .ad{font-size:2.2rem;color:#d4af37;letter-spacing:.08em;
+    clip-path:inset(0 100% 0 0);
+    animation:yaz 1.6s 1.6s steps(11,end) forwards}
+  @keyframes pop{to{opacity:1;transform:scale(1);filter:blur(0)}}
+  @keyframes float{50%{transform:translateY(-12px)}}
+  @keyframes yaz{to{clip-path:inset(0 0 0 0)}}
+</style>
+</head>
+<body>
+  <img class="peri" src="/assets/brand/peri.jpg" alt="">
+  <div class="ad">ComplaintCA</div>
+</body>
+</html>
