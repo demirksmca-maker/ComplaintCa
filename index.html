@@ -6205,14 +6205,17 @@ async function doLogout(){
 (function(){
   var el=document.getElementById('hub-rate'); if(!el) return;
   var W={en:'rated today',tr:'bugün puan verdi',fr:"notes aujourd'hui",zh:'今日评分',es:'valoraciones hoy',ar:'تقييم اليوم',pa:'ਅੱਜ ਰੇਟਿੰਗਾਂ'};
+  var R={en:'Rate our blog',tr:'Blogu puanla',fr:'Notez le blog',zh:'为博客评分',es:'Valora el blog',ar:'قيّم المدونة',pa:'ਬਲੌਗ ਨੂੰ ਰੇਟ ਕਰੋ'};
   var d=null;
   window._ccRenderRate=function(){
-    if(!d||!d.count||!d.avg) return;
     var l=(document.documentElement.lang||'en').slice(0,2);
-    el.innerHTML='<span class="st">★</span> <b>'+d.count+'</b> '+(W[l]||W.en)+' · <b>'+Number(d.avg).toFixed(1)+'</b>/5';
+    // No ratings yet today: invite readers instead of hiding the strip.
+    el.innerHTML=(d&&d.count&&d.avg)
+      ?'<span class="st">★</span> <b>'+d.count+'</b> '+(W[l]||W.en)+' · <b>'+Number(d.avg).toFixed(1)+'</b>/5'
+      :'<span class="st">★</span> '+(R[l]||R.en);
     el.hidden=false;
   };
-  fetch('/api/blog-rating').then(function(r){return r.ok?r.json():null;}).then(function(j){d=j;window._ccRenderRate();}).catch(function(){});
+  fetch('/api/blog-rating').then(function(r){return r.ok?r.json():null;}).then(function(j){d=j;window._ccRenderRate();}).catch(function(){window._ccRenderRate();});
 })();
 </script>
 </body>
