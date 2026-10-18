@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ReclamaES · Prueba de tema</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d0f16;--txt:#e8e9f0;--mut:#8a8fa3;--acc:#7c5cff;--gold:#d4af37;--es-red:#c60b1e;--es-yel:#ffc400}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;color:var(--txt);font-family:Inter,-apple-system,'Segoe UI',sans-serif;
+    background:radial-gradient(ellipse at 100% 100%,rgba(16,120,90,.18),transparent 55%),
+      radial-gradient(ellipse at 0 0,rgba(124,92,255,.12),transparent 50%),var(--bg)}
+  header{height:66px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(#0f2a4f,#0b1f3d);border-bottom:1px solid rgba(212,175,55,.25)}
+  .logo{font-family:Cinzel,serif;font-size:1.7rem;letter-spacing:.06em;
+    background:linear-gradient(180deg,#fff3c4,#d4af37 55%,#8a6a16);-webkit-background-clip:text;background-clip:text;color:transparent}
+  main{max-width:720px;margin:0 auto;padding:12px 16px 32px}
+  .test{display:inline-block;margin:6px 0;padding:2px 8px;border-radius:6px;font-size:.7rem;font-weight:700;
+    background:rgba(255,196,0,.15);color:var(--es-yel);letter-spacing:1px}
+  .kick{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:.9rem;font-weight:600}
+  .flag{width:20px;height:14px;border-radius:2px;background:linear-gradient(var(--es-red) 25%,var(--es-yel) 25% 75%,var(--es-red) 75%)}
+  h1{margin:8px 0 14px;font-size:clamp(2rem,7vw,2.8rem);line-height:1.08;font-weight:800}
+  h1 em{font-style:normal;color:var(--acc)}
+  .quote{font-size:1.2rem;color:#c7cbd4;font-weight:600}
+  .quote small{display:block;margin-top:2px;font-size:.62em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--acc)}
+  .row{display:flex;justify-content:space-between;align-items:center;margin:18px 0 10px}
+  .row span{color:var(--mut);font-weight:600}
+  .asya{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:30px;font-weight:700;color:#fff;letter-spacing:1px;
+    border:2px solid var(--gold);background:linear-gradient(90deg,#1e3a8a,#9d4e8c);cursor:pointer}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{position:relative;min-height:170px;padding:16px;border-radius:18px;display:flex;flex-direction:column;justify-content:flex-end;
+    color:#fff;text-decoration:none;font-weight:700;transition:transform .15s}
+  .card:active{transform:scale(.97)}
+  .card::after{content:"→";position:absolute;top:14px;right:18px;opacity:.6}
+  .card svg{width:28px;height:28px;margin-bottom:10px;fill:none;stroke:#fff;stroke-width:1.8}
+  .card p{margin:4px 0 0;font-size:.78rem;font-weight:500;opacity:.85}
+  .c1{background:linear-gradient(160deg,#8b5cf6,#4f2fd0)}
+  .c2{background:linear-gradient(160deg,#14b8a6,#0b8a6e)}
+  .c3{background:linear-gradient(160deg,#ff8a3d,#e0522a)}
+  .c4{background:linear-gradient(160deg,#3b82f6,#1d4ed8)}
+  .c5{background:linear-gradient(160deg,#ff4f8b,#c2185b)}
+  .c6{background:#232733;border:1px solid #363b4a}
+  .links{margin-top:18px;color:var(--mut);font-weight:600}
+  .links a{color:var(--mut);text-decoration:none;border-bottom:1px dashed var(--acc)}
+  .tags{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.82rem;color:var(--mut)}
+  .tags i{display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:var(--acc)}
+  footer{margin-top:18px;color:var(--mut);font-size:.9rem}
+</style>
+</head>
+<body>
+<header><div class="logo">ReclamaES</div></header>
+<main>
+  <div class="test">PÁGINA DE PRUEBA · SOLO TEMA</div>
+  <div class="kick"><span class="flag"></span> Plataforma de Reclamaciones de España</div>
+  <h1>Tu Reclamación.<br><em>Escuchada. Seguida. Resuelta.</em></h1>
+  <div class="quote">"La justicia es la fuente de todas las demás virtudes."<small>— Marco Aurelio</small></div>
+
+  <div class="row"><span>Seis Caminos hacia la Justicia</span><button class="asya" type="button">ASYA</button></div>
+
+  <div class="grid">
+    <a class="card c1" href="#"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>Presentar una Reclamación<p>Convierte tu voz en una reclamación formal.</p></a>
+    <a class="card c2" href="#"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg>Abogado Gratuito y Sociedad Civil<p>Abogado y ONG asignados por IA.</p></a>
+    <a class="card c3" href="#"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v10H3z"/><path d="M10 21v-6h4v6"/></svg>Encuentra a tu Representante<p>Localiza a tu diputado por dirección.</p></a>
+    <a class="card c4" href="#"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Denunciar un Ciberdelito<p>Acoso, amenazas y robo de identidad.</p></a>
+    <a class="card c5" href="#"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M16 16l5 5"/></svg>Verificar un Documento<p>Revisión de riesgo por IA.</p></a>
+    <a class="card c6" href="#"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>Guías<p>La autoridad correcta por comunidad y tema.</p></a>
+  </div>
+
+  <div class="links"><a href="#">Seguir mi Reclamación</a> · <a href="#">Blog</a> <span style="color:var(--gold)">★</span> Valora nuestro blog</div>
+  <div class="tags"><span><i></i>Anónimo</span><span><i></i>Enrutamiento IA</span><span><i></i>7 Idiomas</span><span><i></i>Seguimiento en Vivo</span></div>
+  <footer>ReclamaES es una plataforma independiente. No es un organismo público.</footer>
+</main>
+</body>
+</html>
