@@ -645,15 +645,16 @@ textarea{resize:vertical;min-height:90px}
 .rqi{width:100%;box-sizing:border-box;border-radius:8px;padding:9px 10px;font:inherit;font-size:.9rem;resize:vertical}
 </style>
 <style>
-/* ES TEST: İspanya temalı arka plan (kırmızı-altın) */
+/* ES TEST: İspanya bayrağı arka plan (kırmızı-sarı-kırmızı, koyulaştırılmış) */
 body{background:#140a0c}
+.topbar{background:linear-gradient(90deg,rgba(150,8,22,.97),rgba(120,6,18,.97));border-bottom:2px solid #ffc400}
 .hero{background:
-  radial-gradient(ellipse at 0% 0%,rgba(198,11,30,.38),transparent 55%),
-  radial-gradient(ellipse at 100% 100%,rgba(255,196,0,.22),transparent 55%),
-  linear-gradient(180deg,#1a0b0e 0%,#120a0c 100%)}
-.hero::before{background:radial-gradient(circle,rgba(255,196,0,.14),transparent 70%)}
-.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:5px;pointer-events:none;
-  background:linear-gradient(90deg,#c60b1e 25%,#ffc400 25% 75%,#c60b1e 75%);opacity:.85}
+  linear-gradient(180deg,rgba(10,6,8,.35),rgba(10,6,8,.55)),
+  radial-gradient(ellipse at 50% 45%,rgba(255,220,120,.18),transparent 60%),
+  linear-gradient(180deg,#aa151b 0 23%,#f1bf00 27% 73%,#aa151b 77% 100%)}
+.hero::before{background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%)}
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background:repeating-linear-gradient(100deg,transparent 0 60px,rgba(0,0,0,.25) 90px,transparent 120px)}
 </style>
 </head>
 <body>
@@ -766,7 +767,7 @@ body{background:#140a0c}
 <div id="pg-land">
   <section class="hero">
     <div class="hero-orb"></div>
-    <div class="hero-eyebrow">🇨🇦 <span class="edot"></span><span id="l-eyebrow">Canada's Complaint Platform</span></div>
+    <div class="hero-eyebrow">🇪🇸 <span class="edot"></span><span id="l-eyebrow">Canada's Complaint Platform</span></div>
     <h1 class="hero-title" id="l-hero-title">Your Complaint.<br><em>Heard. Tracked. Resolved.</em></h1>
     <div class="hero-slogan">
       <div class="hero-slogan-main" style="color:#c7cbd4;font-family:-apple-system,'Segoe UI',Inter,sans-serif;font-style:normal">"Justice is the source of all the other virtues."<div style="font-family:-apple-system,'Segoe UI',Inter,sans-serif;text-transform:uppercase;font-size:.6em;font-weight:700;color:#7c5cff;letter-spacing:1.5px;margin-top:2px;opacity:.9">— Marcus Aurelius</div></div>
@@ -2539,7 +2540,7 @@ const V = (function(){
       vfy_error:"分析过程中出现错误，请重试。",vfy_timeout:"分析超时——服务器响应时间过长。请重试。",vfy_advice:"建议：",vfy_reselect:"再次点击以选择其他文件",vfy_petition_drafting:"Asya 正在起草您的请求...",l_vfy_link:"🔍 收到可疑文件？立即检查 →",cooldown_msg:"⚠ 请等待 {m} 分 {s} 秒后再提交下一个投诉。",del_prompt:"要删除此投诉吗？请输入提交时使用的电子邮件。",del_email_ph:"your@email.com",del_btn:"删除我的投诉",del_need_email:"请输入您的电子邮件以确认。",del_confirm:"此操作将永久删除您的投诉。确定吗？",del_deleting:"删除中...",del_success:"✅ 已删除。",del_fail:"删除失败——电子邮件与此投诉不匹配。",mng_email_prompt:"管理此投诉——请输入提交时使用的电子邮件。",mng_status_label:"更新状态：",mng_updating:"更新中...",mng_success:"✅ 状态已更新。",mng_reply_label:"机构回复(粘贴在此):",mng_reply_ph:"粘贴机构的回复邮件内容...",mng_reply_btn:"保存回复",mng_reply_success:"✅ 回复已保存。",tl_reply_lbl:"✉ 机构已回复",verdict_badge:"裁决",verdict_title:"Asya 法律裁决",verdict_subtitle:"Claude Sonnet · AI 草稿 — 发送前请核实",verdict_law:"适用法律",verdict_sanctions:"可能的处罚",verdict_deadline:"回应期限",verdict_email_draft:"投诉邮件草稿",verdict_copy_btn:"复制邮件",verdict_copied:"已复制！",verdict_disclaimer:"根据您提供的信息由AI生成——这不是法律建议。请在依赖之前核实法律和期限。",ctype_legal_note:"这将进入我们的<b>公开案件列表</b>，仅供已登录的合作律师查看——不会发布到公共信息流。如果您希望律师审查您的案件并讨论代理事宜，他们将通过这里找到您。",ctype_access_label:"信息获取请求",ctype_access_desc:"向机构索取记录或信息",ctype_access_note:"此请求依据《信息获取权/信息自由法》处理——这与投诉是不同的法律程序。机构通常须在规定天数内答复，您无需说明请求理由。为使机构能够回复您，需提供真实姓名和联系方式。",stopncii_title:"🛡️ 阻止进一步传播",stopncii_text:"如果涉及私密图像，StopNCII.org 可以为其创建一个私密指纹，合作平台（Instagram、Facebook、TikTok、Reddit 等）会用它来阻止该图像——图像本身永远不会被上传。",stopncii_btn:"前往 StopNCII.org →",alert_high_text:"这看起来很严重——您可能有法律索赔权。",alert_medium_text:"这可能属于法律权利问题。",alert_legal_btn:"法律权利",pool_suggest_title:"Asya 认为这可能是一起法律案件",pool_suggest_text:"根据这些事实，律师可能可以代表您追究此事。点击下方将其发送到案件池。",pool_suggest_btn:"发送到案件池",pool_suggest_switched:"已切换",legal_track_badge:"法律追踪 — 案件池",ctype_notice_label:"通知机构",ctype_notice_desc:"正式报告问题并要求解决",ctype_legal_label:"主张法律权利",ctype_legal_desc:"通知法律行动和赔偿权利",ctype_section_label:"投诉类型",cy_conf_subj:"您的 ComplaintCA 参考编号 — {ref}",cy_conf_intro:"您好，\n\nComplaintCA 已收到您的网络犯罪举报。",cy_conf_ref_line:"参考编号：{ref}",cy_conf_type_line:"类型：{type}",cy_conf_urgency_line:"紧急程度：{urgency}",cy_conf_notice:"ComplaintCA 不是警察机构，无法代您向有关部门正式提交此举报。要使其正式生效，请联系：",cy_conf_danger:"如果您处于紧急危险中，请立即拨打911。",cy_conf_keepref:"请保留此参考编号——您可以随时在 ComplaintCA 的\"Track\"（追踪）中查看其状态。",cy_conf_privacy:"隐私声明：您提交的详细信息仅用于让您追踪此举报，未经您同意绝不会被分享。您可以随时申请删除。",cy_conf_emailed:"📧 副本已通过电子邮件发送至 {email}。",deadline_passed:"此类投诉的常规回应期限已过。",deadline_soon:"常规回应期限仅剩 {n} 天。",deadline_escalate:"请考虑升级至：{name}。",lw_sug_tag:"相关法律帮助",lw_sug_serious_tag:"这可能是一个有力的案件",lw_sug_text:"根据您的投诉类别，专业律师可能会有所帮助。",lw_sug_serious_text:"根据此投诉的优先级和类别，我们建议您咨询专业律师。",lw_sug_btn:"寻找专业律师",cat_ai_tag:"AI 建议",cat_ai_apply:"应用",cat_ai_dismiss:"忽略",lw_panel_cta_t:"您是律师吗？",lw_panel_cta_s:"浏览公开案件列表 →",lwp_eyebrow:"⚖️ 法律专业人士专区",lwp_title:"案件池",lwp_sub:"实时浏览匿名投诉。完整联系方式仅向合作律师开放。",lwp_partner_text:"想获取这些案件的完整联系方式？合作律师权限按固定月费提供——与案件结果无关。",lwp_partner_btn:"成为合作律师",lwp_locked:"联系方式已锁定 — 仅限合作律师",lwp_record:"案件记录",lwp_facts:"I · 事实",lwp_simh:"II · 类似案件",lwp_filed:"提交于 {t}",lwp_all:"所有类别",lwp_notices:"其他投诉（通知）",lwp_cats:"教育|电信 / 网络|隐私|骚扰|拖欠工资|不当解雇|维修|医疗事故|延误|福利|移民|警察|公寓|环境|公用事业|学生贷款|其他",lwp_prec:"II · 类似判决",lwp_pot:"III · 胜诉潜力",lwp_joint:"IV · 共同诉讼",lwp_loading:"ASYA 正在 CanLII 搜索…",lwp_nodec:"未找到经核实的类似判决。",lwp_ratio:"{k} 个判决中有 {w} 个对投诉人有利",lwp_few:"判决数量不足，无法估计。",lwp_disc:"根据类似已公布判决的估计——不是保证，也不是法律意见。",lwp_jyes:"适合共同诉讼",lwp_jno:"不适合共同诉讼",lwp_jwhy_yes:"案件池中有 {n} 个类似投诉，且先例有利。",lwp_jwhy_no:"需要案件池中有类似投诉和有利先例。",lwp_err:"无法加载判决，请稍后再试。",lwp_signin:"登录以查看类似判决。",lwp_o:"胜诉|败诉|部分|不明",lwp_ledger_l:"未结案件",lwp_stats_title:"按类别划分的相似案件",lwp_similar:"此案件池中有 {n} 个相似案件",lwp_updates_title:"📅 本月法律更新",lwp_updates_sub:"与未结案件相关的法律变化和重要进展，为合作律师整理。",lwp_updates_none:"暂无已发布的更新。"
     },
     es:{
-      ey:"Plataforma Oficial de Quejas de Canadá",
+      ey:"Plataforma Oficial de Quejas de España",
       theme_light:"☀️ Tema claro activado",theme_dark:"🌙 Tema oscuro activado",
       nw:"Presentar",tr:"Rastrear",lw:"Abogado",cy:"Cibercrim.",fd:"Bolsa",
       cy_sub:"Reporte acoso, amenazas y robo de identidad. Suba su evidencia.",
