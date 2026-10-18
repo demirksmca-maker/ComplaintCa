@@ -650,9 +650,10 @@ body{background:#140a0c}
 .hero{background:#3a070d;isolation:isolate}
 .hero::before{background:none}
 .es-flag{position:absolute;inset:-6%;z-index:-1;pointer-events:none;overflow:hidden}
-.es-flag .img{position:absolute;inset:0;background:url('/assets/brand/es-flag.jpg') left center/cover no-repeat;
+.es-flag .img{position:absolute;top:0;bottom:0;right:0;left:7.5%;background:url('/assets/brand/es-flag.jpg') left center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%);mask-image:linear-gradient(90deg,transparent 0,#000 3%);
   filter:url(#esWave);will-change:filter}
-.es-flag .shade{position:absolute;inset:-20%;mix-blend-mode:soft-light;opacity:.9;
+.es-flag .shade{display:none;position:absolute;inset:-20%;mix-blend-mode:soft-light;opacity:.9;
   background:repeating-linear-gradient(105deg,rgba(255,255,255,.45) 0,rgba(0,0,0,.6) 9%,rgba(255,255,255,.45) 18%);
   background-size:35% 100%;animation:esRipple 3.5s linear infinite}
 .es-flag .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,4,6,.30),rgba(8,4,6,.55))}
@@ -773,9 +774,9 @@ body{background:#140a0c}
     <div class="es-flag" aria-hidden="true"><div class="img"></div><div class="shade"></div><div class="dim"></div>
       <svg width="0" height="0" style="position:absolute"><filter id="esWave" x="-5%" y="-5%" width="110%" height="110%">
         <feTurbulence type="fractalNoise" baseFrequency="0.003 0.011" numOctaves="1" seed="4" result="n">
-          <animate attributeName="baseFrequency" dur="5s" values="0.003 0.011;0.004 0.015;0.003 0.011" repeatCount="indefinite"/>
+          <animate attributeName="baseFrequency" dur="8s" values="0.003 0.011;0.0036 0.013;0.003 0.011" repeatCount="indefinite"/>
         </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="48" xChannelSelector="R" yChannelSelector="G"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
       </filter></svg>
     </div>
     <div class="hero-orb"></div>
