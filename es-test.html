@@ -645,14 +645,20 @@ textarea{resize:vertical;min-height:90px}
 .rqi{width:100%;box-sizing:border-box;border-radius:8px;padding:9px 10px;font:inherit;font-size:.9rem;resize:vertical}
 </style>
 <style>
-/* ES TEST: gerçekçi İspanya bayrağı (Figma), yavaş dalgalanma */
+/* ES TEST: gerçekçi İspanya bayrağı (Figma), SVG ile dalgalanma */
 body{background:#140a0c}
-.hero{background:linear-gradient(180deg,rgba(8,4,6,.30),rgba(8,4,6,.55)),url('/assets/brand/es-flag.jpg') left center/cover no-repeat,#5a0a12;
-  animation:esFlag 9s ease-in-out infinite alternate}
+.hero{background:#3a070d;isolation:isolate}
 .hero::before{background:none}
-@keyframes esFlag{from{background-position:0 0,left 48%}to{background-position:0 0,left 54%}}
-@media (min-width:700px){.hero{background-size:auto,auto 100%}.hub-tiles{margin-left:auto;margin-right:3%}}
-@media (prefers-reduced-motion:reduce){.hero{animation:none}}
+.es-flag{position:absolute;inset:-6%;z-index:-1;pointer-events:none;overflow:hidden}
+.es-flag .img{position:absolute;inset:0;background:url('/assets/brand/es-flag.jpg') left center/cover no-repeat;
+  filter:url(#esWave);will-change:filter}
+.es-flag .shade{position:absolute;inset:-20%;mix-blend-mode:soft-light;opacity:.9;
+  background:repeating-linear-gradient(105deg,rgba(255,255,255,.35) 0,rgba(0,0,0,.45) 18%,rgba(255,255,255,.35) 36%);
+  background-size:60% 100%;animation:esRipple 5s linear infinite}
+.es-flag .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,4,6,.30),rgba(8,4,6,.55))}
+@keyframes esRipple{to{background-position:60% 0}}
+@media (min-width:700px){.es-flag .img{background-size:auto 100%}.hub-tiles{margin-left:auto;margin-right:3%}}
+@media (prefers-reduced-motion:reduce){.es-flag .img{filter:none}.es-flag .shade{animation:none}}
 </style>
 </head>
 <body>
@@ -764,6 +770,14 @@ body{background:#140a0c}
 <!-- LANDING -->
 <div id="pg-land">
   <section class="hero">
+    <div class="es-flag" aria-hidden="true"><div class="img"></div><div class="shade"></div><div class="dim"></div>
+      <svg width="0" height="0" style="position:absolute"><filter id="esWave" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0025 0.009" numOctaves="2" seed="4" result="n">
+          <animate attributeName="baseFrequency" dur="7s" values="0.0025 0.009;0.0032 0.012;0.0025 0.009" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+      </filter></svg>
+    </div>
     <div class="hero-orb"></div>
     <div class="hero-eyebrow">🇪🇸 <span class="edot"></span><span id="l-eyebrow">Canada's Complaint Platform</span></div>
     <h1 class="hero-title" id="l-hero-title">Your Complaint.<br><em>Heard. Tracked. Resolved.</em></h1>
