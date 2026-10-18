@@ -653,10 +653,10 @@ body{background:#140a0c}
 .es-flag .img{position:absolute;inset:0;background:url('/assets/brand/es-flag.jpg') left center/cover no-repeat;
   filter:url(#esWave);will-change:filter}
 .es-flag .shade{position:absolute;inset:-20%;mix-blend-mode:soft-light;opacity:.9;
-  background:repeating-linear-gradient(105deg,rgba(255,255,255,.35) 0,rgba(0,0,0,.45) 18%,rgba(255,255,255,.35) 36%);
-  background-size:60% 100%;animation:esRipple 5s linear infinite}
+  background:repeating-linear-gradient(105deg,rgba(255,255,255,.45) 0,rgba(0,0,0,.6) 9%,rgba(255,255,255,.45) 18%);
+  background-size:35% 100%;animation:esRipple 3.5s linear infinite}
 .es-flag .dim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,4,6,.30),rgba(8,4,6,.55))}
-@keyframes esRipple{to{background-position:60% 0}}
+@keyframes esRipple{to{background-position:35% 0}}
 @media (min-width:700px){.es-flag .img{background-size:auto 100%}.hub-tiles{margin-left:auto;margin-right:3%}}
 @media (prefers-reduced-motion:reduce){.es-flag .img{filter:none}.es-flag .shade{animation:none}}
 </style>
@@ -772,10 +772,10 @@ body{background:#140a0c}
   <section class="hero">
     <div class="es-flag" aria-hidden="true"><div class="img"></div><div class="shade"></div><div class="dim"></div>
       <svg width="0" height="0" style="position:absolute"><filter id="esWave" x="-5%" y="-5%" width="110%" height="110%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.0025 0.009" numOctaves="2" seed="4" result="n">
-          <animate attributeName="baseFrequency" dur="7s" values="0.0025 0.009;0.0032 0.012;0.0025 0.009" repeatCount="indefinite"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.003 0.011" numOctaves="1" seed="4" result="n">
+          <animate attributeName="baseFrequency" dur="5s" values="0.003 0.011;0.004 0.015;0.003 0.011" repeatCount="indefinite"/>
         </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" in2="n" scale="38" xChannelSelector="R" yChannelSelector="G"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="48" xChannelSelector="R" yChannelSelector="G"/>
       </filter></svg>
     </div>
     <div class="hero-orb"></div>
