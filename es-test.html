@@ -644,6 +644,17 @@ textarea{resize:vertical;min-height:90px}
 .rqn{background:transparent;border:1.5px solid rgba(201,168,76,.6);color:var(--text)}
 .rqi{width:100%;box-sizing:border-box;border-radius:8px;padding:9px 10px;font:inherit;font-size:.9rem;resize:vertical}
 </style>
+<style>
+/* ES TEST: İspanya temalı arka plan (kırmızı-altın) */
+body{background:#140a0c}
+.hero{background:
+  radial-gradient(ellipse at 0% 0%,rgba(198,11,30,.38),transparent 55%),
+  radial-gradient(ellipse at 100% 100%,rgba(255,196,0,.22),transparent 55%),
+  linear-gradient(180deg,#1a0b0e 0%,#120a0c 100%)}
+.hero::before{background:radial-gradient(circle,rgba(255,196,0,.14),transparent 70%)}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:5px;pointer-events:none;
+  background:linear-gradient(90deg,#c60b1e 25%,#ffc400 25% 75%,#c60b1e 75%);opacity:.85}
+</style>
 </head>
 <body>
 
