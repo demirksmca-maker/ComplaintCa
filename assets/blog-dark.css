@@ -1,0 +1,27 @@
+/* Blog dark mode. Loaded only when the device uses dark mode (media attr on <link>). Colours only; no layout or content changes. */
+:root{
+  --navy:#e6edfb;--blue:#8db4f5;--mid:#6ea0ee;--light:#6ea0ee;
+  --ice:#1b2a45;--white:#0f172a;--off:#0b1220;--text:#e5e9f0;
+  --sub:#b4bfd0;--muted:#8d9bb0;--border:#24324d;
+  --gold:#d6b45a;--dark-gold:#d6b45a;--crimson:#ff7a8c;
+}
+body{background:var(--off);color:var(--text)}
+.path-card,.faq-item,.trust-box,.post-card,.site-tool{background:#121c30}
+.stat-lede{background:linear-gradient(160deg,#121c30,#1b2a45)}
+.callout{background:#2a2312 !important;border-color:#5b4a1f !important}
+.callout[style*="f5c2c7"]{background:#2c1519 !important;border-color:#5a2a33 !important}
+.hero[class]{background:var(--off)}
+.cta{background:linear-gradient(135deg,#0f2952,#1a4fa0)}
+.cta p{color:#fff}
+.cta a{background:#c9a84c;color:#0f2952}
+.path-card .step-num{background:#2f5fb0;color:#fff}
+.wait-table td:last-child{color:var(--text)}
+a{color:var(--blue)}
+.cta a,#cc-rail a.p{color:#0f2952}
+/* injected widgets */
+#cc-rail,#cc-rate{background:#121c30 !important;border-color:#24324d !important;color:#e6edfb !important}
+#cc-rail a{background:#121c30 !important;border-color:#24324d !important;color:#e6edfb !important}
+#cc-rail a.p{background:#c9a84c !important;border-color:#c9a84c !important;color:#0f2952 !important}
+#cc-rail .i{color:#8db4f5 !important}
+#cc-rail a.p .i{color:#0f2952 !important}
+#cc-rate button.off{color:#46546e !important}
