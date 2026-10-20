@@ -2880,6 +2880,8 @@ function _ccEmbed(){
   try{ goApp('new'); }finally{ _suppressNavPush=_was; }
   document.body.classList.add('cc-panel-on');
   window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
+  // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies).
+  try{ navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); }catch(e){}
   window._ccEmbedded=true;
   window.scrollTo(0,0);
 }

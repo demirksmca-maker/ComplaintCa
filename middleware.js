@@ -154,14 +154,42 @@ export function visitSource(referer, ua = '') {
   return app && !(host && host.endsWith('complaintca.ca')) ? app[0] : null;
 }
 
-function countVisit(url, ip, source) {
+export function deviceOf(ua) {
+  if (/iPad|Tablet|Android(?!.*Mobile)/i.test(ua)) return 'tablet';
+  return /Mobi|iPhone|Android/i.test(ua) ? 'mobile' : 'desktop';
+}
+
+// Toronto hour 0-23, for the panel's hour heatmap.
+export function visitHour(now = new Date()) {
+  return Number(now.toLocaleString('en-CA', { timeZone: 'America/Toronto', hour: 'numeric', hourCycle: 'h23' }));
+}
+
+const PAGE_RE = /^\/(es\/)?([a-z0-9-]+\/)*([a-z0-9-]+(\.html)?)?$/;
+
+function countVisit(request, url, ip, ua, source) {
   const site = url.pathname === '/es' || url.pathname.startsWith('/es/') ? 'es' : 'ca';
   const day = visitDay();
-  const views = `shield:views:${site}:${day}`, uniq = `shield:uv:${site}:${day}`;
+  const views = `shield:views:${site}:${day}`, uniq = `shield:uv:${site}:${day}`, stats = `shield:stats:${day}`;
   // No EXPIRE here: a few small keys a day, and it halves the Upstash calls.
-  const cmds = [['INCR', views], ['PFADD', uniq, ip]];
+  const cmds = [['INCR', views], ['PFADD', uniq, ip], ['HINCRBY', stats, `d:${deviceOf(ua)}`, 1], ['HINCRBY', stats, `h:${visitHour()}`, 1]];
+  // Only real-looking paths, so junk URLs can't flood the top-pages list.
+  if (url.pathname.length <= 80 && PAGE_RE.test(url.pathname)) cmds.push(['HINCRBY', stats, `p:${url.pathname}`, 1]);
+  const country = request.headers.get('x-vercel-ip-country');
+  if (country) {
+    let city = '';
+    try { city = decodeURIComponent(request.headers.get('x-vercel-ip-city') || '').slice(0, 40); } catch (e) { /* keep empty */ }
+    cmds.push(['HINCRBY', stats, `g:${country}|${city}`, 1]);
+  }
   if (source) cmds.push(['HINCRBY', `shield:src:${day}`, source, 1]);
   return cmds;
+}
+
+// Complaint funnel: unique people per step per day. "open" comes from the
+// page's beacon (/api/beacon, answered here without a function), the other
+// steps from the API calls the complaint flow makes.
+export function funnelStep(request, url) {
+  if (request.method !== 'POST' || url.search) return null;
+  return { '/api/route': 'route', '/api/email-code': 'email', '/api/complaint': 'submit' }[url.pathname] || null;
 }
 
 export default async function middleware(request) {
@@ -173,7 +201,7 @@ export default async function middleware(request) {
   const minute = Math.floor(Date.now() / 60000);
 
   // Events feed the AI review agent (scripts/shield-agent.mjs).
-  const logEvent = agent => [['LPUSH', 'shield:events', JSON.stringify({ t: Date.now(), ip, agent, path: url.pathname.slice(0, 200), ua: ua.slice(0, 200) })], ['LTRIM', 'shield:events', 0, 499]];
+  const logEvent = agent => [['LPUSH', 'shield:events', JSON.stringify({ t: Date.now(), ip, c: request.headers.get('x-vercel-ip-country') || '', agent, path: url.pathname.slice(0, 200), ua: ua.slice(0, 200) })], ['LTRIM', 'shield:events', 0, 499]];
   const ban = (agent, secs = BAN_SECONDS) => ['SET', `shield:ban:${ip}`, agent, 'EX', secs];
 
   const agent = inspect(url, ua);
@@ -185,6 +213,11 @@ export default async function middleware(request) {
     await redis(cmds);
     return blocked(agent);
   }
+  if (url.pathname === '/api/beacon') {
+    if (url.searchParams.get('e') === 'open' && !searchBot) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
+    return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+  }
+
   // One round trip: ban? lockdown? then the per-minute counter for this kind
   // of request, then the visitor counter. Search crawlers get the ban check
   // only (a spoofed Googlebot from a banned IP stays banned), no limits.
@@ -192,7 +225,9 @@ export default async function middleware(request) {
   const rateKey = searchBot ? null : isApi ? `shield:api:${ip}:${minute}` : page ? `shield:pv:${ip}:${minute}` : null;
   const cmds = [['GET', `shield:ban:${ip}`], ['GET', 'shield:lockdown']];
   if (rateKey) cmds.push(['INCR', rateKey], ['EXPIRE', rateKey, 120]);
-  if (isPageView(request, url, ua)) cmds.push(...countVisit(url, ip, visitSource(request.headers.get('referer'), ua)));
+  if (isPageView(request, url, ua)) cmds.push(...countVisit(request, url, ip, ua, visitSource(request.headers.get('referer'), ua)));
+  const step = funnelStep(request, url);
+  if (step) cmds.push(['PFADD', `shield:fun:${step}:${visitDay()}`, ip]);
   const r = await redis(cmds);
   if (!r) return;
   if (r[0] && r[0].result) return blocked('ban');
