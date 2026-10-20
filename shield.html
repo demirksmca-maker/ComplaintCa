@@ -71,9 +71,9 @@
   .empty{color:var(--mute);font-size:.8rem;text-align:center;padding:8px 0}
 
   .vbars{display:flex;align-items:flex-end;gap:8px;height:120px}
-  .vday{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+  .vday{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
   .stack{width:100%;display:flex;flex-direction:column-reverse;gap:2px;border-radius:4px 4px 0 0;overflow:hidden;min-height:2px}
-  .vday small{color:var(--mute);font-size:.66rem}
+  .vday small{color:var(--mute);font-size:.66rem;white-space:nowrap}
   .legend{display:flex;justify-content:center;gap:14px;font-size:.7rem;color:var(--mute);margin-top:8px}
   .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
 
@@ -179,17 +179,19 @@
 
     <!-- TRAFİK -->
     <section class="sec" id="v-traffic" hidden>
-      <div class="card pad"><h2>Ziyaretçi · 7 gün</h2><div class="vbars" id="bars"></div>
+      <div class="seg seg4" role="group" aria-label="Dönem"><button type="button" data-gdays="7" aria-pressed="false">7 gün</button><button type="button" data-gdays="14" aria-pressed="false">14 gün</button><button type="button" data-gdays="28" aria-pressed="true">1 ay</button><button type="button" data-gdays="90" aria-pressed="false">3 ay</button></div>
+      <div class="card pad"><h2>Ziyaretçi · <span class="plabel">7 gün</span></h2><div class="vbars" id="bars"></div>
         <div class="legend"><span><i style="background:var(--s1)"></i>Kanada</span><span><i style="background:var(--s2)"></i>İspanya</span></div></div>
-      <div class="card pad"><h2>En çok okunan · 7 gün</h2><div class="hb" id="pages"></div></div>
-      <div class="card pad"><h2>Cihaz · 7 gün</h2><div class="split" id="devBar"></div><div class="legend" id="devLegend"></div></div>
-      <div class="card pad"><h2>Şehir · 7 gün</h2><div class="hb" id="geo"></div></div>
-      <div class="card pad"><h2>Saat haritası · Toronto saati</h2><div class="heat" id="heat"></div><div class="scale">az<i></i>çok</div></div>
+      <div class="card pad"><h2>En çok okunan · <span class="plabel">7 gün</span></h2><div class="hb" id="pages"></div></div>
+      <div class="card pad"><h2>Cihaz · <span class="plabel">7 gün</span></h2><div class="split" id="devBar"></div><div class="legend" id="devLegend"></div></div>
+      <div class="card pad"><h2>Şehir · <span class="plabel">7 gün</span></h2><div class="hb" id="geo"></div></div>
+      <div class="card pad"><h2>Saat haritası · <span class="plabel">7 gün</span> · Toronto saati</h2><div class="heat" id="heat"></div><div class="scale">az<i></i>çok</div></div>
     </section>
 
     <!-- HUNİ -->
     <section class="sec" id="v-funnel" hidden>
-      <div class="seg" role="group"><button type="button" data-range="today" aria-pressed="true">Bugün</button><button type="button" data-range="week" aria-pressed="false">7 gün</button></div>
+      <div class="seg seg4" role="group" aria-label="Dönem"><button type="button" data-gdays="7" aria-pressed="false">7 gün</button><button type="button" data-gdays="14" aria-pressed="false">14 gün</button><button type="button" data-gdays="28" aria-pressed="true">1 ay</button><button type="button" data-gdays="90" aria-pressed="false">3 ay</button></div>
+      <div class="seg" role="group"><button type="button" data-range="today" aria-pressed="true">Bugün</button><button type="button" data-range="period" aria-pressed="false">Seçili dönem</button></div>
       <div class="card pad"><h2>Şikayet hunisi · kişi</h2><div class="fun" id="fun"></div></div>
       <p class="note" id="funNote"></p>
     </section>
@@ -344,7 +346,8 @@
   function markGDays() { each('[data-gdays]', function (b) { b.setAttribute('aria-pressed', Number(b.getAttribute('data-gdays')) === gDays ? 'true' : 'false'); }); }
   markGDays();
   each('[data-gdays]', function (b) { b.addEventListener('click', function () {
-    gDays = Number(b.getAttribute('data-gdays')); store('shieldGDays', String(gDays)); markGDays(); loadGsc();
+    // One period for Trafik, Huni and Google.
+    gDays = Number(b.getAttribute('data-gdays')); store('shieldGDays', String(gDays)); markGDays(); load(); if (gscLoaded) loadGsc();
   }); });
   function loadGsc(fresh) {
     gscLoaded = true;
@@ -411,7 +414,7 @@
   }
 
   function renderFunnel(d) {
-    var f = d.funnel[funRange], top = f.open || Math.max(f.route, f.email, f.submit) || 0;
+    var f = funRange === 'today' ? d.funnelToday : d.period.funnel, top = f.open || Math.max(f.route, f.email, f.submit) || 0;
     $('fun').innerHTML = STEPS.map(function (s) {
       var n = f[s[0]] || 0, pct = top ? Math.round(n / top * 100) : 0;
       return '<div><div class="row">' + esc(s[1]) + '<span>' + n + ' · %' + pct + '</span></div><div class="bar" style="width:' + Math.max(1, pct) + '%" title="' + esc(s[1]) + ': ' + n + '"></div></div>';
@@ -443,27 +446,37 @@
     $('search').innerHTML = brands(SEARCH, d.search || {});
     $('socials').innerHTML = brands(SOCIALS, d.socials || {});
 
-    var max = Math.max.apply(null, d.visits.map(function (v) { return v.ca.visitors + v.es.visitors; }).concat(1));
-    $('bars').innerHTML = d.visits.slice().reverse().map(function (v) {
-      var tot = v.ca.visitors + v.es.visitors;
-      return '<div class="vday" title="' + esc(v.day + ' · Kanada ' + v.ca.visitors + ' · İspanya ' + v.es.visitors) + '"><small>' + tot + '</small>' +
+    var pd = d.period, plabel = pd.days === 90 ? '3 ay' : pd.days === 28 ? '1 ay' : pd.days + ' gün';
+    each('.plabel', function (el) { el.textContent = plabel; });
+    // Daily bars up to a month; 3 months fold into weeks (13 bars).
+    var cols = pd.visits.slice().reverse(), weekly = cols.length > 28;
+    if (weekly) cols = cols.reduce(function (acc, v, idx) {
+      if (idx % 7 === 0) acc.push({ day: v.day, ca: { visitors: 0 }, es: { visitors: 0 } });
+      var w = acc[acc.length - 1]; w.ca.visitors += v.ca.visitors; w.es.visitors += v.es.visitors; return acc;
+    }, []);
+    var max = Math.max.apply(null, cols.map(function (v) { return v.ca.visitors + v.es.visitors; }).concat(1));
+    $('bars').innerHTML = cols.map(function (v, idx) {
+      var tot = v.ca.visitors + v.es.visitors, lab = weekly ? v.day.slice(8) + '.' + v.day.slice(5, 7) : cols.length > 7 ? v.day.slice(8) : DAYS_TR[new Date(v.day + 'T12:00:00').getDay()];
+      return '<div class="vday" title="' + esc((weekly ? v.day + ' haftası' : v.day) + ' · Kanada ' + v.ca.visitors + ' · İspanya ' + v.es.visitors) + '">' + (cols.length <= 7 ? '<small>' + tot + '</small>' : '') +
         '<div class="stack" style="height:' + Math.max(2, Math.round(tot / max * 78)) + '%">' +
         '<i style="flex:' + v.ca.visitors + ';background:var(--s1)"></i><i style="flex:' + v.es.visitors + ';background:var(--s2)"></i></div>' +
-        '<small>' + DAYS_TR[new Date(v.day + 'T12:00:00').getDay()] + '</small></div>';
+        '<small>' + (cols.length <= 7 || idx % 2 === 0 ? lab : '&nbsp;') + '</small></div>';
     }).join('');
-    $('pages').innerHTML = hbars(d.pages, function (p) { return p === '/' ? 'Ana sayfa' : p === '/es/' ? 'İspanya ana sayfa' : p.replace(/\.html$/, ''); });
-    $('geo').innerHTML = hbars(d.geo, function (g) { var x = g.split('|'); return flag(x[0]) + (x[1] || x[0]); });
+    $('bars').style.gap = cols.length > 14 ? '2px' : '8px';
+    $('pages').innerHTML = hbars(pd.pages, function (p) { return p === '/' ? 'Ana sayfa' : p === '/es/' ? 'İspanya ana sayfa' : p.replace(/\.html$/, ''); });
+    $('geo').innerHTML = hbars(pd.geo, function (g) { var x = g.split('|'); return flag(x[0]) + (x[1] || x[0]); });
 
-    var dv = d.devices, dt = dv.mobile + dv.desktop + dv.tablet, DEV = [['mobile', 'Telefon', 's1'], ['desktop', 'Bilgisayar', 's2'], ['tablet', 'Tablet', 's3']];
+    var dv = pd.devices, dt = dv.mobile + dv.desktop + dv.tablet, DEV = [['mobile', 'Telefon', 's1'], ['desktop', 'Bilgisayar', 's2'], ['tablet', 'Tablet', 's3']];
     $('devBar').innerHTML = DEV.map(function (x) { return dv[x[0]] ? '<i style="flex:' + dv[x[0]] + ';background:var(--' + x[2] + ')" title="' + x[1] + ': ' + dv[x[0]] + '"></i>' : ''; }).join('');
     $('devLegend').innerHTML = DEV.map(function (x) { return '<span><i style="background:var(--' + x[2] + ')"></i>' + x[1] + ' %' + (dt ? Math.round(dv[x[0]] / dt * 100) : 0) + '</span>'; }).join('');
 
-    var hmax = Math.max.apply(null, d.hours.map(function (r) { return Math.max.apply(null, r); }).concat(1));
+    // Weekday × hour, Monday first, summed over the period.
+    var WD = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'];
+    var hmax = Math.max.apply(null, pd.hours.map(function (r) { return Math.max.apply(null, r); }).concat(1));
     var heat = '<span class="rl"></span>' + Array.from({ length: 24 }, function (_, h) { return '<span class="rl" style="justify-content:center">' + (h % 6 ? '' : h) + '</span>'; }).join('');
-    d.hours.slice().reverse().forEach(function (row, idx) {
-      var day = d.visits[d.hours.length - 1 - idx].day;
-      heat += '<span class="rl">' + DAYS_TR[new Date(day + 'T12:00:00').getDay()] + '</span>' +
-        row.map(function (v, h) { return '<span style="background:' + heatColor(v, hmax) + '" title="' + esc(day + ' ' + h + ':00 · ' + v + ' görüntüleme') + '"></span>'; }).join('');
+    pd.hours.forEach(function (row, w) {
+      heat += '<span class="rl">' + WD[w] + '</span>' +
+        row.map(function (v, h) { return '<span style="background:' + heatColor(v, hmax) + '" title="' + esc(WD[w] + ' ' + h + ':00 · ' + v + ' görüntüleme') + '"></span>'; }).join('');
     });
     $('heat').innerHTML = heat;
 
@@ -493,7 +506,7 @@
   function load() {
     var key = getKey();
     if (!key) return showLogin();
-    fetch('/api/shield', { headers: { 'x-shield-key': key }, cache: 'no-store' }).then(function (r) {
+    fetch('/api/shield?days=' + gDays, { headers: { 'x-shield-key': key }, cache: 'no-store' }).then(function (r) {
       if (r.status === 403) { setKey(''); throw new Error('Şifre yanlış.'); }
       if (r.status === 429) throw new Error('Çok fazla yanlış deneme, 10 dk bekle.');
       if (r.status === 503) throw new Error('Sunucu ayarı eksik.');
