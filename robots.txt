@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /trap/
 
 Sitemap: https://www.complaintca.ca/sitemap.xml

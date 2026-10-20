@@ -6,6 +6,11 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Kalkan Paneli</title>
 <link rel="icon" href="/favicon.ico">
+<link rel="manifest" href="/shield-manifest.json">
+<meta name="theme-color" content="#0f141a">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kalkan">
 <style>
   :root{--bg:#f6f7f9;--card:#fff;--ink:#16202c;--mute:#5f6b7a;--line:#e3e7ec;--ok:#1f8a4c;--bad:#c4372f;--accent:#1d5fd1;--bar:#1d5fd1;--bar2:#e0a020}
   @media (prefers-color-scheme:dark){:root{--bg:#0f141a;--card:#171e27;--ink:#e6ebf1;--mute:#93a0b0;--line:#26303c;--ok:#4cc27e;--bad:#ff6b61;--accent:#6ea2ff;--bar:#6ea2ff;--bar2:#f2bd4b}}
@@ -39,6 +44,12 @@
   button{padding:10px 16px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-size:1rem;cursor:pointer}
   .link{background:none;color:var(--mute);padding:0;font-size:.85rem;text-decoration:underline}
   .err{color:var(--bad)}
+  .lock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .lock b{font-size:1.05rem}
+  .on{color:var(--bad)}
+  .btn-bad{background:var(--bad)}
+  .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+  .install{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -56,7 +67,22 @@
     <p class="err" id="loginErr" hidden></p>
   </section>
 
+  <section class="card install" id="install" hidden>
+    <span id="installText">Paneli telefonuna uygulama olarak ekle.</span>
+    <button type="button" id="installBtn">Uygulama olarak ekle</button>
+  </section>
+
   <div id="app" hidden>
+    <section class="card">
+      <div class="lock">
+        <div><b id="lockState">Acil kilit kapalı</b><br><span class="sub" id="lockHint" style="margin:0">Büyük saldırıda botlara sıkı sınır koyar, site insanlara açık kalır.</span></div>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="btn-bad" id="lockOn">1 saat kilitle</button>
+          <button type="button" class="btn-ghost" id="lockOff" hidden>Kilidi aç</button>
+        </div>
+      </div>
+    </section>
+
     <section class="card">
       <h2>Bugün</h2>
       <div class="stats">
@@ -89,7 +115,7 @@
 <script>
 (function () {
   var KEY = 'shieldKey';
-  var AGENTS = { probe: 'Gizli dosya denemesi', inject: 'Zararlı kod', scanner: 'Saldırı aracı', flood: 'Aşırı istek', ban: 'Banlı IP', 'suspect-rate': 'Şüpheli hız', 'suspect-noua': 'Kimliksiz istek' };
+  var AGENTS = { probe: 'Gizli dosya denemesi', inject: 'Zararlı kod', scanner: 'Saldırı aracı', flood: 'Aşırı istek', ban: 'Banlı IP', trap: 'Tuzağa düşen bot', scrape: 'Kopyalama denemesi', lockdown: 'Kilitte engellendi', 'suspect-rate': 'Şüpheli hız', 'suspect-noua': 'Kimliksiz istek' };
   var $ = function (id) { return document.getElementById(id); };
   function getKey() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
   function setKey(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} }
@@ -122,6 +148,7 @@
     $('reports').innerHTML = d.reports.length ? d.reports.map(function (r) {
       return '<div class="note"><time>' + esc(when(r.t)) + ' · ' + esc(r.events) + ' kayıt</time>' +
         '<p class="' + (r.bans && r.bans.length ? '' : 'quiet') + '">' + esc(r.summary) + '</p>' +
+        (r.lockdownHours ? '<div class="ban">🔒 Acil kilit ' + esc(r.lockdownHours) + ' saat açıldı</div>' : '') +
         (r.bans || []).map(function (b) { return '<div class="ban">⛔ ' + esc(b.ip) + ' · ' + esc(b.hours) + ' saat · ' + esc(b.reason) + '</div>'; }).join('') +
         '</div>';
     }).join('') : '<p class="quiet">Henüz bildirim yok. Site sakin.</p>';
@@ -129,6 +156,11 @@
     $('events').innerHTML = d.events.length ? d.events.slice(0, 20).map(function (e) {
       return '<div class="ev"><b>' + esc(AGENTS[e.agent] || e.agent) + '</b> · ' + esc(when(e.t)) + ' · ' + esc(e.ip) + ' · ' + esc(e.path) + '</div>';
     }).join('') : '<p class="quiet">Engellenen istek yok.</p>';
+
+    var lockMin = Math.ceil((d.lockdown || 0) / 60);
+    $('lockState').textContent = lockMin ? 'Acil kilit AÇIK · ' + lockMin + ' dk kaldı' : 'Acil kilit kapalı';
+    $('lockState').className = lockMin ? 'on' : '';
+    $('lockOn').hidden = !!lockMin; $('lockOff').hidden = !lockMin;
 
     $('status').textContent = 'Son güncelleme: ' + new Date().toLocaleTimeString('tr-TR');
   }
@@ -148,6 +180,29 @@
       if (!getKey()) showLogin(e.message); else $('status').textContent = e.message;
     });
   }
+
+  function setLock(hours) {
+    fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ lockdownHours: hours }) })
+      .then(function (r) { if (!r.ok) throw new Error('Kilit değiştirilemedi (' + r.status + ').'); load(); })
+      .catch(function (e) { $('status').textContent = e.message; });
+  }
+  $('lockOn').addEventListener('click', function () { if (confirm('Acil kilit 1 saatliğine açılsın mı?')) setLock(1); });
+  $('lockOff').addEventListener('click', function () { setLock(0); });
+
+  // Phone app: Android/Chrome offers an install prompt; iPhone needs Share → Add to Home Screen.
+  var promptEvent = null;
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); promptEvent = e; if (!standalone) $('install').hidden = false; });
+  if (!standalone && /iPhone|iPad/.test(navigator.userAgent)) {
+    $('install').hidden = false; $('installBtn').hidden = true;
+    $('installText').textContent = 'Uygulama olarak eklemek için Paylaş → Ana Ekrana Ekle.';
+  }
+  $('installBtn').addEventListener('click', function () {
+    if (!promptEvent) return;
+    promptEvent.prompt();
+    promptEvent.userChoice.then(function () { $('install').hidden = true; promptEvent = null; });
+  });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); });
   $('logout').addEventListener('click', function () { setKey(''); showLogin(); });
