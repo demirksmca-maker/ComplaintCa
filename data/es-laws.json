@@ -252,9 +252,9 @@
    "cats": [
     "transit"
    ],
-   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2025-24545",
+   "url": "https://www.boe.es/eli/es/l/2025/12/03/9",
    "verificado": false,
-   "nota": "Dudoso: confirmar en el BOE antes de usar."
+   "comprobado_web": "BOE núm. 291, 4/12/2025"
   },
   {
    "kanun": "Ley 29/1994, de Arrendamientos Urbanos (LAU)",
@@ -614,22 +614,6 @@
    "verificado": false
   },
   {
-   "kanun": "Ley 6/2022, Estatuto de las Personas Consumidoras del País Vasco",
-   "boe_id": "BOE-A-2022-12001",
-   "madde": "Arts. 10-18, 85-95",
-   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
-   "sure": "Respuesta: 1 mes.",
-   "yetkili_kurum": "Kontsumobide",
-   "kapsam": "pais_vasco",
-   "cats": [
-    "billing",
-    "service"
-   ],
-   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-12001",
-   "verificado": false,
-   "nota": "Dudoso: confirmar número de ley en el BOE."
-  },
-  {
    "kanun": "Ley 2/2012, de protección general de las personas consumidoras de Galicia",
    "boe_id": "BOE-A-2012-5369",
    "madde": "Arts. 12, 28, 45-50",
@@ -796,7 +780,7 @@
   },
   {
    "kanun": "Ley 4/1996, del Estatuto de los Consumidores y Usuarios de la Región de Murcia",
-   "boe_id": "",
+   "boe_id": "BOE-A-1996-21850",
    "madde": "",
    "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
    "sure": "",
@@ -806,9 +790,57 @@
     "billing",
     "service"
    ],
+   "url": "https://www.boe.es/eli/es-mc/l/1996/06/14/4",
+   "verificado": false,
+   "comprobado_web": "BOE núm. 238, 2/10/1996"
+  },
+  {
+   "kanun": "Ley 4/2023, Estatuto de las personas consumidoras y usuarias de Euskadi",
+   "boe_id": "BOE-A-2023-13537",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Kontsumobide",
+   "kapsam": "pais_vasco",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/eli/es-pv/l/2023/04/27/4/con",
+   "verificado": false,
+   "comprobado_web": "Sustituye a la Ley 6/2003 (derogada 11/05/2023); 'Ley 6/2022' no existe"
+  },
+  {
+   "kanun": "Ley Foral 34/2022, Estatuto de las personas consumidoras y usuarias en Navarra",
+   "boe_id": "BOE-A-2023-470",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Servicio de Consumo y Arbitraje de Navarra",
+   "kapsam": "navarra",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/",
+   "verificado": false,
+   "comprobado_web": "En vigor desde 23/12/2022; deroga la Ley Foral 7/2006"
+  },
+  {
+   "kanun": "Ley 5/2013, para la defensa de los consumidores en la Comunidad Autónoma de La Rioja",
+   "boe_id": "",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Consumo — Gobierno de La Rioja",
+   "kapsam": "la_rioja",
+   "cats": [
+    "billing",
+    "service"
+   ],
    "url": "",
    "verificado": false,
-   "nota": "Añadido sin BOE id: confirmar."
+   "comprobado_web": "BOR 19/04/2013"
   }
  ]
 }
