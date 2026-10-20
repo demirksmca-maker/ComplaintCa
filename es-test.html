@@ -6172,11 +6172,66 @@ function mvRender(reps){
 
 function mvEmail(email,name){
   var subj=V.t('mv_email_subj');
-  var body=V.t('mv_email_dear')+' '+name+',\n\n';
+  var body=V.t('mv_email_dear')+' '+name+':\n\n';
   if(_mvRef){body+=V.t('mv_email_ref')+' '+_mvRef+').\n\n';}
   else{body+=V.t('mv_email_noref')+'\n\n';}
   body+=V.t('mv_email_body')+'\n\n'+V.t('mv_email_req')+'\n\n'+V.t('mv_email_sincerely')+'\n';
   window.location.href='mailto:'+encodeURIComponent(email)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+}
+</script>
+
+<script>
+// Spain (ES test page): deputies are elected per province, so "find your representative" works by
+// province instead of the Canadian postal-code API above (these later declarations replace it).
+var ES_PROVINCES=[["Álava", "pais_vasco", "araba alava vitoria"], ["Albacete", "castilla_la_mancha", ""], ["Alicante", "valencia", "alacant"], ["Almería", "andalucia", ""], ["Asturias", "asturias", "oviedo gijon"], ["Ávila", "castilla_leon", ""], ["Badajoz", "extremadura", ""], ["Barcelona", "cataluna", ""], ["Burgos", "castilla_leon", ""], ["Cáceres", "extremadura", ""], ["Cádiz", "andalucia", ""], ["Cantabria", "cantabria", "santander"], ["Castellón", "valencia", "castello"], ["Ciudad Real", "castilla_la_mancha", ""], ["Córdoba", "andalucia", ""], ["A Coruña", "galicia", "la coruna coruna santiago"], ["Cuenca", "castilla_la_mancha", ""], ["Girona", "cataluna", "gerona"], ["Granada", "andalucia", ""], ["Guadalajara", "castilla_la_mancha", ""], ["Gipuzkoa", "pais_vasco", "guipuzcoa san sebastian donostia"], ["Huelva", "andalucia", ""], ["Huesca", "aragon", ""], ["Illes Balears", "baleares", "baleares mallorca palma ibiza menorca"], ["Jaén", "andalucia", ""], ["León", "castilla_leon", ""], ["Lleida", "cataluna", "lerida"], ["Lugo", "galicia", ""], ["Madrid", "madrid", ""], ["Málaga", "andalucia", ""], ["Murcia", "murcia", "cartagena"], ["Navarra", "navarra", "pamplona iruna"], ["Ourense", "galicia", "orense"], ["Palencia", "castilla_leon", ""], ["Las Palmas", "canarias", "gran canaria lanzarote fuerteventura"], ["Pontevedra", "galicia", "vigo"], ["La Rioja", "la_rioja", "logrono"], ["Salamanca", "castilla_leon", ""], ["Santa Cruz de Tenerife", "canarias", "tenerife la palma gomera hierro"], ["Segovia", "castilla_leon", ""], ["Sevilla", "andalucia", ""], ["Soria", "castilla_leon", ""], ["Tarragona", "cataluna", ""], ["Teruel", "aragon", ""], ["Toledo", "castilla_la_mancha", ""], ["Valencia", "valencia", "valencia"], ["Valladolid", "castilla_leon", ""], ["Bizkaia", "pais_vasco", "vizcaya bilbao"], ["Zamora", "castilla_leon", ""], ["Zaragoza", "aragon", ""], ["Ceuta", "ceuta", ""], ["Melilla", "melilla", ""]];
+var ES_REG_PARL={"madrid": "Asamblea de Madrid", "cataluna": "Parlament de Catalunya", "andalucia": "Parlamento de Andalucía", "valencia": "Corts Valencianes", "pais_vasco": "Parlamento Vasco", "galicia": "Parlamento de Galicia", "castilla_leon": "Cortes de Castilla y León", "castilla_la_mancha": "Cortes de Castilla-La Mancha", "aragon": "Cortes de Aragón", "asturias": "Junta General del Principado de Asturias", "murcia": "Asamblea Regional de Murcia", "baleares": "Parlament de les Illes Balears", "canarias": "Parlamento de Canarias", "extremadura": "Asamblea de Extremadura", "navarra": "Parlamento de Navarra", "cantabria": "Parlamento de Cantabria", "la_rioja": "Parlamento de La Rioja", "ceuta": "Asamblea de Ceuta", "melilla": "Asamblea de Melilla"};
+function _esNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]/g,' ').replace(/\s+/g,' ').trim();}
+function _esFindProv(t){
+  var q=_esNorm(t); if(q.length<3) return null;
+  for(var i=0;i<ES_PROVINCES.length;i++){ if(_esNorm(ES_PROVINCES[i][0])===q) return ES_PROVINCES[i]; }
+  for(var j=0;j<ES_PROVINCES.length;j++){ var w=(_esNorm(ES_PROVINCES[j][0])+' '+ES_PROVINCES[j][2]).split(' ');
+    if(w.indexOf(q)>-1 || _esNorm(ES_PROVINCES[j][0]).indexOf(q)===0) return ES_PROVINCES[j]; }
+  return null;
+}
+function _mvLocSearch(){
+  var val=document.getElementById('mv-postal').value, dd=document.getElementById('mv-dropdown');
+  var q=_esNorm(val); if(!dd) return;
+  if(q.length<2){dd.style.display='none';return;}
+  var hits=ES_PROVINCES.filter(function(p){return (_esNorm(p[0])+' '+p[2]).indexOf(q)>-1;}).slice(0,6);
+  if(!hits.length){dd.style.display='none';return;}
+  dd.innerHTML='';
+  hits.forEach(function(p){
+    var item=document.createElement('div'); item.className='loc-item'; item.tabIndex=0; item.setAttribute('role','button');
+    item.innerHTML='<strong>'+escHtml(p[0])+'</strong><span>'+escHtml(ES_REG_PARL[p[1]]||'')+'</span>';
+    item.onclick=function(){document.getElementById('mv-postal').value=p[0];dd.style.display='none';mvSearch();};
+    dd.appendChild(item);
+  });
+  dd.style.display='block';
+}
+function mvSearch(){
+  var raw=(document.getElementById('mv-postal').value||'').trim(), box=document.getElementById('mv-results');
+  var dd=document.getElementById('mv-dropdown'); if(dd) dd.style.display='none';
+  if(_esNorm(raw).length<3){ box.innerHTML='<div style="padding:14px;background:var(--badge-red-bg);border:1px solid var(--red);border-radius:10px;font-size:.8rem;color:var(--badge-red-text)">'+V.t('mv_err_short')+'</div>'; return; }
+  var p=_esFindProv(raw);
+  if(!p){ box.innerHTML='<div style="padding:14px;background:var(--badge-gold-bg);border:1px solid var(--yellow);border-radius:10px;font-size:.8rem;color:var(--badge-gold-text)">'+V.t('mv_err_geocode')+'</div>'; return; }
+  var omb=(typeof ES_LAWYERS!=='undefined'?ES_LAWYERS:[]).filter(function(x){return x.badge==='OMBUDSMAN'&&(x.r===p[1]||x.r==='nacional');});
+  var cards=[
+    {lvl:'Estatal · Congreso',color:'#c8102e',name:'Diputados por '+p[0],desc:'Congreso de los Diputados. Busque los diputados de su circunscripción y escríbales.',url:'https://www.congreso.es/es/busqueda-de-diputados',mail:'Diputados por '+p[0]},
+    {lvl:'Estatal · Senado',color:'#c8102e',name:'Senadores por '+p[0],desc:'Senado de España.',url:'https://www.senado.es/',mail:'Senadores por '+p[0]},
+    {lvl:'Autonómico',color:'#1a4fa0',name:ES_REG_PARL[p[1]]||'',desc:'Parlamento de su comunidad autónoma.',url:'',mail:ES_REG_PARL[p[1]]||''}
+  ];
+  omb.forEach(function(o){cards.push({lvl:o.r==='nacional'?'Estatal · Defensor':'Autonómico · Defensor',color:'#16a34a',name:o.name,desc:o.note,url:o.url,mail:o.name});});
+  var btn='background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:.75rem;font-weight:700;cursor:pointer';
+  var lnk='background:var(--off);color:var(--blue);border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.75rem;font-weight:600;text-decoration:none';
+  box.innerHTML=cards.map(function(c,i){
+    return '<div style="border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px">'+
+      '<span style="font-size:.62rem;font-weight:700;color:#fff;background:'+c.color+';border-radius:20px;padding:3px 9px;letter-spacing:.3px">'+escHtml(c.lvl)+'</span>'+
+      '<div style="font-weight:700;color:var(--text);font-size:.98rem;margin-top:6px">'+escHtml(c.name)+'</div>'+
+      '<div style="font-size:.75rem;color:var(--muted);margin:4px 0 10px">'+escHtml(c.desc)+'</div>'+
+      '<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="mv-email-btn" data-mv-idx="'+i+'" style="'+btn+'">'+V.t('mv_email_btn')+'</button>'+
+      (c.url?'<a href="'+escAttr(c.url)+'" target="_blank" rel="noopener" style="'+lnk+'">'+V.t('mv_profile')+'</a>':'')+'</div></div>';
+  }).join('');
+  box.querySelectorAll('.mv-email-btn').forEach(function(b){ b.addEventListener('click',function(){ mvEmail('',cards[+b.getAttribute('data-mv-idx')].mail); }); });
 }
 </script>
 <style>
