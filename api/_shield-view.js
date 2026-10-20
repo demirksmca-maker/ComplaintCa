@@ -1,8 +1,9 @@
 // GET /api/shield + x-shield-key header → data for the owner's shield page
 // (/shield.html): visitors per day, AI agent reports, latest blocked events,
 // lockdown state, today's arrivals by search engine / social network, and
-// the 7-day analytics: top pages, cities, devices, hour heatmap, complaint
-// funnel, attack countries, change against the week before. POST {lockdownHours} turns emergency lockdown on (1-6 h)
+// analytics for a chosen period (?days=7|14|28|90): top pages, cities,
+// devices, hour heatmap, complaint funnel; plus attack countries and the
+// change against the week before. POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
@@ -21,6 +22,51 @@ export function keyOk(given, expected) {
 export function lastDays(now = new Date(), n = DAYS) {
   return Array.from({ length: n }, (_, i) =>
     new Date(now.getTime() - i * 86400000).toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }));
+}
+
+const PERIODS = [7, 14, 28, 90];
+const top = (obj, n) => Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
+
+// Trafik / Huni numbers for the last N days: visits per day, top pages,
+// cities, devices, a weekday × hour heatmap (Monday first) and the funnel.
+// Up to ~460 Upstash commands for 90 days, so periods over a week are
+// cached for 15 minutes.
+export async function periodStats(pipeline, n, now = new Date()) {
+  const cacheKey = `shield:period:${n}`;
+  if (n > 7) {
+    const [hit] = await pipeline([['GET', cacheKey]]);
+    if (hit) { try { return JSON.parse(hit); } catch { /* recompute */ } }
+  }
+  const days = lastDays(now, n);
+  const cmds = [];
+  for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
+  for (const d of days) cmds.push(['HGETALL', `shield:stats:${d}`]);
+  for (const step of FUNNEL) cmds.push(['PFCOUNT', ...days.map(d => `shield:fun:${step}:${d}`)]);
+  const out = await pipeline(cmds);
+  let i = 0;
+  const visits = days.map(day => {
+    const v = { day };
+    for (const site of ['ca', 'es']) v[site] = { views: Number(out[i++]) || 0, visitors: Number(out[i++]) || 0 };
+    return v;
+  });
+  const pages = {}, geo = {}, devices = { mobile: 0, desktop: 0, tablet: 0 };
+  const hours = Array.from({ length: 7 }, () => Array(24).fill(0)); // [Mon..Sun][hour]
+  for (const day of days) {
+    const wd = (new Date(day + 'T12:00:00Z').getUTCDay() + 6) % 7;
+    const flat = out[i++] || [];
+    for (let k = 0; k + 1 < flat.length; k += 2) {
+      const f = String(flat[k]), c = Number(flat[k + 1]) || 0, v = f.slice(2);
+      if (f.startsWith('p:')) pages[v] = (pages[v] || 0) + c;
+      else if (f.startsWith('g:')) geo[v] = (geo[v] || 0) + c;
+      else if (f.startsWith('d:') && v in devices) devices[v] += c;
+      else if (f.startsWith('h:') && Number(v) >= 0 && Number(v) < 24) hours[wd][Number(v)] += c;
+    }
+  }
+  const funnel = {};
+  for (const step of FUNNEL) funnel[step] = Number(out[i++]) || 0;
+  const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel };
+  if (n > 7) await pipeline([['SET', cacheKey, JSON.stringify(result), 'EX', 900]]);
+  return result;
 }
 
 const parse = list => (list || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
@@ -75,17 +121,18 @@ export async function shieldView(req, res) {
     return res.status(200).json({ lockdown: hours * 3600 });
   }
 
-  // Two weeks of visits (this week + the one before, for the ↑↓ arrows), the
-  // 7-day breakdown hashes, the funnel, then the lists.
-  const days = lastDays(new Date(), 14), week = days.slice(0, 7);
+  // Live part on every refresh: two weeks of visits (today's tiles and the
+  // 7-day ↑↓ arrows), today's funnel and sources, the lists and lockdown.
+  // The period part (Trafik / Huni) is periodStats(), cached for long periods.
+  const days = lastDays(new Date(), 14);
   const cmds = [];
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
-  for (const d of week) cmds.push(['HGETALL', `shield:stats:${d}`]);
-  for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${week[0]}`], ['PFCOUNT', ...week.map(d => `shield:fun:${step}:${d}`)]);
+  for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${days[0]}`]);
   cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown'], ['HGETALL', `shield:src:${days[0]}`]);
-  let out;
+  const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
+  let out, stats;
   try {
-    out = await pipeline(cmds);
+    [out, stats] = await Promise.all([pipeline(cmds), periodStats(pipeline, period)]);
   } catch {
     return res.status(502).json({ error: 'upstash' });
   }
@@ -102,23 +149,8 @@ export async function shieldView(req, res) {
     visitors: [sum(visits, people), sum(all.slice(7), people)],
     views: [sum(visits, seen), sum(all.slice(7), seen)]
   };
-
-  const pages = {}, geo = {}, devices = { mobile: 0, desktop: 0, tablet: 0 };
-  const hours = week.map(() => Array(24).fill(0)); // [day][hour], today first
-  week.forEach((_, d) => {
-    const flat = out[i++] || [];
-    for (let k = 0; k + 1 < flat.length; k += 2) {
-      const f = String(flat[k]), n = Number(flat[k + 1]) || 0;
-      const v = f.slice(2);
-      if (f.startsWith('p:')) pages[v] = (pages[v] || 0) + n;
-      else if (f.startsWith('g:')) geo[v] = (geo[v] || 0) + n;
-      else if (f.startsWith('d:') && v in devices) devices[v] += n;
-      else if (f.startsWith('h:') && Number(v) >= 0 && Number(v) < 24) hours[d][Number(v)] += n;
-    }
-  });
-  const top = (obj, n) => Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
-  const funnel = { today: {}, week: {} };
-  for (const step of FUNNEL) { funnel.today[step] = Number(out[i++]) || 0; funnel.week[step] = Number(out[i++]) || 0; }
+  const today = {};
+  for (const step of FUNNEL) today[step] = Number(out[i++]) || 0;
 
   const reports = parse(out[i++]), events = parse(out[i++]);
   const ttl = Number(out[i++]);
@@ -132,7 +164,7 @@ export async function shieldView(req, res) {
     visits, reports, events: events.slice(0, 50), lockdown: ttl > 0 ? ttl : 0,
     search: pick(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia']),
     socials: pick(['facebook', 'instagram', 'x', 'tiktok', 'youtube']),
-    compare, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel,
+    compare, funnelToday: today, period: stats,
     attackCountries: top(attackCountries, 5)
   });
 }

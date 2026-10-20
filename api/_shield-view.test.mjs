@@ -52,3 +52,20 @@ test('only wrong keys count toward the lockout', async () => {
     delete process.env.KV_REST_API_TOKEN;
   }
 });
+
+test('periodStats adds up days and folds hours into weekdays', async () => {
+  const { periodStats } = await import('./_shield-view.js');
+  const pipeline = async cmds => cmds.map(([c, k]) => {
+    if (c === 'GET') return k.startsWith('shield:period') ? null : '3';
+    if (c === 'PFCOUNT') return 2;
+    if (c === 'HGETALL') return ['p:/', '2', 'g:CA|Toronto', '1', 'd:mobile', '1', 'h:9', '4'];
+    return 'OK';
+  });
+  const r = await periodStats(pipeline, 14, new Date('2026-10-20T15:00:00Z'));
+  assert.equal(r.visits.length, 14);
+  assert.deepEqual(r.pages, [['/', 28]]);
+  assert.equal(r.devices.mobile, 14);
+  assert.equal(r.hours.length, 7);
+  assert.equal(r.hours[0][9], 8); // two Mondays in 14 days
+  assert.equal(r.funnel.open, 2);
+});
