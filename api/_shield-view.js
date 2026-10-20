@@ -25,7 +25,7 @@ export async function shieldView(req, res) {
   if (await isRateLimited(ip, { limit: 30, windowMs: 10 * 60 * 1000, bucket: 'shield-view' })) return res.status(429).json({ error: 'cooldown' });
   if (!process.env.SHIELD_KEY) return res.status(503).json({ error: 'not_configured' });
   if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) return res.status(403).json({ error: 'forbidden' });
-  const base = process.env.UPSTASH_REDIS_REST_URL, token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const base = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL, token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!base || !token) return res.status(503).json({ error: 'no_upstash' });
 
   const days = lastDays();
