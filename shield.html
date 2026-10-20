@@ -146,8 +146,10 @@
     }).join('');
 
     $('reports').innerHTML = d.reports.length ? d.reports.map(function (r) {
-      return '<div class="note"><time>' + esc(when(r.t)) + ' · ' + esc(r.events) + ' kayıt</time>' +
-        '<p class="' + (r.bans && r.bans.length ? '' : 'quiet') + '">' + esc(r.summary) + '</p>' +
+      return '<div class="note"><time>' + esc(when(r.t)) + ' · ' + (r.kind === 'copy' ? 'Kopya avcısı' : esc(r.events) + ' kayıt') + '</time>' +
+        '<p class="' + ((r.bans && r.bans.length) || r.copies ? '' : 'quiet') + '">' + esc(r.summary) + '</p>' +
+        (r.copies || []).map(function (c) { return '<div class="ban">📄 Kopya: ' + esc(c.url) + ' ← ' + esc(c.source.replace(/^https?:\/\/[^/]+/, '')) + '</div>'; }).join('') +
+        (r.copies && r.copies.length ? '<div class="ev"><a href="https://reportcontent.google.com/forms/dmca_search" target="_blank" rel="noopener">Google\'dan kaldırt (telif formu)</a></div>' : '') +
         (r.lockdownHours ? '<div class="ban">🔒 Acil kilit ' + esc(r.lockdownHours) + ' saat açıldı</div>' : '') +
         (r.bans || []).map(function (b) { return '<div class="ban">⛔ ' + esc(b.ip) + ' · ' + esc(b.hours) + ' saat · ' + esc(b.reason) + '</div>'; }).join('') +
         '</div>';

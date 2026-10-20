@@ -1,0 +1,46 @@
+name: Copy Watch
+
+# Once a day: Claude searches the web for copies of a few complaintca.ca
+# pages (rotating through sitemap.xml, every page about once a month). Found
+# copies are re-asserted to search engines via IndexNow and reported on
+# /shield.html and by e-mail. Only secret: ANTHROPIC_API_KEY. Run by hand
+# with "dry_run" to see the result without reporting.
+on:
+  schedule:
+    - cron: '17 13 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only — do not report'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: copy-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Claude SDK
+        run: npm install --no-save --no-package-lock @anthropic-ai/sdk
+
+      - name: Look for copies
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/copy-watch.mjs
