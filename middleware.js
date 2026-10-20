@@ -11,7 +11,7 @@
 // probe/inject/scanner hits also ban the IP for an hour, except for search
 // engine crawlers (a junk link crawled by Googlebot must never ban Google).
 //
-// Without UPSTASH_REDIS_REST_URL/TOKEN only the stateless agents (probe,
+// Without UPSTASH_REDIS_REST_URL/TOKEN (or KV_REST_API_URL/TOKEN) only the stateless agents (probe,
 // inject, scanner) run. Upstash errors or slowness fail open.
 
 export const config = {
@@ -68,8 +68,8 @@ export function inspect(url, userAgent = '') {
 }
 
 async function redis(commands) {
-  const base = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const base = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!base || !token) return null;
   try {
     const res = await fetch(`${base}/pipeline`, {

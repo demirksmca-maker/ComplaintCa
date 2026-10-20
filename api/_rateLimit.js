@@ -6,7 +6,8 @@
 // concurrent/cold-started function instances. Without those env vars, this
 // falls back to the previous in-memory counter, which only limits requests
 // that happen to land on the same warm instance — better than nothing, but
-// not a real guarantee under load.
+// not a real guarantee under load. The Vercel Marketplace Upstash store names
+// them KV_REST_API_URL/KV_REST_API_TOKEN instead; both spellings work.
 const memoryMap = new Map();
 
 function memoryLimited(key, limit, windowMs) {
@@ -22,8 +23,8 @@ function memoryLimited(key, limit, windowMs) {
 }
 
 async function upstashLimited(key, limit, windowSeconds) {
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   const res = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: {
@@ -41,7 +42,7 @@ async function upstashLimited(key, limit, windowSeconds) {
 
 export async function isRateLimited(ip, { limit = 10, windowMs = 60000, bucket = 'default' } = {}) {
   const key = `ratelimit:${bucket}:${ip}`;
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+  if ((process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL) && (process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN)) {
     try {
       return await upstashLimited(key, limit, Math.ceil(windowMs / 1000));
     } catch (e) {
