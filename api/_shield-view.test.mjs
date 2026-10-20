@@ -21,15 +21,34 @@ test('lastDays gives 7 distinct days, newest first', () => {
   assert.equal(d[6], '2026-10-14');
 });
 
-test('wrong key is refused, missing config is 503', async () => {
-  delete process.env.UPSTASH_REDIS_REST_URL;
+test('missing config is 503', async () => {
   delete process.env.SHIELD_KEY;
-  let res = mockRes();
+  const res = mockRes();
   await shieldView({ headers: { 'x-forwarded-for': '10.0.0.1' } }, res);
   assert.equal(res.code, 503);
+});
+
+test('only wrong keys count toward the lockout', async () => {
+  const realFetch = globalThis.fetch;
+  const kv = new Map();
+  globalThis.fetch = async (_u, o) => ({ ok: true, json: async () => JSON.parse(o.body).map(([c, k]) => {
+    if (c === 'GET') return { result: kv.get(k) ?? null };
+    if (c === 'INCR') { kv.set(k, (kv.get(k) || 0) + 1); return { result: kv.get(k) }; }
+    if (c === 'LRANGE') return { result: [] };
+    return { result: 0 };
+  }) });
   process.env.SHIELD_KEY = 'secret';
-  res = mockRes();
-  await shieldView({ headers: { 'x-forwarded-for': '10.0.0.2', 'x-shield-key': 'nope' } }, res);
-  assert.equal(res.code, 403);
-  delete process.env.SHIELD_KEY;
+  process.env.KV_REST_API_URL = 'https://fake';
+  process.env.KV_REST_API_TOKEN = 't';
+  const call = async key => { const r = mockRes(); await shieldView({ method: 'GET', headers: { 'x-forwarded-for': '10.0.0.3', 'x-shield-key': key } }, r); return r.code; };
+  try {
+    for (let i = 0; i < 50; i++) assert.equal(await call('secret'), 200);
+    for (let i = 0; i < 10; i++) assert.equal(await call('nope'), 403);
+    assert.equal(await call('secret'), 429);
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.SHIELD_KEY;
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+  }
 });

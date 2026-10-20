@@ -3,10 +3,10 @@
 // lockdown state. POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
-import { isRateLimited } from './_rateLimit.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
+const BAD_KEY_LIMIT = 10;
 
 export function keyOk(given, expected) {
   if (!expected || typeof given !== 'string') return false;
@@ -24,9 +24,7 @@ const parse = list => (list || []).map(s => { try { return JSON.parse(s); } catc
 export async function shieldView(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
-  if (await isRateLimited(ip, { limit: 30, windowMs: 10 * 60 * 1000, bucket: 'shield-view' })) return res.status(429).json({ error: 'cooldown' });
   if (!process.env.SHIELD_KEY) return res.status(503).json({ error: 'not_configured' });
-  if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) return res.status(403).json({ error: 'forbidden' });
   const base = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL, token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
   if (!base || !token) return res.status(503).json({ error: 'no_upstash' });
 
@@ -39,6 +37,22 @@ export async function shieldView(req, res) {
     if (!r.ok) throw new Error(`upstash ${r.status}`);
     return (await r.json()).map(x => x.result);
   };
+
+  // Only wrong keys count toward the limit, so the panel's own refreshes
+  // never lock the owner out; after BAD_KEY_LIMIT misses the IP waits
+  // 10 minutes, even with the right key (no brute forcing).
+  const badKey = `shield:badkey:${ip}`;
+  let bad;
+  try {
+    [bad] = await pipeline([['GET', badKey]]);
+  } catch {
+    return res.status(502).json({ error: 'upstash' });
+  }
+  if (Number(bad) >= BAD_KEY_LIMIT) return res.status(429).json({ error: 'cooldown' });
+  if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) {
+    await pipeline([['INCR', badKey], ['EXPIRE', badKey, 600]]).catch(() => {});
+    return res.status(403).json({ error: 'forbidden' });
+  }
 
   if (req.method === 'POST') {
     const hours = Math.min(Math.max(Math.round(Number((req.body || {}).lockdownHours) || 0), 0), MAX_LOCKDOWN_HOURS);
