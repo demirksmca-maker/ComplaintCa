@@ -1,0 +1,38 @@
+{
+  "name": "ComplaintES — Quejas en España",
+  "short_name": "ComplaintES",
+  "description": "Presente quejas gratis en España, con IA y de forma anónima.",
+  "start_url": "/es/",
+  "scope": "/es/",
+  "display": "standalone",
+  "background_color": "#0f2952",
+  "theme_color": "#0f2952",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "/es/"
+}
