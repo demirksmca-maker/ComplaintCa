@@ -20,6 +20,7 @@ export const config = {
 
 const BAN_SECONDS = 3600;
 const API_LIMIT_PER_MIN = 120;
+const SUSPECT_PER_MIN = 40;
 
 const PROBE_RE = /(^|\/)(\.env|\.git(\/|$)|\.svn|\.hg|\.aws|\.ssh|\.htaccess|\.htpasswd|\.ds_store|wp-admin|wp-login|wp-content|wp-includes|xmlrpc\.php|phpmyadmin|cgi-bin|server-status|actuator|vendor\/phpunit|boaform|hnap1|owa\/|\.well-known\/(?!security\.txt|assetlinks\.json|apple-app-site-association))|\.(php\d?|asp|aspx|jsp|cgi|sql|bak|old|swp)$/i;
 
@@ -104,9 +105,12 @@ export default async function middleware(request) {
   const minute = Math.floor(Date.now() / 60000);
   const floodKey = `shield:api:${ip}:${minute}`;
 
+  // Events feed the AI review agent (scripts/shield-agent.mjs).
+  const logEvent = agent => [['LPUSH', 'shield:events', JSON.stringify({ t: Date.now(), ip, agent, path: url.pathname.slice(0, 200), ua: ua.slice(0, 200) })], ['LTRIM', 'shield:events', 0, 499]];
+
   const agent = inspect(url, ua);
   if (agent) {
-    const cmds = [['LPUSH', 'shield:events', JSON.stringify({ t: Date.now(), ip, agent, path: url.pathname.slice(0, 200), ua: ua.slice(0, 200) })], ['LTRIM', 'shield:events', 0, 499]];
+    const cmds = logEvent(agent);
     if (!SEARCH_BOT_RE.test(ua)) cmds.push(['SET', `shield:ban:${ip}`, agent, 'EX', BAN_SECONDS]);
     await redis(cmds);
     return blocked(agent);
@@ -117,5 +121,11 @@ export default async function middleware(request) {
   const r = await redis(cmds);
   if (!r) return;
   if (r[0] && r[0].result) return blocked('ban');
-  if (isApi && typeof (r[1] && r[1].result) === 'number' && r[1].result > API_LIMIT_PER_MIN) return blocked('flood');
+  const count = isApi && r[1] && r[1].result;
+  if (typeof count !== 'number') return;
+  // Log once per IP per minute at each threshold, not on every call.
+  if (count === API_LIMIT_PER_MIN + 1) await redis(logEvent('flood'));
+  else if (count === SUSPECT_PER_MIN) await redis(logEvent('suspect-rate'));
+  else if (count === 1 && !ua) await redis(logEvent('suspect-noua'));
+  if (count > API_LIMIT_PER_MIN) return blocked('flood');
 }
