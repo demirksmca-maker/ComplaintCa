@@ -55,3 +55,62 @@ test('only real page views are counted', async () => {
   assert.equal(isPageView(...req('/'), 'Googlebot/2.1'), false);
   assert.equal(isPageView(...req('/'), ''), false);
 });
+
+test('honeypot and AI scrapers are caught statelessly', () => {
+  assert.equal(inspect(u('/trap/archive'), 'Mozilla/5.0'), 'trap');
+  assert.equal(inspect(u('/'), 'CCBot/2.0'), 'aibot');
+  assert.equal(inspect(u('/'), 'Mozilla/5.0 (compatible; Bytespider)'), 'aibot');
+  assert.equal(inspect(u('/'), 'Mozilla/5.0 (compatible; GPTBot/1.2)'), null);
+  assert.equal(inspect(u('/'), 'ClaudeBot/1.0'), null);
+});
+
+// Minimal in-memory stand-in for the Upstash pipeline endpoint.
+function fakeUpstash() {
+  const kv = new Map();
+  const run = ([cmd, key, ...a]) => {
+    switch (cmd) {
+      case 'GET': return kv.has(key) ? kv.get(key) : null;
+      case 'SET': kv.set(key, a[0]); return 'OK';
+      case 'INCR': kv.set(key, (Number(kv.get(key)) || 0) + 1); return kv.get(key);
+      case 'LPUSH': kv.set(key, [a[0], ...(kv.get(key) || [])]); return kv.get(key).length;
+      default: return 1;
+    }
+  };
+  globalThis.fetch = async (_url, opts) => ({ ok: true, json: async () => JSON.parse(opts.body).map(c => ({ result: run(c) })) });
+  process.env.KV_REST_API_URL = 'https://fake';
+  process.env.KV_REST_API_TOKEN = 't';
+  return kv;
+}
+
+test('scraping, trap bans and lockdown with a store', async () => {
+  const realFetch = globalThis.fetch;
+  const kv = fakeUpstash();
+  const req = (p, ip, ua = 'Mozilla/5.0 Chrome/130') => new Request('https://complaintca.ca' + p, { headers: { 'x-forwarded-for': ip, 'user-agent': ua } });
+  try {
+    let last;
+    for (let i = 0; i < 61; i++) last = await middleware(req('/blog/a.html', '7.7.7.7'));
+    assert.equal(last.headers.get('x-shield'), 'scrape');
+    assert.equal(kv.get('shield:ban:7.7.7.7'), 'scrape');
+    assert.equal((await middleware(req('/', '7.7.7.7'))).headers.get('x-shield'), 'ban');
+
+    // Googlebot: never rate limited, never banned by the trap.
+    for (let i = 0; i < 80; i++) last = await middleware(req('/', '66.249.1.1', 'Googlebot/2.1'));
+    assert.equal(last, undefined);
+    await middleware(req('/trap/x', '66.249.1.1', 'Googlebot/2.1'));
+    assert.equal(kv.get('shield:ban:66.249.1.1'), undefined);
+
+    await middleware(req('/trap/x', '8.8.8.8'));
+    assert.equal(kv.get('shield:ban:8.8.8.8'), 'trap');
+
+    kv.set('shield:lockdown', '1');
+    assert.equal((await middleware(req('/', '9.9.9.9', ''))).headers.get('x-shield'), 'lockdown');
+    for (let i = 0; i < 21; i++) last = await middleware(req('/', '9.9.9.8'));
+    assert.equal(last.headers.get('x-shield'), 'scrape');
+    for (let i = 0; i < 31; i++) last = await middleware(req('/api/route', '9.9.9.7'));
+    assert.equal(last.headers.get('x-shield'), 'lockdown');
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+  }
+});

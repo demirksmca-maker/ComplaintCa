@@ -4,13 +4,16 @@
 // token (short-lived, signed by GitHub, no stored secret): only workflows of
 // this repository on main are accepted.
 //   GET  → { events, last }       events newer than the last review
-//   POST { bans, summary, events, last, dryRun } → stores bans + report
+//   POST { bans, lockdownHours, summary, events, last, dryRun } → stores
+//        bans, optional lockdown and the report, mails the owner
 import { createPublicKey, verify } from 'node:crypto';
+import { sendShieldAlert } from './_shield-alert.js';
 
 const ISSUER = 'https://token.actions.githubusercontent.com';
 export const AUDIENCE = 'complaintca-shield';
 const REPO = 'demirksmca-maker/ComplaintCa';
 const MAX_BAN_HOURS = 24;
+const MAX_LOCKDOWN_HOURS = 6;
 const IP_RE = /^(\d{1,3}(\.\d{1,3}){3}|[0-9a-f:]{2,39})$/i;
 
 let jwks = null; // { keys, at }
@@ -84,13 +87,16 @@ export async function shieldAgent(req, res) {
     const known = (raw || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
     const bans = cleanBans(b.bans, known);
     const last = Number(b.last) || 0;
-    const report = { t: Date.now(), events: Number(b.events) || 0, summary: String(b.summary || '').slice(0, 600), bans };
+    const lockdownHours = Math.min(Math.max(Math.round(Number(b.lockdownHours) || 0), 0), MAX_LOCKDOWN_HOURS);
+    const report = { t: Date.now(), events: Number(b.events) || 0, summary: String(b.summary || '').slice(0, 600), bans, lockdownHours };
     if (b.dryRun) return res.status(200).json({ dryRun: true, report });
     const cmds = bans.map(x => ['SET', `shield:ban:${x.ip}`, 'ai', 'EX', x.hours * 3600]);
+    if (lockdownHours) cmds.push(['SET', 'shield:lockdown', 'ai', 'EX', lockdownHours * 3600]);
     if (last) cmds.push(['SET', 'shield:agent:last', String(last)]);
     cmds.push(['LPUSH', 'shield:reports', JSON.stringify(report)], ['LTRIM', 'shield:reports', 0, 199]);
     await redis(cmds);
-    return res.status(200).json({ saved: true, report });
+    const mailed = await sendShieldAlert(report, redis).catch(() => false);
+    return res.status(200).json({ saved: true, mailed, report });
   } catch (err) {
     console.error('shield-agent error:', err && err.message);
     return res.status(502).json({ error: 'upstash' });

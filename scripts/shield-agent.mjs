@@ -52,15 +52,18 @@ const SCHEMA = {
         required: ['ip', 'hours', 'reason'],
         additionalProperties: false
       }
-    }
+    },
+    lockdown_hours: { type: 'integer' }
   },
-  required: ['summary', 'bans'],
+  required: ['summary', 'bans', 'lockdown_hours'],
   additionalProperties: false
 };
 
 const SYSTEM = `You are the security analyst for complaintca.ca, a public complaint-filing site (Canada, plus a Spanish site under /es/).
 An edge filter logs events as JSON lines. "agent" is why it logged: probe/inject/scanner were already blocked and the IP already banned for 1 hour; flood means an IP passed 120 API calls in a minute; suspect-rate means 40+ API calls in a minute (not blocked); suspect-noua means an API call with no User-Agent (not blocked).
-Decide which IPs need a longer or new ban (1-${MAX_BAN_HOURS} hours). Ban only on clear evidence of attack or abuse: repeated blocked attempts, sustained floods, or many suspect events from one IP. A single suspect event is not enough. Never ban search engine crawlers (Googlebot, Bingbot and similar) or uptime checkers. Normal visitors filing one complaint must never be banned.
+More agents: trap means an IP opened a hidden honeypot link only bots follow (already banned 6 h); scrape means an IP opened more than 60 pages in a minute (already banned 1 h); lockdown means a request was refused while emergency lockdown was on.
+Decide which IPs need a longer or new ban (1-${MAX_BAN_HOURS} hours).
+Set lockdown_hours (1-6) only for a large ongoing attack: many different IPs flooding, scraping or probing within the last few minutes, more than bans of single IPs can stop. Lockdown keeps the site open but tightens limits for everyone, so otherwise return 0. Ban only on clear evidence of attack or abuse: repeated blocked attempts, sustained floods, or many suspect events from one IP. A single suspect event is not enough. Never ban search engine crawlers (Googlebot, Bingbot and similar) or uptime checkers. Normal visitors filing one complaint must never be banned.
 Write the summary in Turkish, at most 3 short sentences, for a non-technical site owner. If nothing needs doing, return an empty bans list and say the site looks quiet.`;
 
 async function main() {
@@ -91,11 +94,12 @@ async function main() {
   const verdict = JSON.parse(text.text);
 
   const saved = await site('POST', token, {
-    bans: verdict.bans, summary: verdict.summary, events: events.length,
+    bans: verdict.bans, lockdownHours: verdict.lockdown_hours, summary: verdict.summary, events: events.length,
     last: Math.max(...events.map(e => e.t)), dryRun: DRY_RUN
   });
   report(`### Shield agent${DRY_RUN ? ' (dry run)' : ''}\n${saved.report.summary}`);
   for (const b of saved.report.bans) report(`- ban ${b.ip} ${b.hours}h: ${b.reason}`);
+  if (saved.report.lockdownHours) report(`- lockdown ${saved.report.lockdownHours}h`);
 }
 
 main().catch(err => {
