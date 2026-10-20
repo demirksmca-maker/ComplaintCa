@@ -1,0 +1,47 @@
+name: Shield Agent
+
+# Every 10 minutes: Claude reviews the edge shield's event log
+# (Upstash list shield:events, written by middleware.js) and bans IPs that
+# keep attacking. Needs repository secrets ANTHROPIC_API_KEY,
+# UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN; without them it
+# skips. Run it by hand with "dry_run" to see the verdict without banning.
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only — do not ban'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shield-agent
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Claude SDK
+        run: npm install --no-save --no-package-lock @anthropic-ai/sdk
+
+      - name: Review shield events
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        run: node scripts/shield-agent.mjs
