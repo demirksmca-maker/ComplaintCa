@@ -1,0 +1,32 @@
+name: Shield Weekly
+
+# Monday morning (Toronto): e-mails the owner last week's visitors, sources,
+# blocked attacks, bans and copies, plus a warning when the Claude API key
+# is about to expire. No AI, no secret (GitHub OIDC to /api/shield-agent).
+# When you renew the Claude key, update CLAUDE_KEY_EXPIRES below.
+on:
+  schedule:
+    - cron: '7 13 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Send weekly summary
+        env:
+          CLAUDE_KEY_EXPIRES: '2026-11-19'
+        run: node scripts/shield-weekly.mjs
