@@ -1,33 +1,39 @@
 // AI shield agent — run by .github/workflows/shield-agent.yml every 10 min.
 //
-// Reads the newest events the edge shield (middleware.js) wrote to the
-// Upstash list `shield:events`, asks Claude whether any IP is running an
-// attack the rules alone did not stop (slow scans, many suspect hits,
-// rotating paths), and bans those IPs in the same `shield:ban:<ip>` keys
-// middleware.js already checks on every request. Nothing is deleted;
-// a ban simply expires (max 24 h).
+// Fetches the newest events the edge shield (middleware.js) logged, asks
+// Claude whether any IP is running an attack the rules alone did not stop
+// (slow scans, many suspect hits, rotating paths), and sends the verdict back
+// so the site bans those IPs (max 24 h) and shows a report on /shield.html.
+// The site is reached through /api/shield-agent with a GitHub OIDC token, so
+// the only secret this needs is ANTHROPIC_API_KEY.
 import Anthropic from '@anthropic-ai/sdk';
 import { appendFileSync } from 'node:fs';
 
-const URL_ = process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+const SITE = process.env.SITE_URL || 'https://www.complaintca.ca';
 const DRY_RUN = process.env.DRY_RUN === '1';
 const MAX_BAN_HOURS = 24;
-const IP_RE = /^(\d{1,3}(\.\d{1,3}){3}|[0-9a-f:]{2,39})$/i;
 
 function report(line) {
   console.log(line);
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, line + '\n');
 }
 
-async function redis(commands) {
-  const res = await fetch(`${URL_}/pipeline`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(commands)
+async function githubToken() {
+  const url = process.env.ACTIONS_ID_TOKEN_REQUEST_URL, tok = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
+  if (!url || !tok) throw new Error('no OIDC token (workflow needs permissions: id-token: write)');
+  const r = await fetch(`${url}&audience=complaintca-shield`, { headers: { Authorization: `Bearer ${tok}` } });
+  if (!r.ok) throw new Error(`OIDC ${r.status}`);
+  return (await r.json()).value;
+}
+
+async function site(method, token, body) {
+  const r = await fetch(`${SITE}/api/shield-agent`, {
+    method,
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
   });
-  if (!res.ok) throw new Error(`upstash ${res.status}`);
-  return res.json();
+  if (!r.ok) throw new Error(`site ${method} ${r.status}: ${await r.text()}`);
+  return r.json();
 }
 
 const SCHEMA = {
@@ -58,14 +64,12 @@ Decide which IPs need a longer or new ban (1-${MAX_BAN_HOURS} hours). Ban only o
 Write the summary in Turkish, at most 3 short sentences, for a non-technical site owner. If nothing needs doing, return an empty bans list and say the site looks quiet.`;
 
 async function main() {
-  if (!URL_ || !TOKEN || !process.env.ANTHROPIC_API_KEY) {
-    report('Shield agent: Upstash or ANTHROPIC_API_KEY secret missing, skipped.');
+  if (!process.env.ANTHROPIC_API_KEY) {
+    report('Shield agent: ANTHROPIC_API_KEY secret missing, skipped.');
     return;
   }
-  const [{ result: raw }, { result: lastRaw }] = await redis([['LRANGE', 'shield:events', 0, 499], ['GET', 'shield:agent:last']]);
-  const last = Number(lastRaw) || 0;
-  const events = (raw || []).map(s => { try { return JSON.parse(s); } catch (e) { return null; } })
-    .filter(e => e && e.t > last);
+  const token = await githubToken();
+  const { events } = await site('GET', token);
   if (!events.length) {
     report('Shield agent: no new events.');
     return;
@@ -86,15 +90,12 @@ async function main() {
   const text = response.content.find(b => b.type === 'text');
   const verdict = JSON.parse(text.text);
 
-  const bans = verdict.bans.filter(b => IP_RE.test(b.ip) && events.some(e => e.ip === b.ip));
-  const cmds = bans.map(b => ['SET', `shield:ban:${b.ip}`, 'ai', 'EX', Math.min(Math.max(b.hours, 1), MAX_BAN_HOURS) * 3600]);
-  cmds.push(['SET', 'shield:agent:last', String(Math.max(...events.map(e => e.t)))]);
-  // Shown as a notification on /shield.html.
-  cmds.push(['LPUSH', 'shield:reports', JSON.stringify({ t: Date.now(), events: events.length, summary: verdict.summary, bans })], ['LTRIM', 'shield:reports', 0, 199]);
-  if (!DRY_RUN) await redis(cmds);
-
-  report(`### Shield agent${DRY_RUN ? ' (dry run)' : ''}\n${verdict.summary}`);
-  for (const b of bans) report(`- ban ${b.ip} ${b.hours}h: ${b.reason}`);
+  const saved = await site('POST', token, {
+    bans: verdict.bans, summary: verdict.summary, events: events.length,
+    last: Math.max(...events.map(e => e.t)), dryRun: DRY_RUN
+  });
+  report(`### Shield agent${DRY_RUN ? ' (dry run)' : ''}\n${saved.report.summary}`);
+  for (const b of saved.report.bans) report(`- ban ${b.ip} ${b.hours}h: ${b.reason}`);
 }
 
 main().catch(err => {

@@ -42,6 +42,10 @@
       "destination": "/api/route?precedents=1"
     },
     {
+      "source": "/api/shield-agent",
+      "destination": "/api/route?shieldagent=1"
+    },
+    {
       "source": "/api/shield",
       "destination": "/api/route?shield=1"
     },
