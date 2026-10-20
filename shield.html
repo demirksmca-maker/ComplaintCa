@@ -272,6 +272,28 @@
         rows.map(function (r) { return '<i style="height:' + Math.max(2, r[key] / max * 100) + '%;background:' + color + '" title="' + esc(r.day + ' · ' + r[key] + ' ' + name.toLowerCase()) + '"></i>'; }).join('') +
         '</div></div>';
     };
+    // Last 24 h (hourly, not yet final) and everything since the first day in Google.
+    var recentCards = function (r) {
+      var out = '';
+      if (r.day) {
+        var hmax = Math.max.apply(null, r.day.hours.map(function (h) { return h.impressions; }).concat(1));
+        out += card('Son 24 saat · Google', '<div class="cmp"><div><b>' + r.day.impressions.toLocaleString('tr-TR') + '</b>gösterim</div><div><b>' + r.day.clicks + '</b>tıklama</div></div>' +
+          '<div class="sparkbars" style="margin-top:10px">' + r.day.hours.map(function (h) {
+            var at = new Date(h.t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' });
+            return '<i style="height:' + Math.max(2, h.impressions / hmax * 100) + '%;background:var(--s1)" title="' + esc(at + ' · ' + h.impressions + ' gösterim · ' + h.clicks + ' tık') + '"></i>';
+          }).join('') + '</div><div class="sparkhead" style="margin-top:4px"><span>24 saat önce</span><span>şimdi</span></div>',
+          'Saatlik veri, Google henüz kesinleştirmedi; birkaç gün içinde biraz değişebilir.');
+      }
+      if (r.since) {
+        var wmax = Math.max.apply(null, r.since.weeks.map(function (w) { return w.impressions; }).concat(1));
+        var start = new Date(r.since.start + 'T12:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+        out += card('Başlangıçtan beri · ' + esc(start), '<div class="cmp"><div><b>' + r.since.impressions.toLocaleString('tr-TR') + '</b>toplam gösterim</div><div><b>' + r.since.clicks.toLocaleString('tr-TR') + '</b>toplam tıklama</div></div>' +
+          '<div class="sparkbars" style="margin-top:10px">' + r.since.weeks.map(function (w) {
+            return '<i style="height:' + Math.max(2, w.impressions / wmax * 100) + '%;background:#6da7ec" title="' + esc(w.week + ' haftası · ' + w.impressions + ' gösterim · ' + w.clicks + ' tık') + '"></i>';
+          }).join('') + '</div><div class="sparkhead" style="margin-top:4px"><span>ilk hafta</span><span>bu hafta · haftalık gösterim</span></div>');
+      }
+      return out;
+    };
     var daily = g.daily || [], opp = g.opportunities || [], mv = g.movers || { up: [], down: [] }, dev = g.devices || {}, maps = g.sitemaps || [];
     var devTotal = (dev.mobile || 0) + (dev.desktop || 0) + (dev.tablet || 0);
     var DEV = [['mobile', 'Telefon', 's1'], ['desktop', 'Bilgisayar', 's2'], ['tablet', 'Tablet', 's3']];
@@ -282,6 +304,8 @@
       '<div class="card tile"><b>' + t.impressions.toLocaleString('tr-TR') + gscDelta(t.impressions, b.impressions) + '</b><span>Gösterim</span></div>' +
       '<div class="card tile"><b>%' + (t.ctr * 100).toFixed(1) + '</b><span>Tıklama oranı</span></div>' +
       '<div class="card tile"><b>' + t.position.toFixed(1) + gscDelta(t.position, b.position, true) + '</b><span>Ort. sıra</span></div></div>' +
+
+      recentCards(g.recent || {}) +
 
       (daily.length ? card('Günlük trend · 28 gün', spark(daily, 'clicks', 'var(--s1)', 'Tıklama') + spark(daily, 'impressions', '#6da7ec', 'Gösterim')) : '') +
 
@@ -312,7 +336,7 @@
           '<b class="' + (m.errors ? 'worse' : bad ? '' : 'better') + '">' + (m.errors ? m.errors + ' hata' : m.warnings ? m.warnings + ' uyarı' : m.pending ? 'bekliyor' : '✓') + '</b></div>';
       }).join('') : '<p class="empty">Search Console\'da site haritası yok</p>') +
 
-      '<p class="note">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · Google verisi 2 gün geriden gelir · 6 saatte bir yenilenir</p>';
+      '<p class="note">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · 28 günlük veri 2 gün geriden gelir, 6 saatte bir yenilenir · son 24 saat 30 dakikada bir</p>';
   }
   function loadGsc(fresh) {
     gscLoaded = true;
