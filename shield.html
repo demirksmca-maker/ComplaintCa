@@ -2,198 +2,179 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Kalkan Paneli</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="manifest" href="/shield-manifest.json">
-<meta name="theme-color" content="#0f141a">
+<meta name="theme-color" content="#070d14">
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Kalkan">
 <style>
-  /* Always dark: a control room look that matches the 3D hero. */
-  :root{color-scheme:dark;--bg:#070d14;--card:#0f1a26;--ink:#e6eef6;--mute:#8fa3b8;--line:#1f2d3c;--ok:#3ddc97;--bad:#ff5a52;--accent:#3b82f6;--bar:#4c9bff;--bar2:#f2bd4b}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif;line-height:1.5}
-  main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
-  h1{font-size:1.4rem;margin:0 0 4px}
-  h2{font-size:1rem;margin:0 0 12px}
-  .sub{color:var(--mute);font-size:.9rem;margin:0 0 20px}
-  .card{background:linear-gradient(180deg,#112033,var(--card));border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
-  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  .stat b{display:block;font-size:1.8rem;line-height:1.1}
-  .stat span{color:var(--mute);font-size:.85rem}
-  .bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin-top:8px}
-  .day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
-  .stack{width:100%;display:flex;flex-direction:column-reverse;border-radius:4px;overflow:hidden;min-height:2px;background:var(--line)}
-  .stack i{display:block}
-  .day small{color:var(--mute);font-size:.7rem}
-  .legend{display:flex;gap:14px;font-size:.8rem;color:var(--mute);margin-top:8px}
-  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
-  .note{border-top:1px solid var(--line);padding:12px 0}
-  .note:first-of-type{border-top:0;padding-top:0}
-  .note time{color:var(--mute);font-size:.8rem}
-  .note p{margin:4px 0}
-  .ban{color:var(--bad);font-size:.85rem;margin:2px 0;word-break:break-all}
-  .quiet{color:var(--ok)}
-  .ev{font-size:.82rem;color:var(--mute);padding:4px 0;border-top:1px solid var(--line);word-break:break-all}
-  .ev b{color:var(--ink)}
-  form{display:flex;gap:8px;flex-wrap:wrap}
-  input{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:1rem}
-  button{padding:10px 16px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-size:1rem;cursor:pointer}
-  .link{background:none;color:var(--mute);padding:0;font-size:.85rem;text-decoration:underline}
-  .err{color:var(--bad)}
-  .lock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .lock b{font-size:1.05rem}
-  .on{color:var(--bad)}
-  .btn-bad{background:var(--bad)}
-  .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
-  .install{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  /* One screen, no page scroll: header, 2x2 tiles, lock, then one tabbed
+     panel that scrolls inside itself. Always dark, one accent colour. */
+  :root{color-scheme:dark;--bg:#070d14;--card:#0d1621;--ink:#e6eef6;--mute:#7f93a8;--line:#1a2633;--ok:#3ddc97;--bad:#ff5a52;--accent:#4c9bff;--bar2:#f2bd4b;--glow:var(--ok)}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif;line-height:1.4;overflow:hidden}
+  main{height:100dvh;max-width:480px;margin:0 auto;padding:max(12px,env(safe-area-inset-top)) 16px max(10px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px}
   [hidden]{display:none!important}
-  /* 3D hero: a thick shield (stacked layers in a preserve-3d box) that sways,
-     over a perspective grid with radar rings. --glow follows the live state. */
-  .hero{--glow:#3ddc97;position:relative;overflow:hidden;border-radius:16px;margin-bottom:16px;padding:22px 16px 18px;
-    background:radial-gradient(120% 90% at 50% 0%,#14324a 0%,#0a1520 55%,#060b11 100%);color:#e8f1f8;text-align:center}
-  .hero.warn{--glow:#f2bd4b}.hero.alert{--glow:#ff5a52}
-  .hero h1{position:relative;z-index:2;margin:14px 0 2px;font-size:1.5rem;letter-spacing:.5px}
-  .hero .sub{position:relative;z-index:2;color:#9fb3c6;margin:0}
-  .hero .pill{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:5px 12px;border-radius:999px;
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:.85rem}
-  .hero .dot{width:9px;height:9px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow)}
-  .floor{position:absolute;left:-50%;right:-50%;bottom:-40%;height:90%;transform:perspective(320px) rotateX(62deg);
-    background-image:linear-gradient(rgba(110,170,220,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(110,170,220,.18) 1px,transparent 1px);
-    background-size:34px 34px;mask-image:linear-gradient(to top,#000 10%,transparent 85%);-webkit-mask-image:linear-gradient(to top,#000 10%,transparent 85%);
-    animation:floor 6s linear infinite}
-  @keyframes floor{to{background-position:0 34px,0 0}}
-  .stage{position:relative;z-index:1;width:150px;height:170px;margin:0 auto;perspective:700px}
-  .ring{position:absolute;left:50%;top:58%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;
-    border:2px solid var(--glow);opacity:0;transform:rotateX(70deg) scale(.4);animation:ring 3s ease-out infinite}
-  .ring:nth-child(2){animation-delay:1s}.ring:nth-child(3){animation-delay:2s}
-  @keyframes ring{0%{opacity:.7;transform:rotateX(70deg) scale(.4)}100%{opacity:0;transform:rotateX(70deg) scale(1.6)}}
-  .shield3d{position:absolute;inset:0;transform-style:preserve-3d;animation:sway 7s ease-in-out infinite}
-  @keyframes sway{0%,100%{transform:translateY(0) rotateY(-28deg) rotateX(8deg)}50%{transform:translateY(-8px) rotateY(28deg) rotateX(4deg)}}
-  .shield3d svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-  .shield3d .side path{fill:#203a52}
-  .shield3d .front{filter:drop-shadow(0 0 14px var(--glow))}
-  .hero-stats{position:relative;z-index:2;display:flex;justify-content:center;gap:22px;margin-top:12px;font-size:.8rem;color:#9fb3c6}
-  .hero-stats b{display:block;font-size:1.25rem;color:#fff}
-  @media (prefers-reduced-motion:reduce){.floor,.ring,.shield3d{animation:none}.shield3d{transform:rotateY(-18deg)}}
+  button{font:inherit;border:0;border-radius:10px;cursor:pointer}
 
+  /* Header: small 3D shield, title, live state */
+  .head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding-top:4px}
+  .head.warn{--glow:var(--bar2)}.head.alert{--glow:var(--bad)}
+  .stage{position:relative;width:76px;height:86px;perspective:500px}
+  .ring{position:absolute;left:50%;top:62%;width:90px;height:90px;margin:-45px 0 0 -45px;border-radius:50%;border:1.5px solid var(--glow);opacity:0;transform:rotateX(72deg) scale(.4);animation:ring 3s ease-out infinite}
+  .ring+.ring{animation-delay:1.5s}
+  @keyframes ring{0%{opacity:.6;transform:rotateX(72deg) scale(.4)}100%{opacity:0;transform:rotateX(72deg) scale(1.5)}}
+  .shield3d{position:absolute;inset:0;transform-style:preserve-3d;animation:sway 7s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotateY(-26deg)}50%{transform:rotateY(26deg) translateY(-3px)}}
+  .shield3d svg{position:absolute;inset:0;width:100%;height:100%}
+  .shield3d .side path{fill:#1b3047}
+  .shield3d .front{filter:drop-shadow(0 0 10px var(--glow))}
+  h1{font-size:1.15rem;font-weight:600;letter-spacing:.3px}
+  .state{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;color:var(--mute)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--glow);box-shadow:0 0 8px var(--glow)}
+
+  /* 2x2 tiles, identical size */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{padding:12px;text-align:center}
+  .tile b{display:block;font-size:1.6rem;font-weight:600;line-height:1.1}
+  .tile span{font-size:.72rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+
+  /* Lock: one full-width toggle */
+  .lock{width:100%;padding:12px;background:var(--card);border:1px solid var(--line);color:var(--ink);display:flex;justify-content:center;align-items:center;gap:8px;font-size:.9rem}
+  .lock.on{border-color:var(--bad);color:var(--bad)}
+
+  /* Tabbed panel fills the rest and scrolls inside */
+  .panel{flex:1;min-height:0;display:flex;flex-direction:column}
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+  .tabs button{background:none;color:var(--mute);padding:10px 0;border-radius:0;font-size:.82rem;border-bottom:2px solid transparent}
+  .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+  .view{flex:1;min-height:0;overflow-y:auto;padding:12px 14px;-webkit-overflow-scrolling:touch}
+  .row{padding:9px 0;border-top:1px solid var(--line);font-size:.82rem}
+  .row:first-child{border-top:0;padding-top:0}
+  .row time{display:block;color:var(--mute);font-size:.72rem;margin-bottom:2px}
+  .row .hit{color:var(--bad);word-break:break-all}
+  .row a{color:var(--accent)}
+  .quiet{color:var(--ok);font-size:.85rem;text-align:center;padding:20px 0}
+  .muted{color:var(--mute);word-break:break-all}
+
+  .bars{display:flex;align-items:flex-end;gap:8px;height:150px}
+  .day{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+  .stack{width:100%;display:flex;flex-direction:column-reverse;border-radius:4px;overflow:hidden;min-height:2px;background:var(--line)}
+  .day small{color:var(--mute);font-size:.68rem}
+  .legend{display:flex;justify-content:center;gap:16px;font-size:.72rem;color:var(--mute);margin-top:10px}
+  .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+
+  .foot{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--mute)}
+  .foot button{background:none;color:var(--mute);padding:0;text-decoration:underline;font-size:.72rem}
+  .install{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;font-size:.8rem}
+  .install button{background:var(--accent);color:#fff;padding:7px 12px;font-size:.8rem}
+
+  /* Login: centred card */
+  .login{margin:auto 0;padding:20px;display:flex;flex-direction:column;gap:10px;text-align:center}
+  .login input{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-size:1rem;text-align:center}
+  .login button{padding:12px;background:var(--accent);color:#fff}
+  .err{color:var(--bad);font-size:.85rem}
+
+  @media (prefers-reduced-motion:reduce){.ring,.shield3d{animation:none}.shield3d{transform:rotateY(-18deg)}}
 </style>
 </head>
 <body>
 <main>
-  <section class="hero" id="hero">
-    <div class="floor"></div>
+  <header class="head" id="hero">
     <div class="stage" aria-hidden="true">
-      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="ring"></div><div class="ring"></div>
       <div class="shield3d" id="shield3d"></div>
     </div>
     <h1>Kalkan Paneli</h1>
-    <p class="sub" id="status">complaintca.ca koruma ve ziyaretçi durumu</p>
-    <div class="pill"><span class="dot"></span><span id="heroState">Kalkan aktif</span></div>
-    <div class="hero-stats" id="heroStats" hidden>
-      <div><b id="hsVisitors">–</b>bugün ziyaretçi</div>
-      <div><b id="hsBlocked">–</b>engellenen</div>
-      <div><b id="hsBans">–</b>ajan banı (24s)</div>
-    </div>
-  </section>
+    <div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div>
+  </header>
 
-  <section class="card" id="login" hidden>
-    <h2>Giriş</h2>
-    <form id="loginForm">
-      <input id="key" type="password" placeholder="Kalkan anahtarı" autocomplete="current-password" required>
+  <section class="card login" id="login" hidden>
+    <form id="loginForm" style="display:flex;flex-direction:column;gap:10px">
+      <input id="key" type="password" placeholder="Şifre" autocomplete="current-password" required>
       <button type="submit">Aç</button>
     </form>
     <p class="err" id="loginErr" hidden></p>
   </section>
 
   <section class="card install" id="install" hidden>
-    <span id="installText">Paneli telefonuna uygulama olarak ekle.</span>
-    <button type="button" id="installBtn">Uygulama olarak ekle</button>
+    <span id="installText">Telefona uygulama olarak ekle</span>
+    <button type="button" id="installBtn">Ekle</button>
   </section>
 
-  <div id="app" hidden>
-    <section class="card">
-      <div class="lock">
-        <div><b id="lockState">Acil kilit kapalı</b><br><span class="sub" id="lockHint" style="margin:0">Büyük saldırıda botlara sıkı sınır koyar, site insanlara açık kalır.</span></div>
-        <div style="display:flex;gap:8px">
-          <button type="button" class="btn-bad" id="lockOn">1 saat kilitle</button>
-          <button type="button" class="btn-ghost" id="lockOff" hidden>Kilidi aç</button>
-        </div>
+  <div id="app" hidden style="display:contents">
+    <section class="tiles">
+      <div class="card tile"><b id="caToday">–</b><span>Kanada</span></div>
+      <div class="card tile"><b id="esToday">–</b><span>İspanya</span></div>
+      <div class="card tile"><b id="viewsToday">–</b><span>Görüntüleme</span></div>
+      <div class="card tile"><b id="blockedToday">–</b><span>Engellenen</span></div>
+    </section>
+
+    <button type="button" class="lock" id="lock">🔓 Acil kilit kapalı · dokun, 1 saat kilitle</button>
+
+    <section class="card panel">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true" data-view="reports">Bildirimler</button>
+        <button type="button" role="tab" aria-selected="false" data-view="events">Engellenen</button>
+        <button type="button" role="tab" aria-selected="false" data-view="week">7 gün</button>
+      </div>
+      <div class="view" id="reports"></div>
+      <div class="view" id="events" hidden></div>
+      <div class="view" id="week" hidden>
+        <div class="bars" id="bars"></div>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Kanada</span><span><i style="background:var(--bar2)"></i>İspanya</span></div>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Bugün</h2>
-      <div class="stats">
-        <div class="stat"><b id="caToday">–</b><span>Kanada ziyaretçi</span></div>
-        <div class="stat"><b id="esToday">–</b><span>İspanya ziyaretçi</span></div>
-        <div class="stat"><b id="viewsToday">–</b><span>Sayfa görüntüleme</span></div>
-        <div class="stat"><b id="blockedToday">–</b><span>Engellenen saldırı</span></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Son 7 gün ziyaretçi</h2>
-      <div class="bars" id="bars"></div>
-      <div class="legend"><span><i style="background:var(--bar)"></i>Kanada</span><span><i style="background:var(--bar2)"></i>İspanya</span></div>
-    </section>
-
-    <section class="card">
-      <h2>Ajan bildirimleri</h2>
-      <div id="reports"></div>
-    </section>
-
-    <section class="card">
-      <h2>Son engellenenler</h2>
-      <div id="events"></div>
-    </section>
-
-    <button class="link" id="logout" type="button">Çıkış</button>
+    <div class="foot"><span id="status">–</span><button type="button" id="logout">Çıkış</button></div>
   </div>
 </main>
 <script>
 (function () {
-  var KEY = 'shieldKey';
+  var KEY = 'shieldKey', TAB = 'shieldTab';
   var AGENTS = { probe: 'Gizli dosya denemesi', inject: 'Zararlı kod', scanner: 'Saldırı aracı', flood: 'Aşırı istek', ban: 'Banlı IP', trap: 'Tuzağa düşen bot', scrape: 'Kopyalama denemesi', lockdown: 'Kilitte engellendi', 'suspect-rate': 'Şüpheli hız', 'suspect-noua': 'Kimliksiz istek' };
   var $ = function (id) { return document.getElementById(id); };
-  function getKey() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
-  function setKey(v) { try { v ? localStorage.setItem(KEY, v) : localStorage.removeItem(KEY); } catch (e) {} }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k) || ''; v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) { return ''; } }
+  function getKey() { return store(KEY); }
+  function setKey(v) { store(KEY, v || ''); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function when(t) { return new Date(t).toLocaleString('tr-TR', { timeZone: 'America/Toronto', dateStyle: 'short', timeStyle: 'short' }); }
+  var lockMin = 0;
 
-  // Build the 3D shield: 10 dark layers for thickness, then the lit front.
+  // 3D shield: 10 dark layers for thickness, then the lit front.
   (function () {
     var P = 'M75 8 L132 30 V82 C132 120 106 146 75 160 C44 146 18 120 18 82 V30 Z';
     var html = '';
-    for (var i = 0; i < 10; i++) html += '<svg class="side" viewBox="0 0 150 170" style="transform:translateZ(' + (i * 1.6 - 16) + 'px)"><path d="' + P + '"/></svg>';
-    html += '<svg class="front" viewBox="0 0 150 170" style="transform:translateZ(0)"><defs>' +
-      '<linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fb6ff"/><stop offset=".5" stop-color="#1d5fd1"/><stop offset="1" stop-color="#0b2a5c"/></linearGradient>' +
-      '<linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>' +
-      '<path d="' + P + '" fill="url(#sg)" stroke="var(--glow)" stroke-width="3"/>' +
-      '<path d="M75 20 L120 37 V82 C120 112 100 133 75 146 C50 133 30 112 30 82 V37 Z" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>' +
-      '<path d="M52 84 L68 100 L100 64" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>' +
-      '<path d="' + P + '" fill="url(#sh)"/></svg>';
+    for (var i = 0; i < 10; i++) html += '<svg class="side" viewBox="0 0 150 170" style="transform:translateZ(' + (i * 1.2 - 12) + 'px)"><path d="' + P + '"/></svg>';
+    html += '<svg class="front" viewBox="0 0 150 170"><defs>' +
+      '<linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fb6ff"/><stop offset=".5" stop-color="#1d5fd1"/><stop offset="1" stop-color="#0b2a5c"/></linearGradient></defs>' +
+      '<path d="' + P + '" fill="url(#sg)" stroke="var(--glow)" stroke-width="4"/>' +
+      '<path d="M52 84 L68 100 L100 64" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     $('shield3d').innerHTML = html;
   })();
 
-  function heroState(d, lockMin) {
-    var dayAgo = Date.now() - 86400000;
-    var bans = d.reports.reduce(function (n, r) { return r.t >= dayAgo ? n + (r.bans || []).length : n; }, 0);
-    var hit = d.events.filter(function (e) { return e.t >= Date.now() - 3600000 && e.agent.indexOf('suspect') !== 0; }).length;
-    $('hero').className = 'hero' + (lockMin ? ' alert' : hit ? ' warn' : '');
-    $('heroState').textContent = lockMin ? 'Acil kilit açık' : hit ? 'Son 1 saatte ' + hit + ' saldırı engellendi' : 'Kalkan aktif · her şey sakin';
-    $('hsVisitors').textContent = d.visits[0].ca.visitors + d.visits[0].es.visitors;
-    $('hsBlocked').textContent = $('blockedToday').textContent;
-    $('hsBans').textContent = bans;
-    $('heroStats').hidden = false;
+  function showTab(name) {
+    Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+      var on = b.getAttribute('data-view') === name;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      $(b.getAttribute('data-view')).hidden = !on;
+    });
+    store(TAB, name);
   }
+  Array.prototype.forEach.call(document.querySelectorAll('.tabs button'), function (b) {
+    b.addEventListener('click', function () { showTab(b.getAttribute('data-view')); });
+  });
 
   function showLogin(msg) {
     $('app').hidden = true; $('login').hidden = false;
     $('loginErr').hidden = !msg; $('loginErr').textContent = msg || '';
+    $('heroState').textContent = 'complaintca.ca';
   }
 
   function render(d) {
@@ -204,46 +185,46 @@
     var start = new Date(); start.setHours(0, 0, 0, 0);
     $('blockedToday').textContent = d.events.filter(function (e) { return e.t >= start.getTime() && AGENTS[e.agent] && e.agent.indexOf('suspect') !== 0; }).length + (d.events.length >= 50 ? '+' : '');
 
+    $('reports').innerHTML = d.reports.length ? d.reports.map(function (r) {
+      return '<div class="row"><time>' + esc(when(r.t)) + ' · ' + (r.kind === 'copy' ? 'Kopya avcısı' : esc(r.events) + ' kayıt') + '</time>' +
+        esc(r.summary) +
+        (r.copies || []).map(function (c) { return '<div class="hit">📄 ' + esc(c.url) + ' ← ' + esc(c.source.replace(/^https?:\/\/[^/]+/, '')) + '</div>'; }).join('') +
+        (r.copies && r.copies.length ? '<div><a href="https://reportcontent.google.com/forms/dmca_search" target="_blank" rel="noopener">Google\'dan kaldırt</a></div>' : '') +
+        (r.lockdownHours ? '<div class="hit">🔒 Acil kilit ' + esc(r.lockdownHours) + ' saat</div>' : '') +
+        (r.bans || []).map(function (b) { return '<div class="hit">⛔ ' + esc(b.ip) + ' · ' + esc(b.hours) + ' saat · ' + esc(b.reason) + '</div>'; }).join('') +
+        '</div>';
+    }).join('') : '<p class="quiet">Bildirim yok · site sakin</p>';
+
+    $('events').innerHTML = d.events.length ? d.events.slice(0, 30).map(function (e) {
+      return '<div class="row"><time>' + esc(when(e.t)) + '</time><b>' + esc(AGENTS[e.agent] || e.agent) + '</b> <span class="muted">· ' + esc(e.ip) + ' · ' + esc(e.path) + '</span></div>';
+    }).join('') : '<p class="quiet">Engellenen istek yok</p>';
+
     var max = Math.max.apply(null, d.visits.map(function (v) { return v.ca.visitors + v.es.visitors; }).concat(1));
     $('bars').innerHTML = d.visits.slice().reverse().map(function (v) {
       var tot = v.ca.visitors + v.es.visitors;
-      return '<div class="day" title="' + esc(v.day + ': Kanada ' + v.ca.visitors + ', İspanya ' + v.es.visitors) + '">' +
-        '<small>' + tot + '</small>' +
-        '<div class="stack" style="height:' + Math.max(2, Math.round(tot / max * 80)) + '%">' +
-        '<i style="flex:' + v.ca.visitors + ';background:var(--bar)"></i><i style="flex:' + v.es.visitors + ';background:var(--bar2)"></i></div>' +
-        '<small>' + esc(v.day.slice(5)) + '</small></div>';
+      return '<div class="day"><small>' + tot + '</small>' +
+        '<div class="stack" style="height:' + Math.max(2, Math.round(tot / max * 78)) + '%">' +
+        '<i style="flex:' + v.ca.visitors + ';background:var(--accent)"></i><i style="flex:' + v.es.visitors + ';background:var(--bar2)"></i></div>' +
+        '<small>' + esc(v.day.slice(8)) + '</small></div>';
     }).join('');
 
-    $('reports').innerHTML = d.reports.length ? d.reports.map(function (r) {
-      return '<div class="note"><time>' + esc(when(r.t)) + ' · ' + (r.kind === 'copy' ? 'Kopya avcısı' : esc(r.events) + ' kayıt') + '</time>' +
-        '<p class="' + ((r.bans && r.bans.length) || r.copies ? '' : 'quiet') + '">' + esc(r.summary) + '</p>' +
-        (r.copies || []).map(function (c) { return '<div class="ban">📄 Kopya: ' + esc(c.url) + ' ← ' + esc(c.source.replace(/^https?:\/\/[^/]+/, '')) + '</div>'; }).join('') +
-        (r.copies && r.copies.length ? '<div class="ev"><a href="https://reportcontent.google.com/forms/dmca_search" target="_blank" rel="noopener">Google\'dan kaldırt (telif formu)</a></div>' : '') +
-        (r.lockdownHours ? '<div class="ban">🔒 Acil kilit ' + esc(r.lockdownHours) + ' saat açıldı</div>' : '') +
-        (r.bans || []).map(function (b) { return '<div class="ban">⛔ ' + esc(b.ip) + ' · ' + esc(b.hours) + ' saat · ' + esc(b.reason) + '</div>'; }).join('') +
-        '</div>';
-    }).join('') : '<p class="quiet">Henüz bildirim yok. Site sakin.</p>';
+    lockMin = Math.ceil((d.lockdown || 0) / 60);
+    $('lock').className = 'lock' + (lockMin ? ' on' : '');
+    $('lock').textContent = lockMin ? '🔒 Acil kilit açık · ' + lockMin + ' dk · dokun, kaldır' : '🔓 Acil kilit kapalı · dokun, 1 saat kilitle';
 
-    $('events').innerHTML = d.events.length ? d.events.slice(0, 20).map(function (e) {
-      return '<div class="ev"><b>' + esc(AGENTS[e.agent] || e.agent) + '</b> · ' + esc(when(e.t)) + ' · ' + esc(e.ip) + ' · ' + esc(e.path) + '</div>';
-    }).join('') : '<p class="quiet">Engellenen istek yok.</p>';
-
-    var lockMin = Math.ceil((d.lockdown || 0) / 60);
-    $('lockState').textContent = lockMin ? 'Acil kilit AÇIK · ' + lockMin + ' dk kaldı' : 'Acil kilit kapalı';
-    $('lockState').className = lockMin ? 'on' : '';
-    $('lockOn').hidden = !!lockMin; $('lockOff').hidden = !lockMin;
-    heroState(d, lockMin);
-
-    $('status').textContent = 'Son güncelleme: ' + new Date().toLocaleTimeString('tr-TR');
+    var hit = d.events.filter(function (e) { return e.t >= Date.now() - 3600000 && e.agent.indexOf('suspect') !== 0; }).length;
+    $('hero').className = 'head' + (lockMin ? ' alert' : hit ? ' warn' : '');
+    $('heroState').textContent = lockMin ? 'Acil kilit açık' : hit ? 'Son 1 saatte ' + hit + ' saldırı engellendi' : 'Kalkan aktif · her şey sakin';
+    $('status').textContent = 'Güncellendi ' + new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
   }
 
   function load() {
     var key = getKey();
     if (!key) return showLogin();
     fetch('/api/shield', { headers: { 'x-shield-key': key }, cache: 'no-store' }).then(function (r) {
-      if (r.status === 403) { setKey(''); throw new Error('Anahtar yanlış.'); }
-      if (r.status === 429) throw new Error('Çok fazla deneme, biraz bekle.');
-      if (r.status === 503) throw new Error('Sunucuda SHIELD_KEY veya Upstash ayarı eksik.');
+      if (r.status === 403) { setKey(''); throw new Error('Şifre yanlış.'); }
+      if (r.status === 429) throw new Error('Çok fazla yanlış deneme, 10 dk bekle.');
+      if (r.status === 503) throw new Error('Sunucu ayarı eksik.');
       if (!r.ok) throw new Error('Veri alınamadı (' + r.status + ').');
       return r.json();
     }).then(function (d) {
@@ -253,13 +234,13 @@
     });
   }
 
-  function setLock(hours) {
+  $('lock').addEventListener('click', function () {
+    var hours = lockMin ? 0 : 1;
+    if (hours && !confirm('Acil kilit 1 saatliğine açılsın mı?')) return;
     fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ lockdownHours: hours }) })
       .then(function (r) { if (!r.ok) throw new Error('Kilit değiştirilemedi (' + r.status + ').'); load(); })
       .catch(function (e) { $('status').textContent = e.message; });
-  }
-  $('lockOn').addEventListener('click', function () { if (confirm('Acil kilit 1 saatliğine açılsın mı?')) setLock(1); });
-  $('lockOff').addEventListener('click', function () { setLock(0); });
+  });
 
   // Phone app: Android/Chrome offers an install prompt; iPhone needs Share → Add to Home Screen.
   var promptEvent = null;
@@ -267,7 +248,7 @@
   window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); promptEvent = e; if (!standalone) $('install').hidden = false; });
   if (!standalone && /iPhone|iPad/.test(navigator.userAgent)) {
     $('install').hidden = false; $('installBtn').hidden = true;
-    $('installText').textContent = 'Uygulama olarak eklemek için Paylaş → Ana Ekrana Ekle.';
+    $('installText').textContent = 'Uygulama için: Paylaş → Ana Ekrana Ekle';
   }
   $('installBtn').addEventListener('click', function () {
     if (!promptEvent) return;
@@ -278,6 +259,7 @@
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); });
   $('logout').addEventListener('click', function () { setKey(''); showLogin(); });
+  showTab(store(TAB) || 'reports');
   load();
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
 })();
