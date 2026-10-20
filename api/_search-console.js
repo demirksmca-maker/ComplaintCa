@@ -6,12 +6,14 @@
 // service account (FIREBASE_SERVICE_ACCOUNT); it needs to be added as a user
 // on the Search Console property and the Search Console API enabled on the
 // Google Cloud project — until then the panel shows those two steps.
-// Cached 6 hours in Upstash: the data only moves once a day.
+// Cached 6 hours in Upstash (the 28-day data only moves once a day); the
+// last-24-hours / since-start part is cached 30 minutes.
 import { accessToken, serviceAccount, PROJECT } from './_gauth.js';
 
 const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const API = 'https://www.googleapis.com/webmasters/v3';
 const CACHE_KEY = 'shield:gsc:v2', CACHE_SECONDS = 6 * 3600;
+const RECENT_KEY = 'shield:gsc:recent', RECENT_SECONDS = 1800; // last-24h view moves hourly
 
 const ymd = t => new Date(t).toISOString().slice(0, 10);
 
@@ -64,11 +66,8 @@ export function movers(now, before, n = 3) {
   };
 }
 
-export async function searchConsole(redis, { fresh = false } = {}) {
-  if (!fresh) {
-    const [hit] = await redis([['GET', CACHE_KEY]]);
-    if (hit) { try { return JSON.parse(hit); } catch { /* refetch */ } }
-  }
+// Connects as the service account and finds the property, or explains why not.
+async function connect() {
   const sa = serviceAccount();
   const setup = {
     email: sa ? sa.client_email : null,
@@ -78,18 +77,20 @@ export async function searchConsole(redis, { fresh = false } = {}) {
   const tok = sa && await accessToken(Date.now(), SCOPE);
   if (!tok) return { ok: false, reason: 'no_token', setup };
   const auth = { Authorization: `Bearer ${tok}` };
-
   const sites = await fetch(`${API}/sites`, { headers: auth });
   if (sites.status === 403) return { ok: false, reason: 'api_disabled', setup };
   if (!sites.ok) return { ok: false, reason: `sites_${sites.status}`, setup };
   const site = pickSite((await sites.json()).siteEntry);
   if (!site) return { ok: false, reason: 'no_access', setup };
-
-  const w = windows();
-  const q = (range, dims, limit) => fetch(`${API}/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
+  const q = (range, dims, limit, dataState) => fetch(`${API}/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
     method: 'POST', headers: { ...auth, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ startDate: range[0], endDate: range[1], dimensions: dims, rowLimit: limit })
+    body: JSON.stringify({ startDate: range[0], endDate: range[1], dimensions: dims, rowLimit: limit, ...(dataState ? { dataState } : {}) })
   }).then(r => (r.ok ? r.json() : { rows: [] })).then(j => j.rows || []);
+  return { ok: true, site, auth, q };
+}
+
+async function fetchMain({ site, auth, q }) {
+  const w = windows();
   const [cur, prev, daily, queries, queryPages, pagesNow, pagesBefore, countries, devices, sitemaps] = await Promise.all([
     q(w.cur, [], 1), q(w.prev, [], 1), q(w.cur, ['date'], 40), q(w.cur, ['query'], 250), q(w.cur, ['query', 'page'], 500),
     q(w.cur, ['page'], 100), q(w.prev, ['page'], 100), q(w.cur, ['country'], 6), q(w.cur, ['device'], 3),
@@ -112,6 +113,63 @@ export async function searchConsole(redis, { fresh = false } = {}) {
       submitted: (m.contents || []).reduce((n, c) => n + (Number(c.submitted) || 0), 0)
     }))
   };
-  await redis([['SET', CACHE_KEY, JSON.stringify(out), 'EX', CACHE_SECONDS]]);
   return out;
+}
+
+// Monday of the week a YYYY-MM-DD day falls in.
+export function weekOf(day) {
+  const d = new Date(day + 'T00:00:00Z');
+  return ymd(d.getTime() - ((d.getUTCDay() + 6) % 7) * 86400000);
+}
+
+// Last 24 hours (Search Console's hourly data, includes not-yet-final
+// numbers) and everything since the site's first day in Google search.
+export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
+  const hours = (hourRows || []).map(r => ({ t: Date.parse(r.keys[0]), clicks: r.clicks, impressions: r.impressions }))
+    .filter(h => h.t > now - 86400000 && h.t <= now).sort((a, b) => a.t - b.t);
+  const days = (dateRows || []).filter(r => r.impressions > 0).sort((a, b) => (a.keys[0] < b.keys[0] ? -1 : 1));
+  const weeks = [];
+  for (const r of days) {
+    const w = weekOf(r.keys[0]);
+    const last = weeks[weeks.length - 1];
+    if (last && last.week === w) { last.impressions += r.impressions; last.clicks += r.clicks; }
+    else weeks.push({ week: w, impressions: r.impressions, clicks: r.clicks });
+  }
+  const sum = (list, k) => list.reduce((n, x) => n + x[k], 0);
+  return {
+    day: hourRows && hourRows.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), hours } : null,
+    since: days.length ? { start: days[0].keys[0], impressions: sum(days, 'impressions'), clicks: sum(days, 'clicks'), weeks } : null
+  };
+}
+
+async function fetchRecent({ q }) {
+  const now = Date.now();
+  const [hourRows, dateRows] = await Promise.all([
+    q([ymd(now - 2 * 86400000), ymd(now)], ['hour'], 100, 'hourly_all'),
+    // Search Console keeps 16 months; the first day with data is the start.
+    q([ymd(now - 480 * 86400000), ymd(now)], ['date'], 1000, 'all')
+  ]);
+  return summarizeRecent(hourRows, dateRows, now);
+}
+
+export async function searchConsole(redis, { fresh = false } = {}) {
+  const read = async key => {
+    if (fresh) return null;
+    const [hit] = await redis([['GET', key]]);
+    try { return hit ? JSON.parse(hit) : null; } catch { return null; }
+  };
+  let main = await read(CACHE_KEY), recent = await read(RECENT_KEY);
+  if (!main || !recent) {
+    const c = await connect();
+    if (!c.ok) return c;
+    if (!main) {
+      main = await fetchMain(c);
+      await redis([['SET', CACHE_KEY, JSON.stringify(main), 'EX', CACHE_SECONDS]]);
+    }
+    if (!recent) {
+      recent = await fetchRecent(c);
+      await redis([['SET', RECENT_KEY, JSON.stringify(recent), 'EX', RECENT_SECONDS]]);
+    }
+  }
+  return { ...main, recent };
 }
