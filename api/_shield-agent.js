@@ -6,6 +6,7 @@
 //   GET  → { events, last }       events newer than the last review
 //   POST { bans, lockdownHours, summary, events, last, dryRun } → stores
 //        bans, optional lockdown and the report, mails the owner
+//   POST { quiet, last } → routine batch, only moves the cursor
 //   POST { copies: [{url, source}] } → copy watch finding (scripts/copy-watch.mjs)
 import { createPublicKey, verify } from 'node:crypto';
 import { sendShieldAlert } from './_shield-alert.js';
@@ -104,6 +105,11 @@ export async function shieldAgent(req, res) {
     const known = (raw || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
     const bans = cleanBans(b.bans, known);
     const last = Number(b.last) || 0;
+    // Routine batch the agent did not send to Claude: only move the cursor.
+    if (b.quiet) {
+      if (last && !b.dryRun) await redis([['SET', 'shield:agent:last', String(last)]]);
+      return res.status(200).json({ saved: !b.dryRun });
+    }
     const lockdownHours = Math.min(Math.max(Math.round(Number(b.lockdownHours) || 0), 0), MAX_LOCKDOWN_HOURS);
     const report = { t: Date.now(), events: Number(b.events) || 0, summary: String(b.summary || '').slice(0, 600), bans, lockdownHours };
     if (b.dryRun) return res.status(200).json({ dryRun: true, report });

@@ -1,8 +1,9 @@
 // Copy watch agent — run daily by .github/workflows/copy-watch.yml.
 //
-// Takes a few pages from sitemap.xml each day (rotating, so every page is
-// checked about once a month), picks the most distinctive sentence of each
-// and has Claude search the web for other sites that copied it. When copies
+// Takes two pages from sitemap.xml each day (rotating, so every page is
+// checked about every six weeks), picks the most distinctive sentence of
+// each and has Claude run ONE web search for both (searches are billed
+// separately, so this keeps the agent under about $1 a month). When copies
 // turn up it, the same day:
 //   - re-submits the original URLs to IndexNow (Bing, and ChatGPT search
 //     through it), so they are re-read as the source,
@@ -14,7 +15,7 @@ import { readFileSync, appendFileSync } from 'node:fs';
 
 const SITE = process.env.SITE_URL || 'https://www.complaintca.ca';
 const DRY_RUN = process.env.DRY_RUN === '1';
-const PAGES_PER_DAY = Number(process.env.PAGES_PER_DAY) || 4;
+const PAGES_PER_DAY = Number(process.env.PAGES_PER_DAY) || 2;
 const INDEXNOW_KEY = '0f5530ca1853d5959e003403b74c6535';
 const OWN_HOSTS = /(^|\.)complaintca\.ca$|complaint-ca.*\.vercel\.app$|complaintca\.netlify\.app$/i;
 
@@ -52,7 +53,7 @@ async function githubToken() {
 const SYSTEM = `You look for copies of pages from complaintca.ca, a Canadian complaint-filing site (Spanish edition under /es/).
 For each sentence you get, search the web for it as an exact quote and find pages on other websites that contain the same sentence or a lightly reworded copy of the same paragraph.
 Ignore complaintca.ca itself, its vercel.app/netlify.app previews, and pages that only link to or properly quote and credit complaintca.ca.
-Use the web_search tool; one or two searches per sentence is enough.
+You have exactly one web search: put all the sentences in it as exact quotes joined with OR.
 Finish with one line of JSON and nothing after it: {"copies":[{"url":"<copying page>","source":"<complaintca.ca page it copies>"}]}. Use {"copies":[]} if you found none.`;
 
 export function parseCopies(text, sources) {
@@ -76,9 +77,9 @@ async function searchCopies(client, items) {
     response = await client.messages.create({
       model: 'claude-haiku-5-5',
       max_tokens: 16000,
-      output_config: { effort: 'medium' },
+      output_config: { effort: 'low' },
       system: SYSTEM,
-      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 8 }],
+      tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 1 }],
       messages
     });
     if (response.stop_reason !== 'pause_turn') break;
