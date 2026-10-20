@@ -703,6 +703,112 @@
    ],
    "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2002-3694",
    "verificado": false
+  },
+  {
+   "kanun": "Ley 16/2006, de Protección y Defensa de los Consumidores y Usuarios de Aragón",
+   "boe_id": "BOE-A-2007-3601",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Protección de Consumidores y Usuarios — Aragón",
+   "kapsam": "aragon",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-3601",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 11/2002, de los Consumidores y Usuarios del Principado de Asturias",
+   "boe_id": "BOE-A-2003-912",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Consumo — Principado de Asturias",
+   "kapsam": "asturias",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2003-912",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 7/2014, de protección de las personas consumidoras y usuarias de las Illes Balears",
+   "boe_id": "BOE-A-2014-8820",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Direcció General de Consum — Illes Balears",
+   "kapsam": "baleares",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2014-8820",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 1/2006, de Defensa de los Consumidores y Usuarios de Cantabria",
+   "boe_id": "BOE-A-2006-5810",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Comercio y Consumo — Cantabria",
+   "kapsam": "cantabria",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-5810",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 3/2019, del Estatuto de las Personas Consumidoras en Castilla-La Mancha",
+   "boe_id": "BOE-A-2019-6772",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Turismo, Comercio y Consumo — Castilla-La Mancha",
+   "kapsam": "castilla_la_mancha",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-6772",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 6/2019, del Estatuto de las personas consumidoras de Extremadura",
+   "boe_id": "BOE-A-2019-3492",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Salud Pública y Consumo — Extremadura",
+   "kapsam": "extremadura",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3492",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 4/1996, del Estatuto de los Consumidores y Usuarios de la Región de Murcia",
+   "boe_id": "",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Consumo — Región de Murcia",
+   "kapsam": "murcia",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "",
+   "verificado": false,
+   "nota": "Añadido sin BOE id: confirmar."
   }
  ]
 }
