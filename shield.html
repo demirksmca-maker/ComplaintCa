@@ -285,8 +285,8 @@
           '<div class="sparkbars" style="margin-top:10px">' + r.day.hours.map(function (h) {
             var at = new Date(h.t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' });
             return '<i style="height:' + Math.max(2, h.impressions / hmax * 100) + '%;background:var(--s1)" title="' + esc(at + ' · ' + h.impressions + ' gösterim · ' + h.clicks + ' tık') + '"></i>';
-          }).join('') + '</div><div class="sparkhead" style="margin-top:4px"><span>24 saat önce</span><span>şimdi</span></div>',
-          'Saatlik veri, Google henüz kesinleştirmedi; birkaç gün içinde biraz değişebilir.');
+          }).join('') + '</div><div class="sparkhead" style="margin-top:4px"><span>24 saat önce</span><span>son veri</span></div>',
+          'Search Console\'daki "24 saat" ile aynı: Google\'ın son verisinden (' + esc(new Date(r.day.last).toLocaleString('tr-TR', { timeZone: 'America/Toronto', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + ') geriye 24 saat. Henüz kesin değil, birkaç gün içinde biraz değişebilir.');
       }
       if (r.since) {
         var wmax = Math.max.apply(null, r.since.weeks.map(function (w) { return w.impressions; }).concat(1));

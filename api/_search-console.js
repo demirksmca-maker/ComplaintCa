@@ -14,7 +14,7 @@ import { accessToken, serviceAccount, PROJECT } from './_gauth.js';
 const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const API = 'https://www.googleapis.com/webmasters/v3';
 const CACHE_KEY = 'shield:gsc:v2', CACHE_SECONDS = 6 * 3600;
-const RECENT_KEY = 'shield:gsc:recent', RECENT_SECONDS = 1800; // last-24h view moves hourly
+const RECENT_KEY = 'shield:gsc:recent:v2', RECENT_SECONDS = 1800; // last-24h view moves hourly
 
 const ymd = t => new Date(t).toISOString().slice(0, 10);
 
@@ -125,11 +125,19 @@ export function weekOf(day) {
   return ymd(d.getTime() - ((d.getUTCDay() + 6) % 7) * 86400000);
 }
 
-// Last 24 hours (Search Console's hourly data, includes not-yet-final
+// Last 24 hours of data (Search Console's hourly data, includes not-yet-final
 // numbers) and everything since the site's first day in Google search.
 export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
-  const hours = (hourRows || []).map(r => ({ t: Date.parse(r.keys[0]), clicks: r.clicks, impressions: r.impressions }))
-    .filter(h => h.t > now - 86400000 && h.t <= now).sort((a, b) => a.t - b.t);
+  // Like Search Console's "24 hours" view: the 24 hours ending at the latest
+  // hour Google has data for (it runs a few hours behind), gaps filled with 0.
+  const got = (hourRows || []).map(r => ({ t: Date.parse(r.keys[0]), clicks: r.clicks, impressions: r.impressions }))
+    .filter(h => !isNaN(h.t) && h.t <= now);
+  const lastT = got.length ? Math.max(...got.map(h => h.t)) : 0;
+  const byT = new Map(got.map(h => [h.t, h]));
+  const hours = lastT ? Array.from({ length: 24 }, (_, k) => {
+    const t = lastT - (23 - k) * 3600000;
+    return byT.get(t) || { t, clicks: 0, impressions: 0 };
+  }) : [];
   const days = (dateRows || []).filter(r => r.impressions > 0).sort((a, b) => (a.keys[0] < b.keys[0] ? -1 : 1));
   const weeks = [];
   for (const r of days) {
@@ -140,7 +148,7 @@ export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
   }
   const sum = (list, k) => list.reduce((n, x) => n + x[k], 0);
   return {
-    day: hourRows && hourRows.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), hours } : null,
+    day: hours.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), hours, last: lastT } : null,
     since: days.length ? { start: days[0].keys[0], impressions: sum(days, 'impressions'), clicks: sum(days, 'clicks'), weeks } : null
   };
 }
