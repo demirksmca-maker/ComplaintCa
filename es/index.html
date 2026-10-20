@@ -50,7 +50,7 @@
 <meta name="twitter:description" content="Presente quejas gratis contra empresas, caseros o ayuntamientos en España, con IA y de forma anónima. Siga su queja, encuentre abogado gratis y detecte estafas.">
 <meta name="twitter:image" content="https://www.complaintca.ca/og-image.png">
 
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="/es/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -661,6 +661,7 @@ body{background:#140a0c}
 @media (min-width:700px){.es-flag .img{background-size:auto 100%}.hub-tiles{margin-left:auto;margin-right:3%}}
 @media (prefers-reduced-motion:reduce){.es-flag .img{filter:none}.es-flag .shade{animation:none}}
 </style>
+<style>/* ES page: Canadian-only parts hidden */#tab-feed[hidden],.lang-dd-item[hidden]{display:none!important}</style>
 </head>
 <body>
 
@@ -730,19 +731,19 @@ body{background:#140a0c}
           <svg class="topbar-caret" width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#e8c463" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-dd-menu" id="lang-dd-menu">
-          <div class="lang-dd-item active" tabindex="0" role="button" onclick="selectLangDD('en','EN',this)">
+          <div class="lang-dd-item active" hidden tabindex="0" role="button" onclick="selectLangDD('en','EN',this)">
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="7.5" height="20" fill="#c8102e"/><rect x="22.5" width="7.5" height="20" fill="#c8102e"/><path d="M15 5l.8 2.2 2.2-.7-1.4 1.8 1.8 1.1-2.3.2.5 2.3-1.6-1.7-1.6 1.7.5-2.3-2.3-.2 1.8-1.1-1.4-1.8 2.2.7z" fill="#c8102e"/></svg>
             <span>English</span>
           </div>
-          <div class="lang-dd-item" tabindex="0" role="button" onclick="selectLangDD('fr','FR',this)">
+          <div class="lang-dd-item" hidden tabindex="0" role="button" onclick="selectLangDD('fr','FR',this)">
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ed2939"/></svg>
             <span>Français</span>
           </div>
-          <div class="lang-dd-item" tabindex="0" role="button" onclick="selectLangDD('tr','TR',this)">
+          <div class="lang-dd-item" hidden tabindex="0" role="button" onclick="selectLangDD('tr','TR',this)">
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="30" height="20" fill="#e30a17"/><circle cx="11" cy="10" r="5.5" fill="#fff"/><circle cx="13" cy="10" r="4.2" fill="#e30a17"/><path d="M18 10l3.5-1.3-2.2 3.2V9l2.2 3.2z" fill="#fff"/></svg>
             <span>Türkçe</span>
           </div>
-          <div class="lang-dd-item" tabindex="0" role="button" onclick="selectLangDD('zh','中文',this)">
+          <div class="lang-dd-item" hidden tabindex="0" role="button" onclick="selectLangDD('zh','中文',this)">
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="30" height="20" fill="#de2910"/><circle cx="6" cy="5" r="2.5" fill="#ffde00"/></svg>
             <span>中文</span>
           </div>
@@ -750,11 +751,11 @@ body{background:#140a0c}
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="30" height="20" fill="#c60b1e"/><rect y="5" width="30" height="10" fill="#ffc400"/></svg>
             <span>Español</span>
           </div>
-          <div class="lang-dd-item" tabindex="0" role="button" onclick="selectLangDD('ar','AR',this)">
+          <div class="lang-dd-item" hidden tabindex="0" role="button" onclick="selectLangDD('ar','AR',this)">
             
             <span>العربية</span>
           </div>
-          <div class="lang-dd-item" tabindex="0" role="button" onclick="selectLangDD('pa','PA',this)">
+          <div class="lang-dd-item" hidden tabindex="0" role="button" onclick="selectLangDD('pa','PA',this)">
             <svg width="20" height="14" viewBox="0 0 30 20"><rect width="30" height="20" fill="#ff9933"/><rect y="7" width="30" height="6" fill="#fff"/><rect y="13" width="30" height="7" fill="#138808"/></svg>
             <span>ਪੰਜਾਬੀ</span>
           </div>
@@ -840,7 +841,7 @@ body{background:#140a0c}
         <div class="hub-tile-arrow">→</div>
       </a>
 
-      <a class="hub-tile" href="/guides/">
+      <a class="hub-tile" onclick="goApp('new')">
         <div class="hub-numeral">VI</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
         <div class="hub-tile-body">
@@ -851,7 +852,7 @@ body{background:#140a0c}
       </a>
     </div>
 
-    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/blog/" class="hub-track-link">Blog</a><a href="/blog/" class="hub-rate" id="hub-rate" hidden></a></div>
+    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a></div>
 
     <div class="hero-trust">
       <div class="ht-item"><span class="ht-dot"></span><span id="l-t1">Anonymous</span></div>
@@ -869,7 +870,7 @@ body{background:#140a0c}
   <div class="nav-tabs">
     <div class="nav-inner" style="overflow-x:auto;scrollbar-width:none">
       <div class="nav-tab active" tabindex="0" role="button" id="tab-new" onclick="ccFileTab()" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-new-lbl">File</span></div>
-      <div class="nav-tab" tabindex="0" role="button" id="tab-feed" onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Havuz</span></div>
+      <div class="nav-tab" tabindex="0" role="button" id="tab-feed" hidden onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Havuz</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-track" onclick="showTab('track')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-track-lbl">Track</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-lawyer" onclick="showTab('lawyer')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-lawyer-lbl">Lawyer</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-cyber" onclick="showTab('cyber')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-cyber-lbl">Cyber</span></div>
@@ -886,7 +887,6 @@ body{background:#140a0c}
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         </div>
         <div id="new-step-1">
-        <p style="text-align:center;margin:0 0 10px;font-size:.78rem"><a href="#" onclick="event.preventDefault();ccUsePanel('new')" style="color:var(--blue)">✨ Pruebe el nuevo panel de ASYA</a></p>
         <div class="card" style="padding:14px 16px">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:8px">
@@ -1698,6 +1698,8 @@ async function vfyAnalyze(){
 
 // ES test page safety lock: false = institution letters are redirected to our own inbox.
 var ES_SEND_TO_INSTITUTIONS = false;
+// Shared Firestore lists (publicFeed, Bolsa) are Canadian until Spain gets its own: hidden on this page.
+var ES_SHARED_FEED_OFF = true;
 
 // ── LAWYER FINDER ──
 var _lwProv='madrid', _lwArea='tenant';
@@ -2608,7 +2610,7 @@ const V = (function(){
       hs:"Plataforma segura y rápida para realizar sus quejas en España.",
       c1:"Comenzar Queja",c2:"Rastrear mi queja",
       disc:"ComplaintES es una plataforma independiente. No es un organismo público. · <a href=\"/es/privacidad.html\" style=\"color:inherit\">Privacidad</a> · <a href=\"/es/terminos.html\" style=\"color:inherit\">Términos</a>",t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
-      hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Abogado y ONG emparejados por IA, borradores listos para enviar.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Guías",hub_guides_d:"Encuentra la autoridad correcta por provincia y tema.",
+      hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Abogado y ONG emparejados por IA, borradores listos para enviar.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Autoridad y Plazos",hub_guides_d:"Elija el tema y le mostramos la autoridad competente y el plazo legal.",
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
@@ -2632,7 +2634,7 @@ const V = (function(){
       vfy_drop_t:"Arrastre y suelte o seleccione un documento",vfy_drop_s:"PNG, JPG o PDF · Análisis impulsado por Claude AI",
       vfy_ai_title:"Informe de análisis de Asya y Claude AI",vfy_action_btn:"Solicitar confirmación a la institución bajo la Ley de Acceso a la Información",
       vfy_loading:"Escaneando documento... Verificando contenido...",vfy_unsupported:"Tipo de archivo no compatible. Suba un PNG, JPG o PDF.",
-      vfy_error:"Ocurrió un error durante el análisis. Inténtelo de nuevo.",vfy_timeout:"El análisis agotó el tiempo de espera — el servidor tardó demasiado en responder. Inténtelo de nuevo.",vfy_advice:"Consejo:",vfy_reselect:"Toque de nuevo para elegir otro documento",vfy_petition_drafting:"Asya está redactando su solicitud...",l_vfy_link:"🔍 ¿Recibió un documento sospechoso? Verifíquelo ahora →",cooldown_msg:"⚠ Espere {m} min {s} s antes de enviar otra queja.",del_prompt:"¿Desea eliminar esta queja? Ingrese el correo que usó al presentarla.",del_email_ph:"su@correo.com",del_btn:"Eliminar Mi Queja",del_need_email:"Ingrese su correo para confirmar.",del_confirm:"Esto eliminará permanentemente su queja. ¿Está seguro?",del_deleting:"Eliminando...",del_success:"✅ Eliminada.",del_fail:"No se pudo eliminar — el correo no coincide con esta queja.",mng_email_prompt:"Gestione esta queja — ingrese el correo usado al presentarla.",mng_status_label:"Actualizar estado:",mng_updating:"Actualizando...",mng_success:"✅ Estado actualizado.",mng_reply_label:"Respuesta de la institución (péguela aquí):",mng_reply_ph:"Pegue el texto de la respuesta de la institución...",mng_reply_btn:"Guardar Respuesta",mng_reply_success:"✅ Respuesta guardada.",tl_reply_lbl:"✉ La institución respondió",verdict_badge:"VEREDICTO",verdict_title:"Veredicto Legal de Asya",verdict_subtitle:"Claude Sonnet · Borrador de IA — verifique antes de enviar",verdict_law:"Ley Aplicable",verdict_sanctions:"Posibles Sanciones",verdict_deadline:"Plazo de Respuesta",verdict_email_draft:"Borrador de Queja por Correo",verdict_copy_btn:"Copiar Correo",verdict_copied:"¡Copiado!",verdict_disclaimer:"Generado por IA a partir de su información — esto no es asesoramiento legal. Verifique la ley y el plazo antes de confiar en ellos.",ctype_legal_note:"Esto va a nuestro <b>Feed de Casos Abiertos</b>, solo para abogados socios conectados — no se publica en el feed público. Si desea que un abogado revise su caso y hable sobre representarlo, así lo encontrarán.",ctype_access_label:"Solicitud de Acceso a la Información",ctype_access_desc:"Solicitar documentos o información a una institución",ctype_access_note:"Esta solicitud se procesa bajo la ley de Acceso a la Información / Libertad de Información — un proceso legal distinto de una queja. Las instituciones generalmente deben responder dentro de un plazo determinado, y no necesita dar un motivo para la solicitud. Se requiere un nombre real y datos de contacto para que la institución pueda responderle.",stopncii_title:"🛡️ Evitar Más Difusión",stopncii_text:"Si se trata de una imagen íntima, StopNCII.org puede crear una huella privada de ella que las plataformas asociadas (Instagram, Facebook, TikTok, Reddit y más) usan para bloquearla — la imagen en sí nunca se sube.",stopncii_btn:"Ir a StopNCII.org →",alert_high_text:"Esto parece serio — puede tener una reclamación legal.",alert_medium_text:"Esto podría calificar como un asunto de derechos legales.",alert_legal_btn:"Derechos Legales",pool_suggest_title:"Asya cree que esto podría ser un caso legal",pool_suggest_text:"Según los hechos, un abogado podría perseguir esto en su nombre. Toque abajo para enviarlo a la Bolsa de Casos.",pool_suggest_btn:"Enviar a la Bolsa de Casos",pool_suggest_switched:"Cambiado",legal_track_badge:"Vía Legal — Bolsa de Casos",ctype_notice_label:"Notificar a la Institución",ctype_notice_desc:"Reportar formalmente el problema y solicitar una resolución",ctype_legal_label:"Reclamar Derechos Legales",ctype_legal_desc:"Notificar acción legal y derechos de compensación",ctype_section_label:"Tipo de Queja",cy_conf_subj:"Su Referencia de ComplaintCA — {ref}",cy_conf_intro:"Hola,\n\nSu informe de ciberdelito ha sido recibido por ComplaintCA.",cy_conf_ref_line:"Referencia: {ref}",cy_conf_type_line:"Tipo: {type}",cy_conf_urgency_line:"Urgencia: {urgency}",cy_conf_notice:"ComplaintES no es un servicio de policía y no puede presentar este informe ante una autoridad en su nombre. Para hacerlo oficial, comuníquese con:",cy_conf_danger:"Si está en peligro inmediato, llame al 112 ahora.",cy_conf_keepref:"Guarde este número de referencia — puede consultar su estado en cualquier momento en \"Track\" (Seguimiento) en ComplaintCA.",cy_conf_privacy:"Su privacidad: los detalles que envió se almacenan únicamente para permitirle seguir este informe y nunca se comparten sin su consentimiento. Puede solicitar su eliminación en cualquier momento.",cy_conf_emailed:"📧 Se envió una copia por correo electrónico a {email}.",deadline_passed:"El plazo típico de respuesta para este tipo de queja ha pasado.",deadline_soon:"Solo quedan {n} días en el plazo típico de respuesta.",deadline_escalate:"Considere escalar a: {name}.",lw_title:"Encontrar Abogado Gratis en España",lw_sub:"Justicia gratuita, Defensores del Pueblo y ONG por comunidad autónoma.",lw_step1:"Comunidad Autónoma",lw_step2:"Área",lw_visit:"Visitar",lw_none:"No hay recursos para esta selección.",ar_tenant_t:"Vivienda / Alquiler",ar_tenant_s:"Desahucios, hipotecas",ar_employment_t:"Laboral",ar_employment_s:"Despidos, salarios",ar_humanrights_t:"Derechos Humanos",ar_humanrights_s:"Discriminación, Defensor",ar_immigration_t:"Extranjería",ar_immigration_s:"Asilo, residencia",ar_criminal_t:"Penal",ar_criminal_s:"Víctimas, defensa",ar_family_t:"Familia",ar_family_s:"Violencia, menores",ar_consumer_t:"Consumo",ar_consumer_s:"Bancos, compras",lw_sug_tag:"Ayuda legal relacionada",lw_sug_serious_tag:"Esto podría ser un caso sólido",lw_sug_text:"Según la categoría de su queja, un abogado especialista podría ayudar.",lw_sug_serious_text:"Dada la prioridad y categoría de esta queja, recomendamos hablar con un abogado especialista.",lw_sug_btn:"Buscar Abogado Especialista",cat_ai_tag:"Sugerencia de IA",cat_ai_apply:"Aplicar",cat_ai_dismiss:"Descartar",lw_panel_cta_t:"¿Es usted abogado?",lw_panel_cta_s:"Explore el feed de casos abiertos →",lwp_eyebrow:"⚖️ PARA PROFESIONALES LEGALES",lwp_title:"La Bolsa de Casos",lwp_sub:"Explore quejas anonimizadas en tiempo real. Los detalles de contacto completos están disponibles para Abogados Socios.",lwp_partner_text:"¿Desea los detalles de contacto completos de estos casos? El acceso de Abogado Socio está disponible por una tarifa mensual fija — sin relación con el resultado del caso.",lwp_partner_btn:"Conviértase en Abogado Socio",lwp_locked:"Datos de contacto bloqueados — solo Abogados Socios",lwp_record:"Expediente",lwp_facts:"I · Los hechos",lwp_simh:"II · Casos similares",lwp_filed:"Presentada {t}",lwp_all:"Todas las categorías",lwp_notices:"Otras quejas (avisos)",lwp_cats:"Educación|Telecom / Internet|Privacidad|Acoso|Salarios impagos|Despido injustificado|Reparaciones|Negligencia médica|Retrasos|Prestaciones|Inmigración|Policía|Condominio|Medio ambiente|Servicios públicos|Préstamos estudiantiles|Otro",lwp_prec:"II · Decisiones similares",lwp_pot:"III · Potencial",lwp_joint:"IV · Acción conjunta",lwp_loading:"ASYA está buscando en CanLII…",lwp_nodec:"No se encontraron decisiones similares verificadas.",lwp_ratio:"{w} de {k} decisiones a favor del demandante",lwp_few:"No hay suficientes decisiones para estimar.",lwp_disc:"Una estimación basada en decisiones publicadas — no es garantía ni asesoría legal.",lwp_jyes:"Apto para una acción conjunta",lwp_jno:"No apto para una acción conjunta",lwp_jwhy_yes:"{n} quejas similares en la bolsa y los precedentes son favorables.",lwp_jwhy_no:"Se necesitan quejas similares y precedentes favorables.",lwp_err:"No se pudieron cargar las decisiones. Inténtelo más tarde.",lwp_signin:"Inicie sesión para ver decisiones similares.",lwp_o:"Ganó|Perdió|Parcial|Incierto",lwp_ledger_l:"Casos Abiertos",lwp_stats_title:"Casos Similares por Categoría",lwp_similar:"{n} casos similares en este grupo",lwp_updates_title:"📅 Actualizaciones Legales de Este Mes",lwp_updates_sub:"Cambios legales y novedades relevantes para los casos abiertos, recopilados para Abogados Socios.",lwp_updates_none:"Aún no se han publicado actualizaciones."
+      vfy_error:"Ocurrió un error durante el análisis. Inténtelo de nuevo.",vfy_timeout:"El análisis agotó el tiempo de espera — el servidor tardó demasiado en responder. Inténtelo de nuevo.",vfy_advice:"Consejo:",vfy_reselect:"Toque de nuevo para elegir otro documento",vfy_petition_drafting:"Asya está redactando su solicitud...",l_vfy_link:"🔍 ¿Recibió un documento sospechoso? Verifíquelo ahora →",cooldown_msg:"⚠ Espere {m} min {s} s antes de enviar otra queja.",del_prompt:"¿Desea eliminar esta queja? Ingrese el correo que usó al presentarla.",del_email_ph:"su@correo.com",del_btn:"Eliminar Mi Queja",del_need_email:"Ingrese su correo para confirmar.",del_confirm:"Esto eliminará permanentemente su queja. ¿Está seguro?",del_deleting:"Eliminando...",del_success:"✅ Eliminada.",del_fail:"No se pudo eliminar — el correo no coincide con esta queja.",mng_email_prompt:"Gestione esta queja — ingrese el correo usado al presentarla.",mng_status_label:"Actualizar estado:",mng_updating:"Actualizando...",mng_success:"✅ Estado actualizado.",mng_reply_label:"Respuesta de la institución (péguela aquí):",mng_reply_ph:"Pegue el texto de la respuesta de la institución...",mng_reply_btn:"Guardar Respuesta",mng_reply_success:"✅ Respuesta guardada.",tl_reply_lbl:"✉ La institución respondió",verdict_badge:"VEREDICTO",verdict_title:"Veredicto Legal de Asya",verdict_subtitle:"Claude Sonnet · Borrador de IA — verifique antes de enviar",verdict_law:"Ley Aplicable",verdict_sanctions:"Posibles Sanciones",verdict_deadline:"Plazo de Respuesta",verdict_email_draft:"Borrador de Queja por Correo",verdict_copy_btn:"Copiar Correo",verdict_copied:"¡Copiado!",verdict_disclaimer:"Generado por IA a partir de su información — esto no es asesoramiento legal. Verifique la ley y el plazo antes de confiar en ellos.",ctype_legal_note:"Le mostraremos <b>abogados gratuitos y ONG</b> de su comunidad autónoma según su caso. Sus datos no se comparten con nadie salvo que usted lo decida.",ctype_access_label:"Solicitud de Acceso a la Información",ctype_access_desc:"Solicitar documentos o información a una institución",ctype_access_note:"Esta solicitud se procesa bajo la ley de Acceso a la Información / Libertad de Información — un proceso legal distinto de una queja. Las instituciones generalmente deben responder dentro de un plazo determinado, y no necesita dar un motivo para la solicitud. Se requiere un nombre real y datos de contacto para que la institución pueda responderle.",stopncii_title:"🛡️ Evitar Más Difusión",stopncii_text:"Si se trata de una imagen íntima, StopNCII.org puede crear una huella privada de ella que las plataformas asociadas (Instagram, Facebook, TikTok, Reddit y más) usan para bloquearla — la imagen en sí nunca se sube.",stopncii_btn:"Ir a StopNCII.org →",alert_high_text:"Esto parece serio — puede tener una reclamación legal.",alert_medium_text:"Esto podría calificar como un asunto de derechos legales.",alert_legal_btn:"Derechos Legales",pool_suggest_title:"Asya cree que esto podría ser un caso legal",pool_suggest_text:"Según los hechos, un abogado podría perseguir esto en su nombre. Toque abajo para enviarlo a la Bolsa de Casos.",pool_suggest_btn:"Enviar a la Bolsa de Casos",pool_suggest_switched:"Cambiado",legal_track_badge:"Vía Legal — Bolsa de Casos",ctype_notice_label:"Notificar a la Institución",ctype_notice_desc:"Reportar formalmente el problema y solicitar una resolución",ctype_legal_label:"Reclamar Derechos Legales",ctype_legal_desc:"Notificar acción legal y derechos de compensación",ctype_section_label:"Tipo de Queja",cy_conf_subj:"Su Referencia de ComplaintCA — {ref}",cy_conf_intro:"Hola,\n\nSu informe de ciberdelito ha sido recibido por ComplaintCA.",cy_conf_ref_line:"Referencia: {ref}",cy_conf_type_line:"Tipo: {type}",cy_conf_urgency_line:"Urgencia: {urgency}",cy_conf_notice:"ComplaintES no es un servicio de policía y no puede presentar este informe ante una autoridad en su nombre. Para hacerlo oficial, comuníquese con:",cy_conf_danger:"Si está en peligro inmediato, llame al 112 ahora.",cy_conf_keepref:"Guarde este número de referencia — puede consultar su estado en cualquier momento en \"Track\" (Seguimiento) en ComplaintCA.",cy_conf_privacy:"Su privacidad: los detalles que envió se almacenan únicamente para permitirle seguir este informe y nunca se comparten sin su consentimiento. Puede solicitar su eliminación en cualquier momento.",cy_conf_emailed:"📧 Se envió una copia por correo electrónico a {email}.",deadline_passed:"El plazo típico de respuesta para este tipo de queja ha pasado.",deadline_soon:"Solo quedan {n} días en el plazo típico de respuesta.",deadline_escalate:"Considere escalar a: {name}.",lw_title:"Encontrar Abogado Gratis en España",lw_sub:"Justicia gratuita, Defensores del Pueblo y ONG por comunidad autónoma.",lw_step1:"Comunidad Autónoma",lw_step2:"Área",lw_visit:"Visitar",lw_none:"No hay recursos para esta selección.",ar_tenant_t:"Vivienda / Alquiler",ar_tenant_s:"Desahucios, hipotecas",ar_employment_t:"Laboral",ar_employment_s:"Despidos, salarios",ar_humanrights_t:"Derechos Humanos",ar_humanrights_s:"Discriminación, Defensor",ar_immigration_t:"Extranjería",ar_immigration_s:"Asilo, residencia",ar_criminal_t:"Penal",ar_criminal_s:"Víctimas, defensa",ar_family_t:"Familia",ar_family_s:"Violencia, menores",ar_consumer_t:"Consumo",ar_consumer_s:"Bancos, compras",lw_sug_tag:"Ayuda legal relacionada",lw_sug_serious_tag:"Esto podría ser un caso sólido",lw_sug_text:"Según la categoría de su queja, un abogado especialista podría ayudar.",lw_sug_serious_text:"Dada la prioridad y categoría de esta queja, recomendamos hablar con un abogado especialista.",lw_sug_btn:"Buscar Abogado Especialista",cat_ai_tag:"Sugerencia de IA",cat_ai_apply:"Aplicar",cat_ai_dismiss:"Descartar",lw_panel_cta_t:"¿Es usted abogado?",lw_panel_cta_s:"Explore el feed de casos abiertos →",lwp_eyebrow:"⚖️ PARA PROFESIONALES LEGALES",lwp_title:"La Bolsa de Casos",lwp_sub:"Explore quejas anonimizadas en tiempo real. Los detalles de contacto completos están disponibles para Abogados Socios.",lwp_partner_text:"¿Desea los detalles de contacto completos de estos casos? El acceso de Abogado Socio está disponible por una tarifa mensual fija — sin relación con el resultado del caso.",lwp_partner_btn:"Conviértase en Abogado Socio",lwp_locked:"Datos de contacto bloqueados — solo Abogados Socios",lwp_record:"Expediente",lwp_facts:"I · Los hechos",lwp_simh:"II · Casos similares",lwp_filed:"Presentada {t}",lwp_all:"Todas las categorías",lwp_notices:"Otras quejas (avisos)",lwp_cats:"Educación|Telecom / Internet|Privacidad|Acoso|Salarios impagos|Despido injustificado|Reparaciones|Negligencia médica|Retrasos|Prestaciones|Inmigración|Policía|Condominio|Medio ambiente|Servicios públicos|Préstamos estudiantiles|Otro",lwp_prec:"II · Decisiones similares",lwp_pot:"III · Potencial",lwp_joint:"IV · Acción conjunta",lwp_loading:"ASYA está buscando en CanLII…",lwp_nodec:"No se encontraron decisiones similares verificadas.",lwp_ratio:"{w} de {k} decisiones a favor del demandante",lwp_few:"No hay suficientes decisiones para estimar.",lwp_disc:"Una estimación basada en decisiones publicadas — no es garantía ni asesoría legal.",lwp_jyes:"Apto para una acción conjunta",lwp_jno:"No apto para una acción conjunta",lwp_jwhy_yes:"{n} quejas similares en la bolsa y los precedentes son favorables.",lwp_jwhy_no:"Se necesitan quejas similares y precedentes favorables.",lwp_err:"No se pudieron cargar las decisiones. Inténtelo más tarde.",lwp_signin:"Inicie sesión para ver decisiones similares.",lwp_o:"Ganó|Perdió|Parcial|Incierto",lwp_ledger_l:"Casos Abiertos",lwp_stats_title:"Casos Similares por Categoría",lwp_similar:"{n} casos similares en este grupo",lwp_updates_title:"📅 Actualizaciones Legales de Este Mes",lwp_updates_sub:"Cambios legales y novedades relevantes para los casos abiertos, recopilados para Abogados Socios.",lwp_updates_none:"Aún no se han publicado actualizaciones."
     },
     ar:{
       ey:"منصة الشكاوى الرسمية في كندا",
@@ -2898,6 +2900,7 @@ function goHome(){
 // New ASYA panel is the default for filing; ?panel=old or the person's saved choice keeps the classic form.
 var _ccPanelPref='';try{_ccPanelPref=localStorage.getItem('cc_panel')||'';}catch(e){}
 var _ccOldPanel=/[?&]panel=old\b/.test(location.search)||(_ccPanelPref==='old'&&!/[?&]panel=new\b/.test(location.search));
+_ccOldPanel=true; // ES page: the ASYA panel (/demo/asya) uses Canadian server routing and e-mails institutions directly
 function ccFileTab(){ if(_ccOldPanel) showTab('new'); else openAsyaPanel(); }
 function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e){} _ccOldPanel=(which==='old'); if(which==='old') goApp('new'); else openAsyaPanel(); }
 // ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
@@ -3013,6 +3016,7 @@ async function loadPublicFeed(){
   // Public, anonymous list (Firestore publicFeed: category, city, date, status only).
   var pub=[];
   try{
+    if(window.ES_SHARED_FEED_OFF) throw 0; // ES page: the shared publicFeed holds Canadian complaints
     var r=await fetch('https://firestore.googleapis.com/v1/projects/ajan-d6070/databases/(default)/documents/publicFeed?pageSize=10&orderBy=date%20desc&key=AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g');
     if(r.ok){ var j=await r.json(); pub=(j.documents||[]).map(function(d){ var f=d.fields||{}, g=function(k){return f[k]&&f[k].stringValue||'';};
       return {ref:g('ref'),title:g('title'),category:g('category'),location:g('city'),date:g('date'),status:g('status'),pub:true}; }); }
@@ -3038,7 +3042,7 @@ async function loadPublicFeed(){
     var color=catColors[c.category]||catColors.default;
     var ago=c.date?timeAgo(c.date):'';
     var title=escHtml(c.pub?(c.title||'['+V.t('t1')+']'):(c.anonymous?c.title:'['+V.t('t1')+']'));
-    var loc=escHtml(c.location?c.location.split(',')[0]:'Canada');
+    var loc=escHtml(c.location?c.location.split(',')[0]:'España');
     var catRaw=c.category||'general';
     var catK=catKeyMap[catRaw];
     var cat=escHtml(catK?V.t(catK):(catRaw.charAt(0).toUpperCase()+catRaw.slice(1)));
@@ -4697,7 +4701,7 @@ function _tgtSearch(){
   if(val.length<3){dd.style.display='none';return;}
   var near=_tgtNear();
   var seq=++_tgtSeq;
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(near?val+', '+near:val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(near?val+', '+near:val)+'&format=json&limit=6&addressdetails=1&countrycodes=es&dedupe=1')
     .then(function(r){return r.json();}).then(function(results){
       if(seq!==_tgtSeq) return;
       if(!results||!results.length){dd.style.display='none';return;}
@@ -4741,7 +4745,7 @@ function _locSearch(){
   const val=document.getElementById('inp-loc').value.trim();
   const dd=document.getElementById('loc-dropdown');
   if(val.length<3){if(dd)dd.style.display='none';return;}
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=es&dedupe=1')
     .then(r=>r.json()).then(results=>{
       if(!dd) return;
       if(!results||!results.length){dd.style.display='none';return;}
@@ -5049,14 +5053,14 @@ async function _renderMyComplaints(email){
   _mpEmail=email;
   uc.style.display='block';
   var t=document.getElementById('my-complaints-t'); if(t&&t.parentNode) t.parentNode.style.display='none';
-  ul.innerHTML='<a href="/account" onclick="_openAccount();return false" style="display:block;text-align:center;padding:14px;border:1px solid var(--border);border-radius:10px;color:var(--gold,#c9a84c);font-family:Cinzel,serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-decoration:none">'+escHtml(V.t('auth_account'))+' →</a>';
+  ul.innerHTML='<a href="/es/cuenta.html" onclick="_openAccount();return false" style="display:block;text-align:center;padding:14px;border:1px solid var(--border);border-radius:10px;color:var(--gold,#c9a84c);font-family:Cinzel,serif;font-weight:700;font-size:.85rem;letter-spacing:1px;text-decoration:none">'+escHtml(V.t('auth_account'))+' →</a>';
 }
 async function _openAccount(){
   try{
     var j=window._fbAccountPass?await window._fbAccountPass():null;
     if(j&&j.pass) localStorage.setItem('cc_mail_pass',JSON.stringify({e:j.email,p:j.pass}));
   }catch(e){}
-  location.href='/account';
+  location.href='/es/cuenta.html';
 }
 function _authErrorMessage(e){
   switch(e&&e.code){
@@ -5304,7 +5308,7 @@ function _handleReplyLink(){
     (d.replies||[]).forEach(function(x){
       h+='<div class="rv-msg"><div class="rv-meta"><b>'+esc(R.from)+':</b> '+esc(x.from)+'<br>'+esc(x.date)+'</div><div class="rv-text">'+esc(x.text)+'</div>'+(x.attachments?'<div class="rv-note">'+esc(R.att.replace('{n}',x.attachments))+'</div>':'')+'</div>';
     });
-    h+='<a class="rv-acct" href="/account">'+esc(R.acct)+'</a>';
+    h+='<a class="rv-acct" href="/es/cuenta.html">'+esc(R.acct)+'</a>';
     body.innerHTML=h;
   };
   var open=function(email,pass,errBox){
@@ -5521,7 +5525,7 @@ try{
     }
     if(typeof window._applyAuthUI==='function') window._applyAuthUI(); // keep the Sign In tab in sync
   });
-  window._fbSave=async function(c){c.country='ES';return await addDoc(collection(db,'complaints'),c);}; // ES page: tag so Spanish complaints can be told apart
+  window._fbSave=async function(c){c=Object.assign({},c,{country:'ES'}); if(c.isLegal){c.esLegal=true; delete c.isLegal;} /* keep Spanish cases out of the Canadian lawyer feed */return await addDoc(collection(db,'complaints'),c);}; // ES page: tag so Spanish complaints can be told apart
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
     window._fbAccountPass=async function(){
     const u=authInst.currentUser; if(!u) return null;
@@ -5845,12 +5849,13 @@ try{
         var ago=c.date?window._timeAgo(c.date):'';
         return '<div class="lex-row"><div class="lex-sum"><span class="lex-ico">'+lexSvg(lexIcon(cat))+'</span>'+
           '<span class="lex-txt"><span class="lex-t">'+escHtml(c.title||V.t('feed_default_title'))+'</span>'+
-          '<span class="lex-m">'+escHtml(c.city||'Canada')+(ago?' · '+escHtml(ago):'')+'</span></span></div></div>';
+          '<span class="lex-m">'+escHtml(c.city||'España')+(ago?' · '+escHtml(ago):'')+'</span></span></div></div>';
       }).join('');
     }).join('');
     box.style.display='';
   }
   function _loadNotices(){
+    if(window.ES_SHARED_FEED_OFF){ _noticeItems=[]; _renderNotices(); return; }
     fetch('https://firestore.googleapis.com/v1/projects/ajan-d6070/databases/(default)/documents/publicFeed?pageSize=50&orderBy=date%20desc&key=AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g')
       .then(function(r){ return r.ok?r.json():{}; })
       .then(function(j){
@@ -6024,7 +6029,7 @@ function _mvLocSearch(){
   if(val.length<3){if(dd)dd.style.display='none';return;}
   // Posta kodu yazılıyorsa autocomplete'e gerek yok — "Bul" doğrudan posta kodunu kullanır.
   if(_MV_PC_RE.test(val)){if(dd)dd.style.display='none';return;}
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=ca&dedupe=1')
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(val)+'&format=json&limit=6&addressdetails=1&countrycodes=es&dedupe=1')
     .then(function(r){return r.json();}).then(function(results){
       if(!dd) return;
       if(!results||!results.length){dd.style.display='none';return;}
@@ -6093,8 +6098,8 @@ function mvSearch(){
     }else{
       box.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:.85rem">'+V.t('mv_searching1')+'</div>';
       var q=raw;
-      if(q.toLowerCase().indexOf('canada')===-1)q=q+', Canada';
-      geoPromise=fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ca&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
+      if(q.toLowerCase().indexOf('españa')===-1)q=q+', España';
+      geoPromise=fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=es&q='+encodeURIComponent(q),{headers:{'Accept':'application/json'}})
         .then(function(r){return r.json();});
     }
     repPromise=geoPromise
@@ -6295,7 +6300,18 @@ async function doLogout(){
   location.reload();
 }
 </script>
-<script defer src="/assets/site-footer.js"></script>
+<script>
+// ES footer (the shared /assets/site-footer.js links to the Canadian pages).
+(function(){
+  if(document.getElementById('cc-foot'))return;
+  var st=document.createElement('style');
+  st.textContent='#cc-foot{background:#0f2952;color:rgba(255,255,255,.72);font:13px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:26px 16px 30px;margin-top:32px}#cc-foot b{display:block;color:#fff;font:700 14px Cinzel,Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}#cc-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-bottom:10px}#cc-foot a{color:#fff;text-decoration:none;opacity:.9}#cc-foot small{display:block;font-size:11.5px;opacity:.7;max-width:520px;margin:0 auto}';
+  document.head.appendChild(st);
+  var f=document.createElement('footer');f.id='cc-foot';
+  f.innerHTML='<b>ComplaintES</b><nav><a href="/es/">Inicio</a><a href="/es/privacidad.html">Política de Privacidad</a><a href="/es/terminos.html">Términos de Uso</a></nav><small>© '+new Date().getFullYear()+' ComplaintES. Información general, no asesoramiento legal. Sin vínculo con ningún organismo público.</small>';
+  document.body.appendChild(f);
+})();
+</script>
 <script>
 // Home strip: how many readers rated blog posts today (from /api/blog-rating). Hidden until someone has.
 (function(){
