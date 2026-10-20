@@ -175,6 +175,12 @@
         <h2>Arama motorundan gelen · bugün</h2><div class="brands" id="search"></div>
         <h2>Sosyal medyadan gelen · bugün</h2><div class="brands" id="socials"></div>
       </div>
+      <div class="card pad" id="homeGsc" hidden>
+        <h2 style="text-align:center">Google · son 24 saat</h2>
+        <div class="cmp"><div><b id="hgImp">–</b>gösterim</div><div><b id="hgClk">–</b>tıklama</div></div>
+        <div class="sparkbars" id="hgBars" style="margin-top:10px"></div>
+        <div class="sparkhead" style="margin-top:4px"><span>24 saat önce</span><span id="hgLast">son veri</span></div>
+      </div>
     </section>
 
     <!-- TRAFİK -->
@@ -245,7 +251,23 @@
     var txt = lowerIsBetter ? (diff < 0 ? '↑' : '↓') + Math.abs(diff).toFixed(1) : (diff >= 0 ? '↑' : '↓') + Math.abs(Math.round(diff / before * 100)) + '%';
     return ' <small class="' + (Math.abs(diff) < 1e-9 ? '' : good ? 'better' : 'worse') + '">' + txt + '</small>';
   }
+  // Genel: the same last-24-hours card as the Google tab, centred.
+  function renderHomeGsc(g) {
+    var day = g && g.ok && g.recent && g.recent.day;
+    $('homeGsc').hidden = !day;
+    if (!day) return;
+    var max = Math.max.apply(null, day.hours.map(function (h) { return h.impressions; }).concat(1));
+    $('hgImp').textContent = day.impressions.toLocaleString('tr-TR');
+    $('hgClk').textContent = day.clicks.toLocaleString('tr-TR');
+    $('hgBars').innerHTML = day.hours.map(function (h) {
+      var at = new Date(h.t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' });
+      return '<i style="height:' + Math.max(2, h.impressions / max * 100) + '%;background:var(--s1)" title="' + esc(at + ' · ' + h.impressions + ' gösterim · ' + h.clicks + ' tık') + '"></i>';
+    }).join('');
+    $('hgLast').textContent = 'son veri ' + new Date(day.last).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' });
+  }
+
   function renderGsc(g) {
+    renderHomeGsc(g);
     if (!g.ok) {
       var s = g.setup || {};
       $('gscBody').innerHTML = '<div class="card pad steps"><h2>Search Console bağlantısı · 2 adım</h2>' +
@@ -349,9 +371,9 @@
     // One period for Trafik, Huni and Google.
     gDays = Number(b.getAttribute('data-gdays')); store('shieldGDays', String(gDays)); markGDays(); load(); if (gscLoaded) loadGsc();
   }); });
-  function loadGsc(fresh) {
+  function loadGsc(fresh, quiet) {
     gscLoaded = true;
-    $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
+    if (!quiet) $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
     fetch('/api/shield?gsc=1&days=' + gDays + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(renderGsc)
@@ -542,11 +564,14 @@
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
-  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); });
+  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
   $('logout').addEventListener('click', function () { setKey(''); showLogin(); });
   showSec(store(SEC) || 'home');
   load();
+  // Google numbers for Genel too; the server caches the 24-hour part 30 min.
+  if (getKey()) loadGsc(false, true);
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
+  setInterval(function () { if (!document.hidden && getKey()) loadGsc(false, true); }, 10 * 60000);
 })();
 </script>
 </body>
