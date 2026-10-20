@@ -133,12 +133,35 @@ export function visitDay(now = new Date()) {
   return now.toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
 }
 
-function countVisit(url, ip) {
+// Where a visitor arrived from, for the panel's search / social rows: the
+// Referer of an outside page, or the in-app browser of a social network.
+const SOURCES = [
+  ['google', /(^|\.)google\.[a-z.]+$/], ['bing', /(^|\.)bing\.com$/], ['duckduckgo', /(^|\.)duckduckgo\.com$/],
+  ['yahoo', /(^|\.)yahoo\.com$/], ['ecosia', /(^|\.)ecosia\.org$/],
+  ['facebook', /(^|\.)(facebook\.com|fb\.com|fb\.me)$/], ['instagram', /(^|\.)instagram\.com$/],
+  ['x', /^(t\.co|(.+\.)?x\.com|(.+\.)?twitter\.com)$/], ['tiktok', /(^|\.)tiktok\.com$/], ['youtube', /(^|\.)(youtube\.com|youtu\.be)$/]
+];
+const IN_APP = [['facebook', /FBAN|FBAV|FB_IAB/], ['instagram', /Instagram/], ['tiktok', /musical_ly|BytedanceWebview|TikTok/]];
+
+export function visitSource(referer, ua = '') {
+  let host = '';
+  try { host = new URL(referer).hostname.toLowerCase(); } catch (e) { /* no referer */ }
+  if (host && !host.endsWith('complaintca.ca')) {
+    const hit = SOURCES.find(([, re]) => re.test(host));
+    if (hit) return hit[0];
+  }
+  const app = IN_APP.find(([, re]) => re.test(ua));
+  return app && !(host && host.endsWith('complaintca.ca')) ? app[0] : null;
+}
+
+function countVisit(url, ip, source) {
   const site = url.pathname === '/es' || url.pathname.startsWith('/es/') ? 'es' : 'ca';
   const day = visitDay();
   const views = `shield:views:${site}:${day}`, uniq = `shield:uv:${site}:${day}`;
-  // No EXPIRE here: two small keys a day, and it halves the Upstash calls.
-  return [['INCR', views], ['PFADD', uniq, ip]];
+  // No EXPIRE here: a few small keys a day, and it halves the Upstash calls.
+  const cmds = [['INCR', views], ['PFADD', uniq, ip]];
+  if (source) cmds.push(['HINCRBY', `shield:src:${day}`, source, 1]);
+  return cmds;
 }
 
 export default async function middleware(request) {
@@ -169,7 +192,7 @@ export default async function middleware(request) {
   const rateKey = searchBot ? null : isApi ? `shield:api:${ip}:${minute}` : page ? `shield:pv:${ip}:${minute}` : null;
   const cmds = [['GET', `shield:ban:${ip}`], ['GET', 'shield:lockdown']];
   if (rateKey) cmds.push(['INCR', rateKey], ['EXPIRE', rateKey, 120]);
-  if (isPageView(request, url, ua)) cmds.push(...countVisit(url, ip));
+  if (isPageView(request, url, ua)) cmds.push(...countVisit(url, ip, visitSource(request.headers.get('referer'), ua)));
   const r = await redis(cmds);
   if (!r) return;
   if (r[0] && r[0].result) return blocked('ban');

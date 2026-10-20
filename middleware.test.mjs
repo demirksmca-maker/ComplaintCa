@@ -114,3 +114,16 @@ test('scraping, trap bans and lockdown with a store', async () => {
     delete process.env.KV_REST_API_TOKEN;
   }
 });
+
+test('visitSource reads referer and in-app browsers', async () => {
+  const { visitSource } = await import('./middleware.js');
+  assert.equal(visitSource('https://www.google.ca/', 'Chrome'), 'google');
+  assert.equal(visitSource('https://www.bing.com/search?q=x'), 'bing');
+  assert.equal(visitSource('https://l.facebook.com/l.php'), 'facebook');
+  assert.equal(visitSource('https://t.co/abc'), 'x');
+  assert.equal(visitSource('https://m.youtube.com/'), 'youtube');
+  assert.equal(visitSource('', 'Mozilla/5.0 Instagram 300.0'), 'instagram');
+  assert.equal(visitSource('https://www.complaintca.ca/blog/', 'Mozilla/5.0 FBAV/400'), null);
+  assert.equal(visitSource('https://example.com/'), null);
+  assert.equal(visitSource(null), null);
+});
