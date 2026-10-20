@@ -6,6 +6,7 @@
 //   GET  → { events, last }       events newer than the last review
 //   POST { bans, lockdownHours, summary, events, last, dryRun } → stores
 //        bans, optional lockdown and the report, mails the owner
+//   POST { copies: [{url, source}] } → copy watch finding (scripts/copy-watch.mjs)
 import { createPublicKey, verify } from 'node:crypto';
 import { sendShieldAlert } from './_shield-alert.js';
 
@@ -68,6 +69,14 @@ export function cleanBans(bans, events) {
     .map(b => ({ ip: b.ip, hours: Math.min(Math.max(Math.round(Number(b.hours) || 1), 1), MAX_BAN_HOURS), reason: String(b.reason || '').slice(0, 200) }));
 }
 
+export function cleanCopies(copies) {
+  return (Array.isArray(copies) ? copies : []).filter(c => {
+    try {
+      return /^https?:$/.test(new URL(c.url).protocol) && new URL(c.source).hostname.endsWith('complaintca.ca');
+    } catch { return false; }
+  }).slice(0, 20).map(c => ({ url: String(c.url).slice(0, 300), source: String(c.source).slice(0, 300) }));
+}
+
 export async function shieldAgent(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (!(process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL)) return res.status(503).json({ error: 'no_upstash' });
@@ -83,6 +92,14 @@ export async function shieldAgent(req, res) {
     }
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
     const b = req.body || {};
+    if (Array.isArray(b.copies)) {
+      const copies = cleanCopies(b.copies);
+      if (!copies.length) return res.status(400).json({ error: 'no_copies' });
+      const report = { t: Date.now(), kind: 'copy', summary: `${copies.length} kopya bulundu, orijinaller arama motorlarına yeniden bildirildi.`, copies, bans: [] };
+      await redis([['LPUSH', 'shield:reports', JSON.stringify(report)], ['LTRIM', 'shield:reports', 0, 199]]);
+      const mailed = await sendShieldAlert(report, redis).catch(() => false);
+      return res.status(200).json({ saved: true, mailed, report });
+    }
     const [raw] = await redis([['LRANGE', 'shield:events', 0, 499]]);
     const known = (raw || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
     const bans = cleanBans(b.bans, known);
