@@ -1,0 +1,846 @@
+{
+ "_nota": "Recopilado con IA a partir del BOE; pendiente de verificación (verificado:false). Excluido: RD 1398/1993 (derogado por la Ley 39/2015).",
+ "leyes": [
+  {
+   "kanun": "Real Decreto Legislativo 1/2007 (Ley General para la Defensa de los Consumidores y Usuarios)",
+   "boe_id": "BOE-A-2007-20555",
+   "madde": "Arts. 8, 21, 102-108, 114-127",
+   "ozet_es": "Derechos básicos del consumidor, garantía y reparación de productos, desistimiento en compras a distancia y atención de reclamaciones.",
+   "sure": "La empresa debe responder a la reclamación en 1 mes (art. 21). Garantía legal de 3 años (art. 120). Desistimiento: 14 días naturales.",
+   "yetkili_kurum": "OMIC / organismos de consumo autonómicos",
+   "kapsam": "estatal",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-20555",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 37/2003, del Ruido",
+   "boe_id": "BOE-A-2003-20976",
+   "madde": "Arts. 18, 28, 29",
+   "ozet_es": "Prevención y reducción de la contaminación acústica; las ordenanzas municipales concretan límites y sanciones.",
+   "sure": "Según la ordenanza municipal.",
+   "yetkili_kurum": "Ayuntamiento / Policía Local",
+   "kapsam": "estatal",
+   "cats": [
+    "noise"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2003-20976",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 7/1985, Reguladora de las Bases del Régimen Local",
+   "boe_id": "BOE-A-1985-5392",
+   "madde": "Arts. 18, 25, 26, 54",
+   "ozet_es": "Competencias municipales en ruido, residuos, vías públicas y salubridad, y responsabilidad del ayuntamiento por daños de sus servicios.",
+   "sure": "Reclamación por daños: 1 año.",
+   "yetkili_kurum": "Ayuntamiento",
+   "kapsam": "estatal",
+   "cats": [
+    "noise",
+    "garbage",
+    "road",
+    "safety",
+    "transit"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1985-5392",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 7/2022, de residuos y suelos contaminados para una economía circular",
+   "boe_id": "BOE-A-2022-5774",
+   "madde": "Arts. 12, 108-115",
+   "ozet_es": "Recogida y gestión de residuos y sanciones por abandono de basuras y contaminación.",
+   "sure": "",
+   "yetkili_kurum": "Ayuntamiento / consejería de medio ambiente",
+   "kapsam": "estatal",
+   "cats": [
+    "garbage",
+    "environment"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-5774",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 42/2007, del Patrimonio Natural y de la Biodiversidad",
+   "boe_id": "BOE-A-2007-21490",
+   "madde": "Arts. 79, 80",
+   "ozet_es": "Protección de espacios y especies e infracciones contra el medio natural.",
+   "sure": "",
+   "yetkili_kurum": "SEPRONA / consejería de medio ambiente",
+   "kapsam": "estatal",
+   "cats": [
+    "environment"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-21490",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 7/2023, de protección de los derechos y el bienestar de los animales",
+   "boe_id": "BOE-A-2023-7936",
+   "madde": "Arts. 24, 25, 73-82",
+   "ozet_es": "Obligaciones de los tenedores de animales, prohibición del maltrato y abandono, e infracciones.",
+   "sure": "",
+   "yetkili_kurum": "Ayuntamiento / Dirección General de Derechos de los Animales",
+   "kapsam": "estatal",
+   "cats": [
+    "animal"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2023-7936",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 39/2015, del Procedimiento Administrativo Común",
+   "boe_id": "BOE-A-2015-10565",
+   "madde": "Arts. 21, 24, 67, 91, 92",
+   "ozet_es": "Obligación de la Administración de resolver en plazo y procedimiento para reclamar daños causados por servicios públicos (p. ej. vías en mal estado).",
+   "sure": "Reclamación por daños: 1 año desde el hecho (art. 67). Si no hay plazo propio, la Administración debe resolver en 3 meses (art. 21).",
+   "yetkili_kurum": "Administración competente",
+   "kapsam": "estatal",
+   "cats": [
+    "road",
+    "safety",
+    "delays",
+    "service",
+    "police"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10565",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 40/2015, de Régimen Jurídico del Sector Público",
+   "boe_id": "BOE-A-2015-10566",
+   "madde": "Arts. 32-35",
+   "ozet_es": "Responsabilidad patrimonial de las Administraciones por el funcionamiento de los servicios públicos.",
+   "sure": "Reclamación: 1 año.",
+   "yetkili_kurum": "Administración competente",
+   "kapsam": "estatal",
+   "cats": [
+    "road",
+    "safety",
+    "police",
+    "delays"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-10566",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 24/2013, del Sector Eléctrico",
+   "boe_id": "BOE-A-2013-13645",
+   "madde": "Arts. 44, 46, 52",
+   "ozet_es": "Derechos de los consumidores de electricidad: calidad, refacturación de errores y garantías frente a cortes.",
+   "sure": "Reclame primero a la comercializadora o distribuidora.",
+   "yetkili_kurum": "Comercializadora / consumo autonómico",
+   "kapsam": "estatal",
+   "cats": [
+    "utility"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2013-13645",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 34/1998, del sector de hidrocarburos",
+   "boe_id": "BOE-A-1998-23284",
+   "madde": "Arts. 57, 81",
+   "ozet_es": "Continuidad del suministro de gas, suspensión por impago y derechos ante la facturación.",
+   "sure": "",
+   "yetkili_kurum": "Comercializadora / industria autonómica",
+   "kapsam": "estatal",
+   "cats": [
+    "utility"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1998-23284",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 11/2022, General de Telecomunicaciones",
+   "boe_id": "BOE-A-2022-10757",
+   "madde": "Arts. 65-72",
+   "ozet_es": "Derechos de los usuarios de telecomunicaciones: facturación, portabilidad, baja, calidad del servicio y llamadas comerciales no deseadas.",
+   "sure": "Reclame primero a la operadora; después, Oficina de Atención al Usuario de Telecomunicaciones.",
+   "yetkili_kurum": "Operadora / Oficina de Atención al Usuario de Telecomunicaciones",
+   "kapsam": "estatal",
+   "cats": [
+    "telecom"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-10757",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley Orgánica 3/2018, de Protección de Datos Personales (LOPDGDD)",
+   "boe_id": "BOE-A-2018-16673",
+   "madde": "Arts. 12-18",
+   "ozet_es": "Derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad.",
+   "sure": "El responsable debe responder en 1 mes, ampliable a 2 (RGPD art. 12.3).",
+   "yetkili_kurum": "AEPD",
+   "kapsam": "estatal",
+   "cats": [
+    "privacy"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673",
+   "verificado": false
+  },
+  {
+   "kanun": "Reglamento (UE) 2016/679 (RGPD)",
+   "boe_id": "DOUE-L-2016-80807",
+   "madde": "Arts. 12, 15-22, 77, 82",
+   "ozet_es": "Protección de datos personales, derecho de supresión y reclamación ante la autoridad de control.",
+   "sure": "1 mes para responder (art. 12.3).",
+   "yetkili_kurum": "AEPD",
+   "kapsam": "Unión Europea",
+   "cats": [
+    "privacy"
+   ],
+   "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2016-80807",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley Orgánica 10/1995, del Código Penal",
+   "boe_id": "BOE-A-1995-25444",
+   "madde": "Arts. 169-172, 172 ter, 197, 197.7, 248, 249, 401, 510",
+   "ozet_es": "Amenazas, coacciones, acoso, revelación de secretos e imágenes íntimas, estafa (incluida la informática, art. 249), usurpación de estado civil y delitos de odio.",
+   "sure": "Plazos de prescripción según la pena.",
+   "yetkili_kurum": "Policía Nacional / Guardia Civil / Juzgados de Instrucción",
+   "kapsam": "estatal",
+   "cats": [
+    "cybercrime",
+    "harassment",
+    "police"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1995-25444",
+   "verificado": false,
+   "nota": "Corregido: la estafa informática está en el art. 249 desde la LO 14/2022."
+  },
+  {
+   "kanun": "Reglamento (CE) 261/2004, derechos de los pasajeros aéreos",
+   "boe_id": "DOUE-L-2004-80387",
+   "madde": "Arts. 4, 5, 7, 9",
+   "ozet_es": "Compensación y asistencia por denegación de embarque, cancelación o gran retraso.",
+   "sure": "",
+   "yetkili_kurum": "Aerolínea / AESA",
+   "kapsam": "Unión Europea",
+   "cats": [
+    "transit"
+   ],
+   "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2004-80387",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 16/1987, de Ordenación de los Transportes Terrestres",
+   "boe_id": "BOE-A-1987-18147",
+   "madde": "Arts. 138-143",
+   "ozet_es": "Derechos de los viajeros de transporte terrestre y responsabilidad por retrasos y equipajes.",
+   "sure": "",
+   "yetkili_kurum": "Empresa de transporte / Junta Arbitral del Transporte",
+   "kapsam": "estatal",
+   "cats": [
+    "transit"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1987-18147",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 9/2025, de Movilidad Sostenible",
+   "boe_id": "BOE-A-2025-24545",
+   "madde": "Arts. 18, 26, 42",
+   "ozet_es": "Marco de movilidad e indemnizaciones por retrasos en el transporte público.",
+   "sure": "",
+   "yetkili_kurum": "Ministerio de Transportes",
+   "kapsam": "estatal",
+   "cats": [
+    "transit"
+   ],
+   "url": "https://www.boe.es/eli/es/l/2025/12/03/9",
+   "verificado": false,
+   "comprobado_web": "BOE núm. 291, 4/12/2025"
+  },
+  {
+   "kanun": "Ley 29/1994, de Arrendamientos Urbanos (LAU)",
+   "boe_id": "BOE-A-1994-26003",
+   "madde": "Arts. 9, 10, 21, 36",
+   "ozet_es": "Duración del alquiler, conservación y reparaciones a cargo del arrendador (art. 21) y fianza.",
+   "sure": "El arrendador debe devolver la fianza en 1 mes desde la entrega de llaves (art. 36.4).",
+   "yetkili_kurum": "Oficina de vivienda autonómica / Juzgados",
+   "kapsam": "estatal",
+   "cats": [
+    "property",
+    "repairs",
+    "rent"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1994-26003",
+   "verificado": false,
+   "nota": "Actualización de rentas modificada por la Ley 12/2023: confirmar el texto vigente."
+  },
+  {
+   "kanun": "Ley 49/1960, sobre Propiedad Horizontal",
+   "boe_id": "BOE-A-1960-10906",
+   "madde": "Arts. 9, 15-21",
+   "ozet_es": "Obligaciones de los propietarios, juntas, acuerdos y gastos comunes.",
+   "sure": "Impugnar acuerdos: 3 meses (1 año si son contrarios a la ley o los estatutos) (art. 18).",
+   "yetkili_kurum": "Presidente/administrador de la comunidad / Juzgados",
+   "kapsam": "estatal",
+   "cats": [
+    "condo"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1960-10906",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 38/1999, de Ordenación de la Edificación",
+   "boe_id": "BOE-A-1999-21568",
+   "madde": "Arts. 17, 19",
+   "ozet_es": "Responsabilidad por defectos de construcción.",
+   "sure": "Garantía: 10 años (estructura), 3 años (habitabilidad), 1 año (acabados).",
+   "yetkili_kurum": "Ayuntamiento / Juzgados",
+   "kapsam": "estatal",
+   "cats": [
+    "construction"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1999-21568",
+   "verificado": false
+  },
+  {
+   "kanun": "Real Decreto Legislativo 2/2015 (Estatuto de los Trabajadores)",
+   "boe_id": "BOE-A-2015-11430",
+   "madde": "Arts. 4, 29, 49-56, 59",
+   "ozet_es": "Derechos laborales, pago puntual del salario, protección frente al acoso e indemnizaciones por despido.",
+   "sure": "Impugnar el despido: 20 días hábiles. Reclamar salarios: 1 año (art. 59).",
+   "yetkili_kurum": "Inspección de Trabajo / SMAC / Juzgados de lo Social",
+   "kapsam": "estatal",
+   "cats": [
+    "wages",
+    "wrongful",
+    "harassment"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-11430",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 36/2011, reguladora de la jurisdicción social",
+   "boe_id": "BOE-A-2011-15936",
+   "madde": "Arts. 63-68, 103-113",
+   "ozet_es": "Conciliación previa obligatoria y plazos de las demandas laborales.",
+   "sure": "Despido: 20 días hábiles de caducidad.",
+   "yetkili_kurum": "SMAC / Juzgados de lo Social",
+   "kapsam": "estatal",
+   "cats": [
+    "wages",
+    "wrongful"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2011-15936",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 31/1995, de Prevención de Riesgos Laborales",
+   "boe_id": "BOE-A-1995-24292",
+   "madde": "Arts. 14-19, 29",
+   "ozet_es": "Deber del empresario de garantizar la seguridad y salud en el trabajo.",
+   "sure": "",
+   "yetkili_kurum": "Inspección de Trabajo",
+   "kapsam": "estatal",
+   "cats": [
+    "safety"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1995-24292",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 50/1980, de Contrato de Seguro",
+   "boe_id": "BOE-A-1980-22584",
+   "madde": "Arts. 18, 20",
+   "ozet_es": "Obligaciones de la aseguradora y plazos de pago de indemnizaciones.",
+   "sure": "La aseguradora debe pagar el importe mínimo en 40 días desde la declaración del siniestro (art. 18).",
+   "yetkili_kurum": "Aseguradora / DGSFP",
+   "kapsam": "estatal",
+   "cats": [
+    "banking"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1980-22584",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 5/2019, reguladora de los contratos de crédito inmobiliario",
+   "boe_id": "BOE-A-2019-3814",
+   "madde": "Arts. 14, 15, 21, 24",
+   "ozet_es": "Reparto de gastos hipotecarios, información previa y vencimiento anticipado.",
+   "sure": "10 días de reflexión antes de firmar la hipoteca (art. 14).",
+   "yetkili_kurum": "Banco de España",
+   "kapsam": "estatal",
+   "cats": [
+    "banking"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3814",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 15/2022, integral para la igualdad de trato y la no discriminación",
+   "boe_id": "BOE-A-2022-11589",
+   "madde": "Arts. 4, 6, 24-28",
+   "ozet_es": "Prohíbe la discriminación por origen racial o étnico, sexo, religión, edad, discapacidad, orientación sexual, lengua y otros motivos.",
+   "sure": "Infracciones: prescriben a 1, 2 o 3 años según su gravedad.",
+   "yetkili_kurum": "Autoridad Independiente para la Igualdad de Trato / Ministerio de Igualdad",
+   "kapsam": "estatal",
+   "cats": [
+    "disc",
+    "race",
+    "religion",
+    "age",
+    "language",
+    "gender",
+    "disability",
+    "sexual"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2022-11589",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley Orgánica 3/2007, para la igualdad efectiva de mujeres y hombres",
+   "boe_id": "BOE-A-2007-6115",
+   "madde": "Arts. 3, 5, 12, 45-48",
+   "ozet_es": "Igualdad por razón de sexo, brecha salarial, planes de igualdad y protocolos frente al acoso sexual.",
+   "sure": "",
+   "yetkili_kurum": "Instituto de las Mujeres / Inspección de Trabajo",
+   "kapsam": "estatal",
+   "cats": [
+    "gender",
+    "harassment"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-6115",
+   "verificado": false
+  },
+  {
+   "kanun": "Real Decreto Legislativo 1/2013 (Ley General de derechos de las personas con discapacidad)",
+   "boe_id": "BOE-A-2013-12632",
+   "madde": "Arts. 4, 22-29, 63-81",
+   "ozet_es": "Accesibilidad universal y prohibición de la discriminación por discapacidad.",
+   "sure": "",
+   "yetkili_kurum": "Oficina de Atención a la Discapacidad / Ministerio de Derechos Sociales",
+   "kapsam": "estatal",
+   "cats": [
+    "disability"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2013-12632",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 4/2023, para la igualdad real y efectiva de las personas trans y de los derechos LGTBI",
+   "boe_id": "BOE-A-2023-5364",
+   "madde": "Arts. 3, 4, 62, 76-82",
+   "ozet_es": "Protección frente a la discriminación por orientación sexual, identidad o expresión de género.",
+   "sure": "",
+   "yetkili_kurum": "Ministerio de Igualdad",
+   "kapsam": "estatal",
+   "cats": [
+    "sexual"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2023-5364",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley Orgánica 4/2000, sobre derechos y libertades de los extranjeros",
+   "boe_id": "BOE-A-2000-544",
+   "madde": "Arts. 3, 4, 31, 38",
+   "ozet_es": "Derechos de los extranjeros y procedimientos de residencia y trabajo.",
+   "sure": "Plazo general para resolver: 3 meses; el silencio suele ser negativo.",
+   "yetkili_kurum": "Oficina de Extranjería",
+   "kapsam": "estatal",
+   "cats": [
+    "immigration"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2000-544",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 41/2002, básica reguladora de la autonomía del paciente",
+   "boe_id": "BOE-A-2002-22188",
+   "madde": "Arts. 2, 4, 8, 10, 14-18",
+   "ozet_es": "Derecho a la información, consentimiento informado, intimidad y acceso a la historia clínica.",
+   "sure": "",
+   "yetkili_kurum": "Servicio de Atención al Paciente / servicio de salud autonómico",
+   "kapsam": "estatal",
+   "cats": [
+    "malpractice",
+    "delays"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2002-22188",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 19/2021, del Ingreso Mínimo Vital",
+   "boe_id": "BOE-A-2021-21007",
+   "madde": "Arts. 8, 25-30",
+   "ozet_es": "Derecho al Ingreso Mínimo Vital.",
+   "sure": "Resolución en 6 meses; si no, se entiende denegada.",
+   "yetkili_kurum": "INSS",
+   "kapsam": "estatal",
+   "cats": [
+    "benefits"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2021-21007",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 19/2013, de transparencia, acceso a la información pública y buen gobierno",
+   "boe_id": "BOE-A-2013-12887",
+   "madde": "Arts. 12, 17, 20, 24",
+   "ozet_es": "Derecho de acceso a la información pública sin necesidad de motivar la solicitud.",
+   "sure": "1 mes para resolver, ampliable otro (art. 20). Reclamación ante el CTBG: 1 mes (art. 24).",
+   "yetkili_kurum": "Consejo de Transparencia y Buen Gobierno",
+   "kapsam": "estatal",
+   "cats": [
+    "foi",
+    "delays"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 1/1996, de asistencia jurídica gratuita",
+   "boe_id": "BOE-A-1996-750",
+   "madde": "Arts. 2, 3, 6, 12-20",
+   "ozet_es": "Abogado y procurador gratuitos para quien acredite insuficiencia de recursos.",
+   "sure": "",
+   "yetkili_kurum": "Colegios de Abogados (SOJ) / Comisión de Asistencia Jurídica Gratuita",
+   "kapsam": "estatal",
+   "cats": [
+    "legalaid"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1996-750",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley Orgánica 8/2021, de protección integral a la infancia y la adolescencia frente a la violencia (LOPIVI)",
+   "boe_id": "BOE-A-2021-9347",
+   "madde": "Arts. 30-36",
+   "ozet_es": "Protocolos obligatorios ante acoso escolar y ciberacoso en los centros educativos.",
+   "sure": "",
+   "yetkili_kurum": "Inspección Educativa",
+   "kapsam": "estatal",
+   "cats": [
+    "education"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2021-9347",
+   "verificado": false
+  },
+  {
+   "kanun": "Reglamento (UE) 2022/2065, de Servicios Digitales (DSA)",
+   "boe_id": "DOUE-L-2022-81498",
+   "madde": "Arts. 16, 20, 21",
+   "ozet_es": "Notificación de contenidos ilícitos y reclamaciones frente a plataformas en línea.",
+   "sure": "",
+   "yetkili_kurum": "Plataforma / CNMC",
+   "kapsam": "Unión Europea",
+   "cats": [
+    "cybercrime",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2022-81498",
+   "verificado": false
+  },
+  {
+   "kanun": "Reglamento (UE) 2022/612, de itinerancia (roaming)",
+   "boe_id": "DOUE-L-2022-80517",
+   "madde": "Arts. 3, 7, 9",
+   "ozet_es": "Roaming en la UE a precio nacional y límites frente a cargos inesperados.",
+   "sure": "",
+   "yetkili_kurum": "Operadora / Oficina de Atención al Usuario de Telecomunicaciones",
+   "kapsam": "Unión Europea",
+   "cats": [
+    "telecom"
+   ],
+   "url": "https://www.boe.es/buscar/doc.php?id=DOUE-L-2022-80517",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 11/1998, de Protección de los Consumidores de la Comunidad de Madrid",
+   "boe_id": "BOE-A-1998-21213",
+   "madde": "Arts. 10, 15, 50-55",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Comercio y Consumo",
+   "kapsam": "madrid",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1998-21213",
+   "verificado": false
+  },
+  {
+   "kanun": "Llei 22/2010, del Codi de consum de Catalunya",
+   "boe_id": "BOE-A-2010-13312",
+   "madde": "Arts. 121-1, 211-1, 331-1",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "La empresa debe responder a la hoja de reclamación en 1 mes.",
+   "yetkili_kurum": "Agència Catalana del Consum",
+   "kapsam": "cataluna",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2010-13312",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 13/2003, de Defensa y Protección de los Consumidores y Usuarios de Andalucía",
+   "boe_id": "BOE-A-2004-1002",
+   "madde": "Arts. 8-12, 71-80",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "Respuesta a la hoja de reclamaciones: 10 días hábiles.",
+   "yetkili_kurum": "Dirección General de Consumo de Andalucía",
+   "kapsam": "andalucia",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2004-1002",
+   "verificado": false
+  },
+  {
+   "kanun": "Decreto Legislativo 1/2019, Estatuto de los Consumidores de la Comunitat Valenciana",
+   "boe_id": "BOE-A-2020-1430",
+   "madde": "Arts. 14, 22, 60-70",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "Respuesta a la hoja de reclamaciones: 1 mes.",
+   "yetkili_kurum": "Servicio Territorial de Consumo",
+   "kapsam": "valencia",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2020-1430",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 2/2012, de protección general de las personas consumidoras de Galicia",
+   "boe_id": "BOE-A-2012-5369",
+   "madde": "Arts. 12, 28, 45-50",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "Respuesta a la reclamación: 1 mes.",
+   "yetkili_kurum": "Instituto Galego do Consumo e da Competencia",
+   "kapsam": "galicia",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2012-5369",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 2/2015, Estatuto del Consumidor de Castilla y León",
+   "boe_id": "BOE-A-2015-3211",
+   "madde": "Arts. 10, 18, 62-70",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Comercio y Consumo",
+   "kapsam": "castilla_leon",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2015-3211",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 3/2003, Estatuto de los Consumidores y Usuarios de Canarias",
+   "boe_id": "BOE-A-2003-5188",
+   "madde": "Arts. 8-15, 40-52",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "Respuesta: 1 mes.",
+   "yetkili_kurum": "Dirección General de Consumo de Canarias",
+   "kapsam": "canarias",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2003-5188",
+   "verificado": false
+  },
+  {
+   "kanun": "Llei 18/2007, del dret a l'habitatge (Cataluña)",
+   "boe_id": "BOE-A-2008-1896",
+   "madde": "Arts. 45-55, 112-120",
+   "ozet_es": "Calidad de la vivienda, depósito de fianzas en el INCASÒL y acoso inmobiliario.",
+   "sure": "",
+   "yetkili_kurum": "INCASÒL / Agència de l'Habitatge de Catalunya",
+   "kapsam": "cataluna",
+   "cats": [
+    "property",
+    "repairs"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2008-1896",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 12/2001, de Ordenación Sanitaria de la Comunidad de Madrid",
+   "boe_id": "BOE-A-2002-3694",
+   "madde": "Arts. 27-31",
+   "ozet_es": "Libre elección de médico y tiempos máximos de espera.",
+   "sure": "",
+   "yetkili_kurum": "SERMAS / Consejería de Sanidad",
+   "kapsam": "madrid",
+   "cats": [
+    "delays",
+    "malpractice"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2002-3694",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 16/2006, de Protección y Defensa de los Consumidores y Usuarios de Aragón",
+   "boe_id": "BOE-A-2007-3601",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Protección de Consumidores y Usuarios — Aragón",
+   "kapsam": "aragon",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2007-3601",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 11/2002, de los Consumidores y Usuarios del Principado de Asturias",
+   "boe_id": "BOE-A-2003-912",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Consumo — Principado de Asturias",
+   "kapsam": "asturias",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2003-912",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 7/2014, de protección de las personas consumidoras y usuarias de las Illes Balears",
+   "boe_id": "BOE-A-2014-8820",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Direcció General de Consum — Illes Balears",
+   "kapsam": "baleares",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2014-8820",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 1/2006, de Defensa de los Consumidores y Usuarios de Cantabria",
+   "boe_id": "BOE-A-2006-5810",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Comercio y Consumo — Cantabria",
+   "kapsam": "cantabria",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2006-5810",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 3/2019, del Estatuto de las Personas Consumidoras en Castilla-La Mancha",
+   "boe_id": "BOE-A-2019-6772",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Turismo, Comercio y Consumo — Castilla-La Mancha",
+   "kapsam": "castilla_la_mancha",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-6772",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 6/2019, del Estatuto de las personas consumidoras de Extremadura",
+   "boe_id": "BOE-A-2019-3492",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Salud Pública y Consumo — Extremadura",
+   "kapsam": "extremadura",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2019-3492",
+   "verificado": false
+  },
+  {
+   "kanun": "Ley 4/1996, del Estatuto de los Consumidores y Usuarios de la Región de Murcia",
+   "boe_id": "BOE-A-1996-21850",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores y hojas de reclamaciones.",
+   "sure": "",
+   "yetkili_kurum": "Dirección General de Consumo — Región de Murcia",
+   "kapsam": "murcia",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/eli/es-mc/l/1996/06/14/4",
+   "verificado": false,
+   "comprobado_web": "BOE núm. 238, 2/10/1996"
+  },
+  {
+   "kanun": "Ley 4/2023, Estatuto de las personas consumidoras y usuarias de Euskadi",
+   "boe_id": "BOE-A-2023-13537",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Kontsumobide",
+   "kapsam": "pais_vasco",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/eli/es-pv/l/2023/04/27/4/con",
+   "verificado": false,
+   "comprobado_web": "Sustituye a la Ley 6/2003 (derogada 11/05/2023); 'Ley 6/2022' no existe"
+  },
+  {
+   "kanun": "Ley Foral 34/2022, Estatuto de las personas consumidoras y usuarias en Navarra",
+   "boe_id": "BOE-A-2023-470",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Servicio de Consumo y Arbitraje de Navarra",
+   "kapsam": "navarra",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "https://www.boe.es/",
+   "verificado": false,
+   "comprobado_web": "En vigor desde 23/12/2022; deroga la Ley Foral 7/2006"
+  },
+  {
+   "kanun": "Ley 5/2013, para la defensa de los consumidores en la Comunidad Autónoma de La Rioja",
+   "boe_id": "",
+   "madde": "",
+   "ozet_es": "Protección autonómica de los consumidores.",
+   "sure": "",
+   "yetkili_kurum": "Consumo — Gobierno de La Rioja",
+   "kapsam": "la_rioja",
+   "cats": [
+    "billing",
+    "service"
+   ],
+   "url": "",
+   "verificado": false,
+   "comprobado_web": "BOR 19/04/2013"
+  }
+ ]
+}

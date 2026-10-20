@@ -1,0 +1,173 @@
+{
+ "_nota": "Organismos recopilados con IA (Gemini); pendientes de verificación.",
+ "consumo_autonomico": {
+  "andalucia": [
+   "Dirección General de Consumo — Junta de Andalucía",
+   "https://www.juntadeandalucia.es/temas/vivienda-consumo/consumo.html",
+   "955 006 300"
+  ],
+  "aragon": [
+   "Dirección General de Protección de Consumidores y Usuarios — Aragón",
+   "https://www.aragon.es/-/consumo",
+   "976 715 610"
+  ],
+  "asturias": [
+   "Consumo — Principado de Asturias",
+   "https://www.asturias.es/asturias/c-consumo/",
+   "985 108 306"
+  ],
+  "baleares": [
+   "Direcció General de Consum — Illes Balears",
+   "https://www.caib.es/sidiaca/es/",
+   "971 177 979"
+  ],
+  "canarias": [
+   "Dirección General de Comercio y Consumo — Canarias",
+   "https://www.gobiernodecanarias.org/comercioyconsumo/",
+   "928 306 000"
+  ],
+  "cantabria": [
+   "Dirección General de Comercio y Consumo — Cantabria",
+   "https://www.cantabria.es/",
+   "942 207 700"
+  ],
+  "castilla_leon": [
+   "Dirección General de Comercio y Consumo — Castilla y León",
+   "https://www.jcyl.es/",
+   "983 411 100"
+  ],
+  "castilla_la_mancha": [
+   "Dirección General de Turismo, Comercio y Consumo — Castilla-La Mancha",
+   "https://www.castillalamancha.es/",
+   "925 266 500"
+  ],
+  "cataluna": [
+   "Agència Catalana del Consum",
+   "https://consum.gencat.cat/",
+   "938 574 000"
+  ],
+  "extremadura": [
+   "Dirección General de Salud Pública y Consumo — Extremadura",
+   "https://saludextremadura.ses.es/",
+   "924 005 000"
+  ],
+  "galicia": [
+   "Instituto Galego do Consumo e da Competencia",
+   "https://consumo.xunta.gal/",
+   "981 545 600"
+  ],
+  "la_rioja": [
+   "Consumo — Gobierno de La Rioja",
+   "https://www.larioja.org/",
+   "941 291 100"
+  ],
+  "madrid": [
+   "Dirección General de Comercio y Consumo — Comunidad de Madrid",
+   "https://www.comunidad.madrid/servicios/consumo",
+   "913 105 903"
+  ],
+  "murcia": [
+   "Dirección General de Consumo — Región de Murcia",
+   "https://www.carm.es/web/pagina?IDCONTENIDO=52&IDTIPO=100",
+   "968 362 000"
+  ],
+  "navarra": [
+   "Servicio de Consumo y Arbitraje — Navarra",
+   "https://www.navarra.es/",
+   "848 427 000"
+  ],
+  "pais_vasco": [
+   "Kontsumobide — Instituto Vasco de Consumo",
+   "https://www.kontsumobide.euskadi.eus/",
+   "900 840 120"
+  ],
+  "valencia": [
+   "Dirección General de Comercio, Artesanía y Consumo — Generalitat Valenciana",
+   "https://www.gva.es/",
+   "012"
+  ]
+ },
+ "ayuntamientos": {
+  "madrid": [
+   "Ayuntamiento de Madrid — OMIC y Línea Madrid",
+   "https://www.madrid.es/portales/munimadrid/es/Inicio/Ayuntamiento/Consumo/Oficina-Municipal-de-Informacion-al-Consumidor-OMIC-/"
+  ],
+  "barcelona": [
+   "Ajuntament de Barcelona — OMIC",
+   "https://ajuntament.barcelona.cat/omic/es/"
+  ],
+  "valencia": [
+   "Ayuntamiento de Valencia — OMIC",
+   "https://www.valencia.es/val/infoconsum"
+  ],
+  "sevilla": [
+   "Ayuntamiento de Sevilla — Servicio de Consumo",
+   "https://www.sevilla.org/servicios/consumo"
+  ],
+  "zaragoza": [
+   "Ayuntamiento de Zaragoza — OMIC",
+   "https://www.zaragoza.es/sede/servicio/tramites/3120"
+  ],
+  "malaga": [
+   "Ayuntamiento de Málaga — OMIC",
+   "https://www.malaga.eu/el-ayuntamiento/ventanilla-unica/omic/"
+  ],
+  "murcia": [
+   "Ayuntamiento de Murcia — OMIC",
+   "https://www.murcia.es/web/portal/omic"
+  ],
+  "palma": [
+   "Ajuntament de Palma — OMIC",
+   "https://www.palma.es/"
+  ],
+  "las palmas": [
+   "Ayuntamiento de Las Palmas de Gran Canaria — OMIC",
+   "https://www.laspalmasgc.es/"
+  ],
+  "bilbao": [
+   "Ayuntamiento de Bilbao — OMIC",
+   "https://www.bilbao.eus/"
+  ],
+  "alicante": [
+   "Ayuntamiento de Alicante — OMIC",
+   "https://www.alicante.es/"
+  ],
+  "cordoba": [
+   "Ayuntamiento de Córdoba — OMIC",
+   "https://www.cordoba.es/"
+  ],
+  "valladolid": [
+   "Ayuntamiento de Valladolid — OMIC",
+   "https://www.ava.es/"
+  ],
+  "vigo": [
+   "Concello de Vigo — OMIC",
+   "https://www.vigo.org/"
+  ],
+  "gijon": [
+   "Ayuntamiento de Gijón — OMIC",
+   "https://www.gijon.es/"
+  ]
+ },
+ "parlamentos_url": {
+  "madrid": "https://www.asambleamadrid.es/",
+  "cataluna": "https://www.parlament.cat/",
+  "andalucia": "https://www.parlamentodeandalucia.es/",
+  "valencia": "https://www.cortsvalencianes.es/",
+  "pais_vasco": "https://www.legebiltzarra.eus/",
+  "castilla_leon": "https://www.ccyl.es/",
+  "galicia": "https://www.parlamentodegalicia.gal/",
+  "canarias": "https://www.parlamentodecanarias.es/",
+  "castilla_la_mancha": "https://www.cortesclm.es/",
+  "cantabria": "https://www.parlamento-cantabria.es/",
+  "extremadura": "https://www.asambleaex.es/",
+  "baleares": "https://www.parlamentib.es/",
+  "murcia": "https://www.asambleamurcia.es/",
+  "la_rioja": "https://www.parlamento-larioja.org/",
+  "navarra": "https://www.parlamentodenavarra.es/",
+  "aragon": "https://www.cortesaragon.es/",
+  "ceuta": "https://www.ceuta.es/",
+  "melilla": "https://www.melilla.es/",
+  "asturias": "https://www.jgpa.es/"
+ }
+}

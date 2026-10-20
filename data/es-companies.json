@@ -1,0 +1,335 @@
+{
+ "_nota": "Canales de reclamación de empresas (búsqueda web oct. 2026). fuente=oficial: página de la propia empresa; terceros: guías/comparadores, confirmar.",
+ "empresas": [
+  {
+   "ad": "Movistar",
+   "sector": "telecom",
+   "alias": [
+    "movistar",
+    "telefonica"
+   ],
+   "telefono": "1004",
+   "url": "",
+   "canal": "Formulario en movistar.es o 1004",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Vodafone",
+   "sector": "telecom",
+   "alias": [
+    "vodafone"
+   ],
+   "telefono": "22123 (desde otro operador 607 123 000)",
+   "url": "https://www.vodafone.es/c/conocenos/es/vodafone-espana/quienes-somos/legal-y-regulatorio/otra-informacion-legal/reclamaciones/",
+   "canal": "Formulario web oficial de reclamaciones",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "Orange",
+   "sector": "telecom",
+   "alias": [
+    "orange"
+   ],
+   "telefono": "1470",
+   "url": "",
+   "canal": "Área de clientes Mi Orange, tienda o 1470",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Digi",
+   "sector": "telecom",
+   "alias": [
+    "digi"
+   ],
+   "telefono": "1200",
+   "url": "",
+   "canal": "atencionalcliente@digimobil.es",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "MásMóvil",
+   "sector": "telecom",
+   "alias": [
+    "masmovil",
+    "mas movil"
+   ],
+   "telefono": "2373",
+   "url": "",
+   "canal": "hola@masmovil.com",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Iberdrola",
+   "sector": "utility",
+   "alias": [
+    "iberdrola"
+   ],
+   "telefono": "900 225 235",
+   "url": "",
+   "canal": "Formulario en iberdrola.es/atencion-cliente",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Endesa",
+   "sector": "utility",
+   "alias": [
+    "endesa"
+   ],
+   "telefono": "800 760 909",
+   "url": "",
+   "canal": "Atención al cliente > Formulario de contacto en endesa.com",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Naturgy",
+   "sector": "utility",
+   "alias": [
+    "naturgy",
+    "gas natural"
+   ],
+   "telefono": "900 100 251",
+   "url": "",
+   "canal": "atencioncliente@naturgy.com",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Repsol Luz y Gas",
+   "sector": "utility",
+   "alias": [
+    "repsol"
+   ],
+   "telefono": "900 118 866",
+   "url": "https://www.repsol.es/particulares/faqs/luz-y-gas/como-presentar-una-reclamacion-de-luz-y-gas/",
+   "canal": "Formulario web o teléfono; tarifa regulada (Régsiti): 900 101 005",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "TotalEnergies",
+   "sector": "utility",
+   "alias": [
+    "totalenergies",
+    "total energies"
+   ],
+   "telefono": "900 907 002",
+   "url": "",
+   "canal": "Línea de reclamaciones",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Banco Santander",
+   "sector": "banking",
+   "alias": [
+    "santander"
+   ],
+   "telefono": "",
+   "url": "https://www.bancosantander.es/particulares/atencion-cliente/",
+   "canal": "santander_reclamaciones@gruposantander.es · Apartado de Correos 35.250, 28080 Madrid",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "BBVA",
+   "sector": "banking",
+   "alias": [
+    "bbva"
+   ],
+   "telefono": "900 10 28 01",
+   "url": "",
+   "canal": "bbva.es > Atención al Cliente > Tengo una reclamación · Apartado de Correos 1598, 28080 Madrid",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "CaixaBank",
+   "sector": "banking",
+   "alias": [
+    "caixabank",
+    "la caixa"
+   ],
+   "telefono": "",
+   "url": "https://www.caixabank.es/particular/general/reclamaciones_es.html",
+   "canal": "Servicio de Atención al Cliente: cualquier oficina o la web de reclamaciones",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "Banco Sabadell",
+   "sector": "banking",
+   "alias": [
+    "sabadell"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "bancosabadell.com/FormularioSAC · C/ Sena 12, 08174 Sant Cugat del Vallès",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Bankinter",
+   "sector": "banking",
+   "alias": [
+    "bankinter"
+   ],
+   "telefono": "900 80 20 81",
+   "url": "https://www.bankinter.com/banca/nav/atencion-cliente/elevar-reclamacion",
+   "canal": "Servicio de Atención al Cliente (Tres Cantos, Madrid)",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "Unicaja",
+   "sector": "banking",
+   "alias": [
+    "unicaja"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "atencion.al.cliente@unicaja.es · Av. de Andalucía 10-12, Málaga",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Mapfre",
+   "sector": "banking",
+   "alias": [
+    "mapfre"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "reclamaciones@mapfre.com o formulario en mapfre.es",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Mutua Madrileña",
+   "sector": "banking",
+   "alias": [
+    "mutua madrilena",
+    "mutua"
+   ],
+   "telefono": "915 922 666",
+   "url": "",
+   "canal": "reclamaciones@mutua.es · Defensor: defensor@mutua.es",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Allianz",
+   "sector": "banking",
+   "alias": [
+    "allianz"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "reclamaciones@allianz.es · C/ Ramírez de Arellano 35, 28043 Madrid",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "AXA",
+   "sector": "banking",
+   "alias": [
+    "axa"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "centro.reclamaciones@axa.es",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Iberia",
+   "sector": "transit",
+   "alias": [
+    "iberia"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "Formulario del Centro de Atención al Cliente en iberia.com (no atiende reclamaciones por e-mail)",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Air Europa",
+   "sector": "transit",
+   "alias": [
+    "air europa"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "Formulario web de reclamaciones (no atiende e-mails desde abril de 2025)",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Renfe",
+   "sector": "transit",
+   "alias": [
+    "renfe"
+   ],
+   "telefono": "900 878 333",
+   "url": "",
+   "canal": "Formulario en renfe.com, libros de reclamaciones en estaciones; plazo: 3 meses desde el viaje",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Amazon",
+   "sector": "billing",
+   "alias": [
+    "amazon"
+   ],
+   "telefono": "",
+   "url": "",
+   "canal": "Atención al cliente en la cuenta (chat o «llámame»); sin teléfono gratuito activo",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "El Corte Inglés",
+   "sector": "billing",
+   "alias": [
+    "corte ingles"
+   ],
+   "telefono": "900 363 900",
+   "url": "https://www.elcorteingles.es/supermercado/ayuda/es/devolucion-y-reembolso/reclamacion/",
+   "canal": "clientes@elcorteingles.es · hojas de reclamaciones en los centros",
+   "fuente": "oficial",
+   "verificado": true
+  },
+  {
+   "ad": "Correos",
+   "sector": "service",
+   "alias": [
+    "correos"
+   ],
+   "telefono": "900 400 004",
+   "url": "",
+   "canal": "Formulario «Tu consulta, tu reclamación» en correos.es",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "SEUR",
+   "sector": "service",
+   "alias": [
+    "seur"
+   ],
+   "telefono": "800 00 95 84",
+   "url": "",
+   "canal": "Formulario en seur.com",
+   "fuente": "terceros",
+   "verificado": false
+  }
+ ]
+}
