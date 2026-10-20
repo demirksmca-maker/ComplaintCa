@@ -1320,6 +1320,23 @@
    "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Castellón.",
    "etiket": "JUSTICIA GRATUITA",
    "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Cuenca",
+   "bolge": "castilla_la_mancha",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 969 225 116",
+   "web_sitesi": "https://www.icacuenca.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Cuenca.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
   }
  ]
 }

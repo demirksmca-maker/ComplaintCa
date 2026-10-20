@@ -151,6 +151,23 @@
  },
  "parlamentos_url": {
   "madrid": "https://www.asambleamadrid.es/",
-  "cataluna": "https://www.parlament.cat/"
+  "cataluna": "https://www.parlament.cat/",
+  "andalucia": "https://www.parlamentodeandalucia.es/",
+  "valencia": "https://www.cortsvalencianes.es/",
+  "pais_vasco": "https://www.legebiltzarra.eus/",
+  "castilla_leon": "https://www.ccyl.es/",
+  "galicia": "https://www.parlamentodegalicia.gal/",
+  "canarias": "https://www.parlamentodecanarias.es/",
+  "castilla_la_mancha": "https://www.cortesclm.es/",
+  "cantabria": "https://www.parlamento-cantabria.es/",
+  "extremadura": "https://www.asambleaex.es/",
+  "baleares": "https://www.parlamentib.es/",
+  "murcia": "https://www.asambleamurcia.es/",
+  "la_rioja": "https://www.parlamento-larioja.org/",
+  "navarra": "https://www.parlamentodenavarra.es/",
+  "aragon": "https://www.cortesaragon.es/",
+  "ceuta": "https://www.ceuta.es/",
+  "melilla": "https://www.melilla.es/",
+  "asturias": "https://www.jgpa.es/"
  }
 }
