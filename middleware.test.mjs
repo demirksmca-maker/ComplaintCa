@@ -127,3 +127,24 @@ test('visitSource reads referer and in-app browsers', async () => {
   assert.equal(visitSource('https://example.com/'), null);
   assert.equal(visitSource(null), null);
 });
+
+test('analytics helpers: device, hour, funnel step', async () => {
+  const { deviceOf, visitHour, funnelStep } = await import('./middleware.js');
+  assert.equal(deviceOf('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) Mobile/15E148'), 'mobile');
+  assert.equal(deviceOf('Mozilla/5.0 (iPad; CPU OS 17_0)'), 'tablet');
+  assert.equal(deviceOf('Mozilla/5.0 (Linux; Android 14; SM-X710)'), 'tablet');
+  assert.equal(deviceOf('Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130'), 'desktop');
+  assert.equal(visitHour(new Date('2026-10-20T16:30:00Z')), 12);
+  const post = p => [new Request('https://complaintca.ca' + p, { method: 'POST' }), u(p)];
+  assert.equal(funnelStep(...post('/api/route')), 'route');
+  assert.equal(funnelStep(...post('/api/email-code')), 'email');
+  assert.equal(funnelStep(...post('/api/complaint')), 'submit');
+  assert.equal(funnelStep(...post('/api/complaint?my=1')), null);
+  assert.equal(funnelStep(new Request('https://complaintca.ca/api/route'), u('/api/route')), null);
+});
+
+test('beacon is answered at the edge', async () => {
+  delete process.env.KV_REST_API_URL;
+  const res = await middleware(new Request('https://complaintca.ca/api/beacon?e=open', { method: 'POST', headers: { 'user-agent': 'Mozilla/5.0' } }));
+  assert.equal(res.status, 204);
+});
