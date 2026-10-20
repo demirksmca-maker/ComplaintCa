@@ -69,3 +69,12 @@ test('periodStats adds up days and folds hours into weekdays', async () => {
   assert.equal(r.hours[0][9], 8); // two Mondays in 14 days
   assert.equal(r.funnel.open, 2);
 });
+
+test('fillFromGsc fills empty days and pages from Search Console, keeps own counts', async () => {
+  const { fillFromGsc } = await import('./_shield-view.js');
+  const r = { visits: [{ day: '2026-10-20', ca: { views: 3, visitors: 2 }, es: { views: 0, visitors: 0 } }, { day: '2026-10-19', ca: { views: 0, visitors: 0 }, es: { views: 0, visitors: 0 } }], pages: [['/', 2]] };
+  fillFromGsc(r, { ok: true, daily: [{ day: '2026-10-19', clicks: 18 }, { day: '2026-10-20', clicks: 9 }], totals: { clicks: 193 }, pages: [{ key: '/blog/a.html', clicks: 15 }] });
+  assert.equal(r.visits[0].ca.visitors, 2);
+  assert.equal(r.visits[1].ca.visitors, 18);
+  assert.deepEqual(r.pages, [['/blog/a.html', 15]]);
+});

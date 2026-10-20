@@ -25,6 +25,22 @@ export function lastDays(now = new Date(), n = DAYS) {
 }
 
 const PERIODS = [7, 14, 28, 90];
+
+// The visitor counter only started on 2026-10-20, so earlier days are empty.
+// Fill those days (and the top pages) from Search Console clicks so Trafik
+// matches Google's numbers; days with our own count are left alone.
+export function fillFromGsc(result, g) {
+  if (!g || !g.ok) return result;
+  const clicks = new Map((g.daily || []).map(r => [r.day, r.clicks]));
+  for (const v of result.visits) {
+    if (v.ca.views || v.ca.visitors) continue;
+    const c = clicks.get(v.day);
+    if (c) { v.ca.views = v.ca.visitors = c; v.gsc = true; }
+  }
+  const own = result.pages.reduce((n, p) => n + p[1], 0);
+  if (g.totals && g.totals.clicks > own && (g.pages || []).length) result.pages = g.pages.map(p => [p.key, p.clicks]);
+  return result;
+}
 const top = (obj, n) => Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
 
 // Trafik / Huni numbers for the last N days: visits per day, top pages,
@@ -65,6 +81,9 @@ export async function periodStats(pipeline, n, now = new Date()) {
   const funnel = {};
   for (const step of FUNNEL) funnel[step] = Number(out[i++]) || 0;
   const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel };
+  if (PERIODS.includes(n)) {
+    try { fillFromGsc(result, await searchConsole(pipeline, { days: n })); } catch { /* keep our own numbers */ }
+  }
   if (n > 7) await pipeline([['SET', cacheKey, JSON.stringify(result), 'EX', 900]]);
   return result;
 }
