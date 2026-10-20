@@ -42,3 +42,16 @@ test('middleware returns 403 for attacks, passes clean requests', async () => {
   assert.equal(res.headers.get('x-shield'), 'probe');
   assert.equal(await middleware(new Request('https://complaintca.ca/')), undefined);
 });
+
+test('only real page views are counted', async () => {
+  const { isPageView } = await import('./middleware.js');
+  const req = (p, m = 'GET') => [new Request('https://complaintca.ca' + p, { method: m }), u(p)];
+  const chrome = 'Mozilla/5.0 Chrome/130';
+  assert.equal(isPageView(...req('/'), chrome), true);
+  assert.equal(isPageView(...req('/es/'), chrome), true);
+  assert.equal(isPageView(...req('/blog/x.html'), chrome), true);
+  assert.equal(isPageView(...req('/sw.js'), chrome), false);
+  assert.equal(isPageView(...req('/shield.html'), chrome), false);
+  assert.equal(isPageView(...req('/'), 'Googlebot/2.1'), false);
+  assert.equal(isPageView(...req('/'), ''), false);
+});

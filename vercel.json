@@ -42,6 +42,10 @@
       "destination": "/api/route?precedents=1"
     },
     {
+      "source": "/api/shield",
+      "destination": "/api/route?shield=1"
+    },
+    {
       "source": "/api/blog-rating",
       "destination": "/api/route?blograting=1"
     },
@@ -78,6 +82,15 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/shield.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
         }
       ]
     },

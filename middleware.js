@@ -97,6 +97,26 @@ function blocked(agent) {
   });
 }
 
+// Visitor counter for the shield page (/shield.html): page views and unique
+// IPs (HyperLogLog, so no IP list is stored) per site per Toronto day.
+const BOT_RE = /bot|crawl|spider|slurp|preview|monitor|curl|wget|python|headless|lighthouse/i;
+
+export function isPageView(request, url, ua) {
+  return request.method === 'GET' && !!ua && !BOT_RE.test(ua) &&
+    !/\.(?!html$)[a-z0-9]+$/i.test(url.pathname) && url.pathname !== '/shield.html';
+}
+
+export function visitDay(now = new Date()) {
+  return now.toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
+}
+
+function countVisit(url, ip) {
+  const site = url.pathname === '/es' || url.pathname.startsWith('/es/') ? 'es' : 'ca';
+  const day = visitDay();
+  const views = `shield:views:${site}:${day}`, uniq = `shield:uv:${site}:${day}`;
+  return [['INCR', views], ['EXPIRE', views, 90 * 86400], ['PFADD', uniq, ip], ['EXPIRE', uniq, 90 * 86400]];
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   const ua = request.headers.get('user-agent') || '';
@@ -118,6 +138,7 @@ export default async function middleware(request) {
 
   const cmds = [['GET', `shield:ban:${ip}`]];
   if (isApi) cmds.push(['INCR', floodKey], ['EXPIRE', floodKey, 120]);
+  else if (isPageView(request, url, ua)) cmds.push(...countVisit(url, ip));
   const r = await redis(cmds);
   if (!r) return;
   if (r[0] && r[0].result) return blocked('ban');

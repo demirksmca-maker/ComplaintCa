@@ -89,6 +89,8 @@ async function main() {
   const bans = verdict.bans.filter(b => IP_RE.test(b.ip) && events.some(e => e.ip === b.ip));
   const cmds = bans.map(b => ['SET', `shield:ban:${b.ip}`, 'ai', 'EX', Math.min(Math.max(b.hours, 1), MAX_BAN_HOURS) * 3600]);
   cmds.push(['SET', 'shield:agent:last', String(Math.max(...events.map(e => e.t)))]);
+  // Shown as a notification on /shield.html.
+  cmds.push(['LPUSH', 'shield:reports', JSON.stringify({ t: Date.now(), events: events.length, summary: verdict.summary, bans })], ['LTRIM', 'shield:reports', 0, 199]);
   if (!DRY_RUN) await redis(cmds);
 
   report(`### Shield agent${DRY_RUN ? ' (dry run)' : ''}\n${verdict.summary}`);

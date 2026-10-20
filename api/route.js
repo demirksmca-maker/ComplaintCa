@@ -3,12 +3,14 @@
 import { isRateLimited } from './_rateLimit.js';
 import { precedentsFor } from './_precedents.js';
 import { blogRating } from './_blog-rating.js';
+import { shieldView } from './_shield-view.js';
 import { getAuthorities, getChain, publicAuthority, isValidCategory, withSchool } from './_complaint-core.js';
 
 const str = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
 
 export default async function handler(req, res) {
   if (req.query && req.query.blograting) return blogRating(req, res);
+  if (req.query && req.query.shield) return shieldView(req, res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
   try {
