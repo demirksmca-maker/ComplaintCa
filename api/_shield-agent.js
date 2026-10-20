@@ -7,9 +7,11 @@
 //   POST { bans, lockdownHours, summary, events, last, dryRun } → stores
 //        bans, optional lockdown and the report, mails the owner
 //   POST { quiet, last } → routine batch, only moves the cursor
+//   POST { weekly, keyExpires } → Monday summary e-mail (.github/workflows/shield-weekly.yml)
 //   POST { copies: [{url, source}] } → copy watch finding (scripts/copy-watch.mjs)
 import { createPublicKey, verify } from 'node:crypto';
 import { sendShieldAlert } from './_shield-alert.js';
+import { sendWeekly } from './_shield-weekly.js';
 
 const ISSUER = 'https://token.actions.githubusercontent.com';
 export const AUDIENCE = 'complaintca-shield';
@@ -93,6 +95,10 @@ export async function shieldAgent(req, res) {
     }
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
     const b = req.body || {};
+    if (b.weekly) {
+      const keyExpires = /^\d{4}-\d{2}-\d{2}$/.test(String(b.keyExpires || '')) ? b.keyExpires : null;
+      return res.status(200).json(await sendWeekly(redis, keyExpires));
+    }
     if (Array.isArray(b.copies)) {
       const copies = cleanCopies(b.copies);
       if (!copies.length) return res.status(400).json({ error: 'no_copies' });
