@@ -27,27 +27,27 @@
      storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
      onerror flags when the script is blocked (ad-blocker / privacy filter) so the
      UI can say so instead of hanging on "still loading". -->
-<title>ComplaintCA ES · Prueba de tema</title>
-<meta name="description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
+<title>ComplaintES — Presentar una queja gratis en España</title>
+<meta name="description" content="Presente quejas gratis contra empresas, caseros o ayuntamientos en España, con IA y de forma anónima. Siga su queja, encuentre abogado gratis y detecte estafas.">
 <meta name="robots" content="noindex,nofollow">
 
 
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="ComplaintCA">
-<meta property="og:title" content="ComplaintCA — Canada's Complaint Platform">
-<meta property="og:description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
-<meta property="og:url" content="https://www.complaintca.ca/">
-<meta property="og:locale" content="en_CA">
+<meta property="og:site_name" content="ComplaintES">
+<meta property="og:title" content="ComplaintES — Presentar una queja gratis en España">
+<meta property="og:description" content="Presente quejas gratis contra empresas, caseros o ayuntamientos en España, con IA y de forma anónima. Siga su queja, encuentre abogado gratis y detecte estafas.">
+<meta property="og:url" content="https://www.complaintca.ca/es/">
+<meta property="og:locale" content="es_ES">
 <meta property="og:image" content="https://www.complaintca.ca/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ComplaintCA — Canada's Complaint Platform">
-<meta name="twitter:description" content="File complaints against businesses, landlords, or municipalities across Canada — AI-powered and anonymous. Track complaints, find a lawyer, verify scams.">
+<meta name="twitter:title" content="ComplaintES — Presentar una queja gratis en España">
+<meta name="twitter:description" content="Presente quejas gratis contra empresas, caseros o ayuntamientos en España, con IA y de forma anónima. Siga su queja, encuentre abogado gratis y detecte estafas.">
 <meta name="twitter:image" content="https://www.complaintca.ca/og-image.png">
 
 <link rel="manifest" href="/manifest.json">
@@ -56,7 +56,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ComplaintCA">
+<meta name="apple-mobile-web-app-title" content="ComplaintES">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
@@ -719,7 +719,7 @@ body{background:#140a0c}
     </button>
     <div class="topbar-title"><span class="topbar-word">Complaint</span>
       <div class="lang-dd" id="lang-dd">
-        <button class="lang-dd-btn" onclick="toggleLangDD()" id="lang-dd-btn" aria-label="Language / Langue">
+        <button class="lang-dd-btn" onclick="toggleLangDD()" id="lang-dd-btn" aria-label="Idioma / Language">
           <span class="topbar-ca">ES</span>
           <span class="lang-old" style="display:none">
           <span id="lang-flag-display" style="display:flex;align-items:center;line-height:0">
@@ -903,7 +903,7 @@ body{background:#140a0c}
           </div>
           <div id="email-required-field" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
             <label id="a-lemail" style="margin-bottom:4px">Email</label>
-            <input type="email" id="inp-email" placeholder="you@email.com" style="margin-bottom:0">
+            <input type="email" id="inp-email" placeholder="usted@correo.es" style="margin-bottom:0">
             <div style="font-size:.65rem;color:var(--muted);margin-top:4px" id="a-anon-email-note">Obligatorio incluso en quejas anónimas: solo se usa para verificar, nunca se comparte con la institución.</div>
           </div>
           <div id="id-fields" style="display:none;margin-top:10px">
@@ -917,8 +917,8 @@ body{background:#140a0c}
             <div class="ct" style="margin-bottom:0"><div class="ci">II</div><span id="a-comp">Complaint</span></div>
             <span id="char-cnt" style="font-size:.68rem;color:var(--muted);font-weight:500">0 / 1000</span>
           </div>
-          <input type="text" id="inp-title" placeholder="Title..." style="border:none;border-bottom:1px solid var(--border);border-radius:0;padding:12px 16px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:0;background:var(--surface)">
-          <textarea id="inp-desc" oninput="updateCC();catAIDebounce()" placeholder="Describe your complaint in detail..." style="border:none;border-radius:0;padding:12px 16px;min-height:110px;font-size:.85rem;margin-bottom:0;resize:none;background:var(--surface)"></textarea>
+          <input type="text" id="inp-title" placeholder="Título..." style="border:none;border-bottom:1px solid var(--border);border-radius:0;padding:12px 16px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:0;background:var(--surface)">
+          <textarea id="inp-desc" oninput="updateCC();catAIDebounce()" placeholder="Describa su queja con detalle..." style="border:none;border-radius:0;padding:12px 16px;min-height:110px;font-size:.85rem;margin-bottom:0;resize:none;background:var(--surface)"></textarea>
           <!-- AI-DECIDED CATEGORY + PRIORITY (read-only, populated from description) -->
           <div id="ai-cat-strip" style="display:none;margin:0 16px 12px"></div>
           <!-- COMPLAINT TYPE -->
@@ -1106,7 +1106,7 @@ body{background:#140a0c}
           <div class="ct"><div class="ci">🔐</div><span id="si-title">Sign In</span></div>
           <div id="login-status" style="display:none;font-size:.75rem;padding:8px 12px;border-radius:8px;margin-bottom:12px"></div>
           <label id="si-email-lbl">Email</label>
-          <input type="email" id="li-email" placeholder="your@email.com">
+          <input type="email" id="li-email" placeholder="usted@correo.es">
           <label id="si-pass-lbl">Password</label>
           <input type="password" id="li-pass" placeholder="••••••••">
           <button onclick="doLogin()" class="sbtn" id="si-btn" style="margin-bottom:0">Sign In</button>
@@ -1131,11 +1131,11 @@ body{background:#140a0c}
           <div class="ct"><div class="ci">✦</div><span id="su-title">Create Account</span></div>
           <div id="signup-status" style="display:none;font-size:.75rem;padding:8px 12px;border-radius:8px;margin-bottom:12px"></div>
           <label id="su-name-lbl">Full Name</label>
-          <input type="text" id="su-name" placeholder="Jane Smith">
+          <input type="text" id="su-name" placeholder="María García">
           <label id="su-email-lbl">Email</label>
-          <input type="email" id="su-email" placeholder="your@email.com">
+          <input type="email" id="su-email" placeholder="usted@correo.es">
           <label id="su-pass-lbl">Password</label>
-          <input type="password" id="su-pass" placeholder="Min. 6 characters">
+          <input type="password" id="su-pass" placeholder="Mín. 6 caracteres">
 <button onclick="doSignup()" class="sbtn" id="su-btn" style="margin-bottom:0">Create Free Account</button>
           <div id="su-free" style="text-align:center;margin-top:12px;font-size:.72rem;color:var(--muted)">Free forever · No credit card needed</div>
         </div><div class="or-sep" style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
@@ -1244,7 +1244,7 @@ body{background:#140a0c}
         <div class="lex-ledger-pill"><span class="lex-ledger-ico">📋</span><div><div class="n" id="lwp-ledger-n">0</div><div class="l" id="lwp-ledger-l">Open Cases</div></div></div>
       </div>
       <div class="lex-stats" id="lwp-stats-box" style="display:none">
-        <label class="lex-filter"><select id="lwp-filter" aria-label="Category"></select><span class="lex-fchev">⌄</span></label>
+        <label class="lex-filter"><select id="lwp-filter" aria-label="Categoría"></select><span class="lex-fchev">⌄</span></label>
       </div>
       <div id="lawyer-panel-feed"></div>
       <div class="lex-notices" id="lwp-notices" style="display:none"><div class="lex-notices-h" id="lwp-notices-h"></div><div id="lwp-notices-list"></div></div>
@@ -1358,9 +1358,9 @@ body{background:#140a0c}
       <div class="card">
         <div class="ct"><div class="ci">IV</div><span id="cy-s4-title">Describe the Incident</span></div>
         <label id="cy-offender-lbl">Offender's username / profile URL</label>
-        <input type="text" id="cy-offender" placeholder="@username or https://..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px">
+        <input type="text" id="cy-offender" placeholder="@usuario o https://..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px">
         <label id="cy-desc-lbl">What happened?</label>
-        <textarea id="cy-desc" oninput="cyDescDebounce()" placeholder="Describe the incident..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s"></textarea>
+        <textarea id="cy-desc" oninput="cyDescDebounce()" placeholder="Describa lo ocurrido..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s"></textarea>
         <div id="cy-safety-banner" style="display:none;margin-top:12px;background:rgba(240,87,106,.16);border:1.5px solid #c8102e;border-radius:10px;padding:12px 14px">
           <div style="font-size:.8rem;font-weight:700;color:#c8102e;margin-bottom:4px">🚨 Si está en peligro inmediato, llame al 112 ahora</div>
           <div style="font-size:.72rem;color:var(--badge-red-text);line-height:1.5;margin-bottom:8px">Asya ha detectado señales de riesgo físico inmediato. ComplaintES no se supervisa en tiempo real; la policía puede actuar enseguida.</div>
@@ -1391,7 +1391,7 @@ body{background:#140a0c}
         </div>
         <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--off)">
           <label id="cy-lemail" style="margin-bottom:4px">Email</label>
-          <input type="email" id="cy-email" placeholder="you@email.com" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;margin-bottom:0">
+          <input type="email" id="cy-email" placeholder="usted@correo.es" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;margin-bottom:0">
           <div style="font-size:.65rem;color:var(--muted);margin-top:4px" id="cy-anon-email-note">Obligatorio incluso en reportes anónimos: solo se usa para seguir su caso, nunca se comparte con la autoridad.</div>
         </div>
         <div id="cy-id-fields" style="display:none;margin-top:10px">
@@ -2607,7 +2607,7 @@ const V = (function(){
       ht:"Presentar una <em>Queja</em> Oficial",
       hs:"Plataforma segura y rápida para realizar sus quejas en España.",
       c1:"Comenzar Queja",c2:"Rastrear mi queja",
-      disc:"ComplaintCA es una plataforma independiente. No es una agencia gubernamental.",t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
+      disc:"ComplaintES es una plataforma independiente. No es un organismo público. · <a href=\"/es/privacidad.html\" style=\"color:inherit\">Privacidad</a> · <a href=\"/es/terminos.html\" style=\"color:inherit\">Términos</a>",t1:"Anónimo",t2:"IA",t3:"Idiomas",t4:"Seguimiento",
       hub_kicker:"Seis Caminos Hacia la Justicia",hub_file_d:"Convierte tu voz en una queja oficial.",hub_lawyer_t:"Abogado Gratis y Sociedad Civil",hub_lawyer_d:"Abogado y ONG emparejados por IA, borradores listos para enviar.",hub_mv_d:"Encuentra a tu representante por dirección.",hub_cyber_t:"Reporte de Delito Cibernético",hub_cyber_d:"Reporta acoso, amenazas y robo de identidad.",hub_verify_t:"Verificar un Documento",hub_verify_d:"Haz que la IA verifique un correo o archivo sospechoso.",hub_guides_t:"Guías",hub_guides_d:"Encuentra la autoridad correcta por provincia y tema.",
       who:"Sobre usted",anl:"Enviar anónimamente",ans:"Su identidad no será compartida",
       lnm:"Nombre Completo",lem:"Correo electrónico",lph:"Teléfono (opcional)",anonemailnote:"Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.",
@@ -4802,6 +4802,7 @@ function _mapClear(){
 // ── ASYA ──
 const ASYA_T={
   en:{greeting:"Hi! I'm Asya. Tell me what happened and I'll help you file a complaint.",tap:"Tap to speak",type_ph:"Type your message...",thinking:"Thinking...",listening:"Listening..."},
+  es:{greeting:"¡Hola! Soy Asya. Cuénteme qué ha pasado y le ayudo a preparar su queja.",tap:"Toque para hablar",type_ph:"Escriba su mensaje...",thinking:"Pensando...",listening:"Escuchando..."},
   tr:{greeting:"Merhaba! Ben Asya. Ne olduğunu anlat, şikayetini birlikte hazırlayalım.",tap:"Konuşmak için dokun",type_ph:"Mesajınızı yazın...",thinking:"Düşünüyorum...",listening:"Dinliyorum..."},
   fr:{greeting:"Bonjour! Je suis Asya. Dites-moi ce qui s'est passé.",tap:"Appuyez pour parler",type_ph:"Tapez votre message...",thinking:"Je réfléchis...",listening:"J'écoute..."}
 };
@@ -4972,7 +4973,7 @@ function _aToggle(){
 // Asya UI
 (function(){
   const el=document.createElement('div');
-  el.innerHTML='<div id="a-modal" style="display:none;position:fixed;inset:0;z-index:10001;background:rgba(15,41,82,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)_aToggle()">  <div style="background:var(--surface);width:100%;max-width:420px;border-radius:20px;max-height:85vh;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column">    <div style="background:linear-gradient(135deg,#0f2952,#1a4fa0);padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0">      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#1a4fa0);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">        <svg width="22" height="16" viewBox="0 0 32 20" fill="none"><rect x="1" y="6" width="5" height="8" rx="2.5" fill="white" opacity="0.85"><animate attributeName="height" values="3;8;3" dur="1.4s" repeatCount="indefinite"/><animate attributeName="y" values="8.5;6;8.5" dur="1.4s" repeatCount="indefinite"/></rect><rect x="9" y="2" width="5" height="16" rx="2.5" fill="white"><animate attributeName="height" values="6;16;6" dur="1.4s" repeatCount="indefinite" begin="0.2s"/><animate attributeName="y" values="7;2;7" dur="1.4s" repeatCount="indefinite" begin="0.2s"/></rect><rect x="17" y="4" width="5" height="12" rx="2.5" fill="white" opacity="0.85"><animate attributeName="height" values="4;12;4" dur="1.4s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="y" values="8;4;8" dur="1.4s" repeatCount="indefinite" begin="0.4s"/></rect><rect x="25" y="3" width="5" height="14" rx="2.5" fill="white"><animate attributeName="height" values="5;14;5" dur="1.4s" repeatCount="indefinite" begin="0.15s"/><animate attributeName="y" values="7.5;3;7.5" dur="1.4s" repeatCount="indefinite" begin="0.15s"/></rect></svg>      </div>      <div><div style="font-weight:700;color:white;font-size:.95rem;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:1px">Asya</div><div style="font-size:.68rem;color:rgba(255,255,255,.55);margin-top:1px">Claude AI · ComplaintCA</div></div>      <button onclick="_aToggleVoice(this)" style="margin-left:auto;background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">🔇</button>      <button onclick="_aToggle()" style="background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">✕</button>    </div>    <div id="a-chat" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;min-height:220px"></div>    <div style="padding:12px 16px 16px;border-top:1px solid rgba(77,142,232,.12);display:flex;flex-direction:column;gap:8px;flex-shrink:0">      <button id="a-mic-btn" onclick="_aListen()" style="width:100%;background:linear-gradient(135deg,#1a4fa0,#0f2952);color:white;border:none;border-radius:11px;padding:12px;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:Inter,sans-serif">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>        Tap to speak      </button>      <div style="display:flex;gap:7px">        <input id="a-text" type="text" placeholder="Or type here..." onkeydown="if(event.key===\'Enter\')_aSendText()" style="flex:1;border:1.5px solid rgba(77,142,232,.16);border-radius:9px;padding:9px 11px;font-size:.82rem;font-family:Inter,sans-serif;outline:none;background:rgba(77,142,232,.08);margin-bottom:0">        <button onclick="_aSendText()" style="background:linear-gradient(135deg,#1a4fa0,#0f2952);color:white;border:none;border-radius:9px;padding:9px 14px;cursor:pointer;font-size:.9rem">➤</button>      </div>    </div>  </div></div>';
+  el.innerHTML='<div id="a-modal" style="display:none;position:fixed;inset:0;z-index:10001;background:rgba(15,41,82,.55);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)_aToggle()">  <div style="background:var(--surface);width:100%;max-width:420px;border-radius:20px;max-height:85vh;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column">    <div style="background:linear-gradient(135deg,#0f2952,#1a4fa0);padding:14px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0">      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#1a4fa0);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">        <svg width="22" height="16" viewBox="0 0 32 20" fill="none"><rect x="1" y="6" width="5" height="8" rx="2.5" fill="white" opacity="0.85"><animate attributeName="height" values="3;8;3" dur="1.4s" repeatCount="indefinite"/><animate attributeName="y" values="8.5;6;8.5" dur="1.4s" repeatCount="indefinite"/></rect><rect x="9" y="2" width="5" height="16" rx="2.5" fill="white"><animate attributeName="height" values="6;16;6" dur="1.4s" repeatCount="indefinite" begin="0.2s"/><animate attributeName="y" values="7;2;7" dur="1.4s" repeatCount="indefinite" begin="0.2s"/></rect><rect x="17" y="4" width="5" height="12" rx="2.5" fill="white" opacity="0.85"><animate attributeName="height" values="4;12;4" dur="1.4s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="y" values="8;4;8" dur="1.4s" repeatCount="indefinite" begin="0.4s"/></rect><rect x="25" y="3" width="5" height="14" rx="2.5" fill="white"><animate attributeName="height" values="5;14;5" dur="1.4s" repeatCount="indefinite" begin="0.15s"/><animate attributeName="y" values="7.5;3;7.5" dur="1.4s" repeatCount="indefinite" begin="0.15s"/></rect></svg>      </div>      <div><div style="font-weight:700;color:white;font-size:.95rem;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:1px">Asya</div><div style="font-size:.68rem;color:rgba(255,255,255,.55);margin-top:1px">Claude AI · ComplaintCA</div></div>      <button onclick="_aToggleVoice(this)" style="margin-left:auto;background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">🔇</button>      <button onclick="_aToggle()" style="background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">✕</button>    </div>    <div id="a-chat" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;min-height:220px"></div>    <div style="padding:12px 16px 16px;border-top:1px solid rgba(77,142,232,.12);display:flex;flex-direction:column;gap:8px;flex-shrink:0">      <button id="a-mic-btn" onclick="_aListen()" style="width:100%;background:linear-gradient(135deg,#1a4fa0,#0f2952);color:white;border:none;border-radius:11px;padding:12px;font-size:.85rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:Inter,sans-serif">        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0014 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>        Tap to speak      </button>      <div style="display:flex;gap:7px">        <input id="a-text" type="text" placeholder="O escriba aquí..." onkeydown="if(event.key===\'Enter\')_aSendText()" style="flex:1;border:1.5px solid rgba(77,142,232,.16);border-radius:9px;padding:9px 11px;font-size:.82rem;font-family:Inter,sans-serif;outline:none;background:rgba(77,142,232,.08);margin-bottom:0">        <button onclick="_aSendText()" style="background:linear-gradient(135deg,#1a4fa0,#0f2952);color:white;border:none;border-radius:9px;padding:9px 14px;cursor:pointer;font-size:.9rem">➤</button>      </div>    </div>  </div></div>';
   document.body.appendChild(el);
 })();
 
@@ -5256,7 +5257,7 @@ function _updateThemeBtn(){
   if(!btn) return;
   var isLight=document.documentElement.getAttribute('data-theme')==='light';
   btn.textContent=isLight?'☀️':'🌙';
-  btn.title=isLight?'Switch to dark theme':'Switch to light theme';
+  btn.title=isLight?'Cambiar a tema oscuro':'Cambiar a tema claro';
 }
 
 // Guide pages (/guides/*.html) hand off a typed-out complaint via ?d=... —
@@ -5313,7 +5314,7 @@ function _handleReplyLink(){
       return false;
     }).catch(function(){ if(errBox) errBox.textContent=R.err; return false; });
   };
-  body.innerHTML='<p class="rv-note">'+esc(R.i.replace('{ref}',ref))+'</p><input class="rv-in" type="email" autocomplete="email" placeholder="your@email.com"><button type="button" class="rv-btn rv-send">'+esc(R.send)+'</button>'+
+  body.innerHTML='<p class="rv-note">'+esc(R.i.replace('{ref}',ref))+'</p><input class="rv-in" type="email" autocomplete="email" placeholder="usted@correo.es"><button type="button" class="rv-btn rv-send">'+esc(R.send)+'</button>'+
     '<div class="rv-code" hidden><p class="rv-note rv-sent"></p><input class="rv-in rv-codein" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"><button type="button" class="rv-btn rv-open">'+esc(R.open)+'</button></div><p class="rv-err" role="status"></p>';
   var inp=body.querySelector('.rv-in'), err=body.querySelector('.rv-err'), codeBox=body.querySelector('.rv-code'), tok='';
   body.querySelector('.rv-send').onclick=function(){
@@ -5520,7 +5521,7 @@ try{
     }
     if(typeof window._applyAuthUI==='function') window._applyAuthUI(); // keep the Sign In tab in sync
   });
-  window._fbSave=async function(c){return await addDoc(collection(db,'complaints'),c);};
+  window._fbSave=async function(c){c.country='ES';return await addDoc(collection(db,'complaints'),c);}; // ES page: tag so Spanish complaints can be told apart
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
     window._fbAccountPass=async function(){
     const u=authInst.currentUser; if(!u) return null;

@@ -11,6 +11,16 @@
       "permanent": true
     },
     {
+      "source": "/es-test.html",
+      "destination": "/es/",
+      "permanent": false
+    },
+    {
+      "source": "/es",
+      "destination": "/es/",
+      "permanent": false
+    },
+    {
       "source": "/new-complaint",
       "destination": "/?go=new&panel=new",
       "permanent": false
@@ -55,6 +65,15 @@
   "headers": [
     {
       "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/es/",
       "headers": [
         {
           "key": "Cache-Control",
