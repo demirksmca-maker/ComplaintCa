@@ -1,0 +1,66 @@
+{
+ "_nota": "Organismos recopilados con IA (Gemini); pendientes de verificación.",
+ "consumo_autonomico": {
+  "andalucia": [
+   "Dirección General de Consumo — Junta de Andalucía",
+   "https://www.juntadeandalucia.es/temas/consumo.html",
+   "955 006 300"
+  ],
+  "aragon": [
+   "Junta Arbitral de Consumo de Aragón",
+   "https://www.aragon.es/",
+   "976 715 610"
+  ],
+  "asturias": [
+   "Dirección General de Comercio y Consumo — Principado de Asturias",
+   "https://www.asturias.es/",
+   "985 108 306"
+  ],
+  "baleares": [
+   "Direcció General de Consum — Illes Balears",
+   "https://www.caib.es/sidiaca/es/",
+   "971 177 979"
+  ],
+  "madrid": [
+   "Dirección General de Comercio y Consumo — Comunidad de Madrid",
+   "https://www.comunidad.madrid/servicios/consumo",
+   "913 105 903"
+  ],
+  "cataluna": [
+   "Agència Catalana del Consum",
+   "https://consum.gencat.cat/",
+   "938 574 000"
+  ],
+  "pais_vasco": [
+   "Kontsumobide — Instituto Vasco de Consumo",
+   "https://www.kontsumobide.euskadi.eus/",
+   "945 062 170"
+  ]
+ },
+ "ayuntamientos": {
+  "madrid": [
+   "Ayuntamiento de Madrid — Línea Madrid y OMIC",
+   "https://www.madrid.es/"
+  ],
+  "barcelona": [
+   "Ajuntament de Barcelona — OMIC",
+   "https://ajuntament.barcelona.cat/"
+  ],
+  "valencia": [
+   "Ayuntamiento de Valencia — OMIC y quejas",
+   "https://www.valencia.es/"
+  ],
+  "sevilla": [
+   "Ayuntamiento de Sevilla — Atención a la Ciudadanía",
+   "https://www.sevilla.org/"
+  ],
+  "zaragoza": [
+   "Ayuntamiento de Zaragoza — OMIC",
+   "https://www.zaragoza.es/"
+  ]
+ },
+ "parlamentos_url": {
+  "madrid": "https://www.asambleamadrid.es/",
+  "cataluna": "https://www.parlament.cat/"
+ }
+}

@@ -1,0 +1,1325 @@
+{
+ "_nota": "Datos recopilados con IA; enlaces y teléfonos pendientes de verificación.",
+ "entradas": [
+  {
+   "ad": "Ministerio de Justicia — Asistencia Jurídica Gratuita",
+   "bolge": "nacional",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 918372297",
+   "web_sitesi": "https://www.mjusticia.gob.es",
+   "aciklama": "Requisitos y forma de solicitar la Asistencia Jurídica Gratuita en España.",
+   "etiket": "OFICIAL",
+   "verificado": false
+  },
+  {
+   "ad": "Consejo General de la Abogacía Española (CGAE)",
+   "bolge": "nacional",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 915232593",
+   "web_sitesi": "https://www.abogacia.es",
+   "aciklama": "Coordina la Justicia Gratuita y el Turno de Oficio de todos los Colegios de Abogados.",
+   "etiket": "OFICIAL",
+   "verificado": false
+  },
+  {
+   "ad": "Oficinas de Asistencia a las Víctimas del Delito",
+   "bolge": "nacional",
+   "konu": [
+    "criminal",
+    "family"
+   ],
+   "telefon": "+34 900150000",
+   "web_sitesi": "https://www.mjusticia.gob.es",
+   "aciklama": "Atención gratuita, asesoramiento legal e información de derechos para víctimas de delitos.",
+   "etiket": "GRATIS",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Madrid (ICAM)",
+   "bolge": "madrid",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 900814815",
+   "web_sitesi": "https://www.icam.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en la Comunidad de Madrid.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Il·lustre Col·legi de l'Advocacia de Barcelona (ICAB)",
+   "bolge": "cataluna",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 934961880",
+   "web_sitesi": "https://www.icab.cat",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Barcelona.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Il·lustre Col·legi de l'Advocacia de Girona (ICAG)",
+   "bolge": "cataluna",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 972210208",
+   "web_sitesi": "https://www.icag.cat",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Girona.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Il·lustre Col·legi de l'Advocacia de Tarragona (ICAT)",
+   "bolge": "cataluna",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 977212360",
+   "web_sitesi": "https://www.icatarragona.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Tarragona.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Il·lustre Col·legi de l'Advocacia de Lleida",
+   "bolge": "cataluna",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 973238007",
+   "web_sitesi": "https://www.advocatslleida.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Lleida.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Sevilla (ICAS)",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 954502810",
+   "web_sitesi": "https://www.icas.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Sevilla.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Málaga",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 951017400",
+   "web_sitesi": "https://www.icamalaga.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Málaga.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Granada",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 958221100",
+   "web_sitesi": "https://www.icagr.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Granada.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Córdoba",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 957498103",
+   "web_sitesi": "https://www.icacordoba.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Córdoba.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Cádiz",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 956287611",
+   "web_sitesi": "https://www.icadiz.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Cádiz.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Almería",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 950230855",
+   "web_sitesi": "https://www.icaalmeria.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Almería.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Huelva",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 959245304",
+   "web_sitesi": "https://www.icahuelva.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Huelva.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Jaén",
+   "bolge": "andalucia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 953250611",
+   "web_sitesi": "https://www.icajaen.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Jaén.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Colegio de la Abogacía de Bizkaia",
+   "bolge": "pais_vasco",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 944016712",
+   "web_sitesi": "https://www.icabizkaia.eus",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Bizkaia.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Gipuzkoa (ICAGI)",
+   "bolge": "pais_vasco",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 943440118",
+   "web_sitesi": "https://www.icagi.net",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Gipuzkoa.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía Alavesa",
+   "bolge": "pais_vasco",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 945231050",
+   "web_sitesi": "https://www.icaalava.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Álava.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Valencia (ICAV)",
+   "bolge": "valencia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 963168000",
+   "web_sitesi": "https://www.icav.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Valencia.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Alicante (ICALI)",
+   "bolge": "valencia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 965145180",
+   "web_sitesi": "https://www.icali.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Alicante.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Real e Ilustre Colegio de Abogados de Zaragoza (REICAZ)",
+   "bolge": "aragon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 976204220",
+   "web_sitesi": "https://www.reicaz.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Zaragoza.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Oviedo",
+   "bolge": "asturias",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 985212370",
+   "web_sitesi": "https://www.icaoviedo.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Asturias.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Colegio de Abogados de Murcia",
+   "bolge": "murcia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 968900100",
+   "web_sitesi": "https://www.icamur.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en la Región de Murcia.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Baleares (ICAIB)",
+   "bolge": "baleares",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 971179400",
+   "web_sitesi": "https://www.icaib.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en las Islas Baleares.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Las Palmas",
+   "bolge": "canarias",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 928310200",
+   "web_sitesi": "https://www.icalpa.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Las Palmas.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Santa Cruz de Tenerife",
+   "bolge": "canarias",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 922208010",
+   "web_sitesi": "https://www.icatf.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Santa Cruz de Tenerife.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Valladolid",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 983309228",
+   "web_sitesi": "https://www.icava.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Valladolid.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Burgos",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 947201624",
+   "web_sitesi": "https://www.icaburgos.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Burgos.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de León",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 987211015",
+   "web_sitesi": "https://www.icaleon.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en León.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Salamanca",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 923268566",
+   "web_sitesi": "https://www.icasal.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Salamanca.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Toledo",
+   "bolge": "castilla_la_mancha",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 925223062",
+   "web_sitesi": "https://www.icatoledo.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Toledo.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Ciudad Real",
+   "bolge": "castilla_la_mancha",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 926220721",
+   "web_sitesi": "https://www.icacr.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Ciudad Real.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Albacete",
+   "bolge": "castilla_la_mancha",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 967214181",
+   "web_sitesi": "https://www.icalba.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Albacete.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Badajoz",
+   "bolge": "extremadura",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 924222384",
+   "web_sitesi": "https://www.icaba.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Badajoz.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Cáceres",
+   "bolge": "extremadura",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 927245184",
+   "web_sitesi": "https://www.icacaceres.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Cáceres.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Colegio de la Abogacía de Cantabria",
+   "bolge": "cantabria",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 942364700",
+   "web_sitesi": "https://www.icacantabria.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Cantabria.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de La Rioja",
+   "bolge": "la_rioja",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 941228102",
+   "web_sitesi": "https://www.icarie.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en La Rioja.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Muy Ilustre Colegio de Abogados de Pamplona (MICAP)",
+   "bolge": "navarra",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 948221650",
+   "web_sitesi": "https://www.micap.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Navarra.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de A Coruña",
+   "bolge": "galicia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 981126001",
+   "web_sitesi": "https://www.icacor.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en A Coruña.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio Provincial de Abogados de Pontevedra",
+   "bolge": "galicia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 986896866",
+   "web_sitesi": "https://www.icapontevedra.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Pontevedra.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de la Abogacía de Vigo",
+   "bolge": "galicia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 986208111",
+   "web_sitesi": "https://www.icavigo.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Vigo.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Lugo",
+   "bolge": "galicia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 982220335",
+   "web_sitesi": "https://www.icalugo.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Lugo.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Ourense",
+   "bolge": "galicia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 988212402",
+   "web_sitesi": "https://www.icaourense.org",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Ourense.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Ceuta",
+   "bolge": "ceuta",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 956513511",
+   "web_sitesi": "https://www.icaceuta.es",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Ceuta.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Melilla",
+   "bolge": "melilla",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 952684803",
+   "web_sitesi": "https://www.icamelilla.com",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Melilla.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Defensor del Pueblo",
+   "bolge": "nacional",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 900101025",
+   "web_sitesi": "https://www.defensordelpueblo.es",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública (ámbito estatal).",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Síndic de Greuges de Catalunya",
+   "bolge": "cataluna",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 900124124",
+   "web_sitesi": "https://www.sindic.cat",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Defensor del Pueblo Andaluz",
+   "bolge": "andalucia",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 954212121",
+   "web_sitesi": "https://www.defensordelpuebloandaluz.es",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Ararteko (País Vasco)",
+   "bolge": "pais_vasco",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 945230949",
+   "web_sitesi": "https://www.ararteko.eus",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Valedor do Pobo (Galicia)",
+   "bolge": "galicia",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 981568888",
+   "web_sitesi": "https://www.valedordopobo.gal",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Diputado del Común (Canarias)",
+   "bolge": "canarias",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 900900302",
+   "web_sitesi": "https://www.diputadodelcomun.org",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "El Justicia de Aragón",
+   "bolge": "aragon",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 976298311",
+   "web_sitesi": "https://www.eljusticiadearagon.es",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Procurador del Común de Castilla y León",
+   "bolge": "castilla_leon",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 987270095",
+   "web_sitesi": "https://www.procuradordelcomun.org",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Síndic de Greuges de la Comunitat Valenciana",
+   "bolge": "valencia",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 900210970",
+   "web_sitesi": "https://www.elsindic.com",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Defensor del Pueblo de Navarra",
+   "bolge": "navarra",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 948203520",
+   "web_sitesi": "https://www.defensordelpueblonavarra.es",
+   "aciklama": "Defiende los derechos de la ciudadanía frente a la administración pública autonómica y local.",
+   "etiket": "OMBUDSMAN",
+   "verificado": false
+  },
+  {
+   "ad": "Banco de España — Reclamaciones",
+   "bolge": "nacional",
+   "konu": [
+    "consumer"
+   ],
+   "telefon": "+34 913386530",
+   "web_sitesi": "https://clientebancario.bde.es",
+   "aciklama": "Reclamaciones gratuitas contra bancos por malas prácticas.",
+   "etiket": "OFICIAL",
+   "verificado": false
+  },
+  {
+   "ad": "Sistema Arbitral de Consumo",
+   "bolge": "nacional",
+   "konu": [
+    "consumer"
+   ],
+   "telefon": "+34 912728522",
+   "web_sitesi": "https://www.consumo.gob.es",
+   "aciklama": "Arbitraje gratuito y vinculante entre consumidores y empresas.",
+   "etiket": "OFICIAL",
+   "verificado": false
+  },
+  {
+   "ad": "FACUA — Consumidores en Acción",
+   "bolge": "nacional",
+   "konu": [
+    "consumer"
+   ],
+   "telefon": "+34 954909090",
+   "web_sitesi": "https://www.facua.org",
+   "aciklama": "Defensa de consumidores frente a abusos y fraudes de empresas.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "OCU — Organización de Consumidores y Usuarios",
+   "bolge": "nacional",
+   "konu": [
+    "consumer"
+   ],
+   "telefon": "+34 913009151",
+   "web_sitesi": "https://www.ocu.org",
+   "aciklama": "Asesoramiento jurídico y reclamaciones de consumo para sus socios.",
+   "etiket": "ASOCIACIÓN",
+   "verificado": false
+  },
+  {
+   "ad": "ADICAE",
+   "bolge": "nacional",
+   "konu": [
+    "consumer",
+    "tenant"
+   ],
+   "telefon": "+34 912902355",
+   "web_sitesi": "https://www.adicae.net",
+   "aciklama": "Defensa de usuarios de bancos, hipotecas y seguros.",
+   "etiket": "ASOCIACIÓN",
+   "verificado": false
+  },
+  {
+   "ad": "ASUFIN",
+   "bolge": "nacional",
+   "konu": [
+    "consumer",
+    "tenant"
+   ],
+   "telefon": "+34 915327508",
+   "web_sitesi": "https://www.asufin.com",
+   "aciklama": "Reclamación de cláusulas abusivas, hipotecas y malas prácticas bancarias.",
+   "etiket": "ASOCIACIÓN",
+   "verificado": false
+  },
+  {
+   "ad": "Inspección de Trabajo y Seguridad Social",
+   "bolge": "nacional",
+   "konu": [
+    "employment"
+   ],
+   "telefon": "+34 913630000",
+   "web_sitesi": "https://www.mites.gob.es",
+   "aciklama": "Denuncias por incumplimientos laborales y de Seguridad Social.",
+   "etiket": "OFICIAL",
+   "verificado": false
+  },
+  {
+   "ad": "CCOO — Servicios Jurídicos",
+   "bolge": "nacional",
+   "konu": [
+    "employment"
+   ],
+   "telefon": "+34 917028000",
+   "web_sitesi": "https://www.ccoo.es",
+   "aciklama": "Asesoría laboral: despidos, salarios impagados y Seguridad Social.",
+   "etiket": "SINDICATO",
+   "verificado": false
+  },
+  {
+   "ad": "UGT — Servicios Jurídicos",
+   "bolge": "nacional",
+   "konu": [
+    "employment"
+   ],
+   "telefon": "+34 915897100",
+   "web_sitesi": "https://www.ugt.es",
+   "aciklama": "Asesoría legal en derechos laborales, despidos y reclamaciones.",
+   "etiket": "SINDICATO",
+   "verificado": false
+  },
+  {
+   "ad": "016 — Violencia de Género",
+   "bolge": "nacional",
+   "konu": [
+    "family",
+    "criminal"
+   ],
+   "telefon": "016",
+   "web_sitesi": "https://violenciagenero.igualdad.gob.es",
+   "aciklama": "Información y asesoramiento jurídico gratuito y confidencial. No deja rastro en la factura.",
+   "etiket": "24H",
+   "verificado": false
+  },
+  {
+   "ad": "Fundación ANAR",
+   "bolge": "nacional",
+   "konu": [
+    "family"
+   ],
+   "telefon": "+34 900202010",
+   "web_sitesi": "https://www.anar.org",
+   "aciklama": "Orientación jurídica y psicológica gratuita para menores y familias.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Fundación Mujeres",
+   "bolge": "nacional",
+   "konu": [
+    "family",
+    "employment"
+   ],
+   "telefon": "+34 915720317",
+   "web_sitesi": "https://fundacionmujeres.es",
+   "aciklama": "Apoyo legal a mujeres víctimas de violencia o discriminación.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "CERMI",
+   "bolge": "nacional",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 913601639",
+   "web_sitesi": "https://www.cermi.es",
+   "aciklama": "Defensa de derechos de las personas con discapacidad.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "FELGTBI+",
+   "bolge": "nacional",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 913604605",
+   "web_sitesi": "https://felgtbi.org",
+   "aciklama": "Orientación legal y apoyo frente a delitos de odio LGTBI+.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Fundación Secretariado Gitano",
+   "bolge": "nacional",
+   "konu": [
+    "humanrights"
+   ],
+   "telefon": "+34 914220968",
+   "web_sitesi": "https://www.gitanos.org",
+   "aciklama": "Asesoría jurídica gratuita frente a discriminación étnica y racismo.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "PAH — Plataforma de Afectados por la Hipoteca",
+   "bolge": "nacional",
+   "konu": [
+    "tenant"
+   ],
+   "telefon": "+34 610694634",
+   "web_sitesi": "https://afectadosporlahipoteca.com",
+   "aciklama": "Apoyo colectivo y legal frente a desahucios y deudas hipotecarias.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Provivienda",
+   "bolge": "nacional",
+   "konu": [
+    "tenant"
+   ],
+   "telefon": "+34 915592182",
+   "web_sitesi": "https://www.provivienda.org",
+   "aciklama": "Orientación jurídica y mediación en alquiler y vivienda.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "CEAR — Comisión Española de Ayuda al Refugiado",
+   "bolge": "nacional",
+   "konu": [
+    "immigration"
+   ],
+   "telefon": "+34 915980535",
+   "web_sitesi": "https://www.cear.es",
+   "aciklama": "Atención jurídica a solicitantes de asilo, refugiados y migrantes.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Cruz Roja Española",
+   "bolge": "nacional",
+   "konu": [
+    "immigration"
+   ],
+   "telefon": "+34 900221122",
+   "web_sitesi": "https://www.cruzroja.es",
+   "aciklama": "Asesoramiento jurídico en extranjería para personas vulnerables.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Cáritas Española",
+   "bolge": "nacional",
+   "konu": [
+    "immigration",
+    "tenant"
+   ],
+   "telefon": "+34 914441000",
+   "web_sitesi": "https://www.caritas.es",
+   "aciklama": "Orientación jurídica gratuita en extranjería, vivienda y empleo.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Accem",
+   "bolge": "nacional",
+   "konu": [
+    "immigration"
+   ],
+   "telefon": "+34 915327478",
+   "web_sitesi": "https://www.accem.es",
+   "aciklama": "Asistencia legal a refugiados y solicitantes de protección internacional.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Red Acoge",
+   "bolge": "nacional",
+   "konu": [
+    "immigration"
+   ],
+   "telefon": "+34 915633779",
+   "web_sitesi": "https://www.redacoge.org",
+   "aciklama": "Apoyo jurídico gratuito y asesoría en extranjería.",
+   "etiket": "ONG",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Ávila",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 920 211 756",
+   "web_sitesi": "https://www.icavila.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Ávila.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Segovia",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 921 460 333",
+   "web_sitesi": "https://www.icasegovia.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Segovia.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Soria",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 975 221 051",
+   "web_sitesi": "https://www.icasoria.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Soria.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Palencia",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 979 745 262",
+   "web_sitesi": "https://www.icapalencia.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Palencia.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Zamora",
+   "bolge": "castilla_leon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 980 521 360",
+   "web_sitesi": "https://www.icazamora.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Zamora.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Guadalajara",
+   "bolge": "castilla_la_mancha",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 949 221 102",
+   "web_sitesi": "https://www.icaguadalajara.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Guadalajara.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Huesca",
+   "bolge": "aragon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 974 223 126",
+   "web_sitesi": "https://www.ica-huesca.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Huesca.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Teruel",
+   "bolge": "aragon",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 978 601 449",
+   "web_sitesi": "https://www.icateruel.es/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Teruel.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  },
+  {
+   "ad": "Ilustre Colegio de Abogados de Castellón",
+   "bolge": "valencia",
+   "konu": [
+    "tenant",
+    "employment",
+    "immigration",
+    "criminal",
+    "family",
+    "humanrights"
+   ],
+   "telefon": "+34 964 222 752",
+   "web_sitesi": "https://www.icacs.com/",
+   "aciklama": "Servicio de Orientación Jurídica gratuito: tramita la justicia gratuita y el abogado de oficio en Castellón.",
+   "etiket": "JUSTICIA GRATUITA",
+   "verificado": false
+  }
+ ]
+}
