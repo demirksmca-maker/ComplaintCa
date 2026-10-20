@@ -115,6 +115,20 @@
   .steps code{display:block;margin-top:4px;padding:8px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:.75rem;word-break:break-all;user-select:all}
   .steps a{color:var(--s1)}
   .better{color:var(--ok)}.worse{color:var(--bad)}
+  .gcard{margin-top:10px}
+  .hint{font-size:.74rem;color:var(--mute);margin:-4px 0 10px}
+  .spark+.spark{margin-top:10px}
+  .sparkhead{display:flex;justify-content:space-between;font-size:.7rem;color:var(--mute);margin-bottom:4px}
+  .sparkbars{display:flex;align-items:flex-end;gap:2px;height:48px}
+  .sparkbars i{flex:1;border-radius:2px 2px 0 0;min-height:2px}
+  .opp{padding:8px 0;border-top:1px solid var(--line)}
+  .opp:first-of-type{border-top:0;padding-top:0}
+  .oq{font-size:.86rem}
+  .om{font-size:.72rem;color:var(--mute)}
+  .op{font-size:.76rem;color:var(--s1);word-break:break-all}
+  .mv{display:flex;justify-content:space-between;gap:10px;font-size:.8rem;padding:5px 0;border-top:1px solid var(--line)}
+  .mv:first-of-type{border-top:0}
+  .mv span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .foot{display:flex;justify-content:space-between;font-size:.7rem;color:var(--mute);padding:0 2px}
   .foot button{background:none;color:var(--mute);padding:0;text-decoration:underline;font-size:.7rem}
   .install{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;font-size:.8rem}
@@ -240,25 +254,65 @@
       return;
     }
     var t = g.totals, b = g.before;
+    var CC = { can: 'CA', esp: 'ES', usa: 'US', gbr: 'GB', tur: 'TR', ind: 'IN', mex: 'MX', fra: 'FR', deu: 'DE', aus: 'AU', phl: 'PH', pak: 'PK', nga: 'NG', arg: 'AR', col: 'CO' };
+    var short = function (p) { return p === '/' ? 'Ana sayfa' : p === '/es/' ? 'İspanya ana sayfa' : p.replace(/\.html$/, ''); };
+    var card = function (title, body, hint) { return '<div class="card pad gcard"><h2>' + title + '</h2>' + (hint ? '<p class="hint">' + hint + '</p>' : '') + body + '</div>'; };
+    var hrows = function (rows, label, value, metric) {
+      if (!rows.length) return '<p class="empty">Henüz veri yok</p>';
+      var max = Math.max.apply(null, rows.map(metric).concat(1));
+      return '<div class="hb">' + rows.map(function (r) {
+        return '<span class="lab" title="' + esc(label(r)) + '">' + esc(label(r)) + '</span><span class="val">' + value(r) + '</span>' +
+          '<span class="bar" style="width:' + Math.max(1, metric(r) / max * 100) + '%"></span>';
+      }).join('') + '</div>';
+    };
+    // One series per mini chart: clicks and impressions differ ~100x, so no shared axis.
+    var spark = function (rows, key, color, name) {
+      var max = Math.max.apply(null, rows.map(function (r) { return r[key]; }).concat(1));
+      return '<div class="spark"><div class="sparkhead"><span>' + name + '</span><span>en yüksek ' + max.toLocaleString('tr-TR') + '</span></div><div class="sparkbars">' +
+        rows.map(function (r) { return '<i style="height:' + Math.max(2, r[key] / max * 100) + '%;background:' + color + '" title="' + esc(r.day + ' · ' + r[key] + ' ' + name.toLowerCase()) + '"></i>'; }).join('') +
+        '</div></div>';
+    };
+    var daily = g.daily || [], opp = g.opportunities || [], mv = g.movers || { up: [], down: [] }, dev = g.devices || {}, maps = g.sitemaps || [];
+    var devTotal = (dev.mobile || 0) + (dev.desktop || 0) + (dev.tablet || 0);
+    var DEV = [['mobile', 'Telefon', 's1'], ['desktop', 'Bilgisayar', 's2'], ['tablet', 'Tablet', 's3']];
+
     $('gscBody').innerHTML =
       '<div class="tiles">' +
       '<div class="card tile"><b>' + t.clicks.toLocaleString('tr-TR') + gscDelta(t.clicks, b.clicks) + '</b><span>Tıklama</span></div>' +
       '<div class="card tile"><b>' + t.impressions.toLocaleString('tr-TR') + gscDelta(t.impressions, b.impressions) + '</b><span>Gösterim</span></div>' +
       '<div class="card tile"><b>%' + (t.ctr * 100).toFixed(1) + '</b><span>Tıklama oranı</span></div>' +
       '<div class="card tile"><b>' + t.position.toFixed(1) + gscDelta(t.position, b.position, true) + '</b><span>Ort. sıra</span></div></div>' +
-      '<div class="card pad" style="margin-top:10px"><h2>Aranan kelimeler · tıklama · sıra</h2><div class="hb">' +
-      (g.queries.length ? g.queries.map(function (q, i, all) {
-        var max = all[0].clicks || 1;
-        return '<span class="lab" title="' + esc(q.key + ' · ' + q.impressions + ' gösterim') + '">' + esc(q.key) + '</span><span class="val">' + q.clicks + ' · ' + q.position + '</span>' +
-          '<span class="bar" style="width:' + Math.max(1, q.clicks / max * 100) + '%"></span>';
-      }).join('') : '<p class="empty" style="grid-column:1/-1">Henüz veri yok</p>') + '</div></div>' +
-      '<div class="card pad" style="margin-top:10px"><h2>Google\'dan en çok tıklanan sayfalar</h2><div class="hb">' +
-      g.pages.map(function (p, i, all) {
-        var max = all[0].clicks || 1;
-        return '<span class="lab">' + esc(p.key === '/' ? 'Ana sayfa' : p.key.replace(/\.html$/, '')) + '</span><span class="val">' + p.clicks + '</span>' +
-          '<span class="bar" style="width:' + Math.max(1, p.clicks / max * 100) + '%"></span>';
-      }).join('') + '</div></div>' +
-      '<p class="note" style="margin-top:8px">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · Google verisi 2 gün geriden gelir</p>';
+
+      (daily.length ? card('Günlük trend · 28 gün', spark(daily, 'clicks', 'var(--s1)', 'Tıklama') + spark(daily, 'impressions', '#6da7ec', 'Gösterim')) : '') +
+
+      card('Fırsatlar', opp.length ? opp.map(function (o) {
+        return '<div class="opp"><div class="oq">“' + esc(o.query) + '”</div><div class="om">' + o.impressions.toLocaleString('tr-TR') + ' gösterim · ' + o.clicks + ' tık · sıra ' + o.position + '</div>' +
+          '<div class="op">→ ' + esc(short(o.page)) + '</div></div>';
+      }).join('') : '<p class="empty">Şu an belirgin fırsat yok</p>',
+        'Google seni bu aramalarda gösteriyor ama ilk sıralarda değilsin. Oklu sayfayı bu kelimeyle güçlendirirsen (başlık, ilk paragraf, soru-cevap) tıklama artar.') +
+
+      card('Aranan kelimeler · gösterim · tık · sıra', hrows(g.queries || [], function (q) { return q.key; },
+        function (q) { return q.impressions.toLocaleString('tr-TR') + ' · ' + q.clicks + ' · ' + q.position; }, function (q) { return q.impressions; })) +
+
+      card('Yükselen ve düşen sayfalar · tık', (mv.up.length || mv.down.length)
+        ? mv.up.map(function (m) { return '<div class="mv"><span>' + esc(short(m.key)) + '</span><b class="better">↑' + m.change + '</b></div>'; }).join('') +
+          mv.down.map(function (m) { return '<div class="mv"><span>' + esc(short(m.key)) + '</span><b class="worse">↓' + Math.abs(m.change) + '</b></div>'; }).join('')
+        : '<p class="empty">Önceki 28 güne göre değişen sayfa yok</p>') +
+
+      card('Google\'dan en çok tıklanan sayfalar', hrows(g.pages || [], function (p) { return short(p.key); }, function (p) { return p.clicks; }, function (p) { return p.clicks; })) +
+
+      card('Ülke · tık', hrows(g.countries || [], function (c) { var cc = CC[c.key] || c.key.toUpperCase(); return flag(cc) + cc; }, function (c) { return c.clicks; }, function (c) { return c.clicks; })) +
+
+      card('Cihaz · gösterim', devTotal ? '<div class="split">' + DEV.map(function (x) { return dev[x[0]] ? '<i style="flex:' + dev[x[0]] + ';background:var(--' + x[2] + ')"></i>' : ''; }).join('') + '</div>' +
+        '<div class="legend">' + DEV.map(function (x) { return '<span><i style="background:var(--' + x[2] + ')"></i>' + x[1] + ' %' + Math.round((dev[x[0]] || 0) / devTotal * 100) + '</span>'; }).join('') + '</div>' : '<p class="empty">Henüz veri yok</p>') +
+
+      card('Site haritası sağlığı', maps.length ? maps.map(function (m) {
+        var bad = m.errors || m.warnings;
+        return '<div class="mv"><span>' + esc(m.path) + ' · ' + m.submitted + ' adres' + (m.lastDownloaded ? ' · ' + esc(when(Date.parse(m.lastDownloaded))) : '') + '</span>' +
+          '<b class="' + (m.errors ? 'worse' : bad ? '' : 'better') + '">' + (m.errors ? m.errors + ' hata' : m.warnings ? m.warnings + ' uyarı' : m.pending ? 'bekliyor' : '✓') + '</b></div>';
+      }).join('') : '<p class="empty">Search Console\'da site haritası yok</p>') +
+
+      '<p class="note">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · Google verisi 2 gün geriden gelir · 6 saatte bir yenilenir</p>';
   }
   function loadGsc(fresh) {
     gscLoaded = true;

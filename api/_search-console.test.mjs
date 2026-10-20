@@ -13,3 +13,18 @@ test('windows are two back-to-back 28-day ranges ending 2 days ago', () => {
   assert.deepEqual(w.cur, ['2026-09-21', '2026-10-18']);
   assert.deepEqual(w.prev, ['2026-08-24', '2026-09-20']);
 });
+
+test('opportunities keep seen-but-not-top queries with their best page', async () => {
+  const { opportunities, movers } = await import('./_search-console.js');
+  const rows = [
+    { keys: ['cta complaint', 'https://www.complaintca.ca/guides/a.html'], impressions: 300, clicks: 4, position: 8.2 },
+    { keys: ['cta complaint', 'https://www.complaintca.ca/'], impressions: 40, clicks: 0, position: 12 },
+    { keys: ['top already', 'https://www.complaintca.ca/b'], impressions: 500, clicks: 50, position: 1.5 },
+    { keys: ['too rare', 'https://www.complaintca.ca/c'], impressions: 5, clicks: 0, position: 9 }
+  ];
+  assert.deepEqual(opportunities(rows), [{ query: 'cta complaint', page: '/guides/a.html', impressions: 300, clicks: 4, position: 8.2 }]);
+  const m = movers([{ keys: ['https://www.complaintca.ca/a'], clicks: 10 }, { keys: ['https://www.complaintca.ca/b'], clicks: 2 }],
+    [{ keys: ['https://www.complaintca.ca/b'], clicks: 7 }, { keys: ['https://www.complaintca.ca/gone'], clicks: 3 }]);
+  assert.deepEqual(m.up.map(x => x.key), ['/a']);
+  assert.deepEqual(m.down.map(x => [x.key, x.change]), [['/b', -5], ['/gone', -3]]);
+});
