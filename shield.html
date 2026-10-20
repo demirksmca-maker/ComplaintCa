@@ -46,6 +46,7 @@
   .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .tile{padding:12px;text-align:center}
   .tile b{display:block;font-size:1.6rem;font-weight:600;line-height:1.1}
+  .tile small{font-size:.68rem;font-weight:500;white-space:nowrap}
   .tile span{font-size:.7rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
   .cmp{display:grid;grid-template-columns:1fr 1fr;text-align:center;font-size:.78rem;color:var(--mute)}
   .cmp b{display:block;color:var(--ink);font-size:1.05rem}
@@ -63,7 +64,7 @@
   .brands+h2{margin-top:14px}
 
   /* Horizontal bar list: label left, thin bar, value right */
-  .hb{display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:2px 10px;align-items:center;font-size:.78rem}
+  .hb{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;font-size:.78rem}
   .hb .lab{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .hb .val{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
   .hb .bar{grid-column:1/-1;height:6px;border-radius:0 4px 4px 0;background:var(--s1);margin-bottom:6px;min-width:2px}
@@ -104,12 +105,16 @@
   .quiet{color:var(--ok);font-size:.82rem;text-align:center;padding:14px 0}
 
   /* Bottom toolbar */
-  .bar-nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:#0a121b;padding:6px 8px max(6px,env(safe-area-inset-bottom))}
+  .bar-nav{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:#0a121b;padding:6px 8px max(6px,env(safe-area-inset-bottom))}
   .bar-nav button{background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.68rem;color:var(--mute)}
   .bar-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .bar-nav button[aria-current="page"]{color:var(--ink)}
   .bar-nav button[aria-current="page"] svg{stroke:var(--s1)}
 
+  .steps{display:flex;flex-direction:column;gap:10px;font-size:.84rem}
+  .steps code{display:block;margin-top:4px;padding:8px;border-radius:8px;background:var(--bg);border:1px solid var(--line);font-size:.75rem;word-break:break-all;user-select:all}
+  .steps a{color:var(--s1)}
+  .better{color:var(--ok)}.worse{color:var(--bad)}
   .foot{display:flex;justify-content:space-between;font-size:.7rem;color:var(--mute);padding:0 2px}
   .foot button{background:none;color:var(--mute);padding:0;text-decoration:underline;font-size:.7rem}
   .install{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;font-size:.8rem}
@@ -174,6 +179,11 @@
       <p class="note" id="funNote"></p>
     </section>
 
+    <!-- GOOGLE (Search Console) -->
+    <section class="sec" id="v-google" hidden>
+      <div id="gscBody"><p class="empty">Yükleniyor…</p></div>
+    </section>
+
     <!-- GÜVENLİK -->
     <section class="sec" id="v-security" hidden>
       <div class="card pad"><h2>Saldırı gelen ülkeler · son kayıtlar</h2><div class="hb" id="attackGeo"></div></div>
@@ -187,6 +197,7 @@
       <button type="button" data-sec="home" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Genel</button>
       <button type="button" data-sec="traffic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Trafik</button>
       <button type="button" data-sec="funnel"><svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Huni</button>
+      <button type="button" data-sec="google"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Google</button>
       <button type="button" data-sec="security"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg>Güvenlik</button>
     </nav>
   </div>
@@ -207,7 +218,56 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function when(t) { return new Date(t).toLocaleString('tr-TR', { timeZone: 'America/Toronto', dateStyle: 'short', timeStyle: 'short' }); }
   function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(127397 + cc.charCodeAt(0), 127397 + cc.charCodeAt(1)) + ' ' : ''; }
-  var lockMin = 0, data = null, funRange = 'today';
+  var lockMin = 0, data = null, funRange = 'today', gscLoaded = false;
+
+  // Search Console section: loaded when opened (the server caches it 6 h).
+  function gscDelta(now, before, lowerIsBetter) {
+    if (!before) return '';
+    var diff = now - before, good = lowerIsBetter ? diff < 0 : diff > 0;
+    var txt = lowerIsBetter ? (diff < 0 ? '↑' : '↓') + Math.abs(diff).toFixed(1) : (diff >= 0 ? '↑' : '↓') + Math.abs(Math.round(diff / before * 100)) + '%';
+    return ' <small class="' + (Math.abs(diff) < 1e-9 ? '' : good ? 'better' : 'worse') + '">' + txt + '</small>';
+  }
+  function renderGsc(g) {
+    if (!g.ok) {
+      var s = g.setup || {};
+      $('gscBody').innerHTML = '<div class="card pad steps"><h2>Search Console bağlantısı · 2 adım</h2>' +
+        '<div>1. Search Console API\'yi aç: <a href="' + esc(s.apiUrl) + '" target="_blank" rel="noopener">Google Cloud → Etkinleştir</a></div>' +
+        '<div>2. Search Console\'da <a href="' + esc(s.usersUrl) + '" target="_blank" rel="noopener">Ayarlar → Kullanıcılar</a> → Kullanıcı ekle, izin: Kısıtlı. Bu e-postayı ekle:' +
+        '<code>' + esc(s.email || 'servis hesabı bulunamadı') + '</code></div>' +
+        '<div class="muted">Durum: ' + esc(g.reason) + '. Bitince aşağıya bas.</div>' +
+        '<button type="button" class="lock" id="gscRetry">Tekrar dene</button></div>';
+      $('gscRetry').addEventListener('click', function () { loadGsc(true); });
+      return;
+    }
+    var t = g.totals, b = g.before;
+    $('gscBody').innerHTML =
+      '<div class="tiles">' +
+      '<div class="card tile"><b>' + t.clicks.toLocaleString('tr-TR') + gscDelta(t.clicks, b.clicks) + '</b><span>Tıklama</span></div>' +
+      '<div class="card tile"><b>' + t.impressions.toLocaleString('tr-TR') + gscDelta(t.impressions, b.impressions) + '</b><span>Gösterim</span></div>' +
+      '<div class="card tile"><b>%' + (t.ctr * 100).toFixed(1) + '</b><span>Tıklama oranı</span></div>' +
+      '<div class="card tile"><b>' + t.position.toFixed(1) + gscDelta(t.position, b.position, true) + '</b><span>Ort. sıra</span></div></div>' +
+      '<div class="card pad" style="margin-top:10px"><h2>Aranan kelimeler · tıklama · sıra</h2><div class="hb">' +
+      (g.queries.length ? g.queries.map(function (q, i, all) {
+        var max = all[0].clicks || 1;
+        return '<span class="lab" title="' + esc(q.key + ' · ' + q.impressions + ' gösterim') + '">' + esc(q.key) + '</span><span class="val">' + q.clicks + ' · ' + q.position + '</span>' +
+          '<span class="bar" style="width:' + Math.max(1, q.clicks / max * 100) + '%"></span>';
+      }).join('') : '<p class="empty" style="grid-column:1/-1">Henüz veri yok</p>') + '</div></div>' +
+      '<div class="card pad" style="margin-top:10px"><h2>Google\'dan en çok tıklanan sayfalar</h2><div class="hb">' +
+      g.pages.map(function (p, i, all) {
+        var max = all[0].clicks || 1;
+        return '<span class="lab">' + esc(p.key === '/' ? 'Ana sayfa' : p.key.replace(/\.html$/, '')) + '</span><span class="val">' + p.clicks + '</span>' +
+          '<span class="bar" style="width:' + Math.max(1, p.clicks / max * 100) + '%"></span>';
+      }).join('') + '</div></div>' +
+      '<p class="note" style="margin-top:8px">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · Google verisi 2 gün geriden gelir</p>';
+  }
+  function loadGsc(fresh) {
+    gscLoaded = true;
+    $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
+    fetch('/api/shield?gsc=1' + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(renderGsc)
+      .catch(function () { gscLoaded = false; $('gscBody').innerHTML = '<p class="empty">Google verisi alınamadı.</p>'; });
+  }
 
   // 3D shield: 10 dark layers for thickness, then the lit front.
   (function () {
@@ -223,6 +283,7 @@
   function showSec(name) {
     each('.bar-nav button', function (b) { var on = b.getAttribute('data-sec') === name; on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); $('v-' + b.getAttribute('data-sec')).hidden = !on; });
     store(SEC, name);
+    if (name === 'google' && !gscLoaded) loadGsc();
   }
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
   each('[data-range]', function (b) { b.addEventListener('click', function () {

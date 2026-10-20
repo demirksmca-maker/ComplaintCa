@@ -5,6 +5,7 @@
 // funnel, attack countries, change against the week before. POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
+import { searchConsole } from './_search-console.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -55,6 +56,16 @@ export async function shieldView(req, res) {
   if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) {
     await pipeline([['INCR', badKey], ['EXPIRE', badKey, 600]]).catch(() => {});
     return res.status(403).json({ error: 'forbidden' });
+  }
+
+  // GET /api/shield?gsc=1 → Search Console numbers (cached 6 h; &fresh=1 to refetch).
+  if (req.query && req.query.gsc) {
+    try {
+      return res.status(200).json(await searchConsole(pipeline, { fresh: req.query.fresh === '1' }));
+    } catch (err) {
+      console.error('search console error:', err && err.message);
+      return res.status(502).json({ ok: false, reason: 'error' });
+    }
   }
 
   if (req.method === 'POST') {

@@ -1,4 +1,5 @@
-// Server-only Google access for Firestore, from the FIREBASE_SERVICE_ACCOUNT env
+// Server-only Google access (Firestore, and read-only Search Console for the
+// shield panel), from the FIREBASE_SERVICE_ACCOUNT env
 // (the service-account JSON). Requests made with this token are admin requests:
 // they bypass the Firestore security rules, so they must never run on input a
 // caller has not been checked for.
@@ -7,7 +8,8 @@ import { createSign } from 'node:crypto';
 export const PROJECT = 'ajan-d6070';
 export const FS = `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents`;
 
-let cached = null; // { token, exp }
+const DATASTORE = 'https://www.googleapis.com/auth/datastore';
+const cached = {}; // scope → { token, exp }
 
 export function serviceAccount() {
   try {
@@ -18,13 +20,14 @@ export function serviceAccount() {
 
 const b64url = s => Buffer.from(s).toString('base64').replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
 
-export async function accessToken(now = Date.now()) {
-  if (cached && cached.exp - 60000 > now) return cached.token;
+export async function accessToken(now = Date.now(), scope = DATASTORE) {
+  const hit = cached[scope];
+  if (hit && hit.exp - 60000 > now) return hit.token;
   const sa = serviceAccount();
   if (!sa) return null;
   const iat = Math.floor(now / 1000);
   const head = b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
-  const claims = b64url(JSON.stringify({ iss: sa.client_email, scope: 'https://www.googleapis.com/auth/datastore',
+  const claims = b64url(JSON.stringify({ iss: sa.client_email, scope,
     aud: sa.token_uri || 'https://oauth2.googleapis.com/token', iat, exp: iat + 3600 }));
   const sig = createSign('RSA-SHA256').update(head + '.' + claims).sign(sa.private_key).toString('base64')
     .replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
@@ -34,8 +37,8 @@ export async function accessToken(now = Date.now()) {
   });
   if (!r.ok) return null;
   const j = await r.json();
-  cached = { token: j.access_token, exp: now + (j.expires_in || 3600) * 1000 };
-  return cached.token;
+  cached[scope] = { token: j.access_token, exp: now + (j.expires_in || 3600) * 1000 };
+  return j.access_token;
 }
 
 // fetch() against Firestore REST as the service account.
