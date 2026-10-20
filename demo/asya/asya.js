@@ -67,6 +67,10 @@
   const pickLang = () => { if (LANGS.includes(urlLang)) return urlLang; const p = String(pageLang()).slice(0, 2).toLowerCase(); return LANGS.includes(p) ? p : 'en'; };
   const tx = (s, lg) => { const D = window.ccAsyaDict; return (lg && lg !== 'en' && D && D[lg] && D[lg][s]) || s; };
   const IS_DEMO = location.pathname.indexOf('/demo') === 0;
+  // Complaint funnel for the owner's shield panel: one beacon per step, counted at the edge (no cookies).
+  // Repeats are harmless: a person counts once per step per day. c = complaint category, r = failure reason.
+  let funCat = '';
+  const fun = (e, r) => { if (IS_DEMO) return; try { navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=' + e + (funCat ? '&c=' + funCat : '') + (r ? '&r=' + encodeURIComponent(r) : '')); } catch (x) {} };
   let builtLg = 'en';
 
   // ── overlay shell ──
@@ -554,6 +558,7 @@
     let step = 0, Rt = null, draftSecs = [], draftEdited = '', editing = false, orgAuto = false;
     function showStep(n){
       step = Math.max(0, Math.min(3, n)); panes.forEach((p, i) => { p.hidden = i !== step; });
+      if (step === 3) fun('preview');
       [...o_dots.children].forEach((d, i) => d.classList.toggle('on', i <= step));
       o_back.textContent = L2.back; o_back.hidden = step === 0; o_next.textContent = step === 0 ? L2.next : L2.nextN; o_next.hidden = step === 3;
       if (!sumDone) { o_sum.querySelector('small') && (o_sum.querySelector('small').textContent = (step + 1) + ' / 4 · ' + L2.step[step]); }
@@ -644,6 +649,7 @@
     o_snap.addEventListener('click', () => o_pfile.click());
     o_pfile.addEventListener('change', async () => {
       const f = o_pfile.files[0]; o_pfile.value = ''; if (!f) return;
+      fun('photo');
       o_snap.disabled = true; o_snap.classList.add('on'); o_wait.hidden = false; o_wait.textContent = TX('ASYA is reading your photo…'); o_wait.appendChild(el('span','af1-bar'));
       let v = null; try { const r = await post('/api/vision', { images:[await shrink(f)], lang:LG }); if (r.ok) v = await r.json(); } catch (e) {}
       o_snap.disabled = false; o_snap.classList.remove('on');
@@ -813,10 +819,11 @@
       o_ask.hidden = true;
       if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = routeCategory(c, val.who);
+      funCat = /^[a-z0-9_]{1,24}$/.test(cat || '') ? cat : '';
       const [R, Vv] = await Promise.all([
         post('/api/route', { category:cat, target:val.who, location:loc, targetAddress:whoAddr, targetName:o_who.value.trim() || (c && c.institution) || '', place:c ? [c.city, c.address].filter(Boolean).join(' ') : '' }).then(r => r.ok ? r.json() : null).catch(() => null),
         post('/api/verdict', { title:d.slice(0, 80), desc:d, category:cat, location:loc, targetName:o_who.value.trim(), ctype:'notice', anonymous:true, lang:pageLang() === 'fr' ? 'fr' : 'en' }).then(r => r.ok ? r.json() : null).catch(() => null)]);
-      if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
+      if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R); fun('route');
     }
     function finishOne(d){
       o_done.innerHTML = '';
@@ -953,7 +960,8 @@
       setTimeout(() => o_frame.classList.add('settled'), 2700);   // drop the sweep mask once the frame is fully lit
       setTimeout(() => { let i = 0; const tick = () => { refEl.textContent = ref.slice(0, ++i); if (i < ref.length) setTimeout(tick, 45); }; tick(); }, 2300);
     }
-    o_story.addEventListener('input', () => { clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
+    let wrote = false;
+    o_story.addEventListener('input', () => { if (!wrote && o_story.value.trim()) { wrote = true; fun('write'); } clearTimeout(oTimer); if (o_sheet.classList.contains('open')) setSheet('peek'); emit({ type:'type', len:o_story.value.length }); oTimer = setTimeout(analyse, 1200); });
     o_story.addEventListener('blur', () => { clearTimeout(oTimer); analyse(); });
     // What was typed survives a page refresh (this tab only); cleared once the complaint is sent.
     const ONE_KEY = 'cc_asya_one';
@@ -994,6 +1002,7 @@
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
       const mPass = passFor(mail);
       if (!mPass) { if (!o_code.hidden && codeFor === mail) { o_codeIn.focus(); return; } o_btn.disabled = true; await sendCode(mail); o_btn.disabled = false; return; }
+      fun('email');
       // Consistency check before anything leaves: problems are listed; a second tap sends anyway (the person may have edited on purpose).
       const issues = checkCase(draftText().replace(NAME_TOKEN, (oNeedName() || named) && (val.name || '').trim() ? val.name.trim() : 'Complainant'));
       if (issues.length && !overrideCheck) { overrideCheck = true; o_err.textContent = '⚠ ' + issues.join(' ') + ' ' + TX('Fix it in card 1, or tap Send again to send as it is.'); return; }
@@ -1001,14 +1010,14 @@
       let last = 0; try { last = parseInt(localStorage.getItem('vc_last_submit') || '0', 10); } catch (e) {}
       if (Date.now() - last < COOLDOWN_MS) { o_err.textContent = ERR.cooldown; return; }
       if (A && A.priority === 'high' && !(await askHigh())) return;
-      if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' });
+      if (oBusy) return; oBusy = true; o_btn.disabled = true; o_btn.textContent = L1.sending; emit({ type:'send' }); fun('submit');
       const isNamed = oNeedName() || named; val.mail = mail; val.what = what_; val.where = o_loc.value.trim(); val.ctype = pool ? 'legal' : 'notice'; val.id = isNamed ? 'named' : 'anon'; val.title = what_.slice(0, 80);
       let r, d = {};
       await Promise.all([post('/api/complaint', { test:!!(window._ccPanelTest || /[?&]test=1\b/.test(location.search)), title:val.title, desc:what_, target:val.who || 'other', targetName:o_org.value.trim(), targetAddress:o_org.value.trim() === whoPicked ? whoAddr : '', location:val.where, place:A ? [A.city, A.address].filter(Boolean).join(' ') : '', category:A ? routeCategory(A, val.who) : '', priority:A ? A.priority : '',
         ctype:val.ctype, anonymous:!isNamed, name:isNamed ? (val.name || '') : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' }, turnstileToken:tsToken, mailPass:mPass, lang:pageLang(), emailDraft:draftText().replace(NAME_TOKEN, isNamed && (val.name || '').trim() ? val.name.trim() : 'Complainant') })
         .then(async x => { r = x; d = await x.json().catch(() => ({})); }).catch(() => { d = { error:'network' }; }), wait(1200)]);
       oBusy = false; o_btn.disabled = false; o_btn.textContent = L1.send;
-      if (!r || !r.ok) { emit({ type:'abort' }); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {}
+      if (!r || !r.ok) { emit({ type:'abort' }); fun('fail', String(d.error || (r ? 'http_' + r.status : 'network')).toLowerCase()); if (window.turnstile && tsWidget) try { window.turnstile.reset(tsWidget); tsToken = ''; } catch (e) {}
         if (d.error === 'email_unverified') { try { localStorage.removeItem(MP_KEY); } catch (e) {} codeTok = ''; }
         o_err.textContent = ERR[d.error] || L1.eFail; return; }
       try { localStorage.setItem('vc_last_submit', String(Date.now())); } catch (e) {}
@@ -1016,7 +1025,7 @@
       try { const list = JSON.parse(localStorage.getItem('vc_comp') || '[]'), now = new Date().toISOString();
         list.unshift({ ref:d.ref, title:val.title, desc:what_, category:d.category, target:val.who, targetName:'', priority:d.priority, location:val.where, anonymous:!isNamed, ctype:val.ctype, isLegal:val.ctype === 'legal', photoCount:0, status:'received', date:now, timeline:[{ status:'received', date:now }], test:d.test });
         localStorage.setItem('vc_comp', JSON.stringify(list.slice(0, 50))); } catch (e) {}
-      finishOne(d);
+      fun('sent'); finishOne(d);
     });
 
     wrap.append(top, restored, choice, chat, one, stage, nav, hint, done, o_bd, o_sheet);
@@ -1248,6 +1257,7 @@
     if (!registered && window.ccPanelRoot) { window.ccPanelRoot(ov); registered = true; }
     if (opts.host) { if (ov.parentNode !== opts.host) opts.host.appendChild(ov); ov.classList.add('cc-embedded'); }
     if (opts.mode && F.setMode && F.mode() === 'choose') F.setMode(opts.mode);
+    funCat = ''; fun('open');
     ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); if (!opts.host) document.body.style.overflow = 'hidden';
   }
   function close(){ if (window.ccPanelClosed) setTimeout(window.ccPanelClosed, 0); ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }

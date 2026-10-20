@@ -2945,15 +2945,13 @@ function _ccEmbed(){
   try{ goApp('new'); }finally{ _suppressNavPush=_was; }
   document.body.classList.add('cc-panel-on');
   window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
-  // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies).
-  try{ navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); }catch(e){}
   window._ccEmbedded=true;
   window.scrollTo(0,0);
 }
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261014d';
+var _ccAsyaV='20261020a';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }

@@ -28,6 +28,7 @@ export const config = {
 
 const BAN_SECONDS = 3600;
 const TRAP_BAN_SECONDS = 6 * 3600;
+const LAND_SECONDS = 6 * 3600;
 const API_LIMIT_PER_MIN = 120;
 const SUSPECT_PER_MIN = 40;
 const PAGE_LIMIT_PER_MIN = 60;
@@ -181,15 +182,65 @@ function countVisit(request, url, ip, ua, source) {
     cmds.push(['HINCRBY', stats, `g:${country}|${city}`, 1]);
   }
   if (source) cmds.push(['HINCRBY', `shield:src:${day}`, source, 1]);
+  // First page of the visit, for the funnel's source / landing page rows.
+  // Kept 6 hours under the IP (like the ban keys), then gone.
+  const lp = url.pathname.length <= 80 && PAGE_RE.test(url.pathname) ? url.pathname : '(other)';
+  cmds.push(['SET', `shield:land:${ip}`, `${landSource(request.headers.get('referer'), ua, source)}|${lp}`, 'NX', 'EX', LAND_SECONDS]);
   return cmds;
 }
 
-// Complaint funnel: unique people per step per day. "open" comes from the
-// page's beacon (/api/beacon, answered here without a function), the other
-// steps from the API calls the complaint flow makes.
-export function funnelStep(request, url) {
-  if (request.method !== 'POST' || url.search) return null;
-  return { '/api/route': 'route', '/api/email-code': 'email', '/api/complaint': 'submit' }[url.pathname] || null;
+// Arrival kind for the funnel: a known engine / network, another site, or direct.
+export function landSource(referer, ua, source) {
+  if (source) return source;
+  let host = '';
+  try { host = new URL(referer).hostname.toLowerCase(); } catch (e) { /* no referer */ }
+  return host && !host.endsWith('complaintca.ca') ? 'other' : 'direct';
+}
+
+// Complaint funnel: unique people per step per day, sent by the complaint
+// panel as beacons (/api/beacon?e=step, answered here without a function).
+// A step also counts the person in every step before it, so a later step can
+// never show more people than an earlier one (a blocked or missed beacon used
+// to give "%200"). The first time a person reaches a step that day, the step
+// is also counted by arrival source, landing page, device, site and
+// complaint category (shield:funx:day, fields "step|kind:value").
+export const FUNNEL = ['open', 'write', 'route', 'preview', 'email', 'submit', 'sent'];
+const SIDE_STEPS = ['photo', 'fail'];
+
+export function funnelBeacon(url) {
+  const e = url.searchParams.get('e') || '';
+  if (!FUNNEL.includes(e) && !SIDE_STEPS.includes(e)) return null;
+  const word = k => { const v = (url.searchParams.get(k) || '').toLowerCase(); return /^[a-z0-9_]{1,24}$/.test(v) ? v : ''; };
+  return { step: e, cat: word('c'), reason: word('r') };
+}
+
+export function funnelCommands(b, ip, day, land, ctx, added) {
+  const steps = FUNNEL.includes(b.step) ? FUNNEL.slice(0, FUNNEL.indexOf(b.step) + 1) : [b.step];
+  if (!added) return steps.map(s => ['PFADD', `shield:fun:${s}:${day}`, ip]);
+  const [src, lp] = String(land || '').split('|');
+  const key = `shield:funx:${day}`, cmds = [];
+  steps.forEach((s, i) => {
+    if (!added[i]) return;
+    const dims = [`s:${src || 'direct'}`, `p:${lp || '(other)'}`, `d:${ctx.device}`, `w:${ctx.site}`];
+    if (b.cat) dims.push(`c:${b.cat}`);
+    if (s === 'fail') dims.push(`r:${b.reason || 'error'}`);
+    for (const d of dims) cmds.push(['HINCRBY', key, `${s}|${d}`, 1]);
+  });
+  return cmds;
+}
+
+async function countFunnel(request, url, ip, ua) {
+  const b = funnelBeacon(url);
+  if (!b) return;
+  const day = visitDay();
+  const marks = funnelCommands(b, ip, day);
+  const r = await redis([['GET', `shield:land:${ip}`], ...marks]);
+  if (!r) return;
+  let site = 'ca';
+  try { site = /^\/es(\/|$)/.test(new URL(request.headers.get('referer')).pathname) ? 'es' : 'ca'; } catch (e) { /* no referer */ }
+  const added = marks.map((_, i) => r[i + 1] && r[i + 1].result === 1);
+  const cmds = funnelCommands(b, ip, day, r[0] && r[0].result, { device: deviceOf(ua), site }, added);
+  if (cmds.length) await redis(cmds);
 }
 
 export default async function middleware(request) {
@@ -214,7 +265,7 @@ export default async function middleware(request) {
     return blocked(agent);
   }
   if (url.pathname === '/api/beacon') {
-    if (url.searchParams.get('e') === 'open' && !searchBot) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
+    if (!searchBot) await countFunnel(request, url, ip, ua);
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }
 
@@ -226,8 +277,6 @@ export default async function middleware(request) {
   const cmds = [['GET', `shield:ban:${ip}`], ['GET', 'shield:lockdown']];
   if (rateKey) cmds.push(['INCR', rateKey], ['EXPIRE', rateKey, 120]);
   if (isPageView(request, url, ua)) cmds.push(...countVisit(request, url, ip, ua, visitSource(request.headers.get('referer'), ua)));
-  const step = funnelStep(request, url);
-  if (step) cmds.push(['PFADD', `shield:fun:${step}:${visitDay()}`, ip]);
   const r = await redis(cmds);
   if (!r) return;
   if (r[0] && r[0].result) return blocked('ban');

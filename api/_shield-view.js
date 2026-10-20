@@ -11,7 +11,9 @@ import { searchConsole } from './_search-console.js';
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
 const BAD_KEY_LIMIT = 10;
-const FUNNEL = ['open', 'route', 'email', 'submit'];
+// Same steps as middleware.js, plus the side counts (photo added, send failed).
+const FUNNEL = ['open', 'write', 'route', 'preview', 'email', 'submit', 'sent', 'photo', 'fail'];
+const BY_DIMS = { s: 'source', p: 'page', d: 'device', w: 'site', c: 'category', r: 'reason' };
 
 export function keyOk(given, expected) {
   if (!expected || typeof given !== 'string') return false;
@@ -43,9 +45,34 @@ export function fillFromGsc(result, g) {
 }
 const top = (obj, n) => Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
 
+// Funnel split by source / landing page / device / site / category: adds one
+// day's shield:funx hash (flat HGETALL list, fields "step|kind:value") into
+// by[kind][value][step].
+export function addFunnelBy(by, flat) {
+  for (let k = 0; k + 1 < (flat || []).length; k += 2) {
+    const f = String(flat[k]), bar = f.indexOf('|'), step = f.slice(0, bar), rest = f.slice(bar + 1), colon = rest.indexOf(':');
+    const dim = BY_DIMS[rest.slice(0, colon)];
+    if (bar < 1 || colon < 1 || !dim || !FUNNEL.includes(step)) continue;
+    const v = rest.slice(colon + 1), row = ((by[dim] = by[dim] || {})[v] = by[dim][v] || {});
+    row[step] = (row[step] || 0) + (Number(flat[k + 1]) || 0);
+  }
+  return by;
+}
+
+// Biggest rows first (by people who opened the form, or reached the route
+// step for categories), at most 8 per kind.
+export function topFunnelBy(by) {
+  const out = {};
+  for (const dim of Object.values(BY_DIMS)) {
+    const first = dim === 'category' ? 'route' : dim === 'reason' ? 'fail' : 'open';
+    out[dim] = Object.entries(by[dim] || {}).sort((a, b) => (b[1][first] || 0) - (a[1][first] || 0)).slice(0, 8);
+  }
+  return out;
+}
+
 // Trafik / Huni numbers for the last N days: visits per day, top pages,
 // cities, devices, a weekday × hour heatmap (Monday first) and the funnel.
-// Up to ~460 Upstash commands for 90 days, so periods over a week are
+// Up to ~560 Upstash commands for 90 days, so periods over a week are
 // cached for 15 minutes.
 export async function periodStats(pipeline, n, now = new Date()) {
   const cacheKey = `shield:period:${n}`;
@@ -58,6 +85,7 @@ export async function periodStats(pipeline, n, now = new Date()) {
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
   for (const d of days) cmds.push(['HGETALL', `shield:stats:${d}`]);
   for (const step of FUNNEL) cmds.push(['PFCOUNT', ...days.map(d => `shield:fun:${step}:${d}`)]);
+  for (const d of days) cmds.push(['HGETALL', `shield:funx:${d}`]);
   const out = await pipeline(cmds);
   let i = 0;
   const visits = days.map(day => {
@@ -80,7 +108,9 @@ export async function periodStats(pipeline, n, now = new Date()) {
   }
   const funnel = {};
   for (const step of FUNNEL) funnel[step] = Number(out[i++]) || 0;
-  const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel };
+  const by = {};
+  for (let k = 0; k < days.length; k++) addFunnelBy(by, out[i++]);
+  const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel, funnelBy: topFunnelBy(by) };
   if (PERIODS.includes(n)) {
     try { fillFromGsc(result, await searchConsole(pipeline, { days: n })); } catch { /* keep our own numbers */ }
   }
@@ -147,7 +177,7 @@ export async function shieldView(req, res) {
   const cmds = [];
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
   for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${days[0]}`]);
-  cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown'], ['HGETALL', `shield:src:${days[0]}`]);
+  cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown'], ['HGETALL', `shield:src:${days[0]}`], ['HGETALL', `shield:funx:${days[0]}`]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
   let out, stats;
   try {
@@ -176,6 +206,7 @@ export async function shieldView(req, res) {
   const src = {};
   const flat = out[i++] || [];
   for (let k = 0; k + 1 < flat.length; k += 2) src[flat[k]] = Number(flat[k + 1]) || 0;
+  const funnelByToday = topFunnelBy(addFunnelBy({}, out[i++]));
   const pick = keys => Object.fromEntries(keys.map(k => [k, src[k] || 0]));
   const attackCountries = {};
   for (const e of events) if (e.c && !String(e.agent).startsWith('suspect')) attackCountries[e.c] = (attackCountries[e.c] || 0) + 1;
@@ -183,7 +214,7 @@ export async function shieldView(req, res) {
     visits, reports, events: events.slice(0, 50), lockdown: ttl > 0 ? ttl : 0,
     search: pick(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia']),
     socials: pick(['facebook', 'instagram', 'x', 'tiktok', 'youtube']),
-    compare, funnelToday: today, period: stats,
+    compare, funnelToday: today, funnelByToday, period: stats,
     attackCountries: top(attackCountries, 5)
   });
 }

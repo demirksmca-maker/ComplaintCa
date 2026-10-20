@@ -68,6 +68,19 @@ test('periodStats adds up days and folds hours into weekdays', async () => {
   assert.equal(r.hours.length, 7);
   assert.equal(r.hours[0][9], 8); // two Mondays in 14 days
   assert.equal(r.funnel.open, 2);
+  assert.ok(r.funnelBy.source);
+});
+
+test('addFunnelBy and topFunnelBy split the funnel', async () => {
+  const { addFunnelBy, topFunnelBy } = await import('./_shield-view.js');
+  const by = {};
+  addFunnelBy(by, ['open|s:google', '3', 'sent|s:google', '1', 'open|s:direct', '5', 'route|c:telecom', '2', 'fail|r:cooldown', '1', 'p:/', '9', 'bad|s:x', '1']);
+  addFunnelBy(by, ['open|s:google', '2']);
+  const t = topFunnelBy(by);
+  assert.deepEqual(t.source, [['google', { open: 5, sent: 1 }], ['direct', { open: 5 }]]);
+  assert.deepEqual(t.category, [['telecom', { route: 2 }]]);
+  assert.deepEqual(t.reason, [['cooldown', { fail: 1 }]]);
+  assert.deepEqual(t.page, []);
 });
 
 test('fillFromGsc fills empty days and pages from Search Console, keeps own counts', async () => {

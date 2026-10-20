@@ -128,23 +128,58 @@ test('visitSource reads referer and in-app browsers', async () => {
   assert.equal(visitSource(null), null);
 });
 
-test('analytics helpers: device, hour, funnel step', async () => {
-  const { deviceOf, visitHour, funnelStep } = await import('./middleware.js');
+test('analytics helpers: device, hour, arrival', async () => {
+  const { deviceOf, visitHour, landSource } = await import('./middleware.js');
   assert.equal(deviceOf('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) Mobile/15E148'), 'mobile');
   assert.equal(deviceOf('Mozilla/5.0 (iPad; CPU OS 17_0)'), 'tablet');
   assert.equal(deviceOf('Mozilla/5.0 (Linux; Android 14; SM-X710)'), 'tablet');
   assert.equal(deviceOf('Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130'), 'desktop');
   assert.equal(visitHour(new Date('2026-10-20T16:30:00Z')), 12);
-  const post = p => [new Request('https://complaintca.ca' + p, { method: 'POST' }), u(p)];
-  assert.equal(funnelStep(...post('/api/route')), 'route');
-  assert.equal(funnelStep(...post('/api/email-code')), 'email');
-  assert.equal(funnelStep(...post('/api/complaint')), 'submit');
-  assert.equal(funnelStep(...post('/api/complaint?my=1')), null);
-  assert.equal(funnelStep(new Request('https://complaintca.ca/api/route'), u('/api/route')), null);
+  assert.equal(landSource('https://www.google.ca/', '', 'google'), 'google');
+  assert.equal(landSource('https://example.com/a', '', null), 'other');
+  assert.equal(landSource('https://complaintca.ca/blog/', '', null), 'direct');
+  assert.equal(landSource('', '', null), 'direct');
+});
+
+test('funnel beacons: earlier steps are filled in, splits only for new people', async () => {
+  const { funnelBeacon, funnelCommands } = await import('./middleware.js');
+  assert.equal(funnelBeacon(u('/api/beacon?e=nope')), null);
+  assert.deepEqual(funnelBeacon(u('/api/beacon?e=route&c=Telecom')), { step: 'route', cat: 'telecom', reason: '' });
+  assert.equal(funnelBeacon(u('/api/beacon?e=fail&r=bad%20one')).reason, '');
+  const marks = funnelCommands({ step: 'route', cat: '' }, '1.1.1.1', 'D');
+  assert.deepEqual(marks.map(c => c[1]), ['shield:fun:open:D', 'shield:fun:write:D', 'shield:fun:route:D']);
+  const ctx = { device: 'mobile', site: 'ca' };
+  const split = funnelCommands({ step: 'route', cat: 'telecom' }, '1.1.1.1', 'D', 'google|/blog/a.html', ctx, [false, true, true]);
+  const fields = split.map(c => c[2]);
+  assert.ok(!fields.some(f => f.startsWith('open|')));
+  assert.ok(fields.includes('write|s:google') && fields.includes('route|p:/blog/a.html') && fields.includes('route|c:telecom') && fields.includes('route|d:mobile'));
+  const fail = funnelCommands({ step: 'fail', cat: '', reason: 'cooldown' }, '1.1.1.1', 'D', null, ctx, [true]);
+  assert.ok(fail.some(c => c[2] === 'fail|r:cooldown') && fail.some(c => c[2] === 'fail|s:direct'));
 });
 
 test('beacon is answered at the edge', async () => {
   delete process.env.KV_REST_API_URL;
   const res = await middleware(new Request('https://complaintca.ca/api/beacon?e=open', { method: 'POST', headers: { 'user-agent': 'Mozilla/5.0' } }));
   assert.equal(res.status, 204);
+});
+
+test('beacon counts the funnel with the landing page of the visit', async () => {
+  const realFetch = globalThis.fetch;
+  const kv = fakeUpstash();
+  const sent = [];
+  const fakeFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => { sent.push(...JSON.parse(opts.body)); return fakeFetch(url, opts); };
+  const h = { 'x-forwarded-for': '5.5.5.5', 'user-agent': 'Mozilla/5.0 (iPhone) Mobile' };
+  try {
+    await middleware(new Request('https://complaintca.ca/blog/a.html', { headers: { ...h, referer: 'https://www.google.com/' } }));
+    assert.equal(kv.get('shield:land:5.5.5.5'), 'google|/blog/a.html');
+    const res = await middleware(new Request('https://complaintca.ca/api/beacon?e=write', { method: 'POST', headers: { ...h, referer: 'https://complaintca.ca/es/' } }));
+    assert.equal(res.status, 204);
+    const f = sent.filter(c => c[0] === 'HINCRBY' && c[1].startsWith('shield:funx:')).map(c => c[2]);
+    assert.ok(f.includes('open|s:google') && f.includes('write|p:/blog/a.html') && f.includes('write|w:es') && f.includes('write|d:mobile'));
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.KV_REST_API_URL;
+    delete process.env.KV_REST_API_TOKEN;
+  }
 });
