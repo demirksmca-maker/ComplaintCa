@@ -12,15 +12,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Kalkan">
 <style>
-  :root{--bg:#f6f7f9;--card:#fff;--ink:#16202c;--mute:#5f6b7a;--line:#e3e7ec;--ok:#1f8a4c;--bad:#c4372f;--accent:#1d5fd1;--bar:#1d5fd1;--bar2:#e0a020}
-  @media (prefers-color-scheme:dark){:root{--bg:#0f141a;--card:#171e27;--ink:#e6ebf1;--mute:#93a0b0;--line:#26303c;--ok:#4cc27e;--bad:#ff6b61;--accent:#6ea2ff;--bar:#6ea2ff;--bar2:#f2bd4b}}
+  /* Always dark: a control room look that matches the 3D hero. */
+  :root{color-scheme:dark;--bg:#070d14;--card:#0f1a26;--ink:#e6eef6;--mute:#8fa3b8;--line:#1f2d3c;--ok:#3ddc97;--bad:#ff5a52;--accent:#3b82f6;--bar:#4c9bff;--bar2:#f2bd4b}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif;line-height:1.5}
   main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
   h1{font-size:1.4rem;margin:0 0 4px}
   h2{font-size:1rem;margin:0 0 12px}
   .sub{color:var(--mute);font-size:.9rem;margin:0 0 20px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+  .card{background:linear-gradient(180deg,#112033,var(--card));border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
   .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
   .stat b{display:block;font-size:1.8rem;line-height:1.1}
   .stat span{color:var(--mute);font-size:.85rem}
@@ -51,12 +51,54 @@
   .btn-ghost{background:none;border:1px solid var(--line);color:var(--ink)}
   .install{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   [hidden]{display:none!important}
+  /* 3D hero: a thick shield (stacked layers in a preserve-3d box) that sways,
+     over a perspective grid with radar rings. --glow follows the live state. */
+  .hero{--glow:#3ddc97;position:relative;overflow:hidden;border-radius:16px;margin-bottom:16px;padding:22px 16px 18px;
+    background:radial-gradient(120% 90% at 50% 0%,#14324a 0%,#0a1520 55%,#060b11 100%);color:#e8f1f8;text-align:center}
+  .hero.warn{--glow:#f2bd4b}.hero.alert{--glow:#ff5a52}
+  .hero h1{position:relative;z-index:2;margin:14px 0 2px;font-size:1.5rem;letter-spacing:.5px}
+  .hero .sub{position:relative;z-index:2;color:#9fb3c6;margin:0}
+  .hero .pill{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:5px 12px;border-radius:999px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);font-size:.85rem}
+  .hero .dot{width:9px;height:9px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px var(--glow)}
+  .floor{position:absolute;left:-50%;right:-50%;bottom:-40%;height:90%;transform:perspective(320px) rotateX(62deg);
+    background-image:linear-gradient(rgba(110,170,220,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(110,170,220,.18) 1px,transparent 1px);
+    background-size:34px 34px;mask-image:linear-gradient(to top,#000 10%,transparent 85%);-webkit-mask-image:linear-gradient(to top,#000 10%,transparent 85%);
+    animation:floor 6s linear infinite}
+  @keyframes floor{to{background-position:0 34px,0 0}}
+  .stage{position:relative;z-index:1;width:150px;height:170px;margin:0 auto;perspective:700px}
+  .ring{position:absolute;left:50%;top:58%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;
+    border:2px solid var(--glow);opacity:0;transform:rotateX(70deg) scale(.4);animation:ring 3s ease-out infinite}
+  .ring:nth-child(2){animation-delay:1s}.ring:nth-child(3){animation-delay:2s}
+  @keyframes ring{0%{opacity:.7;transform:rotateX(70deg) scale(.4)}100%{opacity:0;transform:rotateX(70deg) scale(1.6)}}
+  .shield3d{position:absolute;inset:0;transform-style:preserve-3d;animation:sway 7s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:translateY(0) rotateY(-28deg) rotateX(8deg)}50%{transform:translateY(-8px) rotateY(28deg) rotateX(4deg)}}
+  .shield3d svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .shield3d .side path{fill:#203a52}
+  .shield3d .front{filter:drop-shadow(0 0 14px var(--glow))}
+  .hero-stats{position:relative;z-index:2;display:flex;justify-content:center;gap:22px;margin-top:12px;font-size:.8rem;color:#9fb3c6}
+  .hero-stats b{display:block;font-size:1.25rem;color:#fff}
+  @media (prefers-reduced-motion:reduce){.floor,.ring,.shield3d{animation:none}.shield3d{transform:rotateY(-18deg)}}
+
 </style>
 </head>
 <body>
 <main>
-  <h1>🛡️ Kalkan Paneli</h1>
-  <p class="sub" id="status">complaintca.ca koruma ve ziyaretçi durumu</p>
+  <section class="hero" id="hero">
+    <div class="floor"></div>
+    <div class="stage" aria-hidden="true">
+      <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      <div class="shield3d" id="shield3d"></div>
+    </div>
+    <h1>Kalkan Paneli</h1>
+    <p class="sub" id="status">complaintca.ca koruma ve ziyaretçi durumu</p>
+    <div class="pill"><span class="dot"></span><span id="heroState">Kalkan aktif</span></div>
+    <div class="hero-stats" id="heroStats" hidden>
+      <div><b id="hsVisitors">–</b>bugün ziyaretçi</div>
+      <div><b id="hsBlocked">–</b>engellenen</div>
+      <div><b id="hsBans">–</b>ajan banı (24s)</div>
+    </div>
+  </section>
 
   <section class="card" id="login" hidden>
     <h2>Giriş</h2>
@@ -122,6 +164,33 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function when(t) { return new Date(t).toLocaleString('tr-TR', { timeZone: 'America/Toronto', dateStyle: 'short', timeStyle: 'short' }); }
 
+  // Build the 3D shield: 10 dark layers for thickness, then the lit front.
+  (function () {
+    var P = 'M75 8 L132 30 V82 C132 120 106 146 75 160 C44 146 18 120 18 82 V30 Z';
+    var html = '';
+    for (var i = 0; i < 10; i++) html += '<svg class="side" viewBox="0 0 150 170" style="transform:translateZ(' + (i * 1.6 - 16) + 'px)"><path d="' + P + '"/></svg>';
+    html += '<svg class="front" viewBox="0 0 150 170" style="transform:translateZ(0)"><defs>' +
+      '<linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fb6ff"/><stop offset=".5" stop-color="#1d5fd1"/><stop offset="1" stop-color="#0b2a5c"/></linearGradient>' +
+      '<linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>' +
+      '<path d="' + P + '" fill="url(#sg)" stroke="var(--glow)" stroke-width="3"/>' +
+      '<path d="M75 20 L120 37 V82 C120 112 100 133 75 146 C50 133 30 112 30 82 V37 Z" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>' +
+      '<path d="M52 84 L68 100 L100 64" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="' + P + '" fill="url(#sh)"/></svg>';
+    $('shield3d').innerHTML = html;
+  })();
+
+  function heroState(d, lockMin) {
+    var dayAgo = Date.now() - 86400000;
+    var bans = d.reports.reduce(function (n, r) { return r.t >= dayAgo ? n + (r.bans || []).length : n; }, 0);
+    var hit = d.events.filter(function (e) { return e.t >= Date.now() - 3600000 && e.agent.indexOf('suspect') !== 0; }).length;
+    $('hero').className = 'hero' + (lockMin ? ' alert' : hit ? ' warn' : '');
+    $('heroState').textContent = lockMin ? 'Acil kilit açık' : hit ? 'Son 1 saatte ' + hit + ' saldırı engellendi' : 'Kalkan aktif · her şey sakin';
+    $('hsVisitors').textContent = d.visits[0].ca.visitors + d.visits[0].es.visitors;
+    $('hsBlocked').textContent = $('blockedToday').textContent;
+    $('hsBans').textContent = bans;
+    $('heroStats').hidden = false;
+  }
+
   function showLogin(msg) {
     $('app').hidden = true; $('login').hidden = false;
     $('loginErr').hidden = !msg; $('loginErr').textContent = msg || '';
@@ -163,6 +232,7 @@
     $('lockState').textContent = lockMin ? 'Acil kilit AÇIK · ' + lockMin + ' dk kaldı' : 'Acil kilit kapalı';
     $('lockState').className = lockMin ? 'on' : '';
     $('lockOn').hidden = !!lockMin; $('lockOff').hidden = !lockMin;
+    heroState(d, lockMin);
 
     $('status').textContent = 'Son güncelleme: ' + new Date().toLocaleTimeString('tr-TR');
   }
