@@ -12,6 +12,9 @@ test('windows are two back-to-back 28-day ranges ending 2 days ago', () => {
   const w = windows(Date.parse('2026-10-20T12:00:00Z'));
   assert.deepEqual(w.cur, ['2026-09-21', '2026-10-18']);
   assert.deepEqual(w.prev, ['2026-08-24', '2026-09-20']);
+  const w7 = windows(Date.parse('2026-10-20T12:00:00Z'), 7);
+  assert.deepEqual(w7.cur, ['2026-10-12', '2026-10-18']);
+  assert.deepEqual(w7.prev, ['2026-10-05', '2026-10-11']);
 });
 
 test('opportunities keep seen-but-not-top queries with their best page', async () => {

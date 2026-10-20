@@ -87,6 +87,7 @@
   .scale i{width:60px;height:6px;border-radius:3px;background:linear-gradient(90deg,#16263a,#184f95,#3987e5,#86b6ef,#cde2fb)}
 
   .seg{display:grid;grid-template-columns:1fr 1fr;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .seg4{grid-template-columns:repeat(4,1fr)}
   .seg button{background:none;padding:7px;font-size:.8rem;color:var(--mute)}
   .seg button[aria-pressed="true"]{background:var(--card);color:var(--ink)}
   .fun{display:flex;flex-direction:column;gap:12px}
@@ -195,6 +196,7 @@
 
     <!-- GOOGLE (Search Console) -->
     <section class="sec" id="v-google" hidden>
+      <div class="seg seg4" role="group" aria-label="Dönem"><button type="button" data-gdays="7" aria-pressed="false">7 gün</button><button type="button" data-gdays="14" aria-pressed="false">14 gün</button><button type="button" data-gdays="28" aria-pressed="true">1 ay</button><button type="button" data-gdays="90" aria-pressed="false">3 ay</button></div>
       <div id="gscBody"><p class="empty">Yükleniyor…</p></div>
     </section>
 
@@ -253,7 +255,7 @@
       $('gscRetry').addEventListener('click', function () { loadGsc(true); });
       return;
     }
-    var t = g.totals, b = g.before;
+    var t = g.totals, b = g.before, P = g.days === 90 ? '3 ay' : g.days === 28 ? '1 ay' : (g.days || 28) + ' gün';
     var CC = { can: 'CA', esp: 'ES', usa: 'US', gbr: 'GB', tur: 'TR', ind: 'IN', mex: 'MX', fra: 'FR', deu: 'DE', aus: 'AU', phl: 'PH', pak: 'PK', nga: 'NG', arg: 'AR', col: 'CO' };
     var short = function (p) { return p === '/' ? 'Ana sayfa' : p === '/es/' ? 'İspanya ana sayfa' : p.replace(/\.html$/, ''); };
     var card = function (title, body, hint) { return '<div class="card pad gcard"><h2>' + title + '</h2>' + (hint ? '<p class="hint">' + hint + '</p>' : '') + body + '</div>'; };
@@ -307,7 +309,7 @@
 
       recentCards(g.recent || {}) +
 
-      (daily.length ? card('Günlük trend · 28 gün', spark(daily, 'clicks', 'var(--s1)', 'Tıklama') + spark(daily, 'impressions', '#6da7ec', 'Gösterim')) : '') +
+      (daily.length ? card('Günlük trend · ' + P, spark(daily, 'clicks', 'var(--s1)', 'Tıklama') + spark(daily, 'impressions', '#6da7ec', 'Gösterim')) : '') +
 
       card('Fırsatlar', opp.length ? opp.map(function (o) {
         return '<div class="opp"><div class="oq">“' + esc(o.query) + '”</div><div class="om">' + o.impressions.toLocaleString('tr-TR') + ' gösterim · ' + o.clicks + ' tık · sıra ' + o.position + '</div>' +
@@ -321,7 +323,7 @@
       card('Yükselen ve düşen sayfalar · tık', (mv.up.length || mv.down.length)
         ? mv.up.map(function (m) { return '<div class="mv"><span>' + esc(short(m.key)) + '</span><b class="better">↑' + m.change + '</b></div>'; }).join('') +
           mv.down.map(function (m) { return '<div class="mv"><span>' + esc(short(m.key)) + '</span><b class="worse">↓' + Math.abs(m.change) + '</b></div>'; }).join('')
-        : '<p class="empty">Önceki 28 güne göre değişen sayfa yok</p>') +
+        : '<p class="empty">Önceki döneme göre değişen sayfa yok</p>') +
 
       card('Google\'dan en çok tıklanan sayfalar', hrows(g.pages || [], function (p) { return short(p.key); }, function (p) { return p.clicks; }, function (p) { return p.clicks; })) +
 
@@ -336,12 +338,18 @@
           '<b class="' + (m.errors ? 'worse' : bad ? '' : 'better') + '">' + (m.errors ? m.errors + ' hata' : m.warnings ? m.warnings + ' uyarı' : m.pending ? 'bekliyor' : '✓') + '</b></div>';
       }).join('') : '<p class="empty">Search Console\'da site haritası yok</p>') +
 
-      '<p class="note">Son 28 gün (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · önceki 28 güne göre · 28 günlük veri 2 gün geriden gelir, 6 saatte bir yenilenir · son 24 saat 30 dakikada bir</p>';
+      '<p class="note">Seçili dönem: ' + P + ' (' + esc(g.range[0]) + ' – ' + esc(g.range[1]) + ') · oklar önceki aynı uzunluktaki döneme göre · veri 2 gün geriden gelir, 6 saatte bir yenilenir · son 24 saat 30 dakikada bir</p>';
   }
+  var gDays = Number(store('shieldGDays')) || 28;
+  function markGDays() { each('[data-gdays]', function (b) { b.setAttribute('aria-pressed', Number(b.getAttribute('data-gdays')) === gDays ? 'true' : 'false'); }); }
+  markGDays();
+  each('[data-gdays]', function (b) { b.addEventListener('click', function () {
+    gDays = Number(b.getAttribute('data-gdays')); store('shieldGDays', String(gDays)); markGDays(); loadGsc();
+  }); });
   function loadGsc(fresh) {
     gscLoaded = true;
     $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
-    fetch('/api/shield?gsc=1' + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
+    fetch('/api/shield?gsc=1&days=' + gDays + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(renderGsc)
       .catch(function () { gscLoaded = false; $('gscBody').innerHTML = '<p class="empty">Google verisi alınamadı.</p>'; });

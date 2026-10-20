@@ -1,12 +1,13 @@
-// Search Console numbers for the owner's shield panel: last 28 days of
+// Search Console numbers for the owner's shield panel: the last 7, 14, 28
+// or 90 days (default 28) of
 // Google search clicks, impressions, CTR and average position (against the
-// 28 days before), a daily trend, top queries, opportunities (queries just
+// period before), a daily trend, top queries, opportunities (queries just
 // off the top results, with their page), top pages, rising/falling pages,
 // countries, devices and sitemap health. Read with the site's Google
 // service account (FIREBASE_SERVICE_ACCOUNT); it needs to be added as a user
 // on the Search Console property and the Search Console API enabled on the
 // Google Cloud project — until then the panel shows those two steps.
-// Cached 6 hours in Upstash (the 28-day data only moves once a day); the
+// Cached 6 hours per period in Upstash (it only moves once a day); the
 // last-24-hours / since-start part is cached 30 minutes.
 import { accessToken, serviceAccount, PROJECT } from './_gauth.js';
 
@@ -24,12 +25,14 @@ export function pickSite(entries) {
     || urls.find(u => u.includes('complaintca.ca')) || null;
 }
 
-export function windows(now = Date.now()) {
+export const PERIODS = [7, 14, 28, 90];
+
+export function windows(now = Date.now(), days = 28) {
   // Search Console data lags about two days.
-  const end = now - 2 * 86400000;
+  const end = now - 2 * 86400000, D = 86400000;
   return {
-    cur: [ymd(end - 27 * 86400000), ymd(end)],
-    prev: [ymd(end - 55 * 86400000), ymd(end - 28 * 86400000)]
+    cur: [ymd(end - (days - 1) * D), ymd(end)],
+    prev: [ymd(end - (2 * days - 1) * D), ymd(end - days * D)]
   };
 }
 
@@ -55,7 +58,7 @@ export function opportunities(rows, n = 5) {
   return [...best.values()].sort((a, b) => b.impressions - a.impressions).slice(0, n);
 }
 
-// Pages whose Google clicks changed most against the previous 28 days.
+// Pages whose Google clicks changed most against the previous period.
 export function movers(now, before, n = 3) {
   const was = new Map((before || []).map(r => [path(r.keys[0]), r.clicks]));
   const diff = (now || []).map(r => ({ key: path(r.keys[0]), clicks: r.clicks, change: r.clicks - (was.get(path(r.keys[0])) || 0) }));
@@ -89,15 +92,15 @@ async function connect() {
   return { ok: true, site, auth, q };
 }
 
-async function fetchMain({ site, auth, q }) {
-  const w = windows();
+async function fetchMain({ site, auth, q }, days) {
+  const w = windows(Date.now(), days);
   const [cur, prev, daily, queries, queryPages, pagesNow, pagesBefore, countries, devices, sitemaps] = await Promise.all([
-    q(w.cur, [], 1), q(w.prev, [], 1), q(w.cur, ['date'], 40), q(w.cur, ['query'], 250), q(w.cur, ['query', 'page'], 500),
+    q(w.cur, [], 1), q(w.prev, [], 1), q(w.cur, ['date'], 100), q(w.cur, ['query'], 250), q(w.cur, ['query', 'page'], 500),
     q(w.cur, ['page'], 100), q(w.prev, ['page'], 100), q(w.cur, ['country'], 6), q(w.cur, ['device'], 3),
     fetch(`${API}/sites/${encodeURIComponent(site)}/sitemaps`, { headers: auth }).then(r => (r.ok ? r.json() : {})).then(j => j.sitemap || [])
   ]);
   const out = {
-    ok: true, site, range: w.cur, at: Date.now(),
+    ok: true, site, days, range: w.cur, at: Date.now(),
     totals: total(cur), before: total(prev),
     daily: daily.map(r => ({ day: r.keys[0], clicks: r.clicks, impressions: r.impressions })),
     // By impressions: with few clicks, what Google shows the site for says more.
@@ -152,19 +155,21 @@ async function fetchRecent({ q }) {
   return summarizeRecent(hourRows, dateRows, now);
 }
 
-export async function searchConsole(redis, { fresh = false } = {}) {
+export async function searchConsole(redis, { fresh = false, days = 28 } = {}) {
+  if (!PERIODS.includes(days)) days = 28;
+  const mainKey = `${CACHE_KEY}:${days}`;
   const read = async key => {
     if (fresh) return null;
     const [hit] = await redis([['GET', key]]);
     try { return hit ? JSON.parse(hit) : null; } catch { return null; }
   };
-  let main = await read(CACHE_KEY), recent = await read(RECENT_KEY);
+  let main = await read(mainKey), recent = await read(RECENT_KEY);
   if (!main || !recent) {
     const c = await connect();
     if (!c.ok) return c;
     if (!main) {
-      main = await fetchMain(c);
-      await redis([['SET', CACHE_KEY, JSON.stringify(main), 'EX', CACHE_SECONDS]]);
+      main = await fetchMain(c, days);
+      await redis([['SET', mainKey, JSON.stringify(main), 'EX', CACHE_SECONDS]]);
     }
     if (!recent) {
       recent = await fetchRecent(c);

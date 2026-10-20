@@ -58,10 +58,11 @@ export async function shieldView(req, res) {
     return res.status(403).json({ error: 'forbidden' });
   }
 
-  // GET /api/shield?gsc=1 → Search Console numbers (cached 6 h; &fresh=1 to refetch).
+  // GET /api/shield?gsc=1[&days=7|14|28|90] → Search Console numbers (cached
+  // 6 h; &fresh=1 to refetch).
   if (req.query && req.query.gsc) {
     try {
-      return res.status(200).json(await searchConsole(pipeline, { fresh: req.query.fresh === '1' }));
+      return res.status(200).json(await searchConsole(pipeline, { fresh: req.query.fresh === '1', days: Number(req.query.days) || 28 }));
     } catch (err) {
       console.error('search console error:', err && err.message);
       return res.status(502).json({ ok: false, reason: 'error' });
