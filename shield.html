@@ -28,8 +28,12 @@
   h2{font-size:.72rem;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
 
   /* Header */
-  .head{display:flex;align-items:center;justify-content:center;gap:12px;padding:max(10px,env(safe-area-inset-top)) 16px 8px}
+  .head{display:grid;grid-template-columns:56px 1fr 56px;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top)) 16px 8px}
   .head.warn{--glow:var(--warn)}.head.alert{--glow:var(--bad)}
+  .head .mid{display:flex;align-items:center;justify-content:center;gap:12px;min-width:0}
+  .site{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--mute);font-size:.66rem;font-weight:600;letter-spacing:.4px;text-decoration:none}
+  .site span{font-size:1.25rem;line-height:1}
+  .site:active{border-color:var(--s1)}
   .stage{position:relative;width:44px;height:50px;perspective:400px;flex:none}
   .shield3d{position:absolute;inset:0;transform-style:preserve-3d;animation:sway 7s ease-in-out infinite}
   @keyframes sway{0%,100%{transform:rotateY(-26deg)}50%{transform:rotateY(26deg)}}
@@ -144,8 +148,12 @@
 <body>
 <main>
   <header class="head" id="hero">
-    <div class="stage" aria-hidden="true"><div class="shield3d" id="shield3d"></div></div>
-    <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div></div>
+    <a class="site" href="https://www.complaintca.ca/" target="_blank" rel="noopener" title="Kanada sitesi"><span>🇨🇦</span>AXX1</a>
+    <div class="mid">
+      <div class="stage" aria-hidden="true"><div class="shield3d" id="shield3d"></div></div>
+      <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div></div>
+    </div>
+    <a class="site" href="https://www.complaintca.ca/es/" target="_blank" rel="noopener" title="İspanya sitesi"><span>🇪🇸</span>AXX2</a>
   </header>
 
   <section class="card login" id="login" hidden>
@@ -214,7 +222,7 @@
       <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button></div>
       <div class="card pad list" id="reports"></div>
       <div class="card pad list" id="events" hidden></div>
-      <div class="foot"><span id="status">–</span><button type="button" id="logout">Çıkış</button></div>
+      <div class="foot"><span><span id="status">–</span> · bu cihaz sayılmıyor</span><button type="button" id="logout">Çıkış</button></div>
     </section>
 
     <nav class="bar-nav" aria-label="Bölümler">
@@ -238,6 +246,12 @@
   var $ = function (id) { return document.getElementById(id); };
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k) || ''; v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) { return ''; } }
   function getKey() { return store(KEY); }
+  // Marks this device as the owner's, so the site's counters (and Google
+  // Analytics) skip it while you browse complaintca.ca and /es/.
+  function ownerCookie(on) {
+    if (!/(^|\.)complaintca\.ca$/.test(location.hostname)) return;
+    document.cookie = 'cc_owner=' + (on ? '1; Max-Age=31536000' : '; Max-Age=0') + '; Path=/; Domain=complaintca.ca; Secure; SameSite=Lax';
+  }
   function setKey(v) { store(KEY, v || ''); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function when(t) { return new Date(t).toLocaleString('tr-TR', { timeZone: 'America/Toronto', dateStyle: 'short', timeStyle: 'short' }); }
@@ -535,7 +549,7 @@
       if (!r.ok) throw new Error('Veri alınamadı (' + r.status + ').');
       return r.json();
     }).then(function (d) {
-      $('login').hidden = true; $('app').hidden = false; render(d);
+      $('login').hidden = true; $('app').hidden = false; ownerCookie(true); render(d);
     }).catch(function (e) {
       if (!getKey()) showLogin(e.message); else $('heroState').textContent = e.message;
     });
@@ -565,7 +579,7 @@
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
-  $('logout').addEventListener('click', function () { setKey(''); showLogin(); });
+  $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
   showSec(store(SEC) || 'home');
   load();
   // Google numbers for Genel too; the server caches the 24-hour part 30 min.

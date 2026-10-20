@@ -125,6 +125,12 @@ export function isPage(request, url) {
     !/\.(?!html$)[a-z0-9]+$/i.test(url.pathname) && url.pathname !== '/shield.html';
 }
 
+// The site owner's devices carry this cookie (set by the shield panel) and
+// are left out of every visitor / funnel count; security checks still apply.
+export function isOwner(request) {
+  return /(?:^|;\s*)cc_owner=1(?:;|$)/.test(request.headers.get('cookie') || '');
+}
+
 export function isPageView(request, url, ua) {
   return isPage(request, url) && !!ua && !BOT_RE.test(ua);
 }
@@ -214,7 +220,7 @@ export default async function middleware(request) {
     return blocked(agent);
   }
   if (url.pathname === '/api/beacon') {
-    if (url.searchParams.get('e') === 'open' && !searchBot) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
+    if (url.searchParams.get('e') === 'open' && !searchBot && !isOwner(request)) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }
 
@@ -225,8 +231,9 @@ export default async function middleware(request) {
   const rateKey = searchBot ? null : isApi ? `shield:api:${ip}:${minute}` : page ? `shield:pv:${ip}:${minute}` : null;
   const cmds = [['GET', `shield:ban:${ip}`], ['GET', 'shield:lockdown']];
   if (rateKey) cmds.push(['INCR', rateKey], ['EXPIRE', rateKey, 120]);
-  if (isPageView(request, url, ua)) cmds.push(...countVisit(request, url, ip, ua, visitSource(request.headers.get('referer'), ua)));
-  const step = funnelStep(request, url);
+  const owner = isOwner(request);
+  if (!owner && isPageView(request, url, ua)) cmds.push(...countVisit(request, url, ip, ua, visitSource(request.headers.get('referer'), ua)));
+  const step = !owner && funnelStep(request, url);
   if (step) cmds.push(['PFADD', `shield:fun:${step}:${visitDay()}`, ip]);
   const r = await redis(cmds);
   if (!r) return;

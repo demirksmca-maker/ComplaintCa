@@ -148,3 +148,14 @@ test('beacon is answered at the edge', async () => {
   const res = await middleware(new Request('https://complaintca.ca/api/beacon?e=open', { method: 'POST', headers: { 'user-agent': 'Mozilla/5.0' } }));
   assert.equal(res.status, 204);
 });
+
+test('owner cookie skips counting, not security', async () => {
+  const { isOwner } = await import('./middleware.js');
+  const req = c => new Request('https://complaintca.ca/', { headers: { cookie: c } });
+  assert.equal(isOwner(req('a=1; cc_owner=1')), true);
+  assert.equal(isOwner(req('cc_owner=10')), false);
+  assert.equal(isOwner(new Request('https://complaintca.ca/')), false);
+  delete process.env.KV_REST_API_URL;
+  const res = await middleware(new Request('https://complaintca.ca/.env', { headers: { cookie: 'cc_owner=1' } }));
+  assert.equal(res.status, 403);
+});
