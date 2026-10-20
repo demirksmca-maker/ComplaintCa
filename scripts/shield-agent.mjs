@@ -6,7 +6,6 @@
 // so the site bans those IPs (max 24 h) and shows a report on /shield.html.
 // The site is reached through /api/shield-agent with a GitHub OIDC token, so
 // the only secret this needs is ANTHROPIC_API_KEY.
-import Anthropic from '@anthropic-ai/sdk';
 import { appendFileSync } from 'node:fs';
 
 const SITE = process.env.SITE_URL || 'https://www.complaintca.ca';
@@ -34,6 +33,13 @@ async function site(method, token, body) {
   });
   if (!r.ok) throw new Error(`site ${method} ${r.status}: ${await r.text()}`);
   return r.json();
+}
+
+export function needsReview(events) {
+  const perIp = {};
+  for (const e of events) perIp[e.ip] = (perIp[e.ip] || 0) + 1;
+  return events.length >= 5 || Object.values(perIp).some(n => n >= 2) ||
+    events.some(e => ['flood', 'scrape', 'lockdown'].includes(e.agent));
 }
 
 const SCHEMA = {
@@ -78,11 +84,20 @@ async function main() {
     return;
   }
 
+  // Claude is only asked when there is a pattern to judge; single blocked
+  // hits are already handled by the edge rules. Otherwise just move on.
+  if (!needsReview(events)) {
+    await site('POST', token, { quiet: true, last: Math.max(...events.map(e => e.t)), dryRun: DRY_RUN });
+    report(`Shield agent: ${events.length} routine event(s), no review needed.`);
+    return;
+  }
+
+  const { default: Anthropic } = await import('@anthropic-ai/sdk');
   const client = new Anthropic();
   const response = await client.messages.create({
     model: 'claude-haiku-5-5',
     max_tokens: 16000,
-    output_config: { effort: 'medium', format: { type: 'json_schema', schema: SCHEMA } },
+    output_config: { effort: 'low', format: { type: 'json_schema', schema: SCHEMA } },
     system: SYSTEM,
     messages: [{ role: 'user', content: `New events (${events.length}), oldest last:\n` + events.map(e => JSON.stringify(e)).join('\n') }]
   });
@@ -102,7 +117,9 @@ async function main() {
   if (saved.report.lockdownHours) report(`- lockdown ${saved.report.lockdownHours}h`);
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
