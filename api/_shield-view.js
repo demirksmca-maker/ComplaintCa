@@ -1,6 +1,6 @@
 // GET /api/shield + x-shield-key header → data for the owner's shield page
 // (/shield.html): visitors per day, AI agent reports, latest blocked events,
-// lockdown state. POST {lockdownHours} turns emergency lockdown on (1-6 h)
+// lockdown state, today's arrivals by search engine / social network. POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 
@@ -63,7 +63,7 @@ export async function shieldView(req, res) {
   const days = lastDays();
   const cmds = [];
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
-  cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 49], ['TTL', 'shield:lockdown']);
+  cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 49], ['TTL', 'shield:lockdown'], ['HGETALL', `shield:src:${days[0]}`]);
   let out;
   try {
     out = await pipeline(cmds);
@@ -78,5 +78,13 @@ export async function shieldView(req, res) {
   });
   const reports = parse(out[i++]), events = parse(out[i++]);
   const ttl = Number(out[i++]);
-  return res.status(200).json({ visits, reports, events, lockdown: ttl > 0 ? ttl : 0 });
+  const src = {};
+  const flat = out[i++] || [];
+  for (let k = 0; k + 1 < flat.length; k += 2) src[flat[k]] = Number(flat[k + 1]) || 0;
+  const pick = keys => Object.fromEntries(keys.map(k => [k, src[k] || 0]));
+  return res.status(200).json({
+    visits, reports, events, lockdown: ttl > 0 ? ttl : 0,
+    search: pick(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia']),
+    socials: pick(['facebook', 'instagram', 'x', 'tiktok', 'youtube'])
+  });
 }
