@@ -18,3 +18,8 @@
 - **AXX2**: İspanya sitesi (complaintca.ca/es, `es/` klasörü) için AXX kontrolü.
 - Canlıya almadan (main'e birleştirmeden) önce her seferinde kullanıcıya "AXX1 mi (Kanada), AXX2 mi (İspanya)?" diye sor; cevaba göre o sitenin AXX kontrolünü yapıp sonucu 1 satırda söyle.
 - Canlıya almadan önce testleri çalıştır (`node --test` ile tüm `*.test.mjs`). Kırmızı (kod kaynaklı) test varsa birleştirme, önce düzelt. Ortam eksikliğinden (kurulu olmayan paket vb.) düşen test bu kuralın dışında, durumu kısaca belirt.
+
+## Temizlik yetkisi
+- Claude'un tam yetkisi var: otomasyonları (`.github/workflows`, `scripts/`, `api/`) ve sitenin her köşesini tarayıp gereksiz/ölü kodu temizleyebilir.
+- Sınırlar: Google'da indeksli URL'yi silme/taşıma yok (gerekirse 301 ver), `sitemap.xml`'deki sayfalara dokunurken AXX kontrolü şart.
+- Silmeden önce kullanılmadığını doğrula (grep, referans, workflow). Testler yeşil kalmalı.
