@@ -555,6 +555,7 @@
       return r.json();
     }).then(function (d) {
       $('login').hidden = true; $('app').hidden = false; ownerCookie(true); render(d);
+      loadTalk();
     }).catch(function (e) {
       if (!getKey()) showLogin(e.message); else $('heroState').textContent = e.message;
     });
@@ -597,6 +598,21 @@
   var daPick = DA[Math.floor(Date.now() / 86400000) % DA.length];
   $('diasLine').innerHTML = '<b style="color:var(--s1)">Dias:</b> ' + daPick.d;
   $('asyaLine').innerHTML = '<b style="color:var(--warn)">Asya:</b> ' + daPick.a;
+
+  // Once logged in, the day's real talk written by Claude replaces the ready-made lines.
+  var talkLoaded = false;
+  function loadTalk() {
+    if (talkLoaded) return;
+    talkLoaded = true;
+    fetch('/api/shield?talk=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.talk) return;
+        $('diasLine').innerHTML = '<b style="color:var(--s1)">Dias:</b> ' + esc(d.talk.dias);
+        $('asyaLine').innerHTML = '<b style="color:var(--warn)">Asya:</b> ' + esc(d.talk.asya);
+      })
+      .catch(function () { talkLoaded = false; });
+  }
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
