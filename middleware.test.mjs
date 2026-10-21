@@ -45,15 +45,25 @@ test('middleware returns 403 for attacks, passes clean requests', async () => {
 
 test('only real page views are counted', async () => {
   const { isPageView } = await import('./middleware.js');
-  const req = (p, m = 'GET') => [new Request('https://complaintca.ca' + p, { method: m }), u(p)];
+  const nav = { 'sec-fetch-mode': 'navigate', 'sec-fetch-dest': 'document', accept: 'text/html', 'accept-language': 'en' };
+  const req = (p, headers = nav) => [new Request('https://complaintca.ca' + p, { headers }), u(p)];
   const chrome = 'Mozilla/5.0 Chrome/130';
   assert.equal(isPageView(...req('/'), chrome), true);
   assert.equal(isPageView(...req('/es/'), chrome), true);
   assert.equal(isPageView(...req('/blog/x.html'), chrome), true);
+  assert.equal(isPageView(...req('/blog/x'), chrome), false); // redirected to .html, counted there
+  assert.equal(isPageView(...req('/es'), chrome), false);
   assert.equal(isPageView(...req('/sw.js'), chrome), false);
   assert.equal(isPageView(...req('/shield.html'), chrome), false);
   assert.equal(isPageView(...req('/'), 'Googlebot/2.1'), false);
+  assert.equal(isPageView(...req('/'), 'Mediapartners-Google'), false);
+  assert.equal(isPageView(...req('/'), 'Mozilla/5.0 (compatible; ChatGPT-User/1.0)'), false);
+  assert.equal(isPageView(...req('/'), 'facebookexternalhit/1.1'), false);
   assert.equal(isPageView(...req('/'), ''), false);
+  assert.equal(isPageView(...req('/', { ...nav, 'sec-purpose': 'prefetch;prerender' }), chrome), false);
+  assert.equal(isPageView(...req('/', { 'sec-fetch-mode': 'no-cors', 'sec-fetch-dest': 'image' }), chrome), false);
+  assert.equal(isPageView(...req('/', { accept: 'text/html', 'accept-language': 'fr' }), chrome), true); // old Safari, no Sec-Fetch
+  assert.equal(isPageView(...req('/', { accept: '*/*' }), chrome), false); // script pretending to be Chrome
 });
 
 test('honeypot and AI scrapers are caught statelessly', () => {

@@ -118,7 +118,11 @@ function blocked(agent) {
 
 // Visitor counter for the shield page (/shield.html): page views and unique
 // IPs (HyperLogLog, so no IP list is stored) per site per Toronto day.
-const BOT_RE = /bot|crawl|spider|slurp|preview|monitor|curl|wget|python|headless|lighthouse/i;
+const BOT_RE = /bot|crawl|spider|slurp|preview|monitor|curl|wget|python|headless|lighthouse|google(other|-)|mediapartners|externalhit|facebookcatalog|whatsapp|telegram|discord|skype|-user\b|scan|check|http-?client|java\/|go-http|okhttp|axios|node-fetch|undici|postman|insomnia/i;
+
+// Paths vercel.json redirects (the browser then loads the real URL, which is
+// the one counted): /blog/x → /blog/x.html, /about → /about.html, /es → /es/.
+const REDIRECTED = /^\/((guides|blog)\/[a-z0-9-]+|about|privacy|terms|start|presentation|account|es|es-test\.html|new-complaint(-test)?)$/;
 
 export function isPage(request, url) {
   return request.method === 'GET' && !url.pathname.startsWith('/api/') &&
@@ -131,8 +135,16 @@ export function isOwner(request) {
   return /(?:^|;\s*)cc_owner=1(?:;|$)/.test(request.headers.get('cookie') || '');
 }
 
+// A person opening a page, as close as the edge can tell to what Vercel
+// Analytics counts: a real browser navigation (Sec-Fetch headers, or HTML
+// Accept + Accept-Language on browsers without them), not a prefetch, not a
+// bot or link previewer, not a URL that is about to be redirected.
 export function isPageView(request, url, ua) {
-  return isPage(request, url) && !!ua && !BOT_RE.test(ua);
+  if (!isPage(request, url) || !ua || BOT_RE.test(ua) || REDIRECTED.test(url.pathname)) return false;
+  const h = name => request.headers.get(name) || '';
+  if (/prefetch|prerender/i.test(h('sec-purpose') + h('purpose') + h('x-purpose'))) return false;
+  if (h('sec-fetch-mode')) return h('sec-fetch-mode') === 'navigate' && (!h('sec-fetch-dest') || h('sec-fetch-dest') === 'document');
+  return /text\/html/.test(h('accept')) && !!h('accept-language');
 }
 
 export function visitDay(now = new Date()) {
