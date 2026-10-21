@@ -1,5 +1,5 @@
 // "ASYA Core" complaint panel for the working page.
-// One question at a time under a living 3D orb (scene.js), following the live
+// One question at a time under the ASYA emblem, following the live
 // complaint engine of complaintca.ca step by step:
 //  · title + description (required), ASYA writing help, place/business suggestions
 //  · ASYA classifies the complaint (/api/classify — same prompt and rules as live);
@@ -13,7 +13,7 @@
 //  · after sending: cloud-save note, delivery status, authority, next steps,
 //    lawyer suggestion, matched lawyer/NGO intro drafts for legal cases,
 //    representative + submit another; the draft survives a reload like on live.
-// Every change is announced as a `cc` event for the 3D scene.
+// Every change is announced as a `cc` document event.
 (function(){
   const SITEKEY = '0x4AAAAAAD0YTkgBQCsboEB8';
   const COOLDOWN_MS = 5 * 60 * 1000, DRAFT_KEY = 'cc_asya_draft';
@@ -81,7 +81,7 @@
   // Inside the page the window scrolls, as a full-screen overlay the panel's own box does.
   const toTop = o => (ov.classList.contains('cc-embedded') ? window : scroll).scrollTo(o);
   document.body.appendChild(ov);
-  let scene = null, registered = false, F = null;
+  let registered = false, F = null;
 
   function build(){
     ov.classList.remove('af-fin-on');
@@ -1250,7 +1250,7 @@
     if (opts.mode && F.setMode && F.mode() === 'choose') F.setMode(opts.mode);
     ov.classList.add('open'); ov.setAttribute('aria-hidden','false'); if (!opts.host) document.body.style.overflow = 'hidden';
   }
-  function close(){ if (window.ccPanelClosed) setTimeout(window.ccPanelClosed, 0); ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; if (scene) scene.stop(); }
+  function close(){ if (window.ccPanelClosed) setTimeout(window.ccPanelClosed, 0); ov.classList.remove('open'); ov.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
   x.addEventListener('click', close);
   addEventListener('keydown', e => { if (e.key === 'Escape' && ov.classList.contains('open')) close(); });
   window.openComplaintFlow = open;
