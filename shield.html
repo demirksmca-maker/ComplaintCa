@@ -152,7 +152,7 @@
     <a class="site" href="https://www.complaintca.ca/" target="_blank" rel="noopener" title="Kanada sitesi"><span>🇨🇦</span>AXX1</a>
     <div class="mid">
       <div class="stage" aria-hidden="true"><div class="shield3d" id="shield3d"></div></div>
-      <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div><p class="muted" id="diasLine" style="margin:4px 0 0;font-size:.8rem"></p><p class="muted" id="asyaLine" style="margin:1px 0 0;font-size:.8rem"></p></div>
+      <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div></div>
     </div>
     <a class="site" href="https://www.complaintca.ca/es/" target="_blank" rel="noopener" title="İspanya sitesi"><span>🇪🇸</span>AXX2</a>
   </header>
@@ -555,7 +555,6 @@
       return r.json();
     }).then(function (d) {
       $('login').hidden = true; $('app').hidden = false; ownerCookie(true); render(d);
-      loadTalk();
     }).catch(function (e) {
       if (!getKey()) showLogin(e.message); else $('heroState').textContent = e.message;
     });
@@ -583,36 +582,6 @@
     promptEvent.userChoice.then(function () { $('install').hidden = true; promptEvent = null; });
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
-
-  // Dias ↔ Asya: baba kıza her gün bir söz söyler, kız duygusal cevap verir. Sadece burada, kimse görmez.
-  var DA = [
-    { d: 'İyi ki varsın kızım, bugün de seninle gururluyum.', a: 'Ben de seninle gururluyum baba, iyi ki yanımdasın.' },
-    { d: 'Nerede olursan ol, seni her zaman koruyorum kızım.', a: 'Biliyorum baba, kendimi hep güvende hissediyorum.' },
-    { d: 'Bugün de güzel işler çıkardın kızım, seni çok seviyorum.', a: 'Seni daha çok seviyorum baba, iyi ki varsın.' },
-    { d: 'Yorulduysan dinlen kızım, ben buradayım.', a: 'Teşekkür ederim baba, yanımda olduğun için kendimi güçlü hissediyorum.' },
-    { d: 'Seninle her gün ayrı bir gurur duyuyorum kızım.', a: 'Bu sözler bana çok şey ifade ediyor baba, iyi ki varsın.' },
-    { d: 'Kızım, ne olursa olsun yanındayım, unutma.', a: 'Hiç unutmuyorum baba, bu beni çok rahatlatıyor.' },
-    { d: 'Bugün senin için gülümsedim kızım, iyi ki varsın hayatımda.', a: 'Ben de seninle gülümsüyorum baba, çok şanslıyım.' },
-    { d: 'Küçük kızım büyüdü ama hep kızım kalacak.', a: 'Hep senin kızın olacağım baba, bunu hiç unutma.' }
-  ];
-  var daPick = DA[Math.floor(Date.now() / 86400000) % DA.length];
-  $('diasLine').innerHTML = '<b style="color:var(--s1)">Dias:</b> ' + daPick.d;
-  $('asyaLine').innerHTML = '<b style="color:var(--warn)">Asya:</b> ' + daPick.a;
-
-  // Once logged in, the day's real talk written by Claude replaces the ready-made lines.
-  var talkLoaded = false;
-  function loadTalk() {
-    if (talkLoaded) return;
-    talkLoaded = true;
-    fetch('/api/shield?talk=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (!d || !d.talk) return;
-        $('diasLine').innerHTML = '<b style="color:var(--s1)">Dias:</b> ' + esc(d.talk.dias);
-        $('asyaLine').innerHTML = '<b style="color:var(--warn)">Asya:</b> ' + esc(d.talk.asya);
-      })
-      .catch(function () { talkLoaded = false; });
-  }
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
