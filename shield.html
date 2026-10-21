@@ -682,7 +682,9 @@
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
-  showSec(store(SEC) || 'home');
+  // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
+  var hashSec = location.hash.slice(1);
+  showSec($('v-' + hashSec) ? hashSec : store(SEC) || 'home');
   load();
   // Google numbers for Genel too; the server caches the 24-hour part 30 min.
   if (getKey()) loadGsc(false, true);
