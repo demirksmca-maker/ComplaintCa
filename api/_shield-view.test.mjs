@@ -78,3 +78,18 @@ test('fillFromGsc fills empty days and pages from Search Console, keeps own coun
   assert.equal(r.visits[1].ca.visitors, 18);
   assert.deepEqual(r.pages, [['/blog/a.html', 15]]);
 });
+
+test('complaintSummary counts weeks and top institutions', async () => {
+  const { complaintSummary } = await import('./_shield-view.js');
+  const now = Date.parse('2026-10-21T12:00:00Z');
+  const s = complaintSummary([
+    { date: '2026-10-20T10:00:00Z', targetName: 'Rogers', category: 'telecom' },
+    { date: '2026-10-19T10:00:00Z', targetName: 'Rogers', category: 'telecom' },
+    { date: '2026-10-10T10:00:00Z', targetName: '', category: 'housing' },
+    { date: '2026-01-01T10:00:00Z', targetName: null, category: null }
+  ], now);
+  assert.equal(s.total, 4);
+  assert.equal(s.week, 2);
+  assert.equal(s.before, 1);
+  assert.deepEqual(s.top, [['Rogers', 2], ['housing', 1]]);
+});

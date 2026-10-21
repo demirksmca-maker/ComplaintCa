@@ -3,10 +3,11 @@
 // lockdown state, today's arrivals by search engine / social network, and
 // analytics for a chosen period (?days=7|14|28|90): top pages, cities,
 // devices, hour heatmap, complaint funnel; plus attack countries and the
-// change against the week before. POST {lockdownHours} turns emergency lockdown on (1-6 h)
+// change against the week before, the funnel per day and complaint totals. POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
+import { fetchComplaints } from './mcp.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -41,6 +42,27 @@ export function fillFromGsc(result, g) {
   if (g.totals && g.totals.clicks > own && (g.pages || []).length) result.pages = g.pages.map(p => [p.key, p.clicks]);
   return result;
 }
+// Complaint totals for Genel: all public complaints, the last 7 days against
+// the 7 before, and the most named institutions (category when none is
+// named). Firestore is read at most every 10 minutes.
+export function complaintSummary(all, now = Date.now()) {
+  const t = c => Date.parse(c.date), wk = 7 * 864e5;
+  const week = all.filter(c => t(c) > now - wk).length, before = all.filter(c => t(c) <= now - wk && t(c) > now - 2 * wk).length;
+  const by = {};
+  for (const c of all) {
+    const k = String(c.targetName || c.category || '').trim();
+    if (k) by[k] = (by[k] || 0) + 1;
+  }
+  return { total: all.length, week, before, top: top(by, 3) };
+}
+async function complaints(pipeline) {
+  const [hit] = await pipeline([['GET', 'shield:complaints']]);
+  if (hit) { try { return JSON.parse(hit); } catch { /* refetch */ } }
+  const sum = complaintSummary(await fetchComplaints(fetch, ['category', 'date', 'targetName']));
+  await pipeline([['SET', 'shield:complaints', JSON.stringify(sum), 'EX', 600]]);
+  return sum;
+}
+
 const top = (obj, n) => Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
 
 // Trafik / Huni numbers for the last N days: visits per day, top pages,
@@ -58,6 +80,8 @@ export async function periodStats(pipeline, n, now = new Date()) {
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
   for (const d of days) cmds.push(['HGETALL', `shield:stats:${d}`]);
   for (const step of FUNNEL) cmds.push(['PFCOUNT', ...days.map(d => `shield:fun:${step}:${d}`)]);
+  const prev = lastDays(new Date(now.getTime() - n * 86400000), n);
+  for (const step of FUNNEL) cmds.push(['PFCOUNT', ...prev.map(d => `shield:fun:${step}:${d}`)]);
   const out = await pipeline(cmds);
   let i = 0;
   const visits = days.map(day => {
@@ -80,7 +104,9 @@ export async function periodStats(pipeline, n, now = new Date()) {
   }
   const funnel = {};
   for (const step of FUNNEL) funnel[step] = Number(out[i++]) || 0;
-  const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel };
+  const funnelBefore = {};
+  for (const step of FUNNEL) funnelBefore[step] = Number(out[i++]) || 0;
+  const result = { days: n, visits, pages: top(pages, 6), geo: top(geo, 6), devices, hours, funnel, funnelBefore };
   if (PERIODS.includes(n)) {
     try { fillFromGsc(result, await searchConsole(pipeline, { days: n })); } catch { /* keep our own numbers */ }
   }
@@ -146,12 +172,13 @@ export async function shieldView(req, res) {
   const days = lastDays(new Date(), 14);
   const cmds = [];
   for (const d of days) for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${d}`], ['PFCOUNT', `shield:uv:${site}:${d}`]);
-  for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${days[0]}`]);
+  // Funnel per day for the last week (Genel / Huni trend line), today first.
+  for (const d of days.slice(0, 7)) for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${d}`]);
   cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown'], ['HGETALL', `shield:src:${days[0]}`]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
-  let out, stats;
+  let out, stats, comp;
   try {
-    [out, stats] = await Promise.all([pipeline(cmds), periodStats(pipeline, period)]);
+    [out, stats, comp] = await Promise.all([pipeline(cmds), periodStats(pipeline, period), complaints(pipeline).catch(() => null)]);
   } catch {
     return res.status(502).json({ error: 'upstash' });
   }
@@ -168,8 +195,13 @@ export async function shieldView(req, res) {
     visitors: [sum(visits, people), sum(all.slice(7), people)],
     views: [sum(visits, seen), sum(all.slice(7), seen)]
   };
-  const today = {};
-  for (const step of FUNNEL) today[step] = Number(out[i++]) || 0;
+  const funnelDays = days.slice(0, 7).map(day => {
+    const f = { day };
+    for (const step of FUNNEL) f[step] = Number(out[i++]) || 0;
+    return f;
+  });
+  const today = { ...funnelDays[0] };
+  delete today.day;
 
   const reports = parse(out[i++]), events = parse(out[i++]);
   const ttl = Number(out[i++]);
@@ -183,7 +215,7 @@ export async function shieldView(req, res) {
     visits, reports, events: events.slice(0, 50), lockdown: ttl > 0 ? ttl : 0,
     search: pick(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia']),
     socials: pick(['facebook', 'instagram', 'x', 'tiktok', 'youtube']),
-    compare, funnelToday: today, period: stats,
+    compare, funnelToday: today, funnelDays, period: stats, complaints: comp,
     attackCountries: top(attackCountries, 5)
   });
 }
