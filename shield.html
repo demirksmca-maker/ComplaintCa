@@ -101,7 +101,6 @@
   .list .row{padding:9px 0;border-top:1px solid var(--line);font-size:.8rem}
   .list .row:first-child{border-top:0;padding-top:0}
   .list time{display:block;color:var(--mute);font-size:.7rem;margin-bottom:2px}
-  .list .hit{color:var(--bad);word-break:break-all}
   .list a{color:var(--s1)}
   .muted{color:var(--mute);word-break:break-all}
   .quiet{color:var(--ok);font-size:.82rem;text-align:center;padding:14px 0}
@@ -215,9 +214,7 @@
     <!-- GÜVENLİK -->
     <section class="sec" id="v-security" hidden>
       <div class="card pad"><h2>Saldırı gelen ülkeler · son kayıtlar</h2><div class="hb" id="attackGeo"></div></div>
-      <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button></div>
-      <div class="card pad list" id="reports"></div>
-      <div class="card pad list" id="events" hidden></div>
+      <div class="card pad list" id="events"></div>
       <div class="foot"><span><span id="status">–</span> · bu cihaz sayılmıyor</span><button type="button" id="logout">Çıkış</button></div>
     </section>
 
@@ -413,9 +410,6 @@
     each('[data-range]', function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
     if (data) renderFunnel(data);
   }); });
-  each('[data-list]', function (b) { b.addEventListener('click', function () {
-    each('[data-list]', function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); $(x.getAttribute('data-list')).hidden = x !== b; });
-  }); });
 
   function brands(keys, counts) {
     var total = keys.reduce(function (n, k) { return n + (Number(counts[k]) || 0); }, 0);
@@ -519,13 +513,6 @@
     renderFunnel(d);
 
     $('attackGeo').innerHTML = hbars(d.attackCountries, function (c) { return flag(c) + c; });
-    $('reports').innerHTML = d.reports.length ? d.reports.map(function (r) {
-      return '<div class="row"><time>' + esc(when(r.t)) + ' · ' + (r.kind === 'copy' ? 'Kopya avcısı' : esc(r.events) + ' kayıt') + '</time>' + esc(r.summary) +
-        (r.copies || []).map(function (c) { return '<div class="hit">📄 ' + esc(c.url) + ' ← ' + esc(c.source.replace(/^https?:\/\/[^/]+/, '')) + '</div>'; }).join('') +
-        (r.copies && r.copies.length ? '<div><a href="https://reportcontent.google.com/forms/dmca_search" target="_blank" rel="noopener">Google\'dan kaldırt</a></div>' : '') +
-        (r.lockdownHours ? '<div class="hit">🔒 Acil kilit ' + esc(r.lockdownHours) + ' saat</div>' : '') +
-        (r.bans || []).map(function (b) { return '<div class="hit">⛔ ' + esc(b.ip) + ' · ' + esc(b.hours) + ' saat · ' + esc(b.reason) + '</div>'; }).join('') + '</div>';
-    }).join('') : '<p class="quiet">Bildirim yok · site sakin</p>';
     $('events').innerHTML = d.events.length ? d.events.slice(0, 30).map(function (e) {
       return '<div class="row"><time>' + esc(when(e.t)) + '</time><b>' + esc(AGENTS[e.agent] || e.agent) + '</b> <span class="muted">· ' + flag(e.c || '') + esc(e.ip) + ' · ' + esc(e.path) + '</span></div>';
     }).join('') : '<p class="quiet">Engellenen istek yok</p>';
