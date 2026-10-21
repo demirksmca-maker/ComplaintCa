@@ -1,9 +1,9 @@
 {
-  "_help": "Each run (10:00 and 22:00 Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); two posts on one date go out morning and evening. 'video' is an MP4 in social/videos/ (Instagram Reel), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Published ids are recorded in social/posted.json.",
+  "_help": "Each run (08:00 and 20:00 Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); two posts on one date go out morning and evening. 'video' is an MP4 in social/videos/ (Instagram Reel), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Published ids are recorded in social/posted.json.",
   "posts": [
     {
       "id": "v01-scam-check",
-      "date": "2026-10-21",
+      "date": "2026-10-20",
       "video": "social/videos/v01-scam-check.mp4",
       "platforms": ["instagram", "story"],
       "caption": "CRA scam alert: the CRA will never ask you to pay with gift cards. 🚩\n\nHang up and don't pay. Check a suspicious call, text or letter on ComplaintCA, and report scams to the Canadian Anti-Fraud Centre: 1-888-495-8501.\n\ncomplaintca.ca",
@@ -19,7 +19,7 @@
     },
     {
       "id": "v03-three-steps",
-      "date": "2026-10-22",
+      "date": "2026-10-21",
       "video": "social/videos/v03-three-steps.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Filing a complaint in Canada in 3 steps:\n\n1️⃣ Tell us what happened, in your own language\n2️⃣ We match it to the right authority for your province\n3️⃣ Send it and keep your reference number\n\ncomplaintca.ca",
@@ -35,7 +35,7 @@
     },
     {
       "id": "v05-unpaid-wages",
-      "date": "2026-10-23",
+      "date": "2026-10-22",
       "video": "social/videos/v05-unpaid-wages.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Unpaid wages in Ontario? You generally have 2 years to file an Employment Standards claim with the Ministry of Labour — and it's free.\n\nOther provinces have their own deadlines. Check yours on ComplaintCA.\n\ncomplaintca.ca",
@@ -51,7 +51,7 @@
     },
     {
       "id": "v07-human-rights",
-      "date": "2026-10-24",
+      "date": "2026-10-23",
       "video": "social/videos/v07-human-rights.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Discrimination at work, in housing or in services?\n\nIn Ontario, you must apply to the Human Rights Tribunal within one year of the last incident. Find the right body for your province on ComplaintCA.\n\ncomplaintca.ca",
@@ -67,7 +67,7 @@
     },
     {
       "id": "v09-anonymous",
-      "date": "2026-10-25",
+      "date": "2026-10-24",
       "video": "social/videos/v09-anonymous.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Anonymous complaint? You can. 🔒\n\nReport anonymously on ComplaintCA. Some bodies can't open a formal file without your identity — we tell you when, so you can decide.\n\ncomplaintca.ca",
