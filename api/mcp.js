@@ -122,11 +122,11 @@ export function authorized(req, secret) {
 // ---------- complaints (public fields only) ----------
 const val = (f) => f == null ? null : (f.stringValue ?? f.booleanValue ?? f.integerValue ?? f.timestampValue ?? null);
 
-async function fetchComplaints(fetchImpl) {
+export async function fetchComplaints(fetchImpl, fields = ['category', 'date', 'status', 'priority', 'ctype']) {
   const body = {
     structuredQuery: {
       from: [{ collectionId: 'complaints' }],
-      select: { fields: ['category', 'date', 'status', 'priority', 'ctype'].map((fieldPath) => ({ fieldPath })) },
+      select: { fields: fields.map((fieldPath) => ({ fieldPath })) },
       // Firestore rules only let the public read non-legal complaints.
       where: { fieldFilter: { field: { fieldPath: 'isLegal' }, op: 'EQUAL', value: { booleanValue: false } } },
       limit: 5000,
@@ -137,7 +137,7 @@ async function fetchComplaints(fetchImpl) {
   const rows = await r.json();
   return rows.filter((x) => x.document).map((x) => {
     const f = x.document.fields || {};
-    return { category: val(f.category), date: val(f.date), status: val(f.status), priority: val(f.priority), ctype: val(f.ctype) };
+    return Object.fromEntries(fields.map((k) => [k, val(f[k])]));
   });
 }
 
