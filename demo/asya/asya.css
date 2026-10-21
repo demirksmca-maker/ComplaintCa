@@ -540,3 +540,40 @@ a.af1-hico:hover{color:#ffe08a}
 .af-ov .af-bar,.af-ov.cc-embedded .af-bar{padding-top:calc(env(safe-area-inset-top,0px) + 4px);padding-bottom:0;min-height:0}
 /* Inside the site page the tabs are the way out, so no close button */
 .af-ov.cc-embedded .af-close{display:none}
+
+/* Chat look for the start screen and "Just talk": round ASYA avatar with a name pill,
+   ASYA on the left in navy bubbles, the user on the right in gold, choices as ticked rows */
+.af-ov:has(.af.mode-choose) .af-scene,.af-ov:has(.af.mode-talk) .af-scene{height:auto;padding-top:6px}
+.af-ov:has(.af.mode-choose) .af-emblem,.af-ov:has(.af.mode-talk) .af-emblem{width:112px;height:112px;object-fit:cover;border-radius:50%;-webkit-mask-image:none;mask-image:none;
+  background:#0b1d3d;border:2px solid #e6c98a;box-shadow:0 0 0 4px rgba(230,201,138,.12),0 10px 26px rgba(0,0,0,.45)}
+.af-ov:has(.af.mode-choose) .af-brand,.af-ov:has(.af.mode-talk) .af-brand{margin:-16px auto 14px;padding:7px 12px 7px calc(12px + .32em);font-size:.8rem;letter-spacing:.32em;
+  border-radius:999px;border:1px solid rgba(230,201,138,.45);background:rgba(10,30,62,.96)}
+.af.mode-choose .af-kicker,.af.mode-talk .af-kicker{display:none}
+.af.mode-choose .af-choose,.af.mode-talk .af-chat{align-items:stretch;gap:8px}
+.af-msg{max-width:86%;padding:12px 16px;text-align:left}
+.af-msg p{font-size:.95rem;line-height:1.45}
+.af-msg.af-a,.af-card{align-self:flex-start;background:#132a52;border:1px solid rgba(230,201,138,.16);border-radius:22px 22px 22px 6px}
+.af-msg.af-u{align-self:flex-end;border:0;border-radius:22px 22px 6px 22px;color:#2a1d04;font-weight:600;
+  background:linear-gradient(180deg,#f6e2a0,#d9b153);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.af-card{width:92%;padding:16px 14px 14px;display:flex;flex-direction:column;gap:9px;border-top-left-radius:22px;border-bottom-left-radius:6px}
+.af-card .af-q{margin:0 2px 4px;text-align:left;font-size:1.15rem}
+.af-card .af-mode{display:grid;grid-template-columns:auto 1fr 24px;grid-template-areas:"ic t tk" "ic d tk";align-items:center;column-gap:12px;row-gap:2px;
+  padding:12px 12px;text-align:left;border-radius:14px;box-shadow:none;border:1px solid rgba(255,255,255,.12);background:#071326}
+.af-card .af-mode:hover{background:#0b1d3d;border-color:rgba(230,201,138,.5)}
+.af-card .af-mode-ic{grid-area:ic;margin:0}
+.af-card .af-mode b{grid-area:t}
+.af-card .af-mode small{grid-area:d}
+.af-tick{grid-area:tk;width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);transition:background .2s,border-color .2s}
+.af-card .af-mode.sel{border:1.5px solid #e6c98a;background:#0b1d3d}
+.af-mode.sel .af-tick{border-color:#e6c98a;background:#e6c98a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%232a1d04' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.af-chat > .af-q{font-size:.95rem;text-align:center;color:#e6c98a;margin-bottom:2px}
+.af.mode-talk .af-log{max-height:52dvh;padding:4px 0}
+.af-crow{grid-template-columns:1fr 46px;align-items:center;gap:6px;padding:5px;border-radius:999px;background:#132a52;border:1px solid rgba(230,201,138,.22)}
+.af-crow:focus-within{border-color:#e6c98a}
+.af-crow .af-in{border:0;background:none;box-shadow:none;text-align:left;padding:10px 14px;font-size:.95rem}
+.af-crow .af-btn{width:46px;height:46px;padding:0;font-size:0;letter-spacing:0;border-radius:50%;
+  background:#e6c98a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 19V5M5.5 11.5L12 5l6.5 6.5' fill='none' stroke='%232a1d04' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/20px no-repeat}
+[dir=rtl] .af-msg{text-align:right}
+[dir=rtl] .af-msg.af-a,[dir=rtl] .af-card{border-radius:22px 22px 6px 22px}
+[dir=rtl] .af-msg.af-u{border-radius:22px 22px 22px 6px}
+[dir=rtl] .af-card .af-mode,[dir=rtl] .af-card .af-q{text-align:right}

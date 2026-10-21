@@ -360,13 +360,18 @@
     // ── Start: three ways in (complaint · access to information · just talk) ──
     let mode = 'choose';
     const choice = el('div','af-choose');
-    choice.append(el('p','af-kicker','ASYA asks'), el('h2','af-q','How can I help you?'));
+    const hello = el('div','af-msg af-a af-hello'); hello.appendChild(el('p', null, 'Hi, I’m ASYA. I’ll find the right institution for your problem and help you every step of the way.'));
+    const card = el('div','af-card');
+    card.append(el('h2','af-q','How can I help you?'));
+    choice.append(el('p','af-kicker','ASYA asks'), hello, card);
     [['complaint','I','File a complaint','Report a problem to the right institution — ASYA routes it for you.'],
      ['access','II','Access to information','Talk with ASYA about your right to get records from an institution — which law applies, deadlines, how to ask.'],
      ['talk','III','Just talk to ASYA','Not sure yet? Tell ASYA what happened — no form, nothing is sent.']].forEach(([m, ic, t, d]) => {
       const o = el('button','af-mode'); o.type = 'button'; o.dataset.m = m;
-      o.append(el('span','af-mode-ic', ic), el('b', null, t), el('small', null, d));
-      o.addEventListener('click', () => setMode(m)); choice.appendChild(o); });
+      o.append(el('span','af-mode-ic', ic), el('b', null, t), el('small', null, d), el('span','af-tick'));
+      // chat style: tick the chosen row for a beat, then move on
+      o.addEventListener('click', () => { card.querySelectorAll('.af-mode').forEach(b => b.classList.toggle('sel', b === o)); setTimeout(() => setMode(m), 260); });
+      card.appendChild(o); });
 
     // ── Just talk: a conversation with ASYA, nothing is filed ──
     const chat = el('div','af-chat');
@@ -428,6 +433,7 @@
       const talking = m === 'talk' || m === 'access';
       wrap.classList.add(m === 'choose' ? 'mode-choose' : talking ? 'mode-talk' : 'mode-one');
       hint.textContent = '';
+      if (m === 'choose') card.querySelectorAll('.af-mode.sel').forEach(b => b.classList.remove('sel'));
       if (m === 'complaint') {
         types.querySelector('[data-v="access"]').hidden = true;
         setType(val.ctype === 'access' ? 'notice' : val.ctype);
