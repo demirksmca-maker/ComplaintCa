@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Publishes due posts from social/queue.json to Facebook, Instagram and LinkedIn.
+// A post with "video" (MP4 from scripts/social-video.mjs) is published as an Instagram Reel.
 // Run daily by .github/workflows/social-post.yml. State lives in social/posted.json,
 // so a post (or a single platform that failed) is retried on the next run but is
 // never published twice.
@@ -48,6 +49,14 @@ export function fullCaption(post) {
   return post.caption + (post.hashtags ? '\n\n' + post.hashtags : '');
 }
 
+// Instagram captions: links are not clickable there, so point to the bio link,
+// and keep to 5 hashtags (Instagram's own guidance is 3-5; more reads as spam).
+export function instagramCaption(post) {
+  const tags = (post.hashtags || '').split(/\s+/).filter(Boolean).slice(0, 5).join(' ');
+  const text = /complaintca\.ca/i.test(post.caption) ? post.caption + '\n\n🔗 Link in bio' : post.caption;
+  return text + (tags ? '\n\n' + tags : '');
+}
+
 export function duePosts(queue, posted, today, enabled, onlyId) {
   return queue.posts
     .filter((p) => (onlyId ? p.id === onlyId : p.date <= today))
@@ -73,12 +82,15 @@ async function postFacebook(post, imageUrl) {
   return body.post_id || body.id;
 }
 
-async function postInstagram(post, imageUrl) {
+async function postInstagram(post, mediaUrl) {
   const tok = env.META_PAGE_TOKEN;
+  const media = post.video
+    ? { media_type: 'REELS', video_url: mediaUrl, share_to_feed: 'true', thumb_offset: String(post.coverMs ?? 5500) }
+    : { image_url: mediaUrl };
   const { body: c } = await api(`${GRAPH}/${env.IG_USER_ID}/media`, {
-    method: 'POST', body: form({ image_url: imageUrl, caption: fullCaption(post), access_token: tok }),
+    method: 'POST', body: form({ ...media, caption: instagramCaption(post), access_token: tok }),
   }, 'instagram create');
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < (post.video ? 60 : 12); i++) {
     const { body: s } = await api(`${GRAPH}/${c.id}?fields=status_code&access_token=${encodeURIComponent(tok)}`, {}, 'instagram status');
     if (s.status_code === 'FINISHED') break;
     if (s.status_code === 'ERROR' || s.status_code === 'EXPIRED') throw new Error('instagram container ' + s.status_code);
@@ -140,15 +152,17 @@ async function main() {
 
   let failed = 0;
   for (const { post, todo } of due) {
-    const imageUrl = `${SITE}/${post.image}`;
+    const imageUrl = `${SITE}/${post.video || post.image}`;
     const res = await fetch(imageUrl);
     const type = res.headers.get('content-type') || '';
-    if (!res.ok || !/image\/jpe?g/.test(type)) {
-      console.error(`✗ ${post.id}: image not reachable as JPEG at ${imageUrl} (HTTP ${res.status}, ${type})`);
+    const want = post.video ? /video\/mp4/ : /image\/jpe?g/;
+    if (!res.ok || !want.test(type)) {
+      console.error(`✗ ${post.id}: media not reachable as ${post.video ? 'MP4' : 'JPEG'} at ${imageUrl} (HTTP ${res.status}, ${type})`);
       failed++; continue;
     }
     const bytes = Buffer.from(await res.arrayBuffer());
     for (const pl of todo) {
+      if (post.video && pl !== 'instagram') { console.warn(`[skip] ${post.id} → ${pl}: video posts go to Instagram only`); continue; }
       if (DRY) { console.log(`• would post ${post.id} to ${pl}`); continue; }
       try {
         const id = pl === 'facebook' ? await postFacebook(post, imageUrl)

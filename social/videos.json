@@ -1,0 +1,85 @@
+{
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4. accent: red, green, yellow or blue. musicStart: second of the theme to start from. Keep facts in step with the matching post in queue.json.",
+  "videos": [
+    {
+      "id": "v01-scam-check",
+      "accent": "red",
+      "kicker": "Scam alert",
+      "title": "The CRA never asks for gift cards.",
+      "lines": ["Hang up. Don't pay.", "Check it on ComplaintCA", "Report it to the Anti-Fraud Centre"],
+      "musicStart": 0
+    },
+    {
+      "id": "v02-brand",
+      "accent": "blue",
+      "kicker": "ComplaintCA",
+      "title": "Your complaint. Heard. Tracked. Resolved.",
+      "lines": ["The right authority, every province", "Free, in 7 languages", "Anonymous option"],
+      "musicStart": 5.3
+    },
+    {
+      "id": "v03-three-steps",
+      "accent": "green",
+      "kicker": "How it works",
+      "title": "File a complaint in 3 steps.",
+      "lines": ["1  Tell us what happened", "2  We match the right authority", "3  Send it, keep your number"],
+      "musicStart": 10.1
+    },
+    {
+      "id": "v04-landlord",
+      "accent": "yellow",
+      "kicker": "Tenant rights",
+      "title": "Mould, no heat, repairs ignored?",
+      "lines": ["Every province has a tenancy board", "It can order repairs", "Find yours on ComplaintCA"],
+      "musicStart": 13.9
+    },
+    {
+      "id": "v05-unpaid-wages",
+      "accent": "green",
+      "kicker": "Ontario workers",
+      "title": "Your employer didn't pay you?",
+      "lines": ["Generally 2 years to file", "Employment Standards claim", "It's free"],
+      "musicStart": 21.1
+    },
+    {
+      "id": "v06-bank-obsi",
+      "accent": "blue",
+      "kicker": "Banking",
+      "title": "Your bank said no? Not the end.",
+      "lines": ["Banks must answer in 56 days", "Then go to OBSI, free", "Within 180 days of the final answer"],
+      "musicStart": 0
+    },
+    {
+      "id": "v07-human-rights",
+      "accent": "yellow",
+      "kicker": "Human rights",
+      "title": "Facing discrimination?",
+      "lines": ["At work, in housing, in services", "Ontario: apply within 1 year", "Don't wait"],
+      "musicStart": 5.3
+    },
+    {
+      "id": "v08-languages",
+      "accent": "green",
+      "kicker": "7 languages",
+      "title": "Speak up in the language you think in.",
+      "lines": ["English · Français · Español", "Chinese · Arabic · Punjabi", "Türkçe"],
+      "musicStart": 10.1
+    },
+    {
+      "id": "v09-anonymous",
+      "accent": "red",
+      "kicker": "Privacy",
+      "title": "Afraid to speak up?",
+      "lines": ["Report anonymously", "We tell you when ID is required", "You decide"],
+      "musicStart": 13.9
+    },
+    {
+      "id": "v10-find-mp",
+      "accent": "blue",
+      "kicker": "Your representatives",
+      "title": "Your MP works for you.",
+      "lines": ["Enter your postal code", "Find federal and provincial reps", "Contact them directly"],
+      "musicStart": 21.1
+    }
+  ]
+}
