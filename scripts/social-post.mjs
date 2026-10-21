@@ -49,6 +49,14 @@ export function fullCaption(post) {
   return post.caption + (post.hashtags ? '\n\n' + post.hashtags : '');
 }
 
+// Instagram captions: links are not clickable there, so point to the bio link,
+// and keep to 5 hashtags (Instagram's own guidance is 3-5; more reads as spam).
+export function instagramCaption(post) {
+  const tags = (post.hashtags || '').split(/\s+/).filter(Boolean).slice(0, 5).join(' ');
+  const text = /complaintca\.ca/i.test(post.caption) ? post.caption + '\n\n🔗 Link in bio' : post.caption;
+  return text + (tags ? '\n\n' + tags : '');
+}
+
 export function duePosts(queue, posted, today, enabled, onlyId) {
   return queue.posts
     .filter((p) => (onlyId ? p.id === onlyId : p.date <= today))
@@ -77,10 +85,10 @@ async function postFacebook(post, imageUrl) {
 async function postInstagram(post, mediaUrl) {
   const tok = env.META_PAGE_TOKEN;
   const media = post.video
-    ? { media_type: 'REELS', video_url: mediaUrl, share_to_feed: 'true' }
+    ? { media_type: 'REELS', video_url: mediaUrl, share_to_feed: 'true', thumb_offset: String(post.coverMs ?? 5500) }
     : { image_url: mediaUrl };
   const { body: c } = await api(`${GRAPH}/${env.IG_USER_ID}/media`, {
-    method: 'POST', body: form({ ...media, caption: fullCaption(post), access_token: tok }),
+    method: 'POST', body: form({ ...media, caption: instagramCaption(post), access_token: tok }),
   }, 'instagram create');
   for (let i = 0; i < (post.video ? 60 : 12); i++) {
     const { body: s } = await api(`${GRAPH}/${c.id}?fields=status_code&access_token=${encodeURIComponent(tok)}`, {}, 'instagram status');

@@ -81,11 +81,11 @@ async function render(browser, v) {
   for (let f = 0; f < FPS * DUR; f++) {
     const ms = (f * 1000) / FPS;
     await p.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), ms);
-    await p.screenshot({ path: path.join(tmp, String(f).padStart(4, '0') + '.png') });
+    await p.screenshot({ path: path.join(tmp, String(f).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 95 });
   }
   await p.close();
   const mp4 = path.join(OUT, v.id + '.mp4');
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(tmp, '%04d.png'),
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(tmp, '%04d.jpg'),
     '-ss', String(v.musicStart ?? 0), '-i', path.join(ROOT, 'assets/brand/complaintca-theme.mp3'),
     '-t', String(DUR), '-af', `afade=t=in:d=0.4,afade=t=out:st=${DUR - 0.8}:d=0.8`,
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-crf', '20', '-r', String(FPS),
@@ -105,7 +105,9 @@ async function main() {
   }
   if (!todo.length) return console.log('Nothing to render.');
   const browser = await chromium.launch();
-  try { for (const v of todo) await render(browser, v); } finally { await browser.close(); }
+  const queue = [...todo];
+  const worker = async () => { while (queue.length) await render(browser, queue.shift()); };
+  try { await Promise.all([worker(), worker(), worker()]); } finally { await browser.close(); }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((e) => { console.error(e); process.exit(1); });
