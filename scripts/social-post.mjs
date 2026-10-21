@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Publishes due posts from social/queue.json to Facebook, Instagram and LinkedIn.
+// Publishes due posts from social/queue.json to Facebook, Instagram (feed + Story) and LinkedIn.
 // A post with "video" (MP4 from scripts/social-video.mjs) is published as an Instagram Reel.
 // Run daily by .github/workflows/social-post.yml. State lives in social/posted.json,
 // so a post (or a single platform that failed) is retried on the next run but is
@@ -82,23 +82,26 @@ async function postFacebook(post, imageUrl) {
   return body.post_id || body.id;
 }
 
-async function postInstagram(post, mediaUrl) {
+// story: the same media as a 24-hour Instagram Story (no caption on Stories).
+async function postInstagram(post, mediaUrl, story = false) {
   const tok = env.META_PAGE_TOKEN;
-  const media = post.video
-    ? { media_type: 'REELS', video_url: mediaUrl, share_to_feed: 'true', thumb_offset: String(post.coverMs ?? 5500) }
-    : { image_url: mediaUrl };
+  const src = post.video ? { video_url: mediaUrl } : { image_url: mediaUrl };
+  const media = story ? { media_type: 'STORIES', ...src }
+    : post.video ? { media_type: 'REELS', ...src, share_to_feed: 'true', thumb_offset: String(post.coverMs ?? 5500), caption: instagramCaption(post) }
+    : { ...src, caption: instagramCaption(post) };
+  const label = story ? 'instagram story' : 'instagram';
   const { body: c } = await api(`${GRAPH}/${env.IG_USER_ID}/media`, {
-    method: 'POST', body: form({ ...media, caption: instagramCaption(post), access_token: tok }),
-  }, 'instagram create');
+    method: 'POST', body: form({ ...media, access_token: tok }),
+  }, label + ' create');
   for (let i = 0; i < (post.video ? 60 : 12); i++) {
-    const { body: s } = await api(`${GRAPH}/${c.id}?fields=status_code&access_token=${encodeURIComponent(tok)}`, {}, 'instagram status');
-    if (s.status_code === 'FINISHED') break;
-    if (s.status_code === 'ERROR' || s.status_code === 'EXPIRED') throw new Error('instagram container ' + s.status_code);
+    const { body: st } = await api(`${GRAPH}/${c.id}?fields=status_code&access_token=${encodeURIComponent(tok)}`, {}, label + ' status');
+    if (st.status_code === 'FINISHED') break;
+    if (st.status_code === 'ERROR' || st.status_code === 'EXPIRED') throw new Error(label + ' container ' + st.status_code);
     await new Promise((r) => setTimeout(r, 5000));
   }
   const { body } = await api(`${GRAPH}/${env.IG_USER_ID}/media_publish`, {
     method: 'POST', body: form({ creation_id: c.id, access_token: tok }),
-  }, 'instagram publish');
+  }, label + ' publish');
   return body.id;
 }
 
@@ -138,9 +141,9 @@ async function main() {
 
   const enabled = [];
   if (env.META_PAGE_ID && env.META_PAGE_TOKEN) enabled.push('facebook');
-  if (env.IG_USER_ID && env.META_PAGE_TOKEN) enabled.push('instagram');
+  if (env.IG_USER_ID && env.META_PAGE_TOKEN) enabled.push('instagram', 'story');
   if (env.LINKEDIN_TOKEN && env.LINKEDIN_AUTHOR) enabled.push('linkedin');
-  if (DRY) enabled.splice(0, enabled.length, 'facebook', 'instagram', 'linkedin');
+  if (DRY) enabled.splice(0, enabled.length, 'facebook', 'instagram', 'story', 'linkedin');
   for (const pl of ['facebook', 'instagram', 'linkedin'])
     if (!enabled.includes(pl)) console.warn(`[skip] ${pl}: secrets not set`);
 
@@ -162,11 +165,12 @@ async function main() {
     }
     const bytes = Buffer.from(await res.arrayBuffer());
     for (const pl of todo) {
-      if (post.video && pl !== 'instagram') { console.warn(`[skip] ${post.id} → ${pl}: video posts go to Instagram only`); continue; }
+      if (post.video && !['instagram', 'story'].includes(pl)) { console.warn(`[skip] ${post.id} → ${pl}: video posts go to Instagram only`); continue; }
       if (DRY) { console.log(`• would post ${post.id} to ${pl}`); continue; }
       try {
         const id = pl === 'facebook' ? await postFacebook(post, imageUrl)
           : pl === 'instagram' ? await postInstagram(post, imageUrl)
+          : pl === 'story' ? await postInstagram(post, imageUrl, true)
           : await postLinkedIn(post, bytes);
         (posted[post.id] ||= {})[pl] = { id: String(id), at: new Date().toISOString() };
         console.log(`✓ ${post.id} → ${pl} (${id})`);

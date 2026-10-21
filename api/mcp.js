@@ -179,7 +179,7 @@ function torontoToday() {
 export function queueView(queue, posted, filter) {
   return queue.posts.map((p) => {
     const done = p.platforms.filter((pl) => (posted[p.id] || {})[pl]);
-    return { id: p.id, date: p.date, image: `${SITE}/${p.image}`, platforms: p.platforms, published_on: done, fully_published: done.length === p.platforms.length, caption: p.caption, hashtags: p.hashtags || '' };
+    return { id: p.id, date: p.date, ...(p.video ? { video: `${SITE}/${p.video}` } : { image: `${SITE}/${p.image}` }), platforms: p.platforms, published_on: done, fully_published: done.length === p.platforms.length, caption: p.caption, hashtags: p.hashtags || '' };
   }).filter((p) => filter === 'all' || (filter === 'published' ? p.fully_published : !p.fully_published))
     .sort((a, b) => a.date.localeCompare(b.date));
 }

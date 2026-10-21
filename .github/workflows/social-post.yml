@@ -1,12 +1,13 @@
 name: Social Post
 
 # Publishes due posts from social/queue.json to Facebook, Instagram and LinkedIn
-# once a day (10:00 Toronto in summer, 09:00 in winter). Records what was
+# twice a day: 10:00 and 22:00 Toronto in summer (09:00 and 21:00 in winter). Records what was
 # published in social/posted.json so nothing is posted twice. Run it by hand
 # from the Actions tab with "dry_run" to preview without posting.
 on:
   schedule:
     - cron: '0 14 * * *'
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
