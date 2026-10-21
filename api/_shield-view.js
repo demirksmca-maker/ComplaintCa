@@ -7,6 +7,7 @@
 // or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
+import { diasTalk } from './_dias-talk.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -131,6 +132,16 @@ export async function shieldView(req, res) {
     } catch (err) {
       console.error('search console error:', err && err.message);
       return res.status(502).json({ ok: false, reason: 'error' });
+    }
+  }
+
+  // GET /api/shield?talk=1 → today's Dias ↔ Asya talk (written once a day by Claude).
+  if (req.query && req.query.talk) {
+    try {
+      return res.status(200).json({ talk: await diasTalk(pipeline, lastDays(new Date(), 1)[0]) });
+    } catch (err) {
+      console.error('dias talk error:', err && err.message);
+      return res.status(200).json({ talk: null });
     }
   }
 
