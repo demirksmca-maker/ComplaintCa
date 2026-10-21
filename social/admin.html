@@ -29,6 +29,7 @@ h2{font-family:Inter,sans-serif;font-weight:700;font-size:18px;margin:0 0 12px;c
 .posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .post{background:var(--card2);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .post img{width:100%;aspect-ratio:1;object-fit:cover;background:#081120;display:block}
+.post video{width:100%;aspect-ratio:1;object-fit:cover;background:#081120;display:block}
 .post .b{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
 .date{font-weight:700}.cap{color:var(--sub);font-size:13px;white-space:pre-line;max-height:5.6em;overflow:hidden}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -189,7 +190,9 @@ function render(){
   const st=posted[p.id]||{};
   const chips=p.platforms.map(x=>`<span class="chip ${st[x]?'ok':'wait'}">${st[x]?'✓':'⏳'} ${PL[x]}</span>`).join('');
   const late=!statusOf(p).all&&p.date<t?' <span class="chip wait">gecikti — sıradaki çalışmada</span>':'';
-  return `<div class="post"><img loading="lazy" src="${esc(SITE+'/'+p.image)}?v=${esc(p.id)}" alt="" onerror="this.style.opacity=.3">
+  const media=p.video?`<video src="${esc(SITE+'/'+p.video)}#t=5.5" preload="metadata" muted playsinline controls></video>`
+   :`<img loading="lazy" src="${esc(SITE+'/'+p.image)}?v=${esc(p.id)}" alt="" onerror="this.style.opacity=.3">`;
+  return `<div class="post">${media}
    <div class="b"><div class="date">📅 ${esc(fmtDate(p.date))}${late}</div>
    <div class="chips">${chips}</div><div class="cap">${esc(p.caption)}</div>
    <div class="acts">${statusOf(p).all?'':`<button class="btn sm gold" onclick="shareNow('${esc(p.id)}')">🚀 Şimdi paylaş</button>`}
@@ -236,7 +239,7 @@ function openEdit(id){
  document.getElementById('fTags').value=p?(p.hashtags||''):'#Canada #ComplaintCA';
  const pls=p?p.platforms:['facebook','instagram','linkedin'];
  document.getElementById('pFb').checked=pls.includes('facebook');document.getElementById('pIg').checked=pls.includes('instagram');document.getElementById('pLi').checked=pls.includes('linkedin');
- const pv=document.getElementById('imgPrev'); pv.style.display=p?'block':'none'; if(p) pv.src=SITE+'/'+p.image+'?v='+p.id;
+ const pv=document.getElementById('imgPrev'); pv.style.display=p&&p.image?'block':'none'; if(p&&p.image) pv.src=SITE+'/'+p.image+'?v='+p.id;
  document.getElementById('imgFile').value=''; capCount(); dlg.showModal();
 }
 function capCount(){const n=(document.getElementById('fCap').value+'\n\n'+document.getElementById('fTags').value).length;document.getElementById('capCount').textContent='('+n+' / 2200)'}
@@ -266,6 +269,7 @@ async function savePost(){
  try{
   let p=editId?queue.posts.find(x=>x.id===editId):null;
   if(!p){let id=date+'-'+slug(caption.split('\n')[0]),n=2;while(queue.posts.some(x=>x.id===id))id=id.replace(/-\d+$/,'')+'-'+n++;p={id,date,image:'social/images/'+id+'.jpg',platforms,caption,hashtags};queue.posts.push(p)}
+  if(newImage&&p.video) throw new Error('Reels gönderisinin videosu buradan değişmez');
   if(newImage){
    let sha; try{sha=(await gh('/contents/'+p.image+'?ref='+BRANCH)).sha}catch(e){}
    await putFile(p.image,newImage,'Social: image for '+p.id,sha);
@@ -288,7 +292,7 @@ async function shareNow(id){
  const left=p.platforms.filter(x=>!(posted[p.id]||{})[x]).map(x=>PL[x]).join(', ');
  if(!confirm('Bu paylaşım ŞİMDİ şu hesaplarda yayınlanacak: '+left+'\n\nEmin misin?')) return;
  msg('Görsel kontrol ediliyor…');
- if(!await waitImage(SITE+'/'+p.image)) return msg('Görsel henüz sitede değil, 1-2 dk sonra tekrar dene.',1);
+ if(!await waitImage(SITE+'/'+(p.video||p.image))) return msg('Görsel henüz sitede değil, 1-2 dk sonra tekrar dene.',1);
  await runWorkflow(false,id);
 }
 async function runWorkflow(dry,id){
