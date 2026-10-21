@@ -1,0 +1,14 @@
+{
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4. accent: red, green, yellow or blue. musicStart: second of the theme to start from.",
+  "videos": [
+    {
+      "id": "v01-scam-check",
+      "accent": "red",
+      "kicker": "Scam alert",
+      "title": "The CRA never asks for gift cards.",
+      "lines": ["Hang up. Don't pay.", "Report it in 2 minutes", "We find the right office"],
+      "cta": "Free · 7 languages · Anonymous option",
+      "musicStart": 0
+    }
+  ]
+}

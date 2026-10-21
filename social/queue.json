@@ -1,5 +1,5 @@
 {
-  "_help": "Each post is published once, on or after its 'date' (YYYY-MM-DD, Toronto time). Images must be JPEG in social/images/. Set 'platforms' to any of facebook, instagram, linkedin. Published ids are recorded in social/posted.json.",
+  "_help": "Each post is published once, on or after its 'date' (YYYY-MM-DD, Toronto time). Images must be JPEG in social/images/; a post with \"video\" (MP4 in social/videos/) is an Instagram Reel. Set 'platforms' to any of facebook, instagram, linkedin. Published ids are recorded in social/posted.json.",
   "posts": [
     {
       "id": "01-brand",
@@ -80,6 +80,14 @@
       "platforms": ["facebook", "instagram", "linkedin"],
       "caption": "Your representatives work for you. 🏛️\n\nEnter your postal code on ComplaintCA to find your federal and provincial representatives and contact them directly.\n\ncomplaintca.ca",
       "hashtags": "#Democracy #CivicEngagement #CdnPoli #Canada #ComplaintCA"
+    },
+    {
+      "id": "v01-scam-check",
+      "date": "2026-10-23",
+      "video": "social/videos/v01-scam-check.mp4",
+      "platforms": ["instagram"],
+      "caption": "The CRA will never ask you to pay with gift cards. 🚩\n\nHang up, don't pay — and report it. ComplaintCA finds the right office for you in 2 minutes.\n\ncomplaintca.ca",
+      "hashtags": "#ScamAlert #CRA #FraudPrevention #Canada #ComplaintCA"
     }
   ]
 }
