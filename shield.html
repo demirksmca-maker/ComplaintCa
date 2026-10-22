@@ -192,22 +192,18 @@
   .st tr.r[aria-expanded="true"] th,.st tr.r[aria-expanded="true"] td{color:var(--ink);background:rgba(57,135,229,.08)}
   .st tr.det td{padding:0;border-top:0;white-space:normal;text-align:left;font-weight:400}
   .st-box{margin:2px 0 8px;padding:10px 12px;border:1px solid var(--edge);border-radius:10px;background:#081428;display:flex;flex-direction:column;gap:8px}
-  .st-dates{display:flex;justify-content:space-between;gap:8px;font-size:.68rem;color:var(--mute)}
-  .st-dates b{display:block;color:var(--ink);font-size:.6rem;text-transform:uppercase;letter-spacing:.3px}
-  .st-dates span:last-child{text-align:right}
-  .st-grid{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;font-size:.76rem;align-items:baseline}
-  .st-grid span{color:var(--mute)}
-  .st-grid b{text-align:right}
-  .st-grid i{font-style:normal;color:var(--mute);text-align:right;font-size:.7rem}
-  .st-grid .h{font-size:.55rem;font-weight:500;color:var(--mute);text-transform:uppercase}
-  .st-best{display:grid;grid-template-columns:1fr auto;gap:0 10px;font-size:.74rem;border-top:1px solid var(--line);padding-top:7px}
-  .st-best span{grid-column:1/-1;font-size:.58rem;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
-  .st-best b{font-weight:600;min-width:0;overflow-wrap:anywhere}
-  .st-best i{font-style:normal;color:var(--mute);white-space:nowrap}
-  .st-mb{display:flex;align-items:flex-end;gap:2px;height:44px}
-  .st-mb i{flex:1;background:var(--edge);border-radius:2px 2px 0 0;min-height:2px}
-  .st-mb i:last-child{background:var(--s1)}
-  .st-ml{display:flex;justify-content:space-between;font-size:.58rem;color:var(--mute)}
+  .st-when{font-size:.7rem;color:var(--mute);text-align:center;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .st-when b{color:var(--ink);font-weight:600}
+  .st-bar{display:flex;flex-direction:column;gap:3px;font-size:.76rem}
+  .st-bt{display:flex;justify-content:space-between;gap:8px}
+  .st-bt em{font-style:normal;font-weight:700;font-size:.7rem;color:var(--mute);white-space:nowrap}
+  .st-bt em.up{color:var(--ok)}.st-bt em.down{color:var(--bad)}
+  .st-tr{display:flex;align-items:center;gap:6px;font-size:.66rem;color:var(--mute);font-variant-numeric:tabular-nums}
+  .st-tr span{width:38px;flex:none}
+  .st-tr i{height:10px;border-radius:5px;background:#3a4f6e;min-width:2px}
+  .st-tr i.now{background:var(--s1)}
+  .st-best{font-size:.76rem;border-top:1px solid var(--line);padding-top:8px;overflow-wrap:anywhere}
+  .st-best small{display:block;color:var(--mute);font-size:.62rem}
   .st-foot{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;font-size:.58rem;color:var(--mute);text-align:center;padding:6px 10px 10px}
   .st-foot b{color:var(--warn);font-weight:600}
   .st-re{background:none;color:var(--s1);font-size:.62rem;padding:2px 4px}
@@ -520,6 +516,19 @@
     var p = Math.round((cur - prev) / prev * 100);
     return p ? '<em class="' + (p > 0 ? 'up' : 'down') + '">' + (p > 0 ? '▲ %' : '▼ %') + Math.abs(p) + '</em>' : '<em>=</em>';
   }
+  // Detail box: one pair of bars per number, blue = this period, grey = the
+  // one before; the longer bar fills 70%. lowerIsBetter flips the colour (rank).
+  function stSecs(n) { return n < 60 ? n + ' sn' : stTime(n); }
+  function stPage(path) { return decodeURIComponent(String(path).replace(/^\/(es\/)?(blog|guides|guias)\//, '').replace(/\.html$/, '').replace(/[-_/]+/g, ' ').trim()) || 'ana sayfa'; }
+  function stBar(label, cur, prev, fmt, unit, lowerIsBetter) {
+    if (cur == null || prev == null) return '';
+    var max = Math.max(cur, prev) || 1, d = cur - prev, good = lowerIsBetter ? d < 0 : d > 0;
+    var diff = !d ? '<em>= aynı</em>' : '<em class="' + (good ? 'up' : 'down') + '">' + (good ? '▲ ' : '▼ ') +
+      (unit ? (unit === 'basamak' ? Math.abs(d).toFixed(1).replace('.', ',') : stNum(Math.abs(d))) + ' ' + unit : stSecs(Math.abs(d))) + '</em>';
+    return '<div class="st-bar"><div class="st-bt"><span>' + label + '</span>' + diff + '</div>' +
+      '<div class="st-tr"><span>Şimdi</span><i class="now" style="width:' + (cur / max * 70) + '%"></i>' + fmt(cur) + '</div>' +
+      '<div class="st-tr"><span>Önce</span><i style="width:' + (prev / max * 70) + '%"></i>' + fmt(prev) + '</div></div>';
+  }
   function renderStats() {
     each('[data-st]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-st') === stSite ? 'true' : 'false'); });
     var d = stData;
@@ -535,19 +544,16 @@
       html += '<tr class="r" tabindex="0" data-p="' + p.days + '" aria-expanded="' + open + '" aria-controls="' + id + '"><th scope="row">' + ST_NAMES[p.days] + '<span class="st-chev" aria-hidden="true">›</span>' + (p.days === 1 ? '<small>' + stDay(c.to) + '</small>' : '') + '</th>' +
         '<td>' + stNum(c.visitors) + stDelta(c.visitors, v.visitors) + '</td><td>' + stNum(c.clicks) + stDelta(c.clicks, v.clicks) + '</td><td>' + stNum(c.impressions) + stDelta(c.impressions, v.impressions) + '</td>' +
         '<td>' + stTime(c.eng) + stDelta(c.eng, v.eng, 'time') + '</td><td>' + stNum(c.complaints) + stDelta(c.complaints, v.complaints) + '</td></tr>';
-      var max = Math.max.apply(null, p.daily.concat(1));
-      var posCls = c.position && v.position ? (c.position < v.position ? 'up' : c.position > v.position ? 'down' : '') : '';
       html += '<tr class="det" id="' + id + '"' + (open ? '' : ' hidden') + '><td colspan="6"><div class="st-box">' +
-        '<div class="st-dates"><span><b>Bu dönem</b>' + stRange(c.from, c.to) + '</span><span><b>Önceki</b>' + stRange(v.from, v.to) + '</span></div>' +
-        '<div class="st-grid"><span></span><b class="h">Bu</b><i class="h">Önceki</i>' +
-        [['Ziyaretçi', stNum(c.visitors), stNum(v.visitors)], ['Tıklama', stNum(c.clicks), stNum(v.clicks)], ['Görüntüleme', stNum(c.impressions), stNum(v.impressions)],
-          ['Süre/kişi', stTime(c.eng), stTime(v.eng)], ['Şikayet', stNum(c.complaints), stNum(v.complaints)],
-          ['Tıklama oranı', '%' + (c.ctr * 100).toFixed(1), '%' + (v.ctr * 100).toFixed(1)], ['Ort. sıra', c.position ? c.position.toFixed(1) : '–', v.position ? v.position.toFixed(1) : '–', posCls]]
-          .map(function (x) { return '<span>' + x[0] + '</span><b' + (x[3] ? ' class="' + (x[3] === 'up' ? 'better' : 'worse') + '"' : '') + '>' + x[1] + '</b><i>' + x[2] + '</i>'; }).join('') + '</div>' +
-        (p.query ? '<div class="st-best"><span>En çok tıklanan arama</span><b>' + esc(p.query.key) + '</b><i>' + stNum(p.query.clicks) + ' tık</i></div>' : '') +
-        (p.page ? '<div class="st-best"><span>En çok tıklanan sayfa</span><b>' + esc(p.page.key) + '</b><i>' + stNum(p.page.clicks) + ' tık</i></div>' : '') +
-        (p.daily.length ? '<div class="st-mb">' + p.daily.map(function (n) { return '<i style="height:' + Math.max(2, n / max * 100) + '%" title="' + n + ' tık"></i>'; }).join('') + '</div>' +
-          '<div class="st-ml"><span>' + stDay(addDay(c.to, 1 - p.daily.length)) + '</span><span>Günlük tıklama</span><span>' + stDay(c.to) + '</span></div>' : '') +
+        '<p class="st-when">Son ' + ST_NAMES[p.days] + ' <b>(' + stRange(c.from, c.to) + ')</b> ile ondan önceki ' + ST_NAMES[p.days] + ' <b>(' + stRange(v.from, v.to) + ')</b></p>' +
+        stBar('👥 Gelen kişi', c.visitors, v.visitors, stNum, 'kişi') +
+        stBar('👆 Google\'dan tıklama', c.clicks, v.clicks, stNum, 'tık') +
+        stBar('👀 Google\'da görünme', c.impressions, v.impressions, stNum, 'kez') +
+        stBar('⏱️ Kişi başı kalma', c.eng, v.eng, stSecs) +
+        stBar('🏆 Google sırası (küçük = iyi)', c.position || null, v.position || null, function (n) { return n.toFixed(1).replace('.', ',') + '.'; }, 'basamak', true) +
+        (c.complaints || v.complaints ? stBar('📝 Şikayet', c.complaints, v.complaints, stNum, 'şikayet') : '') +
+        (p.query || p.page ? '<p class="st-best"><small>🔎 En çok aranan → en çok tıklanan sayfa</small>' +
+          [p.query ? '"' + esc(p.query.key) + '"' : '', p.page ? esc(stPage(p.page.key)) + ' (' + stNum(p.page.clicks) + ' tık)' : ''].filter(Boolean).join(' · ') + '</p>' : '') +
         '</div></td></tr>';
     });
     html += '</tbody></table></div>';
@@ -563,7 +569,6 @@
     });
     $('stRe').addEventListener('click', function () { loadStats(true); });
   }
-  function addDay(d, n) { return new Date(Date.parse(d + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10); }
   function loadStats(fresh) {
     if (fresh) $('stBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
     fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
