@@ -19,7 +19,7 @@ const GSC_SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const GA_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 const GSC = 'https://www.googleapis.com/webmasters/v3';
 const GA = 'https://analyticsdata.googleapis.com/v1beta';
-const CACHE_KEY = 'shield:statspanel:v1', CACHE_SECONDS = 3 * 3600;
+const CACHE_KEY = 'shield:statspanel:v2', CACHE_SECONDS = 3 * 3600;
 const D = 86400000;
 
 export const PANEL_DAYS = [1, 3, 5, 7, 10, 14, 20, 30, 90];
@@ -108,6 +108,16 @@ export function readGa(reports, requests = []) {
   return out;
 }
 
+// Growth since opening: daily impressions over the last 7 days against the
+// first 14 days in Google (averages, so different lengths compare fairly).
+// Null until there are 21 days of data or while the first days had none.
+export function growth(rows, start, end) {
+  if (!start || addDays(start, 20) > end) return null;
+  const first = sumRange(rows, start, addDays(start, 13)).impressions / 14;
+  const last = sumRange(rows, addDays(end, -6), end).impressions / 7;
+  return first ? Math.round(last / first * 10) / 10 : null;
+}
+
 // One site's panel from the fetched pieces.
 export function buildSite({ end, rows, start, ga, counter, complaints, site, tops }) {
   const visitors = name => (ga ? (ga[name] || { visitors: 0, eng: 0 }) : { visitors: counter ? counter[name] || 0 : null, eng: null });
@@ -120,7 +130,7 @@ export function buildSite({ end, rows, start, ga, counter, complaints, site, top
       query: (tops && tops[`q${d}`]) || null, page: (tops && tops[`g${d}`]) || null
     };
   });
-  return { start, since: start ? part('since', start, end) : null, periods };
+  return { start, since: start ? { ...part('since', start, end), growth: growth(rows, start, end) } : null, periods };
 }
 
 const path = u => String(u).replace(/^https?:\/\/[^/]+/, '') || '/';
