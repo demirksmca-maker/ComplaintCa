@@ -17,3 +17,9 @@ test('page is transparent over footage, dark without it', () => {
   assert.match(page({ ...v, bg: 'pexels:city' }), /class="scrim"/);
   assert.match(page(v), /&lt;b&gt;/);
 });
+
+test('videos.json is valid and every video has the fields page() needs', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const { videos } = JSON.parse(await readFile(new URL('../social/videos.json', import.meta.url), 'utf8'));
+  for (const v of videos) assert.ok(v.id && v.kicker && v.title, v.id);
+});
