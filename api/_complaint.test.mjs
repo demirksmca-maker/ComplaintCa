@@ -55,6 +55,11 @@ describe('core', () => {
     const ch = getChain('repairs', 'landlord', 'Winnipeg, MB');
     assert.equal(ch.province, 'MB'); assert.ok(ch.bodies.length > 0);
   });
+  test('the chain lists federal bodies where the authority list stays empty', () => {
+    assert.ok(getChain('transit', '', 'Halifax, NS').federal.some(a => a.name === 'Canadian Transportation Agency'));
+    assert.ok(getChain('billing', '', 'Regina, SK').federal.every(a => !/ontario/i.test(a.name)));
+    assert.deepEqual(getChain('transit', '', 'Vancouver, BC').federal, []);
+  });
   test('record has every field the rules require', () => {
     const rec = buildRecord(validate(good()).input, { ref: 'VC-2026-ABC234' });
     for (const k of ['ref', 'title', 'desc', 'category', 'status', 'date', 'timeline', 'anonymous', 'email']) assert.ok(k in rec, k);

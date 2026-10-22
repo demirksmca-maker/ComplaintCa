@@ -125,7 +125,10 @@ export function getChain(category, target, location, targetAddress = '') {
   const C = CHAIN[pv];
   const bodies = topic === 'ombudsman' ? (C.ombudsman || []) : (C[topic] || []);
   const extra = topic === 'consumer' ? (C.small_claims || []) : [];
-  return { province: pv, provinceName: _PROV_LABEL[pv] || pv, topic, bodies: bodies.concat(extra).map(b => ({ name: b.n, phone: b.p || '', url: b.u })) };
+  // Federal bodies for provinces whose authority list stays empty (same rule as getAuthorities).
+  const federal = _CAT_TOPIC[category] && !/^(ON|BC|AB|QC)$/.test(pv)
+    ? ((AUTHORITIES[category] || AUTHORITIES.other).default || []).filter(a => _isFederalAuth(a.name)).map(publicAuthority) : [];
+  return { province: pv, provinceName: _PROV_LABEL[pv] || pv, topic, bodies: bodies.concat(extra).map(b => ({ name: b.n, phone: b.p || '', url: b.u })), federal };
 }
 
 // Exactly the record doSubmit() writes, plus source/test markers (allowed by the rules: hasAll, not hasOnly).
