@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { periodWindows, sumRange, dailyClicks, countComplaints, gaRanges, readGa, buildSite, gscFilter, gaFilter, PANEL_DAYS } from './_stats.js';
+import { periodWindows, sumRange, dailyClicks, countComplaints, gaRanges, readGa, buildSite, gscFilter, gaFilter, PANEL_DAYS, growth } from './_stats.js';
 
 test('periodWindows: back-to-back windows of the same length ending on the last data day', () => {
   assert.deepEqual(periodWindows('2026-10-20', 1), { cur: ['2026-10-20', '2026-10-20'], prev: ['2026-10-19', '2026-10-19'] });
@@ -66,4 +66,13 @@ test('buildSite: every period has this and the previous window; no GA → counte
   const withGa = buildSite({ end: '2026-10-20', rows, start: null, ga: { c3: { visitors: 5, eng: 70 } }, complaints: [], site: 'all' });
   assert.equal(withGa.since, null);
   assert.deepEqual([withGa.periods[1].cur.visitors, withGa.periods[1].cur.eng, withGa.periods[1].prev.visitors], [5, 70, 0]);
+});
+
+test('growth: last 7 days a day against the first 14 days a day', () => {
+  const rows = [];
+  for (let i = 0; i < 30; i++) rows.push({ day: new Date(Date.parse('2026-07-06') + i * 864e5).toISOString().slice(0, 10), clicks: 0, impressions: i < 14 ? 55 : i >= 23 ? 852 : 300, position: 9 });
+  assert.equal(growth(rows, '2026-07-06', '2026-08-04'), 15.5); // 852 / 55
+  assert.equal(growth(rows, '2026-07-06', '2026-07-20'), null); // under 21 days
+  assert.equal(growth([], '2026-07-06', '2026-08-04'), null);
+  assert.equal(growth(rows, null, '2026-08-04'), null);
 });
