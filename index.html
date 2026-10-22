@@ -2145,6 +2145,12 @@ function _isFederalAuth(name){
 function _chainItem(b){
   return '<a href="'+escHtml(b.u)+'" target="_blank" rel="noopener" style="display:block;font-size:.8rem;font-weight:600;color:var(--blue);text-decoration:none;margin:4px 0">'+escHtml(b.n)+(b.p?' — '+escHtml(b.p):'')+' →</a>';
 }
+// Federal bodies for provinces whose auth box stays empty (provincial topics route to the chain only).
+function _chainFederal(category,pv){
+  if(!_CAT_TOPIC[category]||/^(ON|BC|AB|QC)$/.test(pv)) return [];
+  return ((AUTHORITIES[category]||AUTHORITIES.other).default||[]).filter(function(a){return _isFederalAuth(a.name);})
+    .map(function(a){return {n:a.name,p:a.phone,u:a.email?(_isMail(a.email)?'mailto:'+a.email:_authUrl(a.email)):''};}).filter(function(b){return b.u;});
+}
 function _chainHTML(category){
   var pv=_complaintProvince(); if(!pv||!CHAIN[pv]) return '';
   var topic=_chainTopic(category); if(!topic) return '';
@@ -2163,6 +2169,8 @@ function _chainHTML(category){
   h+=step(1,t('ch_s1'),first);
   if(second.length) h+=step(2,t('ch_s2'),second.map(_chainItem).join(''));
   if(third.length) h+=step(second.length?3:2,t('ch_s3'),third.map(_chainItem).join(''));
+  var fed=_chainFederal(category,pv);
+  if(fed.length) h+=step((second.length?1:0)+(third.length?1:0)+2,t('ch_fed'),fed.map(_chainItem).join(''));
   if(pv==='NU'&&(topic==='ombudsman'||topic==='municipal')) h+='<div style="font-size:.7rem;color:var(--muted);margin-top:6px">'+escHtml(t('ch_nu'))+'</div>';
   h+='<div style="font-size:.68rem;color:var(--muted);margin-top:10px">'+escHtml(t('ch_keep'))+'</div>';
   return h;
@@ -2267,7 +2275,7 @@ const V = (function(){
       tgt:"Who is this about?",tmn:"Municipality",tbz:"Business",tld:"Landlord",tot:"Other",tnl:"Institution / Company Name",
       nbk:"← Back",miss_title:"complaint title",auth_no_email:"We have no verified e-mail for {name} — please contact them directly:",auth_form:"Official complaint form",auth_form_only:"{name} takes complaints only through its official form — we did not e-mail them. Please file there:",al_noanalysis:"Analyze a document first.",al_min10:"Please write at least 10 characters.",al_error:"Something went wrong. Please try again.",al_nomic:"Microphone not supported. Please type.",al_micdenied:"Microphone permission denied.",miss_desc:"description",miss_email:"valid email",fill_in:"Please fill in",draft_restored:"We restored what you typed before the page reloaded.",
       ld_err:"Couldn't detect your location — please type your address instead.",loc_ph:"Enter address...",
-      ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
+      ch_title:"Where to take this complaint",ch_s1:"Start with",ch_s2:"If it isn't resolved",ch_s3:"Next step",ch_fed:"Federal bodies (if they apply)",ch_org:"The organization itself — in writing, and keep a copy.",ch_city:"Your city or town hall (call 311 where available).",ch_nu:"Nunavut has no Ombudsman — contact the department directly, or your MLA.",ch_keep:"Keep copies of every message, receipt and date.",
       tgv:"Government agency",tsc:"School",thl:"Health care",tad:"Their address",thn:"Pick from the suggestions to fill in the address automatically.",tname_ph:"e.g. Tim Hortons, Halifax City Hall, Lincoln High School",taddr_ph:"Street, city, province",
       cat:"Category",csl:"Select a category...",cno:"Noise / Disturbance",csa:"Safety Hazard",cga:"Garbage / Cleanliness",cdi:"Discrimination / Rights",cse:"Poor Service",cbi:"Billing / Overcharge",cpr:"Property Damage",cot:"Other",
       pri:"Priority",plo:"🟢 Low",pme:"🟡 Medium",phi:"🔴 High",
@@ -2357,7 +2365,7 @@ const V = (function(){
       tgt:"Bu şikayet kime yönelik?",tmn:"Belediye",tbz:"İşletme",tld:"Ev Sahibi",tot:"Diğer",tnl:"Kurum / kişi adı",
       nbk:"← Geri",miss_title:"şikayet başlığı",auth_no_email:"{name} için doğrulanmış e-posta yok — lütfen doğrudan iletişime geçin:",auth_form:"Resmi şikayet formu",auth_form_only:"{name} şikayetleri yalnızca resmi formdan kabul ediyor — e-posta göndermedik. Lütfen buradan başvurun:",al_noanalysis:"Önce bir belge analiz edin.",al_min10:"Lütfen en az 10 karakter yazın.",al_error:"Bir hata oluştu. Lütfen tekrar deneyin.",al_nomic:"Mikrofon desteklenmiyor. Lütfen yazın.",al_micdenied:"Mikrofon izni reddedildi.",miss_desc:"açıklama",miss_email:"geçerli e-posta",fill_in:"Lütfen doldurun",draft_restored:"Sayfa yeniden yüklenmeden önce yazdıklarınızı geri getirdik.",
       ld_err:"Konum alınamadı — lütfen adresinizi yazın.",loc_ph:"Adres yazın...",
-      ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
+      ch_title:"Bu şikayeti nereye götürmeli",ch_s1:"Önce",ch_s2:"Çözülmezse",ch_s3:"Sonraki adım",ch_fed:"Federal kurumlar (konuyla ilgiliyse)",ch_org:"Kurumun kendisine — yazılı olarak, bir kopyasını saklayın.",ch_city:"Belediyeniz (varsa 311'i arayın).",ch_nu:"Nunavut'ta Ombudsman yok — doğrudan ilgili bakanlığa veya milletvekilinize başvurun.",ch_keep:"Her mesajın, makbuzun ve tarihin kopyasını saklayın.",
       tgv:"Devlet kurumu",tsc:"Okul",thl:"Sağlık",tad:"Adresi",thn:"Adresin otomatik dolması için önerilerden seçin.",tname_ph:"örn. Tim Hortons, Halifax Belediyesi, Lincoln Lisesi",taddr_ph:"Sokak, şehir, eyalet",
       cat:"Kategori",csl:"Kategori seçin...",cno:"Gürültü",csa:"Güvenlik Tehlikesi",cga:"Çöp / Temizlik",cdi:"Ayrımcılık",cse:"Kötü Hizmet",cbi:"Fatura / Fazla Ücret",cpr:"Mülk Hasarı",cot:"Diğer",
       pri:"Öncelik",plo:"🟢 Düşük",pme:"🟡 Orta",phi:"🔴 Yüksek",
@@ -2447,7 +2455,7 @@ const V = (function(){
       tgt:"À qui s'adresse cette plainte?",tmn:"Municipalité",tbz:"Entreprise",tld:"Propriétaire",tot:"Autre",tnl:"Nom de l'organisation",
       nbk:"← Retour",miss_title:"titre de la plainte",auth_no_email:"Nous n'avons pas de courriel vérifié pour {name} — veuillez les contacter directement :",auth_form:"Formulaire officiel de plainte",auth_form_only:"{name} reçoit les plaintes uniquement par son formulaire officiel — nous ne lui avons pas écrit. Déposez-la ici :",al_noanalysis:"Analysez d'abord un document.",al_min10:"Veuillez écrire au moins 10 caractères.",al_error:"Une erreur s'est produite. Veuillez réessayer.",al_nomic:"Microphone non pris en charge. Veuillez écrire.",al_micdenied:"Accès au microphone refusé.",miss_desc:"description",miss_email:"e-mail valide",fill_in:"Veuillez remplir",draft_restored:"Nous avons restauré ce que vous aviez saisi avant le rechargement.",
       ld_err:"Impossible de détecter votre position — veuillez saisir votre adresse.",loc_ph:"Saisissez une adresse...",
-      ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
+      ch_title:"Où porter cette plainte",ch_s1:"Commencez par",ch_s2:"Si ce n'est pas réglé",ch_s3:"Étape suivante",ch_fed:"Organismes fédéraux (s'ils s'appliquent)",ch_org:"L'organisation elle-même — par écrit, et gardez une copie.",ch_city:"Votre hôtel de ville (composez le 311 s'il existe).",ch_nu:"Le Nunavut n'a pas d'ombudsman — adressez-vous au ministère ou à votre député.",ch_keep:"Gardez une copie de chaque message, reçu et date.",
       tgv:"Organisme gouvernemental",tsc:"École",thl:"Soins de santé",tad:"Son adresse",thn:"Choisissez une suggestion pour remplir l'adresse automatiquement.",tname_ph:"ex. Tim Hortons, hôtel de ville, école secondaire",taddr_ph:"Rue, ville, province",
       cat:"Catégorie",csl:"Sélectionner...",cno:"Bruit",csa:"Danger",cga:"Déchets",cdi:"Discrimination",cse:"Mauvais service",cbi:"Facturation",cpr:"Dommages",cot:"Autre",
       pri:"Priorité",plo:"🟢 Faible",pme:"🟡 Moyenne",phi:"🔴 Élevée",
@@ -2493,7 +2501,7 @@ const V = (function(){
       tgt:"投诉对象？",tmn:"市政机构",tbz:"企业",tld:"房东",tot:"其他",tnl:"机构/公司名称",
       nbk:"← 返回",miss_title:"投诉标题",auth_no_email:"我们没有 {name} 的已验证邮箱——请直接联系：",auth_form:"官方投诉表格",auth_form_only:"{name} 只通过官方表格受理投诉——我们没有向其发送邮件。请在此提交：",al_noanalysis:"请先分析一份文件。",al_min10:"请至少输入10个字符。",al_error:"出现错误，请重试。",al_nomic:"不支持麦克风，请输入文字。",al_micdenied:"麦克风权限被拒绝。",miss_desc:"描述",miss_email:"有效邮箱",fill_in:"请填写",draft_restored:"已恢复页面重新加载前您输入的内容。",
       ld_err:"无法检测您的位置——请输入您的地址。",loc_ph:"输入地址...",
-      ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
+      ch_title:"此投诉应提交至何处",ch_s1:"首先",ch_s2:"如未解决",ch_s3:"下一步",ch_fed:"联邦机构（如适用）",ch_org:"先以书面形式联系该机构本身，并保留副本。",ch_city:"您所在城市或镇的市政府（如有可拨打311）。",ch_nu:"努纳武特没有监察专员——请直接联系相关部门或您的议员。",ch_keep:"保留每条信息、收据和日期的副本。",
       tgv:"政府机构",tsc:"学校",thl:"医疗",tad:"对方地址",thn:"从建议中选择即可自动填写地址。",tname_ph:"例如：Tim Hortons、市政厅、某中学",taddr_ph:"街道、城市、省份",
       cat:"类别",csl:"选择类别...",cno:"噪音/骚扰",csa:"安全隐患",cga:"垃圾/卫生",cdi:"歧视/权利",cse:"服务差",cbi:"账单/超收",cpr:"财产损失",cot:"其他",
       pri:"优先级",plo:"🟢 低",pme:"🟡 中",phi:"🔴 高",
@@ -2539,7 +2547,7 @@ const V = (function(){
       tgt:"¿A quién va dirigida?",tmn:"Municipio",tbz:"Empresa",tld:"Propietario",tot:"Otro",tnl:"Nombre de institución/empresa",
       nbk:"← Atrás",miss_title:"título de la queja",auth_no_email:"No tenemos un correo verificado de {name} — contáctelos directamente:",auth_form:"Formulario oficial de queja",auth_form_only:"{name} solo acepta quejas mediante su formulario oficial — no le enviamos un correo. Preséntela aquí:",al_noanalysis:"Primero analice un documento.",al_min10:"Escriba al menos 10 caracteres.",al_error:"Algo salió mal. Inténtelo de nuevo.",al_nomic:"Micrófono no compatible. Escriba su mensaje.",al_micdenied:"Permiso de micrófono denegado.",miss_desc:"descripción",miss_email:"correo válido",fill_in:"Complete",draft_restored:"Restauramos lo que escribió antes de que la página se recargara.",
       ld_err:"No se pudo detectar su ubicación: escriba su dirección.",loc_ph:"Escriba una dirección...",
-      ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
+      ch_title:"Adónde llevar esta queja",ch_s1:"Empiece por",ch_s2:"Si no se resuelve",ch_s3:"Siguiente paso",ch_fed:"Organismos federales (si corresponde)",ch_org:"La propia organización, por escrito, y guarde una copia.",ch_city:"Su ayuntamiento (llame al 311 si existe).",ch_nu:"Nunavut no tiene Defensor del Pueblo: contacte al departamento o a su diputado.",ch_keep:"Guarde copias de cada mensaje, recibo y fecha.",
       tgv:"Organismo público",tsc:"Escuela",thl:"Salud",tad:"Su dirección",thn:"Elija una sugerencia para completar la dirección automáticamente.",tname_ph:"p. ej. Tim Hortons, ayuntamiento, escuela secundaria",taddr_ph:"Calle, ciudad, provincia",
       cat:"Categoría",csl:"Seleccionar categoría...",cno:"Ruido/Perturbación",csa:"Peligro de seguridad",cga:"Basura/Limpieza",cdi:"Discriminación",cse:"Mal servicio",cbi:"Facturación",cpr:"Daños a propiedad",cot:"Otro",
       pri:"Prioridad",plo:"🟢 Baja",pme:"🟡 Media",phi:"🔴 Alta",
@@ -2585,7 +2593,7 @@ const V = (function(){
       tgt:"ضد من؟",tmn:"بلدية",tbz:"شركة",tld:"مالك العقار",tot:"أخرى",tnl:"اسم المؤسسة/الشركة",
       nbk:"→ رجوع",miss_title:"عنوان الشكوى",auth_no_email:"ليس لدينا بريد موثّق لـ {name} — يرجى التواصل معهم مباشرة:",auth_form:"نموذج الشكوى الرسمي",auth_form_only:"تقبل {name} الشكاوى عبر نموذجها الرسمي فقط — لم نرسل إليها بريدًا. يرجى التقديم هنا:",al_noanalysis:"حلّل مستندًا أولاً.",al_min10:"يرجى كتابة 10 أحرف على الأقل.",al_error:"حدث خطأ. يرجى المحاولة مرة أخرى.",al_nomic:"الميكروفون غير مدعوم. يرجى الكتابة.",al_micdenied:"تم رفض إذن الميكروفون.",miss_desc:"الوصف",miss_email:"بريد إلكتروني صالح",fill_in:"يرجى تعبئة",draft_restored:"استعدنا ما كتبته قبل إعادة تحميل الصفحة.",
       ld_err:"تعذّر تحديد موقعك — يرجى كتابة عنوانك.",loc_ph:"أدخل العنوان...",
-      ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
+      ch_title:"إلى أين تُقدَّم هذه الشكوى",ch_s1:"ابدأ بـ",ch_s2:"إذا لم تُحل",ch_s3:"الخطوة التالية",ch_fed:"الجهات الفيدرالية (إن انطبقت)",ch_org:"الجهة نفسها — كتابيًا، واحتفظ بنسخة.",ch_city:"بلدية مدينتك (اتصل بـ 311 إن وُجد).",ch_nu:"لا يوجد أمين مظالم في نونافوت — تواصل مع الإدارة مباشرة أو مع نائبك.",ch_keep:"احتفظ بنسخ من كل رسالة وإيصال وتاريخ.",
       tgv:"جهة حكومية",tsc:"مدرسة",thl:"رعاية صحية",tad:"عنوانها",thn:"اختر من الاقتراحات لملء العنوان تلقائيًا.",tname_ph:"مثال: Tim Hortons، مبنى البلدية، مدرسة ثانوية",taddr_ph:"الشارع، المدينة، المقاطعة",
       cat:"الفئة",csl:"اختر فئة...",cno:"ضوضاء",csa:"خطر أمني",cga:"نفايات/نظافة",cdi:"تمييز",cse:"خدمة سيئة",cbi:"فواتير",cpr:"أضرار ممتلكات",cot:"أخرى",
       pri:"الأولوية",plo:"🟢 منخفضة",pme:"🟡 متوسطة",phi:"🔴 عالية",
@@ -2631,7 +2639,7 @@ const V = (function(){
       tgt:"ਇਹ ਕਿਸ ਬਾਰੇ ਹੈ?",tmn:"ਮਿਉਂਸਪੈਲਿਟੀ",tbz:"ਕਾਰੋਬਾਰ",tld:"ਮਕਾਨ ਮਾਲਕ",tot:"ਹੋਰ",tnl:"ਸੰਸਥਾ/ਕੰਪਨੀ ਦਾ ਨਾਮ",
       nbk:"← ਵਾਪਸ",miss_title:"ਸ਼ਿਕਾਇਤ ਦਾ ਸਿਰਲੇਖ",auth_no_email:"{name} ਲਈ ਸਾਡੇ ਕੋਲ ਪ੍ਰਮਾਣਿਤ ਈਮੇਲ ਨਹੀਂ — ਕਿਰਪਾ ਕਰਕੇ ਸਿੱਧਾ ਸੰਪਰਕ ਕਰੋ:",auth_form:"ਅਧਿਕਾਰਤ ਸ਼ਿਕਾਇਤ ਫਾਰਮ",auth_form_only:"{name} ਸ਼ਿਕਾਇਤਾਂ ਸਿਰਫ਼ ਆਪਣੇ ਅਧਿਕਾਰਤ ਫਾਰਮ ਰਾਹੀਂ ਲੈਂਦਾ ਹੈ — ਅਸੀਂ ਈਮੇਲ ਨਹੀਂ ਭੇਜੀ। ਕਿਰਪਾ ਕਰਕੇ ਇੱਥੇ ਦਰਜ ਕਰੋ:",al_noanalysis:"ਪਹਿਲਾਂ ਇੱਕ ਦਸਤਾਵੇਜ਼ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ।",al_min10:"ਕਿਰਪਾ ਕਰਕੇ ਘੱਟੋ-ਘੱਟ 10 ਅੱਖਰ ਲਿਖੋ।",al_error:"ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",al_nomic:"ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਸਮਰਥਿਤ ਨਹੀਂ। ਕਿਰਪਾ ਕਰਕੇ ਲਿਖੋ।",al_micdenied:"ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਮਿਲੀ।",miss_desc:"ਵੇਰਵਾ",miss_email:"ਸਹੀ ਈਮੇਲ",fill_in:"ਕਿਰਪਾ ਕਰਕੇ ਭਰੋ",draft_restored:"ਪੰਨਾ ਮੁੜ ਲੋਡ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਿਆ ਤੁਹਾਡਾ ਲਿਖਤ ਵਾਪਸ ਲਿਆਂਦਾ ਗਿਆ।",
       ld_err:"ਤੁਹਾਡਾ ਟਿਕਾਣਾ ਨਹੀਂ ਲੱਭ ਸਕਿਆ — ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪਤਾ ਲਿਖੋ।",loc_ph:"ਪਤਾ ਲਿਖੋ...",
-      ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
+      ch_title:"ਇਹ ਸ਼ਿਕਾਇਤ ਕਿੱਥੇ ਲੈ ਕੇ ਜਾਣੀ ਹੈ",ch_s1:"ਪਹਿਲਾਂ",ch_s2:"ਜੇ ਹੱਲ ਨਾ ਹੋਵੇ",ch_s3:"ਅਗਲਾ ਕਦਮ",ch_fed:"ਸੰਘੀ ਸੰਸਥਾਵਾਂ (ਜੇ ਲਾਗੂ ਹੋਣ)",ch_org:"ਖੁਦ ਸੰਸਥਾ ਨੂੰ — ਲਿਖਤੀ ਰੂਪ ਵਿੱਚ, ਅਤੇ ਇੱਕ ਕਾਪੀ ਰੱਖੋ।",ch_city:"ਤੁਹਾਡਾ ਸਿਟੀ ਜਾਂ ਟਾਊਨ ਹਾਲ (ਜਿੱਥੇ ਹੋਵੇ 311 ਤੇ ਕਾਲ ਕਰੋ)।",ch_nu:"ਨੂਨਾਵਟ ਵਿੱਚ ਕੋਈ ਓਮਬਡਸਮੈਨ ਨਹੀਂ — ਸਿੱਧਾ ਵਿਭਾਗ ਜਾਂ ਆਪਣੇ ਵਿਧਾਇਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",ch_keep:"ਹਰ ਸੁਨੇਹੇ, ਰਸੀਦ ਅਤੇ ਤਾਰੀਖ ਦੀਆਂ ਕਾਪੀਆਂ ਰੱਖੋ।",
       tgv:"ਸਰਕਾਰੀ ਏਜੰਸੀ",tsc:"ਸਕੂਲ",thl:"ਸਿਹਤ ਸੰਭਾਲ",tad:"ਉਨ੍ਹਾਂ ਦਾ ਪਤਾ",thn:"ਪਤਾ ਆਪਣੇ ਆਪ ਭਰਨ ਲਈ ਸੁਝਾਵਾਂ ਵਿੱਚੋਂ ਚੁਣੋ।",tname_ph:"ਜਿਵੇਂ Tim Hortons, ਸਿਟੀ ਹਾਲ, ਹਾਈ ਸਕੂਲ",taddr_ph:"ਗਲੀ, ਸ਼ਹਿਰ, ਸੂਬਾ",
       cat:"ਸ਼੍ਰੇਣੀ",csl:"ਸ਼੍ਰੇਣੀ ਚੁਣੋ...",cno:"ਰੌਲਾ",csa:"ਸੁਰੱਖਿਆ ਖ਼ਤਰਾ",cga:"ਕੂੜਾ",cdi:"ਵਿਤਕਰਾ",cse:"ਮਾੜੀ ਸੇਵਾ",cbi:"ਬਿੱਲਿੰਗ",cpr:"ਜਾਇਦਾਦ ਨੁਕਸਾਨ",cot:"ਹੋਰ",
       pri:"ਤਰਜੀਹ",plo:"🟢 ਘੱਟ",pme:"🟡 ਦਰਮਿਆਨੀ",phi:"🔴 ਉੱਚ",
