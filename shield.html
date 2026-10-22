@@ -308,9 +308,10 @@
     <section class="sec" id="v-security" hidden>
       <h3 class="ptitle">AI güvenlik ve ajan analizi</h3>
       <div class="card pad"><h2>Saldırı gelen ülkeler · son kayıtlar</h2><div class="hb" id="attackGeo"></div></div>
-      <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button></div>
+      <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button><button type="button" data-list="risks" aria-pressed="false">Risk</button></div>
       <div class="card pad list" id="reports"></div>
       <div class="card pad list" id="events" hidden></div>
+      <div class="card pad list" id="risks" hidden></div>
       <div class="card pad"><h2>Yapay zekâ ajan analizi · son 24 saat</h2><div class="ai" id="aiCard"></div></div>
       <div class="foot"><span><span id="status">–</span> · bu cihaz sayılmıyor</span><button type="button" id="logout">Çıkış</button></div>
     </section>
@@ -777,6 +778,11 @@
     $('events').innerHTML = d.events.length ? d.events.slice(0, 30).map(function (e) {
       return '<div class="row"><time>' + esc(when(e.t)) + '</time><b>' + esc(AGENTS[e.agent] || e.agent) + '</b> <span class="muted">· ' + flag(e.c || '') + esc(e.ip) + ' · ' + esc(e.path) + '</span></div>';
     }).join('') : '<p class="quiet">Engellenen istek yok</p>';
+    // Risk score per IP, last 24 h (api/_shield-risk.js); JSON copies the row.
+    var RISK_CLS = { 'Kritik': 'down', 'Orta': '', 'Düşük': 'up' };
+    $('risks').innerHTML = (d.risks || []).length ? d.risks.map(function (r) {
+      return '<div class="row" title="' + esc(JSON.stringify(r, null, 2)) + '"><time>' + flag(r.country) + esc(r.ip_address) + ' · ' + esc(r.recommended_action) + '</time><b class="' + RISK_CLS[r.threat_level] + '">' + esc(r.risk_score) + '/100 · ' + esc(r.threat_level) + '</b> <span class="muted">· ' + esc(r.detected_behavior) + '</span><div class="muted">' + esc(r.analysis_summary) + '</div></div>';
+    }).join('') : '<p class="quiet">Son 24 saatte riskli IP yok</p>';
 
     lockMin = Math.ceil((d.lockdown || 0) / 60);
     $('lock').className = 'lock' + (lockMin ? ' on' : '');

@@ -3,12 +3,14 @@
 // lockdown state, today's arrivals by search engine / social network, and
 // analytics for a chosen period (?days=7|14|28|90): top pages, cities,
 // devices, hour heatmap, complaint funnel; plus attack countries and the
-// change against the week before, the funnel per day and complaint totals. POST {lockdownHours} turns emergency lockdown on (1-6 h)
+// change against the week before, the funnel per day, complaint totals and
+// the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). ?stats=1 is the İstatistik panel (_stats.js). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
+import { riskList } from './_shield-risk.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -227,6 +229,7 @@ export async function shieldView(req, res) {
     search: pick(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia']),
     socials: pick(['facebook', 'instagram', 'x', 'tiktok', 'youtube']),
     compare, funnelToday: today, funnelDays, period: stats, complaints: comp,
-    attackCountries: top(attackCountries, 5)
+    attackCountries: top(attackCountries, 5),
+    risks: riskList(events, { since: Date.now() - 86400000 })
   });
 }
