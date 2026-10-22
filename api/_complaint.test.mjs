@@ -288,3 +288,34 @@ test('letter layout asks for the sections in order', () => {
   assert.ok(emailDraftSpec({ lang: 'fr' }).includes('LOIS APPLICABLES ET OBLIGATIONS'));
   assert.ok(!emailDraftSpec({ isAnon: true, lang: 'en' }).includes('REQUESTS"'));
 });
+
+describe('Canadian law grounding (CA_LAWS)', () => {
+  test('province comes from city names, last city wins', async () => {
+    const { _detectProvince } = await import('./_engine-data.js');
+    assert.equal(_detectProvince('Winnipeg'), 'MB'); assert.equal(_detectProvince('Hamilton'), 'ON');
+    assert.equal(_detectProvince('12 Victoria St, Toronto'), 'ON'); assert.equal(_detectProvince('Richmond Hill'), 'ON');
+    assert.equal(_detectProvince('Paris'), '');
+  });
+  test('verified facts follow the province, never Ontario bodies outside Ontario', async () => {
+    const { _verifiedFactsFor } = await import('./_engine-data.js');
+    const bc = _verifiedFactsFor('repairs', 'Vancouver, BC');
+    assert.match(bc.act, /Residential Tenancy Act \(British Columbia\)/); assert.doesNotMatch(bc.authorities, /Ontario/);
+    const mb = _verifiedFactsFor('wages', 'Winnipeg');
+    assert.match(mb.act, /Employment Standards Code \(Manitoba\)/); assert.equal(mb.deadline, '');
+    assert.match(_verifiedFactsFor('repairs', 'Toronto, ON').act, /Residential Tenancies Act, 2006/);
+    assert.equal(_verifiedFactsFor('noise', 'Saskatoon'), null);
+    assert.match(_verifiedFactsFor('police', 'Iqaluit').act, /RCMP polices Nunavut/);
+    assert.equal(_verifiedFactsFor('repairs', '').act, '');
+  });
+  test('every province and territory has an access-to-information Act', async () => {
+    const { _foiFactsFor, FOI_FACTS, CA_LAWS } = await import('./_engine-data.js');
+    for (const pv of ['ON','BC','AB','QC','MB','SK','NS','NB','PE','NL','YT','NT','NU']) { assert.ok(FOI_FACTS[pv].act); assert.ok(CA_LAWS[pv].tenancy); }
+    assert.match(_foiFactsFor('Hamilton').act, /FIPPA/);
+    assert.match(_foiFactsFor('Ottawa', 'Canada Revenue Agency').act, /R\.S\.C\. 1985, c\. A-1/);
+    assert.match(_foiFactsFor('Edmonton').deadline, /30 business days/);
+  });
+  test('the letter prompt carries the Act', async () => {
+    const { verdictPrompt } = await import('./_verdict.js');
+    assert.match(verdictPrompt({ desc:'x', category:'repairs', location:'Halifax', anonymous:false }).user, /Correct Act: Residential Tenancies Act \(Nova Scotia\)/);
+  });
+});

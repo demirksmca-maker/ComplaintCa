@@ -66,11 +66,14 @@ export const _CAT_TOPIC = ${literal('_CAT_TOPIC')};
 export const _TGT_TOPIC = ${literal('_TGT_TOPIC')};
 const _PROV_NAMES = ${literal('_PROV_NAMES')};
 const _PC_FIRST = ${literal('_PC_FIRST')};
+const _CITY_PROV = ${literal('_CITY_PROV')};
 export const _PROV_LABEL = ${literal('_PROV_LABEL')};
 export ${fn('_detectProvince')}
 export ${fn('_isFederalAuth')}
 export ${fn('_isMail')}
 export ${fn('_authUrl')}
+export const CA_LAWS = ${literal('CA_LAWS')};
+export ${fn('_lawFor')}
 export const FOI_FACTS = ${literal('FOI_FACTS')};
 export ${fn('_foiFactsFor')}
 export ${fn('_verifiedFactsFor')}

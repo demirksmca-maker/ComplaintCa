@@ -251,6 +251,14 @@ const _PROV_NAMES = [['NL',/newfoundland|labrador/i],['PE',/prince edward island
   ['QC',/qu[ée]bec/i],['ON',/ontario/i],['MB',/manitoba/i],['SK',/saskatchewan/i],['AB',/alberta/i],['BC',/british columbia|colombie-britannique/i],
   ['YT',/yukon/i],['NT',/northwest territories|territoires du nord-ouest/i],['NU',/nunavut/i]];
 const _PC_FIRST = {A:'NL',B:'NS',C:'PE',E:'NB',G:'QC',H:'QC',J:'QC',K:'ON',L:'ON',M:'ON',N:'ON',P:'ON',R:'MB',S:'SK',T:'AB',V:'BC',Y:'YT'};
+const _CITY_PROV = [['ON',/\b(toronto|scarborough|north york|etobicoke|mississauga|brampton|ottawa|hamilton|london|markham|vaughan|richmond hill|oakville|burlington|kitchener|waterloo|cambridge|guelph|windsor|oshawa|whitby|ajax|pickering|barrie|kingston|sudbury|thunder bay|niagara falls|st\.? catharines|peterborough|sault ste\.? marie)\b/i],
+  ['BC',/\b(vancouver|burnaby|surrey|richmond|coquitlam|langley|abbotsford|delta|kelowna|kamloops|nanaimo|victoria|prince george|chilliwack)\b/i],
+  ['AB',/\b(calgary|edmonton|red deer|lethbridge|medicine hat|fort mcmurray|st\.? albert|grande prairie|airdrie)\b/i],
+  ['QC',/\b(montr[ée]al|laval|gatineau|longueuil|sherbrooke|saguenay|l[ée]vis|trois-rivi[èe]res|terrebonne)\b/i],
+  ['MB',/\b(winnipeg|brandon|steinbach)\b/i],['SK',/\b(regina|saskatoon|prince albert|moose jaw)\b/i],
+  ['NS',/\b(halifax|dartmouth|sydney|truro)\b/i],['NB',/\b(moncton|fredericton|saint john|dieppe)\b/i],
+  ['PE',/\b(charlottetown|summerside)\b/i],['NL',/\b(st\.? john.s|mount pearl|corner brook)\b/i],
+  ['YT',/\bwhitehorse\b/i],['NT',/\byellowknife\b/i],['NU',/\biqaluit\b/i]];
 export const _PROV_LABEL = {ON:'Ontario',BC:'British Columbia',AB:'Alberta',QC:'Quebec',MB:'Manitoba',SK:'Saskatchewan',NS:'Nova Scotia',NB:'New Brunswick',PE:'Prince Edward Island',NL:'Newfoundland & Labrador',YT:'Yukon',NT:'Northwest Territories',NU:'Nunavut'};
 export function _detectProvince(text){
   text=text||''; if(!text.trim()) return '';
@@ -259,7 +267,13 @@ export function _detectProvince(text){
   if(pc){ var f=pc[1]; if(f==='X'){ var fsa=pc[0].slice(0,3); return (fsa==='X0A'||fsa==='X0B'||fsa==='X0C')?'NU':'NT'; } return _PC_FIRST[f]||''; }
   var ab=text.match(/\b(ON|BC|AB|QC|MB|SK|NS|NB|PEI|PE|NL|YT|NT|NU)\b/);
   if(ab) return ab[1]==='PEI'?'PE':ab[1];
-  return '';
+  // A city name: the last one in the text wins ("12 Victoria St, Toronto" → ON).
+  var best='',at=-1;
+  for(var j=0;j<_CITY_PROV.length;j++){
+    var re=new RegExp(_CITY_PROV[j][1].source,'gi'),m;
+    while((m=re.exec(text))){ if(m.index>at){ at=m.index; best=_CITY_PROV[j][0]; } }
+  }
+  return best;
 }
 export function _isFederalAuth(name){
   return /canada|canadian|federal|fcac|obsi|ccts|crtc|competition bureau|\bopc\b|rcmp|ircc|\birb\b|nslsc|official languages|immigration ombudsman|indigenous|reconciliation|industrial relations/i.test(name)
@@ -267,29 +281,120 @@ export function _isFederalAuth(name){
 }
 export function _isMail(e){ return /^[^\s@\/]+@[^\s@\/]+\.[a-z]{2,}$/i.test(e||''); }
 export function _authUrl(e){ return /^https?:\/\//i.test(e)?e:'https://'+e; }
+export const CA_LAWS = {
+  federal:{
+    telecom:'Telecommunications Act (S.C. 1993, c. 38) and the CRTC Wireless Code / Internet Code',
+    benefits:'Employment Insurance Act, Canada Pension Plan or Old Age Security Act (whichever benefit applies)',
+    immigration:'Immigration and Refugee Protection Act (S.C. 2001, c. 27)',
+    studentloan:'Canada Student Financial Assistance Act',
+    studentloan_QC:'Act respecting financial assistance for education expenses (Québec, CQLR c. A-13.3)',
+    language:'Official Languages Act (R.S.C. 1985, c. 31 (4th Supp.))',
+    language_QC:'Charter of the French language (CQLR c. C-11) or, for federal institutions, the Official Languages Act',
+    indigenous:'Canadian Human Rights Act (R.S.C. 1985, c. H-6) and section 35 of the Constitution Act, 1982',
+    employment_fed:'Canada Labour Code, Part III (if the employer is federally regulated: bank, airline, telecom, interprovincial transport)',
+    human_rights_fed:'Canadian Human Rights Act (if the organization is federally regulated)',
+    police_fed:'Royal Canadian Mounted Police Act, Part VII (if it was the RCMP)',
+    billing_fed:'Bank Act — Financial Consumer Protection Framework (if it is a bank)'
+  },
+  ON:{tenancy:'Residential Tenancies Act, 2006 (Ontario)',employment:'Employment Standards Act, 2000 (Ontario)',human_rights:'Human Rights Code (Ontario, R.S.O. 1990, c. H.19)',
+    consumer:'Consumer Protection Act, 2002 (Ontario)',privacy:'PIPEDA (businesses); FIPPA / MFIPPA (public bodies); Personal Health Information Protection Act, 2004 (health records)',
+    police:'Community Safety and Policing Act, 2019 (Ontario)',condo:'Condominium Act, 1998 (Ontario)',health:'Regulated Health Professions Act, 1991 and Excellent Care for All Act, 2010 (Ontario)',
+    schools:'Education Act (Ontario)',energy:'Ontario Energy Board Act, 1998',ombudsman:'Ombudsman Act (Ontario)'},
+  BC:{tenancy:'Residential Tenancy Act (British Columbia)',employment:'Employment Standards Act (British Columbia)',human_rights:'Human Rights Code (British Columbia)',
+    consumer:'Business Practices and Consumer Protection Act (British Columbia)',privacy:'Personal Information Protection Act (BC, businesses); Freedom of Information and Protection of Privacy Act (public bodies)',
+    police:'Police Act (British Columbia)',condo:'Strata Property Act (British Columbia)',health:'Patient Care Quality Review Board Act and Health Professions Act (British Columbia)',
+    schools:'School Act (British Columbia)',energy:'Utilities Commission Act (British Columbia)',ombudsman:'Ombudsperson Act (British Columbia)'},
+  AB:{tenancy:'Residential Tenancies Act (Alberta)',employment:'Employment Standards Code (Alberta)',human_rights:'Alberta Human Rights Act',
+    consumer:'Consumer Protection Act (Alberta)',privacy:'Personal Information Protection Act (Alberta, businesses); Protection of Privacy Act (Alberta, public bodies); Health Information Act (health records)',
+    police:'Police Act (Alberta)',condo:'Condominium Property Act (Alberta)',health:'Health Professions Act (Alberta)',
+    schools:'Education Act (Alberta)',energy:'Alberta Utilities Commission Act',ombudsman:'Ombudsman Act (Alberta)'},
+  QC:{tenancy:'Civil Code of Québec (lease of a dwelling) and the Act respecting the Tribunal administratif du logement',employment:'Act respecting labour standards (Québec)',
+    human_rights:'Charter of human rights and freedoms (Québec)',consumer:'Consumer Protection Act (Québec, CQLR c. P-40.1)',
+    privacy:'Act respecting the protection of personal information in the private sector (Québec, as amended by Law 25); Access Act (public bodies)',
+    police:'Police Act (Québec, police ethics)',condo:'Civil Code of Québec (divided co-ownership)',health:'Québec health and social services legislation — users\' rights and complaint examination procedure',
+    schools:'Education Act (Québec) and the Act respecting the National Student Ombudsman',energy:'Act respecting the Régie de l\'énergie',ombudsman:'Public Protector Act (Québec)'},
+  MB:{tenancy:'The Residential Tenancies Act (Manitoba)',employment:'The Employment Standards Code (Manitoba)',human_rights:'The Human Rights Code (Manitoba)',
+    consumer:'The Consumer Protection Act (Manitoba)',privacy:'PIPEDA (businesses); The Freedom of Information and Protection of Privacy Act (public bodies); The Personal Health Information Act (health records)',
+    police:'The Law Enforcement Review Act (Manitoba)',condo:'The Condominium Act (Manitoba)',health:'The Regulated Health Professions Act (Manitoba)',
+    schools:'The Public Schools Act (Manitoba)',energy:'The Public Utilities Board Act (Manitoba)',ombudsman:'The Ombudsman Act (Manitoba)'},
+  SK:{tenancy:'The Residential Tenancies Act, 2006 (Saskatchewan)',employment:'The Saskatchewan Employment Act (Part II)',human_rights:'The Saskatchewan Human Rights Code, 2018',
+    consumer:'The Consumer Protection and Business Practices Act (Saskatchewan)',privacy:'PIPEDA (businesses); The Freedom of Information and Protection of Privacy Act / The Local Authority Freedom of Information and Protection of Privacy Act (public bodies); The Health Information Protection Act (health records)',
+    police:'The Police Act, 1990 (Saskatchewan)',condo:'The Condominium Property Act, 1993 (Saskatchewan)',health:'The Provincial Health Authority Act and The Medical Profession Act, 1981 (Saskatchewan)',
+    schools:'The Education Act, 1995 (Saskatchewan)',energy:'The Ombudsman Act, 2012 (Saskatchewan)',ombudsman:'The Ombudsman Act, 2012 (Saskatchewan)'},
+  NS:{tenancy:'Residential Tenancies Act (Nova Scotia)',employment:'Labour Standards Code (Nova Scotia)',human_rights:'Human Rights Act (Nova Scotia)',
+    consumer:'Consumer Protection Act (Nova Scotia)',privacy:'PIPEDA (businesses); Freedom of Information and Protection of Privacy Act (public bodies); Personal Health Information Act (health records)',
+    police:'Police Act (Nova Scotia)',condo:'Condominium Act (Nova Scotia)',health:'Medical Act (Nova Scotia)',
+    schools:'Education Act (Nova Scotia)',energy:'Public Utilities Act (Nova Scotia)',ombudsman:'Ombudsman Act (Nova Scotia)'},
+  NB:{tenancy:'Residential Tenancies Act (New Brunswick)',employment:'Employment Standards Act (New Brunswick)',human_rights:'Human Rights Act (New Brunswick)',
+    consumer:'Consumer Product Warranty and Liability Act (New Brunswick)',privacy:'PIPEDA (businesses); Right to Information and Protection of Privacy Act (public bodies); Personal Health Information Privacy and Access Act (health records)',
+    police:'Police Act (New Brunswick)',condo:'Condominium Property Act (New Brunswick)',health:'Regional Health Authorities Act and Medical Act (New Brunswick)',
+    schools:'Education Act (New Brunswick)',energy:'Energy and Utilities Board Act (New Brunswick)',ombudsman:'Ombud Act (New Brunswick)'},
+  PE:{tenancy:'Residential Tenancy Act (Prince Edward Island)',employment:'Employment Standards Act (Prince Edward Island)',human_rights:'Human Rights Act (Prince Edward Island)',
+    consumer:'Consumer Protection Act (Prince Edward Island)',privacy:'PIPEDA (businesses); Freedom of Information and Protection of Privacy Act (public bodies); Health Information Act (health records)',
+    police:'Police Act (Prince Edward Island)',condo:'Condominium Act (Prince Edward Island)',health:'Health Services Act (Prince Edward Island)',
+    schools:'Education Act (Prince Edward Island)',energy:'Electric Power Act (Prince Edward Island)',ombudsman:'Ombudsperson Act (Prince Edward Island)'},
+  NL:{tenancy:'Residential Tenancies Act, 2018 (Newfoundland and Labrador)',employment:'Labour Standards Act (Newfoundland and Labrador)',human_rights:'Human Rights Act, 2010 (Newfoundland and Labrador)',
+    consumer:'Consumer Protection and Business Practices Act (Newfoundland and Labrador)',privacy:'PIPEDA (businesses); Access to Information and Protection of Privacy Act, 2015 (public bodies); Personal Health Information Act (health records)',
+    police:'Royal Newfoundland Constabulary Act, 1992',condo:'Condominium Act, 2009 (Newfoundland and Labrador)',health:'Medical Act, 2011 (Newfoundland and Labrador)',
+    schools:'Schools Act, 1997 (Newfoundland and Labrador)',energy:'Public Utilities Act (Newfoundland and Labrador)',ombudsman:'Citizens\' Representative Act (Newfoundland and Labrador)'},
+  YT:{tenancy:'Residential Landlord and Tenant Act (Yukon)',employment:'Employment Standards Act (Yukon)',human_rights:'Human Rights Act (Yukon)',
+    consumer:'Consumer Protection Act (Yukon)',privacy:'PIPEDA (businesses); Access to Information and Protection of Privacy Act (public bodies); Health Information Privacy and Management Act (health records)',
+    police:'Royal Canadian Mounted Police Act, Part VII (the RCMP polices Yukon)',condo:'Condominium Act, 2015 (Yukon)',health:'Health Professions Act (Yukon)',
+    schools:'Education Act (Yukon)',energy:'Public Utilities Act (Yukon)',ombudsman:'Ombudsman Act (Yukon)'},
+  NT:{tenancy:'Residential Tenancies Act (Northwest Territories)',employment:'Employment Standards Act (Northwest Territories)',human_rights:'Human Rights Act (Northwest Territories)',
+    consumer:'Consumer Protection Act (Northwest Territories)',privacy:'PIPEDA (businesses); Access to Information and Protection of Privacy Act (public bodies); Health Information Act (health records)',
+    police:'Royal Canadian Mounted Police Act, Part VII (the RCMP polices the Northwest Territories)',condo:'Condominium Act (Northwest Territories)',health:'Hospital Insurance and Health and Social Services Administration Act (Northwest Territories)',
+    schools:'Education Act (Northwest Territories)',energy:'Public Utilities Act (Northwest Territories)',ombudsman:'Ombud Act (Northwest Territories)'},
+  NU:{tenancy:'Residential Tenancies Act (Nunavut)',employment:'Labour Standards Act (Nunavut)',human_rights:'Human Rights Act (Nunavut)',
+    consumer:'Consumer Protection Act (Nunavut)',privacy:'PIPEDA (businesses); Access to Information and Protection of Privacy Act (public bodies and health records)',
+    police:'Royal Canadian Mounted Police Act, Part VII (the RCMP polices Nunavut)',condo:'Condominium Act (Nunavut)',
+    schools:'Education Act (Nunavut)',energy:'Qulliq Energy Corporation Act and Utility Rates Review Council Act (Nunavut)'}
+};
+export function _lawFor(cat,pv){
+  var F=CA_LAWS.federal, t=_CAT_TOPIC[cat]||'';
+  if(F[cat]) return F[cat+'_'+pv]||F[cat];
+  var a=(pv&&CA_LAWS[pv]&&t&&CA_LAWS[pv][t])||'';
+  if(!a) return '';
+  if(t==='employment') a+='; '+F.employment_fed;
+  else if(t==='human_rights') a+='; '+F.human_rights_fed;
+  else if(t==='police'&&!/RCMP polices/.test(a)) a+='; '+F.police_fed;
+  if(cat==='billing') a+='; '+F.billing_fed;
+  return a;
+}
 export const FOI_FACTS = {
   federal:{act:'Access to Information Act, R.S.C. 1985, c. A-1 (federal institutions)',deadline:'30 days (extendable under s.9 for large record volumes, third-party consultation, or other institutions being consulted)',recourse:'Complaint to the Information Commissioner of Canada'},
-  ontario:{act:'Freedom of Information and Protection of Privacy Act (FIPPA), R.S.O. 1990, c. F.31 for provincial bodies, or the Municipal Freedom of Information and Protection of Privacy Act (MFIPPA), R.S.O. 1990, c. M.56 for municipal bodies',deadline:'30 days',recourse:'Appeal to the Information and Privacy Commissioner of Ontario (IPC)'},
-  bc:{act:'Freedom of Information and Protection of Privacy Act (FOIPPA), RSBC 1996, c. 165',deadline:'30 business days',recourse:'Complaint to the Office of the Information and Privacy Commissioner for British Columbia'},
-  alberta:{act:'Freedom of Information and Protection of Privacy Act (FOIP Act), RSA 2000, c. F-25',deadline:'30 days',recourse:'Complaint to the Office of the Information and Privacy Commissioner of Alberta'},
-  quebec:{act:'Act respecting Access to documents held by public bodies and the Protection of personal information (Access Act), CQLR c. A-2.1',deadline:'20 days, extendable by a further 10 days',recourse:'Review by the Commission d\'accès à l\'information du Québec'}
+  ON:{act:'Freedom of Information and Protection of Privacy Act (FIPPA), R.S.O. 1990, c. F.31 for provincial bodies, or the Municipal Freedom of Information and Protection of Privacy Act (MFIPPA), R.S.O. 1990, c. M.56 for municipal bodies',deadline:'30 days',recourse:'Appeal to the Information and Privacy Commissioner of Ontario (IPC)'},
+  BC:{act:'Freedom of Information and Protection of Privacy Act (FOIPPA), RSBC 1996, c. 165',deadline:'30 business days',recourse:'Complaint to the Office of the Information and Privacy Commissioner for British Columbia'},
+  AB:{act:'Access to Information Act (Alberta), in force June 11, 2025 (replaced the access rules of the FOIP Act)',deadline:'30 business days (s.13; extendable under s.16)',recourse:'Request a review by the Office of the Information and Privacy Commissioner of Alberta'},
+  QC:{act:'Act respecting Access to documents held by public bodies and the Protection of personal information (Access Act), CQLR c. A-2.1',deadline:'20 days, extendable by a further 10 days',recourse:'Review by the Commission d\'accès à l\'information du Québec'},
+  MB:{act:'The Freedom of Information and Protection of Privacy Act (FIPPA), C.C.S.M. c. F175',deadline:'30 days',recourse:'Complaint to the Manitoba Ombudsman'},
+  SK:{act:'The Freedom of Information and Protection of Privacy Act (provincial bodies) or The Local Authority Freedom of Information and Protection of Privacy Act (municipalities, school divisions, health authority)',deadline:'30 days',recourse:'Request a review by the Saskatchewan Information and Privacy Commissioner'},
+  NS:{act:'Freedom of Information and Protection of Privacy Act (FOIPOP), S.N.S. 1993, c. 5 (municipalities: Part XX of the Municipal Government Act)',deadline:'30 days',recourse:'Request a review by the Information and Privacy Commissioner for Nova Scotia'},
+  NB:{act:'Right to Information and Protection of Privacy Act (RTIPPA), S.N.B. 2009, c. R-10.6',deadline:'30 business days',recourse:'Complaint to the Ombud New Brunswick'},
+  PE:{act:'Freedom of Information and Protection of Privacy Act (FOIPP), R.S.P.E.I. 1988, c. F-15.01',deadline:'30 days',recourse:'Request a review by the Information and Privacy Commissioner of Prince Edward Island'},
+  NL:{act:'Access to Information and Protection of Privacy Act, 2015 (ATIPPA), S.N.L. 2015, c. A-1.2',deadline:'20 business days',recourse:'Complaint to the Information and Privacy Commissioner of Newfoundland and Labrador'},
+  YT:{act:'Access to Information and Protection of Privacy Act (Yukon)',deadline:'',recourse:'Complaint to the Yukon Information and Privacy Commissioner'},
+  NT:{act:'Access to Information and Protection of Privacy Act (Northwest Territories)',deadline:'',recourse:'Request a review by the Information and Privacy Commissioner of the Northwest Territories'},
+  NU:{act:'Access to Information and Protection of Privacy Act (Nunavut)',deadline:'25 business days',recourse:'Request a review by the Information and Privacy Commissioner of Nunavut'}
 };
-export function _foiFactsFor(location){
-  var loc=(location||'').toLowerCase();
-  if(loc.includes('scarborough')||loc.includes('mississauga')||loc.includes('brampton')||loc.includes('toronto')||loc.includes('north york')||loc.includes('etobicoke')||loc.includes('ontario')) return FOI_FACTS.ontario;
-  if(loc.includes('vancouver')||loc.includes('burnaby')||loc.includes('surrey')||loc.includes('british columbia')) return FOI_FACTS.bc;
-  if(loc.includes('calgary')||loc.includes('edmonton')||loc.includes('alberta')) return FOI_FACTS.alberta;
-  if(loc.includes('montreal')||loc.includes('québec')||loc.includes('quebec')) return FOI_FACTS.quebec;
-  return FOI_FACTS.federal; // varsayılan: eyalet netse yukarıdakiler yakalar, değilse federal kurum kabul edilir
+export function _foiFactsFor(location,institution){
+  if(institution&&_isFederalAuth(institution)) return FOI_FACTS.federal; // Ottawa’daki federal bakanlık il kanununa girmez
+  return FOI_FACTS[_detectProvince(location||'')]||FOI_FACTS.federal; // il/bölge bulunamazsa federal kurum kabul edilir
 }
-export function _verifiedFactsFor(cat){
-  var entry=AUTHORITIES[cat];
-  if(!entry) return null;
+export function _verifiedFactsFor(cat,location){
+  var entry=AUTHORITIES[cat]||{}, pv=_detectProvince(location||''), t=_CAT_TOPIC[cat]||'';
   var list=entry.default||[];
-  if(!list.length) return null;
+  if(pv&&pv!=='ON'){
+    var key={BC:'bc',AB:'alberta',QC:'quebec'}[pv], ch=(t&&CHAIN[pv]&&CHAIN[pv][t])||[];
+    if(key&&entry[key]) list=entry[key];
+    else if(ch.length) list=ch.map(function(b){return {name:b.n};});
+    else list=list.filter(function(a){return _isFederalAuth(a.name);});
+  }
+  var act=_lawFor(cat,pv);
+  if(!list.length&&!act) return null;
   var authNames=list.map(function(a){return a.name;}).slice(0,3).join('; ');
   var withDl=list.find(function(a){return a.deadline;});
-  return {authorities:authNames, deadline:withDl?withDl.deadline:''};
+  return {authorities:authNames, deadline:withDl?withDl.deadline:'', act:act};
 }
 export const CONF_SUBJ = "Your ComplaintCA reference — {ref}";
 export const CONF_BODY = "Hi,\n\nYour complaint has been received by ComplaintCA.\n\nReference: {ref}\nSubject: {title}\n\nKeep this reference — we'll email you whenever the status changes.\n\n🔗 Track it directly: {link}\n\nComplaintCA (complaintca.ca)";
