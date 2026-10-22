@@ -313,6 +313,7 @@ describe('Canadian law grounding (CA_LAWS)', () => {
     assert.match(_foiFactsFor('Hamilton').act, /FIPPA/);
     assert.match(_foiFactsFor('Ottawa', 'Canada Revenue Agency').act, /R\.S\.C\. 1985, c\. A-1/);
     assert.match(_foiFactsFor('Edmonton').deadline, /30 business days/);
+    for (const pv of Object.keys(FOI_FACTS)) assert.ok(FOI_FACTS[pv].deadline, pv + ' has no deadline');
   });
   test('the letter prompt carries the Act', async () => {
     const { verdictPrompt } = await import('./_verdict.js');
