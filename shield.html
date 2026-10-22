@@ -160,6 +160,58 @@
   .login button{padding:12px;background:var(--s1);color:#fff}
   .err{color:var(--bad);font-size:.85rem}
   @media (prefers-reduced-motion:reduce){.shield3d{animation:none;transform:rotateY(-18deg)}}
+
+  /* İstatistik: one collapsible panel at the top of Genel; one row per
+     period, a tap opens that period's details. */
+  .st summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 12px;font-weight:800;font-size:.9rem;letter-spacing:.4px;text-transform:uppercase}
+  .st summary::-webkit-details-marker{display:none}
+  .st summary:focus-visible,.st-seg button:focus-visible,.st tr.r:focus-visible,.st-re:focus-visible{outline:2px solid var(--edge);outline-offset:-2px;border-radius:10px}
+  .st summary>span{flex:1}
+  .st-ar{color:var(--mute);transition:transform .2s}
+  .st[open] .st-ar{transform:rotate(180deg)}
+  .st-seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:2px;gap:2px;text-transform:none;letter-spacing:0}
+  .st-seg button{font-size:.64rem;font-weight:600;padding:3px 7px;border-radius:7px;background:none;color:var(--mute)}
+  .st-seg button[aria-pressed="true"]{background:#123056;color:var(--ink)}
+  .st-since{display:flex;justify-content:space-between;gap:8px;font-size:.58rem;color:var(--mute);padding:6px 12px 0;text-transform:uppercase;letter-spacing:.4px}
+  .st-top{display:grid;grid-template-columns:repeat(5,1fr);text-align:center;border-bottom:1px solid var(--line);padding:8px 2px 10px;font-variant-numeric:tabular-nums}
+  .st-top b{display:block;font-size:.92rem}
+  .st-top small{font-size:.52rem;color:var(--mute);text-transform:uppercase;letter-spacing:.2px}
+  .st-wrap{overflow-x:auto;padding:0 4px 4px}
+  .st table{width:100%;border-collapse:collapse;font-size:.74rem;font-variant-numeric:tabular-nums}
+  .st thead th{font-weight:500;color:var(--mute);font-size:.52rem;text-transform:uppercase;letter-spacing:.2px;padding:8px 3px 6px;text-align:right}
+  .st thead th:first-child{text-align:left}
+  .st tbody th{text-align:left;font-weight:600;color:var(--mute);font-size:.7rem;white-space:nowrap;padding:7px 3px;border-top:1px solid var(--line)}
+  .st tbody th small{display:block;font-size:.54rem;font-weight:500}
+  .st td{text-align:right;padding:7px 3px;border-top:1px solid var(--line);white-space:nowrap;font-weight:600}
+  .st td em{display:block;font-style:normal;font-size:.58rem;font-weight:600;color:var(--mute)}
+  .st em.up{color:var(--ok)}.st em.down{color:var(--bad)}
+  .st tr.r{cursor:pointer}
+  .st tr.r:hover td,.st tr.r:hover th{background:rgba(57,135,229,.06)}
+  .st-chev{display:inline-block;margin-left:3px;color:var(--edge);transition:transform .2s}
+  .st tr.r[aria-expanded="true"] .st-chev{transform:rotate(90deg)}
+  .st tr.r[aria-expanded="true"] th,.st tr.r[aria-expanded="true"] td{color:var(--ink);background:rgba(57,135,229,.08)}
+  .st tr.det td{padding:0;border-top:0;white-space:normal;text-align:left;font-weight:400}
+  .st-box{margin:2px 0 8px;padding:10px 12px;border:1px solid var(--edge);border-radius:10px;background:#081428;display:flex;flex-direction:column;gap:8px}
+  .st-dates{display:flex;justify-content:space-between;gap:8px;font-size:.68rem;color:var(--mute)}
+  .st-dates b{display:block;color:var(--ink);font-size:.6rem;text-transform:uppercase;letter-spacing:.3px}
+  .st-dates span:last-child{text-align:right}
+  .st-grid{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;font-size:.76rem;align-items:baseline}
+  .st-grid span{color:var(--mute)}
+  .st-grid b{text-align:right}
+  .st-grid i{font-style:normal;color:var(--mute);text-align:right;font-size:.7rem}
+  .st-grid .h{font-size:.55rem;font-weight:500;color:var(--mute);text-transform:uppercase}
+  .st-best{display:grid;grid-template-columns:1fr auto;gap:0 10px;font-size:.74rem;border-top:1px solid var(--line);padding-top:7px}
+  .st-best span{grid-column:1/-1;font-size:.58rem;color:var(--mute);text-transform:uppercase;letter-spacing:.3px}
+  .st-best b{font-weight:600;min-width:0;overflow-wrap:anywhere}
+  .st-best i{font-style:normal;color:var(--mute);white-space:nowrap}
+  .st-mb{display:flex;align-items:flex-end;gap:2px;height:44px}
+  .st-mb i{flex:1;background:var(--edge);border-radius:2px 2px 0 0;min-height:2px}
+  .st-mb i:last-child{background:var(--s1)}
+  .st-ml{display:flex;justify-content:space-between;font-size:.58rem;color:var(--mute)}
+  .st-foot{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;font-size:.58rem;color:var(--mute);text-align:center;padding:6px 10px 10px}
+  .st-foot b{color:var(--warn);font-weight:600}
+  .st-re{background:none;color:var(--s1);font-size:.62rem;padding:2px 4px}
+  @media (prefers-reduced-motion:reduce){.st-ar,.st-chev{transition:none}}
 </style>
 </head>
 <body>
@@ -183,6 +235,10 @@
     <!-- GENEL -->
     <section class="sec" id="v-home">
       <h3 class="ptitle">Bütünleşik master panel</h3>
+      <details class="card st" id="stPanel" open>
+        <summary><span>İstatistik</span><div class="st-seg" role="group" aria-label="Site"><button type="button" data-st="all" aria-pressed="true">Tümü</button><button type="button" data-st="ca" aria-pressed="false">Kanada</button><button type="button" data-st="es" aria-pressed="false">İspanya</button></div><span class="st-ar" aria-hidden="true">▾</span></summary>
+        <div id="stBody"><p class="empty">Yükleniyor…</p></div>
+      </details>
       <div class="card install" id="install" hidden><span id="installText">Telefona uygulama olarak ekle</span><button type="button" id="installBtn">Ekle</button></div>
       <div class="tiles">
         <div class="card tile"><b id="caToday">–</b><span>Kanada · bugün</span></div>
@@ -443,6 +499,84 @@
       .catch(function () { gscLoaded = false; $('gscBody').innerHTML = '<p class="empty">Google verisi alınamadı.</p>'; });
   }
 
+  // İstatistik panel (top of Genel): one row per period against the period
+  // of the same length before it; the server caches it 3 h.
+  var ST_NAMES = { 1: '1 gün', 3: '3 gün', 5: '5 gün', 7: '7 gün', 10: '10 gün', 14: '2 hafta', 20: '20 gün', 30: '1 ay', 90: '3 ay' };
+  var stData = null, stSite = store('shieldStatSite') || 'all', stOpen = {};
+  function stNum(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
+  function stTime(s) { return s == null ? '–' : Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function stDay(d) { return new Date(d + 'T00:00:00Z').toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', timeZone: 'UTC' }); }
+  function stRange(a, b) { return a === b ? stDay(a) : stDay(a) + ' – ' + stDay(b); }
+  // ▲/▼ against the period before: % for counts, m:ss for time, lower is
+  // better for position. Nothing to compare with → "–".
+  function stDelta(cur, prev, kind) {
+    if (cur == null || prev == null) return '<em>–</em>';
+    if (kind === 'time') {
+      if (!prev && !cur) return '<em>–</em>';
+      var d = cur - prev;
+      return d ? '<em class="' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲ ' : '▼ ') + stTime(Math.abs(d)) + '</em>' : '<em>=</em>';
+    }
+    if (!prev) return '<em>' + (cur ? 'yeni' : '–') + '</em>';
+    var p = Math.round((cur - prev) / prev * 100);
+    return p ? '<em class="' + (p > 0 ? 'up' : 'down') + '">' + (p > 0 ? '▲ %' : '▼ %') + Math.abs(p) + '</em>' : '<em>=</em>';
+  }
+  function renderStats() {
+    each('[data-st]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-st') === stSite ? 'true' : 'false'); });
+    var d = stData;
+    if (!d || !d.ok) { $('stBody').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; return; }
+    if (!d.sites[stSite]) stSite = 'all';
+    var site = d.sites[stSite], since = site.since, ga = d.ga && d.ga.ok;
+    var html = '<p class="st-since"><span>Açılıştan beri' + (site.start ? ' · ' + stDay(site.start) : '') + '</span><span>Son veri · ' + stDay(d.end) + '</span></p>';
+    html += '<div class="st-top">' + [[since && since.visitors, 'Ziyaretçi'], [since && since.clicks, 'Tıklama'], [since && since.impressions, 'Görüntüleme'], [since && since.eng, 'Süre/kişi', 1], [since && since.complaints, 'Şikayet']]
+      .map(function (x) { return '<div><b>' + (x[2] ? stTime(x[0]) : stNum(x[0])) + '</b><small>' + x[1] + '</small></div>'; }).join('') + '</div>';
+    html += '<div class="st-wrap"><table><thead><tr><th>Dönem</th><th>Ziyaretçi</th><th>Tıklama</th><th>Görüntül.</th><th>Süre/kişi</th><th>Şikayet</th></tr></thead><tbody>';
+    site.periods.forEach(function (p) {
+      var c = p.cur, v = p.prev, id = 'st' + p.days, open = !!stOpen[p.days];
+      html += '<tr class="r" tabindex="0" data-p="' + p.days + '" aria-expanded="' + open + '" aria-controls="' + id + '"><th scope="row">' + ST_NAMES[p.days] + '<span class="st-chev" aria-hidden="true">›</span>' + (p.days === 1 ? '<small>' + stDay(c.to) + '</small>' : '') + '</th>' +
+        '<td>' + stNum(c.visitors) + stDelta(c.visitors, v.visitors) + '</td><td>' + stNum(c.clicks) + stDelta(c.clicks, v.clicks) + '</td><td>' + stNum(c.impressions) + stDelta(c.impressions, v.impressions) + '</td>' +
+        '<td>' + stTime(c.eng) + stDelta(c.eng, v.eng, 'time') + '</td><td>' + stNum(c.complaints) + stDelta(c.complaints, v.complaints) + '</td></tr>';
+      var max = Math.max.apply(null, p.daily.concat(1));
+      var posCls = c.position && v.position ? (c.position < v.position ? 'up' : c.position > v.position ? 'down' : '') : '';
+      html += '<tr class="det" id="' + id + '"' + (open ? '' : ' hidden') + '><td colspan="6"><div class="st-box">' +
+        '<div class="st-dates"><span><b>Bu dönem</b>' + stRange(c.from, c.to) + '</span><span><b>Önceki</b>' + stRange(v.from, v.to) + '</span></div>' +
+        '<div class="st-grid"><span></span><b class="h">Bu</b><i class="h">Önceki</i>' +
+        [['Ziyaretçi', stNum(c.visitors), stNum(v.visitors)], ['Tıklama', stNum(c.clicks), stNum(v.clicks)], ['Görüntüleme', stNum(c.impressions), stNum(v.impressions)],
+          ['Süre/kişi', stTime(c.eng), stTime(v.eng)], ['Şikayet', stNum(c.complaints), stNum(v.complaints)],
+          ['Tıklama oranı', '%' + (c.ctr * 100).toFixed(1), '%' + (v.ctr * 100).toFixed(1)], ['Ort. sıra', c.position ? c.position.toFixed(1) : '–', v.position ? v.position.toFixed(1) : '–', posCls]]
+          .map(function (x) { return '<span>' + x[0] + '</span><b' + (x[3] ? ' class="' + (x[3] === 'up' ? 'better' : 'worse') + '"' : '') + '>' + x[1] + '</b><i>' + x[2] + '</i>'; }).join('') + '</div>' +
+        (p.query ? '<div class="st-best"><span>En çok tıklanan arama</span><b>' + esc(p.query.key) + '</b><i>' + stNum(p.query.clicks) + ' tık</i></div>' : '') +
+        (p.page ? '<div class="st-best"><span>En çok tıklanan sayfa</span><b>' + esc(p.page.key) + '</b><i>' + stNum(p.page.clicks) + ' tık</i></div>' : '') +
+        (p.daily.length ? '<div class="st-mb">' + p.daily.map(function (n) { return '<i style="height:' + Math.max(2, n / max * 100) + '%" title="' + n + ' tık"></i>'; }).join('') + '</div>' +
+          '<div class="st-ml"><span>' + stDay(addDay(c.to, 1 - p.daily.length)) + '</span><span>Günlük tıklama</span><span>' + stDay(c.to) + '</span></div>' : '') +
+        '</div></td></tr>';
+    });
+    html += '</tbody></table></div>';
+    var notes = ['Satıra dokun: detay', 'Fark: önceki aynı uzunluktaki döneme göre', 'Tıklama/Görüntüleme = Search Console'];
+    notes.push(ga ? 'Ziyaretçi/Süre = Google Analytics' : '<b>Ziyaretçi = site sayacı (20 Eki\'den beri) · Süre için Google Analytics bağlanmalı</b>');
+    if (!d.gsc.ok) notes.unshift('<b>Search Console bağlı değil (' + esc(d.gsc.reason) + ')</b>');
+    html += '<p class="st-foot"><span>' + notes.join(' · ') + ' · ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + '</span><button type="button" class="st-re" id="stRe">↻ Yenile</button></p>';
+    $('stBody').innerHTML = html;
+    each('#stBody tr.r', function (r) {
+      function t() { var n = Number(r.getAttribute('data-p')); stOpen[n] = !stOpen[n]; $('st' + n).hidden = !stOpen[n]; r.setAttribute('aria-expanded', stOpen[n] ? 'true' : 'false'); }
+      r.addEventListener('click', t);
+      r.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+    $('stRe').addEventListener('click', function () { loadStats(true); });
+  }
+  function addDay(d, n) { return new Date(Date.parse(d + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10); }
+  function loadStats(fresh) {
+    if (fresh) $('stBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
+    fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) { stData = d; renderStats(); })
+      .catch(function () { if (!stData) $('stBody').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
+  }
+  each('[data-st]', function (b) { b.addEventListener('click', function (e) {
+    // Inside the summary: switch site without folding the panel.
+    e.preventDefault(); e.stopPropagation();
+    stSite = b.getAttribute('data-st'); store('shieldStatSite', stSite); stOpen = {}; renderStats();
+  }); });
+
   // 3D shield: 10 dark layers for thickness, then the lit front.
   (function () {
     var P = 'M75 8 L132 30 V82 C132 120 106 146 75 160 C44 146 18 120 18 82 V30 Z';
@@ -681,16 +815,17 @@
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
-  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); });
+  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); loadStats(); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
   // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
   var hashSec = location.hash.slice(1);
   showSec($('v-' + hashSec) ? hashSec : store(SEC) || 'home');
   load();
   // Google numbers for Genel too; the server caches the 24-hour part 30 min.
-  if (getKey()) loadGsc(false, true);
+  if (getKey()) { loadGsc(false, true); loadStats(); }
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
   setInterval(function () { if (!document.hidden && getKey()) loadGsc(false, true); }, 10 * 60000);
+  setInterval(function () { if (!document.hidden && getKey()) loadStats(); }, 30 * 60000);
 })();
 </script>
 </body>
