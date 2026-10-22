@@ -1,5 +1,5 @@
 {
-  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4. accent: red, green, yellow or blue. musicStart: second of the theme to start from. Keep facts in step with the matching post in queue.json.",
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4. accent: red, green, yellow or blue. musicStart: second of the theme to start from. bg (optional): "pexels:<search words>" for free stock footage behind the text (PEXELS_API_KEY), or a local MP4 path. Keep facts in step with the matching post in queue.json.",
   "videos": [
     {
       "id": "v01-scam-check",

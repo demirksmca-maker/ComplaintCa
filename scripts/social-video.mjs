@@ -7,8 +7,12 @@
 //   node scripts/social-video.mjs v01-brand  render (or re-render) just this one
 //
 // Needs Playwright (Chromium) and ffmpeg. Output: social/videos/<id>.mp4
+//
+// Optional "bg" puts real footage behind the text: "pexels:<search words>" pulls a
+// free portrait clip from Pexels (needs PEXELS_API_KEY, cached in social/stock/),
+// or a path like "assets/stock/city.mp4" uses a local clip.
 
-import { readFile, mkdir, rm, access } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, access } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
@@ -17,10 +21,12 @@ import path from 'node:path';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'social/videos');
 const FPS = 30, DUR = 7, W = 1080, H = 1920;
+const STOCK = path.join(ROOT, 'social/stock');
 const require = createRequire(import.meta.url);
-const { chromium } = (() => {
-  try { return require('playwright'); } catch { return require('/opt/node22/lib/node_modules/playwright'); }
-})();
+const loadChromium = () => {
+  try { return require('playwright').chromium; } catch { return require('/opt/node22/lib/node_modules/playwright').chromium; }
+};
+const exists = (f) => access(f).then(() => true, () => false);
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
@@ -32,7 +38,7 @@ export function page(v) {
     `<li style="animation-delay:${2.2 + i * 0.55}s"><i></i>${esc(l)}</li>`).join('');
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:${W}px;height:${H}px;overflow:hidden;background:#070d1a;font-family:Inter,system-ui,sans-serif;color:#e9edf5}
+html,body{width:${W}px;height:${H}px;overflow:hidden;background:${v.bg ? 'transparent' : '#070d1a'};font-family:Inter,system-ui,sans-serif;color:#e9edf5}
 @keyframes drift{from{transform:translate(-8%,-6%) scale(1)}to{transform:translate(8%,6%) scale(1.25)}}
 @keyframes up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -57,8 +63,9 @@ li i{flex:none;width:22px;height:22px;border-radius:50%;background:${accent}}
 .go{width:120px;height:120px;border-radius:50%;background:${accent};display:grid;place-items:center;animation:pulse 1.4s ease-out 5.2s 2 both}
 .brand{position:absolute;top:96px;left:96px;font-size:40px;font-weight:800;letter-spacing:-.01em;animation:fade .5s ease-out both}
 .brand em{font-style:normal;color:#f0576a}
+.scrim{position:absolute;inset:0;background:linear-gradient(#070d1ae6,#070d1a99 45%,#070d1acc)}
 </style></head><body>
-<div class="glow g1"></div><div class="glow g2"></div><div class="grid"></div>
+${v.bg ? '<div class="scrim"></div>' : '<div class="glow g1"></div><div class="glow g2"></div><div class="grid"></div>'}
 <main>
   <div class="brand">Complaint<em>CA</em></div>
   <div class="kick">${esc(v.kicker)}</div>
@@ -70,24 +77,58 @@ li i{flex:none;width:22px;height:22px;border-radius:50%;background:${accent}}
 </main></body></html>`;
 }
 
+// Pexels file closest to 1080x1920 among portrait files, preferring >= 1080 wide.
+export function pickFile(files) {
+  const tall = files.filter((f) => f.file_type === 'video/mp4' && f.height > f.width);
+  if (!tall.length) return null;
+  const score = (f) => (f.width >= W ? 0 : 1e6) + Math.abs(f.width - W);
+  return tall.sort((a, b) => score(a) - score(b))[0];
+}
+
+async function stockClip(bg) {
+  if (!bg.startsWith('pexels:')) return path.join(ROOT, bg);
+  const q = bg.slice(7).trim();
+  const file = path.join(STOCK, q.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.mp4');
+  if (await exists(file)) return file;
+  const key = process.env.PEXELS_API_KEY;
+  if (!key) throw new Error(`"${bg}" needs PEXELS_API_KEY (free at pexels.com/api)`);
+  const res = await fetch(`https://api.pexels.com/videos/search?orientation=portrait&per_page=15&query=${encodeURIComponent(q)}`,
+    { headers: { Authorization: key } });
+  if (!res.ok) throw new Error(`Pexels search "${q}": HTTP ${res.status}`);
+  const hit = (await res.json()).videos.map((vid) => ({ vid, f: pickFile(vid.video_files) })).find((x) => x.f && x.vid.duration >= 4);
+  if (!hit) throw new Error(`Pexels: no portrait clip for "${q}"`);
+  await mkdir(STOCK, { recursive: true });
+  await writeFile(file, Buffer.from(await (await fetch(hit.f.link)).arrayBuffer()));
+  console.log(`  bg "${q}": ${hit.vid.url} by ${hit.vid.user.name} (Pexels)`);
+  return file;
+}
+
 async function render(browser, v) {
   const tmp = path.join(OUT, '.frames-' + v.id);
   await rm(tmp, { recursive: true, force: true });
   await mkdir(tmp, { recursive: true });
   const p = await browser.newPage({ viewport: { width: W, height: H } });
+  const bg = v.bg && await stockClip(v.bg);
+  const ext = bg ? 'png' : 'jpg';
   await p.setContent(page(v));
   await p.evaluate(() => document.fonts.ready);
   await p.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
   for (let f = 0; f < FPS * DUR; f++) {
     const ms = (f * 1000) / FPS;
     await p.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), ms);
-    await p.screenshot({ path: path.join(tmp, String(f).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 95 });
+    const shot = path.join(tmp, String(f).padStart(4, '0') + '.' + ext);
+    await p.screenshot(bg ? { path: shot, omitBackground: true } : { path: shot, type: 'jpeg', quality: 95 });
   }
   await p.close();
   const mp4 = path.join(OUT, v.id + '.mp4');
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(tmp, '%04d.jpg'),
+  // Footage is scaled and cropped to fill 9:16; the text frames (darkening scrim included) go on top.
+  const video = bg
+    ? ['-stream_loop', '-1', '-i', bg, '-framerate', String(FPS), '-i', path.join(tmp, '%04d.png'),
+      '-filter_complex', `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1,fps=${FPS}[b];[b][1:v]overlay=shortest=1,format=yuv420p[v]`]
+    : ['-framerate', String(FPS), '-i', path.join(tmp, '%04d.jpg')];
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...video,
     '-ss', String(v.musicStart ?? 0), '-i', path.join(ROOT, 'assets/brand/complaintca-theme.mp3'),
-    '-t', String(DUR), '-af', `afade=t=in:d=0.4,afade=t=out:st=${DUR - 0.8}:d=0.8`,
+    ...(bg ? ['-map', '[v]', '-map', '2:a'] : []), '-t', String(DUR), '-af', `afade=t=in:d=0.4,afade=t=out:st=${DUR - 0.8}:d=0.8`,
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-crf', '20', '-r', String(FPS),
     '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', '-movflags', '+faststart', '-shortest', mp4]);
   await rm(tmp, { recursive: true, force: true });
@@ -100,11 +141,11 @@ async function main() {
   await mkdir(OUT, { recursive: true });
   const todo = [];
   for (const v of videos) {
-    if (only ? v.id !== only : await access(path.join(OUT, v.id + '.mp4')).then(() => true, () => false)) continue;
+    if (only ? v.id !== only : await exists(path.join(OUT, v.id + '.mp4'))) continue;
     todo.push(v);
   }
   if (!todo.length) return console.log('Nothing to render.');
-  const browser = await chromium.launch();
+  const browser = await loadChromium().launch();
   const queue = [...todo];
   const worker = async () => { while (queue.length) await render(browser, queue.shift()); };
   try { await Promise.all([worker(), worker(), worker()]); } finally { await browser.close(); }

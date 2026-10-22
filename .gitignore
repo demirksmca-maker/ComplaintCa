@@ -8,3 +8,6 @@ android-twa/
 *.apk
 *.aab
 scripts/twa-build/node_modules/
+
+# Stock footage cache for scripts/social-video.mjs (re-downloaded on demand)
+social/stock/
