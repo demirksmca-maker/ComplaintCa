@@ -4,10 +4,11 @@
 // analytics for a chosen period (?days=7|14|28|90): top pages, cities,
 // devices, hour heatmap, complaint funnel; plus attack countries and the
 // change against the week before, the funnel per day and complaint totals. POST {lockdownHours} turns emergency lockdown on (1-6 h)
-// or off (0). The key is the SHIELD_KEY env var; wrong keys are rate limited.
+// or off (0). ?stats=1 is the İstatistik panel (_stats.js). The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
+import { statsPanel } from './_stats.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -156,6 +157,16 @@ export async function shieldView(req, res) {
       return res.status(200).json(await searchConsole(pipeline, { fresh: req.query.fresh === '1', days: Number(req.query.days) || 28 }));
     } catch (err) {
       console.error('search console error:', err && err.message);
+      return res.status(502).json({ ok: false, reason: 'error' });
+    }
+  }
+
+  // GET /api/shield?stats=1 → the İstatistik panel (cached 3 h; &fresh=1 to refetch).
+  if (req.query && req.query.stats) {
+    try {
+      return res.status(200).json(await statsPanel(pipeline, { fresh: req.query.fresh === '1' }));
+    } catch (err) {
+      console.error('stats panel error:', err && err.message);
       return res.status(502).json({ ok: false, reason: 'error' });
     }
   }
