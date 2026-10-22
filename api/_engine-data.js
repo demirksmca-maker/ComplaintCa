@@ -373,8 +373,8 @@ export const FOI_FACTS = {
   NB:{act:'Right to Information and Protection of Privacy Act (RTIPPA), S.N.B. 2009, c. R-10.6',deadline:'30 business days',recourse:'Complaint to the Ombud New Brunswick'},
   PE:{act:'Freedom of Information and Protection of Privacy Act (FOIPP), R.S.P.E.I. 1988, c. F-15.01',deadline:'30 days',recourse:'Request a review by the Information and Privacy Commissioner of Prince Edward Island'},
   NL:{act:'Access to Information and Protection of Privacy Act, 2015 (ATIPPA), S.N.L. 2015, c. A-1.2',deadline:'20 business days',recourse:'Complaint to the Information and Privacy Commissioner of Newfoundland and Labrador'},
-  YT:{act:'Access to Information and Protection of Privacy Act (Yukon)',deadline:'',recourse:'Complaint to the Yukon Information and Privacy Commissioner'},
-  NT:{act:'Access to Information and Protection of Privacy Act (Northwest Territories)',deadline:'',recourse:'Request a review by the Information and Privacy Commissioner of the Northwest Territories'},
+  YT:{act:'Access to Information and Protection of Privacy Act (Yukon)',deadline:'30 business days',recourse:'Complaint to the Yukon Information and Privacy Commissioner'},
+  NT:{act:'Access to Information and Protection of Privacy Act (Northwest Territories)',deadline:'20 business days (extendable under s.11)',recourse:'Request a review by the Information and Privacy Commissioner of the Northwest Territories'},
   NU:{act:'Access to Information and Protection of Privacy Act (Nunavut)',deadline:'25 business days',recourse:'Request a review by the Information and Privacy Commissioner of Nunavut'}
 };
 export function _foiFactsFor(location,institution){
