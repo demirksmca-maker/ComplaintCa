@@ -43,7 +43,7 @@
   "@type": "NewsArticle",
   "headline": "OBSI Is Now Canada's Only Banking Ombudsman — Investigations Are Up 90%",
   "datePublished": "2026-09-11",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-10-23",
   "image": ["https://www.complaintca.ca/og-image.png"],
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.complaintca.ca/blog/obsi-single-banking-ombudsman-2026.html" },
   "author": { "@type": "Organization", "name": "ComplaintCA", "url": "https://www.complaintca.ca/" },
@@ -100,6 +100,9 @@ p.body-text{font-size:.95rem;color:var(--sub);line-height:1.75;margin:0 0 16px;t
 .cta p{margin:0;font-size:1rem;max-width:30ch}
 .cta a{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px}
 
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 10px;text-align:left}
+.faq-item summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.5}
+.faq-item p{margin:10px 0 0;font-size:.9rem;color:var(--sub);line-height:1.65}
 .trust-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin:40px 0 0;text-align:left}
 .trust-box p{margin:0 0 12px;font-size:.86rem;color:var(--sub);line-height:1.6}
 .trust-box p:last-child{margin-bottom:0}
@@ -113,13 +116,37 @@ footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 <link rel="stylesheet" href="/assets/blog-dark.css" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I contact OBSI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Call OBSI toll-free at 1-888-451-4519, or 416-287-2877 in the Toronto area. You can also email ombudsman@obsi.ca or start a complaint online at obsi.ca. Have your bank's final response letter ready."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is OBSI free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. OBSI is free for consumers and independent of the banks. You must first finish your bank's own complaint process, which can take up to 56 days."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Consumer Alerts</div>
   <h1>OBSI Is Now Canada's Only Banking Ombudsman — Investigations Are Up 90%</h1>
-  <div class="dateline">Published <b>September 11, 2026</b> · Updated <b>October 21, 2026</b> · 3 min read</div>
+  <div class="dateline">Published <b>September 11, 2026</b> · Updated <b>October 23, 2026</b> · 3 min read</div>
 </div>
 
 <main>
@@ -158,6 +185,16 @@ footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border
     <p>Skip the confusion about which office handles your bank — draft your complaint and let Asya route it correctly.</p>
     <a href="https://www.complaintca.ca" target="_blank" rel="noopener">Start With Asya Now →</a>
   </div>
+
+  <h2>Frequently Asked</h2>
+  <details class="faq-item">
+    <summary>How do I contact OBSI?</summary>
+    <p>Call OBSI toll-free at 1-888-451-4519, or 416-287-2877 in the Toronto area. You can also email ombudsman@obsi.ca or start a complaint online at obsi.ca. Have your bank&#x27;s final response letter ready.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Is OBSI free?</summary>
+    <p>Yes. OBSI is free for consumers and independent of the banks. You must first finish your bank&#x27;s own complaint process, which can take up to 56 days.</p>
+  </details>
 
   <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
