@@ -4332,6 +4332,9 @@ async function doSubmit(){
       var mailSubject2='Queja formal — '+c.ref+' — '+c.title;
       window.location.href='mailto:'+auth.email+'?subject='+encodeURIComponent(mailSubject2)+'&body='+encodeURIComponent(emailDraft);
     });
+  } else if(c.priority==='high'){
+    // Kurumun e-postası yok (sadece form, ör. LTB) — 🔴 admin bilgisi yine de gitsin.
+    sendComplaintEmail(c,'',(auths&&auths[0])?auths[0].name:'','').catch(function(){});
   }
 
   // 4. Show success screen
