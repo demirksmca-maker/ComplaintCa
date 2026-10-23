@@ -13,7 +13,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sitemapPath = path.join(root, 'sitemap.xml');
 const check = process.argv.includes('--check');
 const ORIGIN = 'https://www.complaintca.ca';
-const today = new Date().toISOString().slice(0, 10);
+const today = new Date().toLocaleDateString('en-CA'); // local date, same as git's %cs
 
 function fileFor(loc) {
   const p = loc.slice(ORIGIN.length);
