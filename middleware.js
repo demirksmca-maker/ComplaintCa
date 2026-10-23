@@ -56,9 +56,9 @@ const SCANNER_RE = /sqlmap|nikto|nmap|masscan|zgrab|acunetix|nuclei|wpscan|dirbu
 // Crawlers that copy pages in bulk for datasets. ChatGPT/Claude/Perplexity
 // search bots are deliberately not here: the site publishes llms.txt to be
 // found through them.
-const AI_SCRAPER_RE = /CCBot|Bytespider|Meta-ExternalAgent|meta-externalfetcher|ImagesiftBot|Diffbot|omgili|Timpibot|cohere-training-data-crawler|PetalBot|img2dataset/i;
+const AI_SCRAPER_RE = /CCBot|Bytespider|Meta-ExternalAgent|meta-externalfetcher|ImagesiftBot|Diffbot|omgili|Timpibot|cohere-training-data-crawler|img2dataset/i;
 
-const SEARCH_BOT_RE = /googlebot|google-inspectiontool|adsbot-google|mediapartners-google|bingbot|duckduckbot|yandex|applebot|baiduspider/i;
+const SEARCH_BOT_RE = /googlebot|google-inspectiontool|adsbot-google|mediapartners-google|bingbot|duckduckbot|yandex|applebot|baiduspider|petalbot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user/i;
 
 function decodeAll(s) {
   let out = s;
