@@ -58,6 +58,7 @@ for (const f of pages) {
   const visible = (html.match(/<details class="faq-item">/g) || []).length;
   if (faq.mainEntity.length !== visible) fail(rel, `FAQPage has ${faq.mainEntity.length} questions, page shows ${visible}`);
   if (!ld.some((j) => j['@type'] === 'BreadcrumbList')) fail(rel, 'missing BreadcrumbList JSON-LD');
+  if (!ld.some((j) => j['@type'] === 'Article' && j.dateModified)) fail(rel, 'missing Article JSON-LD — run: node scripts/sitemap-lastmod.mjs');
 }
 
 if (errors.length) {
