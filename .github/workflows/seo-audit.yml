@@ -1,0 +1,49 @@
+name: SEO Audit
+
+# Weekly crawl of the whole live site (Canada + /es) with SiteOne Crawler
+# (free, MIT, github.com/janreges/siteone-crawler): broken links, redirects,
+# missing titles/descriptions, duplicates, indexability. The HTML report is
+# kept as a run artifact. A failed quality gate makes GitHub email the owner.
+# Read-only GET requests; slowed to stay under the Shield page limit
+# (60 pages/min per IP) so the runner never gets banned. robots.txt is
+# respected, so the /trap/ honeypot is never opened.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Install SiteOne Crawler (latest release)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo janreges/siteone-crawler --pattern '*-linux-x64.tar.gz' --output crawler.tgz
+          tar xzf crawler.tgz
+          ./siteone-crawler/siteone-crawler --version
+
+      - name: Crawl and check
+        run: |
+          mkdir -p report
+          ./siteone-crawler/siteone-crawler \
+            --url=https://www.complaintca.ca/ \
+            --workers=1 \
+            --max-reqs-per-sec=0.8 \
+            --no-cache \
+            --output-html-report=report/seo-report.html \
+            --output-json-file=report/seo-report.json \
+            --ci
+
+      - name: Keep report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-report
+          path: report/
+          retention-days: 30
