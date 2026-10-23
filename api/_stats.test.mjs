@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { periodWindows, sumRange, dailyClicks, countComplaints, gaRanges, readGa, buildSite, gscFilter, gaFilter, PANEL_DAYS, growth } from './_stats.js';
+import { periodWindows, sumRange, dailyClicks, countComplaints, gaRanges, readGa, buildSite, gscFilter, gaFilter, PANEL_DAYS, growth, torontoDay } from './_stats.js';
 
 test('periodWindows: back-to-back windows of the same length ending on the last data day', () => {
   assert.deepEqual(periodWindows('2026-10-20', 1), { cur: ['2026-10-20', '2026-10-20'], prev: ['2026-10-19', '2026-10-19'] });
@@ -75,4 +75,9 @@ test('growth: last 7 days a day against the first 14 days a day', () => {
   assert.equal(growth(rows, '2026-07-06', '2026-07-20'), null); // under 21 days
   assert.equal(growth([], '2026-07-06', '2026-08-04'), null);
   assert.equal(growth(rows, null, '2026-08-04'), null);
+});
+
+test('torontoDay: the day in Toronto, not UTC', () => {
+  assert.equal(torontoDay(Date.parse('2026-10-23T06:04:00Z')), '2026-10-23');
+  assert.equal(torontoDay(Date.parse('2026-10-23T02:00:00Z')), '2026-10-22');
 });

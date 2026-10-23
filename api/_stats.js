@@ -5,8 +5,8 @@
 // Performance report shows for that date range and page filter), visitors
 // and engagement time per user (Google Analytics 4: active users and
 // "average engagement time per active user"), and complaints filed.
-// Every window ends on the last day Search Console has data for, so all
-// columns cover the same days. Sites: all (no filter, like Search Console's
+// Every window ends today (Toronto time): "3 days" is today, yesterday and
+// the day before, so all columns cover the same calendar days. Sites: all (no filter, like Search Console's
 // default view), ca (pages outside /es) and es (pages under /es).
 // Without GA4 access the visitor column falls back to the site's own
 // counter (it only started on 2026-10-20) and the time column stays empty.
@@ -27,6 +27,8 @@ export const SITES = ['all', 'ca', 'es'];
 
 export const ymd = t => new Date(t).toISOString().slice(0, 10);
 export const addDays = (day, n) => ymd(Date.parse(day + 'T00:00:00Z') + n * D);
+// Today as YYYY-MM-DD in Toronto, the owner's day.
+export const torontoDay = (now = Date.now()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 const daysBetween = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / D) + 1;
 
 // This period and the one before it, as [from, to] YYYY-MM-DD, ending on `end`.
@@ -198,15 +200,14 @@ async function counterVisitors(redis, site, ranges) {
 
 async function build(redis) {
   const gsc = await gscConnect();
-  const today = ymd(Date.now());
+  const today = torontoDay();
   const dateRows = {};
   if (gsc.ok) {
     // Search Console keeps 16 months; the first day with impressions is the start.
     const all = await Promise.all(SITES.map(s => gsc.q({ startDate: addDays(today, -480), endDate: today, dimensions: ['date'], rowLimit: 1000, ...gscFilter(s) })));
     SITES.forEach((s, i) => { dateRows[s] = all[i].map(r => ({ day: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position })).sort((a, b) => (a.day < b.day ? -1 : 1)); });
   }
-  const last = (dateRows.all || []).map(r => r.day).pop();
-  const end = last || addDays(today, -2);
+  const end = today;
   const startOf = s => ((dateRows[s] || []).find(r => r.impressions > 0) || {}).day || null;
 
   // Top search and page per period, by clicks (Search Console's default order).
@@ -253,7 +254,8 @@ async function build(redis) {
 export async function statsPanel(redis, { fresh = false } = {}) {
   if (!fresh) {
     const [hit] = await redis([['GET', CACHE_KEY]]);
-    if (hit) { try { return JSON.parse(hit); } catch { /* rebuild */ } }
+    // A new day starts new windows, so yesterday's answer is not reused.
+    if (hit) { try { const out = JSON.parse(hit); if (out.end === torontoDay()) return out; } catch { /* rebuild */ } }
   }
   const out = await build(redis);
   await redis([['SET', CACHE_KEY, JSON.stringify(out), 'EX', CACHE_SECONDS]]);
