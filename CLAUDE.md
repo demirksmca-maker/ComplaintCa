@@ -19,6 +19,7 @@
 - Canlıya almadan (main'e birleştirmeden) önce her seferinde kullanıcıya "AXX1 mi (Kanada), AXX2 mi (İspanya)?" diye sor; cevaba göre o sitenin AXX kontrolünü yapıp sonucu 1 satırda söyle.
 - İstisna: sadece Dias Panel (`shield.html`, `api/_shield-*`, `api/_stats.js`) değişiyorsa sorma; AXX1 + AXX2 ikisini de yap, sonucu 1 satırda söyle.
 - Canlıya almadan önce testleri çalıştır (`node --test` ile tüm `*.test.mjs`). Kırmızı (kod kaynaklı) test varsa birleştirme, önce düzelt. Ortam eksikliğinden (kurulu olmayan paket vb.) düşen test bu kuralın dışında, durumu kısaca belirt.
+- Canlıya almadan önce değişikliği `/code-review` ile incele (ücretli GitHub Action yok). Ciddi bulgu varsa birleştirme, önce düzelt; sonucu 1 satırda söyle.
 
 ## Temizlik yetkisi
 - Claude'un tam yetkisi var: otomasyonları (`.github/workflows`, `scripts/`, `api/`) ve sitenin her köşesini tarayıp gereksiz/ölü kodu temizleyebilir.
