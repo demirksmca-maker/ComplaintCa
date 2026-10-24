@@ -7,7 +7,7 @@ test('periodWindows: back-to-back windows of the same length ending on the last 
   assert.deepEqual(periodWindows('2026-10-20', 3), { cur: ['2026-10-18', '2026-10-20'], prev: ['2026-10-15', '2026-10-17'] });
   assert.deepEqual(periodWindows('2026-10-20', 7), { cur: ['2026-10-14', '2026-10-20'], prev: ['2026-10-07', '2026-10-13'] });
   assert.deepEqual(periodWindows('2026-03-01', 1).prev, ['2026-02-28', '2026-02-28']);
-  assert.deepEqual(PANEL_DAYS, [1, 3, 5, 7, 10, 14, 20, 30, 90]);
+  assert.deepEqual(PANEL_DAYS, [1, 3, 5, 7, 10, 14, 20, 30, 60, 90]);
 });
 
 test('sumRange: totals like Search Console, position weighted by impressions', () => {
@@ -45,7 +45,7 @@ test('filters: Spanish pages under /es only', () => {
 
 test('GA4: ranges named per period, answer read back as visitors and seconds per user', () => {
   const ranges = gaRanges('2026-10-20', '2026-03-12');
-  assert.equal(ranges.length, 19);
+  assert.equal(ranges.length, 21);
   assert.deepEqual(ranges[0], { name: 'c1', startDate: '2026-10-20', endDate: '2026-10-20' });
   assert.deepEqual(ranges[ranges.length - 1], { name: 'since', startDate: '2026-03-12', endDate: '2026-10-20' });
   const ga = readGa([
@@ -58,7 +58,7 @@ test('GA4: ranges named per period, answer read back as visitors and seconds per
 test('buildSite: every period has this and the previous window; no GA → counter visitors, no time', () => {
   const rows = [{ day: '2026-10-19', clicks: 4, impressions: 40, position: 8 }, { day: '2026-10-20', clicks: 6, impressions: 60, position: 4 }];
   const s = buildSite({ end: '2026-10-20', rows, start: '2026-10-19', ga: null, counter: { c1: 9, p1: 7, since: 20 }, complaints: [{ date: '2026-10-20T00:00:00Z' }], site: 'ca', tops: { q1: { key: 'x', clicks: 2 } } });
-  assert.equal(s.periods.length, 9);
+  assert.equal(s.periods.length, 10);
   const one = s.periods[0];
   assert.deepEqual([one.cur.clicks, one.prev.clicks, one.cur.visitors, one.prev.visitors, one.cur.eng, one.cur.complaints], [6, 4, 9, 7, null, 1]);
   assert.deepEqual(one.query, { key: 'x', clicks: 2 });

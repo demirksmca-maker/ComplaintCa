@@ -501,7 +501,7 @@
 
   // İstatistik panel (top of Genel): one row per period against the period
   // of the same length before it; the server caches it 3 h.
-  var ST_NAMES = { 1: '1 gün', 3: '3 gün', 5: '5 gün', 7: '7 gün', 10: '10 gün', 14: '2 hafta', 20: '20 gün', 30: '1 ay', 90: '3 ay' };
+  var ST_NAMES = { 1: '1 gün', 3: '3 gün', 5: '5 gün', 7: '7 gün', 10: '10 gün', 14: '2 hafta', 20: '20 gün', 30: '1 ay', 60: '2 ay', 90: '3 ay' };
   var stData = null, stSite = store('shieldStatSite') || 'all', stOpen = {};
   function stNum(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function stTime(s) { return s == null ? '–' : Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
