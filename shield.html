@@ -482,6 +482,7 @@
   function d3Pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
   function d3Secs(s) { return s == null ? '–' : s < 60 ? s + ' sn' : Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+  function d3Short(d) { return new Date(d + 'T00:00:00Z').toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', timeZone: 'UTC' }); }
   function d3Day(d) { return new Date(d + 'T00:00:00Z').toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }); }
   // Change against the period before; for Google position lower is better.
   function d3Delta(cur, prev, lowerBetter) {
@@ -508,10 +509,14 @@
       (last || d3Cell('Şikayet', d3Num(c.complaints), d3Delta(c.complaints, v.complaints)));
   }
   // Growth since opening, in plain sight: daily Google impressions over the
-  // last 7 days against the first 2 weeks in Google (_stats.js growth()).
+  // last 7 days against the first 2 weeks in Google (_stats.js growth()),
+  // and all Google impressions since the first day.
   function d3Grow(since) {
-    if (!since || !since.growth) return '';
-    return '<span class="d3-grow" title="Son 7 günün günlük Google gösterimi, Google\'daki ilk 2 haftaya göre">🚀 ' + String(since.growth).replace('.', ',') + ' kat büyüdü</span>';
+    if (!since) return '';
+    var parts = [];
+    if (since.growth) parts.push(String(since.growth).replace('.', ',') + ' kat');
+    if (since.impressions) parts.push(d3Num(since.impressions) + ' gösterim');
+    return parts.length ? '<span class="d3-grow" title="Büyüme: son 7 günün günlük Google gösterimi, Google\'daki ilk 2 haftaya göre · Toplam: ' + esc(d3Day(since.from)) + '\'den beri tüm gösterim">🚀 ' + parts.join(' · ') + '</span>' : '';
   }
   function d3Arrow(id, open, label) { return '<button type="button" class="d3-arrow" id="' + id + '" aria-expanded="' + open + '" aria-label="' + label + ': 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button>'; }
   // Share of the stop before that made it to this one.
@@ -559,7 +564,7 @@
     var t = by[1];
     d3Pressed();
     var html = '<div><div class="d3-card" id="d3main">' +
-      '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Grow(s.since) + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
+      '<div class="d3-when"><span>Dün · ' + d3Short(t.cur.to) + '</span>' + d3Grow(s.since) + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
       '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Önceki gün gösterim', d3Num(t.prev.impressions)) + '</div>' +
