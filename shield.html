@@ -186,16 +186,16 @@
      site to sending a complaint. Big card vertical, period cards in a row. */
   .rd-card{background:radial-gradient(120% 90% at 0 0,#123a3a,#0a1f2e 55%,#071624);border-color:#1f8a78;box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 30px rgba(61,220,151,.18)}
   .rd-card .d3-arrow{background:#136b5c;border-color:#2fbf9f}
-  .rd{position:relative;margin:10px 0 2px;padding-left:34px}
+  .rd{position:relative;margin:6px 0 0;padding-left:34px}
   .rd::before{content:'';position:absolute;left:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:linear-gradient(#3987e5,#3ddc97 60%,#f2bd4b);box-shadow:0 0 10px rgba(61,220,151,.45)}
   .rd::after{content:'';position:absolute;left:14px;top:14px;bottom:14px;width:2px;background:repeating-linear-gradient(#fff 0 6px,transparent 6px 14px);opacity:.35}
-  .rd-st{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;margin:6px 0;border-radius:10px;background:rgba(4,16,26,.6);border:1px solid #1c4a4f}
+  .rd-st{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 10px;margin:4px 0;border-radius:10px;background:rgba(4,16,26,.6);border:1px solid #1c4a4f}
   .rd-st::before{content:'';position:absolute;left:-28px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#071624;border:3px solid var(--c,#3ddc97);box-shadow:0 0 8px var(--c,#3ddc97)}
   .rd-st i{font-style:normal;font-size:1rem;width:22px;text-align:center;flex:none}
   .rd-nm{flex:1;min-width:0;font-size:.74rem}
   .rd-nm small{display:block;font-size:.6rem;color:var(--mute)}
   .rd-n{text-align:right;flex:none}
-  .rd-n b{display:block;font-size:1.15rem;line-height:1}
+  .rd-n b{display:block;font-size:1.05rem;line-height:1}
   .rd-n small{font-size:.58rem;color:var(--mute)}
   .rd-row{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));text-align:center;padding-top:16px}
   .rd-row::before{content:'';position:absolute;left:10%;right:10%;top:5px;height:4px;border-radius:2px;background:linear-gradient(90deg,#3987e5,#3ddc97 60%,#f2bd4b)}
@@ -207,6 +207,15 @@
   .rd-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:rdpulse 1.6s ease-in-out infinite}
   @keyframes rdpulse{50%{opacity:.3}}
   #d3road .d3-more .d3-card{animation:none}
+  /* Genel fits one screen: fitHome() zooms #homeFit down when it is taller
+     than the section (not while a detail list is open). Wide landscape
+     screens put the two cards side by side. */
+  #homeFit{display:flex;flex-direction:column;gap:10px}
+  @media (min-width:860px) and (orientation:landscape){
+    main{max-width:980px}
+    #homeFit{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+    #homeFit>.ptitle,#homeFit>.d3-top,#homeFit>#install{grid-column:1/-1}
+  }
   @media (prefers-reduced-motion:reduce){.rd-live::before{animation:none}}
   .d3-more{margin-top:12px;display:flex;flex-direction:column;gap:14px}
   .d3-more .d3-card{padding:14px;animation:d3rise .4s ease-out both}
@@ -245,6 +254,7 @@
   <div id="app" hidden style="display:contents">
     <!-- GENEL -->
     <section class="sec" id="v-home">
+      <div id="homeFit">
       <h3 class="ptitle">Bütünleşik master panel</h3>
       <div class="d3-top">
         <div class="d3-now" id="d3now" title="Bugün şu ana kadar"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
@@ -253,6 +263,7 @@
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
       <div id="d3road"></div>
       <div class="card install" id="install" hidden><span id="installText">Telefona uygulama olarak ekle</span><button type="button" id="installBtn">Ekle</button></div>
+      </div>
     </section>
 
     <!-- TRAFİK -->
@@ -525,6 +536,7 @@
     box.innerHTML = html + '</div>';
     d3Tilt($('d3rmain'));
     $('d3rarrow').addEventListener('click', function () { d3ROpen = !d3ROpen; d3Road(); });
+    fitHome();
   }
   function d3Render() {
     var d = d3Data;
@@ -563,6 +575,7 @@
     $('d3').innerHTML = html;
     $('d3arrow').addEventListener('click', function () { d3Open = !d3Open; d3Render(); });
     $('d3re').addEventListener('click', function () { d3Load(true); });
+    fitHome();
     d3Tilt($('d3main'));
   }
   // Live row: today's visitors and page views for the chosen site, and
@@ -578,6 +591,18 @@
   function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }
   d3Pressed();
   each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Pressed(); d3Now(); if (d3Data) d3Render(); }); });
+
+  // Genel on one screen, no scrolling: shrink it to the section's height.
+  // With a detail list open it scrolls as usual.
+  function fitHome() {
+    var sec = $('v-home'), box = $('homeFit');
+    if (sec.hidden) return;
+    box.style.zoom = '';
+    if (d3Open || d3ROpen) return;
+    var cs = getComputedStyle(sec), room = sec.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    if (box.offsetHeight > room) box.style.zoom = Math.max(0.6, Math.floor(room / box.offsetHeight * 1000) / 1000 - 0.01);
+  }
+  window.addEventListener('resize', fitHome);
 
   // Card follows the pointer a little; springs back when it leaves.
   function d3Tilt(el) {
@@ -617,6 +642,7 @@
   function showSec(name) {
     each('.bar-nav button', function (b) { var on = b.getAttribute('data-sec') === name; on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); $('v-' + b.getAttribute('data-sec')).hidden = !on; });
     store(SEC, name);
+    if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
   }
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
