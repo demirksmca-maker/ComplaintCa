@@ -196,7 +196,7 @@
   .rd{position:relative;margin:6px 0 0;padding-left:34px}
   .rd::before{content:'';position:absolute;left:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:linear-gradient(#3987e5,#3ddc97 60%,#f2bd4b);box-shadow:0 0 10px rgba(61,220,151,.45)}
   .rd::after{content:'';position:absolute;left:14px;top:14px;bottom:14px;width:2px;background:repeating-linear-gradient(#fff 0 6px,transparent 6px 14px);opacity:.35}
-  .rd-st{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 10px;margin:4px 0;border-radius:10px;background:rgba(4,16,26,.6);border:1px solid #1c4a4f}
+  .rd-st{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 10px;margin:3px 0;border-radius:10px;background:rgba(4,16,26,.6);border:1px solid #1c4a4f}
   .rd-st::before{content:'';position:absolute;left:-28px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#071624;border:3px solid var(--c,#3ddc97);box-shadow:0 0 8px var(--c,#3ddc97)}
   .rd-st i{font-style:normal;font-size:1rem;width:22px;text-align:center;flex:none}
   .rd-nm{flex:1;min-width:0;font-size:.74rem}
@@ -217,7 +217,9 @@
   /* Genel fits one screen: fitHome() zooms #homeFit down when it is taller
      than the section (not while a detail list is open). Wide landscape
      screens put the two cards side by side. */
-  #homeFit{display:flex;flex-direction:column;gap:10px}
+  #homeFit{display:flex;flex-direction:column;gap:8px}
+  #homeFit>.ptitle{padding:5px 10px;font-size:.8rem}
+  #homeFit .d3-foot{margin:-2px 0}
   @media (min-width:860px) and (orientation:landscape){
     main:has(#v-home:not([hidden])){max-width:980px}
     #homeFit{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
@@ -232,6 +234,15 @@
   .d3-ttl b{font-size:.95rem;text-transform:uppercase;letter-spacing:.5px}
   .d3-ttl small{font-size:.7rem;color:var(--mute)}
   .d3-live{margin-top:8px;font-size:.66rem;color:var(--mute);text-align:center}
+  /* Search Console's 24-hour tiles: clicks blue, impressions purple. */
+  .g24{margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid #2a4a7a;box-shadow:0 0 14px rgba(66,133,244,.18)}
+  .g24-h{display:flex;justify-content:space-between;gap:8px;font-size:.6rem;color:#a9bcd6;padding:5px 10px;background:#0a1a33;text-transform:uppercase;letter-spacing:.4px}
+  .g24-t{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+  .g24-t div{min-width:0;overflow:hidden;padding:7px 7px 9px;background:#0d1f3c}
+  .g24-t div+div{border-left:1px solid #1c3558}
+  .g24-t .c{background:#4285f4}.g24-t .i{background:#5e35b1}
+  .g24-t span{display:block;font-size:.6rem;color:#eaf1fb;opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .g24-t b{display:block;font-size:1.35rem;font-weight:500;line-height:1.15;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .d3-live b{color:var(--ink)}
   .d3-foot{font-size:.7rem;color:var(--mute);text-align:center}
   .d3-foot button{background:none;color:#7fb4ff;text-decoration:underline;font-size:.7rem;padding:0}
@@ -480,7 +491,7 @@
   var D3_ROAD = [['visit', 'Siteye geldi', '🌐', '#3987e5', 'Geldi'], ['open', 'Formu açtı', '📝', '#4aa3d8', 'Form'], ['route', 'Kurum gösterildi', '🏛️', '#3ddc97', 'Kurum'], ['email', 'E-posta doğruladı', '✉️', '#9bd36a', 'E-posta'], ['submit', 'Şikayeti gönderdi', '🏁', '#f2bd4b', 'Gönderdi']];
   var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false, d3G24 = null;
   function d3Num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
-  function d3Pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
+  function d3Pct(r) { return '%' + (r * 100).toFixed(1).replace('.', ','); }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
   function d3Secs(s) { return s == null ? '–' : s < 60 ? s + ' sn' : Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
   function d3Short(d) { return new Date(d + 'T00:00:00Z').toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', timeZone: 'UTC' }); }
@@ -521,11 +532,24 @@
   }
   // Under the Google card: Search Console's "24 saat" numbers (both sites,
   // the same as its Performance report), or for one site Google's today so far.
+  // Search Console's short numbers: 1.380 → "1,38 B", 25.400 → "25,4 B",
+  // 1.250.000 → "1,25 Mn" (three significant digits).
+  function d3Gsc(n) {
+    if (n < 1000) return d3Num(n);
+    var unit = n < 1e6 ? [1e3, ' B'] : [1e6, ' Mn'], v = Number((n / unit[0]).toPrecision(3));
+    if (unit[1] === ' B' && v >= 1000) unit = [1e6, ' Mn'], v = Number((n / 1e6).toPrecision(3));
+    return String(v).replace('.', ',') + unit[1];
+  }
   function d3LiveLine(s, d) {
     var g = d3G24 && d3G24.day, hm = function (t) { return new Date(t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' }); };
     if (g && d3Site === 'all') {
-      return '<p class="d3-live" title="Search Console · son veri ' + hm(g.last) + '">Son 24 saat: <b>' + d3Num(g.impressions) + '</b> gösterim · <b>' + d3Num(g.clicks) + '</b> tık · ' +
-        (g.impressions ? d3Pct(g.clicks / g.impressions) : '–') + ' TO</p>';
+      // Laid out and written like Search Console's 24-hour tiles.
+      var at = hm(g.last);
+      return '<div class="g24" title="Search Console · son veri ' + at + '"><div class="g24-h"><span>Son 24 saat · Search Console</span><span>son veri ' + at + '</span></div><div class="g24-t">' +
+        '<div class="c"><span>Toplam tıklama</span><b title="' + d3Num(g.clicks) + '">' + d3Gsc(g.clicks) + '</b></div>' +
+        '<div class="i"><span>Toplam gösterim</span><b title="' + d3Num(g.impressions) + '">' + d3Gsc(g.impressions) + '</b></div>' +
+        '<div><span>Ortalama TO</span><b>' + (g.impressions ? d3Pct(g.clicks / g.impressions) : '–') + '</b></div>' +
+        '<div><span>Ortalama konum</span><b>' + d3Pos(g.position) + '</b></div></div></div>';
     }
     return s.live ? '<p class="d3-live">Bugün ' + hm(d.at) + "'e kadar: <b>" + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '';
   }
@@ -629,7 +653,7 @@
     box.style.zoom = '';
     if (d3Open || d3ROpen) return;
     var cs = getComputedStyle(sec), room = sec.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    if (box.offsetHeight > room) box.style.zoom = Math.max(0.65, Math.floor(room / box.offsetHeight * 1000) / 1000 - 0.01);
+    if (box.offsetHeight > room) box.style.zoom = Math.max(0.62, Math.floor(room / box.offsetHeight * 1000) / 1000 - 0.01);
   }
   window.addEventListener('resize', fitHome);
 
