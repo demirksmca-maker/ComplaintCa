@@ -38,9 +38,10 @@
   .hero div{text-align:center}
   .hero b{display:block;font-size:2.6rem;font-weight:800;line-height:1;text-shadow:0 4px 0 #061226,0 8px 14px rgba(0,0,0,.6)}
   .hero span{font-size:.72rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-  .m{background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .m{min-width:0;background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center}
   .m b{display:block;font-size:1.15rem;font-weight:700}
+  .m b.q{font-size:.9rem;line-height:1.55rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
   .m span{font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
   small.d{display:block;font-size:.68rem;font-weight:600;margin-top:2px}
   .up{color:var(--ok)}.down{color:var(--bad)}.flat{color:var(--mute)}
@@ -48,7 +49,7 @@
   /* Detail: a stack of smaller 3D cards. */
   .more{margin-top:18px;display:flex;flex-direction:column;gap:14px}
   .more .card3d{--rx:4deg;--ry:0deg;padding:14px;animation:rise .4s ease-out both}
-  .more .card3d .grid{grid-template-columns:repeat(4,1fr)}
+  .more .card3d .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .more .card3d:nth-child(2){animation-delay:.05s}.more .card3d:nth-child(3){animation-delay:.1s}.more .card3d:nth-child(4){animation-delay:.15s}.more .card3d:nth-child(5){animation-delay:.2s}
   @keyframes rise{from{opacity:0;transform:rotateX(35deg) translateY(20px)}}
   .ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
@@ -107,13 +108,21 @@
     return '<small class="d ' + (p === 0 ? 'flat' : good ? 'up' : 'down') + '">' + (p >= 0 ? '↑' : '↓') + Math.abs(p) + '%</small>';
   }
   function cell(label, val, d) { return '<div class="m"><b>' + val + '</b><span>' + label + '</span>' + (d || '') + '</div>'; }
-  function metrics(c, v) {
+  // Search words with capital initials ("car insurance" → "Car Insurance").
+  function title(q) { return String(q).replace(/(^|\s)(\S)/g, function (m, sp, ch) { return sp + ch.toLocaleUpperCase('en'); }); }
+  function topQuery(p) {
+    var q = p.query ? title(p.query.key) : '';
+    return '<div class="m"' + (q ? ' title="' + esc(q) + '"' : '') + '><b class="q">' + (q ? esc(q) : '–') + '</b><span>En çok aranan</span>' +
+      (p.query ? '<small class="d flat">' + num(p.query.clicks) + ' tık</small>' : '') + '</div>';
+  }
+  // The last box: complaints, or today's top search on the main card.
+  function metrics(c, v, last) {
     v = v || {};
     return cell('Tık oranı', pct(c.ctr), delta(c.ctr, v.ctr)) +
       cell('Google sırası', pos(c.position), c.position && v.position ? delta(c.position, v.position, true) : '') +
       cell('Ziyaretçi', num(c.visitors), delta(c.visitors, v.visitors)) +
       cell('Süre / kişi', secs(c.eng), delta(c.eng, v.eng)) +
-      cell('Şikayet', num(c.complaints), delta(c.complaints, v.complaints));
+      (last || cell('Şikayet', num(c.complaints), delta(c.complaints, v.complaints)));
   }
 
   function render() {
@@ -126,7 +135,7 @@
       '<div class="when"><span>Bugün · ' + day(t.cur.to) + '</span><button type="button" class="arrow" id="arrow" aria-expanded="' + open + '" aria-controls="more" aria-label="Detay: 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button></div>' +
       '<div class="hero"><div><b>' + num(t.cur.impressions) + '</b><span>Google gösterim</span>' + delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + num(t.cur.clicks) + '</b><span>Tıklama</span>' + delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
-      '<div class="grid">' + metrics(t.cur, t.prev) + cell('Dünkü gösterim', num(t.prev.impressions)) + '</div></div></div>';
+      '<div class="grid">' + metrics(t.cur, t.prev, topQuery(t)) + cell('Dünkü gösterim', num(t.prev.impressions)) + '</div></div></div>';
 
     html += '<div class="more" id="more"' + (open ? '' : ' hidden') + '>';
     MORE.forEach(function (m) {
