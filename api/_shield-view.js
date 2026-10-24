@@ -5,7 +5,8 @@
 // devices, hour heatmap, complaint funnel; plus attack countries and the
 // change against the week before, the funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
-// or off (0). ?stats=1 is the İstatistik panel (_stats.js). The key is the SHIELD_KEY env var; wrong keys are rate limited.
+// or off (0). ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
+// 3D panel's complaint funnel. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
@@ -29,6 +30,33 @@ export function lastDays(now = new Date(), n = DAYS) {
 }
 
 const PERIODS = [7, 14, 28, 90];
+
+// Complaint funnel for the 3D panel (/shield-3d.html, ?funnel=1): unique
+// people per step today and over 7, 30, 60 and 90 days, each against the
+// window of the same length before it, plus since the funnel started
+// counting. Days before FUNNEL_START have no data and are left out.
+export const FUNNEL_START = '2026-10-20';
+export const FUNNEL_PANEL = [1, 7, 30, 60, 90];
+export function funnelWindows(now = new Date()) {
+  const days = lastDays(now, 180).filter(d => d >= FUNNEL_START);
+  const out = FUNNEL_PANEL.map(n => ({ name: String(n), cur: days.slice(0, n), prev: days.slice(n, 2 * n) }));
+  out.push({ name: 'since', cur: days, prev: [] });
+  return out;
+}
+export async function funnelPanel(pipeline, now = new Date()) {
+  const wins = funnelWindows(now), cmds = [];
+  const add = list => { if (list.length) for (const step of FUNNEL) cmds.push(['PFCOUNT', ...list.map(d => `shield:fun:${step}:${d}`)]); };
+  for (const w of wins) { add(w.cur); add(w.prev); }
+  const res = await pipeline(cmds);
+  let i = 0;
+  const read = list => {
+    if (!list.length) return null;
+    const f = { from: list[list.length - 1], to: list[0] };
+    for (const step of FUNNEL) f[step] = Number(res[i++]) || 0;
+    return f;
+  };
+  return { ok: true, at: now.getTime(), start: FUNNEL_START, windows: wins.map(w => ({ name: w.name, cur: read(w.cur), prev: read(w.prev) })) };
+}
 
 // The visitor counter only started on 2026-10-20, so earlier days are empty.
 // Fill those days (and the top pages) from Search Console clicks so Trafik
@@ -150,6 +178,11 @@ export async function shieldView(req, res) {
   if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) {
     await pipeline([['INCR', badKey], ['EXPIRE', badKey, 600]]).catch(() => {});
     return res.status(403).json({ error: 'forbidden' });
+  }
+
+  if (req.query && req.query.funnel) {
+    try { return res.status(200).json(await funnelPanel(pipeline)); }
+    catch { return res.status(502).json({ error: 'upstash' }); }
   }
 
   // GET /api/shield?gsc=1[&days=7|14|28|90] → Search Console numbers (cached

@@ -27,27 +27,34 @@
   /* 3D card: perspective stage, the card tilts with the finger/mouse. */
   .stage{perspective:900px}
   .card3d{position:relative;transform-style:preserve-3d;transform:rotateX(var(--rx,8deg)) rotateY(var(--ry,-6deg));transition:transform .25s ease-out;
-    border-radius:20px;padding:18px 18px 16px;background:linear-gradient(145deg,#173d72,#0b1b37 55%,#081329);border:1px solid #2d6bb8;
+    border-radius:16px;padding:12px 12px 10px;background:linear-gradient(145deg,#173d72,#0b1b37 55%,#081329);border:1px solid #2d6bb8;
     box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 0 1px rgba(120,180,255,.06) inset,0 0 30px rgba(57,135,229,.25)}
   .card3d::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 40%)}
   .card3d>*{transform:translateZ(30px)}
   .when{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
-  .arrow{width:34px;height:34px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
+  .arrow{width:28px;height:28px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
   .arrow[aria-expanded=true]{transform:rotate(180deg)}
-  .hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0 12px}
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px}
   .hero div{text-align:center}
-  .hero b{display:block;font-size:2.6rem;font-weight:800;line-height:1;text-shadow:0 4px 0 #061226,0 8px 14px rgba(0,0,0,.6)}
-  .hero span{font-size:.72rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
-  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-  .m{min-width:0;background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:12px;padding:8px 4px;text-align:center}
-  .m b{display:block;font-size:1.15rem;font-weight:700}
-  .m b.q{font-size:.9rem;line-height:1.55rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
-  .m span{font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
-  small.d{display:block;font-size:.68rem;font-weight:600;margin-top:2px}
+  .hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1;text-shadow:0 3px 0 #061226,0 6px 10px rgba(0,0,0,.6)}
+  .hero span{font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .grid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .g4 .m{display:flex;flex-direction:column}.g4 .bar{margin-top:auto}.g4 small.d{margin-bottom:4px}
+  .m{min-width:0;background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:10px;padding:5px 3px;text-align:center}
+  .m b{display:block;font-size:.95rem;font-weight:700}
+  .m b.q{font-size:.8rem;line-height:1.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
+  .m span{display:block;font-size:.56rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
+  small.d{display:block;font-size:.62rem;font-weight:600;margin-top:2px}
   .up{color:var(--ok)}.down{color:var(--bad)}.flat{color:var(--mute)}
 
+  /* Funnel step: count, share of the first step as a small 3D bar. */
+  .sec{margin-top:16px}
+  .bar{height:5px;margin:4px 6px 0;border-radius:3px;background:#0a1a33;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+  .bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(180deg,#6fb6ff,#1d5fd1);box-shadow:0 0 6px rgba(57,135,229,.6)}
+
   /* Detail: a stack of smaller 3D cards. */
-  .more{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+  .more{margin-top:12px;display:flex;flex-direction:column;gap:14px}
   .more .card3d{--rx:4deg;--ry:0deg;padding:14px;animation:rise .4s ease-out both}
   .more .card3d .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .more .card3d:nth-child(2){animation-delay:.05s}.more .card3d:nth-child(3){animation-delay:.1s}.more .card3d:nth-child(4){animation-delay:.15s}.more .card3d:nth-child(5){animation-delay:.2s}
@@ -93,7 +100,10 @@
   var $ = function (id) { return document.getElementById(id); };
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k) || ''; v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) { return ''; } }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  var data = null, site = store(SITE) || 'all', open = false;
+  // Funnel steps as /api/shield?funnel=1 names them; windows by name.
+  var STEPS = [['open', 'Formu açtı'], ['route', 'Kurum gösterildi'], ['email', 'E-posta doğruladı'], ['submit', 'Gönderdi']];
+  var FMORE = [['7', '1 hafta'], ['30', '1 ay'], ['60', '2 ay'], ['90', '3 ay'], ['since', 'Açılıştan beri']];
+  var data = null, fun = null, site = store(SITE) || 'all', open = false, fOpen = false;
 
   function num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
@@ -125,6 +135,36 @@
       (last || cell('Şikayet', num(c.complaints), delta(c.complaints, v.complaints)));
   }
 
+  function steps(c, v) {
+    var top = Math.max(c.open, c.route, c.email, c.submit) || 1;
+    return STEPS.map(function (st) {
+      var n = c[st[0]];
+      return '<div class="m"><b>' + num(n) + '</b><span>' + st[1] + '</span>' + (v ? delta(n, v[st[0]]) : '') +
+        '<div class="bar"><i style="width:' + Math.max(2, Math.round(n / top * 100)) + '%"></i></div></div>';
+    }).join('');
+  }
+  function funnelHtml() {
+    if (!fun) return '';
+    var by = {};
+    fun.windows.forEach(function (w) { by[w.name] = w; });
+    var t = by['1'];
+    if (!t || !t.cur) return '';
+    var html = '<div class="stage sec"><div class="card3d" id="fmain">' +
+      '<div class="when"><span>Şikayetçi hunisi · bugün</span><button type="button" class="arrow" id="farrow" aria-expanded="' + fOpen + '" aria-controls="fmore" aria-label="Huni detayı: 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button></div>' +
+      '<div class="hero"><div><b>' + num(t.cur.open) + '</b><span>Formu açan</span>' + delta(t.cur.open, t.prev && t.prev.open) + '</div>' +
+      '<div><b>' + num(t.cur.submit) + '</b><span>Gönderen</span>' + delta(t.cur.submit, t.prev && t.prev.submit) + '</div></div>' +
+      '<div class="grid g4">' + steps(t.cur, t.prev) + '</div></div></div>';
+    html += '<div class="more" id="fmore"' + (fOpen ? '' : ' hidden') + '>';
+    FMORE.forEach(function (m) {
+      var w = by[m[0]];
+      if (!w || !w.cur) return;
+      var sub = m[0] === 'since' ? day(fun.start) + "'den beri" : w.prev ? 'önceki döneme göre' : day(w.cur.from) + "'den beri";
+      html += '<div class="stage"><div class="card3d"><div class="ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div>' +
+        '<div class="grid g4">' + steps(w.cur, w.prev) + '</div></div></div>';
+    });
+    return html + '</div>';
+  }
+
   function render() {
     var s = data && data.sites && data.sites[site];
     if (!s) { $('body').innerHTML = '<p class="empty">Veri yok.</p>'; return; }
@@ -152,15 +192,17 @@
         '<div class="grid">' + cell('Gösterim', num(c.impressions), v && delta(c.impressions, v.impressions)) + cell('Tık', num(c.clicks), v && delta(c.clicks, v.clicks)) +
         metrics(c, v) + '</div></div></div>';
     });
-    html += '</div>';
+    html += '</div>' + funnelHtml();
     var notes = [];
     if (!data.gsc.ok) notes.push('Search Console bağlı değil (' + esc(data.gsc.reason) + ')');
     notes.push(data.visitors === 'ga' ? 'Ziyaretçi: Google Analytics' : 'Ziyaretçi: site sayacı');
+    if (fun) notes.push('Huni: iki site birlikte');
     html += '<p class="foot">' + notes.join(' · ') + ' · ' + new Date(data.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + ' · <button type="button" id="re">Yenile</button> · <a href="/shield.html" style="color:#7fb4ff">Eski panel</a></p>';
     $('body').innerHTML = html;
     $('arrow').addEventListener('click', function () { open = !open; render(); });
     $('re').addEventListener('click', function () { load(true); });
     tilt($('main'));
+    if ($('fmain')) { tilt($('fmain')); $('farrow').addEventListener('click', function () { fOpen = !fOpen; render(); }); }
   }
 
   // Card follows the pointer a little; springs back when it leaves.
@@ -188,6 +230,10 @@
       return r.json();
     }).then(function (d) {
       data = d; $('login').hidden = true; $('app').hidden = false; render();
+      // The funnel comes after, once the key is known to be right.
+      return fetch('/api/shield?funnel=1', { headers: { 'x-shield-key': key }, cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (f) { if (f && f.ok) { fun = f; render(); } }, function () {});
     }).catch(function (e) {
       if (!store(KEY)) showLogin(e.message); else $('body').innerHTML = '<p class="empty">' + esc(e.message) + '</p>';
     });

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { keyOk, lastDays, shieldView } from './_shield-view.js';
+import { keyOk, lastDays, shieldView, funnelWindows, funnelPanel } from './_shield-view.js';
 
 function mockRes() {
   return { code: 0, body: null, setHeader() {}, status(c) { this.code = c; return this; }, json(b) { this.body = b; return this; } };
@@ -92,4 +92,23 @@ test('complaintSummary counts weeks and top institutions', async () => {
   assert.equal(s.week, 2);
   assert.equal(s.before, 1);
   assert.deepEqual(s.top, [['Rogers', 2], ['housing', 1]]);
+});
+
+test('funnelWindows: back-to-back windows, nothing before the funnel started', () => {
+  const w = funnelWindows(new Date('2026-10-24T12:00:00Z'));
+  assert.deepEqual(w.map(x => x.name), ['1', '7', '30', '60', '90', 'since']);
+  assert.deepEqual(w[0].cur, ['2026-10-24']);
+  assert.deepEqual(w[0].prev, ['2026-10-23']);
+  assert.equal(w[1].cur.length, 5);
+  assert.deepEqual(w[1].prev, []);
+  assert.equal(w[5].cur[w[5].cur.length - 1], '2026-10-20');
+});
+
+test('funnelPanel: one PFCOUNT per step and window, empty windows null', async () => {
+  let sent;
+  const out = await funnelPanel(async cmds => { sent = cmds; return cmds.map((_, i) => i + 1); }, new Date('2026-10-24T12:00:00Z'));
+  assert.ok(sent.every(c => c[0] === 'PFCOUNT' && c.length > 1));
+  assert.deepEqual(out.windows[0].cur, { from: '2026-10-24', to: '2026-10-24', open: 1, route: 2, email: 3, submit: 4 });
+  assert.equal(out.windows[0].prev.open, 5);
+  assert.equal(out.windows[1].prev, null);
 });
