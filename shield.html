@@ -537,7 +537,7 @@
     fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), h)
       .then(function (r) { return r.json(); })
       .then(function (d) { d3Data = d; d3Render(); })
-      .catch(function () { if (!d3Data) $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
+      .catch(function () { if (d3Data) d3Render(); else $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (f) { if (f && f.ok) { d3Fun = f; if (d3Data) d3Render(); } }, function () {});
@@ -759,16 +759,16 @@
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
-  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); loadGsc(false, true); d3Load(); });
+  $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); d3Load(); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
   // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
   var hashSec = location.hash.slice(1);
   showSec($('v-' + hashSec) ? hashSec : store(SEC) || 'home');
   load();
-  // Google numbers for Genel too; the server caches the 24-hour part 30 min.
-  if (getKey()) { loadGsc(false, true); d3Load(); }
+  // Genel's 3D cards (stats cached 3 h on the server).
+  if (getKey()) d3Load();
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
-  setInterval(function () { if (!document.hidden && getKey()) loadGsc(false, true); }, 10 * 60000);
+  setInterval(function () { if (!document.hidden && getKey() && gscLoaded) loadGsc(false, true); }, 10 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
 })();
 </script>

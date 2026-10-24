@@ -179,17 +179,17 @@ async function gaSite(c, site, ranges) {
   for (let i = 0; i < ranges.length; i += 4) {
     requests.push({ dateRanges: ranges.slice(i, i + 4), metrics: [{ name: 'activeUsers' }, { name: 'userEngagementDuration' }], ...gaFilter(site) });
   }
-  // batchRunReports takes at most 5 requests per call.
-  const out = {};
-  for (let i = 0; i < requests.length; i += 5) {
-    const part = requests.slice(i, i + 5);
+  // batchRunReports takes at most 5 requests per call; the calls run together.
+  const parts = [];
+  for (let i = 0; i < requests.length; i += 5) parts.push(requests.slice(i, i + 5));
+  const answers = await Promise.all(parts.map(async part => {
     const r = await fetch(`${GA}/properties/${c.id}:batchRunReports`, {
       method: 'POST', headers: { ...c.auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ requests: part })
     });
     if (!r.ok) throw Object.assign(new Error('ga'), { status: r.status });
-    Object.assign(out, readGa((await r.json()).reports, part));
-  }
-  return out;
+    return readGa((await r.json()).reports, part);
+  }));
+  return Object.assign({}, ...answers);
 }
 
 // Own counter fallback: unique visitors per window (HyperLogLog union of the
