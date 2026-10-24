@@ -6,9 +6,9 @@
 // funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
-// site road map of Genel's 3D cards. The key is the SHIELD_KEY env var; wrong keys are rate limited.
+// site road map of Genel's 3D cards, ?gsc24=1 Search Console's last 24 hours. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
-import { searchConsole } from './_search-console.js';
+import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
@@ -195,6 +195,12 @@ export async function shieldView(req, res) {
   if (req.query && req.query.funnel) {
     try { return res.status(200).json(await funnelPanel(pipeline)); }
     catch { return res.status(502).json({ error: 'upstash' }); }
+  }
+
+  // GET /api/shield?gsc24=1 → Search Console's last 24 hours only (Genel).
+  if (req.query && req.query.gsc24) {
+    try { return res.status(200).json(await searchRecent(pipeline)); }
+    catch { return res.status(502).json({ ok: false, reason: 'error' }); }
   }
 
   // GET /api/shield?gsc=1[&days=7|14|28|90] → Search Console numbers (cached

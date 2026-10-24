@@ -163,6 +163,17 @@ async function fetchRecent({ q }) {
   return summarizeRecent(hourRows, dateRows, now);
 }
 
+// Only the last-24-hours part (Genel's "Son 24 saat" line), same cache.
+export async function searchRecent(redis) {
+  const [hit] = await redis([['GET', RECENT_KEY]]);
+  try { if (hit) return { ok: true, ...JSON.parse(hit) }; } catch { /* refetch */ }
+  const c = await connect();
+  if (!c.ok) return c;
+  const recent = await fetchRecent(c);
+  await redis([['SET', RECENT_KEY, JSON.stringify(recent), 'EX', RECENT_SECONDS]]);
+  return { ok: true, ...recent };
+}
+
 export async function searchConsole(redis, { fresh = false, days = 28 } = {}) {
   if (!PERIODS.includes(days)) days = 28;
   const mainKey = `${CACHE_KEY}:${days}`;
