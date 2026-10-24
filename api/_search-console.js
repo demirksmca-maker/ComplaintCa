@@ -147,7 +147,8 @@ export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
     else weeks.push({ week: w, impressions: r.impressions, clicks: r.clicks });
   }
   const sum = (list, k) => list.reduce((n, x) => n + x[k], 0);
-  const avgPos = list => { const imp = sum(list, 'impressions'); return imp ? Math.round(list.reduce((n, x) => n + x.position * x.impressions, 0) / imp * 10) / 10 : 0; };
+  // Hours without a position yet are left out rather than counted as 0.
+  const avgPos = list => { const ok = list.filter(x => x.position > 0), imp = sum(ok, 'impressions'); return imp ? Math.round(ok.reduce((n, x) => n + x.position * x.impressions, 0) / imp * 10) / 10 : 0; };
   return {
     // Average position weighted by impressions, as Search Console averages it.
     day: hours.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), position: avgPos(hours), hours, last: lastT } : null,
