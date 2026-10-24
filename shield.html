@@ -184,6 +184,8 @@
   .d3-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
   .d3-ttl b{font-size:.95rem;text-transform:uppercase;letter-spacing:.5px}
   .d3-ttl small{font-size:.7rem;color:var(--mute)}
+  .d3-live{margin-top:8px;font-size:.66rem;color:var(--mute);text-align:center}
+  .d3-live b{color:var(--ink)}
   .d3-foot{font-size:.7rem;color:var(--mute);text-align:center}
   .d3-foot button{background:none;color:#7fb4ff;text-decoration:underline;font-size:.7rem;padding:0}
   @media (prefers-reduced-motion:reduce){.d3-card,.d3-arrow{transition:none}.d3-more .d3-card{animation:none}}
@@ -413,8 +415,9 @@
   }
 
   // Genel: 3D cards from the İstatistik numbers (?stats=1, cached 3 h on the
-  // server) and the complaint funnel (?funnel=1). Closed: today only; the
-  // arrow opens 1 week, 1 month, 2 months, 3 months and since opening.
+  // server) and the complaint funnel (?funnel=1). Closed: the last full day
+  // (yesterday) against the day before, and today so far on a small line;
+  // the arrow opens 1 week, 1 month, 2 months, 3 months and since opening.
   var D3_MORE = [[7, '1 hafta'], [30, '1 ay'], [60, '2 ay'], [90, '3 ay'], ['since', 'Açılıştan beri']];
   var D3_STEPS = [['open', 'Formu açtı'], ['route', 'Kurum gösterildi'], ['email', 'E-posta doğruladı'], ['submit', 'Gönderdi']];
   var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3FOpen = false;
@@ -438,7 +441,7 @@
     return '<div class="d3-m"' + (q ? ' title="' + esc(q) + '"' : '') + '><b class="q">' + (q ? esc(q) : '–') + '</b><span>En çok aranan</span>' +
       (p.query ? '<small class="d3-d flat">' + d3Num(p.query.clicks) + ' tık</small>' : '') + '</div>';
   }
-  // The last box: complaints, or today's top search on the main card.
+  // The last box: complaints, or the day's top search on the main card.
   function d3Metrics(c, v, last) {
     v = v || {};
     return d3Cell('Tık oranı', d3Pct(c.ctr), d3Delta(c.ctr, v.ctr)) +
@@ -463,10 +466,11 @@
     var t = by['1'];
     if (!t || !t.cur) return '';
     var html = '<div class="d3-stage"><div class="d3-card" id="d3fmain">' +
-      '<div class="d3-when"><span>Şikayetçi hunisi · bugün</span>' + d3Arrow('d3farrow', d3FOpen, 'Huni detayı') + '</div>' +
+      '<div class="d3-when"><span>Şikayetçi hunisi · dün</span>' + d3Arrow('d3farrow', d3FOpen, 'Huni detayı') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.open) + '</b><span>Formu açan</span>' + d3Delta(t.cur.open, t.prev && t.prev.open) + '</div>' +
       '<div><b>' + d3Num(t.cur.submit) + '</b><span>Gönderen</span>' + d3Delta(t.cur.submit, t.prev && t.prev.submit) + '</div></div>' +
-      '<div class="d3-grid g4">' + d3Steps(t.cur, t.prev) + '</div></div></div>';
+      '<div class="d3-grid g4">' + d3Steps(t.cur, t.prev) + '</div>' +
+      (by.today && by.today.cur ? '<p class="d3-live">Bugün şu ana kadar: <b>' + d3Num(by.today.cur.open) + '</b> formu açtı · <b>' + d3Num(by.today.cur.submit) + '</b> gönderdi</p>' : '') + '</div></div>';
     html += '<div class="d3-more"' + (d3FOpen ? '' : ' hidden') + '>';
     [['7', '1 hafta'], ['30', '1 ay'], ['60', '2 ay'], ['90', '3 ay'], ['since', 'Açılıştan beri']].forEach(function (m) {
       var w = by[m[0]];
@@ -487,10 +491,11 @@
     var html = '<div class="d3-top"><div class="d3-sites" role="group" aria-label="Site">' +
       [['all', 'Hepsi'], ['ca', '🇨🇦'], ['es', '🇪🇸']].map(function (x) { return '<button type="button" data-d3site="' + x[0] + '" aria-pressed="' + (x[0] === d3Site) + '">' + x[1] + '</button>'; }).join('') + '</div></div>' +
       '<div class="d3-stage"><div class="d3-card" id="d3main">' +
-      '<div class="d3-when"><span>Bugün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
+      '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
-      '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Dünkü gösterim', d3Num(t.prev.impressions)) + '</div></div></div>';
+      '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Önceki gün gösterim', d3Num(t.prev.impressions)) + '</div>' +
+      (s.live ? '<p class="d3-live">Bugün şu ana kadar: <b>' + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '') + '</div></div>';
     html += '<div class="d3-more"' + (d3Open ? '' : ' hidden') + '>';
     D3_MORE.forEach(function (m) {
       var c, v = null, sub;

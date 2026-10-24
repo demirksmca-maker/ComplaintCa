@@ -5,8 +5,10 @@
 // Performance report shows for that date range and page filter), visitors
 // and engagement time per user (Google Analytics 4: active users and
 // "average engagement time per active user"), and complaints filed.
-// Every window ends today (Toronto time): "3 days" is today, yesterday and
-// the day before, so all columns cover the same calendar days. Sites: all (no filter, like Search Console's
+// Every window ends yesterday, the last full day (Toronto time): "3 days" is
+// yesterday and the two days before, so no window holds a half day and the
+// comparisons are fair. Today so far (Search Console clicks and impressions)
+// comes apart as `live`. Sites: all (no filter, like Search Console's
 // default view), ca (pages outside /es) and es (pages under /es).
 // Without GA4 access the visitor column falls back to the site's own
 // counter (it only started on 2026-10-20) and the time column stays empty.
@@ -19,7 +21,7 @@ const GSC_SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const GA_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 const GSC = 'https://www.googleapis.com/webmasters/v3';
 const GA = 'https://analyticsdata.googleapis.com/v1beta';
-const CACHE_KEY = 'shield:statspanel:v3', CACHE_SECONDS = 3 * 3600;
+const CACHE_KEY = 'shield:statspanel:v4', CACHE_SECONDS = 3 * 3600;
 const D = 86400000;
 
 export const PANEL_DAYS = [1, 3, 5, 7, 10, 14, 20, 30, 60, 90];
@@ -213,7 +215,7 @@ async function build(redis) {
     const all = await Promise.all(SITES.map(s => gsc.q({ startDate: addDays(today, -480), endDate: today, dimensions: ['date'], rowLimit: 1000, ...gscFilter(s) })));
     SITES.forEach((s, i) => { dateRows[s] = all[i].map(r => ({ day: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position })).sort((a, b) => (a.day < b.day ? -1 : 1)); });
   }
-  const end = today;
+  const end = addDays(today, -1);
   const startOf = s => ((dateRows[s] || []).find(r => r.impressions > 0) || {}).day || null;
 
   // Top search and page per period, by clicks (Search Console's default order).
@@ -248,9 +250,10 @@ async function build(redis) {
   const sites = {};
   for (const s of SITES) {
     sites[s] = buildSite({ end, rows: dateRows[s] || [], start: startOf(s), ga: ga.ok ? gaData[s] : null, counter: counter[s], complaints, site: s, tops: tops[s] });
+    sites[s].live = sumRange(dateRows[s] || [], today, today);
   }
   return {
-    ok: true, at: Date.now(), end, sites,
+    ok: true, at: Date.now(), today, end, sites,
     gsc: gsc.ok ? { ok: true } : { ok: false, reason: gsc.reason, setup: gsc.setup },
     ga: ga.ok ? { ok: true } : { ok: false, reason: ga.reason, setup: ga.setup },
     visitors: ga.ok ? 'ga' : 'counter'
@@ -261,7 +264,7 @@ export async function statsPanel(redis, { fresh = false } = {}) {
   if (!fresh) {
     const [hit] = await redis([['GET', CACHE_KEY]]);
     // A new day starts new windows, so yesterday's answer is not reused.
-    if (hit) { try { const out = JSON.parse(hit); if (out.end === torontoDay()) return out; } catch { /* rebuild */ } }
+    if (hit) { try { const out = JSON.parse(hit); if (out.today === torontoDay()) return out; } catch { /* rebuild */ } }
   }
   const out = await build(redis);
   await redis([['SET', CACHE_KEY, JSON.stringify(out), 'EX', CACHE_SECONDS]]);
