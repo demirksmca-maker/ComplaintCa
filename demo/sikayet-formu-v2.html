@@ -406,7 +406,7 @@ $("popular").onclick=e=>{const b=e.target.closest(".chip");if(b)pick(COS.find(c=
 /* company autocomplete */
 let hl=-1;
 $("co").oninput=()=>{const q=$("co").value.trim().toLowerCase();hl=-1;
-  if(!q){$("dd").classList.remove("on");return}
+  if(!q){$("dd").classList.remove("on");$("dd").innerHTML="";return}
   const m=COS.filter(c=>c[0].toLowerCase().includes(q)).slice(0,6);
   $("dd").innerHTML=m.map((c,i)=>`<button data-i="${COS.indexOf(c)}"><span class="b-logo" style="background:${c[2]}">${ini(c[0])}</span>${c[0]}<small>${c[1]}</small></button>`).join("")+
     `<button data-new="1"><span class="b-logo" style="background:#3a4a6a">+</span>Add “${esc($("co").value.trim())}”<small>Not listed</small></button>`;
@@ -479,7 +479,7 @@ function go(i){S.step=i;
   if(i==4)review();if(!fin)scrollTo({top:0,behavior:"smooth"});upd()}
 $("back").onclick=()=>go(S.step-1);
 $("next").onclick=()=>{if(!valid[S.step]()){$("e"+S.step)&&$("e"+S.step).classList.add("on");return}
-  if(S.step==4){$("ref").textContent="CCA-"+Math.random().toString(36).slice(2,8).toUpperCase();try{localStorage.removeItem("ccv2")}catch(e){}}
+  if(S.step==4){$("ref").textContent="CCA-"+Math.random().toString(36).slice(2,8).toUpperCase();clearTimeout(svT);try{localStorage.removeItem("ccv2")}catch(e){}}
   go(S.step+1)};
 function review(){const r=[["Company",S.co&&S.co[0],0],["Topic",S.topic,1],["Type",{notice:"Notify",legal:"Legal rights",access:"Information request"}[S.ctype],1],["Title",$("title").value,2],["Outcome",S.want.join(", ")||"—",2],["Evidence",S.files.length+" file(s)",3]];
   $("rev").innerHTML=r.map(([k,v,s])=>`<div><span>${k}</span><em>${esc(v||"—")}</em><a data-s="${s}">Edit</a></div>`).join("")}
