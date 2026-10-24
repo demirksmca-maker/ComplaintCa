@@ -153,8 +153,14 @@
   /* Genel: 3D cards. Today's numbers big; the arrow opens 1 week, 1 month,
      2 months, 3 months and since opening. The card tilts with the finger. */
   #d3{display:flex;flex-direction:column;gap:12px}
-  .d3-top{display:flex;justify-content:flex-end}
-  .d3-sites{display:flex;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .d3-top{display:flex;align-items:stretch;gap:8px}
+  /* Live row: today so far, refreshed every minute with the rest of the panel. */
+  .d3-now{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px 4px}
+  .d3-now div{min-width:0;text-align:center;line-height:1.1;padding:2px 0}
+  .d3-now b{display:block;font-size:.9rem}
+  .d3-now span{display:block;font-size:.5rem;color:var(--mute);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .d3-now div:first-child b::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);margin-right:4px;vertical-align:middle}
+  .d3-sites{flex:none;display:flex;align-items:center;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
   .d3-sites button{padding:4px 10px;border-radius:7px;font-size:.75rem;color:var(--mute);background:none}
   .d3-sites button[aria-pressed=true]{background:#1d4f91;color:var(--ink)}
   .d3-stage{perspective:900px}
@@ -218,6 +224,10 @@
     <!-- GENEL -->
     <section class="sec" id="v-home">
       <h3 class="ptitle">Bütünleşik master panel</h3>
+      <div class="d3-top">
+        <div class="d3-now" id="d3now" title="Bugün şu ana kadar"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
+        <div class="d3-sites" role="group" aria-label="Site"><button type="button" data-d3site="all">Hepsi</button><button type="button" data-d3site="ca">🇨🇦</button><button type="button" data-d3site="es">🇪🇸</button></div>
+      </div>
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
       <div class="card install" id="install" hidden><span id="installText">Telefona uygulama olarak ekle</span><button type="button" id="installBtn">Ekle</button></div>
     </section>
@@ -494,9 +504,8 @@
     var s = d.sites[d3Site], by = {};
     s.periods.forEach(function (p) { by[p.days] = p; });
     var t = by[1];
-    var html = '<div class="d3-top"><div class="d3-sites" role="group" aria-label="Site">' +
-      [['all', 'Hepsi'], ['ca', '🇨🇦'], ['es', '🇪🇸']].map(function (x) { return '<button type="button" data-d3site="' + x[0] + '" aria-pressed="' + (x[0] === d3Site) + '">' + x[1] + '</button>'; }).join('') + '</div></div>' +
-      '<div class="d3-stage"><div class="d3-card" id="d3main">' +
+    each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); });
+    var html = '<div class="d3-stage"><div class="d3-card" id="d3main">' +
       '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
@@ -524,12 +533,24 @@
     if (d3Fun) notes.push('Huni: iki site birlikte');
     html += '<p class="d3-foot">' + notes.join(' · ') + ' · ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + ' · <button type="button" id="d3re">↻ Yenile</button></p>';
     $('d3').innerHTML = html;
-    each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Render(); }); });
     $('d3arrow').addEventListener('click', function () { d3Open = !d3Open; d3Render(); });
     $('d3re').addEventListener('click', function () { d3Load(true); });
     d3Tilt($('d3main'));
     if ($('d3fmain')) { d3Tilt($('d3fmain')); $('d3farrow').addEventListener('click', function () { d3FOpen = !d3FOpen; d3Render(); }); }
   }
+  // Live row: today's visitors and page views for the chosen site, and
+  // attacks blocked today (all sites), from the minute refresh (/api/shield).
+  function d3Now() {
+    var d = data;
+    if (!d || !d.now) return;
+    var keys = d3Site === 'all' ? ['ca', 'es'] : [d3Site], sum = function (f) { return keys.reduce(function (n, k) { return n + d.now[k][f]; }, 0); };
+    var start = new Date(); start.setHours(0, 0, 0, 0);
+    var blocked = d.events.filter(function (e) { return e.t >= start.getTime() && AGENTS[e.agent] && e.agent.indexOf('suspect') !== 0; }).length;
+    $('d3now').innerHTML = '<div><b>' + d3Num(sum('visitors')) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(blocked) + '</b><span>Engellenen</span></div>';
+  }
+  each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); });
+  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Now(); if (d3Data) d3Render(); }); });
+
   // Card follows the pointer a little; springs back when it leaves.
   function d3Tilt(el) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -654,6 +675,7 @@
 
   function render(d) {
     data = d;
+    d3Now();
 
     var pd = d.period, plabel = pd.days === 90 ? '3 ay' : pd.days === 28 ? '1 ay' : pd.days + ' gün';
     each('.plabel', function (el) { el.textContent = plabel; });

@@ -1,5 +1,6 @@
 // GET /api/shield + x-shield-key header → data for the owner's shield page
 // (/shield.html): AI agent reports, latest blocked events, lockdown state,
+// today's visitors and page views per site,
 // and analytics for a chosen period (?days=7|14|28|90): top pages, cities,
 // devices, hour heatmap, complaint funnel; plus attack countries, the
 // funnel per day, complaint totals and
@@ -228,6 +229,8 @@ export async function shieldView(req, res) {
   // Funnel per day for the last week (Huni trend line), today first.
   for (const d of days) for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${d}`]);
   cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown']);
+  // Today so far per site (Genel's live row): page views and unique visitors.
+  for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', `shield:uv:${site}:${days[0]}`]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
   let out, stats, comp;
   try {
@@ -246,10 +249,12 @@ export async function shieldView(req, res) {
 
   const reports = parse(out[i++]), events = parse(out[i++]);
   const ttl = Number(out[i++]);
+  const now = {};
+  for (const site of ['ca', 'es']) now[site] = { views: Number(out[i++]) || 0, visitors: Number(out[i++]) || 0 };
   const attackCountries = {};
   for (const e of events) if (e.c && !String(e.agent).startsWith('suspect')) attackCountries[e.c] = (attackCountries[e.c] || 0) + 1;
   return res.status(200).json({
-    reports, events: events.slice(0, 50), lockdown: ttl > 0 ? ttl : 0,
+    reports, events: events.slice(0, 50), lockdown: ttl > 0 ? ttl : 0, now,
     funnelToday: today, funnelDays, period: stats, complaints: comp,
     attackCountries: top(attackCountries, 5),
     risks: riskList(events, { since: Date.now() - 86400000 })
