@@ -478,7 +478,7 @@
   var D3_MORE = [[7, '1 hafta'], [30, '1 ay'], [60, '2 ay'], [90, '3 ay'], ['since', 'Açılıştan beri']];
   // Road map stops: [step, name, icon, colour along the road, short name].
   var D3_ROAD = [['visit', 'Siteye geldi', '🌐', '#3987e5', 'Geldi'], ['open', 'Formu açtı', '📝', '#4aa3d8', 'Form'], ['route', 'Kurum gösterildi', '🏛️', '#3ddc97', 'Kurum'], ['email', 'E-posta doğruladı', '✉️', '#9bd36a', 'E-posta'], ['submit', 'Şikayeti gönderdi', '🏁', '#f2bd4b', 'Gönderdi']];
-  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false;
+  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false, d3G24 = null;
   function d3Num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function d3Pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
@@ -518,6 +518,16 @@
     if (since.growth) parts.push(String(since.growth).replace('.', ',') + ' kat');
     if (since.impressions) parts.push(d3Num(since.impressions) + ' gösterim');
     return parts.length ? '<span class="d3-grow" title="Büyüme: son 7 günün günlük Google gösterimi, Google\'daki ilk 2 haftaya göre · Toplam: ' + esc(d3Day(since.from)) + '\'den beri tüm gösterim">🚀 ' + parts.join(' · ') + '</span>' : '';
+  }
+  // Under the Google card: Search Console's "24 saat" numbers (both sites,
+  // the same as its Performance report), or for one site Google's today so far.
+  function d3LiveLine(s, d) {
+    var g = d3G24 && d3G24.day, hm = function (t) { return new Date(t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' }); };
+    if (g && d3Site === 'all') {
+      return '<p class="d3-live" title="Search Console · son veri ' + hm(g.last) + '">Son 24 saat: <b>' + d3Num(g.impressions) + '</b> gösterim · <b>' + d3Num(g.clicks) + '</b> tık · ' +
+        (g.impressions ? d3Pct(g.clicks / g.impressions) : '–') + ' TO</p>';
+    }
+    return s.live ? '<p class="d3-live">Bugün ' + hm(d.at) + "'e kadar: <b>" + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '';
   }
   function d3Arrow(id, open, label) { return '<button type="button" class="d3-arrow" id="' + id + '" aria-expanded="' + open + '" aria-label="' + label + ': 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button>'; }
   // Share of the stop before that made it to this one.
@@ -569,7 +579,7 @@
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
       '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Önceki gün gösterim', d3Num(t.prev.impressions)) + '</div>' +
-      (s.live ? '<p class="d3-live">Bugün ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + "'e kadar: <b>" + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '') + '</div></div>';
+      d3LiveLine(s, d) + '</div></div>';
     html += '<div class="d3-more"' + (d3Open ? '' : ' hidden') + '>';
     D3_MORE.forEach(function (m) {
       var c, v = null, sub;
@@ -650,6 +660,20 @@
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; d3Road(); } }, function () {});
+    if (fresh || !d3G24) d3Load24();
+  }
+  // Search Console's last 24 hours (the server caches it 30 minutes). The card
+  // is redrawn only when the numbers change; an answer without data drops the
+  // line back to today so far.
+  function d3Load24() {
+    fetch('/api/shield?gsc24=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (g) {
+        var next = g && g.ok && g.day ? g : null;
+        if (JSON.stringify(next) === JSON.stringify(d3G24)) return;
+        d3G24 = next;
+        if (d3Data) d3Render();
+      }, function () {});
   }
 
   // 3D shield: 10 dark layers for thickness, then the lit front.
@@ -882,6 +906,7 @@
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
   setInterval(function () { if (!document.hidden && getKey() && gscLoaded) loadGsc(false, true); }, 10 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
+  setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
 })();
 </script>
 </body>

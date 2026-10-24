@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pickSite, windows } from './_search-console.js';
+import { pickSite, windows, searchRecent } from './_search-console.js';
 
 test('pickSite prefers the domain property, skips unverified', () => {
   assert.equal(pickSite([{ siteUrl: 'https://www.complaintca.ca/', permissionLevel: 'siteFullUser' }, { siteUrl: 'sc-domain:complaintca.ca', permissionLevel: 'siteRestrictedUser' }]), 'sc-domain:complaintca.ca');
@@ -52,4 +52,10 @@ test('summarizeRecent: last 24 h from hourly rows, since-start from daily rows',
   assert.deepEqual(r.since.weeks.map(w => [w.week, w.impressions]), [['2026-06-29', 3], ['2026-07-06', 15]]);
   assert.equal(weekOf('2026-10-20'), '2026-10-19');
   assert.equal(summarizeRecent([], [], now).day, null);
+});
+
+test('searchRecent: the cached last-24-hours part, no Google call on a hit', async () => {
+  const day = { impressions: 1380, clicks: 15, hours: [{ t: 1, clicks: 15, impressions: 1380 }], last: 1 };
+  const out = await searchRecent(async cmds => { assert.equal(cmds[0][0], 'GET'); return [JSON.stringify({ day, since: { weeks: [] } })]; });
+  assert.deepEqual(out, { ok: true, day: { impressions: 1380, clicks: 15, last: 1 } });
 });
