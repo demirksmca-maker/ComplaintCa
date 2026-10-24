@@ -37,16 +37,16 @@ test('summarizeRecent: last 24 h from hourly rows, since-start from daily rows',
   const now = Date.parse('2026-10-20T18:00:00Z');
   const hours = [
     { keys: ['2026-10-19T03:00:00-07:00'], clicks: 9, impressions: 99 }, // 25 h before the last hour, out
-    { keys: ['2026-10-19T05:00:00-07:00'], clicks: 4, impressions: 70 }, // older than now-24h but inside the data's 24 h
-    { keys: ['2026-10-20T01:00:00-07:00'], clicks: 1, impressions: 40 },
-    { keys: ['2026-10-20T04:00:00-07:00'], clicks: 2, impressions: 60 } // latest hour with data
+    { keys: ['2026-10-19T05:00:00-07:00'], clicks: 4, impressions: 70, position: 20 }, // older than now-24h but inside the data's 24 h
+    { keys: ['2026-10-20T01:00:00-07:00'], clicks: 1, impressions: 40, position: 10 },
+    { keys: ['2026-10-20T04:00:00-07:00'], clicks: 2, impressions: 60, position: 15 } // latest hour with data
   ];
   const days = [
     { keys: ['2026-07-02'], clicks: 0, impressions: 3 }, { keys: ['2026-07-01'], clicks: 0, impressions: 0 },
     { keys: ['2026-07-06'], clicks: 1, impressions: 10 }, { keys: ['2026-07-07'], clicks: 2, impressions: 5 }
   ];
   const r = summarizeRecent(hours, days, now);
-  assert.equal(r.day.impressions, 170); assert.equal(r.day.clicks, 7); assert.equal(r.day.hours.length, 24);
+  assert.equal(r.day.impressions, 170); assert.equal(r.day.clicks, 7); assert.equal(r.day.position, 15.9); assert.equal(r.day.hours.length, 24);
   assert.equal(r.day.hours[23].impressions, 60); assert.equal(r.day.hours[0].impressions, 70);
   assert.equal(r.since.start, '2026-07-02'); assert.equal(r.since.impressions, 18);
   assert.deepEqual(r.since.weeks.map(w => [w.week, w.impressions]), [['2026-06-29', 3], ['2026-07-06', 15]]);
@@ -57,5 +57,5 @@ test('summarizeRecent: last 24 h from hourly rows, since-start from daily rows',
 test('searchRecent: the cached last-24-hours part, no Google call on a hit', async () => {
   const day = { impressions: 1380, clicks: 15, hours: [{ t: 1, clicks: 15, impressions: 1380 }], last: 1 };
   const out = await searchRecent(async cmds => { assert.equal(cmds[0][0], 'GET'); return [JSON.stringify({ day, since: { weeks: [] } })]; });
-  assert.deepEqual(out, { ok: true, day: { impressions: 1380, clicks: 15, last: 1 } });
+  assert.deepEqual(out, { ok: true, day: { impressions: 1380, clicks: 15, position: undefined, last: 1 } });
 });

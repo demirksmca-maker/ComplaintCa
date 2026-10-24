@@ -14,7 +14,7 @@ import { accessToken, serviceAccount, PROJECT } from './_gauth.js';
 const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const API = 'https://www.googleapis.com/webmasters/v3';
 const CACHE_KEY = 'shield:gsc:v2', CACHE_SECONDS = 6 * 3600;
-const RECENT_KEY = 'shield:gsc:recent:v2', RECENT_SECONDS = 1800; // last-24h view moves hourly
+const RECENT_KEY = 'shield:gsc:recent:v3', RECENT_SECONDS = 1800; // last-24h view moves hourly
 
 const ymd = t => new Date(t).toISOString().slice(0, 10);
 
@@ -130,13 +130,13 @@ export function weekOf(day) {
 export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
   // Like Search Console's "24 hours" view: the 24 hours ending at the latest
   // hour Google has data for (it runs a few hours behind), gaps filled with 0.
-  const got = (hourRows || []).map(r => ({ t: Date.parse(r.keys[0]), clicks: r.clicks, impressions: r.impressions }))
+  const got = (hourRows || []).map(r => ({ t: Date.parse(r.keys[0]), clicks: r.clicks, impressions: r.impressions, position: r.position || 0 }))
     .filter(h => !isNaN(h.t) && h.t <= now);
   const lastT = got.length ? Math.max(...got.map(h => h.t)) : 0;
   const byT = new Map(got.map(h => [h.t, h]));
   const hours = lastT ? Array.from({ length: 24 }, (_, k) => {
     const t = lastT - (23 - k) * 3600000;
-    return byT.get(t) || { t, clicks: 0, impressions: 0 };
+    return byT.get(t) || { t, clicks: 0, impressions: 0, position: 0 };
   }) : [];
   const days = (dateRows || []).filter(r => r.impressions > 0).sort((a, b) => (a.keys[0] < b.keys[0] ? -1 : 1));
   const weeks = [];
@@ -147,8 +147,10 @@ export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
     else weeks.push({ week: w, impressions: r.impressions, clicks: r.clicks });
   }
   const sum = (list, k) => list.reduce((n, x) => n + x[k], 0);
+  const avgPos = list => { const imp = sum(list, 'impressions'); return imp ? Math.round(list.reduce((n, x) => n + x.position * x.impressions, 0) / imp * 10) / 10 : 0; };
   return {
-    day: hours.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), hours, last: lastT } : null,
+    // Average position weighted by impressions, as Search Console averages it.
+    day: hours.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), position: avgPos(hours), hours, last: lastT } : null,
     since: days.length ? { start: days[0].keys[0], impressions: sum(days, 'impressions'), clicks: sum(days, 'clicks'), weeks } : null
   };
 }
@@ -179,7 +181,7 @@ export async function searchRecent(redis) {
     await storeRecent(redis, recent);
   }
   const d = recent.day;
-  return { ok: true, day: d ? { impressions: d.impressions, clicks: d.clicks, last: d.last } : null };
+  return { ok: true, day: d ? { impressions: d.impressions, clicks: d.clicks, position: d.position, last: d.last } : null };
 }
 
 export async function searchConsole(redis, { fresh = false, days = 28 } = {}) {
