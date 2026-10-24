@@ -1,5 +1,5 @@
 {
- "_nota": "Company complaint channels for Canada (gathered with Gemini, Oct 2026). Nothing is verified yet: fuente=terceros, verificado=false. Only send automatic e-mail to an address once verificado is true and fuente is oficial (the company's own page).",
+ "_nota": "Company complaint channels for Canada (gathered with Gemini, Oct 2026). Nothing is verified yet: fuente=terceros, verificado=false. Only send automatic e-mail to an address once verificado is true and fuente is oficial (the company's own page). wikidata = the brand:wikidata value OpenStreetMap uses, taken from name-suggestion-index (Sep 2026), used to match map points to a company.",
  "empresas": [
   {
    "ad": "Rogers",
@@ -18,7 +18,8 @@
    "address": "333 Bloor St E, Toronto, ON M4W 1G9",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q3439663"
   },
   {
    "ad": "TELUS",
@@ -35,7 +36,8 @@
    "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q165858"
   },
   {
    "ad": "Bell",
@@ -53,7 +55,8 @@
    "address": "1 Carrefour Alexander-Graham-Bell, Building A7, Verdun, QC H3E 3B3",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q2894594"
   },
   {
    "ad": "Fido",
@@ -70,7 +73,8 @@
    "address": "333 Bloor St E, Toronto, ON M4W 1G9",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q3071471"
   },
   {
    "ad": "Koodo Mobile",
@@ -87,7 +91,8 @@
    "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q6430529"
   },
   {
    "ad": "Freedom Mobile",
@@ -105,7 +110,8 @@
    "address": "207 Queens Quay W, Toronto, ON M5J 1A7",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q8023931"
   },
   {
    "ad": "Virgin Plus",
@@ -123,7 +129,8 @@
    "address": "1 Carrefour Alexander-Graham-Bell, Verdun, QC H3E 3B3",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q3560641"
   },
   {
    "ad": "Vidéotron",
@@ -141,7 +148,8 @@
    "address": "612 Saint-Jacques St, Montreal, QC H3C 4M8",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q2396830"
   },
   {
    "ad": "Public Mobile",
@@ -158,7 +166,8 @@
    "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Cogeco",
@@ -175,7 +184,8 @@
    "address": "1 Place Ville Marie, Montreal, QC H3B 2C8",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Fizz",
@@ -192,7 +202,8 @@
    "address": "612 Saint-Jacques St, Montreal, QC H3C 4M8",
    "regulator": "CCTS",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Air Canada",
@@ -210,7 +221,8 @@
    "address": "7373 Côte-de-Liesse Rd, Saint-Laurent, QC H4T 1C3",
    "regulator": "CTA",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "WestJet",
@@ -227,7 +239,8 @@
    "address": "22 Aerial Pl NE, Calgary, AB T2E 3J1",
    "regulator": "CTA",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Flair Airlines",
@@ -244,7 +257,8 @@
    "address": "",
    "regulator": "CTA",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Porter Airlines",
@@ -261,7 +275,8 @@
    "address": "",
    "regulator": "CTA",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Air Transat",
@@ -279,7 +294,8 @@
    "address": "5959 Côte-Vertu Blvd, Saint-Laurent, QC H4S 2E6",
    "regulator": "CTA",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "TD Bank",
@@ -298,7 +314,8 @@
    "address": "66 Wellington St W, Toronto, ON M5K 1A2",
    "regulator": "OBSI",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q1080670"
   },
   {
    "ad": "RBC",
@@ -316,7 +333,8 @@
    "address": "200 Bay St, Toronto, ON M5J 2J5",
    "regulator": "OBSI",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q735261"
   },
   {
    "ad": "Scotiabank",
@@ -335,7 +353,8 @@
    "address": "44 King St W, Toronto, ON M5H 1H1",
    "regulator": "OBSI",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q451476"
   },
   {
    "ad": "BMO",
@@ -353,7 +372,8 @@
    "address": "100 King St W, Toronto, ON M5X 1A1",
    "regulator": "OBSI",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q806693"
   },
   {
    "ad": "CIBC",
@@ -370,7 +390,8 @@
    "address": "81 Bay St, Toronto, ON M5J 0E7",
    "regulator": "OBSI",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q666694"
   },
   {
    "ad": "Canada Post",
@@ -388,7 +409,8 @@
    "address": "2701 Riverside Dr, Ottawa, ON K1A 0B1",
    "regulator": "Canada Post Ombudsman",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q1032001"
   },
   {
    "ad": "Purolator",
@@ -405,7 +427,8 @@
    "address": "5995 Avebury Rd, Mississauga, ON L5R 3P9",
    "regulator": "Provincial consumer office",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q7261372"
   },
   {
    "ad": "Amazon.ca",
@@ -424,7 +447,8 @@
    "address": "",
    "regulator": "Provincial consumer office, Competition Bureau",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q3884"
   },
   {
    "ad": "Walmart Canada",
@@ -441,7 +465,8 @@
    "address": "1940 Argentia Rd, Mississauga, ON L5N 1P9",
    "regulator": "Provincial consumer office",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q483551"
   },
   {
    "ad": "Canadian Tire",
@@ -458,7 +483,8 @@
    "address": "2180 Yonge St, Toronto, ON M4P 2V8",
    "regulator": "Provincial consumer office",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q1032400"
   },
   {
    "ad": "DoorDash",
@@ -475,7 +501,8 @@
    "address": "",
    "regulator": "Provincial consumer office",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Uber",
@@ -493,7 +520,8 @@
    "address": "121 Bloor St E, Toronto, ON M4W 3M5",
    "regulator": "Provincial consumer office",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": ""
   },
   {
    "ad": "Enbridge Gas",
@@ -510,7 +538,8 @@
    "address": "500 Consumers Rd, North York, ON M2J 1P8",
    "regulator": "OEB",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q1339966"
   },
   {
    "ad": "Hydro One",
@@ -527,7 +556,382 @@
    "address": "483 Bay St, Toronto, ON M5G 2P5",
    "regulator": "OEB",
    "fuente": "terceros",
-   "verificado": false
+   "verificado": false,
+   "wikidata": "Q3143709"
+  },
+  {
+   "ad": "Tim Hortons",
+   "sector": "restaurant",
+   "category": "service",
+   "alias": [
+    "tim hortons",
+    "tims",
+    "timmies"
+   ],
+   "domain": "timhortons.ca",
+   "telefono": "",
+   "url": "https://www.timhortons.ca/support",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "874 Sinclair Rd, Oakville, ON L6K 2Y1",
+   "regulator": "Public health unit, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q175106"
+  },
+  {
+   "ad": "Shoppers Drug Mart",
+   "sector": "pharmacy",
+   "category": "billing",
+   "alias": [
+    "shoppers drug mart",
+    "shoppers",
+    "pharmaprix"
+   ],
+   "domain": "shoppersdrugmart.ca",
+   "telefono": "",
+   "url": "https://www.shoppersdrugmart.ca/en/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "243 Consumers Rd, Toronto, ON M2J 4W8",
+   "regulator": "Provincial college of pharmacists, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q1820137"
+  },
+  {
+   "ad": "Loblaws",
+   "sector": "grocery",
+   "category": "billing",
+   "alias": [
+    "loblaws",
+    "loblaw"
+   ],
+   "domain": "loblaws.ca",
+   "telefono": "",
+   "url": "https://www.loblaws.ca/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "1 President's Choice Circle, Brampton, ON L6Y 5S5",
+   "regulator": "CFIA, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q3257626"
+  },
+  {
+   "ad": "Costco",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "costco"
+   ],
+   "domain": "costco.ca",
+   "telefono": "",
+   "url": "https://www.costco.ca/customer-service.html",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Provincial consumer office, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q715583"
+  },
+  {
+   "ad": "Best Buy",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "best buy",
+    "bestbuy"
+   ],
+   "domain": "bestbuy.ca",
+   "telefono": "",
+   "url": "https://www.bestbuy.ca/en-ca/help/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "8800 Glenlyon Pkwy, Burnaby, BC V5J 5K3",
+   "regulator": "Provincial consumer office, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q533415"
+  },
+  {
+   "ad": "The Home Depot",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "home depot",
+    "the home depot"
+   ],
+   "domain": "homedepot.ca",
+   "telefono": "",
+   "url": "https://www.homedepot.ca/en/home/customer-support/contact-us.html",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "1 Concorde Gate, Suite 400, Toronto, ON M3C 4H9",
+   "regulator": "Provincial consumer office, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q864407"
+  },
+  {
+   "ad": "Sobeys",
+   "sector": "grocery",
+   "category": "billing",
+   "alias": [
+    "sobeys"
+   ],
+   "domain": "sobeys.com",
+   "telefono": "",
+   "url": "https://www.sobeys.com/en/contact-us/",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "115 King St, Stellarton, NS B0K 1S0",
+   "regulator": "CFIA, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q1143340"
+  },
+  {
+   "ad": "Metro",
+   "sector": "grocery",
+   "category": "billing",
+   "alias": [
+    "metro"
+   ],
+   "domain": "metro.ca",
+   "telefono": "",
+   "url": "https://www.metro.ca/en/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "11011 Boul. Maurice-Duplessis, Montréal, QC H1C 1V6",
+   "regulator": "MAPAQ (Quebec), CFIA, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q1145669"
+  },
+  {
+   "ad": "Dollarama",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "dollarama"
+   ],
+   "domain": "dollarama.com",
+   "telefono": "",
+   "url": "https://www.dollarama.com/en-CA/corp/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "5805 Royalmount Ave, Montreal, QC H4P 1J2",
+   "regulator": "Health Canada (product safety), Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q3033947"
+  },
+  {
+   "ad": "McDonald's",
+   "sector": "restaurant",
+   "category": "service",
+   "alias": [
+    "mcdonald's",
+    "mcdonalds"
+   ],
+   "domain": "mcdonalds.com",
+   "telefono": "",
+   "url": "https://www.mcdonalds.com/ca/en-ca/contact-us.html",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Public health unit, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q38076"
+  },
+  {
+   "ad": "Rexall",
+   "sector": "pharmacy",
+   "category": "billing",
+   "alias": [
+    "rexall"
+   ],
+   "domain": "rexall.ca",
+   "telefono": "",
+   "url": "https://www.rexall.ca/customer-care",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Provincial college of pharmacists, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q39045377"
+  },
+  {
+   "ad": "Petro-Canada",
+   "sector": "fuel",
+   "category": "billing",
+   "alias": [
+    "petro-canada",
+    "petro canada"
+   ],
+   "domain": "petro-canada.ca",
+   "telefono": "",
+   "url": "https://www.petro-canada.ca/en/personal/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "150 6 Ave SW, Calgary, AB T2P 3E3",
+   "regulator": "Measurement Canada, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q1208279"
+  },
+  {
+   "ad": "Esso",
+   "sector": "fuel",
+   "category": "billing",
+   "alias": [
+    "esso",
+    "imperial oil"
+   ],
+   "domain": "esso.ca",
+   "telefono": "",
+   "url": "https://www.esso.ca/en-ca/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "505 Quarry Park Blvd SE, Calgary, AB T2C 5N1",
+   "regulator": "Measurement Canada, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q867662"
+  },
+  {
+   "ad": "Staples",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "staples",
+    "bureau en gros"
+   ],
+   "domain": "staples.ca",
+   "telefono": "",
+   "url": "https://www.staples.ca/pages/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "6 Staples Ave, Richmond Hill, ON L4B 4W3",
+   "regulator": "Provincial consumer office, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q17149420"
+  },
+  {
+   "ad": "IKEA",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "ikea"
+   ],
+   "domain": "ikea.com",
+   "telefono": "",
+   "url": "https://www.ikea.com/ca/en/customer-service/contact-us/",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Health Canada (product safety), Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q54078"
+  },
+  {
+   "ad": "Subway",
+   "sector": "restaurant",
+   "category": "service",
+   "alias": [
+    "subway"
+   ],
+   "domain": "subway.com",
+   "telefono": "",
+   "url": "https://www.subway.com/en-CA/ContactUs/ContactUsForm",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Public health unit, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q244457"
+  },
+  {
+   "ad": "Circle K",
+   "sector": "fuel",
+   "category": "billing",
+   "alias": [
+    "circle k",
+    "couche-tard"
+   ],
+   "domain": "circlek.com",
+   "telefono": "",
+   "url": "https://www.circlek.com/ca/store-locator/contact",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "",
+   "regulator": "Measurement Canada, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q3268010"
+  },
+  {
+   "ad": "LCBO",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "lcbo"
+   ],
+   "domain": "lcbo.com",
+   "telefono": "",
+   "url": "https://www.lcbo.com/en/contactus",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "100 Queens Quay E, Toronto, ON M5E 0C7",
+   "regulator": "AGCO",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q845263"
+  },
+  {
+   "ad": "A&W",
+   "sector": "restaurant",
+   "category": "service",
+   "alias": [
+    "a&w",
+    "a and w"
+   ],
+   "domain": "aw.ca",
+   "telefono": "",
+   "url": "https://web.aw.ca/en/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "171 W Esplanade, North Vancouver, BC V7M 3K9",
+   "regulator": "Public health unit, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q2818848"
+  },
+  {
+   "ad": "No Frills",
+   "sector": "grocery",
+   "category": "billing",
+   "alias": [
+    "no frills",
+    "nofrills"
+   ],
+   "domain": "nofrills.ca",
+   "telefono": "",
+   "url": "https://www.nofrills.ca/contact-us",
+   "canal": "Company contact form",
+   "email": "",
+   "address": "1 President's Choice Circle, Brampton, ON L6Y 5S5",
+   "regulator": "CFIA, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false,
+   "wikidata": "Q3342407"
   }
  ]
 }

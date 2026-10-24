@@ -27,6 +27,12 @@ test('names and aliases are unique, aliases lowercase', () => {
   }
 });
 
+test('wikidata ids are well formed and point to one company each', () => {
+  const ids = empresas.map(c => c.wikidata).filter(Boolean);
+  for (const id of ids) assert.match(id, /^Q\d+$/);
+  assert.equal(new Set(ids).size, ids.length);
+});
+
 test('a verified entry comes from the company itself', () => {
   for (const c of empresas.filter(c => c.verificado)) {
     assert.equal(c.fuente, 'oficial', c.ad);
