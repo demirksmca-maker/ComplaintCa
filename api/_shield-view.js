@@ -6,7 +6,7 @@
 // funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
-// complaint funnel of Genel's 3D cards. The key is the SHIELD_KEY env var; wrong keys are rate limited.
+// site road map of Genel's 3D cards. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
@@ -232,8 +232,10 @@ export async function shieldView(req, res) {
   // Funnel per day for the last week (Huni trend line), today first.
   for (const d of days) for (const step of FUNNEL) cmds.push(['PFCOUNT', `shield:fun:${step}:${d}`]);
   cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown']);
-  // Today so far per site (Genel's live row): page views and unique visitors.
+  // Today so far (Genel's live row and road map): page views and unique
+  // visitors per site, and unique visitors of both sites together.
   for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', `shield:uv:${site}:${days[0]}`]);
+  cmds.push(['PFCOUNT', `shield:uv:ca:${days[0]}`, `shield:uv:es:${days[0]}`]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
   let out, stats, comp;
   try {
@@ -254,6 +256,9 @@ export async function shieldView(req, res) {
   const ttl = Number(out[i++]);
   const now = {};
   for (const site of ['ca', 'es']) now[site] = { views: Number(out[i++]) || 0, visitors: Number(out[i++]) || 0 };
+  now.visitors = Number(out[i++]) || 0;
+  // Attacks blocked since Toronto midnight, from the last 200 events.
+  now.blocked = events.filter(e => !String(e.agent).startsWith('suspect') && lastDays(new Date(e.t), 1)[0] === days[0]).length;
   const attackCountries = {};
   for (const e of events) if (e.c && !String(e.agent).startsWith('suspect')) attackCountries[e.c] = (attackCountries[e.c] || 0) + 1;
   return res.status(200).json({

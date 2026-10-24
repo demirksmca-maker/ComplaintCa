@@ -94,7 +94,7 @@ test('complaintSummary counts weeks and top institutions', async () => {
   assert.deepEqual(s.top, [['Rogers', 2], ['housing', 1]]);
 });
 
-test('funnelWindows: full windows ending yesterday, full previous windows, since and today', () => {
+test('funnelWindows: full windows ending yesterday, full previous windows and since', () => {
   const w = funnelWindows(new Date('2026-10-24T12:00:00Z'));
   assert.deepEqual(w.map(x => x.name), ['1', 'since']);
   assert.deepEqual(w[0].cur, ['2026-10-23']);

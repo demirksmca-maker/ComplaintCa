@@ -454,13 +454,13 @@
   }
 
   // Genel: 3D cards from the İstatistik numbers (?stats=1, cached 3 h on the
-  // server) and the complaint funnel (?funnel=1). Closed: the last full day
-  // (yesterday) against the day before, and today so far on a small line;
-  // the arrow opens 1 week, 1 month, 2 months, 3 months and since opening.
+  // server) and the site road map (?funnel=1, today live from the minute
+  // refresh). Closed: the last full day (yesterday) against the day before,
+  // and today so far; the arrow opens 1 week, 1/2/3 months and since opening.
   var D3_MORE = [[7, '1 hafta'], [30, '1 ay'], [60, '2 ay'], [90, '3 ay'], ['since', 'Açılıştan beri']];
   // Road map stops: [step, name, icon, colour along the road, short name].
   var D3_ROAD = [['visit', 'Siteye geldi', '🌐', '#3987e5', 'Geldi'], ['open', 'Formu açtı', '📝', '#4aa3d8', 'Form'], ['route', 'Kurum gösterildi', '🏛️', '#3ddc97', 'Kurum'], ['email', 'E-posta doğruladı', '✉️', '#9bd36a', 'E-posta'], ['submit', 'Şikayeti gönderdi', '🏁', '#f2bd4b', 'Gönderdi']];
-  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false;
+  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false;
   function d3Num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function d3Pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
@@ -492,19 +492,23 @@
   }
   function d3Arrow(id, open, label) { return '<button type="button" class="d3-arrow" id="' + id + '" aria-expanded="' + open + '" aria-label="' + label + ': 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button>'; }
   // Share of the stop before that made it to this one.
-  function d3Kept(n, before) { return before ? '%' + Math.round(n / before * 100) : ''; }
+  // Capped at 100: the stops are counted by different signals, so a later
+  // stop can now and then come out a little higher.
+  function d3Kept(n, before) { return before ? '%' + Math.min(100, Math.round(n / before * 100)) + ' devam etti' : '–'; }
   function d3Road() {
     var box = $('d3road'), d = data;
     if (!box || !d || !d.now || !d.funnelToday) return;
     var by = {};
     if (d3Fun) d3Fun.windows.forEach(function (w) { by[w.name] = w; });
-    var today = { visit: d.now.ca.visitors + d.now.es.visitors }, y = by['1'] && by['1'].cur;
+    var today = { visit: d.now.visitors }, y = by['1'] && by['1'].cur;
+    // Past Toronto midnight the road map's "yesterday" is a day old: fetch again.
+    if (y && d.funnelDays[1] && y.to !== d.funnelDays[1].day) { y = null; if (!d3Stale) { d3Stale = true; d3Load(); } }
     for (var k in d.funnelToday) today[k] = d.funnelToday[k];
     var html = '<div class="d3-stage"><div class="d3-card rd-card" id="d3rmain">' +
-      '<div class="d3-when"><span class="rd-live">Site yol haritası · bugün canlı</span>' + d3Arrow('d3rarrow', d3ROpen, 'Yol haritası detayı') + '</div><div class="rd">' +
+      '<div class="d3-when"><span class="rd-live">Yol haritası · canlı · iki site</span>' + d3Arrow('d3rarrow', d3ROpen, 'Yol haritası detayı') + '</div><div class="rd">' +
       D3_ROAD.map(function (st, i) {
         var n = today[st[0]] || 0, kept = i ? d3Kept(n, today[D3_ROAD[i - 1][0]] || 0) : '';
-        return '<div class="rd-st" style="--c:' + st[3] + '"><i>' + st[2] + '</i><div class="rd-nm">' + st[1] + '<small>' + (kept ? kept + ' devam etti' : 'bugün gelen kişi') + '</small>' + '</div>' +
+        return '<div class="rd-st" style="--c:' + st[3] + '"><i>' + st[2] + '</i><div class="rd-nm">' + st[1] + '<small>' + (i ? kept : 'bugün gelen kişi') + '</small>' + '</div>' +
           '<div class="rd-n"><b>' + d3Num(n) + '</b>' + (y ? '<small>dün ' + d3Num(y[st[0]]) + '</small>' : '') + '</div></div>';
       }).join('') + '</div></div></div>';
     html += '<div class="d3-more"' + (d3ROpen ? '' : ' hidden') + '>';
@@ -529,7 +533,7 @@
     var s = d.sites[d3Site], by = {};
     s.periods.forEach(function (p) { by[p.days] = p; });
     var t = by[1];
-    each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); });
+    d3Pressed();
     var html = '<div class="d3-stage"><div class="d3-card" id="d3main">' +
       '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
@@ -567,12 +571,13 @@
     var d = data;
     if (!d || !d.now) return;
     var keys = d3Site === 'all' ? ['ca', 'es'] : [d3Site], sum = function (f) { return keys.reduce(function (n, k) { return n + d.now[k][f]; }, 0); };
-    var start = new Date(); start.setHours(0, 0, 0, 0);
-    var blocked = d.events.filter(function (e) { return e.t >= start.getTime() && AGENTS[e.agent] && e.agent.indexOf('suspect') !== 0; }).length;
-    $('d3now').innerHTML = '<div><b>' + d3Num(sum('visitors')) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(blocked) + '</b><span>Engellenen</span></div>';
+    // Both sites: one person on / and /es/ counts once.
+    var people = d3Site === 'all' ? d.now.visitors : sum('visitors');
+    $('d3now').innerHTML = '<div><b>' + d3Num(people) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(d.now.blocked) + '</b><span>Engellenen</span></div>';
   }
-  each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); });
-  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Now(); if (d3Data) d3Render(); }); });
+  function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }
+  d3Pressed();
+  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Pressed(); d3Now(); if (d3Data) d3Render(); }); });
 
   // Card follows the pointer a little; springs back when it leaves.
   function d3Tilt(el) {
@@ -595,7 +600,7 @@
       .catch(function () { if (d3Data) d3Render(); else $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (f) { if (f && f.ok) { d3Fun = f; d3Road(); } }, function () {});
+      .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; d3Road(); } }, function () {});
   }
 
   // 3D shield: 10 dark layers for thickness, then the lit front.
