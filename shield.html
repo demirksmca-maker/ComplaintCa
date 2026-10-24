@@ -489,7 +489,7 @@
   var D3_MORE = [[7, '1 hafta'], [30, '1 ay'], [60, '2 ay'], [90, '3 ay'], ['since', 'Açılıştan beri']];
   // Road map stops: [step, name, icon, colour along the road, short name].
   var D3_ROAD = [['visit', 'Siteye geldi', '🌐', '#3987e5', 'Geldi'], ['open', 'Formu açtı', '📝', '#4aa3d8', 'Form'], ['route', 'Kurum gösterildi', '🏛️', '#3ddc97', 'Kurum'], ['email', 'E-posta doğruladı', '✉️', '#9bd36a', 'E-posta'], ['submit', 'Şikayeti gönderdi', '🏁', '#f2bd4b', 'Gönderdi']];
-  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false, d3G24 = null;
+  var d3Data = null, d3Fun = null, d3Site = 'all', d3Open = false, d3ROpen = false, d3Stale = false, d3G24 = null;
   function d3Num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function d3Pct(r) { return '%' + (r * 100).toFixed(1).replace('.', ','); }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
@@ -623,7 +623,7 @@
     var notes = [];
     if (!d.gsc.ok) notes.push('<b>Search Console bağlı değil (' + esc(d.gsc.reason) + ')</b>');
     notes.push(d.visitors === 'ga' ? 'Ziyaretçi: Google Analytics' : 'Ziyaretçi: site sayacı');
-    html += '<p class="d3-foot">' + notes.join(' · ') + ' · ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + ' · <button type="button" id="d3re">↻ Yenile</button></p>';
+    html += '<p class="d3-foot">' + notes.join(' · ') + ' · ' + new Date(d.at).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' }) + ' · <button type="button" id="d3re">↻ Yenile</button></p>';
     $('d3').innerHTML = html;
     $('d3arrow').addEventListener('click', function () { d3Open = !d3Open; d3Render(); });
     $('d3re').addEventListener('click', function () { d3Load(true); });
@@ -642,7 +642,7 @@
   }
   function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }
   d3Pressed();
-  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Pressed(); d3Now(); if (d3Data) d3Render(); }); });
+  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); d3Pressed(); d3Now(); if (d3Data) d3Render(); }); });
 
   // Genel on one screen, no scrolling: shrink it to the section's height.
   // With a detail list open it scrolls as usual.
@@ -877,7 +877,7 @@
     var hit = d.events.filter(function (e) { return e.t >= Date.now() - 3600000 && e.agent.indexOf('suspect') !== 0; }).length;
     $('hero').className = 'head' + (lockMin ? ' alert' : hit ? ' warn' : '');
     $('heroState').textContent = lockMin ? 'Acil kilit açık' : hit ? 'Son 1 saatte ' + hit + ' saldırı engellendi' : 'Kalkan aktif · her şey sakin';
-    $('status').textContent = 'Güncellendi ' + new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+    $('status').textContent = 'Güncellendi ' + new Date().toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' });
   }
 
   function load() {
