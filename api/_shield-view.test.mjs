@@ -99,7 +99,7 @@ test('funnelWindows: full windows ending yesterday, full previous windows, since
   assert.deepEqual(w.map(x => x.name), ['1', 'since', 'today']);
   assert.deepEqual(w[0].cur, ['2026-10-23']);
   assert.deepEqual(w[0].prev, ['2026-10-22']);
-  assert.deepEqual([w[1].cur[0], w[1].cur[w[1].cur.length - 1]], ['2026-10-24', '2026-10-20']);
+  assert.deepEqual([w[1].cur[0], w[1].cur[w[1].cur.length - 1]], ['2026-10-23', '2026-10-20']);
   assert.deepEqual(w[2].cur, ['2026-10-24']);
   const later = funnelWindows(new Date('2026-10-30T12:00:00Z'));
   assert.deepEqual(later.map(x => x.name), ['1', '7', 'since', 'today']);

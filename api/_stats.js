@@ -5,7 +5,8 @@
 // Performance report shows for that date range and page filter), visitors
 // and engagement time per user (Google Analytics 4: active users and
 // "average engagement time per active user"), and complaints filed.
-// Every window ends yesterday, the last full day (Toronto time): "3 days" is
+// Every window ends yesterday, the last full day (Search Console's Pacific
+// Time day): "3 days" is
 // yesterday and the two days before, so no window holds a half day and the
 // comparisons are fair. Today so far (Search Console clicks and impressions)
 // comes apart as `live`. Sites: all (no filter, like Search Console's
@@ -31,6 +32,9 @@ export const ymd = t => new Date(t).toISOString().slice(0, 10);
 export const addDays = (day, n) => ymd(Date.parse(day + 'T00:00:00Z') + n * D);
 // Today as YYYY-MM-DD in Toronto, the owner's day.
 export const torontoDay = (now = Date.now()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+// Today as Search Console counts it (its dates are Pacific Time). The panel's
+// days follow Google's, so "yesterday" is a day Google has finished.
+export const googleDay = (now = Date.now()) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
 const daysBetween = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / D) + 1;
 
 // This period and the one before it, as [from, to] YYYY-MM-DD, ending on `end`.
@@ -208,7 +212,7 @@ async function counterVisitors(redis, site, ranges) {
 
 async function build(redis) {
   const gsc = await gscConnect();
-  const today = torontoDay();
+  const today = googleDay();
   const dateRows = {};
   if (gsc.ok) {
     // Search Console keeps 16 months; the first day with impressions is the start.
@@ -216,7 +220,8 @@ async function build(redis) {
     SITES.forEach((s, i) => { dateRows[s] = all[i].map(r => ({ day: r.keys[0], clicks: r.clicks, impressions: r.impressions, position: r.position })).sort((a, b) => (a.day < b.day ? -1 : 1)); });
   }
   const end = addDays(today, -1);
-  const startOf = s => ((dateRows[s] || []).find(r => r.impressions > 0) || {}).day || null;
+  // A site whose first impressions are today has no full day yet.
+  const startOf = s => ((dateRows[s] || []).find(r => r.impressions > 0 && r.day <= end) || {}).day || null;
 
   // Top search and page per period, by clicks (Search Console's default order).
   const tops = Object.fromEntries(SITES.map(s => [s, {}]));
@@ -250,7 +255,7 @@ async function build(redis) {
   const sites = {};
   for (const s of SITES) {
     sites[s] = buildSite({ end, rows: dateRows[s] || [], start: startOf(s), ga: ga.ok ? gaData[s] : null, counter: counter[s], complaints, site: s, tops: tops[s] });
-    sites[s].live = sumRange(dateRows[s] || [], today, today);
+    if (gsc.ok) sites[s].live = sumRange(dateRows[s], today, today);
   }
   return {
     ok: true, at: Date.now(), today, end, sites,
@@ -264,7 +269,7 @@ export async function statsPanel(redis, { fresh = false } = {}) {
   if (!fresh) {
     const [hit] = await redis([['GET', CACHE_KEY]]);
     // A new day starts new windows, so yesterday's answer is not reused.
-    if (hit) { try { const out = JSON.parse(hit); if (out.today === torontoDay()) return out; } catch { /* rebuild */ } }
+    if (hit) { try { const out = JSON.parse(hit); if (out.today === googleDay()) return out; } catch { /* rebuild */ } }
   }
   const out = await build(redis);
   await redis([['SET', CACHE_KEY, JSON.stringify(out), 'EX', CACHE_SECONDS]]);

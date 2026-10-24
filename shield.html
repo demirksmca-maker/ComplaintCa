@@ -495,7 +495,7 @@
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
       '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Önceki gün gösterim', d3Num(t.prev.impressions)) + '</div>' +
-      (s.live ? '<p class="d3-live">Bugün şu ana kadar: <b>' + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '') + '</div></div>';
+      (s.live ? '<p class="d3-live">Bugün ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + "'e kadar: <b>" + d3Num(s.live.impressions) + '</b> gösterim · <b>' + d3Num(s.live.clicks) + '</b> tık</p>' : '') + '</div></div>';
     html += '<div class="d3-more"' + (d3Open ? '' : ' hidden') + '>';
     D3_MORE.forEach(function (m) {
       var c, v = null, sub;
