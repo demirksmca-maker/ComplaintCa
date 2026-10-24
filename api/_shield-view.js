@@ -33,9 +33,10 @@ export function lastDays(now = new Date(), n = DAYS) {
 const PERIODS = [7, 14, 28, 90];
 
 // Complaint funnel for Genel's 3D cards (/shield.html, ?funnel=1): unique
-// people per step today and over 7, 30, 60 and 90 days, each against the
-// window of the same length before it, plus since the funnel started
-// counting. Days before FUNNEL_START have no data: a window that reaches
+// people per step for the last full day (yesterday) and over 7, 30, 60 and
+// 90 days ending yesterday, each against the window of the same length
+// before it, plus since the funnel started counting (to yesterday too) and
+// today so far. Days before FUNNEL_START have no data: a window that reaches
 // back past it is left out (the since card covers those days), and a
 // previous window only counts when it is complete, so lengths always match.
 export const FUNNEL_START = '2026-10-20';
@@ -43,11 +44,11 @@ export const FUNNEL_PANEL = [1, 7, 30, 60, 90];
 export function funnelWindows(now = new Date()) {
   const today = lastDays(now, 1)[0];
   const span = Math.max(1, Math.round((Date.parse(today) - Date.parse(FUNNEL_START)) / 86400000) + 1);
-  const days = lastDays(now, span);
+  const all = lastDays(now, span), days = all.slice(1);
   const out = FUNNEL_PANEL.filter(n => n <= days.length).map(n => ({
     name: String(n), cur: days.slice(0, n), prev: days.length >= 2 * n ? days.slice(n, 2 * n) : []
   }));
-  out.push({ name: 'since', cur: days, prev: [] });
+  out.push({ name: 'since', cur: days, prev: [] }, { name: 'today', cur: all.slice(0, 1), prev: [] });
   return out;
 }
 export async function funnelPanel(pipeline, now = new Date()) {

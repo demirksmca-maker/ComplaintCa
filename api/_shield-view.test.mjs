@@ -94,18 +94,20 @@ test('complaintSummary counts weeks and top institutions', async () => {
   assert.deepEqual(s.top, [['Rogers', 2], ['housing', 1]]);
 });
 
-test('funnelWindows: only full windows, full previous windows, since reaches the start', () => {
+test('funnelWindows: full windows ending yesterday, full previous windows, since and today', () => {
   const w = funnelWindows(new Date('2026-10-24T12:00:00Z'));
-  assert.deepEqual(w.map(x => x.name), ['1', 'since']);
-  assert.deepEqual(w[0].cur, ['2026-10-24']);
-  assert.deepEqual(w[0].prev, ['2026-10-23']);
-  assert.equal(w[1].cur[w[1].cur.length - 1], '2026-10-20');
+  assert.deepEqual(w.map(x => x.name), ['1', 'since', 'today']);
+  assert.deepEqual(w[0].cur, ['2026-10-23']);
+  assert.deepEqual(w[0].prev, ['2026-10-22']);
+  assert.deepEqual([w[1].cur[0], w[1].cur[w[1].cur.length - 1]], ['2026-10-23', '2026-10-20']);
+  assert.deepEqual(w[2].cur, ['2026-10-24']);
   const later = funnelWindows(new Date('2026-10-30T12:00:00Z'));
-  assert.deepEqual(later.map(x => x.name), ['1', '7', 'since']);
-  assert.equal(later[1].cur.length, 7);
+  assert.deepEqual(later.map(x => x.name), ['1', '7', 'since', 'today']);
+  assert.deepEqual([later[1].cur[0], later[1].cur.length], ['2026-10-29', 7]);
   assert.deepEqual(later[1].prev, []);
   const far = funnelWindows(new Date('2027-06-01T12:00:00Z'));
-  assert.equal(far[far.length - 1].cur[far[far.length - 1].cur.length - 1], '2026-10-20');
+  const since = far.find(x => x.name === 'since').cur;
+  assert.equal(since[since.length - 1], '2026-10-20');
 });
 
 test('lastDays: no skipped or repeated date across DST', () => {
@@ -117,7 +119,7 @@ test('funnelPanel: one PFCOUNT per step and window, empty windows null', async (
   let sent;
   const out = await funnelPanel(async cmds => { sent = cmds; return cmds.map((_, i) => i + 1); }, new Date('2026-10-24T12:00:00Z'));
   assert.ok(sent.every(c => c[0] === 'PFCOUNT' && c.length > 1));
-  assert.deepEqual(out.windows[0].cur, { from: '2026-10-24', to: '2026-10-24', open: 1, route: 2, email: 3, submit: 4 });
+  assert.deepEqual(out.windows[0].cur, { from: '2026-10-23', to: '2026-10-23', open: 1, route: 2, email: 3, submit: 4 });
   assert.equal(out.windows[0].prev.open, 5);
   assert.equal(out.windows[1].name, 'since');
   assert.equal(out.windows[1].prev, null);
