@@ -1,0 +1,533 @@
+{
+ "_nota": "Company complaint channels for Canada (gathered with Gemini, Oct 2026). Nothing is verified yet: fuente=terceros, verificado=false. Only send automatic e-mail to an address once verificado is true and fuente is oficial (the company's own page).",
+ "empresas": [
+  {
+   "ad": "Rogers",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "rogers",
+    "shaw",
+    "rogers communications"
+   ],
+   "domain": "rogers.com",
+   "telefono": "",
+   "url": "https://www.rogers.com/support/resolve-a-concern",
+   "canal": "Customer service → Management team → Office of the President",
+   "email": "ombudsman@rci.rogers.com",
+   "address": "333 Bloor St E, Toronto, ON M4W 1G9",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "TELUS",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "telus"
+   ],
+   "domain": "telus.com",
+   "telefono": "",
+   "url": "https://www.telus.com/en/support/contact-us/escalate-a-concern",
+   "canal": "Frontline agent → Supervisor → Executive Customer Relations",
+   "email": "executive.office@telus.com",
+   "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Bell",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "bell",
+    "bell canada"
+   ],
+   "domain": "bell.ca",
+   "telefono": "",
+   "url": "https://support.bell.ca/how-to-resolve-a-concern",
+   "canal": "Support team → Executive Office → Ombudsman",
+   "email": "ombudsman@bell.ca",
+   "address": "1 Carrefour Alexander-Graham-Bell, Building A7, Verdun, QC H3E 3B3",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Fido",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "fido"
+   ],
+   "domain": "fido.ca",
+   "telefono": "",
+   "url": "https://www.fido.ca/support/resolve-a-concern",
+   "canal": "Representative → Manager → Office of the President (Rogers)",
+   "email": "ombudsman@rci.rogers.com",
+   "address": "333 Bloor St E, Toronto, ON M4W 1G9",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Koodo Mobile",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "koodo"
+   ],
+   "domain": "koodomobile.com",
+   "telefono": "",
+   "url": "https://www.koodomobile.com/en/help",
+   "canal": "Digital rep → TELUS escalations team",
+   "email": "",
+   "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Freedom Mobile",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "freedom mobile",
+    "freedom"
+   ],
+   "domain": "freedommobile.ca",
+   "telefono": "",
+   "url": "https://www.freedommobile.ca/en-CA/support/resolve-a-concern",
+   "canal": "Customer care → Supervisor → Senior management",
+   "email": "",
+   "address": "207 Queens Quay W, Toronto, ON M5J 1A7",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Virgin Plus",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "virgin plus",
+    "virgin mobile"
+   ],
+   "domain": "virginplus.ca",
+   "telefono": "",
+   "url": "https://www.virginplus.ca/en/support/resolve-a-concern.html",
+   "canal": "Care team → Bell Executive Office",
+   "email": "ombudsman@bell.ca",
+   "address": "1 Carrefour Alexander-Graham-Bell, Verdun, QC H3E 3B3",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Vidéotron",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "videotron",
+    "vidéotron"
+   ],
+   "domain": "videotron.com",
+   "telefono": "",
+   "url": "https://videotron.com/en/support/satisfaction",
+   "canal": "Customer support → Satisfaction & escalation team",
+   "email": "",
+   "address": "612 Saint-Jacques St, Montreal, QC H3C 4M8",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Public Mobile",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "public mobile"
+   ],
+   "domain": "publicmobile.ca",
+   "telefono": "",
+   "url": "https://www.publicmobile.ca/en/ca/get-help",
+   "canal": "Community forum → Agent ticket (TELUS)",
+   "email": "",
+   "address": "510 W Georgia St, Vancouver, BC V6B 0M3",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Cogeco",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "cogeco"
+   ],
+   "domain": "cogeco.ca",
+   "telefono": "",
+   "url": "https://www.cogeco.ca/en/support/resolve-a-concern",
+   "canal": "Support → Escalations advisor → Executive office",
+   "email": "",
+   "address": "1 Place Ville Marie, Montreal, QC H3B 2C8",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Fizz",
+   "sector": "telecom",
+   "category": "telecom",
+   "alias": [
+    "fizz"
+   ],
+   "domain": "fizz.ca",
+   "telefono": "",
+   "url": "https://fizz.ca/en/contact-us",
+   "canal": "Online chat → Complaint ticket (no phone)",
+   "email": "",
+   "address": "612 Saint-Jacques St, Montreal, QC H3C 4M8",
+   "regulator": "CCTS",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Air Canada",
+   "sector": "airline",
+   "category": "delays",
+   "alias": [
+    "air canada",
+    "aircanada"
+   ],
+   "domain": "aircanada.com",
+   "telefono": "",
+   "url": "https://www.aircanada.com/ca/en/aco/home/fly/customer-support.html",
+   "canal": "Customer relations form → Corporate ombudsman",
+   "email": "ombudsman@aircanada.ca",
+   "address": "7373 Côte-de-Liesse Rd, Saint-Laurent, QC H4T 1C3",
+   "regulator": "CTA",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "WestJet",
+   "sector": "airline",
+   "category": "delays",
+   "alias": [
+    "westjet"
+   ],
+   "domain": "westjet.com",
+   "telefono": "",
+   "url": "https://www.westjet.com/en-ca/contact/claims",
+   "canal": "Guest support form → Guest relations escalation",
+   "email": "",
+   "address": "22 Aerial Pl NE, Calgary, AB T2E 3J1",
+   "regulator": "CTA",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Flair Airlines",
+   "sector": "airline",
+   "category": "delays",
+   "alias": [
+    "flair"
+   ],
+   "domain": "flyflair.com",
+   "telefono": "",
+   "url": "https://flyflair.com/contact-us",
+   "canal": "Web support → Passenger rights office",
+   "email": "",
+   "address": "",
+   "regulator": "CTA",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Porter Airlines",
+   "sector": "airline",
+   "category": "delays",
+   "alias": [
+    "porter"
+   ],
+   "domain": "flyporter.com",
+   "telefono": "",
+   "url": "https://www.flyporter.com/en-ca/contact-us",
+   "canal": "Customer relations form → Executive escalation",
+   "email": "",
+   "address": "",
+   "regulator": "CTA",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Air Transat",
+   "sector": "airline",
+   "category": "delays",
+   "alias": [
+    "air transat",
+    "transat"
+   ],
+   "domain": "airtransat.com",
+   "telefono": "",
+   "url": "https://www.airtransat.com/en-CA/contact-us",
+   "canal": "Customer service → Passenger relations",
+   "email": "",
+   "address": "5959 Côte-Vertu Blvd, Saint-Laurent, QC H4S 2E6",
+   "regulator": "CTA",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "TD Bank",
+   "sector": "banking",
+   "category": "billing",
+   "alias": [
+    "td",
+    "td bank",
+    "toronto-dominion"
+   ],
+   "domain": "td.com",
+   "telefono": "",
+   "url": "https://www.td.com/ca/en/about-td/customer-care",
+   "canal": "Branch/phone manager → Customer Care → TD Ombudsman",
+   "email": "td.ombudsman@td.com",
+   "address": "66 Wellington St W, Toronto, ON M5K 1A2",
+   "regulator": "OBSI",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "RBC",
+   "sector": "banking",
+   "category": "billing",
+   "alias": [
+    "rbc",
+    "royal bank"
+   ],
+   "domain": "rbc.com",
+   "telefono": "",
+   "url": "https://www.rbc.com/customercare/",
+   "canal": "Branch manager → Client Care Office → RBC Ombudsman",
+   "email": "ombudsman@rbc.com",
+   "address": "200 Bay St, Toronto, ON M5J 2J5",
+   "regulator": "OBSI",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Scotiabank",
+   "sector": "banking",
+   "category": "billing",
+   "alias": [
+    "scotiabank",
+    "scotia",
+    "bank of nova scotia"
+   ],
+   "domain": "scotiabank.com",
+   "telefono": "",
+   "url": "https://www.scotiabank.com/ca/en/about/contact-us/customer-care/resolving-your-concerns.html",
+   "canal": "Branch → President's Office → Scotiabank Ombudsman",
+   "email": "ombudsman@scotiabank.com",
+   "address": "44 King St W, Toronto, ON M5H 1H1",
+   "regulator": "OBSI",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "BMO",
+   "sector": "banking",
+   "category": "billing",
+   "alias": [
+    "bmo",
+    "bank of montreal"
+   ],
+   "domain": "bmo.com",
+   "telefono": "",
+   "url": "https://www.bmo.com/main/about-bmo/resolving-a-complaint/",
+   "canal": "Branch → Senior management → BMO Ombudsman",
+   "email": "bmo.ombudsman@bmo.com",
+   "address": "100 King St W, Toronto, ON M5X 1A1",
+   "regulator": "OBSI",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "CIBC",
+   "sector": "banking",
+   "category": "billing",
+   "alias": [
+    "cibc"
+   ],
+   "domain": "cibc.com",
+   "telefono": "",
+   "url": "https://www.cibc.com/en/about-cibc/customer-care.html",
+   "canal": "Branch → Client Care → CIBC Ombudsman",
+   "email": "mailbox.ombudsman@cibc.com",
+   "address": "81 Bay St, Toronto, ON M5J 0E7",
+   "regulator": "OBSI",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Canada Post",
+   "sector": "delivery",
+   "category": "service",
+   "alias": [
+    "canada post",
+    "postes canada"
+   ],
+   "domain": "canadapost-postescanada.ca",
+   "telefono": "",
+   "url": "https://www.canadapost-postescanada.ca/cpc/en/support.page",
+   "canal": "Customer service ticket → Customer appeals → Ombudsman",
+   "email": "ombudsman@canadapost.ca",
+   "address": "2701 Riverside Dr, Ottawa, ON K1A 0B1",
+   "regulator": "Canada Post Ombudsman",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Purolator",
+   "sector": "delivery",
+   "category": "service",
+   "alias": [
+    "purolator"
+   ],
+   "domain": "purolator.com",
+   "telefono": "",
+   "url": "https://www.purolator.com/en/resources/contact-us",
+   "canal": "Customer support → Escalations",
+   "email": "",
+   "address": "5995 Avebury Rd, Mississauga, ON L5R 3P9",
+   "regulator": "Provincial consumer office",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Amazon.ca",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "amazon",
+    "amazon.ca",
+    "amazon canada"
+   ],
+   "domain": "amazon.ca",
+   "telefono": "",
+   "url": "https://www.amazon.ca/hz/contact-us",
+   "canal": "Chat/phone rep → Leadership team",
+   "email": "",
+   "address": "",
+   "regulator": "Provincial consumer office, Competition Bureau",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Walmart Canada",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "walmart"
+   ],
+   "domain": "walmart.ca",
+   "telefono": "",
+   "url": "https://www.walmart.ca/en/help",
+   "canal": "Store/online care → Customer relations",
+   "email": "",
+   "address": "1940 Argentia Rd, Mississauga, ON L5N 1P9",
+   "regulator": "Provincial consumer office",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Canadian Tire",
+   "sector": "retail",
+   "category": "billing",
+   "alias": [
+    "canadian tire"
+   ],
+   "domain": "canadiantire.ca",
+   "telefono": "",
+   "url": "https://www.canadiantire.ca/en/customer-service.html",
+   "canal": "Store manager/online rep → Corporate relations",
+   "email": "",
+   "address": "2180 Yonge St, Toronto, ON M4P 2V8",
+   "regulator": "Provincial consumer office",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "DoorDash",
+   "sector": "delivery",
+   "category": "service",
+   "alias": [
+    "doordash"
+   ],
+   "domain": "doordash.com",
+   "telefono": "",
+   "url": "https://help.doordash.com/consumers/s/",
+   "canal": "In-app chat → Support ticket",
+   "email": "",
+   "address": "",
+   "regulator": "Provincial consumer office",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Uber",
+   "sector": "delivery",
+   "category": "service",
+   "alias": [
+    "uber",
+    "uber eats"
+   ],
+   "domain": "uber.com",
+   "telefono": "",
+   "url": "https://help.uber.com/",
+   "canal": "In-app help → Priority support",
+   "email": "",
+   "address": "121 Bloor St E, Toronto, ON M4W 3M5",
+   "regulator": "Provincial consumer office",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Enbridge Gas",
+   "sector": "utility",
+   "category": "utility",
+   "alias": [
+    "enbridge"
+   ],
+   "domain": "enbridgegas.com",
+   "telefono": "",
+   "url": "https://www.enbridgegas.com/contact-us/complaints-escalation",
+   "canal": "Representative → Supervisor → Ombudsman",
+   "email": "ombudsman@enbridge.com",
+   "address": "500 Consumers Rd, North York, ON M2J 1P8",
+   "regulator": "OEB",
+   "fuente": "terceros",
+   "verificado": false
+  },
+  {
+   "ad": "Hydro One",
+   "sector": "utility",
+   "category": "utility",
+   "alias": [
+    "hydro one"
+   ],
+   "domain": "hydroone.com",
+   "telefono": "",
+   "url": "https://www.hydroone.com/about/corporate-information/ombudsman",
+   "canal": "Call centre → Resolution team → Hydro One Ombudsman",
+   "email": "ombudsman@hydroone.com",
+   "address": "483 Bay St, Toronto, ON M5G 2P5",
+   "regulator": "OEB",
+   "fuente": "terceros",
+   "verificado": false
+  }
+ ]
+}
