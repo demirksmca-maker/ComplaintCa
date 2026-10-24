@@ -200,7 +200,10 @@ export async function shieldView(req, res) {
   // GET /api/shield?gsc24=1 → Search Console's last 24 hours only (Genel).
   if (req.query && req.query.gsc24) {
     try { return res.status(200).json(await searchRecent(pipeline)); }
-    catch { return res.status(502).json({ ok: false, reason: 'error' }); }
+    catch (err) {
+      console.error('search console 24h error:', err && err.message);
+      return res.status(502).json({ ok: false, reason: 'error' });
+    }
   }
 
   // GET /api/shield?gsc=1[&days=7|14|28|90] → Search Console numbers (cached

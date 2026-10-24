@@ -55,7 +55,7 @@ test('summarizeRecent: last 24 h from hourly rows, since-start from daily rows',
 });
 
 test('searchRecent: the cached last-24-hours part, no Google call on a hit', async () => {
-  const day = { impressions: 1380, clicks: 15, hours: [], last: 1 };
-  const out = await searchRecent(async cmds => { assert.equal(cmds[0][0], 'GET'); return [JSON.stringify({ day, since: null })]; });
-  assert.deepEqual(out, { ok: true, day, since: null });
+  const day = { impressions: 1380, clicks: 15, hours: [{ t: 1, clicks: 15, impressions: 1380 }], last: 1 };
+  const out = await searchRecent(async cmds => { assert.equal(cmds[0][0], 'GET'); return [JSON.stringify({ day, since: { weeks: [] } })]; });
+  assert.deepEqual(out, { ok: true, day: { impressions: 1380, clicks: 15, last: 1 } });
 });

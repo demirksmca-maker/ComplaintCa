@@ -522,7 +522,7 @@
   // Under the Google card: Search Console's "24 saat" numbers (both sites,
   // the same as its Performance report), or for one site Google's today so far.
   function d3LiveLine(s, d) {
-    var g = d3G24 && d3G24.day, hm = function (t) { return new Date(t).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); };
+    var g = d3G24 && d3G24.day, hm = function (t) { return new Date(t).toLocaleTimeString('tr-TR', { timeZone: 'America/Toronto', hour: '2-digit', minute: '2-digit' }); };
     if (g && d3Site === 'all') {
       return '<p class="d3-live" title="Search Console · son veri ' + hm(g.last) + '">Son 24 saat: <b>' + d3Num(g.impressions) + '</b> gösterim · <b>' + d3Num(g.clicks) + '</b> tık · ' +
         (g.impressions ? d3Pct(g.clicks / g.impressions) : '–') + ' TO</p>';
@@ -660,13 +660,20 @@
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; d3Road(); } }, function () {});
-    d3Load24();
+    if (fresh || !d3G24) d3Load24();
   }
-  // Search Console's last 24 hours (the server caches it 30 minutes).
+  // Search Console's last 24 hours (the server caches it 30 minutes). The card
+  // is redrawn only when the numbers change; an answer without data drops the
+  // line back to today so far.
   function d3Load24() {
     fetch('/api/shield?gsc24=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (g) { if (g && g.ok) { d3G24 = g; if (d3Data) d3Render(); } }, function () {});
+      .then(function (g) {
+        var next = g && g.ok && g.day ? g : null;
+        if (JSON.stringify(next) === JSON.stringify(d3G24)) return;
+        d3G24 = next;
+        if (d3Data) d3Render();
+      }, function () {});
   }
 
   // 3D shield: 10 dark layers for thickness, then the lit front.

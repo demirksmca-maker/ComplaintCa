@@ -163,15 +163,23 @@ async function fetchRecent({ q }) {
   return summarizeRecent(hourRows, dateRows, now);
 }
 
-// Only the last-24-hours part (Genel's "Son 24 saat" line), same cache.
+// An empty answer (Google busy for a moment) is kept only 5 minutes.
+const storeRecent = (redis, recent) => redis([['SET', RECENT_KEY, JSON.stringify(recent), 'EX', recent.day ? RECENT_SECONDS : 300]]);
+
+// Only the last-24-hours totals (Genel's "Son 24 saat" line), same cache as
+// the Google tab.
 export async function searchRecent(redis) {
   const [hit] = await redis([['GET', RECENT_KEY]]);
-  try { if (hit) return { ok: true, ...JSON.parse(hit) }; } catch { /* refetch */ }
-  const c = await connect();
-  if (!c.ok) return c;
-  const recent = await fetchRecent(c);
-  await redis([['SET', RECENT_KEY, JSON.stringify(recent), 'EX', RECENT_SECONDS]]);
-  return { ok: true, ...recent };
+  let recent = null;
+  try { recent = hit ? JSON.parse(hit) : null; } catch { /* refetch */ }
+  if (!recent) {
+    const c = await connect();
+    if (!c.ok) return { ok: false, reason: c.reason };
+    recent = await fetchRecent(c);
+    await storeRecent(redis, recent);
+  }
+  const d = recent.day;
+  return { ok: true, day: d ? { impressions: d.impressions, clicks: d.clicks, last: d.last } : null };
 }
 
 export async function searchConsole(redis, { fresh = false, days = 28 } = {}) {
@@ -192,7 +200,7 @@ export async function searchConsole(redis, { fresh = false, days = 28 } = {}) {
     }
     if (!recent) {
       recent = await fetchRecent(c);
-      await redis([['SET', RECENT_KEY, JSON.stringify(recent), 'EX', RECENT_SECONDS]]);
+      await storeRecent(redis, recent);
     }
   }
   return { ...main, recent };
