@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>File a Complaint — Form v2 Demo</title>
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070f1f;--surface:#0e1a33;--surface-2:#132242;--text:#eaf0fb;--sub:#a8b3cc;--muted:#6f7c98;
+  --border:#22314f;--blue:#5b9bf5;--gold:#c9a84c;--red:#f0576a;--green:#2fd07a;--amber:#e7b955;
+  --radius:16px;--sh:0 10px 30px rgba(0,0,0,.35);--field:#0a1428;
+}
+:root[data-theme="light"]{
+  --bg:#f3f1ea;--surface:#fff;--surface-2:#f5f4ee;--text:#1a2233;--sub:#555f74;--muted:#8a93a6;
+  --border:#e1dfd6;--blue:#1a4fa0;--field:#fbfaf6;--sh:0 1px 2px rgba(20,30,50,.05),0 8px 24px rgba(20,30,50,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea,select{font:inherit;color:var(--text)}
+
+/* Header — logo unchanged */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(7,15,31,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(201,168,76,.18)}
+.hdr-in{max-width:1120px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo img{width:36px;height:36px}
+.logo-word{font-family:Cinzel,serif;font-weight:600;font-size:1.1rem;line-height:1;
+  background:linear-gradient(180deg,#fff6c8 0%,#f5d77a 22%,#c9962e 48%,#7a5212 52%,#b8862a 70%,#f0cf6e 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(240,200,90,.35))}
+.logo-word b{font-weight:900;font-size:1.35rem;letter-spacing:2px}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:6px}
+.saved{font-size:.75rem;color:#8f9bb6;display:flex;align-items:center;gap:6px;opacity:0;transition:opacity .3s}
+.saved.on{opacity:1}
+.icon-btn{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#c7d0e4}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+
+/* Layout */
+.page{max-width:1120px;margin:0 auto;padding:24px 16px 120px;display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.head h1{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em}
+.head p{color:var(--sub);font-size:.92rem;margin-top:4px}
+
+/* Stepper */
+.stepper{display:flex;gap:6px;margin:20px 0 18px}
+.st{flex:1;display:flex;flex-direction:column;gap:7px;cursor:pointer}
+.st .bar{height:4px;border-radius:4px;background:var(--border);overflow:hidden}
+.st .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5d77a,#c9962e);transition:width .35s}
+.st.done .bar i,.st.on .bar i{width:100%}
+.st span{font-size:.74rem;font-weight:600;color:var(--muted)}
+.st.on span{color:var(--text)}
+.st.done span{color:var(--sub)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--sh);padding:22px}
+.step{display:none;animation:in .3s ease}
+.step.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.q{font-size:1.2rem;font-weight:700;letter-spacing:-.01em}
+.hint{color:var(--sub);font-size:.86rem;margin:4px 0 18px}
+.lbl{display:block;font-size:.8rem;font-weight:600;color:var(--sub);margin:18px 0 8px}
+.lbl small{font-weight:400;color:var(--muted)}
+.field{width:100%;background:var(--field);border:1.5px solid var(--border);border-radius:12px;padding:13px 14px;font-size:.95rem;outline:none;transition:border-color .15s,box-shadow .15s}
+.field:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,168,76,.15)}
+textarea.field{min-height:170px;resize:vertical;line-height:1.6}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Company search */
+.srch{position:relative}
+.srch svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.srch .field{padding-left:42px;font-size:1.02rem;padding-top:15px;padding-bottom:15px}
+.dd{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);overflow:hidden;z-index:5;display:none}
+.dd.on{display:block}
+.dd button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;text-align:left;font-size:.9rem}
+.dd button:hover,.dd button.hl{background:var(--surface-2)}
+.dd small{color:var(--muted);margin-left:auto;font-size:.76rem}
+.b-logo{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.72rem;flex-shrink:0}
+.sel-co{display:none;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--gold);border-radius:12px;background:rgba(201,168,76,.08)}
+.sel-co.on{display:flex}
+.sel-co .b-logo{width:40px;height:40px;font-size:.85rem}
+.sel-co b{display:block}
+.sel-co small{color:var(--sub);font-size:.8rem}
+.sel-co button{margin-left:auto;color:var(--sub);font-size:.82rem;font-weight:600}
+
+/* Chips & option cards */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--border);background:var(--field);border-radius:99px;padding:8px 14px;font-size:.86rem;font-weight:500;color:var(--sub);transition:all .15s}
+.chip:hover{border-color:var(--muted)}
+.chip.on{border-color:var(--gold);color:var(--text);background:rgba(201,168,76,.12)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.opt{border:1.5px solid var(--border);background:var(--field);border-radius:14px;padding:14px;text-align:left;transition:all .15s;position:relative}
+.opt:hover{border-color:var(--muted)}
+.opt.on{border-color:var(--gold);background:rgba(201,168,76,.08)}
+.opt.on:after{content:"✓";position:absolute;top:10px;right:12px;width:20px;height:20px;border-radius:50%;background:var(--gold);color:#1b1202;font-size:.7rem;font-weight:800;display:grid;place-items:center}
+.opt .e{font-size:1.4rem}
+.opt b{display:block;font-size:.9rem;margin:6px 0 2px}
+.opt small{color:var(--muted);font-size:.76rem;line-height:1.4;display:block}
+.note{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:.8rem;color:var(--sub);line-height:1.55;display:none}
+.note.on{display:block}
+.note.blue{background:rgba(91,155,245,.1);border:1px solid rgba(91,155,245,.35)}
+.note.gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35)}
+
+/* Writing helpers */
+.meter{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:.78rem;color:var(--muted)}
+.meter .track{flex:1;height:5px;border-radius:5px;background:var(--border);overflow:hidden}
+.meter .track i{display:block;height:100%;width:0;border-radius:5px;transition:width .25s,background .25s}
+.tips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tip{font-size:.74rem;padding:4px 10px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
+.tip.ok{color:var(--green);background:rgba(47,208,122,.12)}
+.tip.ok:before{content:"✓ "}
+.ai{display:flex;align-items:center;gap:12px;margin-top:16px;padding:14px;border-radius:14px;background:linear-gradient(120deg,rgba(91,155,245,.14),rgba(201,168,76,.12));border:1px solid rgba(201,168,76,.25)}
+.ai p{font-size:.84rem;color:var(--sub);flex:1}
+.ai p b{color:var(--text)}
+.ai-cat{display:none;margin-top:12px;font-size:.8rem;color:var(--sub);gap:8px;flex-wrap:wrap;align-items:center}
+.ai-cat.on{display:flex}
+.tag{font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(91,155,245,.14);color:var(--blue)}
+.tag.p{background:rgba(240,87,106,.14);color:var(--red)}
+
+/* Evidence */
+.drop{border:2px dashed var(--border);border-radius:14px;padding:28px;text-align:center;cursor:pointer;transition:all .15s;background:var(--field)}
+.drop:hover,.drop.over{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.drop .e{font-size:1.8rem}
+.drop b{display:block;margin:6px 0 2px}
+.drop small{color:var(--muted);font-size:.8rem}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:12px}
+.thumb{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;font-size:.7rem;color:var(--muted)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:.75rem}
+.loc{display:flex;gap:8px}
+.loc .field{flex:1}
+.loc button{width:50px;border-radius:12px;border:1.5px solid var(--border);background:var(--field);font-size:1.1rem}
+
+/* Identity */
+.toggle-row{display:flex;align-items:center;gap:14px;padding:14px;border-radius:14px;background:var(--field);border:1.5px solid var(--border)}
+.toggle-row div{flex:1}
+.toggle-row b{display:block;font-size:.92rem}
+.toggle-row small{color:var(--muted);font-size:.78rem}
+.tog{width:46px;height:26px;border-radius:99px;background:var(--border);position:relative;flex-shrink:0;transition:background .2s}
+.tog:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.tog.on{background:var(--green)}
+.tog.on:after{transform:translateX(20px)}
+.idf{display:none}
+.idf.on{display:block}
+.quick{display:flex;gap:8px;margin-top:10px}
+.quick button{flex:1;padding:11px;border-radius:12px;border:1.5px solid var(--border);background:var(--field);font-size:.85rem;font-weight:600}
+.err{color:var(--red);font-size:.8rem;margin-top:10px;display:none}
+.err.on{display:block}
+
+/* Nav buttons */
+.nav{display:flex;gap:10px;margin-top:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;border-radius:13px;padding:14px 20px;font-size:.95rem;transition:transform .12s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn-gold{flex:1;background:linear-gradient(180deg,#f5d77a,#c9962e);color:#1b1202;box-shadow:0 8px 20px rgba(201,150,46,.3)}
+.btn-gold[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn-line{border:1.5px solid var(--border);color:var(--sub)}
+.btn-sm{padding:9px 14px;font-size:.82rem;border-radius:10px}
+
+/* Live preview */
+.side{position:sticky;top:80px;display:flex;flex-direction:column;gap:14px}
+.side-h{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
+.side-h:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,208,122,.18)}
+.pv{padding:18px}
+.pv-top{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted)}
+.pv-top strong{color:var(--text)}
+.pv .badge{margin-left:auto;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px;background:rgba(231,185,85,.14);color:var(--amber)}
+.pv h3{font-size:1rem;margin:12px 0 6px;word-break:break-word}
+.pv p{font-size:.85rem;color:var(--sub);white-space:pre-wrap;word-break:break-word;max-height:150px;overflow:hidden;-webkit-mask:linear-gradient(#000 70%,transparent)}
+.pv .ph{color:var(--muted);font-style:italic}
+.pv-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pv-meta span{font-size:.72rem;padding:3px 9px;border-radius:8px;background:var(--surface-2);color:var(--sub)}
+.pv-foot{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--muted);display:flex;gap:6px;align-items:center}
+.what{padding:16px;font-size:.82rem;color:var(--sub)}
+.what b{color:var(--text);display:block;margin-bottom:8px;font-size:.88rem}
+.what li{list-style:none;display:flex;gap:10px;padding:5px 0}
+.what li i{font-style:normal;width:22px;height:22px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;font-size:.72rem;font-weight:800;color:var(--gold);flex-shrink:0}
+
+/* Review list */
+.rev{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.rev div{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.86rem}
+.rev span{color:var(--muted);width:110px;flex-shrink:0}
+.rev em{font-style:normal;flex:1;word-break:break-word}
+.rev a{color:var(--blue);font-size:.78rem;font-weight:600;cursor:pointer}
+
+/* Success */
+.done-box{text-align:center;padding:36px 22px}
+.check{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;background:rgba(47,208,122,.14);display:grid;place-items:center;color:var(--green);animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.ref{display:inline-block;margin:14px 0;font-family:ui-monospace,monospace;font-size:1.05rem;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:10px;background:var(--surface-2);border:1px dashed var(--gold)}
+.timeline{text-align:left;max-width:380px;margin:18px auto 0}
+
+.demo-tag{position:fixed;right:12px;top:68px;z-index:60;font-size:.7rem;font-weight:700;background:#e5484d;color:#fff;padding:4px 9px;border-radius:7px}
+
+@media (max-width:960px){
+  .page{grid-template-columns:1fr}
+  .side{display:none}
+}
+@media (max-width:640px){
+  .page{padding-top:16px}
+  .card{padding:18px}
+  .opts{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr}
+  .st span{font-size:.66rem}
+  .nav{position:fixed;left:0;right:0;bottom:0;margin:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--border);z-index:30}
+  .saved span{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a href="#" class="logo" aria-label="ComplaintCA">
+      <img src="asya/emblem-mark.webp" alt="" width="36" height="36">
+      <span class="logo-word">Complaint<b>CA</b></span>
+    </a>
+    <div class="hdr-r">
+      <span class="saved" id="saved">✓ <span>Draft saved</span></span>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<span class="demo-tag">DEMO · Form v2</span>
+
+<main class="page">
+  <div>
+    <div class="head" id="head">
+      <h1>File a complaint</h1>
+      <p>Takes about 3 minutes. Free, and you can stay anonymous.</p>
+    </div>
+
+    <div class="stepper" id="stepper"></div>
+
+    <!-- STEP 1: WHO -->
+    <section class="step card on" data-step="0">
+      <div class="q">Who is your complaint about?</div>
+      <div class="hint">Start typing a company or institution name.</div>
+      <div class="srch" id="srchBox">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="field" id="co" placeholder="e.g. Rogers, Air Canada, Toronto City Hall" autocomplete="off">
+        <div class="dd" id="dd"></div>
+      </div>
+      <div class="sel-co" id="selCo"></div>
+      <label class="lbl">Popular right now</label>
+      <div class="chips" id="popular"></div>
+      <label class="lbl">What type is it?</label>
+      <div class="chips" id="ttype"></div>
+      <label class="lbl" for="addr">Their address <small>(optional — helps us reach the right office)</small></label>
+      <input class="field" id="addr" placeholder="Street, city, province">
+      <div class="err" id="e0">Please choose who the complaint is about.</div>
+    </section>
+
+    <!-- STEP 2: WHAT -->
+    <section class="step card" data-step="1">
+      <div class="q">What went wrong?</div>
+      <div class="hint">Pick the closest topic — it helps the right team see your complaint.</div>
+      <div class="chips" id="topics"></div>
+      <label class="lbl">What do you want to do?</label>
+      <div class="opts" id="ctype">
+        <button class="opt on" data-v="notice"><span class="e">📢</span><b>Notify</b><small>Report the issue and ask for a fix</small></button>
+        <button class="opt" data-v="legal"><span class="e">⚖️</span><b>Assert legal rights</b><small>Notice of legal action &amp; compensation</small></button>
+        <button class="opt" data-v="access"><span class="e">📄</span><b>Request information</b><small>Access to Information / FOI request</small></button>
+      </div>
+      <div class="note blue" id="nLegal">⚖️ This goes to our <b>Open Case Feed</b> for signed-in partner lawyers only. It is not published on the public feed.</div>
+      <div class="note gold" id="nAccess">📄 Processed under Access to Information law. A real name and contact are required so the institution can respond.</div>
+      <div class="row">
+        <div><label class="lbl" for="date">When did it happen?</label><input class="field" type="date" id="date"></div>
+        <div><label class="lbl" for="amt">Amount involved <small>(optional)</small></label><input class="field" id="amt" inputmode="decimal" placeholder="$ 0.00"></div>
+      </div>
+      <div class="err" id="e1">Please pick a topic.</div>
+    </section>
+
+    <!-- STEP 3: TELL -->
+    <section class="step card" data-step="2">
+      <div class="q">Tell your story</div>
+      <div class="hint">Clear, factual complaints get answered faster.</div>
+      <label class="lbl" for="title">Title</label>
+      <input class="field" id="title" maxlength="90" placeholder="e.g. Charged twice for my November bill">
+      <label class="lbl" for="desc">What happened? <small id="cnt">0 / 1000</small></label>
+      <textarea class="field" id="desc" maxlength="1000" placeholder="What happened, when, and what have you already tried?"></textarea>
+      <div class="meter"><div class="track"><i id="mBar"></i></div><span id="mTxt">Start writing…</span></div>
+      <div class="tips" id="tips"></div>
+      <div class="ai-cat" id="aiCat">🤖 AI sorted it as <span class="tag" id="aiC"></span><span class="tag p" id="aiP"></span></div>
+      <div class="ai">
+        <p><b>✨ Need help?</b> ASYA rewrites your text to be clear, polite and complete.</p>
+        <button class="btn btn-line btn-sm" id="aiBtn">Improve with AI</button>
+      </div>
+      <label class="lbl">What outcome do you want?</label>
+      <div class="chips" id="want"></div>
+      <div class="err" id="e2">Add a title and at least 50 characters.</div>
+    </section>
+
+    <!-- STEP 4: EVIDENCE -->
+    <section class="step card" data-step="3">
+      <div class="q">Add evidence <small style="font-weight:400;color:var(--muted);font-size:.85rem">(optional)</small></div>
+      <div class="hint">Receipts, screenshots, photos or videos make your complaint much stronger.</div>
+      <div class="drop" id="drop">
+        <div class="e">📎</div>
+        <b>Drop files here or tap to upload</b>
+        <small>Images or videos · up to 10 files</small>
+      </div>
+      <input type="file" id="file" accept="image/*,video/*" multiple hidden>
+      <div class="thumbs" id="thumbs"></div>
+      <label class="lbl" for="loc">Where did it happen? <small>(optional)</small></label>
+      <div class="loc"><input class="field" id="loc" placeholder="Address or city"><button id="locBtn" aria-label="Use my location">📡</button></div>
+    </section>
+
+    <!-- STEP 5: YOU + SUBMIT -->
+    <section class="step card" data-step="4">
+      <div class="q">Almost done</div>
+      <div class="hint">Check your complaint and tell us how to reach you.</div>
+      <div class="toggle-row">
+        <div><b>Stay anonymous</b><small>Your name is never shown publicly or to the company.</small></div>
+        <button class="tog on" id="anon" aria-label="Anonymous"></button>
+      </div>
+      <label class="lbl" for="email">Email <small>(for verification and replies — never shared)</small></label>
+      <input class="field" id="email" type="email" placeholder="you@email.com">
+      <div class="quick"><button>  Continue with Google</button><button> Continue with Apple</button></div>
+      <div class="idf" id="idf">
+        <div class="row">
+          <div><label class="lbl" for="name">Full name</label><input class="field" id="name"></div>
+          <div><label class="lbl" for="phone">Phone</label><input class="field" id="phone" type="tel" placeholder="+1 (416) 000-0000"></div>
+        </div>
+      </div>
+      <label class="lbl">Review</label>
+      <div class="rev" id="rev"></div>
+      <div class="toggle-row" style="margin-top:16px">
+        <div><b>I accept full legal responsibility</b><small>My complaint is truthful. <a style="color:var(--blue)">See agreement</a></small></div>
+        <button class="tog" id="legal" aria-label="Accept"></button>
+      </div>
+      <div class="err" id="e4">Enter a valid email and accept the agreement.</div>
+    </section>
+
+    <!-- SUCCESS -->
+    <section class="step card done-box" data-step="5">
+      <div class="check"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+      <div class="q">Complaint submitted</div>
+      <p class="hint" style="margin-bottom:0">We sent a confirmation to your email.</p>
+      <div class="ref" id="ref"></div>
+      <div class="what timeline card">
+        <b>What happens next</b>
+        <ul>
+          <li><i>1</i>We review it (usually within 24 h)</li>
+          <li><i>2</i>The company is notified and can reply publicly</li>
+          <li><i>3</i>You mark it resolved and rate the reply</li>
+        </ul>
+      </div>
+      <div class="nav" style="position:static;border:0;background:none;padding:0;margin-top:18px;max-width:380px;margin-left:auto;margin-right:auto">
+        <button class="btn btn-gold" onclick="location.reload()">Track my complaint</button>
+      </div>
+    </section>
+
+    <div class="nav" id="nav">
+      <button class="btn btn-line" id="back">← Back</button>
+      <button class="btn btn-gold" id="next">Continue →</button>
+    </div>
+  </div>
+
+  <aside class="side" id="side">
+    <div class="side-h">Live preview</div>
+    <div class="card pv">
+      <div class="pv-top"><div class="b-logo" id="pvLogo" style="background:#3a4a6a">?</div><span><strong id="pvCo">Company</strong> · just now</span><span class="badge">Waiting</span></div>
+      <h3 id="pvT"><span class="ph">Your title</span></h3>
+      <p id="pvD"><span class="ph">Your story will appear here as you write…</span></p>
+      <div class="pv-meta" id="pvM"></div>
+      <div class="pv-foot">👤 <span id="pvU">Anonymous</span></div>
+    </div>
+    <div class="card what">
+      <b>Why it works</b>
+      <ul>
+        <li><i>✓</i>Companies are notified and can reply publicly</li>
+        <li><i>✓</i>Your identity stays private</li>
+        <li><i>✓</i>Free — no account needed to start</li>
+      </ul>
+    </div>
+  </aside>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const STEPS=["Company","Topic","Story","Evidence","Submit"];
+const COS=[["Rogers","Telecom","#d6001c"],["Bell","Telecom","#0066a4"],["Telus","Telecom","#4b286d"],["Air Canada","Airline","#e31837"],["WestJet","Airline","#00a0af"],["Amazon.ca","E-commerce","#232f3e"],["Canada Post","Delivery","#da291c"],["TD Bank","Bank","#008a00"],["RBC","Bank","#005daa"],["Toronto City Hall","Municipality","#1a4fa0"],["Service Canada","Government","#26374a"],["Walmart Canada","Retail","#0071ce"]];
+const TYPES=[["🏪","Business"],["🏛️","Municipality"],["🏢","Government"],["🏫","School"],["🏥","Health care"],["🏠","Landlord"],["•••","Other"]];
+const TOPICS=["Billing / overcharge","Refund","Delivery","Customer service","Product defect","Cancellation","Contract / terms","Safety","Other"];
+const WANTS=["Refund","Replacement","Repair","Apology","Cancel contract","Explanation","Compensation"];
+const S={step:0,co:null,type:null,topic:null,ctype:"notice",want:[],files:[],anon:true,legal:false};
+const ini=n=>n.replace(/[^A-Za-z ]/g,"").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+$("stepper").innerHTML=STEPS.map((s,i)=>`<div class="st" data-i="${i}"><div class="bar"><i></i></div><span>${i+1}. ${s}</span></div>`).join("");
+$("stepper").onclick=e=>{const s=e.target.closest(".st");if(s&&+s.dataset.i<S.step)go(+s.dataset.i)};
+
+function chips(el,list,key,multi){
+  $(el).innerHTML=list.map(x=>{const v=Array.isArray(x)?x[1]:x,lab=Array.isArray(x)?x[0]+" "+x[1]:x;return`<button class="chip" data-v="${v}">${lab}</button>`}).join("");
+  $(el).onclick=e=>{const b=e.target.closest(".chip");if(!b)return;const v=b.dataset.v;
+    if(multi){S[key]=S[key].includes(v)?S[key].filter(x=>x!=v):[...S[key],v];b.classList.toggle("on")}
+    else{S[key]=v;$(el).querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c==b))}
+    upd()};
+}
+chips("ttype",TYPES,"type");chips("topics",TOPICS,"topic");chips("want",WANTS,"want",true);
+$("popular").innerHTML=COS.slice(0,6).map(c=>`<button class="chip" data-n="${c[0]}">${c[0]}</button>`).join("");
+$("popular").onclick=e=>{const b=e.target.closest(".chip");if(b)pick(COS.find(c=>c[0]==b.dataset.n))};
+
+/* company autocomplete */
+let hl=-1;
+$("co").oninput=()=>{const q=$("co").value.trim().toLowerCase();hl=-1;
+  if(!q){$("dd").classList.remove("on");$("dd").innerHTML="";return}
+  const m=COS.filter(c=>c[0].toLowerCase().includes(q)).slice(0,6);
+  $("dd").innerHTML=m.map((c,i)=>`<button data-i="${COS.indexOf(c)}"><span class="b-logo" style="background:${c[2]}">${ini(c[0])}</span>${c[0]}<small>${c[1]}</small></button>`).join("")+
+    `<button data-new="1"><span class="b-logo" style="background:#3a4a6a">+</span>Add “${esc($("co").value.trim())}”<small>Not listed</small></button>`;
+  $("dd").classList.add("on")};
+$("co").onkeydown=e=>{const bs=[...$("dd").querySelectorAll("button")];if(!bs.length)return;
+  if(e.key=="ArrowDown"||e.key=="ArrowUp"){e.preventDefault();hl=(hl+(e.key=="ArrowDown"?1:-1)+bs.length)%bs.length;bs.forEach((b,i)=>b.classList.toggle("hl",i==hl))}
+  if(e.key=="Enter"){e.preventDefault();(bs[hl]||bs[0]).click()}};
+$("dd").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  pick(b.dataset.new?[$("co").value.trim(),"New company","#3a4a6a"]:COS[b.dataset.i])};
+document.addEventListener("click",e=>{if(!$("srchBox").contains(e.target))$("dd").classList.remove("on")});
+function pick(c){S.co=c;$("dd").classList.remove("on");$("srchBox").style.display="none";
+  $("selCo").innerHTML=`<span class="b-logo" style="background:${c[2]}">${ini(c[0])}</span><div><b>${esc(c[0])}</b><small>${c[1]}</small></div><button id="chg">Change</button>`;
+  $("selCo").classList.add("on");
+  const t={Telecom:"Business",Airline:"Business","E-commerce":"Business",Delivery:"Business",Bank:"Business",Retail:"Business",Municipality:"Municipality",Government:"Government"}[c[1]];
+  if(t&&!S.type){S.type=t;$("ttype").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on",x.dataset.v==t))}
+  $("chg").onclick=()=>{S.co=null;$("selCo").classList.remove("on");$("srchBox").style.display="";$("co").value="";$("co").focus();upd()};
+  upd()}
+
+/* complaint type */
+$("ctype").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;S.ctype=b.dataset.v;
+  $("ctype").querySelectorAll(".opt").forEach(o=>o.classList.toggle("on",o==b));
+  $("nLegal").classList.toggle("on",S.ctype=="legal");$("nAccess").classList.toggle("on",S.ctype=="access");
+  if(S.ctype=="access"&&S.anon)setAnon(false);upd()};
+
+/* writing quality */
+const TIPS=[["Date",/\b(\d{1,2}(st|nd|rd|th)?|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|monday|tuesday|wednesday|thursday|friday|yesterday|last week)\b/i],["Amount",/\$\s?\d|\d+\s?(dollars|cad)/i],["What you tried",/\b(called|contacted|emailed|chat|support|asked|told)\b/i],["Order / ref #",/#\s?\w+|\border\b|\bref/i]];
+let aiT;
+function quality(){const d=$("desc").value;$("cnt").textContent=d.length+" / 1000";
+  const hits=TIPS.map(([n,r])=>r.test(d));
+  $("tips").innerHTML=TIPS.map(([n],i)=>`<span class="tip ${hits[i]?"ok":""}">${n}</span>`).join("");
+  const sc=Math.min(100,Math.round(Math.min(d.length,400)/400*60+hits.filter(Boolean).length*10));
+  $("mBar").style.width=sc+"%";$("mBar").style.background=sc<40?"var(--red)":sc<70?"var(--amber)":"var(--green)";
+  $("mTxt").textContent=!d?"Start writing…":sc<40?"Add more detail":sc<70?"Good — add a few facts":"Great complaint 💪";
+  clearTimeout(aiT);aiT=setTimeout(()=>{if(d.length<40){$("aiCat").classList.remove("on");return}
+    $("aiC").textContent=S.topic||"Customer service";$("aiP").textContent=/urgent|medic|safety|danger|threat/i.test(d)?"High priority":"Normal priority";$("aiCat").classList.add("on")},700)}
+$("desc").oninput=()=>{quality();upd()};$("title").oninput=upd;
+$("aiBtn").onclick=()=>{const d=$("desc").value.trim();if(!d){$("desc").focus();return}
+  $("aiBtn").textContent="Improving…";
+  setTimeout(()=>{$("desc").value="Dear "+(S.co?S.co[0]:"team")+",\n\n"+d.charAt(0).toUpperCase()+d.slice(1).replace(/\s+$/,"")+(/[.!?]$/.test(d)?"":".")+"\n\nI kindly request a "+(S.want[0]||"resolution").toLowerCase()+" within 14 days. Thank you.";
+    $("aiBtn").textContent="✓ Improved";quality();upd()},900)};
+quality();
+
+/* evidence */
+$("drop").onclick=()=>$("file").click();
+["dragover","dragenter"].forEach(ev=>$("drop").addEventListener(ev,e=>{e.preventDefault();$("drop").classList.add("over")}));
+["dragleave","drop"].forEach(ev=>$("drop").addEventListener(ev,e=>{e.preventDefault();$("drop").classList.remove("over")}));
+$("drop").addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+$("file").onchange=e=>addFiles(e.target.files);
+function addFiles(fl){[...fl].slice(0,10-S.files.length).forEach(f=>S.files.push({f,url:URL.createObjectURL(f)}));thumbs();upd()}
+function thumbs(){$("thumbs").innerHTML=S.files.map((x,i)=>`<div class="thumb">${x.f.type.startsWith("image")?`<img src="${x.url}" alt="">`:"🎬 Video"}<button data-i="${i}" aria-label="Remove">✕</button></div>`).join("")}
+$("thumbs").onclick=e=>{const b=e.target.closest("button");if(b){S.files.splice(+b.dataset.i,1);thumbs();upd()}};
+$("locBtn").onclick=()=>{$("loc").value="Locating…";navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>{$("loc").value=p.coords.latitude.toFixed(4)+", "+p.coords.longitude.toFixed(4);upd()},()=>{$("loc").value=""}):($("loc").value="")};
+
+/* identity */
+function setAnon(v){S.anon=v;$("anon").classList.toggle("on",v);$("idf").classList.toggle("on",!v);upd()}
+$("anon").onclick=()=>{if(S.ctype=="access"&&!S.anon)return;setAnon(!S.anon)};
+$("legal").onclick=()=>{S.legal=!S.legal;$("legal").classList.toggle("on",S.legal);upd()};
+$("email").oninput=upd;$("name").oninput=upd;
+
+/* validation + nav */
+const valid=[()=>!!S.co,()=>!!S.topic,()=>$("title").value.trim().length>3&&$("desc").value.trim().length>=50,()=>true,
+  ()=>/^\S+@\S+\.\S+$/.test($("email").value)&&S.legal&&(S.anon||$("name").value.trim().length>1)];
+function go(i){S.step=i;
+  document.querySelectorAll(".step").forEach(s=>s.classList.toggle("on",+s.dataset.step==i));
+  document.querySelectorAll(".st").forEach((s,k)=>{s.classList.toggle("on",k==i);s.classList.toggle("done",k<i)});
+  document.querySelectorAll(".err").forEach(e=>e.classList.remove("on"));
+  $("back").style.visibility=i?"visible":"hidden";
+  $("next").textContent=i==4?"Submit complaint":i==3&&!S.files.length?"Skip →":"Continue →";
+  const fin=i==5;$("nav").style.display=fin?"none":"";$("stepper").style.display=fin?"none":"";$("head").style.display=fin?"none":"";
+  if(i==4)review();if(!fin)scrollTo({top:0,behavior:"smooth"});upd()}
+$("back").onclick=()=>go(S.step-1);
+$("next").onclick=()=>{if(!valid[S.step]()){$("e"+S.step)&&$("e"+S.step).classList.add("on");return}
+  if(S.step==4){$("ref").textContent="CCA-"+Math.random().toString(36).slice(2,8).toUpperCase();clearTimeout(svT);try{localStorage.removeItem("ccv2")}catch(e){}}
+  go(S.step+1)};
+function review(){const r=[["Company",S.co&&S.co[0],0],["Topic",S.topic,1],["Type",{notice:"Notify",legal:"Legal rights",access:"Information request"}[S.ctype],1],["Title",$("title").value,2],["Outcome",S.want.join(", ")||"—",2],["Evidence",S.files.length+" file(s)",3]];
+  $("rev").innerHTML=r.map(([k,v,s])=>`<div><span>${k}</span><em>${esc(v||"—")}</em><a data-s="${s}">Edit</a></div>`).join("")}
+$("rev").onclick=e=>{const a=e.target.closest("a");if(a)go(+a.dataset.s)};
+
+/* live preview + draft */
+let svT;
+function upd(){const c=S.co;
+  $("pvCo").textContent=c?c[0]:"Company";$("pvLogo").textContent=c?ini(c[0]):"?";$("pvLogo").style.background=c?c[2]:"#3a4a6a";
+  const t=$("title").value.trim(),d=$("desc").value.trim();
+  $("pvT").innerHTML=t?esc(t):'<span class="ph">Your title</span>';
+  $("pvD").innerHTML=d?esc(d):'<span class="ph">Your story will appear here as you write…</span>';
+  $("pvM").innerHTML=[S.topic,$("amt").value&&"$"+$("amt").value.replace(/^\$\s?/,""),...S.want.map(w=>"Wants: "+w),S.files.length&&"📎 "+S.files.length].filter(Boolean).map(x=>`<span>${esc(String(x))}</span>`).join("");
+  $("pvU").textContent=S.anon?"Anonymous":($("name").value.trim()||"Your name");
+  if(S.step<5){clearTimeout(svT);svT=setTimeout(()=>{try{localStorage.setItem("ccv2",JSON.stringify({t,d}));$("saved").classList.add("on");setTimeout(()=>$("saved").classList.remove("on"),1500)}catch(e){}},800)}}
+$("amt").oninput=upd;
+try{const dr=JSON.parse(localStorage.getItem("ccv2")||"null");if(dr){$("title").value=dr.t||"";$("desc").value=dr.d||"";quality()}}catch(e){}
+$("date").max=new Date().toISOString().slice(0,10);
+
+const root=document.documentElement;
+try{const s=localStorage.getItem("ccv2theme");if(s)root.dataset.theme=s}catch(e){}
+$("themeBtn").onclick=()=>{root.dataset.theme=root.dataset.theme=="light"?"dark":"light";try{localStorage.setItem("ccv2theme",root.dataset.theme)}catch(e){}};
+go(0);
+</script>
+</body>
+</html>
