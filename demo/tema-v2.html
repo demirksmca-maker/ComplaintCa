@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ComplaintCA — Theme v2 Demo</title>
+<link rel="icon" href="../icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7fb;--surface:#fff;--surface-2:#f0f2f8;--text:#0e1630;--sub:#4b5675;--muted:#8590a8;
+  --border:#e4e7f0;--navy:#0b1d3d;--blue:#2f6fe4;--gold:#c9a84c;--gold-2:#f5d77a;
+  --red:#e5484d;--green:#1fa463;--amber:#d9900f;
+  --radius:18px;--sh:0 1px 2px rgba(14,22,48,.05),0 8px 24px rgba(14,22,48,.06);
+}
+:root[data-theme="dark"]{
+  --bg:#070f1f;--surface:#0e1a33;--surface-2:#132242;--text:#eaf0fb;--sub:#a8b3cc;--muted:#6f7c98;
+  --border:#1f2d4d;--blue:#5b9bf5;--sh:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ---------- Header (logo unchanged) ---------- */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(7,15,31,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(201,168,76,.18)}
+.hdr .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo img{width:38px;height:38px}
+.logo-word{font-family:Cinzel,serif;font-weight:600;font-size:1.15rem;line-height:1;
+  background:linear-gradient(180deg,#fff6c8 0%,#f5d77a 22%,#c9962e 48%,#7a5212 52%,#b8862a 70%,#f0cf6e 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(240,200,90,.35))}
+.logo-word b{font-weight:900;font-size:1.4rem;letter-spacing:2px}
+.nav{display:flex;gap:4px;margin-left:12px}
+.nav a{color:#c7d0e4;font-size:.9rem;font-weight:500;padding:8px 12px;border-radius:10px}
+.nav a:hover{background:rgba(255,255,255,.07);color:#fff}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#c7d0e4}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;border-radius:12px;padding:10px 16px;font-size:.92rem;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(180deg,#f5d77a,#c9962e);color:#1b1202;box-shadow:0 6px 18px rgba(201,150,46,.35)}
+.btn-ghost{color:#e6ecf8;border:1px solid rgba(255,255,255,.18)}
+.btn-ghost:hover{background:rgba(255,255,255,.06)}
+
+/* ---------- Hero ---------- */
+.hero{background:radial-gradient(80% 60% at 50% 0%,#17346a 0%,#0b1d3d 55%,#070f1f 100%);color:#fff;padding:64px 0 96px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:auto 0 0 0;height:80px;background:linear-gradient(transparent,var(--bg))}
+.hero .wrap{position:relative;z-index:1;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:#f5d77a;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);padding:6px 12px;border-radius:99px}
+.dot{width:8px;height:8px;border-radius:50%;background:#2fd07a;box-shadow:0 0 0 4px rgba(47,208,122,.2);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(47,208,122,0)}}
+.hero h1{font-size:clamp(2rem,5.2vw,3.6rem);line-height:1.08;font-weight:800;letter-spacing:-.03em;margin:20px auto 14px;max-width:820px}
+.hero h1 span{background:linear-gradient(90deg,#f5d77a,#ffb86b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:#b9c4dc;font-size:1.08rem;max-width:620px;margin:0 auto 28px}
+.search{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:8px;background:#fff;border-radius:18px;padding:8px 8px 8px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.search svg{flex-shrink:0;color:#8590a8}
+.search input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:1rem;color:#0e1630;background:none;padding:10px 0}
+.search .btn{padding:12px 20px}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px}
+.chip{font-size:.82rem;color:#d3dbec;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:6px 12px;border-radius:99px}
+.chip:hover{background:rgba(255,255,255,.14)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px;margin:36px auto 0}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px}
+.stat b{display:block;font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.stat small{color:#9fabc6;font-size:.8rem}
+
+/* ---------- Sections ---------- */
+section.blk{padding:40px 0}
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.sec-h h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.sec-h p{color:var(--sub);font-size:.92rem}
+.sec-h a{color:var(--blue);font-weight:600;font-size:.9rem;white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--sh)}
+
+/* Trending brands */
+.brands{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none}
+.brands::-webkit-scrollbar{display:none}
+.brand{scroll-snap-align:start;padding:16px;display:flex;flex-direction:column;gap:14px;transition:transform .2s}
+.brand:hover{transform:translateY(-3px)}
+.brand-top{display:flex;align-items:center;gap:12px}
+.b-logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:1rem}
+.brand h3{font-size:1rem;font-weight:700;white-space:nowrap}
+.brand .cat{color:var(--muted);font-size:.8rem}
+.score{display:flex;align-items:center;gap:12px}
+.ring{--p:70;--c:var(--green);width:52px;height:52px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;flex-shrink:0}
+.ring span{width:42px;height:42px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.score small{color:var(--sub);font-size:.78rem;line-height:1.35}
+.score small b{color:var(--text)}
+.trend{font-size:.75rem;font-weight:700;padding:3px 8px;border-radius:8px;margin-left:auto}
+.up{color:var(--red);background:rgba(229,72,77,.12)}
+.down{color:var(--green);background:rgba(31,164,99,.12)}
+
+/* Layout: feed + sidebar */
+.grid2{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+.tabs{display:flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:12px;width:max-content;max-width:100%;overflow-x:auto;margin-bottom:14px}
+.tab{padding:8px 14px;border-radius:9px;font-size:.86rem;font-weight:600;color:var(--sub);white-space:nowrap}
+.tab.on{background:var(--surface);color:var(--text);box-shadow:var(--sh)}
+.feed{display:flex;flex-direction:column;gap:12px}
+.cmp{padding:18px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
+.cmp:hover{border-color:var(--blue)}
+.cmp-top{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--muted)}
+.cmp-top .b-logo{width:32px;height:32px;border-radius:9px;font-size:.78rem}
+.cmp-top strong{color:var(--text);font-weight:700}
+.badge{margin-left:auto;font-size:.74rem;font-weight:700;padding:4px 10px;border-radius:99px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.badge:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.b-ok{color:var(--green);background:rgba(31,164,99,.12)}
+.b-ans{color:var(--blue);background:rgba(47,111,228,.12)}
+.b-wait{color:var(--amber);background:rgba(217,144,15,.13)}
+.cmp h3{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.cmp p{color:var(--sub);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.reply{background:var(--surface-2);border-left:3px solid var(--green);border-radius:10px;padding:10px 12px;font-size:.85rem;color:var(--sub)}
+.reply b{color:var(--text)}
+.cmp-foot{display:flex;gap:16px;font-size:.82rem;color:var(--muted)}
+.cmp-foot span{display:inline-flex;align-items:center;gap:5px}
+
+.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:80px}
+.side .card{padding:18px}
+.side h4{font-size:.95rem;font-weight:700;margin-bottom:12px}
+.rank{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--border);font-size:.88rem}
+.rank:first-of-type{border-top:0}
+.rank i{font-style:normal;width:22px;color:var(--muted);font-weight:700}
+.rank .b-logo{width:28px;height:28px;border-radius:8px;font-size:.7rem}
+.rank em{margin-left:auto;font-style:normal;font-weight:700;color:var(--green)}
+.cta-card{background:linear-gradient(135deg,#0b1d3d,#17346a);color:#fff;border:0}
+.cta-card p{color:#b9c4dc;font-size:.88rem;margin:6px 0 14px}
+
+/* Categories */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.catc{padding:16px;display:flex;flex-direction:column;gap:10px;transition:transform .2s}
+.catc:hover{transform:translateY(-3px)}
+.catc .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;background:var(--surface-2)}
+.catc b{font-size:.92rem}
+.catc small{color:var(--muted);font-size:.78rem}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{padding:22px}
+.step .n{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#f5d77a,#c9962e);color:#1b1202;font-weight:800;display:grid;place-items:center;margin-bottom:12px}
+.step h3{font-size:1.05rem;margin-bottom:4px}
+.step p{color:var(--sub);font-size:.9rem}
+
+/* Business banner */
+.biz{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px;background:linear-gradient(120deg,#0b1d3d 0%,#1b2f5c 60%,#3a2a0a 140%);color:#fff;border:1px solid rgba(201,168,76,.25)}
+.biz h2{font-size:1.4rem;letter-spacing:-.02em}
+.biz p{color:#b9c4dc;font-size:.92rem;margin-top:4px}
+
+footer{margin-top:40px;background:#070f1f;color:#8f9bb6;padding:40px 0 100px;font-size:.86rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center}
+footer nav{display:flex;flex-wrap:wrap;gap:16px}
+
+/* Mobile bottom bar */
+.mbar{display:none}
+.demo-tag{position:fixed;left:12px;bottom:12px;z-index:60;font-size:.72rem;font-weight:700;background:#e5484d;color:#fff;padding:5px 10px;border-radius:8px}
+
+@media (max-width:960px){
+  .grid2{grid-template-columns:1fr}
+  .side{position:static}
+  .nav{display:none}
+}
+@media (max-width:640px){
+  .hero{padding:40px 0 80px}
+  .search .btn span{display:none}
+  .stats{gap:8px}.stat{padding:10px}.stat b{font-size:1.15rem}
+  .steps{grid-template-columns:1fr}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  .biz{flex-direction:column;align-items:flex-start}
+  .hdr .btn-ghost,.hdr .btn-gold{display:none}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--surface);border-top:1px solid var(--border);justify-content:space-around;align-items:center;height:64px;padding-bottom:env(safe-area-inset-bottom)}
+  .mbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;color:var(--muted);font-weight:600}
+  .mbar a.on{color:var(--blue)}
+  .fab{width:54px;height:54px;border-radius:18px;margin-top:-28px;background:linear-gradient(180deg,#f5d77a,#c9962e);color:#1b1202!important;display:grid!important;place-items:center;box-shadow:0 10px 24px rgba(201,150,46,.45)}
+  .demo-tag{bottom:74px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap">
+    <a href="#" class="logo" aria-label="ComplaintCA">
+      <img src="asya/emblem-mark.webp" alt="" width="38" height="38">
+      <span class="logo-word">Complaint<b>CA</b></span>
+    </a>
+    <nav class="nav">
+      <a href="#feed">Complaints</a>
+      <a href="#brands">Companies</a>
+      <a href="#cats">Categories</a>
+      <a href="#biz">For business</a>
+    </nav>
+    <div class="hdr-r">
+      <button class="icon-btn" id="theme" aria-label="Toggle theme">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a href="#" class="btn btn-ghost">Sign in</a>
+      <a href="#" class="btn btn-gold">+ Write a complaint</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill"><i class="dot"></i> 1,284 complaints resolved this week</span>
+    <h1>Got a problem with a company?<br><span>Get it heard. Get it fixed.</span></h1>
+    <p class="lead">Canada's complaint platform. Share your experience, companies reply publicly, and AI helps you write a clear, effective complaint in seconds.</p>
+    <form class="search" onsubmit="return false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input placeholder="Search a company, product or complaint…" aria-label="Search">
+      <button class="btn btn-gold"><span>Search</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </form>
+    <div class="chips">
+      <a class="chip" href="#">🔥 Rogers</a><a class="chip" href="#">Air Canada</a><a class="chip" href="#">Amazon.ca</a><a class="chip" href="#">Bell</a><a class="chip" href="#">CRA</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="48210">0</b><small>Complaints</small></div>
+      <div class="stat"><b><span data-count="72">0</span>%</b><small>Resolution rate</small></div>
+      <div class="stat"><b data-count="3460">0</b><small>Companies</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="brands">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><h2>Trending companies</h2><p>Most complained about in the last 7 days</p></div>
+      <a href="#">See all →</a>
+    </div>
+    <div class="brands" id="brandList"></div>
+  </div>
+</section>
+
+<section class="blk" id="feed" style="padding-top:8px">
+  <div class="wrap grid2">
+    <div>
+      <div class="sec-h"><div><h2>Latest complaints</h2><p>Real experiences from Canadians, updated live</p></div></div>
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-f="all">All</button>
+        <button class="tab" data-f="ok">Resolved</button>
+        <button class="tab" data-f="ans">Answered</button>
+        <button class="tab" data-f="wait">Waiting</button>
+      </div>
+      <div class="feed" id="feedList"></div>
+    </div>
+    <aside class="side">
+      <div class="card cta-card">
+        <h4 style="margin:0">✨ Write with AI</h4>
+        <p>Describe your issue in one sentence. Our assistant turns it into a clear complaint companies actually answer.</p>
+        <a href="#" class="btn btn-gold" style="width:100%;justify-content:center">Start now — it's free</a>
+      </div>
+      <div class="card">
+        <h4>🏆 Best at resolving</h4>
+        <div id="rankList"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="blk" id="cats">
+  <div class="wrap">
+    <div class="sec-h"><div><h2>Browse by category</h2></div><a href="#">All categories →</a></div>
+    <div class="cats" id="catList"></div>
+  </div>
+</section>
+
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-h"><div><h2>How it works</h2></div></div>
+    <div class="steps">
+      <div class="card step"><div class="n">1</div><h3>Write it</h3><p>Tell your story. AI helps with tone, facts and the right details.</p></div>
+      <div class="card step"><div class="n">2</div><h3>We notify the company</h3><p>The company gets your complaint and can reply publicly.</p></div>
+      <div class="card step"><div class="n">3</div><h3>Get it resolved</h3><p>Mark it resolved and rate the response so others know who cares.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="biz">
+  <div class="wrap">
+    <div class="card biz">
+      <div><h2>Are you a company?</h2><p>Claim your free profile, answer customers and raise your resolution score.</p></div>
+      <a href="#" class="btn btn-gold">Claim your profile</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="logo"><img src="asya/emblem-mark.webp" alt="" width="32" height="32"><span class="logo-word">Complaint<b>CA</b></span></a>
+    <nav><a href="#">About</a><a href="#">Guides</a><a href="#">Blog</a><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Español</a></nav>
+    <span>© 2026 ComplaintCA</span>
+  </div>
+</footer>
+
+<nav class="mbar">
+  <a href="#" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v10H3z"/></svg>Home</a>
+  <a href="#feed"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search</a>
+  <a href="#" class="fab" aria-label="Write a complaint"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg></a>
+  <a href="#brands"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>Companies</a>
+  <a href="#"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>Account</a>
+</nav>
+
+<span class="demo-tag">DEMO · Theme v2</span>
+
+<script>
+const brands=[
+  ["Rogers","Telecom","#d6001c",64,"2.1 d",12,"up"],
+  ["Air Canada","Airlines","#e31837",48,"4.6 d",9,"up"],
+  ["Amazon.ca","E-commerce","#232f3e",81,"1.2 d",4,"down"],
+  ["Bell","Telecom","#0066a4",58,"3.0 d",7,"up"],
+  ["Canada Post","Delivery","#da291c",39,"5.8 d",15,"up"],
+  ["TD Bank","Banking","#008a00",76,"1.9 d",3,"down"]
+];
+const ini=n=>n.replace(/[^A-Za-z ]/g,"").split(" ").map(w=>w[0]).join("").slice(0,2);
+const col=p=>p>=70?"var(--green)":p>=50?"var(--amber)":"var(--red)";
+brandList.innerHTML=brands.map(([n,c,bg,p,t,tr,d])=>`
+  <a href="#" class="card brand">
+    <div class="brand-top"><div class="b-logo" style="background:${bg}">${ini(n)}</div><div><h3>${n}</h3><div class="cat">${c}</div></div><span class="trend ${d}">${d=="up"?"▲":"▼"} ${tr}%</span></div>
+    <div class="score"><div class="ring" style="--p:${p};--c:${col(p)}"><span>${p}%</span></div><small><b>Resolution rate</b><br>Avg. reply in ${t}</small></div>
+  </a>`).join("");
+
+const items=[
+  ["Rogers","#d6001c","ok","Charged twice for my November bill","I was billed $96.40 twice on the same day. Support chat closed my ticket without a refund after 3 attempts.","Rogers Support: We've refunded the duplicate charge — it will appear within 3 business days.","12 min ago",34,6],
+  ["Air Canada","#e31837","wait","Lost baggage on YYZ → YVR, no update in 9 days","My suitcase never arrived. The tracker still says 'located' but nobody answers the phone or email.",null,"38 min ago",112,21],
+  ["Amazon.ca","#232f3e","ans","Package marked delivered but never arrived","The driver photo shows a different house. I need a replacement before the holidays.","Amazon.ca: Sorry about this! We've opened an investigation, please check your messages.","1 h ago",18,3],
+  ["Canada Post","#da291c","wait","Parcel stuck in Mississauga depot for 2 weeks","Tracking hasn't moved since the 9th. It contains medication I urgently need.",null,"2 h ago",67,14],
+  ["TD Bank","#008a00","ok","Card blocked while travelling, no warning","My card was declined abroad even though I set a travel notice in the app.","TD Bank: The block was lifted and fees reversed. Thanks for your patience.","3 h ago",22,4]
+];
+const lbl={ok:["b-ok","Resolved"],ans:["b-ans","Answered"],wait:["b-wait","Waiting"]};
+function renderFeed(f){
+  feedList.innerHTML=items.filter(i=>f=="all"||i[2]==f).map(([n,bg,s,h,p,r,t,l,c])=>`
+  <a href="#" class="card cmp">
+    <div class="cmp-top"><div class="b-logo" style="background:${bg}">${ini(n)}</div><span><strong>${n}</strong> · ${t}</span><span class="badge ${lbl[s][0]}">${lbl[s][1]}</span></div>
+    <h3>${h}</h3><p>${p}</p>
+    ${r?`<div class="reply" style="border-color:${s=="ok"?"var(--green)":"var(--blue)"}"><b>${r.split(":")[0]}:</b>${r.slice(r.indexOf(":")+1)}</div>`:""}
+    <div class="cmp-foot"><span>👍 ${l} same issue</span><span>💬 ${c}</span><span>↗ Share</span></div>
+  </a>`).join("");
+}
+renderFeed("all");
+tabs.onclick=e=>{const b=e.target.closest(".tab");if(!b)return;tabs.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x==b));renderFeed(b.dataset.f)};
+
+rankList.innerHTML=[...brands].sort((a,b)=>b[3]-a[3]).slice(0,5).map((b,i)=>`
+  <div class="rank"><i>#${i+1}</i><div class="b-logo" style="background:${b[2]}">${ini(b[0])}</div>${b[0]}<em style="color:${col(b[3])}">${b[3]}%</em></div>`).join("");
+
+const cats=[["📱","Telecom","8.2k"],["✈️","Airlines","4.1k"],["🛒","E-commerce","9.6k"],["🏦","Banking","5.3k"],["📦","Delivery","6.0k"],["🏠","Housing & rent","2.7k"],["🚗","Auto","3.1k"],["🏛️","Government","1.9k"]];
+catList.innerHTML=cats.map(([i,n,c])=>`<a href="#" class="card catc"><div class="ico">${i}</div><b>${n}</b><small>${c} complaints</small></a>`).join("");
+
+document.querySelectorAll("[data-count]").forEach(el=>{
+  const to=+el.dataset.count,t0=performance.now();
+  (function step(t){const k=Math.min(1,(t-t0)/1200);el.textContent=Math.round(to*(1-Math.pow(1-k,3))).toLocaleString("en-CA");if(k<1)requestAnimationFrame(step)})(t0);
+});
+
+const root=document.documentElement;
+try{const s=localStorage.getItem("v2theme");if(s)root.dataset.theme=s}catch(e){}
+theme.onclick=()=>{root.dataset.theme=root.dataset.theme=="dark"?"light":"dark";try{localStorage.setItem("v2theme",root.dataset.theme)}catch(e){}};
+</script>
+</body>
+</html>
