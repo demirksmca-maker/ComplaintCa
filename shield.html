@@ -163,23 +163,28 @@
   .d3-sites{flex:none;display:flex;align-items:center;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
   .d3-sites button{padding:4px 10px;border-radius:7px;font-size:.75rem;color:var(--mute);background:none}
   .d3-sites button[aria-pressed=true]{background:#1d4f91;color:var(--ink)}
-  .d3-stage{perspective:900px}
-  .d3-card{position:relative;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out;
+  .d3-card{position:relative;transition:transform .25s ease-out;
     border-radius:16px;padding:12px 12px 10px;background:linear-gradient(145deg,#173d72,#0b1b37 55%,#081329);border:1px solid #2d6bb8;
     box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 0 1px rgba(120,180,255,.06) inset,0 0 30px rgba(57,135,229,.25)}
-  .d3-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.14),transparent 40%)}
-  .d3-card>*{transform:translateZ(30px)}
+  /* Sharp text: at rest a card is flat (no 3D layer, so the browser draws
+     text at full resolution); the depth comes from light and shadow. It
+     tilts only while a finger or mouse is on it. The gloss sits behind the
+     content. */
+  .d3-card.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+  .d3-card::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,rgba(255,255,255,.09),transparent 40%)}
+  .d3-card>*{position:relative}
+  #d3,#d3road{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
   .d3-when{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
   .d3-arrow{width:28px;height:28px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
   .d3-arrow[aria-expanded=true]{transform:rotate(180deg)}
   .d3-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px;text-align:center}
-  .d3-hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1;text-shadow:0 3px 0 #061226,0 6px 10px rgba(0,0,0,.6)}
-  .d3-hero span{font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+  .d3-hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1;text-shadow:0 2px 0 rgba(4,12,28,.9)}
+  .d3-hero span{font-size:.64rem;color:#a9bcd6;text-transform:uppercase;letter-spacing:.6px}
   .d3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
   .d3-m{min-width:0;background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:10px;padding:5px 3px;text-align:center}
   .d3-m b{display:block;font-size:.95rem;font-weight:700}
   .d3-m b.q{font-size:.8rem;line-height:1.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
-  .d3-m span{display:block;font-size:.56rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
+  .d3-m span{display:block;font-size:.6rem;color:#a9bcd6;text-transform:uppercase;letter-spacing:.4px}
   .d3-d{display:block;font-size:.62rem;font-weight:600;margin-top:2px}
   .d3-d.flat{color:var(--mute)}
   /* Site road map: one glowing road, a stop per step from arriving on the
@@ -193,16 +198,16 @@
   .rd-st::before{content:'';position:absolute;left:-28px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#071624;border:3px solid var(--c,#3ddc97);box-shadow:0 0 8px var(--c,#3ddc97)}
   .rd-st i{font-style:normal;font-size:1rem;width:22px;text-align:center;flex:none}
   .rd-nm{flex:1;min-width:0;font-size:.74rem}
-  .rd-nm small{display:block;font-size:.6rem;color:var(--mute)}
+  .rd-nm small{display:block;font-size:.62rem;color:#a9bcd6}
   .rd-n{text-align:right;flex:none}
   .rd-n b{display:block;font-size:1.05rem;line-height:1}
-  .rd-n small{font-size:.58rem;color:var(--mute)}
+  .rd-n small{font-size:.6rem;color:#a9bcd6}
   .rd-row{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));text-align:center;padding-top:16px}
   .rd-row::before{content:'';position:absolute;left:10%;right:10%;top:5px;height:4px;border-radius:2px;background:linear-gradient(90deg,#3987e5,#3ddc97 60%,#f2bd4b)}
   .rd-row div{position:relative;min-width:0}
   .rd-row div::before{content:'';position:absolute;left:50%;top:-15px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#071624;border:2px solid var(--c,#3ddc97)}
   .rd-row b{display:block;font-size:.9rem}
-  .rd-row span{display:block;font-size:.5rem;color:var(--mute);text-transform:uppercase;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rd-row span{display:block;font-size:.55rem;color:#a9bcd6;text-transform:uppercase;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rd-live{display:inline-flex;align-items:center;gap:5px}
   .rd-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:rdpulse 1.6s ease-in-out infinite}
   @keyframes rdpulse{50%{opacity:.3}}
@@ -218,7 +223,7 @@
   }
   @media (prefers-reduced-motion:reduce){.rd-live::before{animation:none}}
   .d3-more{margin-top:12px;display:flex;flex-direction:column;gap:14px}
-  .d3-more .d3-card{padding:14px;animation:d3rise .4s ease-out both}
+  .d3-more .d3-card{padding:14px;animation:d3rise .4s ease-out backwards}
   .d3-more .d3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   @keyframes d3rise{from{opacity:0;transform:rotateX(35deg) translateY(20px)}}
   .d3-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
@@ -515,7 +520,7 @@
     // Past Toronto midnight the road map's "yesterday" is a day old: fetch again.
     if (y && d.funnelDays[1] && y.to !== d.funnelDays[1].day) { y = null; if (!d3Stale) { d3Stale = true; d3Load(); } }
     for (var k in d.funnelToday) today[k] = d.funnelToday[k];
-    var html = '<div class="d3-stage"><div class="d3-card rd-card" id="d3rmain">' +
+    var html = '<div><div class="d3-card rd-card" id="d3rmain">' +
       '<div class="d3-when"><span class="rd-live">Yol haritası · canlı · iki site</span>' + d3Arrow('d3rarrow', d3ROpen, 'Yol haritası detayı') + '</div><div class="rd">' +
       D3_ROAD.map(function (st, i) {
         var n = today[st[0]] || 0, kept = i ? d3Kept(n, today[D3_ROAD[i - 1][0]] || 0) : '';
@@ -527,7 +532,7 @@
       var w = by[m[0]];
       if (!w || !w.cur) return;
       var sub = m[0] === 'since' ? d3Day(d3Fun.start) + "'den beri" : w.prev ? 'önceki döneme göre' : d3Day(w.cur.from) + "'den beri";
-      html += '<div class="d3-stage"><div class="d3-card rd-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div><div class="rd-row">' +
+      html += '<div><div class="d3-card rd-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div><div class="rd-row">' +
         D3_ROAD.map(function (st) {
           var n = w.cur[st[0]];
           return '<div style="--c:' + st[3] + '" title="' + st[1] + '"><b>' + d3Num(n) + '</b><span>' + st[4] + '</span>' + (w.prev ? d3Delta(n, w.prev[st[0]]) : '') + '</div>';
@@ -546,7 +551,7 @@
     s.periods.forEach(function (p) { by[p.days] = p; });
     var t = by[1];
     d3Pressed();
-    var html = '<div class="d3-stage"><div class="d3-card" id="d3main">' +
+    var html = '<div><div class="d3-card" id="d3main">' +
       '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
@@ -563,7 +568,7 @@
         if (!p) return;
         c = p.cur; v = p.prev; sub = 'önceki döneme göre';
       }
-      html += '<div class="d3-stage"><div class="d3-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div>' +
+      html += '<div><div class="d3-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div>' +
         '<div class="d3-grid">' + d3Cell('Gösterim', d3Num(c.impressions), v && d3Delta(c.impressions, v.impressions)) + d3Cell('Tık', d3Num(c.clicks), v && d3Delta(c.clicks, v.clicks)) +
         d3Metrics(c, v) + '</div></div></div>';
     });
@@ -609,10 +614,15 @@
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     el.addEventListener('pointermove', function (e) {
       var r = el.getBoundingClientRect();
-      el.style.setProperty('--ry', ((e.clientX - r.left) / r.width - 0.5) * 16 + 'deg');
-      el.style.setProperty('--rx', (0.5 - (e.clientY - r.top) / r.height) * 16 + 'deg');
+      el.classList.add('tilt');
+      el.style.setProperty('--ry', ((e.clientX - r.left) / r.width - 0.5) * 10 + 'deg');
+      el.style.setProperty('--rx', (0.5 - (e.clientY - r.top) / r.height) * 10 + 'deg');
     });
-    function reset() { el.style.removeProperty('--rx'); el.style.removeProperty('--ry'); }
+    // Back to flat, then off the 3D layer so the text is sharp again.
+    function reset() {
+      el.style.removeProperty('--rx'); el.style.removeProperty('--ry');
+      setTimeout(function () { if (!el.style.getPropertyValue('--rx')) el.classList.remove('tilt'); }, 260);
+    }
     el.addEventListener('pointerleave', reset);
     el.addEventListener('touchend', reset);
   }
