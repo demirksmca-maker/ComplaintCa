@@ -10,7 +10,7 @@
 <style>
   /* Test page for the new 3D Dias Panel: today's numbers big on one tilted
      card; the arrow opens 1 week, 1 month, 2 months, 3 months and since
-     opening. Data: /api/shield?stats=1 (same key as /shield.html). */
+     opening. Data: /api/shield?stats=1 and ?funnel=1, no password needed. */
   :root{color-scheme:dark;--bg:#050b18;--ink:#eef4ff;--mute:#8da3c4;--line:#1f3a63;--ok:#3ddc97;--bad:#ff5a52;--s1:#3987e5;--s2:#c98500}
   *{box-sizing:border-box;margin:0}
   body{min-height:100dvh;background:radial-gradient(90% 55% at 50% 0,#12305e 0,var(--bg) 70%) var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif;line-height:1.35;overflow-x:hidden}
@@ -64,23 +64,13 @@
   .ttl small{font-size:.7rem;color:var(--mute)}
   .foot{margin-top:16px;font-size:.7rem;color:var(--mute);text-align:center}
   .foot button{color:#7fb4ff;text-decoration:underline}
-  .login{margin-top:30vh;display:flex;flex-direction:column;gap:10px}
-  .login input{padding:12px;border-radius:10px;border:1px solid var(--line);background:#0b1830}
-  .login button{padding:12px;border-radius:10px;background:#1d4f91}
-  .err{color:var(--bad);font-size:.85rem;text-align:center}
   .empty{text-align:center;color:var(--mute);padding:40px 0}
   @media (prefers-reduced-motion:reduce){.card3d,.arrow{transition:none}.more .card3d{animation:none}}
 </style>
 </head>
 <body>
 <main>
-  <form class="login" id="login" hidden>
-    <h1 style="text-align:center">Dias Panel 3D</h1>
-    <input id="pw" type="password" placeholder="Şifre" autocomplete="current-password" aria-label="Şifre">
-    <button type="submit">Giriş</button>
-    <p class="err" id="err" hidden></p>
-  </form>
-  <div id="app" hidden>
+  <div id="app">
     <div class="top">
       <h1>Dias 3D</h1>
       <div class="sites" role="group" aria-label="Site">
@@ -220,33 +210,25 @@
   }
 
   function load(fresh) {
-    var key = store(KEY);
-    if (!key) return showLogin();
+    // No password needed: without a key the API gives the summary numbers.
+    var key = store(KEY), hdr = key ? { 'x-shield-key': key } : {};
+    if (!key) fresh = false;
     if (fresh) $('body').innerHTML = '<p class="empty">Yükleniyor…</p>';
-    fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': key }, cache: 'no-store' }).then(function (r) {
-      if (r.status === 403) { store(KEY, ''); throw new Error('Şifre yanlış.'); }
-      if (r.status === 429) throw new Error('Çok fazla yanlış deneme, 10 dk bekle.');
+    fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), { headers: hdr, cache: 'no-store' }).then(function (r) {
+      // A stale saved key: forget it and read the open numbers instead.
+      if (r.status === 403 || r.status === 429) { store(KEY, ''); throw new Error('retry'); }
       if (!r.ok) throw new Error('Veri alınamadı (' + r.status + ').');
       return r.json();
     }).then(function (d) {
-      data = d; $('login').hidden = true; $('app').hidden = false; render();
-      // The funnel comes after, once the key is known to be right.
-      return fetch('/api/shield?funnel=1', { headers: { 'x-shield-key': key }, cache: 'no-store' })
+      data = d; render();
+      return fetch('/api/shield?funnel=1', { headers: hdr, cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (f) { if (f && f.ok) { fun = f; render(); } }, function () {});
     }).catch(function (e) {
-      if (!store(KEY)) showLogin(e.message); else $('body').innerHTML = '<p class="empty">' + esc(e.message) + '</p>';
+      if (e.message === 'retry' && key) return load();
+      $('body').innerHTML = '<p class="empty">' + esc(e.message) + '</p>';
     });
   }
-  function showLogin(msg) {
-    $('app').hidden = true; $('login').hidden = false;
-    $('err').hidden = !msg; $('err').textContent = msg || '';
-  }
-  $('login').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var v = $('pw').value.trim();
-    if (v) { store(KEY, v); $('pw').value = ''; load(); }
-  });
   Array.prototype.forEach.call(document.querySelectorAll('[data-site]'), function (b) {
     b.setAttribute('aria-pressed', b.getAttribute('data-site') === site ? 'true' : 'false');
     b.addEventListener('click', function () {

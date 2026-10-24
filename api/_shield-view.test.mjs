@@ -112,3 +112,22 @@ test('funnelPanel: one PFCOUNT per step and window, empty windows null', async (
   assert.equal(out.windows[0].prev.open, 5);
   assert.equal(out.windows[1].prev, null);
 });
+
+test('open panel: ?funnel=1 without a key needs no password; other reads still do', async () => {
+  const env = { ...process.env };
+  process.env.SHIELD_KEY = 'k'; process.env.UPSTASH_REDIS_REST_URL = 'https://u'; process.env.UPSTASH_REDIS_REST_TOKEN = 't';
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, o) => ({ ok: true, json: async () => JSON.parse(o.body).map(() => ({ result: 0 })) });
+  try {
+    const open = mockRes();
+    await shieldView({ query: { funnel: '1' }, headers: {}, socket: {} }, open);
+    assert.equal(open.code, 200);
+    assert.equal(open.body.ok, true);
+    const locked = mockRes();
+    await shieldView({ query: {}, headers: {}, socket: {} }, locked);
+    assert.equal(locked.code, 403);
+  } finally {
+    globalThis.fetch = realFetch;
+    process.env = env;
+  }
+});

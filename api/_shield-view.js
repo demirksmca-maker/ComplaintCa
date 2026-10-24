@@ -164,6 +164,21 @@ export async function shieldView(req, res) {
     return (await r.json()).map(x => x.result);
   };
 
+  // The 3D test panel (/shield-3d.html) opens without a password: only the
+  // summary numbers (?stats=1, ?funnel=1), read from cache (no &fresh, so no
+  // one can make it call Google over and over), without the setup details.
+  // Everything else (IPs, events, lockdown) still needs the key.
+  if (req.query && (req.query.stats || req.query.funnel) && !req.headers['x-shield-key']) {
+    try {
+      if (req.query.funnel) return res.status(200).json(await funnelPanel(pipeline));
+      const out = await statsPanel(pipeline);
+      return res.status(200).json({ ...out, gsc: { ok: out.gsc.ok, reason: out.gsc.reason }, ga: { ok: out.ga.ok, reason: out.ga.reason }, open: true });
+    } catch (err) {
+      console.error('open panel error:', err && err.message);
+      return res.status(502).json({ ok: false, reason: 'error' });
+    }
+  }
+
   // Only wrong keys count toward the limit, so the panel's own refreshes
   // never lock the owner out; after BAD_KEY_LIMIT misses the IP waits
   // 10 minutes, even with the right key (no brute forcing).
