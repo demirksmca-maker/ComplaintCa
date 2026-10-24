@@ -13,6 +13,7 @@ test('every company has the fields the site reads', () => {
     assert.ok(AUTHORITIES[c.category], `${c.ad}: unknown category ${c.category}`);
     if (c.email) assert.ok(_isMail(c.email), `${c.ad}: bad email ${c.email}`);
     if (c.url) assert.match(c.url, /^https:\/\//, c.ad);
+    if (c.telefono) assert.match(c.telefono, /^1-\d{3}-\d{3}-\d{4}$/, c.ad);
   }
 });
 

@@ -11,7 +11,7 @@
     "rogers communications"
    ],
    "domain": "rogers.com",
-   "telefono": "",
+   "telefono": "1-888-764-3771",
    "url": "https://www.rogers.com/support/resolve-a-concern",
    "canal": "Customer service → Management team → Office of the President",
    "email": "ombudsman@rci.rogers.com",
@@ -29,7 +29,7 @@
     "telus"
    ],
    "domain": "telus.com",
-   "telefono": "",
+   "telefono": "1-866-558-2273",
    "url": "https://www.telus.com/en/support/contact-us/escalate-a-concern",
    "canal": "Frontline agent → Supervisor → Executive Customer Relations",
    "email": "executive.office@telus.com",
@@ -48,7 +48,7 @@
     "bell canada"
    ],
    "domain": "bell.ca",
-   "telefono": "",
+   "telefono": "1-866-310-2355",
    "url": "https://support.bell.ca/how-to-resolve-a-concern",
    "canal": "Support team → Executive Office → Ombudsman",
    "email": "ombudsman@bell.ca",
@@ -66,7 +66,7 @@
     "fido"
    ],
    "domain": "fido.ca",
-   "telefono": "",
+   "telefono": "1-888-481-3436",
    "url": "https://www.fido.ca/support/resolve-a-concern",
    "canal": "Representative → Manager → Office of the President (Rogers)",
    "email": "ombudsman@rci.rogers.com",
@@ -103,7 +103,7 @@
     "freedom"
    ],
    "domain": "freedommobile.ca",
-   "telefono": "",
+   "telefono": "1-877-946-3184",
    "url": "https://www.freedommobile.ca/en-CA/support/resolve-a-concern",
    "canal": "Customer care → Supervisor → Senior management",
    "email": "",
@@ -122,7 +122,7 @@
     "virgin mobile"
    ],
    "domain": "virginplus.ca",
-   "telefono": "",
+   "telefono": "1-888-999-2321",
    "url": "https://www.virginplus.ca/en/support/resolve-a-concern.html",
    "canal": "Care team → Bell Executive Office",
    "email": "ombudsman@bell.ca",
@@ -141,7 +141,7 @@
     "vidéotron"
    ],
    "domain": "videotron.com",
-   "telefono": "",
+   "telefono": "1-877-512-0911",
    "url": "https://videotron.com/en/support/satisfaction",
    "canal": "Customer support → Satisfaction & escalation team",
    "email": "",
@@ -177,7 +177,7 @@
     "cogeco"
    ],
    "domain": "cogeco.ca",
-   "telefono": "",
+   "telefono": "1-866-261-4447",
    "url": "https://www.cogeco.ca/en/support/resolve-a-concern",
    "canal": "Support → Escalations advisor → Executive office",
    "email": "",
@@ -214,7 +214,7 @@
     "aircanada"
    ],
    "domain": "aircanada.com",
-   "telefono": "",
+   "telefono": "1-888-247-2262",
    "url": "https://www.aircanada.com/ca/en/aco/home/fly/customer-support.html",
    "canal": "Customer relations form → Corporate ombudsman",
    "email": "ombudsman@aircanada.ca",
@@ -232,7 +232,7 @@
     "westjet"
    ],
    "domain": "westjet.com",
-   "telefono": "",
+   "telefono": "1-888-937-8538",
    "url": "https://www.westjet.com/en-ca/contact/claims",
    "canal": "Guest support form → Guest relations escalation",
    "email": "",
@@ -250,11 +250,11 @@
     "flair"
    ],
    "domain": "flyflair.com",
-   "telefono": "",
+   "telefono": "1-833-711-2333",
    "url": "https://flyflair.com/contact-us",
    "canal": "Web support → Passenger rights office",
    "email": "",
-   "address": "",
+   "address": "4032-1000 Airport Rd, Edmonton International Airport, AB T9E 0V3",
    "regulator": "CTA",
    "fuente": "terceros",
    "verificado": false,
@@ -268,11 +268,11 @@
     "porter"
    ],
    "domain": "flyporter.com",
-   "telefono": "",
+   "telefono": "1-888-619-8622",
    "url": "https://www.flyporter.com/en-ca/contact-us",
    "canal": "Customer relations form → Executive escalation",
    "email": "",
-   "address": "",
+   "address": "Billy Bishop Toronto City Airport, Toronto, ON M5V 1A1",
    "regulator": "CTA",
    "fuente": "terceros",
    "verificado": false,
@@ -287,7 +287,7 @@
     "transat"
    ],
    "domain": "airtransat.com",
-   "telefono": "",
+   "telefono": "1-877-872-6728",
    "url": "https://www.airtransat.com/en-CA/contact-us",
    "canal": "Customer service → Passenger relations",
    "email": "",
@@ -307,7 +307,7 @@
     "toronto-dominion"
    ],
    "domain": "td.com",
-   "telefono": "",
+   "telefono": "1-866-222-3456",
    "url": "https://www.td.com/ca/en/about-td/customer-care",
    "canal": "Branch/phone manager → Customer Care → TD Ombudsman",
    "email": "td.ombudsman@td.com",
@@ -326,7 +326,7 @@
     "royal bank"
    ],
    "domain": "rbc.com",
-   "telefono": "",
+   "telefono": "1-800-769-2511",
    "url": "https://www.rbc.com/customercare/",
    "canal": "Branch manager → Client Care Office → RBC Ombudsman",
    "email": "ombudsman@rbc.com",
@@ -346,7 +346,7 @@
     "bank of nova scotia"
    ],
    "domain": "scotiabank.com",
-   "telefono": "",
+   "telefono": "1-800-472-6842",
    "url": "https://www.scotiabank.com/ca/en/about/contact-us/customer-care/resolving-your-concerns.html",
    "canal": "Branch → President's Office → Scotiabank Ombudsman",
    "email": "ombudsman@scotiabank.com",
@@ -365,7 +365,7 @@
     "bank of montreal"
    ],
    "domain": "bmo.com",
-   "telefono": "",
+   "telefono": "1-877-225-5266",
    "url": "https://www.bmo.com/main/about-bmo/resolving-a-complaint/",
    "canal": "Branch → Senior management → BMO Ombudsman",
    "email": "bmo.ombudsman@bmo.com",
@@ -383,7 +383,7 @@
     "cibc"
    ],
    "domain": "cibc.com",
-   "telefono": "",
+   "telefono": "1-800-465-2422",
    "url": "https://www.cibc.com/en/about-cibc/customer-care.html",
    "canal": "Branch → Client Care → CIBC Ombudsman",
    "email": "mailbox.ombudsman@cibc.com",
@@ -402,7 +402,7 @@
     "postes canada"
    ],
    "domain": "canadapost-postescanada.ca",
-   "telefono": "",
+   "telefono": "1-866-607-6301",
    "url": "https://www.canadapost-postescanada.ca/cpc/en/support.page",
    "canal": "Customer service ticket → Customer appeals → Ombudsman",
    "email": "ombudsman@canadapost.ca",
@@ -420,7 +420,7 @@
     "purolator"
    ],
    "domain": "purolator.com",
-   "telefono": "",
+   "telefono": "1-888-744-7123",
    "url": "https://www.purolator.com/en/resources/contact-us",
    "canal": "Customer support → Escalations",
    "email": "",
@@ -458,7 +458,7 @@
     "walmart"
    ],
    "domain": "walmart.ca",
-   "telefono": "",
+   "telefono": "1-800-328-0402",
    "url": "https://www.walmart.ca/en/help",
    "canal": "Store/online care → Customer relations",
    "email": "",
@@ -476,7 +476,7 @@
     "canadian tire"
    ],
    "domain": "canadiantire.ca",
-   "telefono": "",
+   "telefono": "1-866-746-7287",
    "url": "https://www.canadiantire.ca/en/customer-service.html",
    "canal": "Store manager/online rep → Corporate relations",
    "email": "",
@@ -494,7 +494,7 @@
     "doordash"
    ],
    "domain": "doordash.com",
-   "telefono": "",
+   "telefono": "1-855-973-1040",
    "url": "https://help.doordash.com/consumers/s/",
    "canal": "In-app chat → Support ticket",
    "email": "",
@@ -531,7 +531,7 @@
     "enbridge"
    ],
    "domain": "enbridgegas.com",
-   "telefono": "",
+   "telefono": "1-877-362-7434",
    "url": "https://www.enbridgegas.com/contact-us/complaints-escalation",
    "canal": "Representative → Supervisor → Ombudsman",
    "email": "ombudsman@enbridge.com",
@@ -549,7 +549,7 @@
     "hydro one"
    ],
    "domain": "hydroone.com",
-   "telefono": "",
+   "telefono": "1-888-664-9376",
    "url": "https://www.hydroone.com/about/corporate-information/ombudsman",
    "canal": "Call centre → Resolution team → Hydro One Ombudsman",
    "email": "ombudsman@hydroone.com",
@@ -569,7 +569,7 @@
     "timmies"
    ],
    "domain": "timhortons.ca",
-   "telefono": "",
+   "telefono": "1-888-601-1616",
    "url": "https://www.timhortons.ca/support",
    "canal": "Company contact form",
    "email": "",
@@ -589,7 +589,7 @@
     "pharmaprix"
    ],
    "domain": "shoppersdrugmart.ca",
-   "telefono": "",
+   "telefono": "1-800-746-7737",
    "url": "https://www.shoppersdrugmart.ca/en/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -608,7 +608,7 @@
     "loblaw"
    ],
    "domain": "loblaws.ca",
-   "telefono": "",
+   "telefono": "1-800-296-2332",
    "url": "https://www.loblaws.ca/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -626,11 +626,11 @@
     "costco"
    ],
    "domain": "costco.ca",
-   "telefono": "",
+   "telefono": "1-800-463-3783",
    "url": "https://www.costco.ca/customer-service.html",
    "canal": "Company contact form",
    "email": "",
-   "address": "",
+   "address": "415 W Hunt Club Rd, Ottawa, ON K2E 1C5",
    "regulator": "Provincial consumer office, Competition Bureau",
    "fuente": "terceros",
    "verificado": false,
@@ -645,7 +645,7 @@
     "bestbuy"
    ],
    "domain": "bestbuy.ca",
-   "telefono": "",
+   "telefono": "1-866-237-8289",
    "url": "https://www.bestbuy.ca/en-ca/help/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -664,7 +664,7 @@
     "the home depot"
    ],
    "domain": "homedepot.ca",
-   "telefono": "",
+   "telefono": "1-800-668-2266",
    "url": "https://www.homedepot.ca/en/home/customer-support/contact-us.html",
    "canal": "Company contact form",
    "email": "",
@@ -682,7 +682,7 @@
     "sobeys"
    ],
    "domain": "sobeys.com",
-   "telefono": "",
+   "telefono": "1-888-944-0442",
    "url": "https://www.sobeys.com/en/contact-us/",
    "canal": "Company contact form",
    "email": "",
@@ -700,7 +700,7 @@
     "metro"
    ],
    "domain": "metro.ca",
-   "telefono": "",
+   "telefono": "1-844-943-2500",
    "url": "https://www.metro.ca/en/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -718,7 +718,7 @@
     "dollarama"
    ],
    "domain": "dollarama.com",
-   "telefono": "",
+   "telefono": "1-888-365-4266",
    "url": "https://www.dollarama.com/en-CA/corp/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -737,11 +737,11 @@
     "mcdonalds"
    ],
    "domain": "mcdonalds.com",
-   "telefono": "",
+   "telefono": "1-888-424-4622",
    "url": "https://www.mcdonalds.com/ca/en-ca/contact-us.html",
    "canal": "Company contact form",
    "email": "",
-   "address": "",
+   "address": "2 McDonald's Place, Toronto, ON M3C 3L4",
    "regulator": "Public health unit, Competition Bureau",
    "fuente": "terceros",
    "verificado": false,
@@ -755,11 +755,11 @@
     "rexall"
    ],
    "domain": "rexall.ca",
-   "telefono": "",
+   "telefono": "1-877-378-4100",
    "url": "https://www.rexall.ca/customer-care",
    "canal": "Company contact form",
    "email": "",
-   "address": "",
+   "address": "2300 Meadowvale Blvd, Mississauga, ON L5N 5P9",
    "regulator": "Provincial college of pharmacists, Competition Bureau",
    "fuente": "terceros",
    "verificado": false,
@@ -774,7 +774,7 @@
     "petro canada"
    ],
    "domain": "petro-canada.ca",
-   "telefono": "",
+   "telefono": "1-800-668-0220",
    "url": "https://www.petro-canada.ca/en/personal/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -793,7 +793,7 @@
     "imperial oil"
    ],
    "domain": "esso.ca",
-   "telefono": "",
+   "telefono": "1-800-567-3776",
    "url": "https://www.esso.ca/en-ca/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -812,7 +812,7 @@
     "bureau en gros"
    ],
    "domain": "staples.ca",
-   "telefono": "",
+   "telefono": "1-877-360-8500",
    "url": "https://www.staples.ca/pages/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -830,11 +830,11 @@
     "ikea"
    ],
    "domain": "ikea.com",
-   "telefono": "",
+   "telefono": "1-866-866-4532",
    "url": "https://www.ikea.com/ca/en/customer-service/contact-us/",
    "canal": "Company contact form",
    "email": "",
-   "address": "",
+   "address": "1065 Plains Rd E, Burlington, ON L7T 4K1",
    "regulator": "Health Canada (product safety), Competition Bureau",
    "fuente": "terceros",
    "verificado": false,
@@ -848,7 +848,7 @@
     "subway"
    ],
    "domain": "subway.com",
-   "telefono": "",
+   "telefono": "1-888-445-9239",
    "url": "https://www.subway.com/en-CA/ContactUs/ContactUsForm",
    "canal": "Company contact form",
    "email": "",
@@ -867,7 +867,7 @@
     "couche-tard"
    ],
    "domain": "circlek.com",
-   "telefono": "",
+   "telefono": "1-800-387-6619",
    "url": "https://www.circlek.com/ca/store-locator/contact",
    "canal": "Company contact form",
    "email": "",
@@ -885,7 +885,7 @@
     "lcbo"
    ],
    "domain": "lcbo.com",
-   "telefono": "",
+   "telefono": "1-800-668-5226",
    "url": "https://www.lcbo.com/en/contactus",
    "canal": "Company contact form",
    "email": "",
@@ -904,7 +904,7 @@
     "a and w"
    ],
    "domain": "aw.ca",
-   "telefono": "",
+   "telefono": "1-800-665-9400",
    "url": "https://web.aw.ca/en/contact-us",
    "canal": "Company contact form",
    "email": "",
@@ -923,7 +923,7 @@
     "nofrills"
    ],
    "domain": "nofrills.ca",
-   "telefono": "",
+   "telefono": "1-866-987-6453",
    "url": "https://www.nofrills.ca/contact-us",
    "canal": "Company contact form",
    "email": "",
