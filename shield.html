@@ -33,7 +33,8 @@
   .head{display:grid;grid-template-columns:1fr;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top)) 16px 8px}
   .head.warn{--glow:var(--warn)}.head.alert{--glow:var(--bad)}
   .head .mid{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
-  .head .left{display:flex;align-items:center;gap:12px;min-width:0;text-align:left}
+  .head .left{display:flex;align-items:center;gap:12px;min-width:0}
+  .head .left>div:last-child{min-width:0;overflow-wrap:anywhere}
   .head .emblem{width:40px;height:40px;flex:none;filter:drop-shadow(0 0 8px rgba(201,168,76,.35))}
   .stage{position:relative;width:44px;height:50px;perspective:400px;flex:none}
   .shield3d{position:absolute;inset:0;transform-style:preserve-3d;animation:sway 7s ease-in-out infinite}
@@ -201,7 +202,7 @@
         <div class="stage" aria-hidden="true"><div class="shield3d" id="shield3d"></div></div>
         <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div></div>
       </div>
-      <img class="emblem" src="/demo/asya/emblem-mark.webp" alt="ComplaintCA" width="40" height="40">
+      <img class="emblem" src="/demo/asya/emblem-mark.webp" alt="" width="40" height="40" decoding="async">
     </div>
   </header>
 
