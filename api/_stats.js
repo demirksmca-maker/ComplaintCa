@@ -1,5 +1,5 @@
 // İstatistik panel at the top of the owner's Dias Panel (/shield.html):
-// for 1, 3, 5, 7, 10, 14, 20, 30 and 90 days (and since the site's first day
+// for 1, 3, 5, 7, 10, 14, 20, 30, 60 and 90 days (and since the site's first day
 // in Google), each against the period of the same length just before it:
 // Google clicks and impressions (Search Console, the same numbers its
 // Performance report shows for that date range and page filter), visitors
@@ -19,10 +19,10 @@ const GSC_SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 const GA_SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 const GSC = 'https://www.googleapis.com/webmasters/v3';
 const GA = 'https://analyticsdata.googleapis.com/v1beta';
-const CACHE_KEY = 'shield:statspanel:v2', CACHE_SECONDS = 3 * 3600;
+const CACHE_KEY = 'shield:statspanel:v3', CACHE_SECONDS = 3 * 3600;
 const D = 86400000;
 
-export const PANEL_DAYS = [1, 3, 5, 7, 10, 14, 20, 30, 90];
+export const PANEL_DAYS = [1, 3, 5, 7, 10, 14, 20, 30, 60, 90];
 export const SITES = ['all', 'ca', 'es'];
 
 export const ymd = t => new Date(t).toISOString().slice(0, 10);
@@ -179,11 +179,17 @@ async function gaSite(c, site, ranges) {
   for (let i = 0; i < ranges.length; i += 4) {
     requests.push({ dateRanges: ranges.slice(i, i + 4), metrics: [{ name: 'activeUsers' }, { name: 'userEngagementDuration' }], ...gaFilter(site) });
   }
-  const r = await fetch(`${GA}/properties/${c.id}:batchRunReports`, {
-    method: 'POST', headers: { ...c.auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ requests })
-  });
-  if (!r.ok) throw Object.assign(new Error('ga'), { status: r.status });
-  return readGa((await r.json()).reports, requests);
+  // batchRunReports takes at most 5 requests per call; the calls run together.
+  const parts = [];
+  for (let i = 0; i < requests.length; i += 5) parts.push(requests.slice(i, i + 5));
+  const answers = await Promise.all(parts.map(async part => {
+    const r = await fetch(`${GA}/properties/${c.id}:batchRunReports`, {
+      method: 'POST', headers: { ...c.auth, 'Content-Type': 'application/json' }, body: JSON.stringify({ requests: part })
+    });
+    if (!r.ok) throw Object.assign(new Error('ga'), { status: r.status });
+    return readGa((await r.json()).reports, part);
+  }));
+  return Object.assign({}, ...answers);
 }
 
 // Own counter fallback: unique visitors per window (HyperLogLog union of the
