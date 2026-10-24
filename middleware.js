@@ -126,7 +126,7 @@ const REDIRECTED = /^\/((guides|blog)\/[a-z0-9-]+|about|privacy|terms|start|pres
 
 export function isPage(request, url) {
   return request.method === 'GET' && !url.pathname.startsWith('/api/') &&
-    !/\.(?!html$)[a-z0-9]+$/i.test(url.pathname) && url.pathname !== '/shield.html' && url.pathname !== '/shield-3d.html' && url.pathname !== '/dias-claude.html';
+    !/\.(?!html$)[a-z0-9]+$/i.test(url.pathname) && url.pathname !== '/shield.html' && url.pathname !== '/dias-claude.html';
 }
 
 // The site owner's devices carry this cookie (set by the shield panel) and

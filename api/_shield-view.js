@@ -6,7 +6,7 @@
 // change against the week before, the funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
 // or off (0). ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
-// 3D panel's complaint funnel. The key is the SHIELD_KEY env var; wrong keys are rate limited.
+// complaint funnel of Genel's 3D cards. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
@@ -31,7 +31,7 @@ export function lastDays(now = new Date(), n = DAYS) {
 
 const PERIODS = [7, 14, 28, 90];
 
-// Complaint funnel for the 3D panel (/shield-3d.html, ?funnel=1): unique
+// Complaint funnel for Genel's 3D cards (/shield.html, ?funnel=1): unique
 // people per step today and over 7, 30, 60 and 90 days, each against the
 // window of the same length before it, plus since the funnel started
 // counting. Days before FUNNEL_START have no data and are left out.
@@ -163,21 +163,6 @@ export async function shieldView(req, res) {
     if (!r.ok) throw new Error(`upstash ${r.status}`);
     return (await r.json()).map(x => x.result);
   };
-
-  // The 3D test panel (/shield-3d.html) opens without a password: only the
-  // summary numbers (?stats=1, ?funnel=1), read from cache (no &fresh, so no
-  // one can make it call Google over and over), without the setup details.
-  // Everything else (IPs, events, lockdown) still needs the key.
-  if (req.query && (req.query.stats || req.query.funnel) && !req.headers['x-shield-key']) {
-    try {
-      if (req.query.funnel) return res.status(200).json(await funnelPanel(pipeline));
-      const out = await statsPanel(pipeline);
-      return res.status(200).json({ ...out, gsc: { ok: out.gsc.ok, reason: out.gsc.reason }, ga: { ok: out.ga.ok, reason: out.ga.reason }, open: true });
-    } catch (err) {
-      console.error('open panel error:', err && err.message);
-      return res.status(502).json({ ok: false, reason: 'error' });
-    }
-  }
 
   // Only wrong keys count toward the limit, so the panel's own refreshes
   // never lock the owner out; after BAD_KEY_LIMIT misses the IP waits
