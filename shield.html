@@ -175,6 +175,7 @@
   .d3-card>*{position:relative}
   #d3,#d3road{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
   .d3-when{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+  .d3-grow{margin:0 8px 0 auto;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:0;text-transform:none;white-space:nowrap;color:#5ff0b0;background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.5);box-shadow:0 0 12px rgba(61,220,151,.25)}
   .d3-arrow{width:28px;height:28px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
   .d3-arrow[aria-expanded=true]{transform:rotate(180deg)}
   .d3-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px;text-align:center}
@@ -506,6 +507,12 @@
       d3Cell('Süre / kişi', d3Secs(c.eng), d3Delta(c.eng, v.eng)) +
       (last || d3Cell('Şikayet', d3Num(c.complaints), d3Delta(c.complaints, v.complaints)));
   }
+  // Growth since opening, in plain sight: daily Google impressions over the
+  // last 7 days against the first 2 weeks in Google (_stats.js growth()).
+  function d3Grow(since) {
+    if (!since || !since.growth) return '';
+    return '<span class="d3-grow" title="Son 7 günün günlük Google gösterimi, Google\'daki ilk 2 haftaya göre">🚀 ' + String(since.growth).replace('.', ',') + ' kat büyüdü</span>';
+  }
   function d3Arrow(id, open, label) { return '<button type="button" class="d3-arrow" id="' + id + '" aria-expanded="' + open + '" aria-label="' + label + ': 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button>'; }
   // Share of the stop before that made it to this one.
   // Capped at 100: the stops are counted by different signals, so a later
@@ -552,7 +559,7 @@
     var t = by[1];
     d3Pressed();
     var html = '<div><div class="d3-card" id="d3main">' +
-      '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
+      '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Grow(s.since) + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
       '<div class="d3-grid">' + d3Metrics(t.cur, t.prev, d3TopQuery(t)) + d3Cell('Önceki gün gösterim', d3Num(t.prev.impressions)) + '</div>' +
