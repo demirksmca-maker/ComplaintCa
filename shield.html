@@ -153,8 +153,14 @@
   /* Genel: 3D cards. Today's numbers big; the arrow opens 1 week, 1 month,
      2 months, 3 months and since opening. The card tilts with the finger. */
   #d3{display:flex;flex-direction:column;gap:12px}
-  .d3-top{display:flex;justify-content:flex-end}
-  .d3-sites{display:flex;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
+  .d3-top{display:flex;align-items:stretch;gap:8px}
+  /* Live row: today so far, refreshed every minute with the rest of the panel. */
+  .d3-now{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px 4px}
+  .d3-now div{min-width:0;text-align:center;line-height:1.1;padding:2px 0}
+  .d3-now b{display:block;font-size:.9rem}
+  .d3-now span{display:block;font-size:.5rem;color:var(--mute);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .d3-now div:first-child b::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);margin-right:4px;vertical-align:middle}
+  .d3-sites{flex:none;display:flex;align-items:center;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
   .d3-sites button{padding:4px 10px;border-radius:7px;font-size:.75rem;color:var(--mute);background:none}
   .d3-sites button[aria-pressed=true]{background:#1d4f91;color:var(--ink)}
   .d3-stage{perspective:900px}
@@ -170,16 +176,38 @@
   .d3-hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1;text-shadow:0 3px 0 #061226,0 6px 10px rgba(0,0,0,.6)}
   .d3-hero span{font-size:.62rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
   .d3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-  .d3-grid.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
   .d3-m{min-width:0;background:rgba(5,14,32,.55);border:1px solid var(--line);border-radius:10px;padding:5px 3px;text-align:center}
   .d3-m b{display:block;font-size:.95rem;font-weight:700}
   .d3-m b.q{font-size:.8rem;line-height:1.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
   .d3-m span{display:block;font-size:.56rem;color:var(--mute);text-transform:uppercase;letter-spacing:.4px}
   .d3-d{display:block;font-size:.62rem;font-weight:600;margin-top:2px}
   .d3-d.flat{color:var(--mute)}
-  .g4 .d3-m{display:flex;flex-direction:column}.g4 .d3-bar{margin-top:auto}.g4 .d3-d{margin-bottom:4px}
-  .d3-bar{height:5px;margin:4px 6px 0;border-radius:3px;background:#0a1a33;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
-  .d3-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(180deg,#6fb6ff,#1d5fd1);box-shadow:0 0 6px rgba(57,135,229,.6)}
+  /* Site road map: one glowing road, a stop per step from arriving on the
+     site to sending a complaint. Big card vertical, period cards in a row. */
+  .rd-card{background:radial-gradient(120% 90% at 0 0,#123a3a,#0a1f2e 55%,#071624);border-color:#1f8a78;box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 30px rgba(61,220,151,.18)}
+  .rd-card .d3-arrow{background:#136b5c;border-color:#2fbf9f}
+  .rd{position:relative;margin:10px 0 2px;padding-left:34px}
+  .rd::before{content:'';position:absolute;left:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:linear-gradient(#3987e5,#3ddc97 60%,#f2bd4b);box-shadow:0 0 10px rgba(61,220,151,.45)}
+  .rd::after{content:'';position:absolute;left:14px;top:14px;bottom:14px;width:2px;background:repeating-linear-gradient(#fff 0 6px,transparent 6px 14px);opacity:.35}
+  .rd-st{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;margin:6px 0;border-radius:10px;background:rgba(4,16,26,.6);border:1px solid #1c4a4f}
+  .rd-st::before{content:'';position:absolute;left:-28px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#071624;border:3px solid var(--c,#3ddc97);box-shadow:0 0 8px var(--c,#3ddc97)}
+  .rd-st i{font-style:normal;font-size:1rem;width:22px;text-align:center;flex:none}
+  .rd-nm{flex:1;min-width:0;font-size:.74rem}
+  .rd-nm small{display:block;font-size:.6rem;color:var(--mute)}
+  .rd-n{text-align:right;flex:none}
+  .rd-n b{display:block;font-size:1.15rem;line-height:1}
+  .rd-n small{font-size:.58rem;color:var(--mute)}
+  .rd-row{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));text-align:center;padding-top:16px}
+  .rd-row::before{content:'';position:absolute;left:10%;right:10%;top:5px;height:4px;border-radius:2px;background:linear-gradient(90deg,#3987e5,#3ddc97 60%,#f2bd4b)}
+  .rd-row div{position:relative;min-width:0}
+  .rd-row div::before{content:'';position:absolute;left:50%;top:-15px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#071624;border:2px solid var(--c,#3ddc97)}
+  .rd-row b{display:block;font-size:.9rem}
+  .rd-row span{display:block;font-size:.5rem;color:var(--mute);text-transform:uppercase;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .rd-live{display:inline-flex;align-items:center;gap:5px}
+  .rd-live::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:rdpulse 1.6s ease-in-out infinite}
+  @keyframes rdpulse{50%{opacity:.3}}
+  #d3road .d3-more .d3-card{animation:none}
+  @media (prefers-reduced-motion:reduce){.rd-live::before{animation:none}}
   .d3-more{margin-top:12px;display:flex;flex-direction:column;gap:14px}
   .d3-more .d3-card{padding:14px;animation:d3rise .4s ease-out both}
   .d3-more .d3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -218,7 +246,12 @@
     <!-- GENEL -->
     <section class="sec" id="v-home">
       <h3 class="ptitle">Bütünleşik master panel</h3>
+      <div class="d3-top">
+        <div class="d3-now" id="d3now" title="Bugün şu ana kadar"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
+        <div class="d3-sites" role="group" aria-label="Site"><button type="button" data-d3site="all">Hepsi</button><button type="button" data-d3site="ca">🇨🇦</button><button type="button" data-d3site="es">🇪🇸</button></div>
+      </div>
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
+      <div id="d3road"></div>
       <div class="card install" id="install" hidden><span id="installText">Telefona uygulama olarak ekle</span><button type="button" id="installBtn">Ekle</button></div>
     </section>
 
@@ -421,12 +454,13 @@
   }
 
   // Genel: 3D cards from the İstatistik numbers (?stats=1, cached 3 h on the
-  // server) and the complaint funnel (?funnel=1). Closed: the last full day
-  // (yesterday) against the day before, and today so far on a small line;
-  // the arrow opens 1 week, 1 month, 2 months, 3 months and since opening.
+  // server) and the site road map (?funnel=1, today live from the minute
+  // refresh). Closed: the last full day (yesterday) against the day before,
+  // and today so far; the arrow opens 1 week, 1/2/3 months and since opening.
   var D3_MORE = [[7, '1 hafta'], [30, '1 ay'], [60, '2 ay'], [90, '3 ay'], ['since', 'Açılıştan beri']];
-  var D3_STEPS = [['open', 'Formu açtı'], ['route', 'Kurum gösterildi'], ['email', 'E-posta doğruladı'], ['submit', 'Gönderdi']];
-  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3FOpen = false;
+  // Road map stops: [step, name, icon, colour along the road, short name].
+  var D3_ROAD = [['visit', 'Siteye geldi', '🌐', '#3987e5', 'Geldi'], ['open', 'Formu açtı', '📝', '#4aa3d8', 'Form'], ['route', 'Kurum gösterildi', '🏛️', '#3ddc97', 'Kurum'], ['email', 'E-posta doğruladı', '✉️', '#9bd36a', 'E-posta'], ['submit', 'Şikayeti gönderdi', '🏁', '#f2bd4b', 'Gönderdi']];
+  var d3Data = null, d3Fun = null, d3Site = store('shieldStatSite') || 'all', d3Open = false, d3ROpen = false, d3Stale = false;
   function d3Num(n) { return n == null ? '–' : Number(n).toLocaleString('tr-TR'); }
   function d3Pct(r) { return (r * 100).toFixed(1).replace('.', ',') + '%'; }
   function d3Pos(p) { return p ? p.toFixed(1).replace('.', ',') : '–'; }
@@ -456,36 +490,41 @@
       d3Cell('Süre / kişi', d3Secs(c.eng), d3Delta(c.eng, v.eng)) +
       (last || d3Cell('Şikayet', d3Num(c.complaints), d3Delta(c.complaints, v.complaints)));
   }
-  function d3Steps(c, v) {
-    var top = Math.max(c.open, c.route, c.email, c.submit) || 1;
-    return D3_STEPS.map(function (st) {
-      var n = c[st[0]];
-      return '<div class="d3-m"><b>' + d3Num(n) + '</b><span>' + st[1] + '</span>' + (v ? d3Delta(n, v[st[0]]) : '') +
-        '<div class="d3-bar"><i style="width:' + Math.max(2, Math.round(n / top * 100)) + '%"></i></div></div>';
-    }).join('');
-  }
   function d3Arrow(id, open, label) { return '<button type="button" class="d3-arrow" id="' + id + '" aria-expanded="' + open + '" aria-label="' + label + ': 1 hafta, 1 ay, 2 ay, 3 ay, açılıştan beri">▾</button>'; }
-  function d3FunnelHtml() {
-    if (!d3Fun) return '';
+  // Share of the stop before that made it to this one.
+  // Capped at 100: the stops are counted by different signals, so a later
+  // stop can now and then come out a little higher.
+  function d3Kept(n, before) { return before ? '%' + Math.min(100, Math.round(n / before * 100)) + ' devam etti' : '–'; }
+  function d3Road() {
+    var box = $('d3road'), d = data;
+    if (!box || !d || !d.now || !d.funnelToday) return;
     var by = {};
-    d3Fun.windows.forEach(function (w) { by[w.name] = w; });
-    var t = by['1'];
-    if (!t || !t.cur) return '';
-    var html = '<div class="d3-stage"><div class="d3-card" id="d3fmain">' +
-      '<div class="d3-when"><span>Şikayetçi hunisi · dün</span>' + d3Arrow('d3farrow', d3FOpen, 'Huni detayı') + '</div>' +
-      '<div class="d3-hero"><div><b>' + d3Num(t.cur.open) + '</b><span>Formu açan</span>' + d3Delta(t.cur.open, t.prev && t.prev.open) + '</div>' +
-      '<div><b>' + d3Num(t.cur.submit) + '</b><span>Gönderen</span>' + d3Delta(t.cur.submit, t.prev && t.prev.submit) + '</div></div>' +
-      '<div class="d3-grid g4">' + d3Steps(t.cur, t.prev) + '</div>' +
-      (by.today && by.today.cur ? '<p class="d3-live">Bugün şu ana kadar: <b>' + d3Num(by.today.cur.open) + '</b> formu açtı · <b>' + d3Num(by.today.cur.submit) + '</b> gönderdi</p>' : '') + '</div></div>';
-    html += '<div class="d3-more"' + (d3FOpen ? '' : ' hidden') + '>';
-    [['7', '1 hafta'], ['30', '1 ay'], ['60', '2 ay'], ['90', '3 ay'], ['since', 'Açılıştan beri']].forEach(function (m) {
+    if (d3Fun) d3Fun.windows.forEach(function (w) { by[w.name] = w; });
+    var today = { visit: d.now.visitors }, y = by['1'] && by['1'].cur;
+    // Past Toronto midnight the road map's "yesterday" is a day old: fetch again.
+    if (y && d.funnelDays[1] && y.to !== d.funnelDays[1].day) { y = null; if (!d3Stale) { d3Stale = true; d3Load(); } }
+    for (var k in d.funnelToday) today[k] = d.funnelToday[k];
+    var html = '<div class="d3-stage"><div class="d3-card rd-card" id="d3rmain">' +
+      '<div class="d3-when"><span class="rd-live">Yol haritası · canlı · iki site</span>' + d3Arrow('d3rarrow', d3ROpen, 'Yol haritası detayı') + '</div><div class="rd">' +
+      D3_ROAD.map(function (st, i) {
+        var n = today[st[0]] || 0, kept = i ? d3Kept(n, today[D3_ROAD[i - 1][0]] || 0) : '';
+        return '<div class="rd-st" style="--c:' + st[3] + '"><i>' + st[2] + '</i><div class="rd-nm">' + st[1] + '<small>' + (i ? kept : 'bugün gelen kişi') + '</small>' + '</div>' +
+          '<div class="rd-n"><b>' + d3Num(n) + '</b>' + (y ? '<small>dün ' + d3Num(y[st[0]]) + '</small>' : '') + '</div></div>';
+      }).join('') + '</div></div></div>';
+    html += '<div class="d3-more"' + (d3ROpen ? '' : ' hidden') + '>';
+    [['1', 'Dün'], ['7', '1 hafta'], ['30', '1 ay'], ['60', '2 ay'], ['90', '3 ay'], ['since', 'Açılıştan beri']].forEach(function (m) {
       var w = by[m[0]];
       if (!w || !w.cur) return;
       var sub = m[0] === 'since' ? d3Day(d3Fun.start) + "'den beri" : w.prev ? 'önceki döneme göre' : d3Day(w.cur.from) + "'den beri";
-      html += '<div class="d3-stage"><div class="d3-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div>' +
-        '<div class="d3-grid g4">' + d3Steps(w.cur, w.prev) + '</div></div></div>';
+      html += '<div class="d3-stage"><div class="d3-card rd-card"><div class="d3-ttl"><b>' + esc(m[1]) + '</b><small>' + esc(sub) + '</small></div><div class="rd-row">' +
+        D3_ROAD.map(function (st) {
+          var n = w.cur[st[0]];
+          return '<div style="--c:' + st[3] + '" title="' + st[1] + '"><b>' + d3Num(n) + '</b><span>' + st[4] + '</span>' + (w.prev ? d3Delta(n, w.prev[st[0]]) : '') + '</div>';
+        }).join('') + '</div></div></div>';
     });
-    return html + '</div>';
+    box.innerHTML = html + '</div>';
+    d3Tilt($('d3rmain'));
+    $('d3rarrow').addEventListener('click', function () { d3ROpen = !d3ROpen; d3Road(); });
   }
   function d3Render() {
     var d = d3Data;
@@ -494,9 +533,8 @@
     var s = d.sites[d3Site], by = {};
     s.periods.forEach(function (p) { by[p.days] = p; });
     var t = by[1];
-    var html = '<div class="d3-top"><div class="d3-sites" role="group" aria-label="Site">' +
-      [['all', 'Hepsi'], ['ca', '🇨🇦'], ['es', '🇪🇸']].map(function (x) { return '<button type="button" data-d3site="' + x[0] + '" aria-pressed="' + (x[0] === d3Site) + '">' + x[1] + '</button>'; }).join('') + '</div></div>' +
-      '<div class="d3-stage"><div class="d3-card" id="d3main">' +
+    d3Pressed();
+    var html = '<div class="d3-stage"><div class="d3-card" id="d3main">' +
       '<div class="d3-when"><span>Dün · ' + d3Day(t.cur.to) + '</span>' + d3Arrow('d3arrow', d3Open, 'Detay') + '</div>' +
       '<div class="d3-hero"><div><b>' + d3Num(t.cur.impressions) + '</b><span>Google gösterim</span>' + d3Delta(t.cur.impressions, t.prev.impressions) + '</div>' +
       '<div><b>' + d3Num(t.cur.clicks) + '</b><span>Tıklama</span>' + d3Delta(t.cur.clicks, t.prev.clicks) + '</div></div>' +
@@ -517,19 +555,30 @@
         '<div class="d3-grid">' + d3Cell('Gösterim', d3Num(c.impressions), v && d3Delta(c.impressions, v.impressions)) + d3Cell('Tık', d3Num(c.clicks), v && d3Delta(c.clicks, v.clicks)) +
         d3Metrics(c, v) + '</div></div></div>';
     });
-    html += '</div>' + d3FunnelHtml();
+    html += '</div>';
     var notes = [];
     if (!d.gsc.ok) notes.push('<b>Search Console bağlı değil (' + esc(d.gsc.reason) + ')</b>');
     notes.push(d.visitors === 'ga' ? 'Ziyaretçi: Google Analytics' : 'Ziyaretçi: site sayacı');
-    if (d3Fun) notes.push('Huni: iki site birlikte');
     html += '<p class="d3-foot">' + notes.join(' · ') + ' · ' + new Date(d.at).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) + ' · <button type="button" id="d3re">↻ Yenile</button></p>';
     $('d3').innerHTML = html;
-    each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Render(); }); });
     $('d3arrow').addEventListener('click', function () { d3Open = !d3Open; d3Render(); });
     $('d3re').addEventListener('click', function () { d3Load(true); });
     d3Tilt($('d3main'));
-    if ($('d3fmain')) { d3Tilt($('d3fmain')); $('d3farrow').addEventListener('click', function () { d3FOpen = !d3FOpen; d3Render(); }); }
   }
+  // Live row: today's visitors and page views for the chosen site, and
+  // attacks blocked today (all sites), from the minute refresh (/api/shield).
+  function d3Now() {
+    var d = data;
+    if (!d || !d.now) return;
+    var keys = d3Site === 'all' ? ['ca', 'es'] : [d3Site], sum = function (f) { return keys.reduce(function (n, k) { return n + d.now[k][f]; }, 0); };
+    // Both sites: one person on / and /es/ counts once.
+    var people = d3Site === 'all' ? d.now.visitors : sum('visitors');
+    $('d3now').innerHTML = '<div><b>' + d3Num(people) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(d.now.blocked) + '</b><span>Engellenen</span></div>';
+  }
+  function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }
+  d3Pressed();
+  each('[data-d3site]', function (b) { b.addEventListener('click', function () { d3Site = b.getAttribute('data-d3site'); store('shieldStatSite', d3Site); d3Pressed(); d3Now(); if (d3Data) d3Render(); }); });
+
   // Card follows the pointer a little; springs back when it leaves.
   function d3Tilt(el) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -551,7 +600,7 @@
       .catch(function () { if (d3Data) d3Render(); else $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (f) { if (f && f.ok) { d3Fun = f; if (d3Data) d3Render(); } }, function () {});
+      .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; d3Road(); } }, function () {});
   }
 
   // 3D shield: 10 dark layers for thickness, then the lit front.
@@ -654,6 +703,8 @@
 
   function render(d) {
     data = d;
+    d3Now();
+    d3Road();
 
     var pd = d.period, plabel = pd.days === 90 ? '3 ay' : pd.days === 28 ? '1 ay' : pd.days + ' gün';
     each('.plabel', function (el) { el.textContent = plabel; });
