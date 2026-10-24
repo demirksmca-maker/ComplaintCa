@@ -158,7 +158,7 @@
   .d3-now{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px 4px}
   .d3-now div{min-width:0;text-align:center;line-height:1.1;padding:2px 0}
   .d3-now b{display:block;font-size:.9rem}
-  .d3-now span{display:block;font-size:.5rem;color:var(--mute);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .d3-now span{display:block;font-size:.56rem;color:#a9bcd6;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .d3-now div:first-child b::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);margin-right:4px;vertical-align:middle}
   .d3-sites{flex:none;display:flex;align-items:center;gap:4px;background:#0b1830;border:1px solid var(--line);border-radius:10px;padding:3px}
   .d3-sites button{padding:4px 10px;border-radius:7px;font-size:.75rem;color:var(--mute);background:none}
@@ -175,8 +175,9 @@
   .d3-card>*{position:relative}
   #d3,#d3road{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
   .d3-when{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
-  .d3-grow{margin:0 8px 0 auto;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:0;text-transform:none;white-space:nowrap;color:#5ff0b0;background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.5);box-shadow:0 0 12px rgba(61,220,151,.25)}
-  .d3-arrow{width:28px;height:28px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
+  .d3-when>span:first-child{flex:none}
+  .d3-grow{min-width:0;overflow:hidden;text-overflow:ellipsis;margin:0 8px 0 auto;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:0;text-transform:none;white-space:nowrap;color:#5ff0b0;background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.5);box-shadow:0 0 12px rgba(61,220,151,.25)}
+  .d3-arrow{flex:none;width:28px;height:28px;border-radius:50%;background:#1d4f91;border:1px solid #3b7fd6;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
   .d3-arrow[aria-expanded=true]{transform:rotate(180deg)}
   .d3-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px;text-align:center}
   .d3-hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1;text-shadow:0 2px 0 rgba(4,12,28,.9)}
@@ -218,7 +219,7 @@
      screens put the two cards side by side. */
   #homeFit{display:flex;flex-direction:column;gap:10px}
   @media (min-width:860px) and (orientation:landscape){
-    main{max-width:980px}
+    main:has(#v-home:not([hidden])){max-width:980px}
     #homeFit{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
     #homeFit>.ptitle,#homeFit>.d3-top,#homeFit>#install{grid-column:1/-1}
   }
@@ -226,7 +227,7 @@
   .d3-more{margin-top:12px;display:flex;flex-direction:column;gap:14px}
   .d3-more .d3-card{padding:14px;animation:d3rise .4s ease-out backwards}
   .d3-more .d3-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  @keyframes d3rise{from{opacity:0;transform:rotateX(35deg) translateY(20px)}}
+  @keyframes d3rise{from{opacity:0;transform:perspective(600px) rotateX(35deg) translateY(20px)}}
   .d3-ttl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
   .d3-ttl b{font-size:.95rem;text-transform:uppercase;letter-spacing:.5px}
   .d3-ttl small{font-size:.7rem;color:var(--mute)}
@@ -557,7 +558,7 @@
   }
   function d3Render() {
     var d = d3Data;
-    if (!d || !d.ok) { $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; return; }
+    if (!d || !d.ok) { $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; fitHome(); return; }
     if (!d.sites[d3Site]) d3Site = 'all';
     var s = d.sites[d3Site], by = {};
     s.periods.forEach(function (p) { by[p.days] = p; });
@@ -613,11 +614,12 @@
   // With a detail list open it scrolls as usual.
   function fitHome() {
     var sec = $('v-home'), box = $('homeFit');
-    if (sec.hidden) return;
+    // Not on screen yet (login, or before the first answer): nothing to fit.
+    if (sec.hidden || !sec.clientHeight) return;
     box.style.zoom = '';
     if (d3Open || d3ROpen) return;
     var cs = getComputedStyle(sec), room = sec.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    if (box.offsetHeight > room) box.style.zoom = Math.max(0.6, Math.floor(room / box.offsetHeight * 1000) / 1000 - 0.01);
+    if (box.offsetHeight > room) box.style.zoom = Math.max(0.65, Math.floor(room / box.offsetHeight * 1000) / 1000 - 0.01);
   }
   window.addEventListener('resize', fitHome);
 
@@ -640,7 +642,7 @@
   }
   function d3Load(fresh) {
     var h = { headers: { 'x-shield-key': getKey() }, cache: 'no-store' };
-    if (fresh) $('d3').innerHTML = '<p class="empty">Yükleniyor…</p>';
+    if (fresh) { $('d3').innerHTML = '<p class="empty">Yükleniyor…</p>'; fitHome(); }
     fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), h)
       .then(function (r) { return r.json(); })
       .then(function (d) { d3Data = d; d3Render(); })
@@ -857,15 +859,15 @@
   // Phone app: Android/Chrome offers an install prompt; iPhone needs Share → Add to Home Screen.
   var promptEvent = null;
   var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); promptEvent = e; if (!standalone) $('install').hidden = false; });
+  window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); promptEvent = e; if (!standalone) { $('install').hidden = false; fitHome(); } });
   if (!standalone && /iPhone|iPad/.test(navigator.userAgent)) {
-    $('install').hidden = false; $('installBtn').hidden = true;
+    $('install').hidden = false; $('installBtn').hidden = true; fitHome();
     $('installText').textContent = 'Uygulama için: Paylaş → Ana Ekrana Ekle';
   }
   $('installBtn').addEventListener('click', function () {
     if (!promptEvent) return;
     promptEvent.prompt();
-    promptEvent.userChoice.then(function () { $('install').hidden = true; promptEvent = null; });
+    promptEvent.userChoice.then(function () { $('install').hidden = true; promptEvent = null; fitHome(); });
   });
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
