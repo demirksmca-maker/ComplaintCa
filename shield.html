@@ -115,9 +115,9 @@
   .quiet{color:var(--ok);font-size:.82rem;text-align:center;padding:14px 0}
 
   /* Bottom toolbar */
-  .bar-nav{display:grid;grid-template-columns:repeat(8,1fr);border-top:1px solid var(--edge);background:#08142a;padding:6px 8px max(6px,env(safe-area-inset-bottom))}
+  .bar-nav{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));border-top:1px solid var(--edge);background:#08142a;padding:6px 8px max(6px,env(safe-area-inset-bottom))}
   .bar-nav a{text-decoration:none}
-  .bar-nav button,.bar-nav a{background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.68rem;color:var(--mute)}
+  .bar-nav button,.bar-nav a{background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.62rem;letter-spacing:-.2px;white-space:nowrap;color:var(--mute)}
   .bar-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
   .bar-nav button[aria-current="page"]{color:var(--ink);font-weight:600}
   .bar-nav button[aria-current="page"] svg{stroke:var(--s1)}
@@ -337,7 +337,7 @@
       <button type="button" data-sec="google"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Google</button>
       <button type="button" data-sec="security"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg>Güvenlik</button>
       <a href="/dias-claude.html"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg>Claude</a>
-      <a href="/"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>Site</a>
+      <a href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>Site</a>
       <a href="/social/admin.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5"/></svg>Paylaşım</a>
     </nav>
   </div>
