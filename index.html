@@ -616,6 +616,43 @@ textarea{resize:vertical;min-height:90px}
 <script src="/ga-init.js"></script>
 </head>
 <body>
+<!-- Choice screen: shown once per visit on the bare home page; "Complain CA" opens the complaint form (/?go=new) -->
+<style>
+#cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;background:#041235;color:#fff;font-family:Inter,system-ui,sans-serif}
+#cc-choice.on{display:grid;align-content:center;padding:24px 0}
+#cc-choice .cc-hero{max-width:1100px;width:100%;margin:0 auto}
+#cc-choice .cc-hero img{display:block;width:100%;height:auto;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%)}
+#cc-choice .cc-bars{box-sizing:border-box;width:100%;max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
+#cc-choice .cc-bar{display:block;box-sizing:border-box;width:100%;text-align:center;font:600 18px/1.2 Inter,system-ui,sans-serif;letter-spacing:.02em;text-decoration:none;padding:18px 12px;border-radius:999px;cursor:pointer}
+#cc-choice .cc-info{color:#f1d27a;border:2px solid #d9b24c;background:rgba(4,18,53,.6)}
+#cc-choice .cc-complain{color:#14213a;background:linear-gradient(180deg,#f1d27a,#d9b24c);border:2px solid #d9b24c;box-shadow:0 0 24px -4px rgba(217,178,76,.6)}
+#cc-choice .cc-ca{display:inline-block;margin-left:4px;padding:3px 8px 2px;border-radius:6px;background:#0f2952;color:#f1d27a;font:700 14px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em;vertical-align:2px}
+#cc-choice .cc-bar:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#cc-choice .cc-quote{margin:32px auto 0;padding:0 16px;text-align:center;font:italic 600 clamp(17px,2.4vw,21px)/1.5 Georgia,serif;color:#f1d27a}
+#cc-choice .cc-quote cite{display:block;margin-top:8px;font:italic 600 14px/1 Georgia,serif}
+@media (max-width:520px){#cc-choice .cc-hero img{aspect-ratio:1/1;object-fit:cover}#cc-choice .cc-bars{grid-template-columns:1fr;margin-top:4px}#cc-choice .cc-complain{order:-1}}
+</style>
+<div id="cc-choice" role="dialog" aria-modal="true" aria-label="How can we help?">
+  <div class="cc-hero"><img src="/assets/newsletter/flag-wreath.jpg" alt="" width="1376" height="630"></div>
+  <nav class="cc-bars">
+    <a class="cc-bar cc-info" href="/guides/">Know Your Rights</a>
+    <a class="cc-bar cc-complain" href="/?go=new">Complain <span class="cc-ca">CA</span></a>
+  </nav>
+  <p class="cc-quote">“Don't be discouraged.<br>When you fail, come back again.”<cite>Marcus Aurelius · Meditations 5.9</cite></p>
+</div>
+<script>
+(function(){
+  var box=document.getElementById('cc-choice');
+  var seen=false;try{seen=sessionStorage.getItem('cc_choice')==='1'}catch(e){}
+  // Never for crawlers or visitors arriving from a search engine (no interstitial on search landings)
+  var bot=/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent);
+  var fromSearch=/\/\/([^\/]+\.)?(google|bing|yahoo|duckduckgo|yandex|ecosia|baidu)\./i.test(document.referrer);
+  if(location.search||location.hash||seen||bot||fromSearch)return;
+  box.classList.add('on');document.documentElement.style.overflow='hidden';
+  function done(){try{sessionStorage.setItem('cc_choice','1')}catch(e){}}
+  box.querySelectorAll('a').forEach(function(a){a.addEventListener('click',done)});
+})();
+</script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
