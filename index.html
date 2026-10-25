@@ -636,13 +636,22 @@ textarea{resize:vertical;min-height:90px}
   <div class="cc-hero"><img src="/assets/newsletter/flag-wreath.jpg" alt="" width="1376" height="630"></div>
   <nav class="cc-bars">
     <a class="cc-bar cc-info" href="/guides/">Know Your Rights</a>
-    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceClose();openAsyaPanel()">Complain <span class="cc-ca">CA</span></button>
+    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceComplain(this)">Complain <span class="cc-ca">CA</span></button>
   </nav>
   <p class="cc-quote">“Don't be discouraged.<br>When you fail, come back again.”<cite>Marcus Aurelius · Meditations 5.9</cite></p>
 </div>
 <script>
 function ccChoiceOpen(){document.getElementById('cc-choice').classList.add('on');document.documentElement.style.overflow='hidden'}
 function ccChoiceClose(){document.getElementById('cc-choice').classList.remove('on');document.documentElement.style.overflow=''}
+// Keep the choice screen up until the form has replaced the home page, so the home page never flashes
+function ccChoiceComplain(btn){
+  btn.disabled=true;btn.style.opacity='.7';try{openAsyaPanel()}catch(e){ccChoiceClose();btn.disabled=false;btn.style.opacity='';throw e}
+  var land=document.getElementById('pg-land'),t0=Date.now();
+  (function wait(){
+    if((land&&land.style.display==='none')||Date.now()-t0>8000){ccChoiceClose();btn.disabled=false;btn.style.opacity='';return}
+    setTimeout(wait,50);
+  })();
+}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
 </script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
