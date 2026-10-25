@@ -540,6 +540,7 @@ a.af1-hico:hover{color:#ffe08a}
 .af-ov .af-bar,.af-ov.cc-embedded .af-bar{padding-top:calc(env(safe-area-inset-top,0px) + 4px);padding-bottom:0;min-height:0}
 /* Inside the site page the tabs are the way out, so no close button */
 .af-ov.cc-embedded .af-close{display:none}
-/* No ASYA name under the scales; the emblem sits a little left and higher */
+/* No ASYA name under the scales; the emblem is 40% smaller, sits left and higher */
 .af-brand{display:none}
-.af-scene{position:relative;left:-40px;margin-top:-20px}
+.af-scene{position:relative;left:-100px;margin-top:-20px;height:clamp(120px,18.6dvh,180px)}
+.af-ov:has(.af.mode-one) .af-scene{height:clamp(66px,10.2dvh,90px)}
