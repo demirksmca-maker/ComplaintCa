@@ -662,6 +662,8 @@ function ccChoiceOpen(){document.getElementById('cc-choice').classList.add('on')
 function ccChoiceClose(){document.getElementById('cc-choice').classList.remove('on');document.documentElement.style.overflow=''}
 // Keep the choice screen up until the form has replaced the home page, so the home page never flashes
 function ccChoiceComplain(btn){
+  // New six-step screen; the old direct-to-form path stays as the fallback
+  if(window.ccStepsOpen&&!window._ccOldPanel){ccChoiceClose();window.ccStepsOpen();return}
   btn.disabled=true;btn.style.opacity='.7';try{openAsyaPanel()}catch(e){ccChoiceClose();btn.disabled=false;btn.style.opacity='';throw e}
   var land=document.getElementById('pg-land'),t0=Date.now();
   (function wait(){
@@ -671,6 +673,7 @@ function ccChoiceComplain(btn){
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
 </script>
+<script defer src="/assets/complaint-steps.js"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
