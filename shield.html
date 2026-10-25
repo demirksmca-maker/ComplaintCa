@@ -317,6 +317,9 @@
       <div id="gscBody"><p class="empty">Yükleniyor…</p></div>
     </section>
 
+    <!-- SİTE -->
+    <section class="sec" id="v-site" hidden style="padding:0"><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe></section>
+
     <!-- GÜVENLİK -->
     <section class="sec" id="v-security" hidden>
       <h3 class="ptitle">AI güvenlik ve ajan analizi</h3>
@@ -337,7 +340,7 @@
       <button type="button" data-sec="google"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Google</button>
       <button type="button" data-sec="security"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/></svg>Güvenlik</button>
       <a href="/dias-claude.html"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg>Claude</a>
-      <a href="/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>Site</a>
+      <button type="button" data-sec="site"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>Site</button>
       <a href="/social/admin.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5"/></svg>Paylaşım</a>
     </nav>
   </div>
@@ -714,9 +717,11 @@
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
   function showSec(name) {
     each('.bar-nav button', function (b) { var on = b.getAttribute('data-sec') === name; on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); $('v-' + b.getAttribute('data-sec')).hidden = !on; });
-    store(SEC, name);
+    if (name !== 'site') store(SEC, name);
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
+    // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
+    if (name === 'site') $('siteFrame').src = '/'; else $('siteFrame').removeAttribute('src');
   }
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
   each('[data-range]', function (b) { b.addEventListener('click', function () {
