@@ -630,7 +630,19 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-bar:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #cc-choice .cc-quote{margin:32px auto 0;padding:0 16px;text-align:center;font:italic 600 clamp(17px,2.4vw,21px)/1.5 Georgia,serif;color:#f1d27a}
 #cc-choice .cc-quote cite{display:block;margin-top:8px;font:italic 600 14px/1 Georgia,serif}
-@media (max-width:520px){#cc-choice .cc-hero img{aspect-ratio:1/1;object-fit:cover}#cc-choice .cc-bars{grid-template-columns:1fr;margin-top:4px}#cc-choice .cc-complain{order:-1}}
+@media (max-width:520px){
+#cc-choice{background:radial-gradient(circle at 50% 32%,#0b2155 0,#041235 58%)}
+#cc-choice.on{padding:20px 0 calc(20px + env(safe-area-inset-bottom))}
+#cc-choice .cc-hero{width:min(74vw,46vh,300px);margin:0 auto 18px}
+#cc-choice .cc-hero img{aspect-ratio:1/1;object-fit:cover;object-position:50% 50%;border-radius:50%;-webkit-mask-image:radial-gradient(circle closest-side,#000 70%,transparent 100%);mask-image:radial-gradient(circle closest-side,#000 70%,transparent 100%)}
+#cc-choice .cc-bars{grid-template-columns:1fr;gap:12px;max-width:340px;padding:0 24px}
+#cc-choice .cc-bar{font-size:16px;padding:14px 12px}
+#cc-choice .cc-ca{font-size:12px}
+#cc-choice .cc-complain{order:-1;box-shadow:0 6px 20px -8px rgba(217,178,76,.55)}
+#cc-choice .cc-info{background:rgba(255,255,255,.03);border-width:1.5px}
+#cc-choice .cc-quote{margin-top:24px;padding:0 28px;font-size:15px;line-height:1.45;opacity:.9}
+#cc-choice .cc-quote cite{font-size:12px;opacity:.8}
+}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-label="How can we help?">
   <div class="cc-hero"><img src="/assets/newsletter/flag-wreath.jpg" alt="" width="1376" height="630"></div>
