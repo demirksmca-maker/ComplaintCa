@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Complaint Result Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Result screen demo: same look as the six-step screen (assets/complaint-steps.js), shown after a complaint is sent. */
+:root{--bg:#041235;--ink:#fff;--soft:#b9c4dc;--line:#9cc0ff}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{color:var(--ink);font-family:Inter,system-ui,sans-serif;background:var(--bg) radial-gradient(ellipse 80% 45% at 50% 0%,#0b2a63 0%,#041235 70%);display:flex;flex-direction:column;min-height:100dvh}
+button{font:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top,0px)) 12px 12px;background:linear-gradient(180deg,#0f2952,#0a1f45);border-bottom:1px solid rgba(156,192,255,.25)}
+.top b{font:700 20px/1 Cinzel,Georgia,serif;letter-spacing:.08em}
+.rb{width:38px;height:38px;border-radius:50%;border:1px solid rgba(156,192,255,.45);background:rgba(4,18,53,.5);color:#fff;font-size:19px;line-height:1;cursor:pointer}
+.wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:720px;margin:0 auto;padding:clamp(10px,2.2vh,20px) 16px calc(clamp(10px,2vh,32px) + env(safe-area-inset-bottom,0px))}
+.ttl{text-align:center}
+.seal{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0%,#cfe0ff 30%,#3b82f6 70%,#1d4ed8 100%);box-shadow:0 0 30px 4px rgba(96,165,250,.55);color:#0a1f4d;font:800 20px/1 Inter,sans-serif;animation:pop .6s cubic-bezier(.2,.8,.2,1.4) both,breathe 3s 1s ease-in-out infinite}
+.ttl h1{margin:0;font:700 clamp(24px,min(7vw,4.5vh),38px)/1.1 Cinzel,Georgia,serif;letter-spacing:.08em}
+.ln{display:flex;align-items:center;justify-content:center;gap:10px;margin:clamp(4px,1vh,10px) 0 clamp(4px,.8vh,8px);color:var(--line);font-size:11px}
+.ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--line))}.ln i:last-child{transform:scaleX(-1)}
+.ttl p{margin:0;font:500 15px/1.4 Inter,sans-serif;color:var(--soft)}
+.ttl p em{font-style:normal;color:#fff;font-weight:700;letter-spacing:.04em}
+.hd{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(8px,2vh,20px);font:700 14px/1 Cinzel,Georgia,serif;letter-spacing:.08em}
+.pill{font:700 13px/1 Inter,sans-serif;letter-spacing:.14em;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:linear-gradient(90deg,#1d4ed8,#2563eb)}
+.grid{position:relative;display:grid;flex:1;min-height:0;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:clamp(8px,1.4vh,14px);margin-top:clamp(8px,1.4vh,14px);padding:clamp(8px,1.4vh,14px);border-radius:22px;background:#0a1f4d;overflow:hidden;isolation:isolate}
+.leaf{position:absolute;left:50%;top:50%;width:125%;height:112%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;filter:drop-shadow(0 0 18px rgba(255,255,255,.35))}
+.card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:0;overflow:hidden;padding:clamp(10px,1.8vh,18px);border:0;border-radius:14px;text-align:left;color:#dbe8ff;cursor:pointer;background:rgba(var(--c),.8);box-shadow:inset 0 0 0 2px rgba(255,255,255,.8);transition:transform .2s,background .2s;animation:up .6s ease-out both}
+.card:hover{transform:translateY(-2px);background:rgba(var(--c),.9)}
+.card:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.card>svg{flex:none;width:24px;height:24px}
+.card b{display:block;font:600 18px/1.2 Inter,sans-serif;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.card small{display:block;margin-top:4px;font:500 13px/1.35 Inter,sans-serif;color:#cfe0ff;text-shadow:0 1px 2px rgba(0,0,0,.35);overflow-wrap:anywhere}
+.card .k{display:block;font:700 11px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9fc2ff;margin-bottom:5px}
+.n{position:absolute;top:14px;right:16px;font:700 13px/1 Cinzel,Georgia,serif;color:#fff}
+.ok{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:#fff;color:#1d4ed8;display:grid;place-items:center;font:800 14px/1 Inter,sans-serif}
+.card:nth-of-type(1){--c:30,64,175}.card:nth-of-type(2){--c:29,78,216;animation-delay:.06s}.card:nth-of-type(3){--c:37,87,201;animation-delay:.12s}.card:nth-of-type(4){--c:30,71,181;animation-delay:.18s}.card:nth-of-type(5){--c:23,53,127;animation-delay:.24s}.card:nth-of-type(6){--c:37,99,235;animation-delay:.3s}
+.ring{width:30px;height:30px;transform:rotate(-90deg)}.ring .tk{stroke:rgba(255,255,255,.25)}.ring .vl{stroke:#fff;stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:clamp(6px,1.6vh,22px);color:var(--line)}.orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,var(--line))}.orn i:last-child{transform:scaleX(-1)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:clamp(8px,1.6vh,18px)}
+.go,.alt{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;padding:clamp(12px,1.8vh,17px) 10px;border-radius:999px;font:600 16px/1 Inter,sans-serif;white-space:nowrap;cursor:pointer}
+.go{border:0;color:#0a1f4d;background:linear-gradient(180deg,#fff,#dbe8ff);box-shadow:0 0 26px -6px rgba(255,255,255,.55)}
+.go::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(96,165,250,.3) 50%,transparent 70%);transform:translateX(-120%);animation:shine 4.5s 1.2s ease-in-out infinite;pointer-events:none}
+.alt{border:1.5px solid rgba(156,192,255,.5);background:transparent;color:#fff}
+.note{margin:clamp(6px,1.2vh,12px) 0 0;text-align:center;font:500 13px/1.4 Inter,sans-serif;color:#9fb8e8}
+.scrim{position:fixed;inset:0;z-index:2;background:rgba(2,8,24,.72);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;top:46%;z-index:3;width:min(560px,calc(100% - 28px));max-height:calc(100% - 40px);overflow:auto;transform:translate(-50%,-46%) scale(.94);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s;background:#041235 radial-gradient(ellipse 90% 60% at 50% 0%,#0b2a63 0%,#041235 75%);border:1.5px solid rgba(156,192,255,.6);border-radius:24px;padding:18px 20px 20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+.sheet.on{transform:translate(-50%,-46%);opacity:1;pointer-events:auto}
+.sheet .rb{position:absolute;top:12px;right:12px}
+.sh-h{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}.sh-h svg{width:22px;height:22px;color:var(--line)}
+.sh-h b{font:700 21px/1.2 Cinzel,Georgia,serif;letter-spacing:.1em}
+.sh-b p{margin:0 0 10px;font:400 15px/1.6 Inter,sans-serif;color:#eef4ff}
+.sh-b ol{margin:0;padding-left:20px;font:400 15px/1.7 Inter,sans-serif}
+.box{padding:12px 14px;border-radius:14px;background:rgba(29,78,216,.25);border:1px solid rgba(156,192,255,.35);margin-top:10px;font:500 14px/1.5 Inter,sans-serif}
+.box b{display:block;font:700 12px/1.3 Inter,sans-serif;color:#cfe0ff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.ok-btn{display:block;width:100%;margin-top:18px;padding:16px;border:0;border-radius:999px;background:linear-gradient(180deg,#fff,#dbe8ff);color:#0a1f4d;font:700 17px/1 Inter,sans-serif;cursor:pointer}
+.demo{width:38px;text-align:center;padding:4px 0;letter-spacing:.04em!important;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(156,192,255,.3);font:700 10px/1 Inter,sans-serif;letter-spacing:.2em;color:#9fb8e8;pointer-events:none}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shine{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}
+@media (max-height:720px){.card>svg{display:none}.card{justify-content:flex-end}.card b{font-size:16px}.card small{font-size:12px}.seal{width:42px;height:42px;font-size:20px}}
+@media (max-height:560px){.grid{flex:none;grid-template-rows:none}.card{min-height:110px}.wrap{flex:none}}
+@media (prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><button type="button" class="rb" onclick="history.back()" aria-label="Back">←</button><b>COMPLAINTCA</b><span class="demo">DEMO</span></div>
+<main class="wrap">
+  <div class="ttl"><div class="seal" aria-hidden="true">✓</div><h1>Complaint Filed</h1><div class="ln" aria-hidden="true"><i></i>✦<i></i></div><p>Reference <em id="ref"></em> · sent today</p></div>
+  <div class="hd"><span>Result · 6/6</span><span class="pill">ASYA</span></div>
+  <div class="grid" id="grid"><svg class="leaf" viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="M50 3 57 17 64 14 60 37 73 25 76 32 90 29 86 43 94 47 74 63 77 71 53.5 67 54.5 97 45.5 97 46.5 67 23 71 26 63 6 47 14 43 10 29 24 32 27 25 40 37 36 14 43 17Z"/></svg></div>
+  <div class="orn" aria-hidden="true"><i></i>✦<i></i></div>
+  <div class="btns"><button type="button" class="alt" id="copy">Save a copy</button><button type="button" class="go" onclick="history.back()">New complaint</button></div>
+  <p class="note">Tap any card for details. A copy was sent to your email.</p>
+</main>
+<div class="scrim" data-x></div>
+<section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t"><button type="button" class="rb" data-x aria-label="Close">×</button>
+  <div class="sh-h"><span id="sh-i"></span><b id="sh-t"></b></div><div class="ln" aria-hidden="true"><i></i>✦<i></i></div>
+  <div class="sh-b" id="sh-b"></div><button type="button" class="ok-btn" data-x>Got it</button></section>
+<script>
+(function(){
+  // Demo answers: what the six steps would have collected.
+  var D = { who:'Rogers', loc:'Toronto, ON', topic:'Consumer & Business · Billing error', mail:'an***@gmail.com', score:82, sent:new Date() };
+  var ref = 'CA-' + D.sent.getFullYear() + '-' + String(Math.floor(10000 + Math.random() * 89999));
+  var day = function(d){ return d.toLocaleDateString('en-CA', { month:'short', day:'numeric', year:'numeric' }); };
+  var plus = function(n){ var d = new Date(D.sent); d.setDate(d.getDate() + n); return d; };
+  var SV = function(d){ return '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; };
+  var C = 2 * Math.PI * 12, RING = '<svg class="ring" viewBox="0 0 30 30" aria-hidden="true"><circle class="tk" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="vl" cx="15" cy="15" r="12" fill="none" stroke-width="3" stroke-dasharray="' + C + '" stroke-dashoffset="' + C + '"/></svg>';
+  var CARDS = [
+    { k:'Sent', t:'Delivered', s:'To ' + D.who + ' by email', i:'<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/>',
+      d:'<p>Your complaint reached <b>' + D.who + '</b> by email.</p><div class="box"><b>Reference</b>' + ref + '</div><div class="box"><b>Topic</b>' + D.topic + '</div><div class="box"><b>Location</b>' + D.loc + '</div>' },
+    { k:'Strength', t:D.score + ' / 100', s:'Strong case', i:RING,
+      d:'<p>ASYA checked your story before it was sent.</p><div class="box"><b>Found</b>✓ Clear sentences · ✓ Date · ✓ Amount · ✓ What you want</div><div class="box"><b>Tip</b>Keep the bill and any reply. They make the case stronger.</div>' },
+    { k:'Reply due', t:day(plus(30)), s:'30 days to answer', i:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+      d:'<p>Give <b>' + D.who + '</b> up to 30 days to fix it.</p><div class="box"><b>We remind you</b>' + day(plus(25)) + ', if there is no answer yet.</div>' },
+    { k:'If no fix', t:'CCTS', s:'Free telecom ombudsman', i:'<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>',
+      d:'<p>If the company does not fix it, take it to the <b>Commission for Complaints for Telecom-television Services (CCTS)</b>. It is free.</p><div class="box"><b>Bring</b>Your reference ' + ref + ' and the company’s reply.</div>' },
+    { k:'Time limit', t:'About 2 years', s:'Sooner is better', i:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
+      d:'<p>Consumer claims in Canada usually have about <b>2 years</b>. Sooner is better.</p><div class="box"><b>Last safe date</b>' + day(plus(730)) + '</div>' },
+    { k:'Next steps', t:'3 things to do', s:'Tap to see them', i:'<path d="M4 6h2M4 12h2M4 18h2M9 6h11M9 12h11M9 18h11"/>',
+      d:'<ol><li>Open the email we sent to ' + D.mail + '.</li><li>Keep the bill, photos and any reply.</li><li>No fix by ' + day(plus(30)) + '? Go to CCTS.</li></ol>' }
+  ];
+  document.getElementById('ref').textContent = ref;
+  var g = document.getElementById('grid'), N = ['I','II','III','IV','V','VI'];
+  CARDS.forEach(function(c, i){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'card';
+    b.innerHTML = (i === 0 ? '<span class="ok">✓</span>' : '<span class="n">' + N[i] + '</span>') + (c.i.indexOf('<svg') === 0 ? c.i : SV(c.i)) + '<span><span class="k">' + c.k + '</span><b>' + c.t + '</b><small>' + c.s + '</small></span>';
+    b.onclick = function(){ open(c, b); }; g.appendChild(b);
+  });
+  requestAnimationFrame(function(){ setTimeout(function(){ var v = g.querySelector('.ring .vl'); if (v) v.style.strokeDashoffset = C * (1 - D.score / 100); }, 400); });
+  var sc = document.querySelector('.scrim'), sh = document.querySelector('.sheet');
+  function open(c, b){ document.getElementById('sh-t').textContent = c.k; document.getElementById('sh-i').innerHTML = b.querySelector('svg').outerHTML; document.getElementById('sh-b').innerHTML = c.d; sc.classList.add('on'); sh.classList.add('on'); }
+  function close(){ sc.classList.remove('on'); sh.classList.remove('on'); }
+  document.querySelectorAll('[data-x]').forEach(function(x){ x.onclick = close; });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+  document.getElementById('copy').onclick = function(){ window.print(); };
+})();
+</script>
+</body>
+</html>
