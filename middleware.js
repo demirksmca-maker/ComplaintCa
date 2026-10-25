@@ -34,7 +34,7 @@ const PAGE_LIMIT_PER_MIN = 60;
 const LOCKDOWN_API_PER_MIN = 30;
 const LOCKDOWN_PAGE_PER_MIN = 20;
 
-const PROBE_RE = /(^|\/)(\.env|\.git(\/|$)|\.svn|\.hg|\.aws|\.ssh|\.htaccess|\.htpasswd|\.ds_store|wp-admin|wp-login|wp-content|wp-includes|xmlrpc\.php|phpmyadmin|cgi-bin|server-status|actuator|vendor\/phpunit|boaform|hnap1|owa\/|\.well-known\/(?!security\.txt|assetlinks\.json|apple-app-site-association))|\.(php\d?|asp|aspx|jsp|cgi|sql|bak|old|swp)$/i;
+const PROBE_RE = /(^|\/)(\.env|\.git(\/|$)|\.svn|\.hg|\.aws|\.ssh|\.htaccess|\.htpasswd|\.ds_store|wp-admin|wp-login|wp-content|wp-includes|xmlrpc\.php|phpmyadmin|cgi-bin|server-status|actuator|vendor\/phpunit|boaform|hnap1|owa\/|\.well-known\/(?!security\.txt|assetlinks\.json|apple-app-site-association|traffic-advice))|\.(php\d?|asp|aspx|jsp|cgi|sql|bak|old|swp)$/i;
 
 const INJECT_RES = [
   /<\s*script/i,
@@ -58,7 +58,9 @@ const SCANNER_RE = /sqlmap|nikto|nmap|masscan|zgrab|acunetix|nuclei|wpscan|dirbu
 // found through them.
 const AI_SCRAPER_RE = /CCBot|Bytespider|Meta-ExternalAgent|meta-externalfetcher|ImagesiftBot|Diffbot|omgili|Timpibot|cohere-training-data-crawler|img2dataset/i;
 
-const SEARCH_BOT_RE = /googlebot|google-inspectiontool|adsbot-google|mediapartners-google|bingbot|duckduckbot|yandex|applebot|baiduspider|petalbot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user/i;
+// Any Google fetcher (GoogleOther, Google-Read-Aloud, FeedFetcher-Google, the
+// Chrome prefetch proxy asking for /.well-known/traffic-advice ...), not just Googlebot.
+const SEARCH_BOT_RE = /google|privacy preserving prefetch proxy|bingbot|duckduckbot|yandex|applebot|baiduspider|petalbot|oai-searchbot|chatgpt-user|perplexitybot|perplexity-user|claude-searchbot|claude-user/i;
 
 function decodeAll(s) {
   let out = s;

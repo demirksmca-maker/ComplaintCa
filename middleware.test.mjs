@@ -14,7 +14,7 @@ test('every sitemap URL passes', () => {
 
 test('normal app URLs pass', () => {
   for (const p of ['/', '/es/', '/?go=new&panel=new', '/api/route', '/api/complaint?my=1',
-    '/.well-known/assetlinks.json', '/?q=noise+complaint+toronto&gclid=abc', '/blog/how-to-complain.html'])
+    '/.well-known/assetlinks.json', '/.well-known/traffic-advice', '/?q=noise+complaint+toronto&gclid=abc', '/blog/how-to-complain.html'])
     assert.equal(inspect(u(p), 'Mozilla/5.0'), null, p);
   assert.equal(inspect(u('/'), 'curl/8.5.0'), null);
 });
@@ -168,4 +168,23 @@ test('owner cookie skips counting, not security', async () => {
   delete process.env.KV_REST_API_URL;
   const res = await middleware(new Request('https://complaintca.ca/.env', { headers: { cookie: 'cc_owner=1' } }));
   assert.equal(res.status, 403);
+});
+
+test('Google fetchers without a Googlebot UA are never banned', async () => {
+  delete process.env.UPSTASH_REDIS_REST_URL;
+  const ua = 'Chrome Privacy Preserving Prefetch Proxy';
+  assert.equal(await middleware(new Request('https://complaintca.ca/.well-known/traffic-advice', { headers: { 'user-agent': ua } })), undefined);
+  const calls = [];
+  process.env.UPSTASH_REDIS_REST_URL = 'https://r.test'; process.env.UPSTASH_REDIS_REST_TOKEN = 't';
+  const orig = globalThis.fetch;
+  globalThis.fetch = async (_, o) => { calls.push(o.body); return new Response('[]'); };
+  try {
+    for (const g of ['GoogleOther', 'Mozilla/5.0 (compatible; Google-Read-Aloud)', 'FeedFetcher-Google'])
+      await middleware(new Request('https://complaintca.ca/.well-known/x', { headers: { 'user-agent': g } }));
+  } finally {
+    globalThis.fetch = orig;
+    delete process.env.UPSTASH_REDIS_REST_URL; delete process.env.UPSTASH_REDIS_REST_TOKEN;
+  }
+  assert.equal(calls.length, 3);
+  assert.ok(calls.every(b => !b.includes('shield:ban:')));
 });
