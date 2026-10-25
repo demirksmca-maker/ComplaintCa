@@ -145,12 +145,15 @@ test('analytics helpers: device, hour, funnel step', async () => {
   assert.equal(deviceOf('Mozilla/5.0 (Linux; Android 14; SM-X710)'), 'tablet');
   assert.equal(deviceOf('Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130'), 'desktop');
   assert.equal(visitHour(new Date('2026-10-20T16:30:00Z')), 12);
-  const post = p => [new Request('https://complaintca.ca' + p, { method: 'POST' }), u(p)];
+  const post = (p, ua = 'Mozilla/5.0 (iPhone) Mobile') => [new Request('https://complaintca.ca' + p, { method: 'POST', headers: { 'user-agent': ua } }), u(p)];
   assert.equal(funnelStep(...post('/api/route')), 'route');
   assert.equal(funnelStep(...post('/api/email-code')), 'email');
   assert.equal(funnelStep(...post('/api/complaint')), 'submit');
   assert.equal(funnelStep(...post('/api/complaint?my=1')), null);
   assert.equal(funnelStep(new Request('https://complaintca.ca/api/route'), u('/api/route')), null);
+  // The uptime check's curl and other robots are not counted.
+  assert.equal(funnelStep(...post('/api/route', 'curl/8.5.0')), null);
+  assert.equal(funnelStep(...post('/api/route', '')), null);
 });
 
 test('beacon is answered at the edge', async () => {

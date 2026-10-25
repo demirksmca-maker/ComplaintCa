@@ -206,9 +206,11 @@ function countVisit(request, url, ip, ua, source) {
 
 // Complaint funnel: unique people per step per day. "open" comes from the
 // page's beacon (/api/beacon, answered here without a function), the other
-// steps from the API calls the complaint flow makes.
+// steps from the API calls the complaint flow makes. Robots (the uptime
+// check's curl POST to /api/route every 30 min) are not people: skipped.
 export function funnelStep(request, url) {
-  if (request.method !== 'POST' || url.search) return null;
+  const ua = request.headers.get('user-agent') || '';
+  if (request.method !== 'POST' || url.search || !ua || BOT_RE.test(ua)) return null;
   return { '/api/route': 'route', '/api/email-code': 'email', '/api/complaint': 'submit' }[url.pathname] || null;
 }
 
@@ -234,7 +236,7 @@ export default async function middleware(request) {
     return blocked(agent);
   }
   if (url.pathname === '/api/beacon') {
-    if (url.searchParams.get('e') === 'open' && !searchBot && !isOwner(request)) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
+    if (url.searchParams.get('e') === 'open' && ua && !BOT_RE.test(ua) && !isOwner(request)) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }
 
