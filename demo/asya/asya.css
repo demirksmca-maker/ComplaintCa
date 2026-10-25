@@ -542,5 +542,5 @@ a.af1-hico:hover{color:#ffe08a}
 .af-ov.cc-embedded .af-close{display:none}
 /* No ASYA name under the scales; the emblem is 40% smaller, sits left and higher */
 .af-brand{display:none}
-.af-scene{position:relative;left:-100px;margin-top:-20px;height:clamp(120px,18.6dvh,180px)}
+.af-scene{position:relative;left:-135px;margin-top:0;height:clamp(120px,18.6dvh,180px)}
 .af-ov:has(.af.mode-one) .af-scene{height:clamp(66px,10.2dvh,90px)}
