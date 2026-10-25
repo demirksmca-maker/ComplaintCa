@@ -318,7 +318,7 @@
     </section>
 
     <!-- SİTE -->
-    <section class="sec" id="v-site" hidden style="padding:0"><iframe id="siteFrame" title="ComplaintCA" style="flex:1;width:100%;border:0;background:#fff"></iframe></section>
+    <section class="sec" id="v-site" hidden style="padding:0"><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe></section>
 
     <!-- GÜVENLİK -->
     <section class="sec" id="v-security" hidden>
@@ -717,10 +717,11 @@
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
   function showSec(name) {
     each('.bar-nav button', function (b) { var on = b.getAttribute('data-sec') === name; on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); $('v-' + b.getAttribute('data-sec')).hidden = !on; });
-    store(SEC, name);
+    if (name !== 'site') store(SEC, name);
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
-    if (name === 'site' && !$('siteFrame').src) $('siteFrame').src = '/';
+    // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
+    if (name === 'site') $('siteFrame').src = '/'; else $('siteFrame').removeAttribute('src');
   }
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
   each('[data-range]', function (b) { b.addEventListener('click', function () {
