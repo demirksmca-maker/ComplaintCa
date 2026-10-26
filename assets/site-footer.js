@@ -11,4 +11,14 @@
   f.innerHTML='<b>ComplaintCA</b><nav><a href="/">Home</a><a href="/about.html">About</a><a href="/guides/">Guides</a><a href="/blog/">Blog</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></nav>'
    +'<small>© '+new Date().getFullYear()+' ComplaintCA · complaintca.ca. General information, not legal advice. Not affiliated with any government body.</small>';
   document.body.appendChild(f);
+  // On the app page ("/"), a plain href="/" is a no-op while a tab is open:
+  // go back to the home screen instead.
+  var h=f.querySelector('nav a[href="/"]');
+  if(h)h.addEventListener('click',function(e){
+    var p=location.pathname;
+    if((p==='/'||p==='/index.html')&&typeof window.goHome==='function'){
+      e.preventDefault();
+      try{window.goHome();}catch(x){location.href='/';}
+    }
+  });
 })();
