@@ -208,7 +208,7 @@ html[data-restoring-tab] #pg-app{display:block}
 .topbar-right{margin-left:auto}
 .topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;white-space:nowrap}
 .topbar-emblem{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:transparent}
-.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 0 #3a2506) drop-shadow(0 2px 2px rgba(0,0,0,.6)) drop-shadow(0 0 8px rgba(240,200,90,.45));font-size:1.15rem;background:linear-gradient(180deg,#fff6c8 0%,#f5d77a 22%,#c9962e 48%,#7a5212 52%,#b8862a 70%,#f0cf6e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 1px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 14px rgba(140,190,255,.45));font-size:1.15rem;background:linear-gradient(180deg,#fff 0%,#fff 45%,#dfe8f5 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .topbar-ca{font-size:1.4rem;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;line-height:1}
 .topbar-title .lang-dd-btn{padding:2px 2px 2px 0;gap:3px}
 .topbar-caret{margin-top:4px}
@@ -750,7 +750,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
           </span>
           <span id="lang-label" style="font-size:.72rem;color:rgba(255,255,255,.75);font-family:Inter,sans-serif;font-weight:600;margin-left:6px">EN</span>
           </span>
-          <svg class="topbar-caret" width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#e8c463" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="topbar-caret" width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="lang-dd-menu" id="lang-dd-menu">
           <div class="lang-dd-item active" tabindex="0" role="button" onclick="selectLangDD('en','EN',this)">
