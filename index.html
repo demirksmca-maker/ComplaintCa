@@ -882,6 +882,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
     </div>
   </div>
 
+  <div id="cc-steps-host"></div>
   <div id="cc-panel-host"></div>
   <div class="amain">
     <div id="view-new">
@@ -2876,6 +2877,7 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 function goHome(){
+  if(window.ccStepsClose) window.ccStepsClose();
   document.getElementById('pg-land').style.display='block';
   document.getElementById('pg-app').style.display='none';
   document.getElementById('back-btn').classList.remove('show');
@@ -2890,7 +2892,8 @@ function goHome(){
 // New ASYA panel is the default for filing; ?panel=old or the person's saved choice keeps the classic form.
 var _ccPanelPref='';try{_ccPanelPref=localStorage.getItem('cc_panel')||'';}catch(e){}
 var _ccOldPanel=/[?&]panel=old\b/.test(location.search)||(_ccPanelPref==='old'&&!/[?&]panel=new\b/.test(location.search));
-function ccFileTab(){ if(_ccOldPanel) showTab('new'); else openAsyaPanel(); }
+// File opens the six-step screen inside the page; the ASYA form stays the fallback.
+function ccFileTab(){ if(_ccOldPanel) showTab('new'); else if(window.ccStepsOpen){ if(window._ccEmbedded&&window.closeComplaintFlow){ window._ccTabSwitch=true; window.closeComplaintFlow(); } window.ccStepsOpen(); } else openAsyaPanel(); }
 function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e){} _ccOldPanel=(which==='old'); if(which==='old') goApp('new'); else openAsyaPanel(); }
 // ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
@@ -2944,6 +2947,7 @@ let _authRedirectTab=null;
 function showTab(tab){
   // Another tab while the embedded complaint panel is open: close the panel, stay in the app.
   if(tab!=='new'&&window._ccEmbedded&&window.closeComplaintFlow){ window._ccTabSwitch=true; window.closeComplaintFlow(); }
+  if(tab!=='new'&&window.ccStepsClose) window.ccStepsClose();
   // "feed" (nav tab, labelled Havuz) and "lawyerpanel" (reached via the lawyer-
   // referral CTA) both show the same Case Pool view — sign-in required either way.
   // Wrapped defensively: if ANYTHING here throws (bad localStorage JSON, a
