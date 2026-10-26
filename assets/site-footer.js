@@ -8,7 +8,7 @@
    +'#cc-foot small{display:block;font-size:11.5px;opacity:.7;max-width:520px;margin:0 auto}';
   document.head.appendChild(s);
   var f=document.createElement('footer');f.id='cc-foot';
-  f.innerHTML='<b>ComplaintCA</b><nav><a href="/">Home</a><a href="/about.html">About</a><a href="/guides/">Guides</a><a href="/blog/">Blog</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></nav>'
+  f.innerHTML='<b lang="en">ComplaintCA</b><nav><a href="/">Home</a><a href="/about.html">About</a><a href="/guides/">Guides</a><a href="/blog/">Blog</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></nav>'
    +'<small>© '+new Date().getFullYear()+' ComplaintCA · complaintca.ca. General information, not legal advice. Not affiliated with any government body.</small>';
   document.body.appendChild(f);
   // On the app page ("/"), a plain href="/" is a no-op while a tab is open:
