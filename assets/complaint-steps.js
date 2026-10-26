@@ -77,9 +77,9 @@
     '#cc-steps .cs-go::after,#cc-steps .cs-save::after,#cc-steps .as-use::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(96,165,250,.3) 50%,transparent 70%);transform:translateX(-120%);animation:csShine 4.5s 1.2s ease-in-out infinite;pointer-events:none}',
     '#cc-steps .cs-ca{display:inline-block;padding:3px 8px 2px;border-radius:6px;background:#0f2952;color:#fff;font:700 14px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em}',
     '#cc-steps .cs-note{margin:clamp(6px,1.2vh,12px) 0 0;text-align:center;font:500 13px/1.4 Inter,sans-serif;color:#9fb8e8}',
-    '#cc-steps .cs-scrim{position:fixed;inset:0;z-index:2;background:rgba(2,8,24,.72);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s}',
+    '#cc-steps .cs-scrim{position:fixed;inset:0;z-index:300;background:rgba(2,8,24,.72);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .25s}',
     '#cc-steps .cs-scrim.on{opacity:1;pointer-events:auto}',
-    '#cc-steps .cs-sheet{position:fixed;left:50%;top:46%;z-index:3;width:min(560px,calc(100% - 28px));max-height:calc(100% - 40px);overflow:auto;transform:translate(-50%,-46%) scale(.94);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s;background:#041235 radial-gradient(ellipse 90% 60% at 50% 0%,#0b2a63 0%,#041235 75%);border:1.5px solid rgba(156,192,255,.6);border-radius:24px;padding:18px 20px 20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8),0 0 40px -12px rgba(156,192,255,.35)}',
+    '#cc-steps .cs-sheet{position:fixed;left:50%;top:46%;z-index:301;width:min(560px,calc(100% - 28px));max-height:calc(100% - 40px);overflow:auto;transform:translate(-50%,-46%) scale(.94);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s;background:#041235 radial-gradient(ellipse 90% 60% at 50% 0%,#0b2a63 0%,#041235 75%);border:1.5px solid rgba(156,192,255,.6);border-radius:24px;padding:18px 20px 20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8),0 0 40px -12px rgba(156,192,255,.35)}',
     '#cc-steps .cs-sheet.on{transform:translate(-50%,-46%);opacity:1;pointer-events:auto}',
     '#cc-steps .cs-sheet .cs-x{position:absolute;top:12px;right:12px}',
     '#cc-steps .cs-emb{display:block;width:60px;height:60px;margin:0 auto 8px;filter:drop-shadow(0 0 14px rgba(156,192,255,.55));animation:csBreathe 7s ease-in-out infinite}',
@@ -112,10 +112,10 @@
     '#cc-steps .cs-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}',
     '#cc-steps .cs-thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:1px solid rgba(156,192,255,.4)}',
     '#cc-steps .cs-save{position:relative;overflow:hidden;display:block;width:100%;margin-top:18px;padding:16px;border:0;border-radius:999px;background:linear-gradient(180deg,#fff,#dbe8ff);color:#0a1f4d;font:700 17px/1 Inter,sans-serif;cursor:pointer;box-shadow:0 0 26px -6px rgba(255,255,255,.55)}',
-    '#cc-steps .cs-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;transition:.3s;z-index:6;padding:12px 18px;border-radius:12px;background:#fff;color:#0a1f4d;font:600 14px/1.3 Inter,sans-serif}',
+    '#cc-steps .cs-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);opacity:0;transition:.3s;z-index:303;padding:12px 18px;border-radius:12px;background:#fff;color:#0a1f4d;font:600 14px/1.3 Inter,sans-serif}',
     '#cc-steps .cs-toast.on{opacity:1;transform:translate(-50%,0)}',
     // ASYA show
-    '#cc-steps .as{position:fixed;inset:0;z-index:5;display:none;overflow:auto;background:#061a45}',
+    '#cc-steps .as{position:fixed;inset:0;z-index:302;display:none;overflow:auto;background:#061a45}',
     '#cc-steps .as.on{display:block;animation:csIn .35s ease-out}',
     '#cc-steps .as-flag{position:fixed;inset:-4%;width:108%;height:108%;animation:csSway 9s ease-in-out infinite;transform-origin:0 50%}',
     '#cc-steps .as-dim{position:fixed;inset:0;background:linear-gradient(180deg,rgba(2,10,31,.1),rgba(2,10,31,.3) 50%,rgba(2,10,31,.5))}',
@@ -354,7 +354,10 @@
     var story = head + (V.what || '').slice(0, Math.max(0, 5000 - head.length - tail.length)) + tail;
     var data = { mail:V.mail, loc:V.loc || '', who:V.who || '', story:story.slice(0, 5000) };
     var btn = q('.cs-go'); btn.disabled = true;
-    try { window.openAsyaPanel(); } catch (e) { btn.disabled = false; toast('Something went wrong. Please try again.'); return; }
+    window._ccFromSteps = true;
+    try { window.openAsyaPanel(); } catch (e) { window._ccFromSteps = false; btn.disabled = false; toast('Something went wrong. Please try again.'); return; }
+    // The form takes the page now: hide this screen so the two never stack while it loads.
+    exit(true);
     var t0 = Date.now();
     (function fill(){
       var host = document.getElementById('cc-panel-host'), ta = host && host.querySelector('textarea.af1-ta');
@@ -381,7 +384,10 @@
   window.ccStepsOpen = function(){
     if (!root) build();
     // Show it on the File tab: the site's bar and tabs stay above it, the classic form underneath is hidden.
-    if (window.goApp) window.goApp('new');
+    if (window._ccEmbedded && window.closeComplaintFlow) { window._ccTabSwitch = true; window.closeComplaintFlow(); }
+    if (window._ccGoFile) window._ccGoFile(); else if (window.goApp) window.goApp('new');
+    // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies).
+    try { navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); } catch (e) {}
     document.body.classList.add('cc-steps-on'); root.classList.add('on'); window.scrollTo(0, 0);
     loadCompanies();
   };

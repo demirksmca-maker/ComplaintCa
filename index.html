@@ -2834,15 +2834,15 @@ function _pushNav(state){
 window.addEventListener('popstate',function(e){
   // Destek/uyarı sayfası açıksa, geri tuşu önce onu kapatsın (nav'a dokunma).
   var _sov=document.getElementById('support-overlay');
-  if(_sov && _sov.style.display!=='none'){ _hideSupport(); _supportBackFn=null; return; }
+  if(_sov && _sov.style.display==='block'){ _hideSupport(); _supportBackFn=null; return; }
   _suppressNavPush=true;
   try{
     var s=e.state;
     if(!s||!s.tab){
       goHome();
     }else{
-      // A refresh on the complaint panel reopens the panel (with what was typed), not the classic form.
-      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') openAsyaPanel(); else goApp(s.tab);
+      // A refresh or Back on File reopens the complaint screen (six steps, or the ASYA form if it is open), not the classic form.
+      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') _ccFileRestore(); else goApp(s.tab);
       if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
@@ -2861,7 +2861,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(s&&s.tab){
     _suppressNavPush=true;
     try{
-      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') openAsyaPanel(); else goApp(s.tab);
+      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') _ccFileRestore(); else goApp(s.tab);
       if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
@@ -2893,7 +2893,14 @@ function goHome(){
 var _ccPanelPref='';try{_ccPanelPref=localStorage.getItem('cc_panel')||'';}catch(e){}
 var _ccOldPanel=/[?&]panel=old\b/.test(location.search)||(_ccPanelPref==='old'&&!/[?&]panel=new\b/.test(location.search));
 // File opens the six-step screen inside the page; the ASYA form stays the fallback.
-function ccFileTab(){ if(_ccOldPanel) showTab('new'); else if(window.ccStepsOpen){ if(window._ccEmbedded&&window.closeComplaintFlow){ window._ccTabSwitch=true; window.closeComplaintFlow(); } window.ccStepsOpen(); } else openAsyaPanel(); }
+function ccFileTab(){ if(_ccOldPanel) showTab('new'); else if(window.ccStepsOpen) window.ccStepsOpen(); else openAsyaPanel(); }
+// Back/Forward or a refresh on File: keep the ASYA form if it is open, otherwise the six-step screen.
+function _ccFileRestore(){ if(window._ccEmbedded||!window.ccStepsOpen) openAsyaPanel(); else window.ccStepsOpen(); }
+// Go to the File tab without adding a second history entry when already there.
+function _ccGoFile(){
+  var _same=history.state&&history.state.tab==='new', _was=_suppressNavPush; if(_same) _suppressNavPush=true;
+  try{ goApp('new'); }finally{ _suppressNavPush=_was; }
+}
 function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e){} _ccOldPanel=(which==='old'); if(which==='old') goApp('new'); else openAsyaPanel(); }
 // ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
 var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
@@ -2902,13 +2909,12 @@ var _ccPanelTest=/[?&]test=1\b/.test(location.search);
 // Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
 // The panel sits in the page itself (#cc-panel-host), so the page scrolls as one and nothing floats over it.
 function _ccEmbed(){
-  // Already on File (e.g. after a refresh): don't add a second history entry.
-  var _same=history.state&&history.state.tab==='new', _was=_suppressNavPush; if(_same) _suppressNavPush=true;
-  try{ goApp('new'); }finally{ _suppressNavPush=_was; }
+  _ccGoFile();
   document.body.classList.add('cc-panel-on');
   window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
-  // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies).
-  try{ navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); }catch(e){}
+  // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies); the six-step screen counts its own open.
+  if(!window._ccFromSteps){ try{ navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); }catch(e){} }
+  window._ccFromSteps=false;
   window._ccEmbedded=true;
   window.scrollTo(0,0);
 }
