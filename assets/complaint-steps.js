@@ -57,6 +57,8 @@
     '#cc-steps .cs-ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,#9cc0ff)}#cc-steps .cs-ln i:last-child{transform:scaleX(-1)}',
     '#cc-steps .cs-hd{display:flex;justify-content:flex-end;align-items:center;margin-top:clamp(4px,1vh,10px);font:700 13px/1 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#8991a3}',
     '#cc-steps .cs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
+    '#cc-steps .cs-quote{flex:1;min-width:0;margin-right:12px;quotes:none;text-align:left;text-transform:uppercase;font:600 clamp(9.5px,2.6vw,11px)/1.35 Cinzel,Georgia,serif;letter-spacing:.06em;color:#f2dcae;text-shadow:0 1px 1px rgba(0,0,0,.6)}',
+    '#cc-steps .cs-quote cite{display:block;margin-top:3px;font:700 clamp(8px,2.1vw,9px)/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.22em;color:rgba(242,220,174,.6)}',
     '#cc-steps .cs-asya{font:700 13px/1 Inter,sans-serif;letter-spacing:.14em;color:#fff;padding:9px 16px;border-radius:999px;border:1.5px solid rgba(140,190,255,.6);background:rgba(26,79,160,.35);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:0 3px 12px rgba(15,41,82,.5)}',
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:10px;margin-top:clamp(10px,1.6vh,16px)}',
     '#cc-steps .cs-leaf{position:absolute;left:50%;top:50%;width:125%;height:112%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;display:none}',
@@ -175,7 +177,7 @@
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
       '<div class="cs-wrap"><div class="cs-ttl"><h2 id="cs-title">File a Complaint</h2></div>' +
-      '<div class="cs-hd"><span class="cs-sr">Progress · <span class="cs-prog">0/6</span></span><span class="cs-asya">ASYA</span></div>' +
+      '<div class="cs-hd"><span class="cs-sr">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote">If it is not right, do not do it; if it is not trve, do not say it.<cite>Marcvs·Avrelivs</cite></q><span class="cs-asya">ASYA</span></div>' +
       '<div class="cs-grid"><svg class="cs-leaf" viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="' + LEAF + '"/></svg>' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
