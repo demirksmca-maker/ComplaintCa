@@ -678,11 +678,14 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-info .cc-med{background:radial-gradient(circle at 35% 30%,rgba(232,210,255,.45),rgba(120,60,180,.15) 65%);border-color:rgba(216,180,254,.55)}
 #cc-choice .cc-info::before{border-color:rgba(216,180,254,.25)}
 /* Framed velvet look: baroque gold frame (9-slice) on velvet, marble and walnut plaques */
-#cc-choice{background:#2a0c2e!important}
-#cc-choice::before{content:"";position:fixed;inset:0;border-style:solid;border-width:min(26vw,120px);border-image:url(/assets/choice/frame.webp) 250 fill stretch;pointer-events:none;z-index:0}
-#cc-choice>*{position:relative;z-index:1}
-#cc-choice.on{padding:calc(min(26vw,120px)*.42) calc(min(26vw,120px)*.36)!important}
-#cc-choice .cc-hero{width:min(58vw,300px)!important;margin-bottom:10px!important}
+/* Pop-up card: the framed panel floats over the dimmed page instead of covering it */
+#cc-choice{background:rgba(12,2,14,.62)!important;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#cc-choice.on{display:grid!important;place-items:center;padding:16px!important;animation:ccIn .25s ease-out both}
+#cc-choice .cc-card{position:relative;box-sizing:border-box;width:min(88vw,420px);max-height:calc(100dvh - 32px);overflow-y:auto;padding:clamp(34px,10vw,48px) clamp(22px,7vw,34px);border-radius:22px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);animation:ccPop .35s cubic-bezier(.2,.9,.3,1.2) both}
+#cc-choice .cc-card::before{content:"";position:absolute;inset:0;border-style:solid;border-width:clamp(46px,14vw,64px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}
+@keyframes ccPop{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:none}}
+#cc-choice .cc-card>*{position:relative;z-index:1}
+#cc-choice .cc-hero{width:min(44vw,210px)!important;margin:0 auto 6px!important}
 #cc-choice .cc-title{color:#f1d27a!important;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.6)!important;letter-spacing:.06em!important;text-transform:none}
 #cc-choice .cc-bars{padding:0 4px!important;gap:12px!important}
 #cc-choice .cc-bar{border:2.5px solid transparent!important;border-radius:14px!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),0 8px 18px -8px rgba(0,0,0,.7)!important;text-shadow:0 1px 3px rgba(0,0,0,.75)!important}
@@ -696,11 +699,11 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-quote{color:#f3e6ea!important}
 #cc-choice .cc-quote cite{letter-spacing:.14em!important;font-size:10px!important;white-space:nowrap}
 #cc-choice .cc-ca{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin-left:4px;font:inherit!important;letter-spacing:inherit!important;color:#ff5a6e!important;text-shadow:0 1px 2px rgba(0,0,0,.8),0 0 10px rgba(255,60,90,.55)!important}
-#cc-choice .cc-txt b{font-size:clamp(16px,4.6vw,19px)!important;letter-spacing:.05em!important;color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.85)!important}
-#cc-choice .cc-bar{min-height:62px}
+#cc-choice .cc-txt b{font-size:clamp(14px,4.1vw,17px)!important;letter-spacing:.05em!important;color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.85)!important}
+#cc-choice .cc-bar{min-height:58px;padding-right:10px!important;gap:10px!important}
 #cc-choice .cc-title{font-size:clamp(20px,5.4vw,26px)!important;text-shadow:0 1px 0 rgba(0,0,0,.8),0 2px 10px rgba(0,0,0,.7)!important}
 #cc-choice .cc-quote{font-size:clamp(18px,4.8vw,22px)!important;font-weight:400!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.8)!important}
-#cc-choice .cc-quote cite{font-size:11px!important;color:#f1d27a!important}
+#cc-choice .cc-quote cite{font-size:clamp(9px,2.6vw,11px)!important;letter-spacing:.1em!important;color:#f1d27a!important}
 #cc-choice .cc-srx{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0}
 #cc-choice .cc-bar:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #cc-choice .cc-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 0;color:#d8b4fe;animation:ccIn 1s .8s ease-out both}
@@ -717,6 +720,7 @@ textarea{resize:vertical;min-height:90px}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-labelledby="cc-choice-t">
   <button type="button" class="cc-srx" onclick="ccChoiceClose()">Close</button>
+  <div class="cc-card">
   <div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></div>
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
@@ -725,6 +729,7 @@ textarea{resize:vertical;min-height:90px}
   </nav>
   <div class="cc-orn" aria-hidden="true"><i></i>✦<i></i></div>
   <p class="cc-quote">“Don't be discouraged.<br>When you fail, come back again.”<cite>Marcus Aurelius · Meditations 5.9</cite></p>
+  </div>
 </div>
 <script>
 function ccChoiceOpen(){document.getElementById('cc-choice').classList.add('on');document.documentElement.style.overflow='hidden'}
@@ -741,8 +746,8 @@ function ccChoiceComplain(btn){
   })();
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
-// No visible close button: a tap anywhere outside the two choices closes it.
-document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-bar,.cc-srx'))ccChoiceClose()});
+// No visible close button: a tap on the dimmed page around the card closes it.
+document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-card,.cc-srx'))ccChoiceClose()});
 </script>
 <script defer src="/assets/complaint-steps.js"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
