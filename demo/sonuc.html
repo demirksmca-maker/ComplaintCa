@@ -50,7 +50,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 /* card I = the main action: glowing ring */
 .card.main::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--a),transparent,#f9a8d4,#fff,#c4b5fd,transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 3.5s linear infinite}
 .card.main.done::after{display:none}
-.card.main{filter:brightness(1.08);min-height:200px}
+.card.main{filter:brightness(1.25) saturate(1.15);min-height:200px;box-shadow:inset 0 1px 0 rgba(255,230,250,.35),0 0 26px -4px rgba(249,168,212,.65),0 14px 34px -14px rgba(190,24,93,.8)}
 
 .orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 4px;color:#cfb0e8}
 .orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.orn i:last-child{transform:scaleX(-1)}
