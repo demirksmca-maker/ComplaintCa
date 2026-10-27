@@ -49,6 +49,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 /* card I = the main action: glowing ring */
 .card.main::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--a),transparent,#f9a8d4,#fff,#c4b5fd,transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 3.5s linear infinite}
 .card.main.done::after{display:none}
+.card.main{filter:brightness(1.08)}
 
 .orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 4px;color:#cfb0e8}
 .orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.orn i:last-child{transform:scaleX(-1)}
