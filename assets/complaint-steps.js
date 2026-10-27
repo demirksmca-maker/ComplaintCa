@@ -105,11 +105,16 @@
     '#cc-steps .cs-sheet{position:fixed;left:50%;top:46%;z-index:301;width:min(560px,calc(100% - 28px));max-height:calc(100% - 40px);overflow:auto;transform:translate(-50%,-46%) scale(.94);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s;background:#14040f radial-gradient(ellipse 95% 60% at 50% 0%,#4a0b2e 0%,#24091c 55%,#14040f 100%);border:1.5px solid rgba(196,160,255,.6);border-radius:24px;padding:18px 20px 20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.8),0 0 40px -12px rgba(196,160,255,.35)}',
     '#cc-steps .cs-sheet.on{transform:translate(-50%,-46%);opacity:1;pointer-events:auto}',
     '#cc-steps .cs-sheet .cs-x{position:absolute;top:12px;right:12px}',
-    '#cc-steps .cs-emb{display:block;width:60px;height:60px;margin:0 auto 8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)) drop-shadow(0 0 12px rgba(220,40,60,.4));animation:csBreathe 7s ease-in-out infinite}',
     '#cc-steps .cs-sh-h{display:flex;align-items:center;justify-content:center;gap:10px}',
     '#cc-steps .cs-sh-h svg{width:22px;height:22px;color:#c9a8ff}',
     '#cc-steps .cs-sh-h b{font:700 21px/1.2 Cinzel,Georgia,serif;letter-spacing:.1em;color:#f7eef1}',
-    '#cc-steps .cs-sheet .cs-ln{margin:6px 0 14px}',
+    // Minimal sheet: small card near the top, so the keyboard rarely covers it.
+    '#cc-steps .cs-sheet{top:calc(64px + env(safe-area-inset-top,0px));width:min(420px,calc(100% - 32px));max-height:calc(100vh - 90px - env(safe-area-inset-top,0px));max-height:calc(100dvh - 90px - env(safe-area-inset-top,0px));padding:14px 16px 16px;border-radius:18px;border-width:1px;transform:translate(-50%,8px) scale(.97)}#cc-steps .cs-sheet.on{transform:translate(-50%,0)}',
+    '#cc-steps .cs-sheet .cs-sh-h{justify-content:flex-start;gap:8px;padding-right:40px;margin-bottom:12px}#cc-steps .cs-sheet .cs-sh-h svg{width:18px;height:18px}#cc-steps .cs-sheet .cs-sh-h b{font-size:16px;letter-spacing:.08em}',
+    '#cc-steps .cs-sheet .cs-x{top:10px;right:10px;width:30px;height:30px;font-size:16px;border-color:rgba(196,160,255,.3)}',
+    '#cc-steps .cs-sheet .cs-in{padding:11px 14px;border-radius:12px;border-width:1px;font-size:16px}#cc-steps .cs-sheet textarea.cs-in{min-height:110px}',
+    '#cc-steps .cs-sheet .cs-mini{padding:7px 12px;font-size:10.5px;border-width:1px}#cc-steps .cs-sheet .cs-row{margin-top:8px}',
+    '#cc-steps .cs-sheet .cs-save{margin-top:12px;padding:12px;font-size:14px;border-radius:12px}',
     '#cc-steps .cs-in{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid rgba(196,160,255,.45);background:rgba(24,4,16,.6);color:#f7eef1;font:400 18px/1.4 \'EB Garamond\',Georgia,serif;letter-spacing:.01em;outline:none}#cc-steps .cs-in::placeholder{font-style:italic;color:rgba(243,230,234,.45)}',
     '#cc-steps textarea.cs-in{min-height:130px;resize:vertical}',
     '#cc-steps .cs-in:focus{border-color:#c9a8ff;box-shadow:0 0 0 3px rgba(196,160,255,.18)}',
@@ -203,8 +208,7 @@
       '<p class="cs-note">Location, what happened and your email are needed. You review everything before it is sent.</p></div>' +
       '<div class="cs-scrim" data-act="close"></div>' +
       '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
-      '<img class="cs-emb" src="/assets/emblem-ruby.webp" alt="" width="60" height="60">' +
-      '<div class="cs-sh-h"><span class="cs-sh-i"></span><b id="cs-sh-t"></b></div><div class="cs-ln" aria-hidden="true"><i></i>✦<i></i></div>' +
+      '<div class="cs-sh-h"><span class="cs-sh-i"></span><b id="cs-sh-t"></b></div>' +
       '<div class="cs-sh-b"></div><button type="button" class="cs-save" data-act="save">Save</button></section>' +
       '<div class="as" role="dialog" aria-modal="true" aria-label="ASYA">' + FLAG + '<div class="as-dim"></div><div class="as-in">' +
       '<button type="button" class="cs-x" data-act="as-close" aria-label="Close">×</button>' +
