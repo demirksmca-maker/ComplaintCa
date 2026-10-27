@@ -69,8 +69,9 @@
     '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:0;overflow:hidden;padding:12px 14px clamp(14px,2vh,18px);border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;cursor:pointer;background:var(--g);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
     '#cc-steps .cs-card:hover{transform:translateY(-2px);filter:brightness(1.08)}',
     '#cc-steps .cs-dove{position:fixed;left:0;top:0;z-index:310;width:84px;height:84px;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(20,0,30,.55)) drop-shadow(0 0 10px rgba(216,180,254,.45))}',
-    '#cc-steps .cs-dove i{display:block;width:100%;height:100%;background:url(/assets/dove.webp) 0 0/400% 100% no-repeat;animation:csFlap .5s steps(4) infinite,csBob 1s ease-in-out infinite alternate}',
-    '@keyframes csFlap{to{background-position:133.333% 0}}',
+    '#cc-steps .cs-dove b{position:absolute;inset:0;animation:csBob 1.4s ease-in-out infinite alternate}#cc-steps .cs-dove i{position:absolute;inset:0;background:url(/assets/dove.webp) 0 0/400% 100% no-repeat;opacity:0;animation:.75s linear infinite}',
+    '#cc-steps .cs-dove .f0{animation-name:csF0}#cc-steps .cs-dove .f1{background-position:33.333% 0;animation-name:csF1}#cc-steps .cs-dove .f2{background-position:66.667% 0;animation-name:csF2}',
+    '@keyframes csF0{0%,17%,92%,100%{opacity:1}25%,84%{opacity:0}}@keyframes csF1{0%,17%,50%,67%,100%{opacity:0}25%,42%,75%,92%{opacity:1}}@keyframes csF2{0%,42%,75%,100%{opacity:0}50%,67%{opacity:1}}',
     '@keyframes csBob{from{transform:translateY(-4px) rotate(-3deg)}to{transform:translateY(4px) rotate(2deg)}}',
     '#cc-steps .cs-asya.got{animation:csGot .6s ease-out}@keyframes csGot{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(216,180,254,.35),0 0 24px rgba(216,180,254,.8)}100%{transform:scale(1)}}',
     '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{text-wrap:balance}',
@@ -324,7 +325,7 @@
     closeSheet(); sync(); dove(c);
   }
   // A carrier dove takes the saved answer from the card to the ASYA badge.
-  var DOVE = '<i></i>'; (new Image()).src = '/assets/dove.webp';
+  var DOVE = '<b><i class="f0"></i><i class="f1"></i><i class="f2"></i></b>'; (new Image()).src = '/assets/dove.webp';
   function dove(from){
     var to = q('.cs-asya');
     if (!from || !to || !root.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
