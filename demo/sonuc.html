@@ -123,7 +123,6 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .meter div{display:flex;justify-content:space-between;font:700 11px/1 Cinzel,serif;letter-spacing:.12em;color:#cfb0e8}
 .meter b{color:#fff}
 .meter .prog{margin:8px 0 8px}
-.meter small{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.85)}
 .safe{margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(155deg,rgba(124,58,237,.35),rgba(46,16,80,.5));border:1px solid rgba(196,160,255,.4);font:400 17px/1.4 'EB Garamond',Georgia,serif;color:#f3eaff}
 .safe a{color:#fff;font-weight:600}
 .help em{background:#5a1d9a;font-size:10.5px}
@@ -161,11 +160,11 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 </head>
 <body>
 <main class="wrap">
-  <div class="tabs" role="group" aria-label="Senaryo"><button type="button" data-t="consumer">Tüketici</button><button type="button" data-t="gov">Devlet</button><button type="button" data-t="serious">Hassas</button></div>
+  <div class="tabs" role="group" aria-label="Senaryo"><button type="button" data-t="consumer">Tüketici</button><button type="button" data-t="serious">Hassas</button></div>
   <h1 id="h1">Şikayetin Hazır</h1>
   <p class="sub" id="sub"></p>
   <div class="safe" id="safe"><b>Yalnız değilsin.</b> Tehlikedeysen hemen <a href="tel:911">911</a>’i ara. Bu sayfada hiçbir şey sen onaylamadan gönderilmez.</div>
-  <div class="meter" id="meter"><div><span>DAVA GÜCÜ</span><b id="m-pct"></b></div><div class="prog"><i id="m-bar"></i></div><small id="m-next"></small></div>
+  <div class="meter" id="meter"><div><span>DAVA GÜCÜ</span><b id="m-pct"></b></div><div class="prog"><i id="m-bar"></i></div></div>
   <blockquote class="quote" id="quote">Geciken adalet, adalet değildir.<cite>W·E·GLADSTONE</cite></blockquote>
 
   <div class="grid">
@@ -219,22 +218,6 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
         ['crtc', 'CRTC', 'Telekom düzenleyici (federal)', '', false],
         ['cb', 'Competition Bureau', 'Yanıltıcı fiyat ve ücretler', 'FEDERAL', false],
         ['bbb', 'Better Business Bureau', 'Herkese açık firma puanı', '', false]
-      ]
-    },
-    gov: {
-      who:'IRCC (Göçmenlik)', topic:'Devlet hizmeti — göçmenlik', what:'Çalışma izni başvurum 14 aydır sonuçlanmadı. Ne arayınca ne yazınca cevap alamıyorum.',
-      sub:'Devlet kurumları da hesap verir. Doğru kapıyı çalarsan dosyan hareketlenir.',
-      game:true, card6:'mp', mpRec:true, ask:'Başvurumun 30 gün içinde sonuçlandırılmasını ya da gecikmenin yazılı olarak açıklanmasını talep ediyorum.',
-      rights:[
-        ['Dosyanı görme hakkı', 'Bilgi Edinme (ATIP) başvurusuyla dosyanın tamamını ve memur notlarını isteyebilirsin. Ücreti $5.', 'Privacy Act / Access to Information Act', 'Privacy Act kapsamında dosyamın ve memur notlarının bir kopyasını talep ediyorum.'],
-        ['Makul sürede karar', 'Aşırı gecikmede Federal Mahkeme’den “mandamus” ile karar verilmesini isteyebilirsin.', 'Federal Courts Act, s.18.1', 'Gecikme devam ederse Federal Mahkeme’de mandamus başvurusu yapmaya hazırım.'],
-        ['Milletvekili ofisi yardımı', 'Milletvekili ofisleri IRCC’ye özel hatla dosyanı sorabilir. Bu hizmet ücretsiz.', 'Parlamento üyeleri hizmeti', 'Milletvekilimin ofisini de bu konudan haberdar ediyorum.'],
-        ['Resmi dilde hizmet', 'İngilizce ya da Fransızca hizmet alma hakkın var.', 'Official Languages Act', 'Official Languages Act uyarınca hizmetin seçtiğim dilde verilmesini talep ediyorum.']
-      ],
-      inst:[
-        ['mp', 'Milletvekilin', '', 'ÖNERİLEN', true],
-        ['ircc', 'IRCC Web Formu', 'Kurumun kendi şikayet kanalı', 'FEDERAL', true],
-        ['ombud', 'Client Experience Branch', 'IRCC şikayet birimi', '', false]
       ]
     },
     serious: {
@@ -332,7 +315,6 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     $('c-send').textContent = S.sent ? 'Gönderildi ✓' : !ni ? 'Önce kurum seç' : !C.game ? 'Sen onaylayınca' : strength() >= 70 ? 'Güçlü — hazır' : 'Güç %' + strength();
     card('send').classList.toggle('done', S.sent);
     var st = strength(); $('m-pct').textContent = '%' + st; $('m-bar').style.width = st + '%';
-    $('m-next').textContent = S.sent ? 'Gönderildi — referans: ' + S.ref : nr < C.rights.length ? 'Sıradaki adım: II. kartta haklarını aç (+%' + Math.round(60 / C.rights.length) + ' her biri)' : !ni ? 'Sıradaki adım: III. karttan kurum seç (+%10)' : !(S.lawProv || S.mp) ? 'Sıradaki adım: V. kartta avukat bul (+%10)' : 'Hazır — I. karttan gönder';
   }
 
   function mpRow(r, lv){
