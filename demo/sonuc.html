@@ -125,6 +125,15 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .cited{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(134,239,172,.14);border:1px solid rgba(134,239,172,.5);color:#bbf7d0;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em;animation:pop .4s both}
 .letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
 .warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
+[hidden]{display:none!important}
+.demo-sw{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 16px;padding:8px;border-radius:14px;border:1px dashed rgba(207,176,232,.4);background:rgba(10,2,14,.35)}
+.demo-sw small{font:700 9.5px/1 Cinzel,serif;letter-spacing:.16em;color:#cfb0e8;margin:0 4px}
+.demo-sw button{padding:7px 11px;border-radius:999px;border:1px solid rgba(196,160,255,.45);background:transparent;font:500 15px/1 'EB Garamond',Georgia,serif;cursor:pointer}
+.demo-sw button.on{background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;border-color:#fff}
+.safe{margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(155deg,rgba(124,58,237,.35),rgba(46,16,80,.5));border:1px solid rgba(196,160,255,.4);font:400 17px/1.4 'EB Garamond',Georgia,serif;color:#f3eaff}
+.safe a{color:#fff;font-weight:600}
+.help em{background:#5a1d9a;font-size:10.5px}
+.ghost-x{display:block;width:100%;margin-top:6px;padding:12px;border-radius:999px;border:1px solid rgba(207,176,232,.45);background:transparent;color:#d5b9eb;font:700 11px/1 Cinzel,serif;letter-spacing:.14em;cursor:pointer}
 .find{display:flex;gap:8px}
 .in{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.6);color:#f7eef1;font:400 17px/1.3 'EB Garamond',Georgia,serif;outline:none}
 .in:focus{border-color:#d5b9eb}
@@ -158,36 +167,40 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 </head>
 <body>
 <main class="wrap">
-  <h1>Şikayetin Hazır</h1>
-  <p class="sub">Kanuna dayanan şikayet cevap alır. Göndermeden önce şikayetini güçlendir.</p>
+  <div class="demo-sw" role="tablist" aria-label="Demo konusu"><small>DEMO KONU</small>
+    <button data-t="consumer" class="on">Tüketici</button><button data-t="gov">Devlet işi</button><button data-t="serious">Ağır vaka</button>
+  </div>
+  <h1 id="h1">Şikayetin Hazır</h1>
+  <p class="sub" id="sub"></p>
   <div class="power" id="power">
     <div class="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><circle id="pw-arc" cx="40" cy="40" r="34" pathLength="100"/></svg><strong id="pw-n">%20</strong></div>
     <div class="pw-t">
       <small>DAVA GÜCÜ</small>
       <b id="pw-w">Zayıf</b>
-      <span id="pw-tip">Haklarını oku — her biri mektubuna bir kanun ekler.</span>
+      <span id="pw-tip"></span>
     </div>
   </div>
-  <div class="owed"><span>💰</span><div><b>$84</b> paranı geri alabilirsin — kanun senin tarafında. <em>II. karta bak.</em></div></div>
-  <blockquote class="quote">Geciken adalet, adalet değildir.<cite>W·E·GLADSTONE</cite></blockquote>
+  <div class="owed" id="owed"></div>
+  <div class="safe" id="safe"><b>Yalnız değilsin.</b> Tehlikedeysen hemen <a href="tel:911">911</a>’i ara. Bu sayfada hiçbir şey sen onaylamadan gönderilmez.</div>
+  <blockquote class="quote" id="quote">Geciken adalet, adalet değildir.<cite>W·E·GLADSTONE</cite></blockquote>
 
   <div class="grid">
     <button class="card" data-s="send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg><i class="n">I</i><i class="ok">✓</i>
-      <div><b>Şikayet Gönder</b><span id="c-send">Kontrol et, gönder</span></div></button>
+      <div><b id="c-send-b">Şikayet Gönder</b><span id="c-send">Kontrol et, gönder</span></div></button>
     <button class="card main" data-s="rights"><i class="flag">BURADAN BAŞLA</i><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><i class="n">II</i><i class="ok">✓</i>
-      <div><b>Yasal Hakların</b><span id="c-rights">5 kanun senin yanında</span></div></button>
+      <div><b>Yasal Hakların</b><span id="c-rights"></span></div></button>
     <button class="card" data-s="inst"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6z"/></svg><i class="n">III</i><i class="ok">✓</i>
-      <div><b>Kurumlar</b><span id="c-inst">Nereye gideceğini seç</span></div></button>
+      <div><b>Kurumlar</b><span id="c-inst"></span></div></button>
     <button class="card" data-s="letter"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><i class="n">IV</i><i class="ok">✓</i>
-      <div><b>Mektubun</b><span>Önizle, düzenle</span></div></button>
+      <div><b id="c-letter-b">Mektubun</b><span>Önizle, düzenle</span></div></button>
     <button class="card" data-s="lawyer"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M12 15l-1.5 3L12 21l1.5-3z"/></svg><i class="n">V</i><i class="ok">✓</i>
       <div><b>Ücretsiz Avukat</b><span id="c-lawyer">Adresine yakın</span></div></button>
-    <button class="card" data-s="mp"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/></svg><i class="n">VI</i><i class="ok">✓</i>
-      <div><b>Milletvekili Bul</b><span id="c-mp">Adresine göre</span></div></button>
+    <button class="card" data-s="mp" id="c6"><span id="c6-ic"></span><i class="n">VI</i><i class="ok">✓</i>
+      <div><b id="c6-b">Milletvekilin</b><span id="c6-s">Adresine göre</span></div></button>
   </div>
 
   <div class="orn"><i></i>✦<i></i></div>
-  <p class="note">Okuduğun her hak mektubuna eklenir. Kurumlar yasal bir talebe cevap vermek zorundadır.</p>
+  <p class="note" id="note"></p>
 </main>
 
 <div class="dim" id="dim"></div>
@@ -196,23 +209,69 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 
 <script>
 (function(){
-  var C = { who:'NovaTel Mobile', topic:'Tüketici — fatura', city:'Toronto, ON', what:'İptal ettikten sonra 3 ay boyunca fazladan $84 çekildi. İade etmeyi reddediyorlar.', email:'you@example.ca', addr:'M5V 2T6' };
-  var RIGHTS = [
-    ['Haksız ücretin iadesi', 'İptal ettiğin bir hizmet için ücret alındıysa şirket bunu iade etmek zorunda. İptal belgeni sakla.', 'Consumer Protection Act, 2002 (ON)', 'Ontario Tüketiciyi Koruma Kanunu (2002) uyarınca iptal edilen hizmetin ücreti iade edilmelidir.'],
-    ['Açık, yazılı sözleşme', 'Fiyat ve ücretler açıkça yazılmalı. Gizli ya da sürpriz ücretlere itiraz edebilirsin.', 'Wireless Code — CRTC', 'CRTC Kablosuz Hizmet Kuralları, tüm ücretlerin sözleşmemde açıkça yazılmasını zorunlu kılar.'],
-    ['İstediğin an iptal', 'Mobil sözleşmeni istediğin an iptal edebilirsin; erken iptal ücreti sınırlıdır.', 'Wireless Code — CRTC', 'Kablosuz Hizmet Kuralları bana istediğim an iptal hakkı verir; iptalden sonra ücret alınamaz.'],
-    ['Ücretsiz şikayet kurumu', 'Şirket çözmezse CCTS iade emri verebilir. Sana hiçbir maliyeti yok.', 'CCTS', 'Sorun çözülmezse şikayetimi Telekom Şikayet Komisyonuna (CCTS) taşıyacağım.'],
-    ['Küçük Davalar Mahkemesi', 'Ontario’da $50.000’a kadar olan tutarlar için avukatsız dava açabilirsin.', 'Courts of Justice Act (ON)', 'Alacağımı tahsil etmek için Ontario Küçük Davalar Mahkemesine başvurmaya hazırım.']
-  ];
-  var INST = [
-    ['ccts', 'CCTS', 'Telekom şikayetleri — ücretsiz, bağlayıcı', 'EN UYGUN', true],
-    ['crtc', 'CRTC', 'Telekom düzenleyici (federal)', '', false],
-    ['ocp', 'Consumer Protection Ontario', 'Eyalet tüketici ofisi', 'EYALET', true],
-    ['cb', 'Competition Bureau', 'Yanıltıcı fiyat ve ücretler', 'FEDERAL', false],
-    ['bbb', 'Better Business Bureau', 'Herkese açık firma puanı', '', false],
-    ['mp', 'Milletvekilin', 'Hiçbiri işe yaramazsa siyasi baskı', '', false]
-  ];
-  // Free legal help per province (official legal aid, law-society referral, pro bono, clinics)
+  var ADDR = 'M5V 2T6';   // the user's OWN address from the Location step
+  var IC = {
+    mp: '<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/></svg>',
+    help: '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>'
+  };
+  // Each topic decides: rights, institutions, whether to gamify, and what card VI is.
+  var T = {
+    consumer: {
+      who:'NovaTel Mobile', topic:'Tüketici — fatura', what:'İptal ettikten sonra 3 ay boyunca fazladan $84 çekildi. İade etmeyi reddediyorlar.',
+      sub:'Kanuna dayanan şikayet cevap alır. Göndermeden önce şikayetini güçlendir.',
+      owed:'<span>💰</span><div><b>$84</b> paranı geri alabilirsin — kanun senin tarafında. <em>II. karta bak.</em></div>',
+      game:true, card6:'mp', mpRec:false, ask:'$84 tutarın 30 gün içinde tamamen iade edilmesini talep ediyorum.',
+      rights:[
+        ['Haksız ücretin iadesi', 'İptal ettiğin bir hizmet için ücret alındıysa şirket bunu iade etmek zorunda. İptal belgeni sakla.', 'Consumer Protection Act, 2002 (ON)', 'Ontario Tüketiciyi Koruma Kanunu (2002) uyarınca iptal edilen hizmetin ücreti iade edilmelidir.'],
+        ['Açık, yazılı sözleşme', 'Fiyat ve ücretler açıkça yazılmalı. Gizli ya da sürpriz ücretlere itiraz edebilirsin.', 'Wireless Code — CRTC', 'CRTC Kablosuz Hizmet Kuralları, tüm ücretlerin sözleşmemde açıkça yazılmasını zorunlu kılar.'],
+        ['İstediğin an iptal', 'Mobil sözleşmeni istediğin an iptal edebilirsin; erken iptal ücreti sınırlıdır.', 'Wireless Code — CRTC', 'Kablosuz Hizmet Kuralları bana istediğim an iptal hakkı verir; iptalden sonra ücret alınamaz.'],
+        ['Ücretsiz şikayet kurumu', 'Şirket çözmezse CCTS iade emri verebilir. Sana hiçbir maliyeti yok.', 'CCTS', 'Sorun çözülmezse şikayetimi Telekom Şikayet Komisyonuna (CCTS) taşıyacağım.'],
+        ['Küçük Davalar Mahkemesi', 'Ontario’da $50.000’a kadar olan tutarlar için avukatsız dava açabilirsin.', 'Courts of Justice Act (ON)', 'Alacağımı tahsil etmek için Ontario Küçük Davalar Mahkemesine başvurmaya hazırım.']
+      ],
+      inst:[
+        ['ccts', 'CCTS', 'Telekom şikayetleri — ücretsiz, bağlayıcı', 'EN UYGUN', true],
+        ['ocp', 'Consumer Protection Ontario', 'Eyalet tüketici ofisi', 'EYALET', true],
+        ['crtc', 'CRTC', 'Telekom düzenleyici (federal)', '', false],
+        ['cb', 'Competition Bureau', 'Yanıltıcı fiyat ve ücretler', 'FEDERAL', false],
+        ['bbb', 'Better Business Bureau', 'Herkese açık firma puanı', '', false]
+      ]
+    },
+    gov: {
+      who:'IRCC (Göçmenlik)', topic:'Devlet hizmeti — göçmenlik', what:'Çalışma izni başvurum 14 aydır sonuçlanmadı. Ne arayınca ne yazınca cevap alamıyorum.',
+      sub:'Devlet kurumları da hesap verir. Doğru kapıyı çalarsan dosyan hareketlenir.',
+      owed:'<span>⏳</span><div>Başvurun <b>14 aydır</b> bekliyor — normal süre 6 ay. <em>Hakların var, II. karta bak.</em></div>',
+      game:true, card6:'mp', mpRec:true, ask:'Başvurumun 30 gün içinde sonuçlandırılmasını ya da gecikmenin yazılı olarak açıklanmasını talep ediyorum.',
+      rights:[
+        ['Dosyanı görme hakkı', 'Bilgi Edinme (ATIP) başvurusuyla dosyanın tamamını ve memur notlarını isteyebilirsin. Ücreti $5.', 'Privacy Act / Access to Information Act', 'Privacy Act kapsamında dosyamın ve memur notlarının bir kopyasını talep ediyorum.'],
+        ['Makul sürede karar', 'Aşırı gecikmede Federal Mahkeme’den “mandamus” ile karar verilmesini isteyebilirsin.', 'Federal Courts Act, s.18.1', 'Gecikme devam ederse Federal Mahkeme’de mandamus başvurusu yapmaya hazırım.'],
+        ['Milletvekili ofisi yardımı', 'Milletvekili ofisleri IRCC’ye özel hatla dosyanı sorabilir. Bu hizmet ücretsiz.', 'Parlamento üyeleri hizmeti', 'Milletvekilimin ofisini de bu konudan haberdar ediyorum.'],
+        ['Resmi dilde hizmet', 'İngilizce ya da Fransızca hizmet alma hakkın var.', 'Official Languages Act', 'Official Languages Act uyarınca hizmetin seçtiğim dilde verilmesini talep ediyorum.']
+      ],
+      inst:[
+        ['mp', 'Milletvekilin', '', 'ÖNERİLEN', true],
+        ['ircc', 'IRCC Web Formu', 'Kurumun kendi şikayet kanalı', 'FEDERAL', true],
+        ['ombud', 'Client Experience Branch', 'IRCC şikayet birimi', '', false]
+      ]
+    },
+    serious: {
+      who:'Bir tanıdık', topic:'Cinsel saldırı', what:'(Senin anlattığın, sadece senin onayınla paylaşılır.)',
+      sub:'Ne olduğuna sen karar verirsin. Hakların, seçeneklerin ve destek burada.',
+      owed:'', game:false, card6:'help', mpRec:false, ask:'Bu olayın kayda alınmasını ve bana destek hizmetleri hakkında bilgi verilmesini talep ediyorum.',
+      rights:[
+        ['Süre sınırı yok', 'Kanada’da cinsel saldırı suçunda şikayet için zaman aşımı yok. Hazır olduğunda bildirebilirsin.', 'Criminal Code', 'Olayın tarihinden bağımsız olarak bildirimde bulunma hakkımı kullanıyorum.'],
+        ['Bilgi ve destek hakkı', 'Dosyanın durumu hakkında bilgi alma ve destek hizmetlerine yönlendirilme hakkın var.', 'Canadian Victims Bill of Rights', 'Canadian Victims Bill of Rights uyarınca dosyam hakkında bilgilendirilmeyi talep ediyorum.'],
+        ['Kimliğinin korunması', 'Adının basında ve mahkemede yayımlanmasını yasaklatabilirsin (yayın yasağı).', 'Criminal Code s.486.4', 'Kimliğimin korunması için yayın yasağı talep ediyorum.'],
+        ['Ücretsiz bağımsız avukat', 'Ontario’da mağdurlar 4 saate kadar ücretsiz avukat danışmanlığı alabilir.', 'Independent Legal Advice (ON)', 'Bağımsız hukuki danışmanlık programından yararlanmak istiyorum.']
+      ],
+      inst:[
+        ['police', 'Toronto Polisi', 'Resmi suç bildirimi — sen isteyince', '', false],
+        ['sac', 'Cinsel Saldırı Destek Merkezi', 'Gizli, ücretsiz destek', 'ÖNERİLEN', true],
+        ['vs', 'Victim Services Toronto', 'Mağdur hizmetleri', '', true],
+        ['mp', 'Milletvekilin', '', 'İSTEĞE BAĞLI', false]
+      ]
+    }
+  };
+
   var LAW = {
     ON: [['Legal Aid Ontario', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://www.legalaid.on.ca'],
          ['Law Society Referral Service', 'Avukatla 30 dk ücretsiz görüşme', '30 DK ÜCRETSİZ', 'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal/law-society-referral-service'],
@@ -229,6 +288,13 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     XX: [['Eyalet Adli Yardımı', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'],
          ['Pro Bono Canada', 'Eyaletinde ücretsiz hukuk yardımı', 'ÜCRETSİZ', 'https://www.probonocanada.org']]
   };
+  var ILA = ['Independent Legal Advice', 'Mağdurlara 4 saate kadar ücretsiz avukat', '4 SAAT ÜCRETSİZ', 'https://www.ontario.ca/page/independent-legal-advice-survivors-sexual-assault'];
+  var HELP = [
+    ['🚨', 'Acil durum', 'Şu an tehlikedeysen', '911', 'tel:911'],
+    ['💜', 'Victim Support Line', '7/24, gizli, çok dilli', '1-888-579-2888', 'tel:18885792888'],
+    ['🤝', 'Assaulted Women’s Helpline', '7/24, 200+ dilde destek', '1-866-863-0511', 'tel:18668630511'],
+    ['🏥', 'En yakın destek merkezi', 'Adresine göre — gizli ve ücretsiz', 'HARİTA', 'https://sexualassaultsupport.ca/support/']
+  ];
   var PROV_N = { ON:'Ontario', BC:'British Columbia', AB:'Alberta', QC:'Quebec', XX:'eyaletin' };
   var PC_RE = /([ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z])\s?(\d[ABCEGHJ-NPRSTV-Z]\d)/i;
   function provOf(a){
@@ -238,23 +304,42 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     if (p) return p;
     return /ontario|toronto|ottawa/i.test(a) ? 'ON' : /british columbia|vancouver/i.test(a) ? 'BC' : /alberta|calgary|edmonton/i.test(a) ? 'AB' : /qu[eé]bec|montr[eé]al/i.test(a) ? 'QC' : 'XX';
   }
-  var S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:null };
-  INST.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
 
+  var C, S, MP = { list:null, name:'', state:'idle' };
   var $ = function(id){ return document.getElementById(id); };
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
   var card = function(k){ return document.querySelector('.card[data-s="' + k + '"]'); };
-  var picked = function(){ return INST.filter(function(i){ return S.inst[i[0]]; }); };
+  var picked = function(){ return C.inst.filter(function(i){ return S.inst[i[0]]; }); };
+  var instName = function(i){ return i[0] === 'mp' && MP.name ? MP.name + ' (Milletvekili)' : i[1]; };
   function toast(t){ var e = $('toast'); e.textContent = t; e.classList.add('on'); clearTimeout(e._t); e._t = setTimeout(function(){ e.classList.remove('on'); }, 1800); }
 
+  function setTopic(k){
+    C = Object.assign({}, T[k], { inst: T[k].inst.slice() }); S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:false };
+    C.inst.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
+    document.querySelectorAll('.demo-sw button').forEach(function(b){ b.classList.toggle('on', b.dataset.t === k); });
+    $('sub').textContent = C.sub;
+    $('owed').innerHTML = C.owed; $('owed').hidden = !C.owed;
+    $('power').hidden = !C.game; $('quote').hidden = !C.game; $('safe').hidden = C.game;
+    $('h1').textContent = C.game ? 'Şikayetin Hazır' : 'Seçeneklerin Hazır';
+    $('c-send-b').textContent = C.game ? 'Şikayet Gönder' : 'Bildir';
+    $('c-letter-b').textContent = C.game ? 'Mektubun' : 'Beyanın';
+    $('note').textContent = C.game ? 'Okuduğun her hak mektubuna eklenir. Kurumlar yasal bir talebe cevap vermek zorundadır.' : 'Hiçbir şey sen onaylamadan kimseye gönderilmez. İstediğin an durabilirsin.';
+    var c6 = $('c6'); c6.dataset.s = C.card6; $('c6-ic').innerHTML = IC[C.card6];
+    $('c6-b').textContent = C.card6 === 'help' ? 'Hemen Yardım Al' : 'Milletvekilin';
+    c6.querySelector('.flag') && c6.querySelector('.flag').remove();
+    if (C.card6 === 'mp' && C.mpRec) c6.insertAdjacentHTML('afterbegin', '<i class="flag">ÖNERİLEN</i>');
+    lastPw = 20; refresh();
+  }
+
   function strength(){
-    return Math.min(100, 20 + Object.keys(S.read).length * 12 + (picked().length ? 10 : 0) + ((S.lawProv || S.mp) ? 10 : 0));
+    return Math.min(100, 20 + Math.round(Object.keys(S.read).length * 60 / C.rights.length) + (picked().length ? 10 : 0) + ((S.lawProv || S.mp) ? 10 : 0));
   }
   var lastPw = 20;
   function paintPower(){
-    var v = strength(), w, c, tip, nr = Object.keys(S.read).length;
+    if (!C.game) return;
+    var v = strength(), w, c, tip, left = C.rights.length - Object.keys(S.read).length, per = Math.round(60 / C.rights.length);
     if (v < 45){ w = 'Zayıf'; c = '#f97316'; } else if (v < 70){ w = 'Orta'; c = '#facc15'; } else if (v < 90){ w = 'Güçlü'; c = '#86efac'; } else { w = 'Çok Güçlü'; c = '#a7f3d0'; }
-    tip = nr < RIGHTS.length ? (RIGHTS.length - nr) + ' hak daha oku — her biri +%12.' : (v < 100 ? 'Tüm kanunlar eklendi. Son hamle: ücretsiz avukat ya da milletvekili bul.' : 'Hazır. Bu şikayet görmezden gelinemez.');
+    tip = left ? left + ' hak daha oku — her biri +%' + per + '.' : (v < 100 ? 'Tüm kanunlar eklendi. Son hamle: ücretsiz avukat ya da milletvekili.' : 'Hazır. Bu şikayet görmezden gelinemez.');
     var pw = $('power'); pw.style.setProperty('--pc', c);
     $('pw-arc').style.strokeDasharray = v + ' 100'; $('pw-n').textContent = '%' + v; $('pw-w').textContent = w; $('pw-tip').textContent = tip;
     if (v > lastPw){ pw.classList.remove('bump'); void pw.offsetWidth; pw.classList.add('bump'); }
@@ -263,66 +348,91 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   function refresh(){
     var nr = Object.keys(S.read).length, ni = picked().length;
     paintPower();
-    card('send').classList.toggle('main', strength() >= 70 && !S.sent);
-    $('c-rights').textContent = nr ? nr + '/' + RIGHTS.length + ' eklendi' : RIGHTS.length + ' kanun senin yanında';
-    card('rights').classList.toggle('done', nr === RIGHTS.length);
+    card('send').classList.toggle('main', C.game && strength() >= 70 && !S.sent);
+    $('c-rights').textContent = nr ? nr + '/' + C.rights.length + (C.game ? ' eklendi' : ' okundu') : C.game ? C.rights.length + ' kanun senin yanında' : C.rights.length + ' hakkın var';
+    card('rights').classList.toggle('done', nr === C.rights.length);
     $('c-inst').textContent = ni ? ni + ' seçildi' : 'Nereye gideceğini seç';
     card('inst').classList.toggle('done', ni > 0);
-    $('c-lawyer').textContent = S.lawProv ? LAW[S.lawProv].length + ' ücretsiz seçenek' : 'Adresine yakın';
+    $('c-lawyer').textContent = S.lawProv ? (C.card6 === 'help' ? 1 : 0) + LAW[S.lawProv].length + ' ücretsiz seçenek' : 'Adresine yakın';
     card('lawyer').classList.toggle('done', !!S.lawProv);
-    $('c-mp').textContent = S.mp ? S.mp : 'Adresine göre';
-    card('mp').classList.toggle('done', !!S.mp);
-    $('c-send').textContent = S.sent ? 'Gönderildi ✓' : !ni ? 'Önce kurum seç' : strength() >= 70 ? 'Güçlü — hazır' : 'Güç %' + strength();
+    var c6 = $('c6');
+    if (C.card6 === 'help'){ $('c6-s').textContent = '7/24 · gizli · ücretsiz'; c6.classList.remove('done'); }
+    else { $('c6-s').textContent = S.inst.mp ? (MP.name || 'Eklendi') + ' ✓' : MP.name ? MP.name + (C.mpRec ? '' : ' · istersen ekle') : MP.state === 'busy' ? 'Adresinden bulunuyor…' : 'İstersen ekle'; c6.classList.toggle('done', !!S.inst.mp); }
+    $('c-send').textContent = S.sent ? 'Gönderildi ✓' : !ni ? 'Önce kurum seç' : !C.game ? 'Sen onaylayınca' : strength() >= 70 ? 'Güçlü — hazır' : 'Güç %' + strength();
     card('send').classList.toggle('done', S.sent);
   }
 
+  function mpRow(r, lv){
+    var photo = /^https:\/\//.test(r.photo_url || '') ? r.photo_url : '';
+    return '<div class="inst res"><span class="av">' + (photo ? '<img src="' + esc(photo) + '" alt="" onerror="this.remove()">' : '👤') + '</span><div><b>' + esc(r.name || '—') + '</b><small>' + esc([r.party_name, r.district_name].filter(Boolean).join(' · ')) + '</small></div><em>' + lv + '</em></div>';
+  }
+  function lvl(r){
+    var t = ((r.representative_set_name || '') + ' ' + (r.elected_office || '')).toLowerCase();
+    return t.indexOf('house of commons') > -1 || /\bmp\b/.test(t) ? [1, 'FEDERAL'] : /legislative|national assembly|mpp|mla|mna/.test(t) ? [2, 'EYALET'] : [3, 'YEREL'];
+  }
+  var mpReps = function(){ return (MP.list || []).map(function(r){ return { r:r, l:lvl(r) }; }).filter(function(x){ return x.l[0] < 3; }).sort(function(a, b){ return a.l[0] - b.l[0]; }); };
+
   var VIEWS = {
     send: function(){
-      if (S.sent) return ['Şikayet Gönderildi', '<div class="seal">✓</div><p class="p" style="text-align:center"><em>' + picked().map(function(i){ return esc(i[1]); }).join(', ') + '</em> kurumlarına gönderildi.</p><div class="refbox" style="margin-top:14px"><small>REFERANS NO.</small><strong>' + S.ref + '</strong></div><div class="steps"><div class="on">ComplaintCA teslim aldı</div><div class="on">Kurumlara gönderildi</div><div>Kurum inceliyor</div><div>Cevap geldi</div></div><div class="tg' + (S.notify ? ' on' : '') + '" id="tg-not"><div>Gelişme olunca bana e-posta at</div><i></i></div><button class="go" id="do-copy">Referansı Kopyala <span class="ca">CA</span></button>'];
-      var ni = picked().length;
-      return ['Şikayet Gönder',
+      if (S.sent) return [C.game ? 'Şikayet Gönderildi' : 'Gönderildi', '<div class="seal">✓</div><p class="p" style="text-align:center"><em>' + picked().map(function(i){ return esc(instName(i)); }).join(', ') + '</em> gönderildi.</p><div class="refbox" style="margin-top:14px"><small>REFERANS NO.</small><strong>' + S.ref + '</strong></div><div class="steps"><div class="on">ComplaintCA teslim aldı</div><div class="on">Kurumlara gönderildi</div><div>Kurum inceliyor</div><div>Cevap geldi</div></div><div class="tg' + (S.notify ? ' on' : '') + '" id="tg-not"><div>Gelişme olunca bana e-posta at</div><i></i></div><button class="go" id="do-copy">Referansı Kopyala <span class="ca">CA</span></button>'];
+      var ni = picked().length, nr = Object.keys(S.read).length;
+      return [C.game ? 'Şikayet Gönder' : 'Bildir',
         '<div class="sum">' +
         '<div><small>KİME</small><span>' + esc(C.who) + '</span></div>' +
         '<div><small>KONU</small><span>' + esc(C.topic) + '</span></div>' +
-        '<div><small>NEREDE</small><span>' + esc(C.city) + '</span></div>' +
-        '<div><small>KURUM</small><span>' + (ni ? picked().map(function(i){ return esc(i[1]); }).join(', ') : '<em>Henüz yok</em>') + '</span></div>' +
-        '<div><small>KANUN</small><span>' + Object.keys(S.read).length + '/' + RIGHTS.length + '</span></div>' +
-        '<div><small>GÜÇ</small><span>%' + strength() + '</span></div>' +
+        '<div><small>ADRESİN</small><span>Toronto, ON</span></div>' +
+        '<div><small>KURUM</small><span>' + (ni ? picked().map(function(i){ return esc(instName(i)); }).join(', ') : '<em>Henüz yok</em>') + '</span></div>' +
+        (C.game ? '<div><small>KANUN</small><span>' + nr + '/' + C.rights.length + '</span></div><div><small>GÜÇ</small><span>%' + strength() + '</span></div>' : '') +
         '</div>' +
-        (Object.keys(S.read).length < 2 ? '<div class="warn">⚠ Mektubunda ' + (Object.keys(S.read).length ? 'sadece 1 kanun' : 'hiç kanun') + ' var. Yasal dayanağı olmayan şikayetler çoğu zaman görmezden gelinir. Haklarını okumak 1 dakika sürer.</div><button class="go" data-go="rights">Haklarımla Güçlendir</button>' : '') +
-        '<button class="go" id="do-send"' + (ni ? '' : ' disabled') + '>Şikayeti Gönder <span class="ca">CA</span></button>' +
+        (C.game && nr < 2 ? '<div class="warn">⚠ Mektubunda ' + (nr ? 'sadece 1 kanun' : 'hiç kanun') + ' var. Yasal dayanağı olmayan şikayetler çoğu zaman görmezden gelinir. Haklarını okumak 1 dakika sürer.</div><button class="go" data-go="rights">Haklarımla Güçlendir</button>' : '') +
+        '<button class="go" id="do-send"' + (ni ? '' : ' disabled') + '>' + (C.game ? 'Şikayeti Gönder' : 'Onaylıyorum, Gönder') + ' <span class="ca">CA</span></button>' +
         '<p class="hint">' + (ni ? 'E-postan kurumla asla paylaşılmaz.' : 'III. karttan en az bir kurum seç.') + '</p>' +
         (ni ? '' : '<button class="go" data-go="inst" style="margin-top:10px">Kurum Seç</button>')];
     },
     rights: function(){
-      var h = '<p class="p" style="margin-bottom:10px"><em>' + esc(C.topic) + '</em> konusunda kanun senin tarafında. <b>Açtığın her hak mektubuna eklenir</b> — ve davanı güçlendirir.</p><div class="prog"><i id="prog"></i></div>';
-      RIGHTS.forEach(function(r, i){
-        h += '<details class="acc" data-i="' + i + '"' + (S.read[i] ? ' open' : '') + '><summary><i>' + (S.read[i] ? '✓' : i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span><br><span class="cited" hidden>✓ MEKTUBUNA EKLENDİ · +%12</span></div></details>';
+      var h = '<p class="p" style="margin-bottom:10px">' + (C.game ? '<em>' + esc(C.topic) + '</em> konusunda kanun senin tarafında. <b>Açtığın her hak mektubuna eklenir</b> — ve davanı güçlendirir.' : 'Acele yok. Bunlar senin hakların; okuduklarını beyanına ekleyebilirsin.') + '</p><div class="prog"><i id="prog"></i></div>';
+      C.rights.forEach(function(r, i){
+        h += '<details class="acc" data-i="' + i + '"' + (S.read[i] ? ' open' : '') + '><summary><i>' + (S.read[i] ? '✓' : i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span><br><span class="cited" hidden>✓ ' + (C.game ? 'MEKTUBUNA EKLENDİ · +%' + Math.round(60 / C.rights.length) : 'BEYANINA EKLENDİ') + '</span></div></details>';
       });
-      return ['Yasal Hakların', h + '<button class="go" data-go="letter">Mektubumu Gör</button>'];
+      return ['Yasal Hakların', h + '<button class="go" data-go="letter">' + (C.game ? 'Mektubumu Gör' : 'Beyanımı Gör') + '</button>'];
     },
     inst: function(){
-      var h = '<p class="p" style="margin-bottom:12px">Telekom fatura sorunu için en uygun kurumları seçtik. İstediğini ekle ya da çıkar.</p>';
-      INST.forEach(function(i){
-        h += '<button class="inst' + (S.inst[i[0]] ? ' on' : '') + '" data-k="' + i[0] + '"><span class="bx">✓</span><div><b>' + esc(i[1]) + '</b><small>' + esc(i[2]) + '</small></div>' + (i[3] ? '<em>' + i[3] + '</em>' : '') + '</button>';
+      var h = '<p class="p" style="margin-bottom:12px">' + (C.game ? 'Konuna en uygun kurumları seçtik. İstediğini ekle ya da çıkar.' : 'Polise gitmek zorunda değilsin. Önce destek alabilir, hazır olunca bildirebilirsin.') + '</p>';
+      C.inst.forEach(function(i){
+        var sub = i[0] === 'mp' ? (MP.name ? MP.name + ' · adresine göre bulundu' : 'Adresine göre bulunur') : i[2];
+        h += '<button class="inst' + (S.inst[i[0]] ? ' on' : '') + '" data-k="' + i[0] + '"><span class="bx">✓</span><div><b>' + esc(i[1]) + '</b><small>' + esc(sub) + '</small></div>' + (i[3] ? '<em>' + i[3] + '</em>' : '') + '</button>';
       });
+      if (!C.inst.some(function(i){ return i[0] === 'mp'; })) h += '<button class="go" data-go="mp" style="margin-top:4px">+ Milletvekilimi de ekle</button>';
       return ['Kurumlar', h + '<button class="go" data-go="send">Tamam</button>'];
     },
     letter: function(){
-      var laws = RIGHTS.filter(function(r, i){ return S.read[i]; }).map(function(r){ return '<span class="law-c">' + esc(r[3]) + '</span>'; }).join(' ');
-      return ['Mektubun', '<div class="letter"><p>İlgili makama,</p><p><b>' + esc(C.who) + '</b> hakkında ' + esc(C.topic.toLowerCase()) + ' konusunda şikayette bulunuyorum.</p><p>' + esc(C.what) + '</p>' + (laws ? '<p>' + laws + '</p>' : '') + '<p>$84 tutarın 30 gün içinde tamamen iade edilmesini talep ediyorum.</p><p>Saygılarımla,<br>— ComplaintCA ile gönderildi</p></div>' +
-        (laws ? '<button class="go" data-go="send">Güzel Olmuş</button>' : '<div class="warn">Bu mektubun henüz yasal dayanağı yok. II. karttan haklarını aç — her biri buraya bir kanun ekler.</div><button class="go" data-go="rights">Mektubuma Kanun Ekle</button>')];
+      var laws = C.rights.filter(function(r, i){ return S.read[i]; }).map(function(r){ return '<span class="law-c">' + esc(r[3]) + '</span>'; }).join(' ');
+      return [C.game ? 'Mektubun' : 'Beyanın', '<div class="letter"><p>İlgili makama,</p><p><b>' + esc(C.who) + '</b> hakkında, ' + esc(C.topic.toLowerCase()) + ' konusunda başvuruyorum.</p><p>' + esc(C.what) + '</p>' + (laws ? '<p>' + laws + '</p>' : '') + '<p>' + esc(C.ask) + '</p><p>Saygılarımla,<br>— ComplaintCA ile gönderildi</p></div>' +
+        (laws || !C.game ? '<button class="go" data-go="send">Güzel Olmuş</button>' : '<div class="warn">Bu mektubun henüz yasal dayanağı yok. II. karttan haklarını aç — her biri buraya bir kanun ekler.</div><button class="go" data-go="rights">Mektubuma Kanun Ekle</button>')];
     },
     lawyer: function(){
-      return ['Ücretsiz Avukat', '<p class="p" style="margin-bottom:10px">Ücretsiz hukuk yardımı <em>nerede yaşadığına</em> göre değişir. Adresini kontrol et:</p>' +
-        '<div class="find"><input class="in" id="law-in" value="' + esc(C.addr) + '" placeholder="Posta kodu ya da adres"><button class="fbtn" id="do-law">Bul</button></div>' +
+      return ['Ücretsiz Avukat', '<p class="p" style="margin-bottom:10px">Ücretsiz hukuk yardımı <em>nerede yaşadığına</em> göre değişir. Adresin:</p>' +
+        '<div class="find"><input class="in" id="law-in" value="' + esc(ADDR) + '" placeholder="Posta kodu ya da adres"><button class="fbtn" id="do-law">Bul</button></div>' +
         '<div id="law-res"></div>' +
         '<div class="tg' + (S.lawyer ? ' on' : '') + '" id="tg-law"><div>Partner avukatlar da dosyamı görsün <em>(e-posta paylaşılmaz)</em></div><i></i></div>'];
     },
     mp: function(){
-      return ['Milletvekili Bul', '<p class="p" style="margin-bottom:10px">Federal ve eyalet milletvekilin kuruma baskı yapabilir. <em>Posta kodunu</em> gir:</p>' +
-        '<div class="find"><input class="in" id="mp-in" value="' + esc(C.addr) + '" placeholder="örn. M5V 2T6" autocomplete="postal-code"><button class="fbtn" id="do-mp">Bul</button></div>' +
-        '<div id="mp-res"></div>'];
+      var reps = mpReps();
+      var body = MP.state === 'busy' ? '<p class="hint">Adresinden bulunuyor…</p>' :
+        reps.length ? reps.map(function(x){ return mpRow(x.r, x.l[1]); }).join('') :
+        '<p class="hint">' + (MP.state === 'err' ? 'Arama servisine ulaşılamadı.' : 'Temsilci bulunamadı.') + '</p><button class="go" id="do-mp">Tekrar Dene</button>';
+      return ['Milletvekilin', '<p class="p" style="margin-bottom:10px">' + (C.mpRec ? 'Bu konuda milletvekili ofisleri <b>gerçekten işe yarıyor</b> — kurumla özel hattan konuşabilirler.' : 'Zorunlu değil. İstersen şikayetinin bir kopyası milletvekiline de gider; kurum üzerinde baskı oluşturur.') + '</p>' +
+        '<p class="hint" style="margin:0 0 10px">📍 Adresine göre (' + esc(ADDR) + ') otomatik bulundu</p>' + body +
+        (reps.length ? '<div class="tg' + (S.inst.mp ? ' on' : '') + '" id="tg-mp"><div>Şikayetimin bir kopyası milletvekilime de gitsin</div><i></i></div>' : '') +
+        '<button class="go" data-go="send">Tamam</button>'];
+    },
+    help: function(){
+      var h = '<p class="p" style="margin-bottom:12px">Ne yapacağına sen karar verirsin. Bu hatlar <b>gizli ve ücretsiz</b>; polise bildirmek zorunda değilsin.</p>';
+      HELP.forEach(function(x){
+        h += '<a class="inst res help" href="' + x[4] + '"' + (x[4].indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '><span class="av">' + x[0] + '</span><div><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></div><em>' + esc(x[3]) + '</em></a>';
+      });
+      h += '<button class="ghost-x" id="quick-exit">⎋ Hızlı çıkış</button>';
+      return ['Hemen Yardım Al', h];
     }
   };
 
@@ -332,50 +442,36 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     $('sh-t').textContent = v[0]; $('sh-b').innerHTML = v[1];
     $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop = 0;
     if (k === 'rights') prog();
-    if (k === 'lawyer' && S.lawProv) findLaw();
-    if (k === 'mp' && S.mpList) renderMp(S.mpList);
+    if (k === 'lawyer') findLaw();
   }
   function close(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); cur = ''; refresh(); }
-  function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / RIGHTS.length * 100) + '%'; }
+  function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / C.rights.length * 100) + '%'; }
 
   function findLaw(){
     var pv = provOf($('law-in').value.trim()); S.lawProv = pv;
+    var list = (C.card6 === 'help' && pv === 'ON' ? [ILA] : []).concat(LAW[pv]);
     var h = '<p class="hint" style="margin:12px 0 8px"><em>' + PROV_N[pv] + '</em> için ücretsiz seçenekler</p>';
-    LAW[pv].forEach(function(l){
+    list.forEach(function(l){
       h += '<a class="inst res" href="' + l[3] + '" target="_blank" rel="noopener"><span class="av">⚖</span><div><b>' + esc(l[0]) + '</b><small>' + esc(l[1]) + '</small></div><em>' + l[2] + '</em></a>';
     });
     $('law-res').innerHTML = h; refresh();
   }
-  function lvl(r){
-    var t = ((r.representative_set_name || '') + ' ' + (r.elected_office || '')).toLowerCase();
-    return t.indexOf('house of commons') > -1 || /\bmp\b/.test(t) ? [1, 'FEDERAL'] : /legislative|national assembly|mpp|mla|mna/.test(t) ? [2, 'EYALET'] : [3, 'YEREL'];
-  }
-  function renderMp(reps){
-    var list = reps.map(function(r){ return { r:r, l:lvl(r) }; }).filter(function(x){ return x.l[0] < 3; }).sort(function(a, b){ return a.l[0] - b.l[0]; });
-    if (!list.length){ $('mp-res').innerHTML = '<p class="hint">Bu adres için temsilci bulunamadı.</p>'; return; }
-    var h = '';
-    list.forEach(function(x){
-      var r = x.r, photo = /^https:\/\//.test(r.photo_url || '') ? r.photo_url : '';
-      var mail = r.email ? 'mailto:' + encodeURIComponent(r.email) + '?subject=' + encodeURIComponent('Seçmen şikayeti ' + (S.ref || '')) : '';
-      h += '<div class="inst res"><span class="av">' + (photo ? '<img src="' + esc(photo) + '" alt="" onerror="this.remove()">' : '👤') + '</span><div><b>' + esc(r.name || '—') + '</b><small>' + esc([r.party_name, r.district_name].filter(Boolean).join(' · ')) + '</small>' +
-        (mail ? '<a class="mini" href="' + mail + '">✉ Şikayetimi gönder</a>' : '') + '</div><em>' + x.l[1] + '</em></div>';
-    });
-    $('mp-res').innerHTML = h;
-    S.mp = list[0].r.name; refresh();
-  }
-  function findMp(){
-    var v = $('mp-in').value.trim(), m = v.match(PC_RE), btn = $('do-mp');
-    if (!m){ $('mp-res').innerHTML = '<p class="hint">Lütfen Kanada posta kodu gir (A1A 1A1).</p>'; return; }
-    btn.disabled = true; btn.textContent = '…';
-    $('mp-res').innerHTML = '<p class="hint">Seçim bölgen aranıyor…</p>';
+  // MP is looked up automatically from the user's own address, in the background.
+  function autoMp(){
+    var m = ADDR.match(PC_RE); if (!m) return;
+    MP.state = 'busy'; refresh();
     fetch('https://represent.opennorth.ca/postcodes/' + (m[1] + m[2]).toUpperCase() + '/')
       .then(function(r){ if (!r.ok) throw 0; return r.json(); })
-      .then(function(d){ S.mpList = (d.representatives_concordance && d.representatives_concordance.length) ? d.representatives_concordance : (d.representatives_centroid || []); renderMp(S.mpList); })
-      .catch(function(){ $('mp-res').innerHTML = '<p class="hint">Arama servisine ulaşılamadı. Tekrar dene.</p>'; })
-      .then(function(){ btn.disabled = false; btn.textContent = 'Bul'; });
+      .then(function(d){
+        MP.list = (d.representatives_concordance && d.representatives_concordance.length) ? d.representatives_concordance : (d.representatives_centroid || []);
+        var f = mpReps()[0]; MP.name = f ? f.r.name : ''; MP.state = 'ok';
+      })
+      .catch(function(){ MP.state = 'err'; })
+      .then(function(){ refresh(); if (cur === 'mp' || cur === 'inst') open(cur); });
   }
 
   document.querySelectorAll('.card').forEach(function(c){ c.onclick = function(){ open(c.dataset.s); }; });
+  document.querySelectorAll('.demo-sw button').forEach(function(b){ b.onclick = function(){ setTopic(b.dataset.t); }; });
   $('dim').onclick = close; $('sh-x').onclick = close;
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cur) close(); });
 
@@ -383,22 +479,23 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     var d = e.target; if (!d.open || d.dataset.i == null) return;
     var fresh = !S.read[d.dataset.i]; S.read[d.dataset.i] = 1;
     d.querySelector('summary i').textContent = '✓';
-    if (fresh){ d.querySelector('.cited').hidden = false; toast('Kanun eklendi · Dava gücü %' + strength()); }
+    if (fresh){ d.querySelector('.cited').hidden = false; if (C.game) toast('Kanun eklendi · Dava gücü %' + strength()); }
     prog(); refresh();
   }, true);
-  $('sh-b').addEventListener('keydown', function(e){
-    if (e.key !== 'Enter') return;
-    if (e.target.id === 'law-in') findLaw();
-    if (e.target.id === 'mp-in') findMp();
-  });
+  $('sh-b').addEventListener('keydown', function(e){ if (e.key === 'Enter' && e.target.id === 'law-in') findLaw(); });
   $('sh-b').addEventListener('click', function(e){
     var t = e.target.closest('button,.tg'); if (!t) return;
     if (t.dataset.go){ open(t.dataset.go); return; }
     if (t.dataset.k){ S.inst[t.dataset.k] ? delete S.inst[t.dataset.k] : S.inst[t.dataset.k] = 1; t.classList.toggle('on'); refresh(); return; }
+    if (t.id === 'tg-mp'){
+      if (!C.inst.some(function(i){ return i[0] === 'mp'; })) C.inst.push(['mp', 'Milletvekilin', '', 'İSTEĞE BAĞLI', false]);
+      S.inst.mp ? delete S.inst.mp : S.inst.mp = 1; t.classList.toggle('on'); refresh(); return;
+    }
     if (t.id === 'tg-law'){ S.lawyer = !S.lawyer; t.classList.toggle('on'); refresh(); return; }
     if (t.id === 'tg-not'){ S.notify = !S.notify; t.classList.toggle('on'); return; }
     if (t.id === 'do-law'){ findLaw(); return; }
-    if (t.id === 'do-mp'){ findMp(); return; }
+    if (t.id === 'do-mp'){ autoMp(); open('mp'); return; }
+    if (t.id === 'quick-exit'){ location.replace('https://www.google.com/search?q=weather'); return; }
     if (t.id === 'do-copy'){ try { navigator.clipboard.writeText(S.ref).then(function(){ toast('Kopyalandı: ' + S.ref); }, function(){ toast(S.ref); }); } catch (x) { toast(S.ref); } return; }
     if (t.id === 'do-send'){
       t.disabled = true; t.firstChild.textContent = 'Gönderiliyor… ';
@@ -408,7 +505,8 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
       }, 900);
     }
   });
-  refresh();
+  setTopic('consumer');
+  autoMp();
 })();
 </script>
 </body>
