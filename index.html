@@ -680,8 +680,8 @@ textarea{resize:vertical;min-height:90px}
 /* Framed velvet look: baroque gold frame (9-slice) on velvet, marble and walnut plaques */
 /* Pop-up card: the framed panel floats over the dimmed page instead of covering it */
 #cc-choice{background:rgba(12,2,14,.62)!important;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-#cc-choice.on{display:grid!important;place-items:center;padding:16px!important;animation:ccIn .25s ease-out both}
-#cc-choice .cc-card{position:relative;box-sizing:border-box;width:min(88vw,420px);max-height:calc(100dvh - 32px);overflow-y:auto;padding:clamp(34px,10vw,48px) clamp(22px,7vw,34px);border-radius:22px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);animation:ccPop .35s cubic-bezier(.2,.9,.3,1.2) both}
+#cc-choice.on{display:grid!important;place-items:safe center;padding:16px!important;animation:ccIn .25s ease-out both}
+#cc-choice .cc-card{position:relative;box-sizing:border-box;width:min(88vw,420px);padding:clamp(34px,10vw,48px) clamp(22px,7vw,34px);border-radius:22px;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);animation:ccPop .35s cubic-bezier(.2,.9,.3,1.2) both}
 #cc-choice .cc-card::before{content:"";position:absolute;inset:0;border-style:solid;border-width:clamp(46px,14vw,64px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}
 @keyframes ccPop{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:none}}
 #cc-choice .cc-card>*{position:relative;z-index:1}
@@ -697,7 +697,7 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-orn,#cc-choice .cc-quote cite{color:#e9c56a!important}
 #cc-choice .cc-orn i{background:linear-gradient(90deg,transparent,#e9c56a)!important}
 #cc-choice .cc-quote{color:#f3e6ea!important}
-#cc-choice .cc-quote cite{letter-spacing:.14em!important;font-size:10px!important;white-space:nowrap}
+#cc-choice .cc-quote cite{letter-spacing:.14em!important;font-size:10px!important}
 #cc-choice .cc-ca{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin-left:4px;font:inherit!important;letter-spacing:inherit!important;color:#ff5a6e!important;text-shadow:0 1px 2px rgba(0,0,0,.8),0 0 10px rgba(255,60,90,.55)!important}
 #cc-choice .cc-txt b{font-size:clamp(14px,4.1vw,17px)!important;letter-spacing:.05em!important;color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.85)!important}
 #cc-choice .cc-bar{min-height:58px;padding-right:10px!important;gap:10px!important}
@@ -715,8 +715,8 @@ textarea{resize:vertical;min-height:90px}
 @keyframes ccUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes ccBreathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.025);filter:brightness(1.12)}}
 @keyframes ccShine{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}
-@media (max-width:520px){#cc-choice .cc-txt b{white-space:nowrap}#cc-choice .cc-bars{grid-template-columns:1fr}#cc-choice .cc-complain{order:-1}}
-@media (prefers-reduced-motion:reduce){#cc-choice *,#cc-choice *::before,#cc-choice *::after{animation:none!important;transition:none!important}}
+#cc-choice .cc-bars{grid-template-columns:1fr!important}#cc-choice .cc-complain{order:-1}#cc-choice .cc-txt b{text-wrap:balance}
+@media (prefers-reduced-motion:reduce){#cc-choice,#cc-choice *,#cc-choice *::before,#cc-choice *::after{animation:none!important;transition:none!important}}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-labelledby="cc-choice-t">
   <button type="button" class="cc-srx" onclick="ccChoiceClose()">Close</button>
