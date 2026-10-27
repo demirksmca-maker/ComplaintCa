@@ -72,9 +72,9 @@
     '#cc-steps .cs-perch.fl{animation:csFlut .7s 1,csWind 2.6s ease-in-out infinite alternate}#cc-steps .cs-perch.off{visibility:hidden}',
     '@keyframes csIdle{0%{background-position:0 0;animation-timing-function:steps(1,end)}70%{background-position:33.333% 0;animation-timing-function:steps(1,end)}72.5%{background-position:66.667% 0;animation-timing-function:steps(1,end)}75%{background-position:33.333% 0;animation-timing-function:steps(1,end)}77.5%{background-position:0 0;animation-timing-function:steps(1,end)}80%{background-position:33.333% 0;animation-timing-function:steps(1,end)}82.5%{background-position:66.667% 0;animation-timing-function:steps(1,end)}85%{background-position:33.333% 0;animation-timing-function:steps(1,end)}87.5%{background-position:0 0;animation-timing-function:steps(1,end)}90%{background-position:33.333% 0;animation-timing-function:steps(1,end)}92.5%{background-position:66.667% 0;animation-timing-function:steps(1,end)}95%{background-position:33.333% 0;animation-timing-function:steps(1,end)}97.5%{background-position:0 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}@keyframes csWind{0%{transform:rotate(-2.5deg) skewX(-3deg)}45%{transform:rotate(.5deg) skewX(1deg)}70%{transform:rotate(-1deg) skewX(-1.5deg)}100%{transform:rotate(2deg) skewX(2.5deg)}}',
     '@keyframes csFlut{0%{background-position:33.333% 0;animation-timing-function:steps(1,end)}20%,60%{background-position:66.667% 0;animation-timing-function:steps(1,end)}40%,80%{background-position:33.333% 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}',
-    '#cc-steps .cs-fly{position:fixed;left:0;top:0;z-index:311;width:50px;height:74px;pointer-events:none;display:none;will-change:transform;background:url(/assets/dove-fly-letter.webp) 0 0/600% 100% no-repeat;animation:csWing .42s steps(6) infinite}',
+    '#cc-steps .cs-fly{position:absolute;left:0;top:0;z-index:299;width:50px;height:74px;pointer-events:none;display:none;will-change:transform;background:url(/assets/dove-fly-letter.webp) 0 0/600% 100% no-repeat;animation:csWing .42s steps(6) infinite}',
     '#cc-steps .cs-fly.empty{background-image:url(/assets/dove-fly.webp)}@keyframes csWing{to{background-position:120% 0}}',
-    '#cc-steps .cs-env{position:fixed;left:0;top:0;z-index:312;width:20px;height:13px;border-radius:2px;pointer-events:none;will-change:transform;background:linear-gradient(to bottom right,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 0 0/50% 60% no-repeat,linear-gradient(to bottom left,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 100% 0/50% 60% no-repeat,#f6ecd9;box-shadow:0 2px 5px rgba(0,0,0,.45)}',
+    '#cc-steps .cs-env{position:absolute;left:0;top:0;z-index:299;width:20px;height:13px;border-radius:2px;pointer-events:none;will-change:transform;background:linear-gradient(to bottom right,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 0 0/50% 60% no-repeat,linear-gradient(to bottom left,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 100% 0/50% 60% no-repeat,#f6ecd9;box-shadow:0 2px 5px rgba(0,0,0,.45)}',
     '#cc-steps .cs-env::after{content:"";position:absolute;left:7px;top:4px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e0464a,#8e0c1c)}',
     '#cc-steps .cs-asya.got{animation:csGot .6s ease-out}@keyframes csGot{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(216,180,254,.35),0 0 24px rgba(216,180,254,.8)}100%{transform:scale(1)}}',
     '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{text-wrap:balance}',
@@ -88,7 +88,7 @@
     '#cc-steps .cs-card.done .cs-ok{display:grid}#cc-steps .cs-card.done .cs-n{display:none}',
     '#cc-steps .cs-card.done{border-color:rgba(255,245,255,.95);background:linear-gradient(115deg,transparent 42%,rgba(255,245,255,.38) 50%,transparent 58%) 0 0/320% 100% no-repeat,var(--g);animation:csAura 2.4s ease-in-out infinite,csSweep 3.2s linear infinite}',
     '@keyframes csSweep{0%{background-position:100% 0,0 0}100%{background-position:-60% 0,0 0}}',
-    '#cc-steps .cs-card.done::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:3px;pointer-events:none;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px rgba(233,200,255,1));background:conic-gradient(from var(--cs-a),transparent 0deg,#fff 16deg,#d8b4fe 32deg,#a78bfa 48deg,transparent 72deg,transparent 180deg,#f9a8d4 196deg,#fff 212deg,#c4b5fd 228deg,transparent 252deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:csSpin 2.2s linear infinite}',
+    '#cc-steps .cs-card.done::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:3px;pointer-events:none;background:conic-gradient(from var(--cs-a),transparent 0deg,#fff 16deg,#d8b4fe 32deg,#a78bfa 48deg,transparent 72deg,transparent 180deg,#f9a8d4 196deg,#fff 212deg,#c4b5fd 228deg,transparent 252deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:csSpin 2.2s linear infinite}',
     '@keyframes csAura{0%,100%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 0 30px rgba(240,220,255,.35),0 0 20px 4px rgba(220,180,255,.85),0 0 46px 12px rgba(255,100,190,.4)}50%{box-shadow:inset 0 0 0 2px rgba(255,255,255,.9),inset 0 0 44px rgba(245,230,255,.55),0 0 32px 9px rgba(235,205,255,1),0 0 78px 22px rgba(255,120,200,.6)}}',
     '#cc-steps .cs-card:nth-of-type(1){--g:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}#cc-steps .cs-card:nth-of-type(2){--g:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%);animation-delay:.06s}#cc-steps .cs-card:nth-of-type(3){--g:linear-gradient(155deg,rgba(124,58,237,.55) 0%,rgba(109,40,140,.38) 55%,rgba(50,14,70,.3) 100%);animation-delay:.12s}#cc-steps .cs-card:nth-of-type(4){--g:linear-gradient(155deg,rgba(225,29,72,.55) 0%,rgba(136,19,55,.38) 55%,rgba(70,10,35,.3) 100%);animation-delay:.18s}#cc-steps .cs-card:nth-of-type(5){--g:linear-gradient(155deg,rgba(168,85,247,.55) 0%,rgba(126,34,206,.38) 55%,rgba(60,12,90,.3) 100%);animation-delay:.24s}#cc-steps .cs-card:nth-of-type(6){--g:linear-gradient(155deg,rgba(159,18,57,.55) 0%,rgba(97,22,90,.38) 55%,rgba(45,10,55,.3) 100%);animation-delay:.30s}',
     '#cc-steps .cs-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:clamp(6px,1.6vh,22px);color:#cfb0e8}#cc-steps .cs-orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}#cc-steps .cs-orn i:last-child{transform:scaleX(-1)}',
@@ -217,6 +217,7 @@
       '<div class="cs-toast" role="status"></div>';
     (document.getElementById('cc-steps-host') || document.body).appendChild(root);
     var pe = document.createElement('div'); pe.className = 'cs-perch'; pe.setAttribute('aria-hidden', 'true'); q('.cs-quote').appendChild(pe);
+    ['perch', 'fly-letter', 'fly'].forEach(function(n){ (new Image()).src = '/assets/dove-' + n + '.webp'; });
     root.addEventListener('click', function(e){
       var c = e.target.closest('.cs-card'); if (c) return openSheet(c.dataset.k);
       var a = e.target.closest('[data-act]'); if (!a) return;
@@ -331,20 +332,21 @@
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
     closeSheet(); sync(); dove(c);
   }
-  // A carrier dove lives on the Who card. A saved answer flies to its beak as a
-  // sealed letter; the dove takes it far up to the ASYA badge and lands back.
-  ['perch', 'fly-letter', 'fly'].forEach(function(n){ (new Image()).src = '/assets/dove-' + n + '.webp'; });
+  // A carrier dove perches on the quote. A saved answer flies to its beak as a
+  // sealed letter; the dove carries it to the ASYA badge and lands back.
+  // Positions are relative to #cc-steps so a scroll mid-flight cannot strand it.
   var dq = [], dBusy = false;
+  function rc(el){ var r = el.getBoundingClientRect(), o = root.getBoundingClientRect(); return { left: r.left - o.left, top: r.top - o.top, width: r.width, height: r.height }; }
   function dove(from){
     var to = q('.cs-asya'), pe = q('.cs-perch');
     if (!from || !to || !pe || !root.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) { if (to) { to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); } return; }
-    dq.push(from); if (!dBusy) doveRun();
+    if (dq.length < 1 && dq.indexOf(from) < 0) dq.push(from); if (!dBusy) doveRun();
   }
   function doveRun(){
     var from = dq.shift(); if (!from) { dBusy = false; return; }
     dBusy = true;
     var to = q('.cs-asya'), pe = q('.cs-perch');
-    var a = from.getBoundingClientRect(), p = pe.getBoundingClientRect();
+    var a = rc(from), p = rc(pe);
     var bx = p.left + 42, by = p.top + 7;
     var env = document.createElement('div'); env.className = 'cs-env'; root.appendChild(env);
     var ex = a.left + a.width / 2 - 10, ey = a.top + a.height / 2 - 6, hx = Math.min(ex, bx) + Math.abs(bx - ex) / 2, hy = Math.min(ey, by) - 50;
@@ -357,7 +359,7 @@
   }
   function doveFly(pe, to){
     var fl = q('.cs-fly'); if (!fl) { fl = document.createElement('div'); fl.className = 'cs-fly'; fl.setAttribute('aria-hidden', 'true'); root.appendChild(fl); }
-    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect();
+    var p = rc(pe), b = rc(to);
     // One symmetric arch from the perch to beside the badge and back on the same arch;
     // the peak stays just above the perch so the flight keeps to the strip over the quote.
     var x0 = p.left - 2, y0 = p.top - 20, xe = Math.max(b.left - 56, x0 + 80), H = 16, n = 14;
@@ -369,11 +371,11 @@
     function run(k, ms, cb){ fl.animate(k, { duration: ms, easing: 'ease-in-out', fill: 'forwards' }).onfinish = cb; }
     fl.className = 'cs-fly'; fl.style.display = 'block'; pe.classList.add('off');
     run(arch(1), 2000, function(){
-      var e = at(1, 1).transform.replace(/rotate\([^)]*\)/, '');
+      var ex = 'translate(' + xe + 'px,' + y0 + 'px) ', e = ex + 'scale(.9,.9) ';
       // Head toss: rear back, flick forward; the letter leaves the beak on the flick.
       run([{ transform: e + 'rotate(0deg)' }, { transform: e + 'rotate(-16deg)' }, { transform: e + 'rotate(12deg)' }, { transform: e + 'rotate(0deg)' }], 520, function(){
         setTimeout(function(){
-          run([{ transform: e.replace('scale(.9', 'scale(-.9') + 'rotate(0deg)' }, at(1, -1)], 120, function(){
+          run([{ transform: ex + 'scale(.9,.9) rotate(0deg)' }, { transform: ex + 'scale(-.9,.9) rotate(0deg)' }], 120, function(){
             run(arch(-1), 2000, function(){
               fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); });
               pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
