@@ -46,7 +46,7 @@
   var V = {}, tmp = {}, cur = null, root, companies = null;
 
   var CSS = [
-    '#cc-steps{position:relative;display:none;margin-top:46px;height:calc(100dvh - 85px);min-height:620px;color:#fff;font-family:Inter,system-ui,sans-serif;background:#041235 radial-gradient(ellipse 80% 45% at 50% 0%,#0b2a63 0%,#041235 70%)}',
+    '#cc-steps{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;background:#041235 radial-gradient(ellipse 80% 45% at 50% 0%,#0b2a63 0%,#041235 70%)}',
     '#cc-steps.on{display:flex;flex-direction:column}',
     '#cc-steps *{box-sizing:border-box}',
     'body.cc-steps-on .amain{display:none!important}',
@@ -59,10 +59,10 @@
     '#cc-steps .cs-ttl p{margin:0;font:500 15px/1.4 Inter,sans-serif;color:#b9c4dc}',
     '#cc-steps .cs-hd{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(8px,2vh,20px);font:700 14px/1 Cinzel,Georgia,serif;letter-spacing:.08em}',
     '#cc-steps .cs-asya{font:700 13px/1 Inter,sans-serif;letter-spacing:.14em;padding:9px 16px;border-radius:999px;border:1.5px solid #9cc0ff;background:linear-gradient(90deg,#1d4ed8,#2563eb)}',
-    '#cc-steps .cs-grid{position:relative;display:grid;flex:1;min-height:0;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));gap:clamp(8px,1.4vh,14px);margin-top:clamp(8px,1.4vh,14px);padding:clamp(8px,1.4vh,14px);border-radius:22px;background:#0a1f4d;overflow:hidden;isolation:isolate}',
+    '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:12px;margin-top:clamp(10px,1.6vh,16px);padding:12px;border-radius:22px;background:#0a1f4d;overflow:hidden;isolation:isolate}',
     '#cc-steps .cs-leaf{position:absolute;left:50%;top:50%;width:125%;height:112%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;filter:drop-shadow(0 0 18px rgba(255,255,255,.35))}',
-    '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:0;overflow:hidden;padding:clamp(10px,1.8vh,18px);border:0;border-radius:14px;text-align:left;color:#dbe8ff;cursor:pointer;background:rgba(var(--c),.8);transition:transform .2s,background .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
-    '#cc-steps .cs-card:hover{transform:translateY(-2px);background:rgba(var(--c),.9)}',
+    '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px;min-height:0;overflow:hidden;padding:clamp(14px,2vh,18px);border:0;border-radius:14px;text-align:left;color:#dbe8ff;cursor:pointer;background:rgba(var(--c),.94);transition:transform .2s,background .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
+    '#cc-steps .cs-card:hover{transform:translateY(-2px);background:rgba(var(--c),.98)}',
     '#cc-steps .cs-card:focus-visible,#cc-steps button:focus-visible{outline:2px solid #fff;outline-offset:3px}',
     '#cc-steps .cs-card b{display:block;font:600 18px/1.2 Inter,sans-serif;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}',
     '#cc-steps .cs-card small{display:block;margin-top:4px;font:500 13px/1.35 Inter,sans-serif;color:#cfe0ff;text-shadow:0 1px 2px rgba(0,0,0,.35);overflow-wrap:anywhere}',
@@ -152,7 +152,6 @@
     '@keyframes csRing{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.35);opacity:0}}@keyframes csFill{from{transform:translateX(-100%)}to{transform:none}}',
     '@keyframes csBlink{50%{opacity:0}}@keyframes csPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}@keyframes csSway{0%,100%{transform:skewY(0) scale(1)}50%{transform:skewY(-1.2deg) scale(1.02) translateX(-.6%)}}',
     '@media (max-height:720px){#cc-steps .cs-card>svg{display:none}#cc-steps .cs-card{justify-content:flex-end}#cc-steps .cs-card b{font-size:16px}#cc-steps .cs-card small{font-size:12px}}',
-    '@media (max-height:560px){#cc-steps .cs-grid{flex:none;grid-template-rows:none}#cc-steps .cs-card{min-height:110px}#cc-steps .cs-wrap{flex:none}}',
     '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::after{animation:none!important;transition:none!important}}'
   ].join('\n');
 
