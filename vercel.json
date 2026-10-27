@@ -6,7 +6,7 @@
       "permanent": true
     },
     {
-      "source": "/(about|privacy|terms|start|presentation|account)",
+      "source": "/(about|contact|privacy|terms|start|presentation|account)",
       "destination": "/$1.html",
       "permanent": true
     },

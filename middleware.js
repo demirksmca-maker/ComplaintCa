@@ -124,7 +124,7 @@ const BOT_RE = /bot|crawl|spider|slurp|preview|monitor|curl|wget|python|headless
 
 // Paths vercel.json redirects (the browser then loads the real URL, which is
 // the one counted): /blog/x → /blog/x.html, /about → /about.html, /es → /es/.
-const REDIRECTED = /^\/((guides|blog)\/[a-z0-9-]+|about|privacy|terms|start|presentation|account|es|es-test\.html|new-complaint(-test)?)$/;
+const REDIRECTED = /^\/((guides|blog)\/[a-z0-9-]+|about|contact|privacy|terms|start|presentation|account|es|es-test\.html|new-complaint(-test)?)$/;
 
 export function isPage(request, url) {
   return request.method === 'GET' && !url.pathname.startsWith('/api/') &&
