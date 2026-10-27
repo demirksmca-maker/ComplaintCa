@@ -2,7 +2,7 @@ import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import handler from './complaint.js';
 import { mailSecret, mailPass } from './_mailcode.js';
-import { validate, genRef, getAuthorities, getChain, buildRecord, toFirestore, titleFromDesc, replyAddress, parseReplyAddress } from './_complaint-core.js';
+import { validate, genRef, getAuthorities, getChain, buildRecord, toFirestore, titleFromDesc, replyAddress, parseReplyAddress, adminEmail } from './_complaint-core.js';
 
 const ENV = ['TURNSTILE_SECRET_KEY', 'GROQ_API_KEY', 'BREVO_API_KEY', 'COMPLAINT_LIVE', 'COMPLAINT_PILOT_TO', 'REPLY_SECRET', 'REPLY_DOMAIN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN', 'MAIL_CODE_SECRET'];
 let saved, calls, ipN = 0;
@@ -139,6 +139,27 @@ describe('institution email (live parity)', () => {
     r = await call({ ...good(), category: 'noise', priority: 'high', name: 'Ana', test: false });
     assert.equal(r.data.admin, 'sent');
     assert.ok(calls.some(c => c.url.includes('brevo') && JSON.parse(c.body).to[0].email === 'complaintcaca@gmail.com'));
+  });
+  test('admin heads-up says "not sent", not "failed", when nothing was tried', async () => {
+    mockFetch(); process.env.BREVO_API_KEY = 'k'; process.env.COMPLAINT_LIVE = '1';
+    await call({ ...good(), category: 'service', location: 'Halifax, NS', targetName: 'Canadian Tire', priority: 'high', name: 'Ana', test: false });
+    const body = calls.filter(c => c.url.includes('brevo')).map(c => JSON.parse(c.body)).find(b => /Yüksek Öncelik/.test(b.subject)).textContent;
+    assert.match(body, /Şikayet edilen: Canadian Tire/);
+    assert.match(body, /Kuruma gönderim: ℹ gönderilmedi/);
+    assert.doesNotMatch(body, /başarısız/);
+  });
+  test('adminEmail: each routing outcome gets its own line', () => {
+    const c = { ref: 'VC-1', category: 'service', targetName: 'Canadian Tire' };
+    const line = (inst, a) => adminEmail(c, a, inst).body.split('Kuruma gönderim: ')[1];
+    const mail = { name: 'X', email: 'x@y.ca' }, form = { name: 'X', email: 'www.x.ca/form' }, bare = { name: 'X', email: '' };
+    assert.match(line({ status: 'sent' }, mail), /^✅/);
+    assert.match(line({ status: 'failed' }, mail), /başarısız — gönderim denendi/);
+    assert.match(line({ status: 'form_only' }, form), /resmi forma/);
+    assert.match(line({ status: 'form_only' }, bare), /doğrudan iletişim/);
+    assert.match(line({ status: 'none' }, undefined), /otomatik kurum yok/);
+    assert.match(adminEmail(c, form, { status: 'form_only' }).body, /\(https:\/\/www\.x\.ca\/form\)/);
+    assert.match(adminEmail(c, { email: 'x@y.ca' }, { status: 'sent' }).body, /Yönlendirilen kurum: — \(x@y\.ca\)/);
+    assert.match(adminEmail({ ...c, anonymous: true }, mail, { status: 'sent' }).body, /Anonim şikayet \| Tarih: \d{4}-\d{2}-\d{2}$/);
   });
 });
 

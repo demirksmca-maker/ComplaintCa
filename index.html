@@ -4030,6 +4030,33 @@ function withOwnWords(draft, own, fr) {
   var at = draft.search(/^(APPLICABLE LAW AND OBLIGATIONS|LOIS APPLICABLES ET OBLIGATIONS)\s*$/m);
   return at > -1 ? draft.slice(0, at) + block + draft.slice(at) : draft.replace(/\s*$/, '') + '\n\n' + block.trim();
 }
+// Admin heads-up for high-priority (🔴) complaints. Sent whether or not the
+// institution letter went out; `status` says what really happened to it
+// ("not sent: no e-mail on file" is not the same as a failed send).
+// Same wording as deliveryLine() in api/_complaint-core.js.
+var _DELIVERY={
+  sent:'✅ başarılı',
+  test:'🧪 test kutusuna gönderildi (gerçek kuruma değil)',
+  failed:'⚠ başarısız — gönderim denendi, kullanıcıya kendi e-postasından göndermesi önerildi',
+  empty:'⚠ gönderilmedi — mektup metni boştu',
+  form:'📝 gönderilmedi — kurumun e-posta adresi yok, kullanıcı resmi forma yönlendirildi',
+  noemail:'📝 gönderilmedi — kurumun e-posta adresi yok, kullanıcıya doğrudan iletişim önerildi',
+  none:'ℹ gönderilmedi — bu bölge/kategori için otomatik kurum yok, kullanıcıya sonraki adım kurumları gösterildi'
+};
+function _adminAlert(complaint, auth, status){
+  if(complaint.priority!=='high') return Promise.resolve(false);
+  var contact=auth&&auth.email?(_isMail(auth.email)?auth.email:_authUrl(auth.email)):((auth&&auth.phone)||'—');
+  var body =
+    'Yüksek öncelikli şikayet alındı.\n\n'+
+    'Referans: '+complaint.ref+'\n'+
+    'Kategori: '+complaint.category+'\n'+
+    'Şikayet edilen: '+(complaint.targetName||complaint.target||'—')+'\n'+
+    'Yönlendirilen kurum: '+(auth?(auth.name||'—')+' ('+contact+')':'—')+'\n'+
+    'Kuruma gönderim: '+_DELIVERY[status]+
+    '\n\n---\n'+(complaint.anonymous?'Anonim şikayet':'İletişim: '+(complaint.name||'—')+' <'+(complaint.email||'—')+'>')+
+    ' | Tarih: '+new Date().toISOString().slice(0,10);
+  return sendBrevoEmail('complaintcaca@gmail.com','ComplaintCA Admin','[🔴 Yüksek Öncelik] Yeni Şikayet — '+complaint.ref,body);
+}
 async function sendComplaintEmail(complaint, authorityEmail, authorityName, emailDraft){
   var ref = complaint.ref;
   var fr = _aLang==='fr';
@@ -4065,6 +4092,7 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   // kendi e-postası kuruma hiçbir zaman Reply-To olarak verilmez (anonimde
   // de, normalde de gizli kalır).
   var replyAlias = 'complaintcaca+'+ref+'@gmail.com';
+  var realName = authorityName, realEmail = authorityEmail;
   var instSent = false;
   if(emailDraft && authorityEmail){
     var ownText = (!complaint.anonymous && !isFoiEmail && emailDraft !== _basicComplaintEmail(complaint, authorityName)) ? (window._ccOrigDesc || complaint.desc) : '';
@@ -4079,23 +4107,8 @@ async function sendComplaintEmail(complaint, authorityEmail, authorityName, emai
   }
 
   // 2. Admin'e kısa bilgilendirme — SADECE yüksek öncelikli (🔴) şikayetlerde
-  var adminSent = false;
-  if(complaint.priority==='high'){
-    var adminBody =
-      'Yüksek öncelikli şikayet alındı.\n\n'+
-      'Referans: '+ref+'\n'+
-      'Kategori: '+complaint.category+'\n'+
-      'Kurum: '+(authorityName||complaint.targetName||complaint.target||'—')+' ('+(authorityEmail||'—')+')\n'+
-      'Kuruma gönderim: '+(instSent?'✅ başarılı':'⚠ başarısız — kullanıcıya manuel gönderim önerildi')+
-      footer;
-
-    adminSent = await sendBrevoEmail(
-      'complaintcaca@gmail.com',
-      'ComplaintCA Admin',
-      '[🔴 Yüksek Öncelik] Yeni Şikayet — '+ref,
-      adminBody
-    );
-  }
+  var adminSent = await _adminAlert(complaint, {name:realName, email:realEmail},
+    instSent?'sent':(emailDraft&&authorityEmail?'failed':'empty'));
 
   return {admin: adminSent, institution: instSent};
 }
@@ -4332,7 +4345,7 @@ async function doSubmit(){
   // email so the institution still gets notified either way.
   var emailDraftEl=document.getElementById('email-draft-text');
   var auths=getAuthorities(c.category,c.location);
-  var emailDraft=emailDraftEl?emailDraftEl.innerText:_basicComplaintEmail(c,(auths&&auths[0])?auths[0].name:'');
+  var emailDraft=(emailDraftEl&&emailDraftEl.innerText.trim())?emailDraftEl.innerText:_basicComplaintEmail(c,(auths&&auths[0])?auths[0].name:'');
   var emailStatus=document.getElementById('email-status');
   if(auths&&auths.length&&!_isMail(auths[0].email)&&emailStatus){
     // No public complaint e-mail for this body — point the user to its official form instead of e-mailing a wrong inbox.
@@ -4368,6 +4381,10 @@ async function doSubmit(){
       var mailSubject2='Formal Complaint — '+c.ref+' — '+c.title;
       window.location.href='mailto:'+auth.email+'?subject='+encodeURIComponent(mailSubject2)+'&body='+encodeURIComponent(emailDraft);
     });
+  } else {
+    // Nothing was e-mailed above: the admin still hears about 🔴 complaints.
+    var na=auths&&auths[0];
+    _adminAlert(c, na, !na?'none':na.email?'form':'noemail').catch(function(){});
   }
 
   // 4. Show success screen
