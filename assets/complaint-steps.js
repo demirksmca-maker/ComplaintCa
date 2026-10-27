@@ -68,6 +68,10 @@
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:10px;margin-top:clamp(10px,1.6vh,16px)}',
     '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:0;overflow:hidden;padding:12px 14px clamp(14px,2vh,18px);border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;cursor:pointer;background:var(--g);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
     '#cc-steps .cs-card:hover{transform:translateY(-2px);filter:brightness(1.08)}',
+    '#cc-steps .cs-dove{position:fixed;left:0;top:0;z-index:310;width:64px;height:44px;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(20,0,30,.55)) drop-shadow(0 0 10px rgba(216,180,254,.45))}',
+    '#cc-steps .cs-dove .wg{transform-box:fill-box;transform-origin:50% 100%;animation:csFlap .22s ease-in-out infinite alternate}',
+    '@keyframes csFlap{from{transform:scaleY(1)}to{transform:scaleY(-.55)}}',
+    '#cc-steps .cs-asya.got{animation:csGot .6s ease-out}@keyframes csGot{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(216,180,254,.35),0 0 24px rgba(216,180,254,.8)}100%{transform:scale(1)}}',
     '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{text-wrap:balance}',
     '#cc-steps .cs-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}#cc-steps .cs-card>*{position:relative}#cc-steps .cs-card>.cs-n,#cc-steps .cs-card>.cs-ok{position:absolute}',
     '#cc-steps .cs-card:focus-visible,#cc-steps button:focus-visible{outline:2px solid #fff;outline-offset:3px}',
@@ -316,7 +320,27 @@
     V[cur] = v; var c = card(cur), sm = c.querySelector('small'); c.classList.add('done');
     sm.textContent = cur === 'proof' ? v.length + (v.length > 1 ? ' photos' : ' photo') : cur === 'what' ? v.slice(0, 40) + (v.length > 40 ? '…' : '') : v;
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
-    closeSheet(); sync();
+    closeSheet(); sync(); dove(c);
+  }
+  // A carrier dove takes the saved answer from the card to the ASYA badge.
+  var DOVE = '<svg viewBox="0 0 70 48" width="64" height="44"><path d="M8 30 0 25 4 33z" fill="#e9dcf7"/>' +
+    '<path d="M8 30C14 22 26 20 36 22c6-4 12-6 16-4l6-1-5 4c-1 7-7 13-17 14-8 1-18 0-28-5z" fill="#fbf7ff"/>' +
+    '<path class="wg" d="M22 25c2-14 12-21 24-19-4 6-9 13-14 20z" fill="#e2d0f7"/><circle cx="51" cy="19.5" r="1.2" fill="#2a0d3a"/>' +
+    '<g transform="translate(56 15) rotate(12)"><rect width="12" height="8" rx="1" fill="#fff" stroke="#8b3fd1" stroke-width="1"/><path d="M0 0l6 4.5L12 0" fill="none" stroke="#8b3fd1" stroke-width="1"/></g></svg>';
+  function dove(from){
+    var to = q('.cs-asya');
+    if (!from || !to || !root.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+    var x0 = a.left + 14, y0 = a.top + 14, x1 = b.left + b.width / 2 - 32, y1 = b.top + b.height / 2 - 22;
+    var f = x1 < x0 ? -1 : 1, mx = (x0 + x1) / 2, my = Math.max(Math.min(y0, y1) - 36, 8);
+    var d = document.createElement('div'); d.className = 'cs-dove'; d.innerHTML = DOVE; root.appendChild(d);
+    var an = d.animate([
+      { transform: 'translate(' + x0 + 'px,' + y0 + 'px) scale(' + .4 * f + ',.4) rotate(' + -10 * f + 'deg)', opacity: 0 },
+      { transform: 'translate(' + x0 + 'px,' + (y0 - 12) + 'px) scale(' + f + ',1) rotate(' + -18 * f + 'deg)', opacity: 1, offset: .15 },
+      { transform: 'translate(' + mx + 'px,' + my + 'px) scale(' + f + ',1) rotate(' + -6 * f + 'deg)', opacity: 1, offset: .6 },
+      { transform: 'translate(' + x1 + 'px,' + y1 + 'px) scale(' + .35 * f + ',.35) rotate(' + 8 * f + 'deg)', opacity: 0 }
+    ], { duration: 1150, easing: 'cubic-bezier(.4,0,.3,1)' });
+    an.onfinish = function(){ d.remove(); to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); };
   }
   function sync(){ q('.cs-prog').textContent = STEPS.filter(function(s){ return V[s[0]]; }).length + '/6'; q('.cs-go').disabled = !REQ.every(function(k){ return V[k]; }); }
 
