@@ -1,4 +1,5 @@
 {
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)demo' ':(exclude)CLAUDE.md'",
   "redirects": [
     {
       "source": "/(guides|blog)/([a-z0-9-]+)",

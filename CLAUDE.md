@@ -19,6 +19,7 @@
 - **AXX2**: İspanya sitesi (complaintca.ca/es, `es/` klasörü) için AXX kontrolü.
 - Canlıya almadan (main'e birleştirmeden) önce her seferinde kullanıcıya "AXX1 mi (Kanada), AXX2 mi (İspanya)?" diye sor; cevaba göre o sitenin AXX kontrolünü yapıp sonucu 1 satırda söyle.
 - İstisna: Dias Panel > Test'ten gelen talepler (`demo/` gibi test sayfaları) için sorma; direkt AXX1 yap, sonucu 1 satırda söyle ve main'e birleştir.
+- Test sayfası (`demo/`) Vercel'i beklemez: Dias Panel > Test onu doğrudan GitHub main'den yükler. Birleştirince iş biter; Vercel deploy'u bekleme, kontrol etme. Sadece `demo/` (ve `CLAUDE.md`) değişen commit'lerde Vercel deploy atlanır (`vercel.json` > `ignoreCommand`), günlük deploy sınırı boşa harcanmaz.
 - İstisna: sadece Dias Panel (`shield.html`, `api/_shield-*`, `api/_stats.js`) değişiyorsa sorma; AXX1 + AXX2 ikisini de yap, sonucu 1 satırda söyle.
 - Canlıya almadan önce testleri çalıştır (`node --test` ile tüm `*.test.mjs`). Kırmızı (kod kaynaklı) test varsa birleştirme, önce düzelt. Ortam eksikliğinden (kurulu olmayan paket vb.) düşen test bu kuralın dışında, durumu kısaca belirt.
 - Canlıya almadan önce değişikliği `/code-review` ile incele (ücretli GitHub Action yok). Ciddi bulgu varsa birleştirme, önce düzelt; sonucu 1 satırda söyle.
