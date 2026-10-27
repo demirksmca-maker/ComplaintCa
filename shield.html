@@ -58,6 +58,9 @@
   .cmp b{display:block;color:var(--ink);font-size:1.05rem}
   .up{color:var(--ok)}.down{color:var(--bad)}
   /* Site tab: mark elements on the live page and send notes to Claude. */
+  .pg-sw{position:absolute;top:10px;left:10px;z-index:3;display:flex;padding:3px;border-radius:12px;background:#380b31;border:1px solid var(--edge);box-shadow:0 2px 10px rgba(0,0,0,.4)}
+  .pg-sw button{padding:6px 12px;font-size:.8rem;font-weight:700;background:none;color:var(--mute)}
+  .pg-sw button[aria-pressed="true"]{background:var(--s1);color:#fff}
   .mk-btn{position:absolute;top:10px;right:10px;z-index:3;padding:8px 12px;font-size:.8rem;font-weight:700;background:#380b31;border:1px solid var(--edge);box-shadow:0 2px 10px rgba(0,0,0,.4)}
   .mk-btn[aria-pressed="true"]{background:var(--s1);color:#fff}
   .mk-sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:3;max-height:55%;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
@@ -335,7 +338,7 @@
     </section>
 
     <!-- SİTE -->
-    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
+    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
       <div class="mk-sheet card" id="mkSheet" hidden>
         <div class="mk-list" id="mkList"></div>
@@ -841,7 +844,7 @@
     };
     $('mkToggle').addEventListener('click', function () {
       on = !on; this.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = '/'; }
+      if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = sitePage(); }
       var d = doc(); if (d) { hook(); d.documentElement.classList.toggle('dias-mk-on', on); }
       render();
     });
@@ -855,7 +858,7 @@
     $('mkClear').addEventListener('click', function () { marks = []; $('mkMsg').textContent = ''; render(); });
     $('mkSend').addEventListener('click', function () {
       if (!marks.length) { $('mkMsg').textContent = 'Önce bir öğe işaretle.'; return; }
-      var text = 'Dias Panel > Site üzerinden işaretlediğim öğeler (tema/görünüm):\n' + marks.map(function (m, i) {
+      var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : 'Test') + ' üzerinden işaretlediğim öğeler (tema/görünüm):\n' + marks.map(function (m, i) {
         return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + '\n   İstek: ' + (m.note.trim() || '(not yok)');
       }).join('\n');
       var box = document.createElement('textarea');
@@ -877,8 +880,17 @@
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
     // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
-    if (name === 'site') $('siteFrame').src = '/'; else { $('siteFrame').removeAttribute('src'); mkReset(); }
+    if (name === 'site') $('siteFrame').src = sitePage(); else { $('siteFrame').removeAttribute('src'); mkReset(); }
   }
+  // Site tab shows the live home page or the test page (/demo/sonuc.html); the choice is remembered.
+  var PG = 'shieldPage';
+  function sitePage() { var p = store(PG); return p === '/demo/sonuc.html' ? p : '/'; }
+  function paintPg() { each('.pg-sw button', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-pg') === sitePage() ? 'true' : 'false'); }); }
+  each('.pg-sw button', function (b) { b.addEventListener('click', function () {
+    var p = b.getAttribute('data-pg'); if (p === sitePage()) return;
+    store(PG, p === '/' ? '' : p); paintPg(); mkReset(); $('siteFrame').src = p;
+  }); });
+  paintPg();
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
   each('[data-range]', function (b) { b.addEventListener('click', function () {
     funRange = b.getAttribute('data-range');

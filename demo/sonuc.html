@@ -126,6 +126,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
 .warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
 [hidden]{display:none!important}
+.in-frame .wrap{padding-top:64px}
 .demo-sw{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 16px;padding:8px;border-radius:14px;border:1px dashed rgba(207,176,232,.4);background:rgba(10,2,14,.35)}
 .demo-sw small{font:700 9.5px/1 Cinzel,serif;letter-spacing:.16em;color:#cfb0e8;margin:0 4px}
 .demo-sw button{padding:7px 11px;border-radius:999px;border:1px solid rgba(196,160,255,.45);background:transparent;font:500 15px/1 'EB Garamond',Georgia,serif;cursor:pointer}
@@ -208,6 +209,8 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 <div class="toast" id="toast"></div>
 
 <script>
+// Inside the Dias Panel frame its Site/Test switch sits on top: leave room for it.
+if (window.top !== window) document.documentElement.classList.add('in-frame');
 (function(){
   var ADDR = 'M5V 2T6';   // the user's OWN address from the Location step
   var IC = {
