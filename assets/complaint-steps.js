@@ -339,7 +339,7 @@
   function closeSheet(){ q('.cs-scrim').classList.remove('on'); q('.cs-sheet').classList.remove('on'); cur = null; }
   function save(){
     var v = S[cur].get();
-    if (!v) { toast(cur === 'mail' ? 'Enter a valid email address.' : cur === 'topic' ? 'Pick a topic and what happened.' : 'Type or pick something first.'); return; }
+    if (!v) { toast(cur === 'mail' ? 'Enter a valid email address.' : cur === 'topic' ? 'Pick a topic and what happened.' : cur === 'loc' ? 'Pick a province and type a city.' : 'Type or pick something first.'); return; }
     V[cur] = v; var c = card(cur), sm = c.querySelector('small'); c.classList.add('done');
     sm.textContent = cur === 'proof' ? v.length + (v.length > 1 ? ' photos' : ' photo') : cur === 'what' ? v.slice(0, 40) + (v.length > 40 ? '…' : '') : v;
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
