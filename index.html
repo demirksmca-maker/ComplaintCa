@@ -301,7 +301,11 @@ html[data-restoring-tab] #pg-app{display:block}
 #pg-land .hub-tile:nth-of-type(even){background:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
 #pg-land .hub-tile-title{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.74rem,2.3vh,.86rem);letter-spacing:.03em;color:#fff}
 #pg-land .hub-tile-arrow{color:rgba(243,230,234,.6)}
-#pg-land .hub-track-link,#pg-land .hub-links-sep,#pg-land .hub-rate,#pg-land .ht-item{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:clamp(.74rem,1.8vh,.86rem);font-weight:500;letter-spacing:.01em;color:rgba(243,230,234,.75)}
+#pg-land .hub-track-link,#pg-land .hub-links-sep,#pg-land .hub-rate{font-family:'EB Garamond',Georgia,serif;font-style:normal;font-size:clamp(.9rem,2.1vh,1rem);font-weight:500;letter-spacing:.01em;color:#f3e6ea}
+#pg-land .hub-track-link{border-bottom-color:rgba(216,180,254,.55)}
+#pg-land .ht-item{font-family:Cinzel,Georgia,serif;font-style:normal;font-size:clamp(.54rem,1.4vh,.6rem);font-weight:700;letter-spacing:.07em;white-space:nowrap;text-transform:uppercase;color:rgba(243,230,234,.85)}
+#pg-land #l-disc{font-family:'EB Garamond',Georgia,serif!important;font-style:italic;font-size:clamp(.8rem,1.8vh,.9rem)!important;color:rgba(243,230,234,.62)!important;margin-top:8px!important}
+#pg-land .hub-tile-title{text-wrap:balance}
 #pg-land .hub-rate .st{color:#d8b4fe}#pg-land .ht-dot{background:#d8b4fe;box-shadow:0 0 6px rgba(216,180,254,.6)}
 #pg-land #a-fab{background:linear-gradient(145deg,#4a1a5e 0%,#2a0d3a 55%,#3d0f2e 100%);border:1px solid rgba(216,180,254,.55);box-shadow:inset 0 1px 0 rgba(255,225,250,.25),0 6px 18px -6px rgba(120,30,140,.7)}
 #pg-land #a-fab .a-smoke{display:none}#pg-land #a-status{font-family:Cinzel,Georgia,serif;letter-spacing:.24em;color:#f3e6ea}
@@ -848,7 +852,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
         <div class="hub-numeral">III</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="l-mv-btn">🏛️ Find My Representative</div>
+          <div class="hub-tile-title" id="l-mv-btn">Find My Representative</div>
           <div class="hub-tile-desc" id="hub-mv-d">Locate your representative by address.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
@@ -2417,7 +2421,7 @@ const V = (function(){
       mv_email_sincerely:"Sincerely,",
       mv_quote:"\"Justice is the source of all the other virtues.\"",
       hss:"File against municipalities, businesses or landlords — AI-powered, anonymous, fully documented.",
-      l_mv_btn:"🏛️ Find My Representative",
+      l_mv_btn:"Find My Representative",
       suc_save_note:"Save your reference number to track your complaint status in the <strong style=\"color:var(--text)\">\"Track My Complaint\"</strong> section.",
       suc_mv_btn:"🏛️ Forward to Representative",
       feed_live:"LIVE FEED",feed_tab_title:"Recent Complaints",feed_tab_sub:"Real-time · Updating live",feed_new_btn:"+ File Complaint",feed_last10:"Showing last 10 complaints",feed_private:"Complaints are kept private to protect the people who file them.",
@@ -2506,7 +2510,7 @@ const V = (function(){
       mv_email_sincerely:"Saygılarımla,",
       mv_quote:"\"Adalet, diğer tüm erdemlerin kaynağıdır.\"",
       hss:"Kanada genelinde belediyelere, işletmelere veya ev sahiplerine şikayet iletin — yapay zeka destekli, anonim, tam belgelenmiş.",
-      l_mv_btn:"🏛️ Milletvekili Bul",
+      l_mv_btn:"Milletvekili Bul",
       suc_save_note:"Şikayet durumunuzu takip etmek için referans numaranızı <strong style=\"color:var(--text)\">\"Şikayetimi Takip Et\"</strong> bölümünde saklayın.",
       suc_mv_btn:"🏛️ Milletvekiline İlet",
       feed_live:"CANLI AKIŞ",feed_tab_title:"Son Şikayetler",feed_tab_sub:"Gerçek zamanlı · Canlı güncelleniyor",feed_new_btn:"+ Şikayet Et",feed_last10:"Son 10 şikayet gösteriliyor",feed_private:"Şikayetler, bildiren kişileri korumak için gizli tutulur.",
