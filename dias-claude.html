@@ -12,8 +12,8 @@
 <style>
   /* Owner's Claude work panel: same tokens, title strip and toolbar as the
      Dias Panel (/shield.html), with a message list and a large composer.
-     Sending copies the message and opens Claude Code until a direct link
-     to a session is added. */
+     Sending hands the task to Claude through /api/shield?task (a GitHub
+     issue that Claude Code answers) and shows its reply here. */
   :root{color-scheme:dark;--bg:#21061d;--card:#300a2a;--ink:#f2eafb;--mute:#a38abd;--line:#4c1c58;--edge:#842a9a;--ok:#3ddc97;--s1:#8f39e5;--gold:#e7b955}
   *{box-sizing:border-box;margin:0}
   html,body{height:100%}
@@ -31,6 +31,7 @@
   .msg{max-width:88%;padding:11px 14px;font-size:.95rem;white-space:pre-wrap;word-wrap:break-word}
   .msg.me{align-self:flex-end;background:linear-gradient(180deg,#5d176f,#4b1259);border:1px solid var(--edge);border-radius:14px 14px 4px 14px}
   .msg.sys{align-self:flex-start;border-radius:14px 14px 14px 4px;color:var(--mute);font-size:.85rem}
+  .msg time a{color:var(--mute)}
   .msg time{display:block;font-size:.68rem;color:var(--mute);margin-top:4px}
   .welcome{margin:auto 0;text-align:center;padding:22px 16px;display:flex;flex-direction:column;gap:12px;align-items:center}
   .welcome b{font-size:1.15rem}
@@ -86,7 +87,7 @@
 </main>
 <script>
 (function () {
-  var KEY = 'diasClaudeLog', CODE = 'https://claude.ai/code';
+  var KEY = 'diasClaudeLog';
   var IDEAS = ['Paneli kontrol et, hata var mı bak', 'Testleri çalıştır ve canlıya al', 'AXX1 kontrolü yap', 'Blog için yeni rehber taslağı yaz'];
   var $ = function (id) { return document.getElementById(id); };
   // History stays in this browser only; it is a convenience, not a record.
@@ -98,8 +99,8 @@
 
   function render() {
     $('log').innerHTML = log.length ? log.map(function (m) {
-      return '<div class="msg ' + (m.me ? 'me' : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + '</time></div>';
-    }).join('') : '<div class="welcome"><b>Merhaba 👋 Ne yapalım?</b><p>Yaz, gönder; mesajın kopyalanır ve Claude Code açılır. Orada yapıştırınca Claude kodda, GitHub\'da ve Vercel\'de işi yapar.</p>' +
+      return '<div class="msg ' + (m.me ? 'me' : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + (m.url ? ' · <a href="' + esc(m.url) + '" target="_blank" rel="noopener">GitHub</a>' : '') + '</time></div>';
+    }).join('') : '<div class="welcome"><b>Merhaba 👋 Ne yapalım?</b><p>Yaz, gönder; Claude işi ayrı bir dalda yapar, PR linkini verir ve ilerlemesini burada yazar. Panelden çıkmana gerek yok.</p>' +
       '<div class="chips">' + IDEAS.map(function (x) { return '<button type="button">' + esc(x) + '</button>'; }).join('') + '</div></div>';
     Array.prototype.forEach.call(document.querySelectorAll('.chips button'), function (b) {
       b.addEventListener('click', function () { $('text').value = b.textContent; sync(); $('text').focus(); });
@@ -108,25 +109,45 @@
   }
   function sync() { $('send').disabled = !$('text').value.trim(); }
 
+  function key() { try { return localStorage.getItem('shieldKey') || ''; } catch (e) { return ''; } }
+  function api(q, init) {
+    init = init || {}; init.cache = 'no-store';
+    init.headers = { 'x-shield-key': key(), 'Content-Type': 'application/json' };
+    return fetch('/api/shield?task=' + q, init).then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || r.status); return d; }); });
+  }
+
+  // Claude works through a GitHub issue; its progress comment is shown here, so the owner never leaves the panel.
   function send() {
     var text = $('text').value.trim();
     if (!text) return;
-    // Copy synchronously first: once the new tab takes focus the clipboard API refuses.
-    var box = $('text'), copied = false;
-    box.select();
-    try { copied = document.execCommand('copy'); } catch (e) { /* not supported */ }
-    var win = window.open(CODE, '_blank');
-    if (win) win.opener = null;
-    log.push({ me: true, text: text, t: Date.now() });
-    log.push({ me: false, text: (copied ? 'Panoya kopyalandı. ' : 'Kopyalanamadı, metni elle kopyala. ') + (win ? 'Claude Code yeni sekmede açıldı; yapıştırıp gönder.' : 'Claude Code açılamadı: claude.ai/code'), t: Date.now() });
-    save(log); box.value = ''; sync(); render();
+    var me = { me: true, text: text, t: Date.now() }, sys = { me: false, text: 'Claude\'a gönderiliyor…', t: Date.now() };
+    log.push(me, sys); save(log); $('text').value = ''; sync(); render();
+    api('1', { method: 'POST', body: JSON.stringify({ text: text }) }).then(function (d) {
+      sys.task = d.number; sys.url = d.url; sys.text = 'Gönderildi (#' + d.number + '). Claude işe başlayınca cevabı burada görünecek.';
+    }).catch(function (e) {
+      sys.text = 'Gönderilemedi (' + e.message + '). Genel sekmesinde panel anahtarın girili mi?';
+    }).then(function () { sys.t = Date.now(); save(log); render(); });
   }
+
+  function poll() {
+    log.forEach(function (m) {
+      if (!m.task || m.done) return;
+      api(m.task).then(function (d) {
+        if (!d.reply || d.reply.text === m.text) return;
+        m.text = d.reply.text; m.t = Date.parse(d.reply.at) || Date.now();
+        // The action marks its comment finished with "Claude finished"; stop polling then.
+        if (/Claude finished|Claude encountered an error/i.test(m.text)) m.done = true;
+        save(log); render();
+      }).catch(function () { /* try again next round */ });
+    });
+  }
+  setInterval(function () { if (!document.hidden) poll(); }, 20000);
 
   $('text').addEventListener('input', sync);
   $('text').addEventListener('keydown', function (e) { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(); } });
   $('form').addEventListener('submit', function (e) { e.preventDefault(); send(); });
   $('clear').addEventListener('click', function () { if (log.length && confirm('Geçmiş silinsin mi?')) { log = []; save(log); render(); } });
-  render();
+  render(); poll();
 })();
 </script>
 </body>
