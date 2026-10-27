@@ -63,6 +63,9 @@
   .pg-sw button[aria-pressed="true"]{background:var(--s1);color:#fff}
   .mk-btn{position:absolute;top:10px;right:10px;z-index:3;padding:8px 12px;font-size:.8rem;font-weight:700;background:#380b31;border:1px solid var(--edge);box-shadow:0 2px 10px rgba(0,0,0,.4)}
   .mk-btn[aria-pressed="true"]{background:var(--s1);color:#fff}
+  .mk-pen{top:52px}
+  /* Pen mode: freehand strokes over the page, each stroke becomes one mark. */
+  .mk-cv{position:absolute;inset:0;z-index:2;width:100%;height:100%;touch-action:none;cursor:crosshair}
   /* Mark mode: slim bar at the bottom, a pop-up toolbar beside the tapped element. */
   .mk-sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:3;padding:8px;display:flex;flex-direction:column;gap:6px}
   .mk-list{display:flex;align-items:center;gap:6px;overflow-x:auto;font-size:.75rem;color:var(--mute)}
@@ -360,6 +363,8 @@
     <!-- SİTE -->
     <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
+      <button type="button" class="mk-btn mk-pen" id="mkPen" aria-pressed="false">🖍 Çiz</button>
+      <canvas class="mk-cv" id="mkCv" hidden></canvas>
       <div class="mk-sheet card" id="mkSheet" hidden>
         <div class="mk-list" id="mkList"></div>
         <div class="mk-row"><button type="button" id="mkClear">Temizle</button><button type="button" class="mk-send" id="mkSend">Claude'a gönder</button></div>
@@ -802,7 +807,7 @@
   // Site tab mark mode: tap an element on the live page, a toolbar opens beside it
   // with design, theme and data questions; all marks go to Claude Code in one message.
   (function () {
-    var on = false, marks = [], cur = -1, tab = 'tasarim', frame = $('siteFrame'), pop = $('mkPop');
+    var on = false, pen = false, marks = [], cur = -1, tab = 'tasarim', frame = $('siteFrame'), pop = $('mkPop');
     // 30 questions: [tab, question shown, request sent to Claude].
     var QS = [
       ['tasarim', 'Rengini değiştireyim mi?', 'Rengini değiştir'],
@@ -859,14 +864,26 @@
     function paint() {
       var d = doc(); if (!d) return;
       Array.prototype.forEach.call(d.querySelectorAll('.dias-mk'), function (el) { el.classList.remove('dias-mk'); });
-      Array.prototype.forEach.call(d.querySelectorAll('.dias-mk-n'), function (el) { el.remove(); });
+      Array.prototype.forEach.call(d.querySelectorAll('.dias-mk-n,.dias-mk-d'), function (el) { el.remove(); });
       marks.forEach(function (m, i) {
         if (!m.el || m.el.ownerDocument !== d) return;
-        m.el.classList.add('dias-mk');
+        var n = d.createElement('span'), x, y;
+        if (m.box) {
+          // Drawn mark: redraw the stroke in page coordinates so it scrolls with the page.
+          var b = m.box, svg = d.createElementNS(SVG, 'svg'), pl = d.createElementNS(SVG, 'polyline');
+          svg.setAttribute('class', 'dias-mk-d'); svg.setAttribute('width', b.w + 8); svg.setAttribute('height', b.h + 8);
+          svg.style.left = (b.x - 4) + 'px'; svg.style.top = (b.y - 4) + 'px';
+          pl.setAttribute('points', m.draw.map(function (p) { return (p[0] - b.x + 4) + ',' + (p[1] - b.y + 4); }).join(' '));
+          svg.appendChild(pl); d.body.appendChild(svg);
+          x = b.x; y = b.y;
+        } else {
+          m.el.classList.add('dias-mk');
+          var r = m.el.getBoundingClientRect();
+          x = r.left + d.defaultView.scrollX; y = r.top + d.defaultView.scrollY;
+        }
         // Number badge in its own layer, so the site's own ::before/::after styles stay untouched.
-        var r = m.el.getBoundingClientRect(), n = d.createElement('span');
         n.className = 'dias-mk-n'; n.textContent = i + 1;
-        n.style.top = (r.top + d.defaultView.scrollY - 8) + 'px'; n.style.left = (r.left + d.defaultView.scrollX - 8) + 'px';
+        n.style.top = (y - 8) + 'px'; n.style.left = (x - 8) + 'px';
         d.body.appendChild(n);
       });
     }
@@ -886,7 +903,7 @@
       // Element gone (the frame changed page): centre it near the top.
       if (!m.el.isConnected) { top = 8; left = (W - w) / 2; }
       else {
-        var r = m.el.getBoundingClientRect(), below = f.top - host.top + r.bottom + 8, above = f.top - host.top + r.top - h - 8;
+        var r = m.box ? boxRect(m) : m.el.getBoundingClientRect(), below = f.top - host.top + r.bottom + 8, above = f.top - host.top + r.top - h - 8;
         // Below if it fits, else above; a tall element that leaves no room gets it at the bottom.
         top = below + h <= H - 8 ? below : above >= 8 ? above : H - h - 8;
         left = f.left - host.left + r.left;
@@ -928,7 +945,7 @@
       var d = doc(); if (!d || d.__diasMk) return;
       d.__diasMk = true;
       var st = d.createElement('style');
-      st.textContent = '.dias-mk{outline:3px solid #b76fff!important;outline-offset:2px}.dias-mk-n{position:absolute;z-index:99999;pointer-events:none;background:#8f39e5;color:#fff;font:700 12px/20px sans-serif;width:20px;text-align:center;border-radius:50%}html.dias-mk-on *{cursor:crosshair!important}';
+      st.textContent = '.dias-mk{outline:3px solid #b76fff!important;outline-offset:2px}.dias-mk-d{position:absolute;z-index:99998;pointer-events:none;overflow:visible}.dias-mk-d polyline{fill:none;stroke:#ff3b6b;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.dias-mk-n{position:absolute;z-index:99999;pointer-events:none;background:#8f39e5;color:#fff;font:700 12px/20px sans-serif;width:20px;text-align:center;border-radius:50%}html.dias-mk-on *{cursor:crosshair!important}';
       d.head.appendChild(st);
       d.defaultView.addEventListener('resize', function () { paint(); placeSoon(); });
       d.defaultView.addEventListener('scroll', placeSoon, { passive: true });
@@ -951,15 +968,55 @@
     frame.addEventListener('load', hook);
     // Same-origin access only while marking: the frame is fully sandboxed otherwise.
     var SANDBOX = frame.getAttribute('sandbox');
+    // Pen: strokes are drawn on a canvas over the frame, then stored in page coordinates.
+    var SVG = 'http://www.w3.org/2000/svg', cv = $('mkCv'), ctx = cv.getContext('2d'), pts = null;
+    function boxRect(m) {
+      var w = m.el.ownerDocument.defaultView;
+      return { top: m.box.y - w.scrollY, left: m.box.x - w.scrollX, bottom: m.box.y + m.box.h - w.scrollY };
+    }
+    function setPen(v) { pen = v; $('mkPen').setAttribute('aria-pressed', v ? 'true' : 'false'); cv.hidden = !v; }
+    cv.addEventListener('pointerdown', function (e) {
+      var dpr = window.devicePixelRatio || 1;
+      cv.width = cv.clientWidth * dpr; cv.height = cv.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.strokeStyle = '#ff3b6b'; ctx.lineWidth = 3; ctx.lineCap = ctx.lineJoin = 'round';
+      pts = [[e.offsetX, e.offsetY]]; cv.setPointerCapture(e.pointerId);
+      ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY);
+    });
+    cv.addEventListener('pointermove', function (e) {
+      if (!pts) return;
+      pts.push([e.offsetX, e.offsetY]); ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke();
+    });
+    function endStroke() {
+      var p = pts, d = doc(); pts = null; ctx.clearRect(0, 0, cv.width, cv.height);
+      if (!p || p.length < 3 || !d) return;
+      var c = cv.getBoundingClientRect(), f = frame.getBoundingClientRect(), w = d.defaultView;
+      var dx = c.left - f.left + w.scrollX, dy = c.top - f.top + w.scrollY;
+      p = p.map(function (q) { return [Math.round(q[0] + dx), Math.round(q[1] + dy)]; });
+      var xs = p.map(function (q) { return q[0]; }), ys = p.map(function (q) { return q[1]; });
+      var b = { x: Math.min.apply(null, xs), y: Math.min.apply(null, ys) };
+      b.w = Math.max.apply(null, xs) - b.x; b.h = Math.max.apply(null, ys) - b.y;
+      // The element under the middle of the drawing names the mark.
+      var el = d.elementFromPoint(b.x + b.w / 2 - w.scrollX, b.y + b.h / 2 - w.scrollY) || d.body;
+      if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
+      marks.push({ el: el, path: w.location.pathname, sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '', draw: p, box: b });
+      render(); openPop(marks.length - 1);
+    }
+    cv.addEventListener('pointerup', endStroke);
+    cv.addEventListener('pointercancel', endStroke);
+    $('mkPen').addEventListener('click', function () {
+      if (!on) $('mkToggle').click();
+      setPen(!pen);
+    });
     mkReset = function () {
-      on = false; marks = []; cur = -1; pop.hidden = true; $('mkToggle').setAttribute('aria-pressed', 'false'); $('mkMsg').textContent = '';
+      on = false; setPen(false); marks = []; cur = -1; pop.hidden = true; $('mkToggle').setAttribute('aria-pressed', 'false'); $('mkMsg').textContent = '';
       frame.setAttribute('sandbox', SANDBOX); render();
     };
     $('mkToggle').addEventListener('click', function () {
       on = !on; this.setAttribute('aria-pressed', on ? 'true' : 'false');
       if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = sitePage(); }
       var d = doc(); if (d) { hook(); d.documentElement.classList.toggle('dias-mk-on', on); }
-      if (!on && !pop.hidden) closePop();
+      if (!on) { setPen(false); if (!pop.hidden) closePop(); }
       render();
     });
     $('mkClear').addEventListener('click', function () { marks = []; cur = -1; pop.hidden = true; $('mkMsg').textContent = ''; render(); });
@@ -969,7 +1026,7 @@
       var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : 'Test') + ' üzerinden işaretlediğim öğeler (tema/görünüm/veri):\n' + marks.map(function (m, i) {
         var req = m.picks.map(function (q) { return QS[q][2]; });
         if (m.note) req.push(m.note);
-        return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + (m.data ? '\n   Veri içeriyor: evet' : '') + '\n   İstek: ' + (req.join(', ') || '(not yok)');
+        return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + (m.box ? '\n   Çizim: x' + m.box.x + ' y' + m.box.y + ', ' + m.box.w + '×' + m.box.h + ' px (çizilen alan)' : '') + (m.data ? '\n   Veri içeriyor: evet' : '') + '\n   İstek: ' + (req.join(', ') || '(not yok)');
       }).join('\n');
       var box = document.createElement('textarea');
       box.value = text; box.style.position = 'fixed'; box.style.opacity = '0';
