@@ -374,7 +374,7 @@
         <div class="mk-pop-hd"><b id="mkPopT"></b><button type="button" id="mkPopX" aria-label="Kapat">✕</button></div>
         <div class="mk-tabs" id="mkTabs"></div>
         <div class="mk-qs" id="mkQs"></div>
-        <div class="mk-pop-ft"><input id="mkNote" placeholder="Başka ne yapılsın? (isteğe bağlı)"><div class="mk-row"><button type="button" id="mkDrop">İşareti kaldır</button><button type="button" class="mk-send" id="mkOk">Tamam</button></div></div>
+        <div class="mk-pop-ft"><input id="mkNote" placeholder="Başka ne yapılsın? (isteğe bağlı)"><div class="mk-row"><button type="button" id="mkDrop">İşareti kaldır</button><button type="button" id="mkGo" hidden>Sayfaya git →</button><button type="button" class="mk-send" id="mkOk">Tamam</button></div></div>
       </div></section>
 
     <!-- GÜVENLİK -->
@@ -846,6 +846,11 @@
     var DATA = /milletvekil|representative|d[ée]put[ée]|diputad|avukat|lawyer|abogad|istatisti|statistic|estad[íi]stic|\bmps?\b/i;
     function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
     function doc() { try { return frame.contentDocument; } catch (e) { return null; } }
+    // Same-site link under the element: mark mode blocks clicks, so the toolbar offers to follow it.
+    function link(el) {
+      var a = el.closest('a[href]'); if (!a) return '';
+      try { var u = new URL(a.href, el.ownerDocument.baseURI); return u.origin === location.origin ? u.pathname + u.search + u.hash : ''; } catch (e) { return ''; }
+    }
     function sel(el) {
       var parts = [];
       for (var i = 0; el && el.nodeType === 1 && el.tagName !== 'BODY' && i < 4; i++, el = el.parentElement) {
@@ -934,12 +939,21 @@
       tab = m.data ? 'veri' : 'tasarim';
       $('mkPopT').textContent = (i + 1) + '. ' + (m.text || m.sel);
       $('mkNote').value = m.note;
+      $('mkGo').hidden = !m.href;
       pop.hidden = false; drawQs(); place();
     }
     function closePop() { if (marks[cur]) marks[cur].note = $('mkNote').value.trim(); pop.hidden = true; cur = -1; render(); }
     $('mkPopX').addEventListener('click', closePop);
     $('mkOk').addEventListener('click', closePop);
     $('mkDrop').addEventListener('click', function () { marks.splice(cur, 1); pop.hidden = true; cur = -1; render(); });
+    $('mkGo').addEventListener('click', function () {
+      var m = marks[cur]; if (!m) return;
+      m.note = $('mkNote').value.trim();
+      // A mark made only to follow the link is dropped; one with requests stays in the list.
+      if (!m.picks.length && !m.note) marks.splice(cur, 1);
+      pop.hidden = true; cur = -1; render();
+      frame.contentWindow.location.href = m.href;
+    });
     $('mkNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') closePop(); });
     function hook() {
       var d = doc(); if (!d || d.__diasMk) return;
@@ -958,7 +972,7 @@
         if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
         // Tapping a marked element reopens its toolbar; a new one is marked and opened.
         if (hit < 0) {
-          marks.push({ el: el, path: frame.contentWindow.location.pathname, sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '' });
+          marks.push({ el: el, path: frame.contentWindow.location.pathname, href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '' });
           hit = marks.length - 1;
         }
         render(); openPop(hit);
@@ -999,7 +1013,7 @@
       // The element under the middle of the drawing names the mark.
       var el = d.elementFromPoint(b.x + b.w / 2 - w.scrollX, b.y + b.h / 2 - w.scrollY) || d.body;
       if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
-      marks.push({ el: el, path: w.location.pathname, sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '', draw: p, box: b });
+      marks.push({ el: el, path: w.location.pathname, href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '', draw: p, box: b });
       render(); openPop(marks.length - 1);
     }
     cv.addEventListener('pointerup', endStroke);
