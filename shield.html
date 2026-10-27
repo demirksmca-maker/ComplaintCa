@@ -335,7 +335,7 @@
     </section>
 
     <!-- SİTE -->
-    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin" style="flex:1;width:100%;border:0;background:#fff"></iframe>
+    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
       <div class="mk-sheet card" id="mkSheet" hidden>
         <div class="mk-list" id="mkList"></div>
@@ -770,6 +770,7 @@
     $('shield3d').innerHTML = html;
   })();
 
+  var mkReset;
   // Site tab mark mode: tap elements on the live page, write a note per mark, send all to Claude Code.
   (function () {
     var on = false, marks = [], last = null, frame = $('siteFrame');
@@ -816,6 +817,7 @@
       var st = d.createElement('style');
       st.textContent = '.dias-mk{outline:3px solid #b76fff!important;outline-offset:2px}.dias-mk-n{position:absolute;z-index:99999;pointer-events:none;background:#8f39e5;color:#fff;font:700 12px/20px sans-serif;width:20px;text-align:center;border-radius:50%}html.dias-mk-on *{cursor:crosshair!important}';
       d.head.appendChild(st);
+      d.defaultView.addEventListener('resize', paint);
       d.documentElement.classList.toggle('dias-mk-on', on);
       d.addEventListener('click', function (e) {
         if (!on) return;
@@ -831,8 +833,15 @@
       paint();
     }
     frame.addEventListener('load', hook);
+    // Same-origin access only while marking: the frame is fully sandboxed otherwise.
+    var SANDBOX = frame.getAttribute('sandbox');
+    mkReset = function () {
+      on = false; marks = []; $('mkToggle').setAttribute('aria-pressed', 'false'); $('mkMsg').textContent = '';
+      frame.setAttribute('sandbox', SANDBOX); render();
+    };
     $('mkToggle').addEventListener('click', function () {
       on = !on; this.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = '/'; }
       var d = doc(); if (d) { hook(); d.documentElement.classList.toggle('dias-mk-on', on); }
       render();
     });
@@ -868,7 +877,7 @@
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
     // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
-    if (name === 'site') $('siteFrame').src = '/'; else $('siteFrame').removeAttribute('src');
+    if (name === 'site') $('siteFrame').src = '/'; else { $('siteFrame').removeAttribute('src'); mkReset(); }
   }
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
   each('[data-range]', function (b) { b.addEventListener('click', function () {
