@@ -224,9 +224,7 @@ textarea.af-in::placeholder{text-align:center}
 
 /* Emblem (gold scales + laurel) replaces the 3D orb; edges fade into the navy page */
 .af-scene{display:flex;align-items:center;justify-content:center;height:clamp(230px,38dvh,360px)}
-.af-emblem{height:100%;width:auto;max-width:100%;object-fit:contain;animation:afGlow 5s ease-in-out infinite}
-@keyframes afGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
-@media (prefers-reduced-motion:reduce){.af-emblem{animation:none}}
+.af-emblem{height:100%;width:auto;max-width:100%;object-fit:contain}
 .af-mode{font-family:Georgia,'Times New Roman',serif;border:1.5px solid transparent;border-radius:12px;
   background:linear-gradient(rgba(62,10,54,.94),rgba(62,10,54,.94)) padding-box,linear-gradient(135deg,#dec8ef,#5b2089 50%,#cfb0e8) border-box;box-shadow:0 6px 16px rgba(0,0,0,.35)}
 .af-mode:hover{background:linear-gradient(rgba(80,16,70,.96),rgba(80,16,70,.96)) padding-box,linear-gradient(135deg,#dec8ef,#5b2089 50%,#cfb0e8) border-box}
