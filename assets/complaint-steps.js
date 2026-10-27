@@ -52,12 +52,10 @@
     'body.cc-steps-on .amain{display:none!important}',
     '#cc-steps .cs-x{width:38px;height:38px;border-radius:50%;border:1px solid rgba(156,192,255,.45);background:rgba(4,18,53,.5);color:#fff;font-size:19px;line-height:1;cursor:pointer}',
     '#cc-steps .cs-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:720px;margin:0 auto;padding:clamp(10px,2.2vh,20px) max(16px,env(safe-area-inset-right,0px)) calc(clamp(10px,2vh,32px) + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}',
-    '#cc-steps .cs-ttl{text-align:center}',
-    '#cc-steps .cs-ttl h2{margin:0;font:700 clamp(24px,min(7vw,4.5vh),38px)/1.1 Cinzel,Georgia,serif;letter-spacing:.08em}',
+    '#cc-steps .cs-ttl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
     '#cc-steps .cs-ln{display:flex;align-items:center;justify-content:center;gap:10px;margin:clamp(4px,1vh,10px) 0 clamp(4px,.8vh,8px);color:#9cc0ff;font-size:11px}',
     '#cc-steps .cs-ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,#9cc0ff)}#cc-steps .cs-ln i:last-child{transform:scaleX(-1)}',
-    '#cc-steps .cs-ttl p{margin:0;font:500 15px/1.4 Inter,sans-serif;color:#b9c4dc}',
-    '#cc-steps .cs-hd{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(8px,2vh,20px);font:700 14px/1 Cinzel,Georgia,serif;letter-spacing:.08em}',
+    '#cc-steps .cs-hd{display:flex;justify-content:space-between;align-items:center;margin-top:clamp(4px,1vh,10px);font:700 14px/1 Cinzel,Georgia,serif;letter-spacing:.08em}',
     '#cc-steps .cs-asya{font:700 13px/1 Inter,sans-serif;letter-spacing:.14em;padding:9px 16px;border-radius:999px;border:1.5px solid #9cc0ff;background:linear-gradient(90deg,#1d4ed8,#2563eb)}',
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:12px;margin-top:clamp(10px,1.6vh,16px);padding:12px;border-radius:22px;background:#0a1f4d;overflow:hidden;isolation:isolate}',
     '#cc-steps .cs-leaf{position:absolute;left:50%;top:50%;width:125%;height:112%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;filter:drop-shadow(0 0 18px rgba(255,255,255,.35))}',
@@ -171,7 +169,7 @@
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
-      '<div class="cs-wrap"><div class="cs-ttl"><h2 id="cs-title">File a Complaint</h2><div class="cs-ln" aria-hidden="true"><i></i>✦<i></i></div><p>6 steps · about 3 minutes · free</p></div>' +
+      '<div class="cs-wrap"><div class="cs-ttl"><h2 id="cs-title">File a Complaint</h2></div>' +
       '<div class="cs-hd"><span>Progress · <span class="cs-prog">0/6</span></span><span class="cs-asya">ASYA</span></div>' +
       '<div class="cs-grid"><svg class="cs-leaf" viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="' + LEAF + '"/></svg>' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
