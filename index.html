@@ -653,27 +653,30 @@ textarea{resize:vertical;min-height:90px}
 <body>
 <!-- Choice screen: opened by the "File a Complaint" tile; "Complain CA" opens the complaint form -->
 <style>
-#cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;color:#fff;font-family:Inter,system-ui,sans-serif;background:#32072b radial-gradient(ellipse 70% 55% at 50% 38%,#510b63 0%,#32072b 70%)}
+#cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;color:#fff;font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(200,30,60,.28),transparent 70%),linear-gradient(rgba(34,10,40,.7),rgba(18,4,22,.92)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}
 #cc-choice.on{display:grid;align-content:center;padding:24px 0}
 #cc-choice .cc-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));width:40px;height:40px;border-radius:50%;border:1px solid rgba(207,176,232,.4);background:rgba(50,7,43,.5);color:#cfb0e8;font-size:22px;line-height:1;cursor:pointer;z-index:1}
-#cc-choice .cc-hero{max-width:1100px;width:100%;margin:0 auto;animation:ccIn 1s ease-out both}
-#cc-choice .cc-hero img{display:block;width:100%;height:auto;animation:ccBreathe 7s ease-in-out infinite;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 72%,transparent 100%)}
-#cc-choice .cc-title{margin:0 0 18px;text-align:center;font:700 clamp(18px,3vw,24px)/1.2 Cinzel,Georgia,serif;letter-spacing:.12em;color:#cfb0e8;animation:ccUp .7s .3s ease-out both}
+#cc-choice .cc-hero{position:relative;width:min(72vw,340px);aspect-ratio:1;margin:0 auto 22px;animation:ccIn 1s ease-out both}
+#cc-choice .cc-hero::before{content:"";position:absolute;inset:-22%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,220,230,.10) 0deg 4deg,transparent 4deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 30%,transparent 70%);mask-image:radial-gradient(circle,#000 30%,transparent 70%);animation:ccRays 40s linear infinite}
+#cc-choice .cc-hero::after{content:"";position:absolute;inset:8%;border-radius:50%;box-shadow:0 0 60px 18px rgba(220,40,70,.35),0 0 120px 40px rgba(150,60,220,.25);z-index:-1}
+@keyframes ccRays{to{transform:rotate(360deg)}}
+#cc-choice .cc-hero img{position:relative;display:block;width:100%;height:100%;border-radius:50%;filter:drop-shadow(0 10px 24px rgba(0,0,0,.6));animation:ccBreathe 7s ease-in-out infinite}
+#cc-choice .cc-title{margin:0 0 18px;text-align:center;font:700 clamp(19px,3vw,25px)/1.2 Cinzel,Georgia,serif;letter-spacing:.14em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);animation:ccUp .7s .3s ease-out both}
 #cc-choice .cc-bars{box-sizing:border-box;width:100%;max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
-#cc-choice .cc-bar{position:relative;overflow:hidden;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;font:600 18px/1.2 Inter,system-ui,sans-serif;letter-spacing:.02em;text-decoration:none;padding:18px 12px;border-radius:999px;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:ccUp .7s ease-out both}
+#cc-choice .cc-bar{position:relative;overflow:hidden;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:center;gap:12px;font:700 16px/1.2 Cinzel,Georgia,serif;letter-spacing:.1em;text-decoration:none;padding:18px 12px;border-radius:999px;cursor:pointer;transition:transform .2s,box-shadow .2s;animation:ccUp .7s ease-out both}
 #cc-choice .cc-bar svg{width:20px;height:20px;flex:none}
-#cc-choice .cc-info{color:#cfb0e8;border:2px solid #cfb0e8;background:rgba(50,7,43,.6);animation-delay:.55s}
+#cc-choice .cc-info{color:#f3e6ea;border:1px solid rgba(216,180,254,.55);background:rgba(30,8,36,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation-delay:.55s}
 #cc-choice .cc-info:hover{box-shadow:0 0 18px -6px rgba(207,176,232,.7)}
-#cc-choice .cc-complain{color:#3a1434;background:linear-gradient(180deg,#cfb0e8,#cfb0e8);border:2px solid #cfb0e8;box-shadow:0 0 26px -4px rgba(207,176,232,.65);animation-delay:.45s}
+#cc-choice .cc-complain{color:#f6f0ff;background:linear-gradient(180deg,#8b3fd1 0%,#5a1d9a 55%,#3a0f68 100%);border:1px solid rgba(214,190,255,.5);box-shadow:inset 0 1px 0 rgba(235,220,255,.4),inset 0 -10px 18px -10px rgba(12,0,28,.6),0 14px 34px -12px rgba(139,63,209,.85);animation-delay:.45s}
 #cc-choice .cc-complain::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:ccShine 4.5s 1.5s ease-in-out infinite;pointer-events:none}
-#cc-choice .cc-ca{display:inline-block;padding:3px 8px 2px;border-radius:6px;background:#520f47;color:#cfb0e8;font:700 14px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em}
+#cc-choice .cc-ca{display:inline-block;padding:3px 8px 2px;border-radius:6px;background:linear-gradient(145deg,#b3121f,#5c0611);color:#fbeef1;border:1px solid rgba(255,190,200,.4);font:700 14px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em}
 #cc-choice .cc-bar:hover{transform:translateY(-2px)}
 #cc-choice .cc-bar:focus-visible,#cc-choice .cc-x:focus-visible{outline:2px solid #fff;outline-offset:3px}
-#cc-choice .cc-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 0;color:#cfb0e8;animation:ccIn 1s .8s ease-out both}
+#cc-choice .cc-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 0;color:#d8b4fe;animation:ccIn 1s .8s ease-out both}
 #cc-choice .cc-orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}
 #cc-choice .cc-orn i:last-child{transform:scaleX(-1)}
-#cc-choice .cc-quote{margin:12px auto 0;padding:0 16px;text-align:center;font:italic 600 clamp(17px,2.4vw,21px)/1.5 Georgia,serif;color:#cfb0e8;animation:ccIn 1s .9s ease-out both}
-#cc-choice .cc-quote cite{display:block;margin-top:8px;font:italic 600 14px/1 Georgia,serif}
+#cc-choice .cc-quote{margin:12px auto 0;padding:0 16px;text-align:center;font:italic 500 clamp(18px,2.5vw,22px)/1.45 'EB Garamond',Georgia,serif;color:#f6e9ee;text-shadow:0 1px 2px rgba(0,0,0,.5);animation:ccIn 1s .9s ease-out both}
+#cc-choice .cc-quote cite{display:block;margin-top:10px;font:700 11px/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:#d8b4fe}
 @keyframes ccIn{from{opacity:0}to{opacity:1}}
 @keyframes ccUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes ccBreathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.025);filter:brightness(1.12)}}
@@ -683,7 +686,7 @@ textarea{resize:vertical;min-height:90px}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-labelledby="cc-choice-t">
   <button type="button" class="cc-x" aria-label="Close" onclick="ccChoiceClose()">×</button>
-  <div class="cc-hero"><img src="/assets/newsletter/flag-wreath.jpg" alt="" width="1376" height="630"></div>
+  <div class="cc-hero"><img src="/demo/asya/emblem.webp" alt="" width="1024" height="1024"></div>
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
     <a class="cc-bar cc-info" href="/guides/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>Know Your Rights</a>
