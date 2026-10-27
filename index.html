@@ -13,8 +13,11 @@
 // same-origin authDomain proxy) only works on complaintca.ca — NOT on Vercel's
 // *.vercel.app hostnames. If the app is opened on a vercel.app host (e.g. an
 // old installed PWA/shortcut), bounce to the real domain, preserving the path.
+// Branch/commit preview URLs (…-demirksmca-makers-projects.vercel.app) stay put
+// so changes can be checked before they go live.
 (function(){try{
-  if(/\.vercel\.app$/i.test(location.hostname)){
+  var h=location.hostname;
+  if(/\.vercel\.app$/i.test(h)&&!/-demirksmca-makers-projects\.vercel\.app$/i.test(h)){
     location.replace('https://www.complaintca.ca'+location.pathname+location.search+location.hash);
   }
 }catch(e){}})();
