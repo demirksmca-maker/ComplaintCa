@@ -378,6 +378,15 @@
   var $ = function (id) { return document.getElementById(id); };
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k) || ''; v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) { return ''; } }
   function getKey() { return store(KEY); }
+  // Last answers kept on the phone: opening the panel paints them at once,
+  // the fresh answer replaces them a moment later.
+  function cache(k, v) {
+    try {
+      if (v === undefined) return JSON.parse(localStorage.getItem('shieldC_' + k) || 'null');
+      v ? localStorage.setItem('shieldC_' + k, JSON.stringify(v)) : localStorage.removeItem('shieldC_' + k);
+    } catch (e) { return null; }
+  }
+  function dropCache() { try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('shieldC_') === 0) localStorage.removeItem(k); }); } catch (e) { /* storage off */ } }
   // Marks this device as the owner's, so the site's counters (and Google
   // Analytics) skip it while you browse complaintca.ca and /es/.
   function ownerCookie(on) {
@@ -535,11 +544,12 @@
   }); });
   function loadGsc(fresh, quiet) {
     gscLoaded = true;
-    if (!quiet) $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
+    var old = !fresh && cache('gsc' + gDays);
+    if (old) renderGsc(old); else if (!quiet) $('gscBody').innerHTML = '<p class="empty">Yükleniyor…</p>';
     fetch('/api/shield?gsc=1&days=' + gDays + (fresh ? '&fresh=1' : ''), { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
       .then(function (r) { return r.json(); })
-      .then(renderGsc)
-      .catch(function () { gscLoaded = false; $('gscBody').innerHTML = '<p class="empty">Google verisi alınamadı.</p>'; });
+      .then(function (g) { if (g.ok) cache('gsc' + gDays, g); renderGsc(g); })
+      .catch(function () { gscLoaded = false; if (!old) $('gscBody').innerHTML = '<p class="empty">Google verisi alınamadı.</p>'; });
   }
 
   // Genel: 3D cards from the İstatistik numbers (?stats=1, cached 3 h on the
@@ -739,11 +749,11 @@
     if (fresh) { $('d3').innerHTML = '<p class="empty">Yükleniyor…</p>'; fitHome(); }
     fetch('/api/shield?stats=1' + (fresh ? '&fresh=1' : ''), h)
       .then(function (r) { return r.json(); })
-      .then(function (d) { d3Data = d; d3Render(); })
+      .then(function (d) { d3Data = d; if (d.ok) cache('stats', d); d3Render(); })
       .catch(function () { if (d3Data) d3Render(); else $('d3').innerHTML = '<p class="empty">İstatistik alınamadı.</p>'; });
     fetch('/api/shield?funnel=1', h)
       .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; d3Road(); } }, function () {});
+      .then(function (f) { if (f && f.ok) { d3Fun = f; d3Stale = false; cache('fun', f); d3Road(); } }, function () {});
     if (fresh || !d3G24) d3Load24();
   }
   // Search Console's last 24 hours (the server caches it 30 minutes). The card
@@ -755,16 +765,16 @@
       .then(function (g) {
         var next = g && g.ok && g.day ? g : null;
         if (JSON.stringify(next) === JSON.stringify(d3G24)) return;
-        d3G24 = next;
+        d3G24 = next; cache('g24', next);
         if (d3Data) d3Render();
       }, function () {});
   }
 
-  // 3D shield: 10 dark layers for thickness, then the lit front.
+  // 3D shield: 5 dark layers (light on phone GPUs) for thickness, then the lit front.
   (function () {
     var P = 'M75 8 L132 30 V82 C132 120 106 146 75 160 C44 146 18 120 18 82 V30 Z';
     var html = '';
-    for (var i = 0; i < 10; i++) html += '<svg class="side" viewBox="0 0 150 170" style="transform:translateZ(' + (i * 0.8 - 8) + 'px)"><path d="' + P + '"/></svg>';
+    for (var i = 0; i < 5; i++) html += '<svg class="side" viewBox="0 0 150 170" style="transform:translateZ(' + (i * 1.6 - 8) + 'px)"><path d="' + P + '"/></svg>';
     html += '<svg class="front" viewBox="0 0 150 170"><defs><linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b76fff"/><stop offset=".5" stop-color="#771dd1"/><stop offset="1" stop-color="#4c0b5c"/></linearGradient></defs>' +
       '<path d="' + P + '" fill="url(#sg)" stroke="var(--glow)" stroke-width="5"/><path d="M52 84 L68 100 L100 64" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     $('shield3d').innerHTML = html;
@@ -1042,8 +1052,10 @@
     $('status').textContent = 'Güncellendi ' + new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
   }
 
+  var lastLoad = 0;
   function load() {
     var key = getKey();
+    lastLoad = Date.now();
     if (!key) return showLogin();
     fetch('/api/shield?days=' + gDays, { headers: { 'x-shield-key': key }, cache: 'no-store' }).then(function (r) {
       if (r.status === 403) { setKey(''); throw new Error('Şifre yanlış.'); }
@@ -1052,7 +1064,7 @@
       if (!r.ok) throw new Error('Veri alınamadı (' + r.status + ').');
       return r.json();
     }).then(function (d) {
-      $('login').hidden = true; $('app').hidden = false; ownerCookie(true); render(d);
+      $('login').hidden = true; $('app').hidden = false; ownerCookie(true); cache('main' + gDays, d); render(d);
     }).catch(function (e) {
       if (!getKey()) showLogin(e.message); else $('heroState').textContent = e.message;
     });
@@ -1082,14 +1094,26 @@
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); d3Load(); });
-  $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
+  $('logout').addEventListener('click', function () { setKey(''); dropCache(); ownerCookie(false); showLogin(); });
   // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
   var hashSec = location.hash.slice(1);
   showSec($('v-' + hashSec) ? hashSec : store(SEC) || 'home');
+  // Paint the last answers first (no blank "Yükleniyor"), then fetch fresh ones.
+  if (getKey()) {
+    var c0 = cache('main' + gDays);
+    d3Fun = cache('fun'); d3G24 = cache('g24'); d3Data = cache('stats');
+    if (c0) { $('login').hidden = true; $('app').hidden = false; try { render(c0); } catch (e) { /* old shape: wait for fresh */ } }
+    if (d3Data) try { d3Render(); } catch (e) { d3Data = null; }
+  }
   load();
   // Genel's 3D cards (stats cached 3 h on the server).
-  if (getKey()) d3Load();
+  if (getKey()) { d3Load(); if (d3G24) d3Load24(); }
   setInterval(function () { if (!document.hidden && getKey()) load(); }, 60000);
+  // Back to the app from another one: fresh numbers right away, not at the next tick.
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden || !getKey() || Date.now() - lastLoad < 20000) return;
+    load(); d3Load24();
+  });
   setInterval(function () { if (!document.hidden && getKey() && gscLoaded) loadGsc(false, true); }, 10 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
