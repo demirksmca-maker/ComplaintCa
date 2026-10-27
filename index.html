@@ -208,7 +208,11 @@ html[data-restoring-tab] #pg-app{display:block}
 .topbar-right{margin-left:auto}
 .topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;white-space:nowrap}
 .topbar-emblem{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:36px;height:36px;background:transparent}
-.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 1px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 14px rgba(140,190,255,.45));font-size:1.15rem;background:linear-gradient(180deg,#fff 0%,#fff 45%,#dfe8f5 55%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 1px rgba(0,0,0,.45)) drop-shadow(0 0 6px rgba(225,215,255,.5)) drop-shadow(0 0 14px rgba(167,139,250,.45));font-size:1.15rem;background:linear-gradient(100deg,#ece8f7 0%,#d6cdee 28%,#b7a3e8 42%,#fff 50%,#c4b2f0 58%,#e4def5 76%,#ece8f7 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;display:inline-block;animation:tbIn 1.1s cubic-bezier(.2,.8,.2,1) both,tbSheen 7s 1.3s ease-in-out infinite}
+.topbar-ca{animation-delay:.25s,1.55s}
+@keyframes tbIn{from{opacity:0;letter-spacing:9px;transform:translateY(-6px) scale(.96)}to{opacity:1;letter-spacing:2px;transform:none}}
+@keyframes tbSheen{0%,55%{background-position:100% 0}100%{background-position:0 0}}
+@media (prefers-reduced-motion:reduce){.topbar-word,.topbar-ca{animation:none}}
 .topbar-ca{font-size:1.4rem;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;line-height:1}
 .topbar-title .lang-dd-btn{padding:2px 2px 2px 0;gap:3px}
 .topbar-caret{margin-top:4px}
