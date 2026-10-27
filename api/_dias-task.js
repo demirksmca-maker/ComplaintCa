@@ -26,7 +26,7 @@ export function issueFor(text) {
   };
 }
 
-// Claude's tracking comment, newest first; null while it has not answered.
+// Claude's latest comment (GitHub lists them oldest first); null while it has not answered.
 export function claudeReply(comments) {
   const own = (comments || []).filter(c => c && c.user && /^claude(\[bot\])?$/.test(c.user.login));
   const c = own[own.length - 1];
