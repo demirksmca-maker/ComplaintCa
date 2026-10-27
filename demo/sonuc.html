@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Şikayet Hazır — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#160a1c}
+body{min-height:100dvh;color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover fixed no-repeat;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes spin{to{--a:360deg}}
+@keyframes up{from{transform:translateY(14px);opacity:0}}
+@keyframes gild{50%{background-position:100% 0}}
+@keyframes shine{40%,100%{transform:translateX(120%)}}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+
+h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04em;font-variant:small-caps;background:linear-gradient(100deg,#fff 30%,#d5b9eb 50%,#fff 70%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:gild 6s ease-in-out infinite}
+.sub{text-align:center;margin:6px auto 16px;max-width:380px;font:italic 400 17px/1.35 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.9)}
+.quote{position:relative;padding:2px 0 2px 14px;margin:0 4px 16px;font:italic 400 17px/1.35 'EB Garamond',Georgia,serif;color:#eadcf3}
+.quote::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:1.5px;background:linear-gradient(180deg,transparent,#cfb0e8 20%,#cfb0e8 80%,transparent)}
+.quote cite{display:flex;align-items:center;gap:8px;margin-top:6px;font:700 11px/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.24em;color:#cfb0e8}
+.quote cite::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}
+
+/* 6 cards */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{--a:0deg;position:relative;overflow:hidden;min-height:150px;padding:14px;border-radius:16px;border:1px solid rgba(244,214,255,.22);background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);display:flex;flex-direction:column;justify-content:space-between;text-align:right;cursor:pointer;animation:up .6s ease-out both;transition:transform .2s,filter .2s}
+.card:active{transform:scale(.97)}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%)}
+.card>*{position:relative}
+.card svg{width:30px;height:30px;stroke:#fff;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.card .n{position:absolute;top:12px;right:14px;font:700 12px/1 Cinzel,Georgia,serif;font-style:normal;color:rgba(211,181,234,.75)}
+.card b{display:block;font:700 16px/1.2 Cinzel,Georgia,serif;font-variant:small-caps;letter-spacing:.02em}
+.card span{display:block;margin-top:4px;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .ok{position:absolute;top:10px;right:10px;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;display:none;place-items:center;font:800 14px/1 Inter,sans-serif}
+.card.done .ok{display:grid}.card.done .n{display:none}
+.card:nth-child(1){--g:linear-gradient(155deg,rgba(138,92,246,.55),rgba(88,28,135,.38) 55%,rgba(46,16,80,.3))}
+.card:nth-child(2){--g:linear-gradient(155deg,rgba(190,24,93,.55),rgba(120,20,70,.38) 55%,rgba(60,10,40,.3));animation-delay:.06s}
+.card:nth-child(3){--g:linear-gradient(155deg,rgba(124,58,237,.55),rgba(109,40,140,.38) 55%,rgba(50,14,70,.3));animation-delay:.12s}
+.card:nth-child(4){--g:linear-gradient(155deg,rgba(225,29,72,.55),rgba(136,19,55,.38) 55%,rgba(70,10,35,.3));animation-delay:.18s}
+.card:nth-child(5){--g:linear-gradient(155deg,rgba(168,85,247,.55),rgba(126,34,206,.38) 55%,rgba(60,12,90,.3));animation-delay:.24s}
+.card:nth-child(6){--g:linear-gradient(155deg,rgba(159,18,57,.55),rgba(97,22,90,.38) 55%,rgba(45,10,55,.3));animation-delay:.30s}
+/* card I = the main action: glowing ring */
+.card.main::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--a),transparent,#f9a8d4,#fff,#c4b5fd,transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 3.5s linear infinite}
+.card.main.done::after{display:none}
+
+.orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 4px;color:#cfb0e8}
+.orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.orn i:last-child{transform:scaleX(-1)}
+.note{margin-top:10px;text-align:center;font:italic 400 16px/1.35 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85)}
+
+/* sheet */
+.dim{position:fixed;inset:0;z-index:10;background:rgba(10,2,14,.6);opacity:0;pointer-events:none;transition:opacity .2s}
+.dim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;z-index:11;width:min(560px,100%);max-height:86dvh;overflow:auto;transform:translate(-50%,105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);background:#14040f radial-gradient(ellipse 95% 60% at 50% 0%,#4a0b2e,#24091c 55%,#14040f);border:1px solid rgba(196,160,255,.5);border-bottom:0;border-radius:24px 24px 0 0;padding:10px 18px calc(22px + env(safe-area-inset-bottom,0px))}
+.sheet.on{transform:translate(-50%,0)}
+.grab{width:42px;height:4px;margin:0 auto 12px;border-radius:4px;background:rgba(207,176,232,.4)}
+.sh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.sh h2{font:700 19px/1.2 Cinzel,Georgia,serif;font-variant:small-caps;letter-spacing:.03em}
+.x{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.5);font-size:18px;cursor:pointer}
+.p{font:400 17px/1.45 'EB Garamond',Georgia,serif;color:#eadcf3}
+.p em{color:#d5b9eb}
+
+/* summary rows */
+.sum{display:grid;gap:8px;margin:4px 0 4px}
+.sum div{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:12px;background:rgba(24,4,16,.5);border:1px solid rgba(196,160,255,.25);font:400 16px/1.3 'EB Garamond',Georgia,serif}
+.sum small{font:700 10.5px/1.6 Cinzel,Georgia,serif;letter-spacing:.14em;color:#cfb0e8;flex:none}
+.sum span{text-align:right}
+
+/* rights accordion */
+.acc{border:1px solid rgba(196,160,255,.3);border-radius:14px;background:rgba(24,4,16,.45);margin-bottom:8px;overflow:hidden}
+.acc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font:600 16.5px/1.25 'EB Garamond',Georgia,serif}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";margin-left:auto;font:400 20px/1 Inter;color:#cfb0e8;transition:transform .2s}
+.acc[open] summary::after{transform:rotate(45deg)}
+.acc summary i{display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:8px;background:rgba(110,45,180,.5);font:700 11px/1 Cinzel,serif;font-style:normal}
+.acc .p{padding:0 14px 14px 50px;font-size:16px}
+.law{display:inline-block;margin-top:6px;padding:3px 8px;border-radius:6px;background:#2e0f52;border:1px solid rgba(196,160,255,.45);font:700 10px/1.4 Cinzel,serif;letter-spacing:.08em;color:#d5b9eb}
+.prog{height:4px;border-radius:4px;background:rgba(207,176,232,.2);margin:4px 0 12px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b36bff,#f9a8d4);transition:width .3s}
+
+/* institution picker */
+.inst{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;margin-bottom:8px;border-radius:14px;border:1px solid rgba(196,160,255,.35);background:rgba(24,4,16,.45);text-align:left;cursor:pointer}
+.inst .bx{width:22px;height:22px;flex:none;border-radius:7px;border:1.5px solid rgba(207,176,232,.7);display:grid;place-items:center;font:800 13px/1 Inter;color:transparent}
+.inst div{flex:1;min-width:0}
+.inst b{display:block;font:500 17px/1.2 'EB Garamond',Georgia,serif}
+.inst small{display:block;margin-top:2px;font:italic 400 14px/1.25 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.75)}
+.inst em{flex:none;font:700 9.5px/1 Cinzel,serif;font-style:normal;letter-spacing:.1em;padding:5px 7px;border-radius:6px;background:#2e0f52;border:1px solid rgba(196,160,255,.5)}
+.inst.on{background:linear-gradient(180deg,#f3ecff,#cdb6f5);border-color:#fff;color:#2a0814}
+.inst.on small{color:#5a1d9a}.inst.on .bx{background:#5a1d9a;border-color:#5a1d9a;color:#fff}.inst.on em{background:#5a1d9a;color:#fff}
+
+/* letter preview */
+.letter{padding:16px;border-radius:12px;background:#f6ecd9;color:#2a0814;font:400 16px/1.45 'EB Garamond',Georgia,serif;box-shadow:inset 0 0 30px rgba(120,80,40,.15)}
+.letter p+p{margin-top:10px}
+
+/* toggles */
+.tg{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:10px;border-radius:14px;background:rgba(24,4,16,.45);border:1px solid rgba(196,160,255,.3);cursor:pointer}
+.tg div{flex:1;font:400 16px/1.3 'EB Garamond',Georgia,serif}
+.tg i{position:relative;width:44px;height:26px;flex:none;border-radius:99px;background:rgba(207,176,232,.25);transition:background .2s}
+.tg i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.tg.on i{background:#8b3fd1}.tg.on i::after{transform:translateX(18px)}
+
+.power{display:flex;align-items:center;gap:16px;padding:14px 16px;margin-bottom:10px;border-radius:18px;border:1px solid rgba(244,214,255,.25);background:linear-gradient(155deg,rgba(74,26,94,.75),rgba(36,9,28,.75));box-shadow:inset 0 1px 0 rgba(255,230,250,.18),0 14px 30px -18px rgba(190,24,93,.55)}
+.ring{position:relative;width:78px;height:78px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7;stroke:rgba(207,176,232,.18)}
+.ring #pw-arc{stroke:var(--pc,#f97316);stroke-linecap:round;stroke-dasharray:20 100;transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1),stroke .4s;filter:drop-shadow(0 0 6px var(--pc,#f97316))}
+.ring strong{position:absolute;inset:0;display:grid;place-items:center;font:700 18px/1 Cinzel,serif}
+.pw-t small{font:700 10.5px/1 Cinzel,serif;letter-spacing:.2em;color:#cfb0e8}
+.pw-t b{display:block;margin:5px 0 3px;font:700 20px/1 Cinzel,serif;font-variant:small-caps;color:var(--pc,#f97316);transition:color .4s}
+.pw-t span{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.85)}
+.power.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.03)}}
+.owed{display:flex;gap:12px;align-items:center;padding:12px 14px;margin-bottom:14px;border-radius:14px;border:1px dashed rgba(246,200,168,.55);background:rgba(246,200,168,.08);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#f7eef1}
+.owed span{font-size:22px}.owed b{color:#f6c8a8;font-size:18px}.owed em{color:#d5b9eb}
+.flag{position:absolute;top:10px;right:10px;z-index:3;padding:5px 8px;border-radius:999px;background:linear-gradient(90deg,#ff4d79,#b36bff);font:700 9px/1 Cinzel,serif;font-style:normal;letter-spacing:.12em;color:#fff;box-shadow:0 2px 10px rgba(255,77,121,.5);animation:glow 1.8s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 18px rgba(255,77,121,.9)}}
+.card .flag~.n{display:none}
+.card.done .flag{display:none}
+.cited{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(134,239,172,.14);border:1px solid rgba(134,239,172,.5);color:#bbf7d0;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em;animation:pop .4s both}
+.letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
+.warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
+[hidden]{display:none!important}
+.in-frame .wrap{padding-top:64px}
+.demo-sw{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 16px;padding:8px;border-radius:14px;border:1px dashed rgba(207,176,232,.4);background:rgba(10,2,14,.35)}
+.demo-sw small{font:700 9.5px/1 Cinzel,serif;letter-spacing:.16em;color:#cfb0e8;margin:0 4px}
+.demo-sw button{padding:7px 11px;border-radius:999px;border:1px solid rgba(196,160,255,.45);background:transparent;font:500 15px/1 'EB Garamond',Georgia,serif;cursor:pointer}
+.demo-sw button.on{background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;border-color:#fff}
+.safe{margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(155deg,rgba(124,58,237,.35),rgba(46,16,80,.5));border:1px solid rgba(196,160,255,.4);font:400 17px/1.4 'EB Garamond',Georgia,serif;color:#f3eaff}
+.safe a{color:#fff;font-weight:600}
+.help em{background:#5a1d9a;font-size:10.5px}
+.ghost-x{display:block;width:100%;margin-top:6px;padding:12px;border-radius:999px;border:1px solid rgba(207,176,232,.45);background:transparent;color:#d5b9eb;font:700 11px/1 Cinzel,serif;letter-spacing:.14em;cursor:pointer}
+.find{display:flex;gap:8px}
+.in{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.6);color:#f7eef1;font:400 17px/1.3 'EB Garamond',Georgia,serif;outline:none}
+.in:focus{border-color:#d5b9eb}
+.fbtn{flex:none;padding:0 18px;border-radius:12px;border:1px solid rgba(214,190,255,.4);background:linear-gradient(180deg,#8b3fd1,#5a1d9a 55%,#3a0f68);font:700 13px/1 Cinzel,serif;letter-spacing:.1em;cursor:pointer}
+.res{color:#f7eef1;text-decoration:none;cursor:default}a.res{cursor:pointer}
+.res .av{width:44px;height:44px;flex:none;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(110,45,180,.5);font-size:20px}
+.res .av img{width:100%;height:100%;object-fit:cover}
+.res .mini{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(196,160,255,.5);color:#eadcf3;text-decoration:none;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em}
+.refbox{text-align:center;padding:16px;border-radius:16px;background:linear-gradient(155deg,rgba(138,92,246,.5),rgba(190,24,93,.35));border:1px solid rgba(244,214,255,.28)}
+.refbox small{font:700 11px/1 Cinzel,serif;letter-spacing:.2em;color:#cfb0e8}
+.refbox strong{display:block;margin-top:8px;font:700 22px/1 Cinzel,serif;letter-spacing:.1em}
+.steps{display:grid;gap:10px;margin-top:14px}
+.steps div{display:flex;gap:12px;align-items:center;font:400 16px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.6)}
+.steps div::before{content:"";width:12px;height:12px;flex:none;border-radius:50%;border:1.5px solid rgba(207,176,232,.6)}
+.steps div.on{color:#fff}.steps div.on::before{background:#86efac;border-color:#86efac;box-shadow:0 0 10px #86efac}
+
+/* buttons */
+.go{--a:0deg;position:relative;overflow:hidden;display:flex;width:100%;align-items:center;justify-content:center;gap:12px;margin-top:14px;padding:16px 20px;border:1.5px solid transparent;border-radius:18px;font:700 16px/1 Cinzel,Georgia,serif;font-variant:small-caps;letter-spacing:.08em;color:#fff;cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 42%) padding-box,linear-gradient(180deg,#2b0d1f,#1a0714 60%,#12040e) padding-box,conic-gradient(from var(--a),#ff4d79,#f6c8a8,#e9e6f2,#b36bff,#ff4d79) border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 12px 30px -12px rgba(255,77,121,.6),0 0 24px -6px rgba(179,107,255,.45);animation:spin 6s linear infinite}
+.go::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(234,220,245,.4) 50%,transparent 70%);transform:translateX(-120%);animation:shine 4.5s 1.2s ease-in-out infinite;pointer-events:none}
+.go:disabled{cursor:default;color:rgba(220,197,238,.6);animation:none;box-shadow:none;background:linear-gradient(160deg,#3a1248,#24092f 55%,#2e0a24) padding-box,linear-gradient(100deg,rgba(207,176,232,.25),rgba(207,176,232,.6) 50%,rgba(207,176,232,.25)) border-box}
+.go:disabled::after{display:none}
+.ca{padding:4px 8px;border-radius:8px;background:linear-gradient(145deg,#4a1a5e,#2a0d3a);border:1px solid rgba(207,176,232,.55);color:#d5b9eb;font-size:11px;letter-spacing:.18em}
+.hint{margin-top:8px;text-align:center;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.75)}
+.seal{width:76px;height:76px;margin:6px auto 12px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#8b3fd1,#3a0f68 70%);box-shadow:0 0 0 6px rgba(139,63,209,.15),0 14px 40px -10px rgba(190,24,93,.6);font-size:34px;animation:pop .6s cubic-bezier(.2,.9,.3,1.3) both}
+.toast{position:fixed;left:50%;bottom:24px;z-index:20;transform:translate(-50%,40px);opacity:0;transition:.3s;padding:12px 18px;border-radius:12px;background:linear-gradient(180deg,#f3ecff,#ddccfa);color:#2a0814;font:italic 400 16px/1.3 'EB Garamond',Georgia,serif;pointer-events:none}
+.toast{white-space:nowrap}
+.toast.on{transform:translate(-50%,0);opacity:1}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:360px){.card b{font-size:14px}.card span{font-size:14px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="demo-sw" role="tablist" aria-label="Demo konusu"><small>DEMO KONU</small>
+    <button data-t="consumer" class="on">Tüketici</button><button data-t="gov">Devlet işi</button><button data-t="serious">Ağır vaka</button>
+  </div>
+  <h1 id="h1">Şikayetin Hazır</h1>
+  <p class="sub" id="sub"></p>
+  <div class="power" id="power">
+    <div class="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><circle id="pw-arc" cx="40" cy="40" r="34" pathLength="100"/></svg><strong id="pw-n">%20</strong></div>
+    <div class="pw-t">
+      <small>DAVA GÜCÜ</small>
+      <b id="pw-w">Zayıf</b>
+      <span id="pw-tip"></span>
+    </div>
+  </div>
+  <div class="owed" id="owed"></div>
+  <div class="safe" id="safe"><b>Yalnız değilsin.</b> Tehlikedeysen hemen <a href="tel:911">911</a>’i ara. Bu sayfada hiçbir şey sen onaylamadan gönderilmez.</div>
+  <blockquote class="quote" id="quote">Geciken adalet, adalet değildir.<cite>W·E·GLADSTONE</cite></blockquote>
+
+  <div class="grid">
+    <button class="card" data-s="send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg><i class="n">I</i><i class="ok">✓</i>
+      <div><b id="c-send-b">Şikayet Gönder</b><span id="c-send">Kontrol et, gönder</span></div></button>
+    <button class="card main" data-s="rights"><i class="flag">BURADAN BAŞLA</i><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><i class="n">II</i><i class="ok">✓</i>
+      <div><b>Yasal Hakların</b><span id="c-rights"></span></div></button>
+    <button class="card" data-s="inst"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6z"/></svg><i class="n">III</i><i class="ok">✓</i>
+      <div><b>Kurumlar</b><span id="c-inst"></span></div></button>
+    <button class="card" data-s="letter"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><i class="n">IV</i><i class="ok">✓</i>
+      <div><b id="c-letter-b">Mektubun</b><span>Önizle, düzenle</span></div></button>
+    <button class="card" data-s="lawyer"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M12 15l-1.5 3L12 21l1.5-3z"/></svg><i class="n">V</i><i class="ok">✓</i>
+      <div><b>Ücretsiz Avukat</b><span id="c-lawyer">Adresine yakın</span></div></button>
+    <button class="card" data-s="mp" id="c6"><span id="c6-ic"></span><i class="n">VI</i><i class="ok">✓</i>
+      <div><b id="c6-b">Milletvekilin</b><span id="c6-s">Adresine göre</span></div></button>
+  </div>
+
+  <div class="orn"><i></i>✦<i></i></div>
+  <p class="note" id="note"></p>
+</main>
+
+<div class="dim" id="dim"></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="sh"><h2 id="sh-t"></h2><button class="x" id="sh-x" aria-label="Kapat">×</button></div><div id="sh-b"></div></section>
+<div class="toast" id="toast"></div>
+
+<script>
+// Inside the Dias Panel frame its Site/Test switch sits on top: leave room for it.
+if (window.top !== window) document.documentElement.classList.add('in-frame');
+(function(){
+  var ADDR = 'M5V 2T6';   // the user's OWN address from the Location step
+  var IC = {
+    mp: '<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/></svg>',
+    help: '<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 6a5.5 5.5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>'
+  };
+  // Each topic decides: rights, institutions, whether to gamify, and what card VI is.
+  var T = {
+    consumer: {
+      who:'NovaTel Mobile', topic:'Tüketici — fatura', what:'İptal ettikten sonra 3 ay boyunca fazladan $84 çekildi. İade etmeyi reddediyorlar.',
+      sub:'Kanuna dayanan şikayet cevap alır. Göndermeden önce şikayetini güçlendir.',
+      owed:'<span>💰</span><div><b>$84</b> paranı geri alabilirsin — kanun senin tarafında. <em>II. karta bak.</em></div>',
+      game:true, card6:'mp', mpRec:false, ask:'$84 tutarın 30 gün içinde tamamen iade edilmesini talep ediyorum.',
+      rights:[
+        ['Haksız ücretin iadesi', 'İptal ettiğin bir hizmet için ücret alındıysa şirket bunu iade etmek zorunda. İptal belgeni sakla.', 'Consumer Protection Act, 2002 (ON)', 'Ontario Tüketiciyi Koruma Kanunu (2002) uyarınca iptal edilen hizmetin ücreti iade edilmelidir.'],
+        ['Açık, yazılı sözleşme', 'Fiyat ve ücretler açıkça yazılmalı. Gizli ya da sürpriz ücretlere itiraz edebilirsin.', 'Wireless Code — CRTC', 'CRTC Kablosuz Hizmet Kuralları, tüm ücretlerin sözleşmemde açıkça yazılmasını zorunlu kılar.'],
+        ['İstediğin an iptal', 'Mobil sözleşmeni istediğin an iptal edebilirsin; erken iptal ücreti sınırlıdır.', 'Wireless Code — CRTC', 'Kablosuz Hizmet Kuralları bana istediğim an iptal hakkı verir; iptalden sonra ücret alınamaz.'],
+        ['Ücretsiz şikayet kurumu', 'Şirket çözmezse CCTS iade emri verebilir. Sana hiçbir maliyeti yok.', 'CCTS', 'Sorun çözülmezse şikayetimi Telekom Şikayet Komisyonuna (CCTS) taşıyacağım.'],
+        ['Küçük Davalar Mahkemesi', 'Ontario’da $50.000’a kadar olan tutarlar için avukatsız dava açabilirsin.', 'Courts of Justice Act (ON)', 'Alacağımı tahsil etmek için Ontario Küçük Davalar Mahkemesine başvurmaya hazırım.']
+      ],
+      inst:[
+        ['ccts', 'CCTS', 'Telekom şikayetleri — ücretsiz, bağlayıcı', 'EN UYGUN', true],
+        ['ocp', 'Consumer Protection Ontario', 'Eyalet tüketici ofisi', 'EYALET', true],
+        ['crtc', 'CRTC', 'Telekom düzenleyici (federal)', '', false],
+        ['cb', 'Competition Bureau', 'Yanıltıcı fiyat ve ücretler', 'FEDERAL', false],
+        ['bbb', 'Better Business Bureau', 'Herkese açık firma puanı', '', false]
+      ]
+    },
+    gov: {
+      who:'IRCC (Göçmenlik)', topic:'Devlet hizmeti — göçmenlik', what:'Çalışma izni başvurum 14 aydır sonuçlanmadı. Ne arayınca ne yazınca cevap alamıyorum.',
+      sub:'Devlet kurumları da hesap verir. Doğru kapıyı çalarsan dosyan hareketlenir.',
+      owed:'<span>⏳</span><div>Başvurun <b>14 aydır</b> bekliyor — normal süre 6 ay. <em>Hakların var, II. karta bak.</em></div>',
+      game:true, card6:'mp', mpRec:true, ask:'Başvurumun 30 gün içinde sonuçlandırılmasını ya da gecikmenin yazılı olarak açıklanmasını talep ediyorum.',
+      rights:[
+        ['Dosyanı görme hakkı', 'Bilgi Edinme (ATIP) başvurusuyla dosyanın tamamını ve memur notlarını isteyebilirsin. Ücreti $5.', 'Privacy Act / Access to Information Act', 'Privacy Act kapsamında dosyamın ve memur notlarının bir kopyasını talep ediyorum.'],
+        ['Makul sürede karar', 'Aşırı gecikmede Federal Mahkeme’den “mandamus” ile karar verilmesini isteyebilirsin.', 'Federal Courts Act, s.18.1', 'Gecikme devam ederse Federal Mahkeme’de mandamus başvurusu yapmaya hazırım.'],
+        ['Milletvekili ofisi yardımı', 'Milletvekili ofisleri IRCC’ye özel hatla dosyanı sorabilir. Bu hizmet ücretsiz.', 'Parlamento üyeleri hizmeti', 'Milletvekilimin ofisini de bu konudan haberdar ediyorum.'],
+        ['Resmi dilde hizmet', 'İngilizce ya da Fransızca hizmet alma hakkın var.', 'Official Languages Act', 'Official Languages Act uyarınca hizmetin seçtiğim dilde verilmesini talep ediyorum.']
+      ],
+      inst:[
+        ['mp', 'Milletvekilin', '', 'ÖNERİLEN', true],
+        ['ircc', 'IRCC Web Formu', 'Kurumun kendi şikayet kanalı', 'FEDERAL', true],
+        ['ombud', 'Client Experience Branch', 'IRCC şikayet birimi', '', false]
+      ]
+    },
+    serious: {
+      who:'Bir tanıdık', topic:'Cinsel saldırı', what:'(Senin anlattığın, sadece senin onayınla paylaşılır.)',
+      sub:'Ne olduğuna sen karar verirsin. Hakların, seçeneklerin ve destek burada.',
+      owed:'', game:false, card6:'help', mpRec:false, ask:'Bu olayın kayda alınmasını ve bana destek hizmetleri hakkında bilgi verilmesini talep ediyorum.',
+      rights:[
+        ['Süre sınırı yok', 'Kanada’da cinsel saldırı suçunda şikayet için zaman aşımı yok. Hazır olduğunda bildirebilirsin.', 'Criminal Code', 'Olayın tarihinden bağımsız olarak bildirimde bulunma hakkımı kullanıyorum.'],
+        ['Bilgi ve destek hakkı', 'Dosyanın durumu hakkında bilgi alma ve destek hizmetlerine yönlendirilme hakkın var.', 'Canadian Victims Bill of Rights', 'Canadian Victims Bill of Rights uyarınca dosyam hakkında bilgilendirilmeyi talep ediyorum.'],
+        ['Kimliğinin korunması', 'Adının basında ve mahkemede yayımlanmasını yasaklatabilirsin (yayın yasağı).', 'Criminal Code s.486.4', 'Kimliğimin korunması için yayın yasağı talep ediyorum.'],
+        ['Ücretsiz bağımsız avukat', 'Ontario’da mağdurlar 4 saate kadar ücretsiz avukat danışmanlığı alabilir.', 'Independent Legal Advice (ON)', 'Bağımsız hukuki danışmanlık programından yararlanmak istiyorum.']
+      ],
+      inst:[
+        ['police', 'Toronto Polisi', 'Resmi suç bildirimi — sen isteyince', '', false],
+        ['sac', 'Cinsel Saldırı Destek Merkezi', 'Gizli, ücretsiz destek', 'ÖNERİLEN', true],
+        ['vs', 'Victim Services Toronto', 'Mağdur hizmetleri', '', true],
+        ['mp', 'Milletvekilin', '', 'İSTEĞE BAĞLI', false]
+      ]
+    }
+  };
+
+  var LAW = {
+    ON: [['Legal Aid Ontario', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://www.legalaid.on.ca'],
+         ['Law Society Referral Service', 'Avukatla 30 dk ücretsiz görüşme', '30 DK ÜCRETSİZ', 'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal/law-society-referral-service'],
+         ['Pro Bono Ontario', 'Ücretsiz danışma hattı', 'ÜCRETSİZ', 'https://www.probonoontario.org'],
+         ['Community Legal Clinics', 'Adresine yakın ücretsiz yardım', 'ÜCRETSİZ', 'https://www.legalaid.on.ca/legal-clinics/']],
+    BC: [['Legal Aid BC', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://legalaid.bc.ca'],
+         ['Access Pro Bono', 'BC genelinde ücretsiz danışma', 'ÜCRETSİZ', 'https://accessprobono.ca'],
+         ['Clicklaw HelpMap', 'Yakınında ücretsiz hukuk yardımı', 'ÜCRETSİZ', 'https://www.clicklaw.bc.ca/helpmap']],
+    AB: [['Legal Aid Alberta', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://www.legalaid.ab.ca'],
+         ['Lawyer Referral Service', 'Avukatla 30 dk ücretsiz görüşme', '30 DK ÜCRETSİZ', 'https://www.lawsociety.ab.ca/public/lawyer-referral/'],
+         ['Pro Bono Law Alberta', 'İhtiyacı olana ücretsiz hukuk yardımı', 'ÜCRETSİZ', 'https://www.pbla.ca']],
+    QC: [['Commission des services juridiques', 'Adli yardım — ücretsiz avukat', 'ÜCRETSİZ', 'https://www.csj.qc.ca'],
+         ['Juripop', 'Ucuz ve ücretsiz hukuk yardımı', 'UCUZ', 'https://juripop.org']],
+    XX: [['Eyalet Adli Yardımı', 'Gelirin düşükse ücretsiz avukat', 'ÜCRETSİZ', 'https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'],
+         ['Pro Bono Canada', 'Eyaletinde ücretsiz hukuk yardımı', 'ÜCRETSİZ', 'https://www.probonocanada.org']]
+  };
+  var ILA = ['Independent Legal Advice', 'Mağdurlara 4 saate kadar ücretsiz avukat', '4 SAAT ÜCRETSİZ', 'https://www.ontario.ca/page/independent-legal-advice-survivors-sexual-assault'];
+  var HELP = [
+    ['🚨', 'Acil durum', 'Şu an tehlikedeysen', '911', 'tel:911'],
+    ['💜', 'Victim Support Line', '7/24, gizli, çok dilli', '1-888-579-2888', 'tel:18885792888'],
+    ['🤝', 'Assaulted Women’s Helpline', '7/24, 200+ dilde destek', '1-866-863-0511', 'tel:18668630511'],
+    ['🏥', 'En yakın destek merkezi', 'Adresine göre — gizli ve ücretsiz', 'HARİTA', 'https://sexualassaultsupport.ca/support/']
+  ];
+  var PROV_N = { ON:'Ontario', BC:'British Columbia', AB:'Alberta', QC:'Quebec', XX:'eyaletin' };
+  var PC_RE = /([ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z])\s?(\d[ABCEGHJ-NPRSTV-Z]\d)/i;
+  function provOf(a){
+    var m = a.match(PC_RE);
+    if (m){ var c = m[1][0].toUpperCase(); return 'KLMNP'.indexOf(c) > -1 ? 'ON' : c === 'V' ? 'BC' : c === 'T' ? 'AB' : 'GHJ'.indexOf(c) > -1 ? 'QC' : 'XX'; }
+    var p = (a.toUpperCase().match(/\b(ON|BC|AB|QC)\b/) || [])[1];
+    if (p) return p;
+    return /ontario|toronto|ottawa/i.test(a) ? 'ON' : /british columbia|vancouver/i.test(a) ? 'BC' : /alberta|calgary|edmonton/i.test(a) ? 'AB' : /qu[eé]bec|montr[eé]al/i.test(a) ? 'QC' : 'XX';
+  }
+
+  var C, S, MP = { list:null, name:'', state:'idle' };
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
+  var card = function(k){ return document.querySelector('.card[data-s="' + k + '"]'); };
+  var picked = function(){ return C.inst.filter(function(i){ return S.inst[i[0]]; }); };
+  var instName = function(i){ return i[0] === 'mp' && MP.name ? MP.name + ' (Milletvekili)' : i[1]; };
+  function toast(t){ var e = $('toast'); e.textContent = t; e.classList.add('on'); clearTimeout(e._t); e._t = setTimeout(function(){ e.classList.remove('on'); }, 1800); }
+
+  function setTopic(k){
+    C = Object.assign({}, T[k], { inst: T[k].inst.slice() }); S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:false };
+    C.inst.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
+    document.querySelectorAll('.demo-sw button').forEach(function(b){ b.classList.toggle('on', b.dataset.t === k); });
+    $('sub').textContent = C.sub;
+    $('owed').innerHTML = C.owed; $('owed').hidden = !C.owed;
+    $('power').hidden = !C.game; $('quote').hidden = !C.game; $('safe').hidden = C.game;
+    $('h1').textContent = C.game ? 'Şikayetin Hazır' : 'Seçeneklerin Hazır';
+    $('c-send-b').textContent = C.game ? 'Şikayet Gönder' : 'Bildir';
+    $('c-letter-b').textContent = C.game ? 'Mektubun' : 'Beyanın';
+    $('note').textContent = C.game ? 'Okuduğun her hak mektubuna eklenir. Kurumlar yasal bir talebe cevap vermek zorundadır.' : 'Hiçbir şey sen onaylamadan kimseye gönderilmez. İstediğin an durabilirsin.';
+    var c6 = $('c6'); c6.dataset.s = C.card6; $('c6-ic').innerHTML = IC[C.card6];
+    $('c6-b').textContent = C.card6 === 'help' ? 'Hemen Yardım Al' : 'Milletvekilin';
+    c6.querySelector('.flag') && c6.querySelector('.flag').remove();
+    if (C.card6 === 'mp' && C.mpRec) c6.insertAdjacentHTML('afterbegin', '<i class="flag">ÖNERİLEN</i>');
+    lastPw = 20; refresh();
+  }
+
+  function strength(){
+    return Math.min(100, 20 + Math.round(Object.keys(S.read).length * 60 / C.rights.length) + (picked().length ? 10 : 0) + ((S.lawProv || S.mp) ? 10 : 0));
+  }
+  var lastPw = 20;
+  function paintPower(){
+    if (!C.game) return;
+    var v = strength(), w, c, tip, left = C.rights.length - Object.keys(S.read).length, per = Math.round(60 / C.rights.length);
+    if (v < 45){ w = 'Zayıf'; c = '#f97316'; } else if (v < 70){ w = 'Orta'; c = '#facc15'; } else if (v < 90){ w = 'Güçlü'; c = '#86efac'; } else { w = 'Çok Güçlü'; c = '#a7f3d0'; }
+    tip = left ? left + ' hak daha oku — her biri +%' + per + '.' : (v < 100 ? 'Tüm kanunlar eklendi. Son hamle: ücretsiz avukat ya da milletvekili.' : 'Hazır. Bu şikayet görmezden gelinemez.');
+    var pw = $('power'); pw.style.setProperty('--pc', c);
+    $('pw-arc').style.strokeDasharray = v + ' 100'; $('pw-n').textContent = '%' + v; $('pw-w').textContent = w; $('pw-tip').textContent = tip;
+    if (v > lastPw){ pw.classList.remove('bump'); void pw.offsetWidth; pw.classList.add('bump'); }
+    lastPw = v;
+  }
+  function refresh(){
+    var nr = Object.keys(S.read).length, ni = picked().length;
+    paintPower();
+    card('send').classList.toggle('main', C.game && strength() >= 70 && !S.sent);
+    $('c-rights').textContent = nr ? nr + '/' + C.rights.length + (C.game ? ' eklendi' : ' okundu') : C.game ? C.rights.length + ' kanun senin yanında' : C.rights.length + ' hakkın var';
+    card('rights').classList.toggle('done', nr === C.rights.length);
+    $('c-inst').textContent = ni ? ni + ' seçildi' : 'Nereye gideceğini seç';
+    card('inst').classList.toggle('done', ni > 0);
+    $('c-lawyer').textContent = S.lawProv ? (C.card6 === 'help' ? 1 : 0) + LAW[S.lawProv].length + ' ücretsiz seçenek' : 'Adresine yakın';
+    card('lawyer').classList.toggle('done', !!S.lawProv);
+    var c6 = $('c6');
+    if (C.card6 === 'help'){ $('c6-s').textContent = '7/24 · gizli · ücretsiz'; c6.classList.remove('done'); }
+    else { $('c6-s').textContent = S.inst.mp ? (MP.name || 'Eklendi') + ' ✓' : MP.name ? MP.name + (C.mpRec ? '' : ' · istersen ekle') : MP.state === 'busy' ? 'Adresinden bulunuyor…' : 'İstersen ekle'; c6.classList.toggle('done', !!S.inst.mp); }
+    $('c-send').textContent = S.sent ? 'Gönderildi ✓' : !ni ? 'Önce kurum seç' : !C.game ? 'Sen onaylayınca' : strength() >= 70 ? 'Güçlü — hazır' : 'Güç %' + strength();
+    card('send').classList.toggle('done', S.sent);
+  }
+
+  function mpRow(r, lv){
+    var photo = /^https:\/\//.test(r.photo_url || '') ? r.photo_url : '';
+    return '<div class="inst res"><span class="av">' + (photo ? '<img src="' + esc(photo) + '" alt="" onerror="this.remove()">' : '👤') + '</span><div><b>' + esc(r.name || '—') + '</b><small>' + esc([r.party_name, r.district_name].filter(Boolean).join(' · ')) + '</small></div><em>' + lv + '</em></div>';
+  }
+  function lvl(r){
+    var t = ((r.representative_set_name || '') + ' ' + (r.elected_office || '')).toLowerCase();
+    return t.indexOf('house of commons') > -1 || /\bmp\b/.test(t) ? [1, 'FEDERAL'] : /legislative|national assembly|mpp|mla|mna/.test(t) ? [2, 'EYALET'] : [3, 'YEREL'];
+  }
+  var mpReps = function(){ return (MP.list || []).map(function(r){ return { r:r, l:lvl(r) }; }).filter(function(x){ return x.l[0] < 3; }).sort(function(a, b){ return a.l[0] - b.l[0]; }); };
+
+  var VIEWS = {
+    send: function(){
+      if (S.sent) return [C.game ? 'Şikayet Gönderildi' : 'Gönderildi', '<div class="seal">✓</div><p class="p" style="text-align:center"><em>' + picked().map(function(i){ return esc(instName(i)); }).join(', ') + '</em> gönderildi.</p><div class="refbox" style="margin-top:14px"><small>REFERANS NO.</small><strong>' + S.ref + '</strong></div><div class="steps"><div class="on">ComplaintCA teslim aldı</div><div class="on">Kurumlara gönderildi</div><div>Kurum inceliyor</div><div>Cevap geldi</div></div><div class="tg' + (S.notify ? ' on' : '') + '" id="tg-not"><div>Gelişme olunca bana e-posta at</div><i></i></div><button class="go" id="do-copy">Referansı Kopyala <span class="ca">CA</span></button>'];
+      var ni = picked().length, nr = Object.keys(S.read).length;
+      return [C.game ? 'Şikayet Gönder' : 'Bildir',
+        '<div class="sum">' +
+        '<div><small>KİME</small><span>' + esc(C.who) + '</span></div>' +
+        '<div><small>KONU</small><span>' + esc(C.topic) + '</span></div>' +
+        '<div><small>ADRESİN</small><span>Toronto, ON</span></div>' +
+        '<div><small>KURUM</small><span>' + (ni ? picked().map(function(i){ return esc(instName(i)); }).join(', ') : '<em>Henüz yok</em>') + '</span></div>' +
+        (C.game ? '<div><small>KANUN</small><span>' + nr + '/' + C.rights.length + '</span></div><div><small>GÜÇ</small><span>%' + strength() + '</span></div>' : '') +
+        '</div>' +
+        (C.game && nr < 2 ? '<div class="warn">⚠ Mektubunda ' + (nr ? 'sadece 1 kanun' : 'hiç kanun') + ' var. Yasal dayanağı olmayan şikayetler çoğu zaman görmezden gelinir. Haklarını okumak 1 dakika sürer.</div><button class="go" data-go="rights">Haklarımla Güçlendir</button>' : '') +
+        '<button class="go" id="do-send"' + (ni ? '' : ' disabled') + '>' + (C.game ? 'Şikayeti Gönder' : 'Onaylıyorum, Gönder') + ' <span class="ca">CA</span></button>' +
+        '<p class="hint">' + (ni ? 'E-postan kurumla asla paylaşılmaz.' : 'III. karttan en az bir kurum seç.') + '</p>' +
+        (ni ? '' : '<button class="go" data-go="inst" style="margin-top:10px">Kurum Seç</button>')];
+    },
+    rights: function(){
+      var h = '<p class="p" style="margin-bottom:10px">' + (C.game ? '<em>' + esc(C.topic) + '</em> konusunda kanun senin tarafında. <b>Açtığın her hak mektubuna eklenir</b> — ve davanı güçlendirir.' : 'Acele yok. Bunlar senin hakların; okuduklarını beyanına ekleyebilirsin.') + '</p><div class="prog"><i id="prog"></i></div>';
+      C.rights.forEach(function(r, i){
+        h += '<details class="acc" data-i="' + i + '"' + (S.read[i] ? ' open' : '') + '><summary><i>' + (S.read[i] ? '✓' : i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span><br><span class="cited" hidden>✓ ' + (C.game ? 'MEKTUBUNA EKLENDİ · +%' + Math.round(60 / C.rights.length) : 'BEYANINA EKLENDİ') + '</span></div></details>';
+      });
+      return ['Yasal Hakların', h + '<button class="go" data-go="letter">' + (C.game ? 'Mektubumu Gör' : 'Beyanımı Gör') + '</button>'];
+    },
+    inst: function(){
+      var h = '<p class="p" style="margin-bottom:12px">' + (C.game ? 'Konuna en uygun kurumları seçtik. İstediğini ekle ya da çıkar.' : 'Polise gitmek zorunda değilsin. Önce destek alabilir, hazır olunca bildirebilirsin.') + '</p>';
+      C.inst.forEach(function(i){
+        var sub = i[0] === 'mp' ? (MP.name ? MP.name + ' · adresine göre bulundu' : 'Adresine göre bulunur') : i[2];
+        h += '<button class="inst' + (S.inst[i[0]] ? ' on' : '') + '" data-k="' + i[0] + '"><span class="bx">✓</span><div><b>' + esc(i[1]) + '</b><small>' + esc(sub) + '</small></div>' + (i[3] ? '<em>' + i[3] + '</em>' : '') + '</button>';
+      });
+      if (!C.inst.some(function(i){ return i[0] === 'mp'; })) h += '<button class="go" data-go="mp" style="margin-top:4px">+ Milletvekilimi de ekle</button>';
+      return ['Kurumlar', h + '<button class="go" data-go="send">Tamam</button>'];
+    },
+    letter: function(){
+      var laws = C.rights.filter(function(r, i){ return S.read[i]; }).map(function(r){ return '<span class="law-c">' + esc(r[3]) + '</span>'; }).join(' ');
+      return [C.game ? 'Mektubun' : 'Beyanın', '<div class="letter"><p>İlgili makama,</p><p><b>' + esc(C.who) + '</b> hakkında, ' + esc(C.topic.toLowerCase()) + ' konusunda başvuruyorum.</p><p>' + esc(C.what) + '</p>' + (laws ? '<p>' + laws + '</p>' : '') + '<p>' + esc(C.ask) + '</p><p>Saygılarımla,<br>— ComplaintCA ile gönderildi</p></div>' +
+        (laws || !C.game ? '<button class="go" data-go="send">Güzel Olmuş</button>' : '<div class="warn">Bu mektubun henüz yasal dayanağı yok. II. karttan haklarını aç — her biri buraya bir kanun ekler.</div><button class="go" data-go="rights">Mektubuma Kanun Ekle</button>')];
+    },
+    lawyer: function(){
+      return ['Ücretsiz Avukat', '<p class="p" style="margin-bottom:10px">Ücretsiz hukuk yardımı <em>nerede yaşadığına</em> göre değişir. Adresin:</p>' +
+        '<div class="find"><input class="in" id="law-in" value="' + esc(ADDR) + '" placeholder="Posta kodu ya da adres"><button class="fbtn" id="do-law">Bul</button></div>' +
+        '<div id="law-res"></div>' +
+        '<div class="tg' + (S.lawyer ? ' on' : '') + '" id="tg-law"><div>Partner avukatlar da dosyamı görsün <em>(e-posta paylaşılmaz)</em></div><i></i></div>'];
+    },
+    mp: function(){
+      var reps = mpReps();
+      var body = MP.state === 'busy' ? '<p class="hint">Adresinden bulunuyor…</p>' :
+        reps.length ? reps.map(function(x){ return mpRow(x.r, x.l[1]); }).join('') :
+        '<p class="hint">' + (MP.state === 'err' ? 'Arama servisine ulaşılamadı.' : 'Temsilci bulunamadı.') + '</p><button class="go" id="do-mp">Tekrar Dene</button>';
+      return ['Milletvekilin', '<p class="p" style="margin-bottom:10px">' + (C.mpRec ? 'Bu konuda milletvekili ofisleri <b>gerçekten işe yarıyor</b> — kurumla özel hattan konuşabilirler.' : 'Zorunlu değil. İstersen şikayetinin bir kopyası milletvekiline de gider; kurum üzerinde baskı oluşturur.') + '</p>' +
+        '<p class="hint" style="margin:0 0 10px">📍 Adresine göre (' + esc(ADDR) + ') otomatik bulundu</p>' + body +
+        (reps.length ? '<div class="tg' + (S.inst.mp ? ' on' : '') + '" id="tg-mp"><div>Şikayetimin bir kopyası milletvekilime de gitsin</div><i></i></div>' : '') +
+        '<button class="go" data-go="send">Tamam</button>'];
+    },
+    help: function(){
+      var h = '<p class="p" style="margin-bottom:12px">Ne yapacağına sen karar verirsin. Bu hatlar <b>gizli ve ücretsiz</b>; polise bildirmek zorunda değilsin.</p>';
+      HELP.forEach(function(x){
+        h += '<a class="inst res help" href="' + x[4] + '"' + (x[4].indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '><span class="av">' + x[0] + '</span><div><b>' + esc(x[1]) + '</b><small>' + esc(x[2]) + '</small></div><em>' + esc(x[3]) + '</em></a>';
+      });
+      h += '<button class="ghost-x" id="quick-exit">⎋ Hızlı çıkış</button>';
+      return ['Hemen Yardım Al', h];
+    }
+  };
+
+  var cur = '';
+  function open(k){
+    cur = k; var v = VIEWS[k]();
+    $('sh-t').textContent = v[0]; $('sh-b').innerHTML = v[1];
+    $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop = 0;
+    if (k === 'rights') prog();
+    if (k === 'lawyer') findLaw();
+  }
+  function close(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); cur = ''; refresh(); }
+  function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / C.rights.length * 100) + '%'; }
+
+  function findLaw(){
+    var pv = provOf($('law-in').value.trim()); S.lawProv = pv;
+    var list = (C.card6 === 'help' && pv === 'ON' ? [ILA] : []).concat(LAW[pv]);
+    var h = '<p class="hint" style="margin:12px 0 8px"><em>' + PROV_N[pv] + '</em> için ücretsiz seçenekler</p>';
+    list.forEach(function(l){
+      h += '<a class="inst res" href="' + l[3] + '" target="_blank" rel="noopener"><span class="av">⚖</span><div><b>' + esc(l[0]) + '</b><small>' + esc(l[1]) + '</small></div><em>' + l[2] + '</em></a>';
+    });
+    $('law-res').innerHTML = h; refresh();
+  }
+  // MP is looked up automatically from the user's own address, in the background.
+  function autoMp(){
+    var m = ADDR.match(PC_RE); if (!m) return;
+    MP.state = 'busy'; refresh();
+    fetch('https://represent.opennorth.ca/postcodes/' + (m[1] + m[2]).toUpperCase() + '/')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        MP.list = (d.representatives_concordance && d.representatives_concordance.length) ? d.representatives_concordance : (d.representatives_centroid || []);
+        var f = mpReps()[0]; MP.name = f ? f.r.name : ''; MP.state = 'ok';
+      })
+      .catch(function(){ MP.state = 'err'; })
+      .then(function(){ refresh(); if (cur === 'mp' || cur === 'inst') open(cur); });
+  }
+
+  document.querySelectorAll('.card').forEach(function(c){ c.onclick = function(){ open(c.dataset.s); }; });
+  document.querySelectorAll('.demo-sw button').forEach(function(b){ b.onclick = function(){ setTopic(b.dataset.t); }; });
+  $('dim').onclick = close; $('sh-x').onclick = close;
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cur) close(); });
+
+  $('sh-b').addEventListener('toggle', function(e){
+    var d = e.target; if (!d.open || d.dataset.i == null) return;
+    var fresh = !S.read[d.dataset.i]; S.read[d.dataset.i] = 1;
+    d.querySelector('summary i').textContent = '✓';
+    if (fresh){ d.querySelector('.cited').hidden = false; if (C.game) toast('Kanun eklendi · Dava gücü %' + strength()); }
+    prog(); refresh();
+  }, true);
+  $('sh-b').addEventListener('keydown', function(e){ if (e.key === 'Enter' && e.target.id === 'law-in') findLaw(); });
+  $('sh-b').addEventListener('click', function(e){
+    var t = e.target.closest('button,.tg'); if (!t) return;
+    if (t.dataset.go){ open(t.dataset.go); return; }
+    if (t.dataset.k){ S.inst[t.dataset.k] ? delete S.inst[t.dataset.k] : S.inst[t.dataset.k] = 1; t.classList.toggle('on'); refresh(); return; }
+    if (t.id === 'tg-mp'){
+      if (!C.inst.some(function(i){ return i[0] === 'mp'; })) C.inst.push(['mp', 'Milletvekilin', '', 'İSTEĞE BAĞLI', false]);
+      S.inst.mp ? delete S.inst.mp : S.inst.mp = 1; t.classList.toggle('on'); refresh(); return;
+    }
+    if (t.id === 'tg-law'){ S.lawyer = !S.lawyer; t.classList.toggle('on'); refresh(); return; }
+    if (t.id === 'tg-not'){ S.notify = !S.notify; t.classList.toggle('on'); return; }
+    if (t.id === 'do-law'){ findLaw(); return; }
+    if (t.id === 'do-mp'){ autoMp(); open('mp'); return; }
+    if (t.id === 'quick-exit'){ location.replace('https://www.google.com/search?q=weather'); return; }
+    if (t.id === 'do-copy'){ try { navigator.clipboard.writeText(S.ref).then(function(){ toast('Kopyalandı: ' + S.ref); }, function(){ toast(S.ref); }); } catch (x) { toast(S.ref); } return; }
+    if (t.id === 'do-send'){
+      t.disabled = true; t.firstChild.textContent = 'Gönderiliyor… ';
+      setTimeout(function(){
+        S.sent = true; S.ref = 'VC-2026-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+        refresh(); open('send');
+      }, 900);
+    }
+  });
+  setTopic('consumer');
+  autoMp();
+})();
+</script>
+</body>
+</html>
