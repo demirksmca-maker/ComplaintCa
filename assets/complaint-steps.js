@@ -354,23 +354,40 @@
   }
   function doveFly(pe, to){
     var fl = q('.cs-fly'); if (!fl) { fl = document.createElement('div'); fl.className = 'cs-fly'; fl.setAttribute('aria-hidden', 'true'); root.appendChild(fl); }
-    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect();
-    var x0 = p.left - 2, y0 = p.top - 20, tx = b.left + b.width / 2 - 42, ty = b.top - 36, W = innerWidth;
-    var mx = Math.min(Math.max((x0 + tx) / 2, 10), W - 60), hi = Math.max(Math.min(y0, ty) - 90, 4);
-    function T(x, y, s, f, r){ return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + s * f + ',' + s + ') rotate(' + r * f + 'deg)' }; }
+    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect(), qt = q('.cs-quote').getBoundingClientRect();
+    // The dove keeps to the strip just above the quote: out along it, toss, and back the same way.
+    var x0 = p.left - 2, y0 = p.top - 20, yl = qt.top - 50, xs = x0 + 18, xe = Math.max(b.left - 58, xs + 60), d = xe - xs;
+    function T(x, y, f, r){ return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + .9 * f + ',.9) rotate(' + r * f + 'deg)' }; }
+    function run(k, ms, ease, cb){ var a = fl.animate(k, { duration: ms, easing: ease || 'linear', fill: 'forwards' }); a.onfinish = cb; }
+    function cruise(f){ var k = [], n = 6; for (var i = 0; i <= n; i++) { var x = f > 0 ? xs + d * i / n : xe - d * i / n; k.push(T(x, yl + (i % 2 ? -5 : 4), f, i % 2 ? -3 : 2)); } return k; }
     fl.className = 'cs-fly'; fl.style.display = 'block'; pe.classList.add('off');
-    var out = [T(x0, y0, 1, 1, 0), T(x0 - 26, y0 - 50, .62, 1, -14), T(mx, hi, .42, 1, -4), T(tx - 10, ty - 26, .72, 1, 6), T(tx, ty, .8, 1, 0)];
-    out[1].offset = .22; out[2].offset = .55; out[3].offset = .84;
-    fl.animate(out, { duration: 2600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = function(){
-      to.classList.remove('got'); void to.offsetWidth; to.classList.add('got');
-      fl.className = 'cs-fly empty';
-      var back = [T(tx, ty, .8, 1, 0), T(tx + 4, ty - 8, .78, -1, -4), T(mx, hi + 10, .45, -1, -6), T(x0 + 30, y0 - 46, .7, -1, 8), T(x0 + 6, y0 - 8, .95, 1, -4), T(x0, y0, 1, 1, 0)];
-      back[1].offset = .08; back[2].offset = .45; back[3].offset = .75; back[4].offset = .92;
-      fl.animate(back, { duration: 2500, delay: 250, easing: 'ease-in-out', fill: 'forwards' }).onfinish = function(){
-        fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); }); pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
-        setTimeout(function(){ pe.classList.remove('fl'); doveRun(); }, 700);
-      };
-    };
+    run([T(x0, y0, 1, 0), T(xs - 6, yl + 14, 1, -16), T(xs, yl + 4, 1, 2)], 600, 'ease-out', function(){
+      run(cruise(1), 1700, 'ease-in-out', function(){
+        // Head toss: rear back, then flick the letter forward into the badge.
+        run([T(xe, yl + 4, 1, 2), T(xe - 3, yl - 2, 1, -18), T(xe + 4, yl + 6, 1, 14), T(xe, yl + 4, 1, 0)], 520, 'ease-in-out', function(){
+          setTimeout(function(){ doveBack(); }, 150);
+        });
+        setTimeout(function(){
+          fl.className = 'cs-fly empty';
+          var env = document.createElement('div'); env.className = 'cs-env'; root.appendChild(env);
+          var sx = xe + 40, sy = yl + 34, tx = b.left + b.width / 2 - 10, ty = b.top + b.height / 2 - 6;
+          env.animate([
+            { transform: 'translate(' + sx + 'px,' + sy + 'px) scale(.6) rotate(-20deg)' },
+            { transform: 'translate(' + (sx + tx) / 2 + 'px,' + (Math.min(sy, ty) - 26) + 'px) scale(.9) rotate(160deg)', offset: .45 },
+            { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(.5) rotate(350deg)', opacity: .2 }
+          ], { duration: 650, easing: 'cubic-bezier(.3,0,.5,1)' }).onfinish = function(){ env.remove(); to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); };
+        }, 300);
+      });
+    });
+    function doveBack(){
+      run(cruise(-1), 1700, 'ease-in-out', function(){
+        run([T(xs, yl + 4, -1, 2), T(xs - 6, yl + 14, -1, 10), T(x0 + 2, y0 - 2, 1, -6), T(x0, y0, 1, 0)], 650, 'ease-in', function(){
+          fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); });
+          pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
+          setTimeout(function(){ pe.classList.remove('fl'); doveRun(); }, 700);
+        });
+      });
+    }
   }
   function sync(){ q('.cs-prog').textContent = STEPS.filter(function(s){ return V[s[0]]; }).length + '/6'; q('.cs-go').disabled = !REQ.every(function(k){ return V[k]; }); }
 
