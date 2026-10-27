@@ -105,6 +105,26 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .tg i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
 .tg.on i{background:#8b3fd1}.tg.on i::after{transform:translateX(18px)}
 
+.power{display:flex;align-items:center;gap:16px;padding:14px 16px;margin-bottom:10px;border-radius:18px;border:1px solid rgba(244,214,255,.25);background:linear-gradient(155deg,rgba(74,26,94,.75),rgba(36,9,28,.75));box-shadow:inset 0 1px 0 rgba(255,230,250,.18),0 14px 30px -18px rgba(190,24,93,.55)}
+.ring{position:relative;width:78px;height:78px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7;stroke:rgba(207,176,232,.18)}
+.ring #pw-arc{stroke:var(--pc,#f97316);stroke-linecap:round;stroke-dasharray:20 100;transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1),stroke .4s;filter:drop-shadow(0 0 6px var(--pc,#f97316))}
+.ring strong{position:absolute;inset:0;display:grid;place-items:center;font:700 18px/1 Cinzel,serif}
+.pw-t small{font:700 10.5px/1 Cinzel,serif;letter-spacing:.2em;color:#cfb0e8}
+.pw-t b{display:block;margin:5px 0 3px;font:700 20px/1 Cinzel,serif;font-variant:small-caps;color:var(--pc,#f97316);transition:color .4s}
+.pw-t span{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.85)}
+.power.bump{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.03)}}
+.owed{display:flex;gap:12px;align-items:center;padding:12px 14px;margin-bottom:14px;border-radius:14px;border:1px dashed rgba(246,200,168,.55);background:rgba(246,200,168,.08);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#f7eef1}
+.owed span{font-size:22px}.owed b{color:#f6c8a8;font-size:18px}.owed em{color:#d5b9eb}
+.flag{position:absolute;top:10px;right:10px;z-index:3;padding:5px 8px;border-radius:999px;background:linear-gradient(90deg,#ff4d79,#b36bff);font:700 9px/1 Cinzel,serif;font-style:normal;letter-spacing:.12em;color:#fff;box-shadow:0 2px 10px rgba(255,77,121,.5);animation:glow 1.8s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 18px rgba(255,77,121,.9)}}
+.card .flag~.n{display:none}
+.card.done .flag{display:none}
+.cited{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(134,239,172,.14);border:1px solid rgba(134,239,172,.5);color:#bbf7d0;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em;animation:pop .4s both}
+.letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
+.warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
 .find{display:flex;gap:8px}
 .in{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.6);color:#f7eef1;font:400 17px/1.3 'EB Garamond',Georgia,serif;outline:none}
 .in:focus{border-color:#d5b9eb}
@@ -130,6 +150,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .hint{margin-top:8px;text-align:center;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.75)}
 .seal{width:76px;height:76px;margin:6px auto 12px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#8b3fd1,#3a0f68 70%);box-shadow:0 0 0 6px rgba(139,63,209,.15),0 14px 40px -10px rgba(190,24,93,.6);font-size:34px;animation:pop .6s cubic-bezier(.2,.9,.3,1.3) both}
 .toast{position:fixed;left:50%;bottom:24px;z-index:20;transform:translate(-50%,40px);opacity:0;transition:.3s;padding:12px 18px;border-radius:12px;background:linear-gradient(180deg,#f3ecff,#ddccfa);color:#2a0814;font:italic 400 16px/1.3 'EB Garamond',Georgia,serif;pointer-events:none}
+.toast{white-space:nowrap}
 .toast.on{transform:translate(-50%,0);opacity:1}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 @media (max-width:360px){.card b{font-size:14px}.card span{font-size:14px}}
@@ -138,14 +159,23 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 <body>
 <main class="wrap">
   <h1>Your Complaint Is Ready</h1>
-  <p class="sub">Know your rights, choose where it goes, then send it.</p>
+  <p class="sub">Complaints that cite the law get answered. Make yours strong before you send it.</p>
+  <div class="power" id="power">
+    <div class="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><circle id="pw-arc" cx="40" cy="40" r="34" pathLength="100"/></svg><strong id="pw-n">20%</strong></div>
+    <div class="pw-t">
+      <small>CASE STRENGTH</small>
+      <b id="pw-w">Weak</b>
+      <span id="pw-tip">Read your rights — each one adds a law to your letter.</span>
+    </div>
+  </div>
+  <div class="owed"><span>💰</span><div>You may be owed <b>$84</b> back — the law is on your side. <em>See card II.</em></div></div>
   <blockquote class="quote">Justice delayed is justice denied.<cite>W·E·GLADSTONE</cite></blockquote>
 
   <div class="grid">
-    <button class="card main" data-s="send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg><i class="n">I</i><i class="ok">✓</i>
+    <button class="card" data-s="send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg><i class="n">I</i><i class="ok">✓</i>
       <div><b>Send Complaint</b><span id="c-send">Review &amp; send</span></div></button>
-    <button class="card" data-s="rights"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><i class="n">II</i><i class="ok">✓</i>
-      <div><b>Your Rights</b><span id="c-rights">5 things to know</span></div></button>
+    <button class="card main" data-s="rights"><i class="flag">START HERE</i><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><i class="n">II</i><i class="ok">✓</i>
+      <div><b>Your Rights</b><span id="c-rights">5 laws on your side</span></div></button>
     <button class="card" data-s="inst"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6z"/></svg><i class="n">III</i><i class="ok">✓</i>
       <div><b>Institutions</b><span id="c-inst">Choose where it goes</span></div></button>
     <button class="card" data-s="letter"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><i class="n">IV</i><i class="ok">✓</i>
@@ -157,7 +187,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   </div>
 
   <div class="orn"><i></i>✦<i></i></div>
-  <p class="note">Nothing is sent until you tap <em>Send</em> in card I.</p>
+  <p class="note">Every right you read is cited in your letter. Institutions must answer a legal claim.</p>
 </main>
 
 <div class="dim" id="dim"></div>
@@ -168,11 +198,11 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 (function(){
   var C = { who:'NovaTel Mobile', topic:'Consumer — billing', city:'Toronto, ON', what:'Charged $84 extra for 3 months after I cancelled. They refuse to refund.', email:'you@example.ca', addr:'M5V 2T6' };
   var RIGHTS = [
-    ['Refund of wrong charges', 'If you were billed for a service you cancelled, the company must refund it. Keep your cancellation proof.', 'Consumer Protection Act, 2002 (ON)'],
-    ['Clear, written contract', 'Prices and fees must be shown clearly. Hidden or surprise fees can be disputed.', 'Wireless Code — CRTC'],
-    ['Cancel any time', 'You can cancel a mobile contract at any time; only limited early-cancellation fees are allowed.', 'Wireless Code — CRTC'],
-    ['A free complaint body', 'If the company does not fix it, the CCTS can order a refund. It costs you nothing.', 'CCTS'],
-    ['Small Claims Court', 'For amounts up to $50,000 in Ontario you can sue without a lawyer.', 'Courts of Justice Act (ON)']
+    ['Refund of wrong charges', 'If you were billed for a service you cancelled, the company must refund it. Keep your cancellation proof.', 'Consumer Protection Act, 2002 (ON)', 'Under the Consumer Protection Act, 2002 (Ontario), charges for a cancelled service must be refunded.'],
+    ['Clear, written contract', 'Prices and fees must be shown clearly. Hidden or surprise fees can be disputed.', 'Wireless Code — CRTC', 'The CRTC Wireless Code requires all fees to be clearly disclosed in my contract.'],
+    ['Cancel any time', 'You can cancel a mobile contract at any time; only limited early-cancellation fees are allowed.', 'Wireless Code — CRTC', 'The Wireless Code gives me the right to cancel at any time; no charges may continue after cancellation.'],
+    ['A free complaint body', 'If the company does not fix it, the CCTS can order a refund. It costs you nothing.', 'CCTS', 'If this is not resolved, I will escalate to the Commission for Complaints for Telecom-television Services (CCTS).'],
+    ['Small Claims Court', 'For amounts up to $50,000 in Ontario you can sue without a lawyer.', 'Courts of Justice Act (ON)', 'I am prepared to file in Ontario Small Claims Court to recover the amount owed.']
   ];
   var INST = [
     ['ccts', 'CCTS', 'Telecom complaints — free, binding', 'BEST FIT', true],
@@ -217,9 +247,24 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   var picked = function(){ return INST.filter(function(i){ return S.inst[i[0]]; }); };
   function toast(t){ var e = $('toast'); e.textContent = t; e.classList.add('on'); clearTimeout(e._t); e._t = setTimeout(function(){ e.classList.remove('on'); }, 1800); }
 
+  function strength(){
+    return Math.min(100, 20 + Object.keys(S.read).length * 12 + (picked().length ? 10 : 0) + ((S.lawProv || S.mp) ? 10 : 0));
+  }
+  var lastPw = 20;
+  function paintPower(){
+    var v = strength(), w, c, tip, nr = Object.keys(S.read).length;
+    if (v < 45){ w = 'Weak'; c = '#f97316'; } else if (v < 70){ w = 'Fair'; c = '#facc15'; } else if (v < 90){ w = 'Strong'; c = '#86efac'; } else { w = 'Very Strong'; c = '#a7f3d0'; }
+    tip = nr < RIGHTS.length ? 'Read ' + (RIGHTS.length - nr) + ' more right' + (RIGHTS.length - nr > 1 ? 's' : '') + ' — +12% each.' : (v < 100 ? 'All laws cited. Find a free lawyer or your MP for the last push.' : 'Ready. This complaint is hard to ignore.');
+    var pw = $('power'); pw.style.setProperty('--pc', c);
+    $('pw-arc').style.strokeDasharray = v + ' 100'; $('pw-n').textContent = v + '%'; $('pw-w').textContent = w; $('pw-tip').textContent = tip;
+    if (v > lastPw){ pw.classList.remove('bump'); void pw.offsetWidth; pw.classList.add('bump'); }
+    lastPw = v;
+  }
   function refresh(){
     var nr = Object.keys(S.read).length, ni = picked().length;
-    $('c-rights').textContent = nr ? nr + ' of ' + RIGHTS.length + ' read' : RIGHTS.length + ' things to know';
+    paintPower();
+    card('send').classList.toggle('main', strength() >= 70 && !S.sent);
+    $('c-rights').textContent = nr ? nr + ' of ' + RIGHTS.length + ' cited' : RIGHTS.length + ' laws on your side';
     card('rights').classList.toggle('done', nr === RIGHTS.length);
     $('c-inst').textContent = ni ? ni + ' selected' : 'Choose where it goes';
     card('inst').classList.toggle('done', ni > 0);
@@ -227,7 +272,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     card('lawyer').classList.toggle('done', !!S.lawProv);
     $('c-mp').textContent = S.mp ? S.mp : 'By your address';
     card('mp').classList.toggle('done', !!S.mp);
-    $('c-send').textContent = S.sent ? 'Sent ✓' : (ni ? 'Ready to send' : 'Pick institutions first');
+    $('c-send').textContent = S.sent ? 'Sent ✓' : !ni ? 'Pick institutions first' : strength() >= 70 ? 'Strong — ready' : 'Strength ' + strength() + '%';
     card('send').classList.toggle('done', S.sent);
   }
 
@@ -241,17 +286,20 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
         '<div><small>TOPIC</small><span>' + esc(C.topic) + '</span></div>' +
         '<div><small>WHERE</small><span>' + esc(C.city) + '</span></div>' +
         '<div><small>TO</small><span>' + (ni ? picked().map(function(i){ return esc(i[1]); }).join(', ') : '<em>None yet</em>') + '</span></div>' +
+        '<div><small>LAWS CITED</small><span>' + Object.keys(S.read).length + ' of ' + RIGHTS.length + '</span></div>' +
+        '<div><small>STRENGTH</small><span>' + strength() + '%</span></div>' +
         '</div>' +
+        (Object.keys(S.read).length < 2 ? '<div class="warn">⚠ Your letter cites ' + (Object.keys(S.read).length ? 'only 1 law' : 'no law') + '. Complaints without a legal basis are often ignored. Reading your rights takes about a minute.</div><button class="go" data-go="rights">Strengthen With My Rights</button>' : '') +
         '<button class="go" id="do-send"' + (ni ? '' : ' disabled') + '>Send Complaint <span class="ca">CA</span></button>' +
         '<p class="hint">' + (ni ? 'Your email is never shared with the institution.' : 'Choose at least one institution in card III.') + '</p>' +
         (ni ? '' : '<button class="go" data-go="inst" style="margin-top:10px">Choose Institutions</button>')];
     },
     rights: function(){
-      var h = '<p class="p" style="margin-bottom:10px">Based on your topic: <em>' + esc(C.topic) + '</em>. Tap each one to read.</p><div class="prog"><i id="prog"></i></div>';
+      var h = '<p class="p" style="margin-bottom:10px">For <em>' + esc(C.topic) + '</em>, the law is on your side. <b>Each right you open is cited in your letter</b> — and makes your case stronger.</p><div class="prog"><i id="prog"></i></div>';
       RIGHTS.forEach(function(r, i){
-        h += '<details class="acc" data-i="' + i + '"><summary><i>' + (i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span></div></details>';
+        h += '<details class="acc" data-i="' + i + '"' + (S.read[i] ? ' open' : '') + '><summary><i>' + (S.read[i] ? '✓' : i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span><br><span class="cited" hidden>✓ ADDED TO YOUR LETTER · +12%</span></div></details>';
       });
-      return ['Your Rights', h + '<button class="go" data-go="inst">Next: Institutions</button>'];
+      return ['Your Rights', h + '<button class="go" data-go="letter">See My Letter</button>'];
     },
     inst: function(){
       var h = '<p class="p" style="margin-bottom:12px">We picked the best fit for a telecom billing issue. Add or remove any.</p>';
@@ -261,7 +309,9 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
       return ['Institutions', h + '<button class="go" data-go="send">Done</button>'];
     },
     letter: function(){
-      return ['Your Letter', '<div class="letter"><p>To whom it may concern,</p><p>I am filing a complaint against <b>' + esc(C.who) + '</b> regarding ' + esc(C.topic.toLowerCase()) + '.</p><p>' + esc(C.what) + '</p><p>I ask for a full refund of the wrong charges within 30 days.</p><p>Sincerely,<br>— Filed via ComplaintCA</p></div><button class="go" data-go="send">Looks Good</button>'];
+      var laws = RIGHTS.filter(function(r, i){ return S.read[i]; }).map(function(r){ return '<span class="law-c">' + esc(r[3]) + '</span>'; }).join(' ');
+      return ['Your Letter', '<div class="letter"><p>To whom it may concern,</p><p>I am filing a complaint against <b>' + esc(C.who) + '</b> regarding ' + esc(C.topic.toLowerCase()) + '.</p><p>' + esc(C.what) + '</p>' + (laws ? '<p>' + laws + '</p>' : '') + '<p>I ask for a full refund of $84 within 30 days.</p><p>Sincerely,<br>— Filed via ComplaintCA</p></div>' +
+        (laws ? '<button class="go" data-go="send">Looks Good</button>' : '<div class="warn">This letter has no legal basis yet. Open your rights in card II — each one adds a law here.</div><button class="go" data-go="rights">Add Laws To My Letter</button>')];
     },
     lawyer: function(){
       return ['Free Lawyer', '<p class="p" style="margin-bottom:10px">Free legal help depends on <em>where you live</em>. Check your address:</p>' +
@@ -330,7 +380,11 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cur) close(); });
 
   $('sh-b').addEventListener('toggle', function(e){
-    var d = e.target; if (d.open && d.dataset.i != null){ S.read[d.dataset.i] = 1; prog(); refresh(); }
+    var d = e.target; if (!d.open || d.dataset.i == null) return;
+    var fresh = !S.read[d.dataset.i]; S.read[d.dataset.i] = 1;
+    d.querySelector('summary i').textContent = '✓';
+    if (fresh){ d.querySelector('.cited').hidden = false; toast('Law added · Case strength ' + strength() + '%'); }
+    prog(); refresh();
   }, true);
   $('sh-b').addEventListener('keydown', function(e){
     if (e.key !== 'Enter') return;
