@@ -1136,8 +1136,9 @@
       status.innerHTML = ''; const inst = d.institution || {};
       if (inst.status === 'sent') status.appendChild(el('p','af-ok','✅ Sent directly to ' + inst.name + '.'));
       if (inst.status === 'form_only') { const a0 = (d.authorities || [])[0] || {};
-        status.append(el('b', null, '📝 ' + inst.name), el('p','af-note','This institution takes complaints only through its official form — we did not e-mail them. Please file there:'));
-        if (a0.url) { const a = el('a','af-mini', 'Official complaint form →'); a.href = a0.url; a.target = '_blank'; a.rel = 'noopener'; status.appendChild(a); } }
+        status.append(el('b', null, '📝 ' + inst.name), el('p','af-note', a0.url ? 'This institution takes complaints only through its official form — we did not e-mail them. Please file there:' : 'We have no verified e-mail for this institution — we did not e-mail them. Please contact them directly:'));
+        if (a0.url) { const a = el('a','af-mini', 'Official complaint form →'); a.href = a0.url; a.target = '_blank'; a.rel = 'noopener'; status.appendChild(a); }
+        else if (a0.phone) status.appendChild(el('p','af-note','📞 ' + a0.phone)); }
       if (inst.status === 'failed' && inst.fallback) { const f = inst.fallback;
         status.append(el('b', null, '📤 ' + inst.name), el('p','af-note','Automatic sending unavailable — please send it yourself from your email app.'));
         const a = el('a','af-mini','✉ Open my email app'); a.href = 'mailto:' + f.to + '?subject=' + encodeURIComponent(f.subject) + '&body=' + encodeURIComponent(f.body); status.appendChild(a); }

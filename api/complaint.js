@@ -167,7 +167,7 @@ export default async function handler(req, res) {
     let admin = 'none';
     if (record.priority === 'high') {
       if (live) {
-        const a = adminEmail(record, top, instSent);
+        const a = adminEmail(record, top, institution);
         admin = (await sendEmail(SENDER.email, 'ComplaintCA Admin', a.subject, a.body)) ? 'sent' : 'failed';
       } else admin = 'test_skipped';
     }
