@@ -15,3 +15,11 @@ self.addEventListener('fetch', function(e){
     }
   }catch(_){ /* let the browser handle it natively */ }
 });
+// Tapping a Dias Panel notification opens (or focuses) the panel.
+self.addEventListener('notificationclick', function(e){
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({ type: 'window' }).then(function(list){
+    for (var i = 0; i < list.length; i++) if (list[i].url.indexOf('/shield') !== -1) return list[i].focus();
+    return self.clients.openWindow('/shield.html');
+  }));
+});

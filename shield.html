@@ -1292,26 +1292,40 @@
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
   // Update bar: every 30 s, re-fetch the panel and the page open in the
-  // site tab; if either changed since we first saw it, offer a reload.
+  // site tab. A change since the last visit (remembered per device) or while
+  // the panel is open shows the bar and, if allowed, a phone notification.
   (function () {
-    var seen = {};
+    var seen = {}, UPD = 'dias:upd:';
     function sig(url) {
       return fetch(url, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; })
-        .then(function (t) { if (t == null) return null; var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return h; })
+        .then(function (t) { if (t == null) return null; var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return String(h); })
         .catch(function () { return null; });
     }
+    function notify() {
+      if ($('updBar').hidden === false) return;
+      $('updBar').hidden = false;
+      if (!('Notification' in window) || Notification.permission !== 'granted' || !navigator.serviceWorker) return;
+      navigator.serviceWorker.ready.then(function (r) {
+        r.showNotification('Dias Panel', { body: '✨ Yeni değişiklik geldi', icon: '/icons/icon-192.png', tag: 'dias-upd' });
+      }).catch(function () {});
+    }
     function check() {
-      if (document.hidden) return;
+      if (!getKey()) return;
       var fr = document.getElementById('siteFrame');
       var urls = [location.pathname, fr && fr.getAttribute('src')].filter(Boolean);
       urls.forEach(function (u) {
         sig(u).then(function (h) {
           if (h == null) return;
-          if (!(u in seen)) seen[u] = h;
-          else if (seen[u] !== h) document.getElementById('updBar').hidden = false;
+          if (!(u in seen)) { seen[u] = h; var prev = store(UPD + u); store(UPD + u, h); if (prev && prev !== h) notify(); }
+          else if (seen[u] !== h) { seen[u] = h; store(UPD + u, h); notify(); }
         });
       });
     }
+    // Ask for notification permission once, on the first tap (browsers need a gesture).
+    document.addEventListener('click', function ask() {
+      document.removeEventListener('click', ask);
+      if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+    });
     document.getElementById('updBtn').onclick = function () { location.reload(); };
     check();
     setInterval(check, 30000);
