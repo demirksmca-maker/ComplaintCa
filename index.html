@@ -671,6 +671,16 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-complain::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);animation:ccShine 4.5s 1.5s ease-in-out infinite;pointer-events:none}
 #cc-choice .cc-ca{display:inline-block;padding:3px 8px 2px;border-radius:6px;background:linear-gradient(145deg,#b3121f,#5c0611);color:#fbeef1;text-shadow:none;border:1px solid rgba(255,190,200,.4);font:700 14px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em}
 #cc-choice .cc-bar:hover{transform:translateY(-2px)}
+#cc-choice .cc-bar{display:grid!important;grid-template-columns:auto 1fr auto;align-items:center;gap:14px!important;text-align:left;padding:10px 16px 10px 10px!important;border-radius:20px!important}
+#cc-choice .cc-bar::before{content:"";position:absolute;inset:4px;border-radius:16px;border:1px solid rgba(255,255,255,.28);pointer-events:none}
+#cc-choice .cc-med{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.55),rgba(255,255,255,.08) 60%);border:1px solid rgba(255,255,255,.5);box-shadow:inset 0 -6px 10px rgba(0,0,0,.18),0 3px 8px rgba(0,0,0,.25)}
+#cc-choice .cc-med svg{width:22px!important;height:22px!important}
+#cc-choice .cc-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+#cc-choice .cc-txt b{font:700 17px/1.1 Cinzel,Georgia,serif;letter-spacing:.08em}
+#cc-choice .cc-txt small{font:italic 400 14.5px/1.2 'EB Garamond',Georgia,serif;letter-spacing:.01em;text-transform:none;opacity:.88}
+#cc-choice .cc-arr{font:400 28px/1 'EB Garamond',Georgia,serif;opacity:.8;padding-right:4px}
+#cc-choice .cc-info .cc-med{background:radial-gradient(circle at 35% 30%,rgba(232,210,255,.45),rgba(120,60,180,.15) 65%);border-color:rgba(216,180,254,.55)}
+#cc-choice .cc-info::before{border-color:rgba(216,180,254,.25)}
 #cc-choice .cc-bar:focus-visible,#cc-choice .cc-x:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #cc-choice .cc-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 0;color:#d8b4fe;animation:ccIn 1s .8s ease-out both}
 #cc-choice .cc-orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}
@@ -689,8 +699,8 @@ textarea{resize:vertical;min-height:90px}
   <div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="720" height="720"></div>
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
-    <a class="cc-bar cc-info" href="/guides/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>Know Your Rights</a>
-    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceComplain(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg>Complain <span class="cc-ca">CA</span></button>
+    <a class="cc-bar cc-info" href="/guides/"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg></span><span class="cc-txt"><b>Know Your Rights</b><small>Plain-language guides</small></span><span class="cc-arr" aria-hidden="true">›</span></a>
+    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceComplain(this)"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><span class="cc-txt"><b>Complain</b><small>ASYA writes it with you</small></span><span class="cc-ca">CA</span></button>
   </nav>
   <div class="cc-orn" aria-hidden="true"><i></i>✦<i></i></div>
   <p class="cc-quote">“Don't be discouraged.<br>When you fail, come back again.”<cite>Marcus Aurelius · Meditations 5.9</cite></p>
