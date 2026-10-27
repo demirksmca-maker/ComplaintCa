@@ -655,11 +655,8 @@ textarea{resize:vertical;min-height:90px}
 <style>
 #cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;color:#fff;font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(140,60,210,.22),transparent 70%),linear-gradient(rgba(34,10,40,.7),rgba(18,4,22,.92)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}
 #cc-choice.on{display:grid;align-content:center;padding:24px 0}
-#cc-choice .cc-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));width:40px;height:40px;border-radius:50%;border:1px solid rgba(207,176,232,.4);background:rgba(50,7,43,.5);color:#cfb0e8;font-size:22px;line-height:1;cursor:pointer;z-index:1}
 #cc-choice .cc-hero{position:relative;width:min(72vw,340px);aspect-ratio:1;margin:0 auto 22px;animation:ccIn 1s ease-out both}
-#cc-choice .cc-hero::before{content:"";position:absolute;inset:-22%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,220,230,.10) 0deg 4deg,transparent 4deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 30%,transparent 70%);mask-image:radial-gradient(circle,#000 30%,transparent 70%);animation:ccRays 40s linear infinite}
 #cc-choice .cc-hero::after{content:"";position:absolute;inset:8%;border-radius:50%;box-shadow:0 0 90px 30px rgba(150,60,220,.28);z-index:-1}
-@keyframes ccRays{to{transform:rotate(360deg)}}
 #cc-choice .cc-hero img{position:relative;display:block;width:100%;height:100%;filter:drop-shadow(0 8px 18px rgba(0,0,0,.55));animation:ccBreathe 7s ease-in-out infinite}
 #cc-choice .cc-title{margin:0 0 18px;text-align:center;font:700 clamp(19px,3vw,25px)/1.2 Cinzel,Georgia,serif;letter-spacing:.14em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);animation:ccUp .7s .3s ease-out both}
 #cc-choice .cc-bars{box-sizing:border-box;width:100%;max-width:640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
@@ -677,7 +674,6 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-med svg{width:22px!important;height:22px!important}
 #cc-choice .cc-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
 #cc-choice .cc-txt b{font:700 17px/1.1 Cinzel,Georgia,serif;letter-spacing:.08em}
-#cc-choice .cc-txt small{font:italic 400 14.5px/1.2 'EB Garamond',Georgia,serif;letter-spacing:.01em;text-transform:none;opacity:.88}
 #cc-choice .cc-arr{font:400 28px/1 'EB Garamond',Georgia,serif;opacity:.8;padding-right:4px}
 #cc-choice .cc-info .cc-med{background:radial-gradient(circle at 35% 30%,rgba(232,210,255,.45),rgba(120,60,180,.15) 65%);border-color:rgba(216,180,254,.55)}
 #cc-choice .cc-info::before{border-color:rgba(216,180,254,.25)}
@@ -686,9 +682,7 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice::before{content:"";position:fixed;inset:0;border-style:solid;border-width:min(26vw,120px);border-image:url(/assets/choice/frame.webp) 250 fill stretch;pointer-events:none;z-index:0}
 #cc-choice>*{position:relative;z-index:1}
 #cc-choice.on{padding:calc(min(26vw,120px)*.42) calc(min(26vw,120px)*.36)!important}
-#cc-choice .cc-x{position:absolute!important;top:calc(min(26vw,120px)*.5)!important;right:calc(min(26vw,120px)*.45)!important;background:rgba(30,8,36,.6)!important;border-color:rgba(233,197,106,.6)!important;color:#f1d27a!important}
 #cc-choice .cc-hero{width:min(58vw,300px)!important;margin-bottom:10px!important}
-#cc-choice .cc-hero::before{display:none}
 #cc-choice .cc-title{color:#f1d27a!important;font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,.6)!important;letter-spacing:.06em!important;text-transform:none}
 #cc-choice .cc-bars{padding:0 4px!important;gap:12px!important}
 #cc-choice .cc-bar{border:2.5px solid transparent!important;border-radius:14px!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),0 8px 18px -8px rgba(0,0,0,.7)!important;text-shadow:0 1px 3px rgba(0,0,0,.75)!important}
@@ -702,12 +696,13 @@ textarea{resize:vertical;min-height:90px}
 #cc-choice .cc-quote{color:#f3e6ea!important}
 #cc-choice .cc-quote cite{letter-spacing:.14em!important;font-size:10px!important;white-space:nowrap}
 #cc-choice .cc-ca{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin-left:4px;font:inherit!important;letter-spacing:inherit!important;color:#ff5a6e!important;text-shadow:0 1px 2px rgba(0,0,0,.8),0 0 10px rgba(255,60,90,.55)!important}
-#cc-choice .cc-txt b{font-size:clamp(16px,4.6vw,19px)!important;letter-spacing:.05em!important;white-space:nowrap;color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.85)!important}
+#cc-choice .cc-txt b{font-size:clamp(16px,4.6vw,19px)!important;letter-spacing:.05em!important;color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.9),0 2px 6px rgba(0,0,0,.85)!important}
 #cc-choice .cc-bar{min-height:62px}
 #cc-choice .cc-title{font-size:clamp(20px,5.4vw,26px)!important;text-shadow:0 1px 0 rgba(0,0,0,.8),0 2px 10px rgba(0,0,0,.7)!important}
-#cc-choice .cc-quote{font-size:clamp(18px,4.8vw,22px)!important;font-weight:500;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.8)!important}
+#cc-choice .cc-quote{font-size:clamp(18px,4.8vw,22px)!important;font-weight:400!important;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.8)!important}
 #cc-choice .cc-quote cite{font-size:11px!important;color:#f1d27a!important}
-#cc-choice .cc-bar:focus-visible,#cc-choice .cc-x:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#cc-choice .cc-srx{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0}
+#cc-choice .cc-bar:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #cc-choice .cc-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px auto 0;color:#d8b4fe;animation:ccIn 1s .8s ease-out both}
 #cc-choice .cc-orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}
 #cc-choice .cc-orn i:last-child{transform:scaleX(-1)}
@@ -717,11 +712,12 @@ textarea{resize:vertical;min-height:90px}
 @keyframes ccUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes ccBreathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.025);filter:brightness(1.12)}}
 @keyframes ccShine{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}
-@media (max-width:520px){#cc-choice .cc-hero img{aspect-ratio:1/1;object-fit:cover}#cc-choice .cc-bars{grid-template-columns:1fr}#cc-choice .cc-complain{order:-1}}
-@media (prefers-reduced-motion:reduce){#cc-choice *,#cc-choice *::after{animation:none!important;transition:none!important}}
+@media (max-width:520px){#cc-choice .cc-txt b{white-space:nowrap}#cc-choice .cc-bars{grid-template-columns:1fr}#cc-choice .cc-complain{order:-1}}
+@media (prefers-reduced-motion:reduce){#cc-choice *,#cc-choice *::before,#cc-choice *::after{animation:none!important;transition:none!important}}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-labelledby="cc-choice-t">
-  <div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="720" height="720"></div>
+  <button type="button" class="cc-srx" onclick="ccChoiceClose()">Close</button>
+  <div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></div>
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
     <a class="cc-bar cc-info" href="/guides/"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg></span><span class="cc-txt"><b>Know Your Rights</b></span><span class="cc-arr" aria-hidden="true">›</span></a>
@@ -745,8 +741,8 @@ function ccChoiceComplain(btn){
   })();
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
-// No close button: tapping the empty frame/velvet around the content closes it.
-document.getElementById('cc-choice').addEventListener('click',function(e){if(e.target===this)ccChoiceClose()});
+// No visible close button: a tap anywhere outside the two choices closes it.
+document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-bar,.cc-srx'))ccChoiceClose()});
 </script>
 <script defer src="/assets/complaint-steps.js"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
