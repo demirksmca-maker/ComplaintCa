@@ -127,6 +127,11 @@
   .steps a{color:var(--s1)}
   .better{color:var(--ok)}.worse{color:var(--bad)}
   .gcard{margin-top:10px}
+  .gh{font-size:.68rem;font-weight:500;color:var(--mute);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 6px}
+  .grow{margin-top:12px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:.72rem;color:var(--mute);text-align:center}
+  .grow div{display:flex;justify-content:space-around;margin-top:4px;color:var(--ink);font-size:.86rem}
+  .grow small{font-weight:600}
+  .m{color:var(--mute)}
   .hint{font-size:.74rem;color:var(--mute);margin:-4px 0 10px}
   .spark+.spark{margin-top:10px}
   .sparkhead{display:flex;justify-content:space-between;font-size:.7rem;color:var(--mute);margin-bottom:4px}
@@ -417,12 +422,44 @@
           'Search Console\'daki "24 saat" ile aynı: Google\'ın son verisinden (' + esc(new Date(r.day.last).toLocaleString('tr-TR', { timeZone: 'America/Toronto', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })) + ') geriye 24 saat. Henüz kesin değil, birkaç gün içinde biraz değişebilir.');
       }
       if (r.since) {
-        var wmax = Math.max.apply(null, r.since.weeks.map(function (w) { return w.impressions; }).concat(1));
+        // Growth since the first day: monthly totals compared by daily average
+        // (a running month is fair against a full one), then weekly bars.
+        var ws = r.since.weeks, ms = r.since.months || [], fmt = function (n) { return Math.round(n).toLocaleString('tr-TR'); };
+        var pct = function (cur, prev) {
+          if (!prev) return '';
+          var c = Math.round((cur / prev - 1) * 100);
+          return ' <small class="' + (c >= 0 ? 'up' : 'down') + '">' + (c >= 0 ? '↑' : '↓') + Math.abs(c) + '%</small>';
+        };
         var start = new Date(r.since.start + 'T12:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
-        out += card('Başlangıçtan beri · ' + esc(start), '<div class="cmp"><div><b>' + r.since.impressions.toLocaleString('tr-TR') + '</b>toplam gösterim</div><div><b>' + r.since.clicks.toLocaleString('tr-TR') + '</b>toplam tıklama</div></div>' +
-          '<div class="sparkbars" style="margin-top:10px">' + r.since.weeks.map(function (w) {
-            return '<i style="height:' + Math.max(2, w.impressions / wmax * 100) + '%;background:#6da7ec" title="' + esc(w.week + ' haftası · ' + w.impressions + ' gösterim · ' + w.clicks + ' tık') + '"></i>';
-          }).join('') + '</div><div class="sparkhead" style="margin-top:4px"><span>ilk hafta</span><span>bu hafta · haftalık gösterim</span></div>');
+        var body = '<div class="cmp"><div><b>' + fmt(r.since.impressions) + '</b>toplam gösterim</div><div><b>' + fmt(r.since.clicks) + '</b>toplam tıklama</div></div>';
+        // Last 4 full weeks against the 4 before them.
+        var full = ws.filter(function (w) { return (w.days || 7) >= 7; });
+        if (full.length >= 8) {
+          var tot = function (list, k) { return list.reduce(function (n, w) { return n + w[k]; }, 0); };
+          var cur = full.slice(-4), prev = full.slice(-8, -4);
+          body += '<div class="grow">Son 4 hafta, önceki 4 haftaya göre<div><span>gösterim' + pct(tot(cur, 'impressions'), tot(prev, 'impressions')) + '</span><span>tıklama' + pct(tot(cur, 'clicks'), tot(prev, 'clicks')) + '</span></div></div>';
+        }
+        if (ms.length) {
+          var avg = function (m, k) { return m[k] / (m.days || 1); };
+          var mmax = Math.max.apply(null, ms.map(function (m) { return avg(m, 'impressions'); }).concat(1));
+          body += '<h3 class="gh">Aylık · günlük ortalama gösterim</h3><div class="hb">' + ms.map(function (m, i) {
+            var p = ms[i - 1], name = new Date(m.month + '-15T12:00:00').toLocaleDateString('tr-TR', { month: 'long' });
+            var run = i === ms.length - 1 && m.days < 28;
+            return '<span class="lab">' + esc(name) + (run ? ' <small class="m">· sürüyor</small>' : '') + '</span><span class="val">' + fmt(avg(m, 'impressions')) + '/gün' + (p ? pct(avg(m, 'impressions'), avg(p, 'impressions')) : '') + '</span>' +
+              '<span class="bar" style="width:' + (avg(m, 'impressions') / mmax * 100).toFixed(1) + '%' + (run ? ';opacity:.55' : '') + '" title="' + esc(m.month + ' · ' + m.impressions + ' gösterim · ' + m.clicks + ' tık · ' + m.days + ' gün') + '"></span>';
+          }).join('') + '</div>';
+        }
+        var bars = function (k, color) {
+          var max = Math.max.apply(null, ws.map(function (w) { return w[k]; }).concat(1));
+          return '<div class="sparkbars" style="margin-top:4px">' + ws.map(function (w) {
+            return '<i style="height:' + Math.max(2, w[k] / max * 100) + '%;background:' + color + ((w.days || 7) < 7 ? ';opacity:.45' : '') + '" title="' + esc(w.week + ' haftası · ' + w.impressions + ' gösterim · ' + w.clicks + ' tık') + '"></i>';
+          }).join('') + '</div>';
+        };
+        var last = ws[ws.length - 1] || { impressions: 0, clicks: 0 };
+        body += '<h3 class="gh">Haftalık</h3><div class="sparkhead"><span>Gösterim</span><span>bu hafta ' + fmt(last.impressions) + '</span></div>' + bars('impressions', '#6da7ec') +
+          '<div class="sparkhead" style="margin-top:10px"><span>Tıklama</span><span>bu hafta ' + fmt(last.clicks) + '</span></div>' + bars('clicks', 'var(--s1)') +
+          '<div class="sparkhead" style="margin-top:4px"><span>ilk hafta</span><span>son hafta (soluk = süren hafta)</span></div>';
+        out += card('Büyüme · ' + esc(start) + '\'dan beri', body);
       }
       return out;
     };
