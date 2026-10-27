@@ -56,8 +56,12 @@
     '#cc-steps .cs-ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,#9cc0ff)}#cc-steps .cs-ln i:last-child{transform:scaleX(-1)}',
     '#cc-steps .cs-hd{display:flex;justify-content:flex-end;align-items:center;margin-top:clamp(4px,1vh,10px);font:700 13px/1 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#8991a3}',
     '#cc-steps .cs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
-    '#cc-steps .cs-quote{flex:1;min-width:0;margin-right:12px;quotes:none;text-align:left;text-transform:uppercase;font:600 clamp(9.5px,2.6vw,11px)/1.35 Cinzel,Georgia,serif;letter-spacing:.06em;color:#f2dcae;text-shadow:0 1px 1px rgba(0,0,0,.6)}',
-    '#cc-steps .cs-quote cite{display:block;margin-top:3px;font:700 clamp(8px,2.1vw,9px)/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.22em;color:rgba(242,220,174,.8)}',
+    '#cc-steps .cs-quote{position:relative;flex:1;min-width:0;margin-right:14px;padding:2px 0 2px 13px;quotes:none;text-align:left;font:italic 500 clamp(13.5px,3.7vw,15.5px)/1.3 \'EB Garamond\',Georgia,serif;letter-spacing:.005em;color:#f6e3bd;text-shadow:0 1px 2px rgba(0,0,0,.55)}',
+    '#cc-steps .cs-quote::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:1.5px;border-radius:2px;background:linear-gradient(180deg,transparent,#e9c46a 20%,#e9c46a 80%,transparent);transform-origin:50% 0;animation:csRule .9s cubic-bezier(.2,.7,.2,1) both}',
+    '#cc-steps .cs-quote .w{display:inline-block;opacity:0;filter:blur(5px);transform:translateY(5px);animation:csInk .8s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(.35s + var(--i) * 75ms)}',
+    '#cc-steps .cs-quote cite{display:flex;align-items:center;gap:8px;margin-top:7px;font:700 clamp(8.5px,2.3vw,9.5px)/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.3em;color:#e9c46a;opacity:0;animation:csCite .9s ease-out 1.9s forwards}',
+    '#cc-steps .cs-quote cite::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#e9c46a)}',
+    '@keyframes csInk{to{opacity:1;filter:blur(0);transform:none}}@keyframes csRule{from{transform:scaleY(0);opacity:0}to{transform:none;opacity:1}}@keyframes csCite{from{opacity:0;letter-spacing:.6em}to{opacity:1;letter-spacing:.3em}}',
     '#cc-steps .cs-asya{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:7px;flex-shrink:0;font:700 12px/1 Cinzel,Georgia,serif;letter-spacing:.24em;color:#f6dcae;padding:10px 16px 10px 13px;border-radius:999px;border:1px solid rgba(242,210,150,.55);background:linear-gradient(145deg,#4a1a5e 0%,#2a0d3a 55%,#3d0f2e 100%);box-shadow:inset 0 1px 0 rgba(255,225,180,.25),inset 0 -6px 12px rgba(10,2,18,.5),0 6px 18px -6px rgba(120,30,140,.7)}',
     '#cc-steps .cs-asya::before{content:"\\2726";font-size:10px;letter-spacing:0;color:#e9c46a;text-shadow:0 0 6px rgba(233,196,106,.7)}',
     '#cc-steps .cs-asya::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,235,200,.22) 50%,transparent 65%) 0 0/250% 100%;animation:csGild 7s ease-in-out infinite;pointer-events:none}',
@@ -158,7 +162,7 @@
     '@keyframes csRing{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.35);opacity:0}}@keyframes csFill{from{transform:translateX(-100%)}to{transform:none}}',
     '@keyframes csGild{0%,60%{background-position:100% 0}100%{background-position:0 0}}@keyframes csBlink{50%{opacity:0}}@keyframes csPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}@keyframes csSway{0%,100%{transform:skewY(0) scale(1)}50%{transform:skewY(-1.2deg) scale(1.02) translateX(-.6%)}}',
     '@media (max-height:720px){#cc-steps .cs-card>svg{width:24px;height:24px}#cc-steps .cs-card b{font-size:15px}#cc-steps .cs-card small{font-size:14px}}',
-    '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::after{animation:none!important;transition:none!important}}'
+    '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::before,#cc-steps *::after{animation:none!important;transition:none!important}#cc-steps .cs-quote .w,#cc-steps .cs-quote cite{opacity:1;filter:none;transform:none}}'
   ].join('\n');
 
   var FLAG = '<svg class="as-flag" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
@@ -178,7 +182,7 @@
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
       '<div class="cs-wrap"><h2 class="cs-sr" id="cs-title">File a Complaint</h2>' +
-      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">If it is not right, do not do it; if it is not trve, do not say it.<cite>Marcvs·Avrelivs</cite></q><span class="cs-asya">ASYA</span></div>' +
+      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + 'If it is not right, do not do it; if it is not true, do not say it.'.split(' ').map(function(w, i){ return '<span class="w" style="--i:' + i + '">' + w + '</span>'; }).join(' ') + '<cite>Marcvs·Avrelivs</cite></q><span class="cs-asya">ASYA</span></div>' +
       '<div class="cs-grid">' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
