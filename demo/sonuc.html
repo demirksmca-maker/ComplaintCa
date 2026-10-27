@@ -105,15 +105,17 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .tg i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
 .tg.on i{background:#8b3fd1}.tg.on i::after{transform:translateX(18px)}
 
-.power{display:flex;align-items:center;gap:16px;padding:14px 16px;margin-bottom:10px;border-radius:18px;border:1px solid rgba(244,214,255,.25);background:linear-gradient(155deg,rgba(74,26,94,.75),rgba(36,9,28,.75));box-shadow:inset 0 1px 0 rgba(255,230,250,.18),0 14px 30px -18px rgba(190,24,93,.55)}
+.power{position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;padding:14px 16px;margin-bottom:10px;border-radius:18px;border:1px solid rgba(229,228,226,.55);background:linear-gradient(155deg,#3a3f47,#1f2329 55%,#2c3038);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 14px 30px -18px rgba(229,228,226,.45)}
+.power::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.14) 50%,transparent 65%);transform:translateX(-100%);animation:plat 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes plat{60%,100%{transform:translateX(100%)}}
 .ring{position:relative;width:78px;height:78px;flex:none}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ring circle{fill:none;stroke-width:7;stroke:rgba(207,176,232,.18)}
+.ring circle{fill:none;stroke-width:7;stroke:rgba(229,228,226,.18)}
 .ring #pw-arc{stroke:var(--pc,#f97316);stroke-linecap:round;stroke-dasharray:20 100;transition:stroke-dasharray .7s cubic-bezier(.2,.8,.2,1),stroke .4s;filter:drop-shadow(0 0 6px var(--pc,#f97316))}
 .ring strong{position:absolute;inset:0;display:grid;place-items:center;font:700 18px/1 Cinzel,serif}
-.pw-t small{font:700 10.5px/1 Cinzel,serif;letter-spacing:.2em;color:#cfb0e8}
+.pw-t small{font:700 10.5px/1 Cinzel,serif;letter-spacing:.2em;color:#d7dbe0}
 .pw-t b{display:block;margin:5px 0 3px;font:700 20px/1 Cinzel,serif;font-variant:small-caps;color:var(--pc,#f97316);transition:color .4s}
-.pw-t span{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.85)}
+.pw-t span{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(236,238,241,.85)}
 .power.bump{animation:bump .5s}
 @keyframes bump{40%{transform:scale(1.03)}}
 .owed{display:flex;gap:12px;align-items:center;padding:12px 14px;margin-bottom:14px;border-radius:14px;border:1px dashed rgba(246,200,168,.55);background:rgba(246,200,168,.08);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#f7eef1}
@@ -176,8 +178,8 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   <div class="power" id="power">
     <div class="ring"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34"/><circle id="pw-arc" cx="40" cy="40" r="34" pathLength="100"/></svg><strong id="pw-n">%20</strong></div>
     <div class="pw-t">
-      <small>DAVA GÜCÜ</small>
-      <b id="pw-w">Zayıf</b>
+      <small>DAVA SEVİYESİ</small>
+      <b id="pw-w">Bronz</b>
       <span id="pw-tip"></span>
     </div>
   </div>
@@ -341,8 +343,8 @@ if (window.top !== window) document.documentElement.classList.add('in-frame');
   function paintPower(){
     if (!C.game) return;
     var v = strength(), w, c, tip, left = C.rights.length - Object.keys(S.read).length, per = Math.round(60 / C.rights.length);
-    if (v < 45){ w = 'Zayıf'; c = '#f97316'; } else if (v < 70){ w = 'Orta'; c = '#facc15'; } else if (v < 90){ w = 'Güçlü'; c = '#86efac'; } else { w = 'Çok Güçlü'; c = '#a7f3d0'; }
-    tip = left ? left + ' hak daha oku — her biri +%' + per + '.' : (v < 100 ? 'Tüm kanunlar eklendi. Son hamle: ücretsiz avukat ya da milletvekili.' : 'Hazır. Bu şikayet görmezden gelinemez.');
+    if (v < 45){ w = 'Bronz'; c = '#cd7f32'; } else if (v < 70){ w = 'Gümüş'; c = '#c0c7d0'; } else if (v < 90){ w = 'Altın'; c = '#facc15'; } else { w = 'Platin'; c = '#e5e4e2'; }
+    tip = left ? 'Platine ' + left + ' hak kaldı — her biri +%' + per + '.' : (v < 100 ? 'Tüm kanunlar eklendi. Platin için son hamle: ücretsiz avukat ya da milletvekili.' : 'Platin dosya. Bu şikayet görmezden gelinemez.');
     var pw = $('power'); pw.style.setProperty('--pc', c);
     $('pw-arc').style.strokeDasharray = v + ' 100'; $('pw-n').textContent = '%' + v; $('pw-w').textContent = w; $('pw-tip').textContent = tip;
     if (v > lastPw){ pw.classList.remove('bump'); void pw.offsetWidth; pw.classList.add('bump'); }
