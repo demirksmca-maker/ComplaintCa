@@ -286,6 +286,26 @@ html[data-restoring-tab] #pg-app{display:block}
 .hub-rate b{color:#efe9f5}.hub-rate .st{color:#cfb1e7}
 .hub-links-sep{color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem)}
 .hub-track-link{display:inline-block;color:#8991a3;font-size:clamp(.62rem,1.5vh,.72rem);font-weight:600;text-decoration:none;border-bottom:1px dashed rgba(173,92,255,.5);padding-bottom:1px;margin-bottom:8px}
+/* ── LANDING: same plum/ruby look as the File screen ── */
+#pg-land .hero{background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}
+#pg-land .hero-eyebrow{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.56rem,1.5vh,.64rem);letter-spacing:.22em;text-transform:uppercase;color:rgba(243,230,234,.72)}
+#pg-land .hero-title{font-family:Cinzel,Georgia,serif;font-weight:700;letter-spacing:.03em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+#pg-land .hero-title em{display:block;margin-top:2px;font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;letter-spacing:.005em;font-size:1.08em;background:linear-gradient(100deg,#f3e6ea 0%,#f3e6ea 38%,#d8b4fe 50%,#f3e6ea 62%,#f3e6ea 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:heroGild 7s ease-in-out infinite}
+@keyframes heroGild{0%,60%{background-position:100% 0}100%{background-position:0 0}}
+#pg-land .hero-slogan-main{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-weight:500;color:#f6e9ee;text-shadow:0 1px 2px rgba(0,0,0,.55)}
+#pg-land .hero-slogan-main cite{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:5px;font:700 .58em/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.3em;text-transform:uppercase;color:#d8b4fe}
+#pg-land .hero-slogan-main cite::before,#pg-land .hero-slogan-main cite::after{content:"";width:20px;height:1px;background:linear-gradient(90deg,transparent,#d8b4fe)}#pg-land .hero-slogan-main cite::after{transform:scaleX(-1)}
+#pg-land .hub-kicker{font-family:Cinzel,Georgia,serif;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(.56rem,1.4vh,.64rem);color:rgba(243,230,234,.6)}
+#pg-land .hub-tile{border:1px solid rgba(244,214,255,.22);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55)}
+#pg-land .hub-tile:nth-of-type(odd){background:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
+#pg-land .hub-tile:nth-of-type(even){background:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
+#pg-land .hub-tile-title{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.74rem,2.3vh,.86rem);letter-spacing:.03em;color:#fff}
+#pg-land .hub-tile-arrow{color:rgba(243,230,234,.6)}
+#pg-land .hub-track-link,#pg-land .hub-links-sep,#pg-land .hub-rate,#pg-land .ht-item{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:clamp(.74rem,1.8vh,.86rem);font-weight:500;letter-spacing:.01em;color:rgba(243,230,234,.75)}
+#pg-land .hub-rate .st{color:#d8b4fe}#pg-land .ht-dot{background:#d8b4fe;box-shadow:0 0 6px rgba(216,180,254,.6)}
+#pg-land #a-fab{background:linear-gradient(145deg,#4a1a5e 0%,#2a0d3a 55%,#3d0f2e 100%);border:1px solid rgba(216,180,254,.55);box-shadow:inset 0 1px 0 rgba(255,225,250,.25),0 6px 18px -6px rgba(120,30,140,.7)}
+#pg-land #a-fab .a-smoke{display:none}#pg-land #a-status{font-family:Cinzel,Georgia,serif;letter-spacing:.24em;color:#f3e6ea}
+@media (prefers-reduced-motion:reduce){#pg-land .hero-title em{animation:none}}
 
 /* ── APP ── */
 .nav-tabs{background:linear-gradient(180deg,#1c0003 0%,#120002 100%);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(220,215,240,.35);box-shadow:0 8px 20px -12px rgba(0,0,0,.7);position:sticky;top:46px;z-index:90}
@@ -797,7 +817,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
     <div class="hero-eyebrow"><img class="flag-ico" src="/assets/brand/flag-blue.svg" alt="" width="20" height="10"> <span class="edot"></span><span id="l-eyebrow">Canada's Complaint Platform</span></div>
     <h1 class="hero-title" id="l-hero-title">Your Complaint.<br><em>Heard. Tracked. Resolved.</em></h1>
     <div class="hero-slogan">
-      <div class="hero-slogan-main" style="color:#c7cbd4;font-family:-apple-system,'Segoe UI',Inter,sans-serif;font-style:normal">"Justice is the source of all the other virtues."<div style="font-family:-apple-system,'Segoe UI',Inter,sans-serif;text-transform:uppercase;font-size:.6em;font-weight:700;color:#ad5cff;letter-spacing:1.5px;margin-top:2px;opacity:.9">— Marcus Aurelius</div></div>
+      <div class="hero-slogan-main">“Justice is the source of all the other virtues.”<cite>Marcus Aurelius</cite></div>
     </div>
 
     <div class="hub-kicker" id="hub-kicker">Six Paths to Justice</div>
