@@ -129,10 +129,6 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
 [hidden]{display:none!important}
 .in-frame .wrap{padding-top:64px}
-.demo-sw{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 16px;padding:8px;border-radius:14px;border:1px dashed rgba(207,176,232,.4);background:rgba(10,2,14,.35)}
-.demo-sw small{font:700 9.5px/1 Cinzel,serif;letter-spacing:.16em;color:#cfb0e8;margin:0 4px}
-.demo-sw button{padding:7px 11px;border-radius:999px;border:1px solid rgba(196,160,255,.45);background:transparent;font:500 15px/1 'EB Garamond',Georgia,serif;cursor:pointer}
-.demo-sw button.on{background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;border-color:#fff}
 .safe{margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(155deg,rgba(124,58,237,.35),rgba(46,16,80,.5));border:1px solid rgba(196,160,255,.4);font:400 17px/1.4 'EB Garamond',Georgia,serif;color:#f3eaff}
 .safe a{color:#fff;font-weight:600}
 .help em{background:#5a1d9a;font-size:10.5px}
@@ -170,9 +166,6 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 </head>
 <body>
 <main class="wrap">
-  <div class="demo-sw" role="tablist" aria-label="Demo konusu"><small>DEMO KONU</small>
-    <button data-t="consumer" class="on">Tüketici</button><button data-t="gov">Devlet işi</button><button data-t="serious">Ağır vaka</button>
-  </div>
   <h1 id="h1">Şikayetin Hazır</h1>
   <p class="sub" id="sub"></p>
   <div class="power" id="power">
@@ -321,7 +314,6 @@ if (window.top !== window) document.documentElement.classList.add('in-frame');
   function setTopic(k){
     C = Object.assign({}, T[k], { inst: T[k].inst.slice() }); S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:false };
     C.inst.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
-    document.querySelectorAll('.demo-sw button').forEach(function(b){ b.classList.toggle('on', b.dataset.t === k); });
     $('sub').textContent = C.sub;
     $('owed').innerHTML = C.owed; $('owed').hidden = !C.owed;
     $('power').hidden = !C.game; $('quote').hidden = !C.game; $('safe').hidden = C.game;
@@ -476,7 +468,6 @@ if (window.top !== window) document.documentElement.classList.add('in-frame');
   }
 
   document.querySelectorAll('.card').forEach(function(c){ c.onclick = function(){ open(c.dataset.s); }; });
-  document.querySelectorAll('.demo-sw button').forEach(function(b){ b.onclick = function(){ setTopic(b.dataset.t); }; });
   $('dim').onclick = close; $('sh-x').onclick = close;
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && cur) close(); });
 
