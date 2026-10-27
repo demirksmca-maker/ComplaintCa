@@ -1,7 +1,7 @@
 (function(){
   if(document.getElementById('cc-foot'))return;
   var s=document.createElement('style');
-  s.textContent='#cc-foot{background:#0f2952;color:rgba(255,255,255,.72);font:13px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:26px 16px 30px;margin-top:32px}'
+  s.textContent='#cc-foot{background:#520f47;color:rgba(255,255,255,.72);font:13px/1.6 Inter,system-ui,sans-serif;text-align:center;padding:26px 16px 30px;margin-top:32px}'
    +'#cc-foot b{display:block;color:#fff;font:700 14px Cinzel,Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}'
    +'#cc-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-bottom:10px}'
    +'#cc-foot a{color:#fff;text-decoration:none;opacity:.9}#cc-foot a:hover{text-decoration:underline;opacity:1}'

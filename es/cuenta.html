@@ -9,32 +9,32 @@
 <link rel="icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#d9b55a;--gold2:#e6c98a;--cream:#f6e7bf;--mute:#a9b0c4;--red:#d52b1e}
+:root{--gold:#cfb0e8;--gold2:#cfb0e8;--cream:#ddc6ef;--mute:#a9b0c4;--red:#d52b1e}
 *{box-sizing:border-box}
-html{background:#0a1a38}
-body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-apple-system,'Segoe UI',Inter,system-ui,sans-serif;
-  background:radial-gradient(75% 40% at 50% 18%,#16305c 0%,#0b1d3d 60%,#071326 100%) fixed}
+html{background:#380a31}
+body{margin:0;min-height:100vh;color:#f2eef6;text-align:center;font-family:-apple-system,'Segoe UI',Inter,system-ui,sans-serif;
+  background:radial-gradient(75% 40% at 50% 18%,#4e165c 0%,#3d0b35 60%,#260721 100%) fixed}
 .wrap{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 26px) 18px 44px}
 
 /* Head: everything on the centre line, like the complaint panel */
 .kicker{font:700 1.05rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;padding-left:.42em;color:var(--cream)}
 .emblem{display:block;width:190px;height:190px;margin:22px auto 6px;border-radius:50%;object-fit:cover;
   -webkit-mask-image:radial-gradient(circle,#000 58%,transparent 72%);mask-image:radial-gradient(circle,#000 58%,transparent 72%);
-  filter:drop-shadow(0 0 22px rgba(230,195,92,.35))}
+  filter:drop-shadow(0 0 22px rgba(207,176,232,.35))}
 .name{position:relative;width:max-content;margin:6px auto 0;padding:6px 0 6px .42em;font:700 1.9rem/1 'Cinzel',Georgia,serif;letter-spacing:.42em;color:#fff;animation:sirenTxt 6.4s linear infinite}
 .name::before,.name::after{content:"";position:absolute;top:-22px;bottom:-22px;width:72%;border-radius:50%;z-index:-1;filter:blur(16px);opacity:0}
-.name::before{left:-20%;background:radial-gradient(closest-side,#2f8bff,rgba(47,139,255,.5) 55%,transparent);animation:sirenB 6.4s linear infinite}
+.name::before{left:-20%;background:radial-gradient(closest-side,#972fff,rgba(151,47,255,.5) 55%,transparent);animation:sirenB 6.4s linear infinite}
 .name::after{right:-20%;background:radial-gradient(closest-side,#ff2d78,rgba(255,45,120,.5) 55%,transparent);animation:sirenR 6.4s linear infinite}
 @keyframes sirenB{0%,4%{opacity:.9}12%,16%{opacity:.08}20%,26%{opacity:.9}34%,100%{opacity:.08}}
 @keyframes sirenR{0%,48%{opacity:.08}50%,54%{opacity:.9}62%,66%{opacity:.08}70%,76%{opacity:.9}84%,100%{opacity:.08}}
-@keyframes sirenTxt{0%,26%{text-shadow:-3px 0 10px #4aa3ff,0 0 28px #2f8bff}34%,48%{text-shadow:0 0 4px rgba(255,255,255,.5)}50%,76%{text-shadow:3px 0 10px #ff4f93,0 0 28px #ff2d78}84%,100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
+@keyframes sirenTxt{0%,26%{text-shadow:-3px 0 10px #a44aff,0 0 28px #972fff}34%,48%{text-shadow:0 0 4px rgba(255,255,255,.5)}50%,76%{text-shadow:3px 0 10px #ff4f93,0 0 28px #ff2d78}84%,100%{text-shadow:0 0 4px rgba(255,255,255,.5)}}
 @media (prefers-reduced-motion:reduce){.name,.name::before,.name::after{animation:none}}
 .seal{width:84px;height:84px;margin:22px auto 0;border-radius:50%;display:grid;place-items:center;
   background:radial-gradient(circle at 35% 30%,#fff,#f1f1f1 60%,#d9d9d9);box-shadow:0 0 0 3px var(--gold),0 0 0 6px rgba(213,43,30,.85),0 8px 22px rgba(0,0,0,.5)}
 .seal svg{width:62%;height:62%}
 .title{margin:22px 0 4px;font:700 1.35rem/1.1 'Cinzel',Georgia,serif;letter-spacing:.22em;padding-left:.22em;color:var(--cream)}
 .since{font:italic 1rem 'EB Garamond',Georgia,serif;color:var(--gold2)}
-.rule{height:1.5px;margin:20px 30px;background:linear-gradient(90deg,transparent,var(--gold) 25%,#f3dc8c 50%,var(--gold) 75%,transparent)}
+.rule{height:1.5px;margin:20px 30px;background:linear-gradient(90deg,transparent,var(--gold) 25%,#cfb0e8 50%,var(--gold) 75%,transparent)}
 .sec{font:700 .66rem/1 'Cinzel',Georgia,serif;letter-spacing:.34em;padding-left:.34em;color:var(--gold2);margin:26px 0 16px}
 
 /* Complaints as medals: gold rim, icon, a ribbon in the status colour */
@@ -42,40 +42,40 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .medal{position:relative;width:118px;background:none;border:0;padding:0;color:inherit;cursor:pointer}
 .ribbon{width:46px;height:34px;margin:0 auto -6px;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%)}
 .r-reply{background:repeating-linear-gradient(90deg,#1d7a52 0 8px,#5fe0a0 8px 12px)}
-.r-sent{background:repeating-linear-gradient(90deg,#8a6a1e 0 8px,#f3dc8c 8px 12px)}
+.r-sent{background:repeating-linear-gradient(90deg,#5a2088 0 8px,#cfb0e8 8px 12px)}
 .r-closed{background:repeating-linear-gradient(90deg,#3a4256 0 8px,#8a92a6 8px 12px)}
 .disc{position:relative;width:96px;height:96px;margin:0 auto;border-radius:50%;display:grid;place-items:center;
-  background:radial-gradient(circle at 35% 28%,#fbe9a6,#d9b55a 45%,#8a6a1e 100%);box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(138,106,30,.55),0 8px 20px rgba(0,0,0,.5)}
-.disc::after{content:"";position:absolute;inset:13px;border-radius:50%;border:1.5px dashed rgba(60,40,10,.45)}
-.disc svg{width:38px;height:38px;color:#3b2a0c}
-.medal.on .disc{box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(138,106,30,.55),0 0 0 3px #fff6dc,0 0 26px rgba(243,220,140,.6)}
+  background:radial-gradient(circle at 35% 28%,#d4b7ea,#cfb0e8 45%,#5a2088 100%);box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(90,32,136,.55),0 8px 20px rgba(0,0,0,.5)}
+.disc::after{content:"";position:absolute;inset:13px;border-radius:50%;border:1.5px dashed rgba(57,13,50,.45)}
+.disc svg{width:38px;height:38px;color:#3a0d32}
+.medal.on .disc{box-shadow:inset 0 0 0 4px rgba(255,255,255,.18),inset 0 0 0 9px rgba(90,32,136,.55),0 0 0 3px #efe4f7,0 0 26px rgba(207,176,232,.6)}
 .pip{position:absolute;top:4px;right:6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:#fff;
   background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%);box-shadow:0 2px 4px rgba(0,0,0,.4)}
 .medal b{display:block;margin-top:10px;font:700 .62rem/1.2 'Cinzel',Georgia,serif;letter-spacing:.14em;color:var(--cream)}
 .medal small{display:block;margin-top:4px;font:italic .9rem 'EB Garamond',Georgia,serif;color:var(--gold2)}
 
 /* The opened record: centred parchment */
-.record{display:none;margin:26px auto 0;max-width:440px;padding:22px 20px 18px;border-radius:6px;color:#2b2214;font-family:'EB Garamond',Georgia,serif;
-  background:radial-gradient(120% 80% at 20% 10%,rgba(255,255,255,.35),transparent 60%),repeating-linear-gradient(0deg,rgba(90,60,20,.035) 0 1px,transparent 1px 4px),linear-gradient(180deg,#f2e7c9,#e6d4a8);
-  box-shadow:inset 0 0 0 1px #b48a3c,inset 0 0 0 4px #f2e7c9,inset 0 0 0 5px rgba(140,100,40,.55),0 12px 28px rgba(0,0,0,.45)}
+.record{display:none;margin:26px auto 0;max-width:440px;padding:22px 20px 18px;border-radius:6px;color:#2b1427;font-family:'EB Garamond',Georgia,serif;
+  background:radial-gradient(120% 80% at 20% 10%,rgba(255,255,255,.35),transparent 60%),repeating-linear-gradient(0deg,rgba(59,21,89,.035) 0 1px,transparent 1px 4px),linear-gradient(180deg,#e0cbf0,#cfb0e8);
+  box-shadow:inset 0 0 0 1px #cfb2e6,inset 0 0 0 4px #e0cbf0,inset 0 0 0 5px rgba(96,40,140,.55),0 12px 28px rgba(0,0,0,.45)}
 .record.show{display:block;animation:rise .35s ease}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
-.rec-h{font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.32em;padding-left:.32em;color:#7a5a22}
+.rec-h{font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.32em;padding-left:.32em;color:#53227a}
 .rec-t{margin:8px 0 2px;font-size:1.25rem;font-weight:600}
-.rec-ref{font-style:italic;color:#6b5634}
+.rec-ref{font-style:italic;color:#53346b}
 .path{display:flex;justify-content:center;align-items:center;margin:18px 0}
-.node{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 .72rem 'Cinzel',Georgia,serif;border:1.5px solid rgba(122,90,34,.45);color:#7a5a22;background:#efe2bf}
-.node.done{border:0;color:#2b2214;background:radial-gradient(circle at 35% 30%,#f3dc8c,#c9a052)}
+.node{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 .72rem 'Cinzel',Georgia,serif;border:1.5px solid rgba(83,34,122,.45);color:#53227a;background:#dac1ed}
+.node.done{border:0;color:#2b1427;background:radial-gradient(circle at 35% 30%,#cfb0e8,#cfb1e7)}
 .node.now{border:0;color:#f6dccb;background:radial-gradient(circle at 35% 30%,#b8473a,#7e2219 70%)}
-.link{width:34px;height:2px;background:rgba(122,90,34,.35)}.link.done{background:#c9a052}
-.labels{display:flex;justify-content:center;gap:12px;font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;color:#7a5a22;margin:-8px 0 16px}
+.link{width:34px;height:2px;background:rgba(83,34,122,.35)}.link.done{background:#cfb1e7}
+.labels{display:flex;justify-content:center;gap:12px;font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;color:#53227a;margin:-8px 0 16px}
 .labels span{width:52px}
 .quote{font-size:1.05rem;line-height:1.5;margin:0 0 6px}
 .quote::before{content:"“";font:700 2rem/0 'Cinzel',Georgia,serif;color:#8a2a1f;vertical-align:-.45em;margin-right:4px}
-.from{font-style:italic;color:#6b5634;font-size:.9rem}
+.from{font-style:italic;color:#53346b;font-size:.9rem}
 .acts{display:flex;justify-content:center;gap:10px;margin-top:16px}
-.btn{border-radius:999px;padding:10px 16px;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.14em;cursor:pointer;border:1px solid #b48a3c;background:transparent;color:#5b1e14}
-.btn.gold{border:0;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a)}
+.btn{border-radius:999px;padding:10px 16px;font:700 .62rem/1 'Cinzel',Georgia,serif;letter-spacing:.14em;cursor:pointer;border:1px solid #cfb2e6;background:transparent;color:#5b1e14}
+.btn.gold{border:0;color:#190616;background:linear-gradient(180deg,#cfb0e8,#cfb0e8)}
 
 /* Honours: badges earned by using the platform */
 .honours{display:flex;justify-content:center;gap:18px}
@@ -86,7 +86,7 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .hon small{display:block;margin-top:8px;font:700 .5rem/1.3 'Cinzel',Georgia,serif;letter-spacing:.1em;color:var(--cream)}
 .hon.off small{color:#6f7891}
 
-.cta{display:inline-block;margin-top:30px;padding:14px 30px;border-radius:999px;border:0;font:700 .72rem/1 'Cinzel',Georgia,serif;letter-spacing:.2em;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a);box-shadow:0 8px 20px rgba(0,0,0,.4);cursor:pointer}
+.cta{display:inline-block;margin-top:30px;padding:14px 30px;border-radius:999px;border:0;font:700 .72rem/1 'Cinzel',Georgia,serif;letter-spacing:.2em;color:#190616;background:linear-gradient(180deg,#cfb0e8,#cfb0e8);box-shadow:0 8px 20px rgba(0,0,0,.4);cursor:pointer}
 .foot{margin-top:26px;color:var(--mute);font-size:.74rem;line-height:1.8}
 .foot a{color:var(--mute)}
 .demo{margin-top:14px;color:#6f7891;font-size:.68rem}
@@ -96,12 +96,12 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .pin{width:100%;height:100%;display:block}
 
 /* Opening scene (3 s) */
-.intro{position:fixed;inset:0;z-index:50;background:#03070f;display:grid;place-items:center;overflow:hidden;transition:opacity .6s ease}
+.intro{position:fixed;inset:0;z-index:50;background:#0f030d;display:grid;place-items:center;overflow:hidden;transition:opacity .6s ease}
 .intro.out{opacity:0;pointer-events:none}
 .intro::before,.intro::after{content:"";position:absolute;left:0;right:0;height:11vh;background:#000;z-index:3;transition:transform .8s ease}
 .intro::before{top:0}.intro::after{bottom:0}
 .intro.play::before{transform:translateY(-30%)}.intro.play::after{transform:translateY(30%)}
-.spot{position:absolute;inset:0;background:radial-gradient(38% 30% at 50% 46%,rgba(255,236,190,.22),transparent 70%);opacity:0;transition:opacity 1s ease}
+.spot{position:absolute;inset:0;background:radial-gradient(38% 30% at 50% 46%,rgba(225,205,240,.22),transparent 70%);opacity:0;transition:opacity 1s ease}
 .intro.play .spot{opacity:1}
 .stage{position:relative;z-index:2;text-align:center;perspective:900px}
 .stage .pin{width:230px;height:230px;margin:0 auto;opacity:0;transform:rotateY(100deg) scale(.55);filter:drop-shadow(0 14px 26px rgba(0,0,0,.7))}
@@ -113,7 +113,7 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 @keyframes sweep{0%{left:-60%;opacity:1}100%{left:130%;opacity:1}}
 .who{margin-top:22px;font:700 1.1rem/1 'Cinzel',Georgia,serif;letter-spacing:.5em;padding-left:.5em;color:var(--cream);opacity:0;transform:translateY(8px);transition:all .6s ease 1.9s}
 .intro.play .who{opacity:1;transform:none}
-.tap{position:relative;z-index:4;margin-top:30px;padding:14px 26px;border-radius:999px;border:1px solid rgba(230,201,138,.5);background:rgba(255,255,255,.04);color:var(--cream);font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;cursor:pointer}
+.tap{position:relative;z-index:4;margin-top:30px;padding:14px 26px;border-radius:999px;border:1px solid rgba(207,176,232,.5);background:rgba(255,255,255,.04);color:var(--cream);font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.24em;cursor:pointer}
 .intro.play .tap{display:none}
 .skip{position:absolute;right:16px;bottom:calc(11vh + 12px);z-index:4;background:none;border:0;color:#6f7891;font-size:.72rem;cursor:pointer}
 
@@ -124,8 +124,8 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 .head .since{font-size:.92rem}
 .head .emblem{width:96px;height:96px;margin:0;flex:none}
 /* One line per complaint; the record opens below on tap */
-#records{border-top:1px solid rgba(230,201,138,.22);text-align:left}
-.rr{border-bottom:1px solid rgba(230,201,138,.22)}
+#records{border-top:1px solid rgba(207,176,232,.22);text-align:left}
+.rr{border-bottom:1px solid rgba(207,176,232,.22)}
 .rr-sum{width:100%;display:flex;align-items:center;gap:10px;padding:15px 2px;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .rr-txt{flex:1;min-width:0}
 .rr-txt b{display:block;color:var(--cream);font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -143,19 +143,19 @@ body{margin:0;min-height:100vh;color:#eef0f6;text-align:center;font-family:-appl
 
 .intro[hidden]{display:none}
 a.btn,a.cta{text-decoration:none;display:inline-block}
-.login{max-width:420px;margin:30px auto 0;padding:22px 20px;border-radius:18px;border:1px solid rgba(230,201,138,.3);background:rgba(255,255,255,.03);text-align:center}
+.login{max-width:420px;margin:30px auto 0;padding:22px 20px;border-radius:18px;border:1px solid rgba(207,176,232,.3);background:rgba(255,255,255,.03);text-align:center}
 .login h2{margin:0 0 8px;font:700 1rem/1.3 'Cinzel',Georgia,serif;letter-spacing:.1em;color:var(--cream)}
 .login p{margin:0 0 14px;color:var(--mute);font-size:.88rem;line-height:1.5}
-.in{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(230,201,138,.3);border-radius:10px;color:#fff;padding:12px;font-size:1rem;margin:0 0 10px}
-.gbtn{width:100%;border:0;border-radius:999px;padding:13px;font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.16em;color:#1a1405;background:linear-gradient(180deg,#f3dc8c,#d9b55a);cursor:pointer}
+.in{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(207,176,232,.3);border-radius:10px;color:#fff;padding:12px;font-size:1rem;margin:0 0 10px}
+.gbtn{width:100%;border:0;border-radius:999px;padding:13px;font:700 .7rem/1 'Cinzel',Georgia,serif;letter-spacing:.16em;color:#190616;background:linear-gradient(180deg,#cfb0e8,#cfb0e8);cursor:pointer}
 .gbtn:disabled{opacity:.6}
 .err{color:#ff8a98;font-size:.84rem;min-height:1.2em;margin:10px 0 0}
 .empty{color:var(--mute);font-style:italic;padding:18px 0}
 .tag{font:700 .5rem/1 'Cinzel',Georgia,serif;letter-spacing:.12em;color:#ff8a98;margin-left:6px}
 .rr .quote{white-space:pre-wrap}
 .langs{margin-top:10px}
-.langs select{background:transparent;border:1px solid rgba(230,201,138,.3);border-radius:8px;color:var(--mute);padding:4px 8px;font-size:.74rem}
-.langs option{background:#0b1d3d}
+.langs select{background:transparent;border:1px solid rgba(207,176,232,.3);border-radius:8px;color:var(--mute);padding:4px 8px;font-size:.74rem}
+.langs option{background:#3d0b35}
 html[dir=rtl] .head,html[dir=rtl] #records{text-align:right}
 </style>
 </head>
@@ -238,19 +238,19 @@ function drawPin(el, id){
   const ticks = Array.from({ length: 72 }, (_, i) => '<rect x="98.6" y="3" width="2.8" height="11" rx="1" transform="rotate(' + (i * 5) + ' 100 100) skewX(-28)" fill="url(#rimDark' + id + ')"/>').join('');
   el.innerHTML =
     '<defs>' +
-      '<linearGradient id="rim' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#d9b55a"/><stop offset=".65" stop-color="#8a6a1e"/><stop offset="1" stop-color="#f3dc8c"/></linearGradient>' +
-      '<linearGradient id="rimDark' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a5a18"/><stop offset="1" stop-color="#3b2a0c"/></linearGradient>' +
-      '<radialGradient id="enamel' + id + '" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fffdf6"/><stop offset="1" stop-color="#e9e2cf"/></radialGradient>' +
+      '<linearGradient id="rim' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3d1f2"/><stop offset=".35" stop-color="#cfb0e8"/><stop offset=".65" stop-color="#5a2088"/><stop offset="1" stop-color="#cfb0e8"/></linearGradient>' +
+      '<linearGradient id="rimDark' + id + '" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4e1c76"/><stop offset="1" stop-color="#3a0d32"/></linearGradient>' +
+      '<radialGradient id="enamel' + id + '" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#fbf8fd"/><stop offset="1" stop-color="#decfe9"/></radialGradient>' +
       '<radialGradient id="red' + id + '" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="#e2453a"/><stop offset=".7" stop-color="#b3211a"/><stop offset="1" stop-color="#7e1510"/></radialGradient>' +
       '<path id="arc' + id + '" d="M100 100 m-61 0 a61 61 0 1 1 122 0 a61 61 0 1 1 -122 0"/>' +
     '</defs>' +
     '<circle cx="100" cy="100" r="97" fill="url(#rim' + id + ')"/>' + ticks +
     '<circle cx="100" cy="100" r="80" fill="url(#rim' + id + ')"/>' +
     '<circle cx="100" cy="100" r="76" fill="url(#enamel' + id + ')"/>' +
-    '<text font-family="Cinzel,Georgia,serif" font-weight="700" font-size="12.5" letter-spacing="2.2" fill="#2b2214"><textPath href="#arc' + id + '" startOffset="0">' + PIN_TEXT + '</textPath></text>' +
+    '<text font-family="Cinzel,Georgia,serif" font-weight="700" font-size="12.5" letter-spacing="2.2" fill="#2b1427"><textPath href="#arc' + id + '" startOffset="0">' + PIN_TEXT + '</textPath></text>' +
     '<circle cx="100" cy="100" r="49" fill="url(#rim' + id + ')"/>' +
     '<circle cx="100" cy="100" r="46" fill="url(#red' + id + ')"/>' +
-    '<g transform="translate(100 98) scale(.62) translate(-50 -50)"><path fill="url(#rim' + id + ')" stroke="#7a5a18" stroke-width="1.2" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></g>' +
+    '<g transform="translate(100 98) scale(.62) translate(-50 -50)"><path fill="url(#rim' + id + ')" stroke="#4e1c76" stroke-width="1.2" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></g>' +
     '<path d="M38 64 A70 70 0 0 1 96 30" stroke="rgba(255,255,255,.55)" stroke-width="3" fill="none" stroke-linecap="round"/>';
 }
 drawPin(document.getElementById('pinIntro'), 'b');
