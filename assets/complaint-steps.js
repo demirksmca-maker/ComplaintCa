@@ -46,7 +46,7 @@
   var V = {}, tmp = {}, cur = null, root, companies = null;
 
   var CSS = [
-    '#cc-steps{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(14,16,21,.72),rgba(14,16,21,.86)),#0e1015 url(/assets/brand/flag-blue-wave.svg) center/cover no-repeat}',
+    '#cc-steps{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.svg) center/cover no-repeat}',
     '#cc-steps.on{display:flex;flex-direction:column}',
     '#cc-steps *{box-sizing:border-box}',
     'body.cc-steps-on .amain{display:none!important}',
