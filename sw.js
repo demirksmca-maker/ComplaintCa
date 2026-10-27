@@ -23,3 +23,7 @@ self.addEventListener('notificationclick', function(e){
     return self.clients.openWindow('/shield.html');
   }));
 });
+// Dias Panel deploy push (api/_shield-push.js): no payload, fixed text.
+self.addEventListener('push', function(e){
+  e.waitUntil(self.registration.showNotification('Dias Panel', { body: '✨ Yeni değişiklik geldi', icon: '/icons/icon-192.png', tag: 'dias-upd' }));
+});

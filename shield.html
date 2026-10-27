@@ -1321,11 +1321,28 @@
         });
       });
     }
+    // Web Push (api/_shield-push.js): saves this device so a new deploy
+    // notifies it even while the app is closed.
+    function subscribe() {
+      if (!getKey() || !('PushManager' in window) || Notification.permission !== 'granted') return;
+      var h = { 'x-shield-key': getKey() };
+      Promise.all([navigator.serviceWorker.ready, fetch('/api/shield?push=1', { headers: h, cache: 'no-store' }).then(function (r) { return r.json(); })])
+        .then(function (a) {
+          var k = atob(a[1].key.replace(/-/g, '+').replace(/_/g, '/')), key = new Uint8Array(k.length);
+          for (var i = 0; i < k.length; i++) key[i] = k.charCodeAt(i);
+          return a[0].pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+        })
+        .then(function (sub) {
+          h['Content-Type'] = 'application/json';
+          return fetch('/api/shield?push=1', { method: 'POST', headers: h, body: JSON.stringify(sub) });
+        }).catch(function () {});
+    }
     // Ask for notification permission once, on the first tap (browsers need a gesture).
     document.addEventListener('click', function ask() {
       document.removeEventListener('click', ask);
-      if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+      if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(subscribe);
     });
+    if ('Notification' in window) subscribe();
     document.getElementById('updBtn').onclick = function () { location.reload(); };
     check();
     setInterval(check, 30000);
