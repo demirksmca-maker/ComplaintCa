@@ -721,7 +721,6 @@ textarea{resize:vertical;min-height:90px}
 @media (prefers-reduced-motion:reduce){#cc-choice *,#cc-choice *::after{animation:none!important;transition:none!important}}
 </style>
 <div id="cc-choice" role="dialog" aria-modal="true" aria-labelledby="cc-choice-t">
-  <button type="button" class="cc-x" aria-label="Close" onclick="ccChoiceClose()">×</button>
   <div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="720" height="720"></div>
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
@@ -746,6 +745,8 @@ function ccChoiceComplain(btn){
   })();
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
+// No close button: tapping the empty frame/velvet around the content closes it.
+document.getElementById('cc-choice').addEventListener('click',function(e){if(e.target===this)ccChoiceClose()});
 </script>
 <script defer src="/assets/complaint-steps.js"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
