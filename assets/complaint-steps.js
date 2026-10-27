@@ -354,40 +354,42 @@
   }
   function doveFly(pe, to){
     var fl = q('.cs-fly'); if (!fl) { fl = document.createElement('div'); fl.className = 'cs-fly'; fl.setAttribute('aria-hidden', 'true'); root.appendChild(fl); }
-    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect(), qt = q('.cs-quote').getBoundingClientRect();
-    // The dove keeps to the strip just above the quote: out along it, toss, and back the same way.
-    var x0 = p.left - 2, y0 = p.top - 20, yl = qt.top - 50, xs = x0 + 18, xe = Math.max(b.left - 58, xs + 60), d = xe - xs;
-    function T(x, y, f, r){ return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + .9 * f + ',.9) rotate(' + r * f + 'deg)' }; }
-    function run(k, ms, ease, cb){ var a = fl.animate(k, { duration: ms, easing: ease || 'linear', fill: 'forwards' }); a.onfinish = cb; }
-    function cruise(f){ var k = [], n = 6; for (var i = 0; i <= n; i++) { var x = f > 0 ? xs + d * i / n : xe - d * i / n; k.push(T(x, yl + (i % 2 ? -5 : 4), f, i % 2 ? -3 : 2)); } return k; }
-    fl.className = 'cs-fly'; fl.style.display = 'block'; pe.classList.add('off');
-    run([T(x0, y0, 1, 0), T(xs - 6, yl + 14, 1, -16), T(xs, yl + 4, 1, 2)], 600, 'ease-out', function(){
-      run(cruise(1), 1700, 'ease-in-out', function(){
-        // Head toss: rear back, then flick the letter forward into the badge.
-        run([T(xe, yl + 4, 1, 2), T(xe - 3, yl - 2, 1, -18), T(xe + 4, yl + 6, 1, 14), T(xe, yl + 4, 1, 0)], 520, 'ease-in-out', function(){
-          setTimeout(function(){ doveBack(); }, 150);
-        });
-        setTimeout(function(){
-          fl.className = 'cs-fly empty';
-          var env = document.createElement('div'); env.className = 'cs-env'; root.appendChild(env);
-          var sx = xe + 40, sy = yl + 34, tx = b.left + b.width / 2 - 10, ty = b.top + b.height / 2 - 6;
-          env.animate([
-            { transform: 'translate(' + sx + 'px,' + sy + 'px) scale(.6) rotate(-20deg)' },
-            { transform: 'translate(' + (sx + tx) / 2 + 'px,' + (Math.min(sy, ty) - 26) + 'px) scale(.9) rotate(160deg)', offset: .45 },
-            { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(.5) rotate(350deg)', opacity: .2 }
-          ], { duration: 650, easing: 'cubic-bezier(.3,0,.5,1)' }).onfinish = function(){ env.remove(); to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); };
-        }, 300);
-      });
-    });
-    function doveBack(){
-      run(cruise(-1), 1700, 'ease-in-out', function(){
-        run([T(xs, yl + 4, -1, 2), T(xs - 6, yl + 14, -1, 10), T(x0 + 2, y0 - 2, 1, -6), T(x0, y0, 1, 0)], 650, 'ease-in', function(){
-          fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); });
-          pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
-          setTimeout(function(){ pe.classList.remove('fl'); doveRun(); }, 700);
-        });
-      });
+    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect();
+    // One symmetric arch from the perch to beside the badge and back on the same arch;
+    // the peak stays just above the perch so the flight keeps to the strip over the quote.
+    var x0 = p.left - 2, y0 = p.top - 20, xe = Math.max(b.left - 56, x0 + 80), H = 16, n = 14;
+    function at(t, f){
+      var x = x0 + (xe - x0) * t, y = y0 - 4 * H * t * (1 - t), r = Math.atan2(-4 * H * (1 - 2 * t), xe - x0) * 180 / Math.PI * .6;
+      return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + .9 * f + ',.9) rotate(' + r * f + 'deg)' };
     }
+    function arch(f){ var k = []; for (var i = 0; i <= n; i++) k.push(at(f > 0 ? i / n : 1 - i / n, f)); return k; }
+    function run(k, ms, cb){ fl.animate(k, { duration: ms, easing: 'ease-in-out', fill: 'forwards' }).onfinish = cb; }
+    fl.className = 'cs-fly'; fl.style.display = 'block'; pe.classList.add('off');
+    run(arch(1), 2000, function(){
+      var e = at(1, 1).transform.replace(/rotate\([^)]*\)/, '');
+      // Head toss: rear back, flick forward; the letter leaves the beak on the flick.
+      run([{ transform: e + 'rotate(0deg)' }, { transform: e + 'rotate(-16deg)' }, { transform: e + 'rotate(12deg)' }, { transform: e + 'rotate(0deg)' }], 520, function(){
+        setTimeout(function(){
+          run([{ transform: e.replace('scale(.9', 'scale(-.9') + 'rotate(0deg)' }, at(1, -1)], 120, function(){
+            run(arch(-1), 2000, function(){
+              fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); });
+              pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
+              setTimeout(function(){ pe.classList.remove('fl'); doveRun(); }, 700);
+            });
+          });
+        }, 120);
+      });
+      setTimeout(function(){
+        fl.className = 'cs-fly empty';
+        var env = document.createElement('div'); env.className = 'cs-env'; root.appendChild(env);
+        var sx = xe + 40, sy = y0 + 34, tx = b.left + b.width / 2 - 10, ty = b.top + b.height / 2 - 6;
+        env.animate([
+          { transform: 'translate(' + sx + 'px,' + sy + 'px) scale(.6) rotate(-20deg)' },
+          { transform: 'translate(' + (sx + tx) / 2 + 'px,' + (Math.min(sy, ty) - 18) + 'px) scale(.85) rotate(160deg)', offset: .45 },
+          { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(.5) rotate(350deg)', opacity: .2 }
+        ], { duration: 600, easing: 'cubic-bezier(.3,0,.5,1)' }).onfinish = function(){ env.remove(); to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); };
+      }, 300);
+    });
   }
   function sync(){ q('.cs-prog').textContent = STEPS.filter(function(s){ return V[s[0]]; }).length + '/6'; q('.cs-go').disabled = !REQ.every(function(k){ return V[k]; }); }
 
