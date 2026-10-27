@@ -125,6 +125,7 @@
     '#cc-steps .cs-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}',
     '#cc-steps .cs-mini{padding:10px 14px;border-radius:999px;border:1.5px solid rgba(196,160,255,.5);background:transparent;color:#f7eef1;font:700 11.5px/1 Cinzel,Georgia,serif;letter-spacing:.12em;cursor:pointer}',
     '#cc-steps .cs-mini.asya{background:linear-gradient(90deg,rgba(110,45,180,.55),rgba(130,60,210,.55))}',
+    '#cc-steps .cs-addr{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8px}#cc-steps select.cs-in{appearance:none;-webkit-appearance:none;cursor:pointer}#cc-steps select.cs-in option{background:#1a0612;color:#f7eef1}#cc-steps .cs-st{margin-top:8px}',
     '#cc-steps .cs-sugg{display:grid;gap:8px;margin-top:12px}',
     '#cc-steps .cs-sg{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:14px;background:rgba(24,4,16,.5);border:1.5px solid rgba(196,160,255,.35);cursor:pointer;text-align:left;color:#f7eef1;font:500 17px/1.3 \'EB Garamond\',Georgia,serif}',
     '#cc-steps .cs-sg small{display:block;font:italic 400 14px/1.4 \'EB Garamond\',Georgia,serif;color:rgba(243,230,234,.65)}',
@@ -245,20 +246,28 @@
     return fetch('https://nominatim.openstreetmap.org/search?format=json&limit=4&addressdetails=1&countrycodes=ca&dedupe=1&q=' + encodeURIComponent(qs), { headers:{ 'Accept-Language':'en' } })
       .then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
   }
+  var PROV = [['AB','Alberta'],['BC','British Columbia'],['MB','Manitoba'],['NB','New Brunswick'],['NL','Newfoundland and Labrador'],['NS','Nova Scotia'],['NT','Northwest Territories'],['NU','Nunavut'],['ON','Ontario'],['PE','Prince Edward Island'],['QC','Quebec'],['SK','Saskatchewan'],['YT','Yukon']];
+  function osmPart(a){ a = a || {}; return { city: a.city || a.town || a.village || a.municipality || '', pv: a['ISO3166-2-lvl4'] ? a['ISO3166-2-lvl4'].split('-')[1] : '', st: [a.house_number, a.road].filter(Boolean).join(' ') }; }
   function osmCity(a){ a = a || {}; return [a.city || a.town || a.village || a.municipality || '', a['ISO3166-2-lvl4'] ? a['ISO3166-2-lvl4'].split('-')[1] : ''].filter(Boolean).join(', '); }
 
   var S = {
-    loc: { b: function(){ return '<input class="cs-in" type="text" id="cs-f" maxlength="200" placeholder="City or postal code, e.g. Toronto or M5V 3L9" value="' + esc(V.loc || '') + '">' +
-        '<div class="cs-row"><button type="button" class="cs-mini" id="cs-geo">📍 Use my location</button></div><div class="cs-sugg" id="cs-sg"></div>'; },
+    loc: { b: function(){ var L = V.locP || {};
+        return '<div class="cs-addr"><select class="cs-in" id="cs-pv" aria-label="Province"><option value="">Province</option>' +
+          PROV.map(function(p){ return '<option value="' + p[0] + '"' + (L.pv === p[0] ? ' selected' : '') + '>' + p[1] + '</option>'; }).join('') + '</select>' +
+          '<input class="cs-in" type="text" id="cs-f" maxlength="80" autocomplete="address-level2" placeholder="City" aria-label="City" value="' + esc(L.city || '') + '"></div>' +
+          '<input class="cs-in cs-st" type="text" id="cs-st" maxlength="120" autocomplete="street-address" placeholder="Street (optional)" aria-label="Street" value="' + esc(L.st || '') + '">' +
+          '<div class="cs-row"><button type="button" class="cs-mini" id="cs-geo">📍 Use my location</button></div><div class="cs-sugg" id="cs-sg"></div>'; },
       init: function(){
-        var f = q('#cs-f'), sg = q('#cs-sg'), t = 0;
+        var f = q('#cs-f'), pv = q('#cs-pv'), st = q('#cs-st'), sg = q('#cs-sg'), t = 0;
+        var fill = function(a){ a = a || {}; var c = osmPart(a); if (c.city) f.value = c.city; if (c.pv) pv.value = c.pv; if (c.st) st.value = c.st; };
         q('#cs-geo').onclick = function(){ if (!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(function(p){
-          fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=10&addressdetails=1&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(function(r){ return r.json(); }).then(function(d){ f.value = osmCity(d.address); }).catch(function(){}); }, function(){}, { timeout:8000 }); };
+          fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=17&addressdetails=1&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(function(r){ return r.json(); }).then(function(d){ fill(d.address); }).catch(function(){}); }, function(){}, { timeout:8000 }); };
         f.oninput = function(){ clearTimeout(t); var v = f.value.trim(); if (v.length < 3) { sg.innerHTML = ''; return; }
-          t = setTimeout(function(){ osm(v).then(function(rs){ sg.innerHTML = rs.map(function(r){ var c = osmCity(r.address) || r.display_name; return '<button type="button" class="cs-sg" data-v="' + esc(c) + '"><span>' + esc(c) + '</span></button>'; }).join('');
-            qa('#cs-sg .cs-sg').forEach(function(b){ b.onclick = function(){ f.value = b.dataset.v; sg.innerHTML = ''; }; }); }); }, 450); };
+          t = setTimeout(function(){ osm(v).then(function(rs){ sg.innerHTML = rs.map(function(r, i){ var c = osmCity(r.address) || r.display_name; return '<button type="button" class="cs-sg" data-i="' + i + '"><span>' + esc(c) + '</span></button>'; }).join('');
+            qa('#cs-sg .cs-sg').forEach(function(b){ b.onclick = function(){ var a = rs[b.dataset.i].address || {}; var c = osmPart(a); f.value = c.city || f.value; if (c.pv) pv.value = c.pv; sg.innerHTML = ''; }; }); }); }, 450); };
       },
-      get: function(){ return q('#cs-f').value.trim(); } },
+      get: function(){ var L = { st: q('#cs-st').value.trim(), city: q('#cs-f').value.trim(), pv: q('#cs-pv').value };
+        if (!L.city || !L.pv) return ''; V.locP = L; return [L.st, L.city, L.pv].filter(Boolean).join(', '); } },
     who: { b: function(){ return '<input class="cs-in" type="text" id="cs-f" maxlength="120" autocomplete="off" placeholder="Company, office, school, landlord…" value="' + esc(V.who || '') + '"><div class="cs-sugg" id="cs-sg"></div><p class="cs-hint">Not listed? Just type the name.</p>'; },
       init: function(){
         var f = q('#cs-f'), sg = q('#cs-sg'), t = 0;
@@ -330,7 +339,7 @@
   function closeSheet(){ q('.cs-scrim').classList.remove('on'); q('.cs-sheet').classList.remove('on'); cur = null; }
   function save(){
     var v = S[cur].get();
-    if (!v) { toast(cur === 'mail' ? 'Enter a valid email address.' : cur === 'topic' ? 'Pick a topic and what happened.' : 'Type or pick something first.'); return; }
+    if (!v) { toast(cur === 'mail' ? 'Enter a valid email address.' : cur === 'topic' ? 'Pick a topic and what happened.' : cur === 'loc' ? 'Pick a province and type a city.' : 'Type or pick something first.'); return; }
     V[cur] = v; var c = card(cur), sm = c.querySelector('small'); c.classList.add('done');
     sm.textContent = cur === 'proof' ? v.length + (v.length > 1 ? ' photos' : ' photo') : cur === 'what' ? v.slice(0, 40) + (v.length > 40 ? '…' : '') : v;
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
