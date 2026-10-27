@@ -270,12 +270,12 @@ export function institutionEmail(c, authorityName, draft, now = new Date()) {
 
 // What actually happened to the institution letter, in the admin's words.
 // "Not sent" (no e-mail on file, no authority) is not a failure — only a send
-// that was tried and bounced is.
+// that was tried and bounced is. Same wording as _DELIVERY in index.html.
+// The admin alert is live-only, so pilot/test outcomes never reach it.
 export function deliveryLine(inst, authority) {
   const s = inst && inst.status;
-  if (s === 'sent') return inst.pilot ? '🧪 pilot kutusuna gönderildi (gerçek kuruma değil)' : '✅ başarılı';
+  if (s === 'sent') return '✅ başarılı';
   if (s === 'failed') return '⚠ başarısız — gönderim denendi, kullanıcıya kendi e-postasından göndermesi önerildi';
-  if (s === 'test_skipped') return '🧪 test modu — gönderilmedi';
   if (s === 'form_only') return authority && authority.email
     ? '📝 gönderilmedi — kurumun e-posta adresi yok, kullanıcı resmi forma yönlendirildi'
     : '📝 gönderilmedi — kurumun e-posta adresi yok, kullanıcıya doğrudan iletişim önerildi';
@@ -283,14 +283,16 @@ export function deliveryLine(inst, authority) {
 }
 
 // Port of the admin heads-up sent only for high-priority complaints.
-export function adminEmail(c, authority, inst) {
-  const contact = authority && authority.email ? (_isMail(authority.email) ? authority.email : _authUrl(authority.email)) : '—';
+export function adminEmail(c, authority, inst, now = new Date()) {
+  const contact = authority && authority.email ? (_isMail(authority.email) ? authority.email : _authUrl(authority.email)) : ((authority && authority.phone) || '—');
   return {
     subject: '[🔴 Yüksek Öncelik] Yeni Şikayet — ' + c.ref,
     body: 'Yüksek öncelikli şikayet alındı.\n\nReferans: ' + c.ref + '\nKategori: ' + c.category + '\n' +
       'Şikayet edilen: ' + (c.targetName || c.target || '—') + '\n' +
-      'Yönlendirilen kurum: ' + (authority ? authority.name + ' (' + contact + ')' : '—') + '\n' +
-      'Kuruma gönderim: ' + deliveryLine(inst, authority),
+      'Yönlendirilen kurum: ' + (authority ? (authority.name || '—') + ' (' + contact + ')' : '—') + '\n' +
+      'Kuruma gönderim: ' + deliveryLine(inst, authority) +
+      '\n\n---\n' + (c.anonymous ? 'Anonim şikayet' : 'İletişim: ' + (c.name || '—') + ' <' + (c.email || '—') + '>') +
+      ' | Tarih: ' + now.toISOString().slice(0, 10),
   };
 }
 

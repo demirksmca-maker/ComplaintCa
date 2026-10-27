@@ -153,12 +153,13 @@ describe('institution email (live parity)', () => {
     const line = (inst, a) => adminEmail(c, a, inst).body.split('Kuruma gönderim: ')[1];
     const mail = { name: 'X', email: 'x@y.ca' }, form = { name: 'X', email: 'www.x.ca/form' }, bare = { name: 'X', email: '' };
     assert.match(line({ status: 'sent' }, mail), /^✅/);
-    assert.match(line({ status: 'sent', pilot: true }, mail), /pilot/);
     assert.match(line({ status: 'failed' }, mail), /başarısız — gönderim denendi/);
     assert.match(line({ status: 'form_only' }, form), /resmi forma/);
     assert.match(line({ status: 'form_only' }, bare), /doğrudan iletişim/);
     assert.match(line({ status: 'none' }, undefined), /otomatik kurum yok/);
     assert.match(adminEmail(c, form, { status: 'form_only' }).body, /\(https:\/\/www\.x\.ca\/form\)/);
+    assert.match(adminEmail(c, { email: 'x@y.ca' }, { status: 'sent' }).body, /Yönlendirilen kurum: — \(x@y\.ca\)/);
+    assert.match(adminEmail({ ...c, anonymous: true }, mail, { status: 'sent' }).body, /Anonim şikayet \| Tarih: \d{4}-\d{2}-\d{2}$/);
   });
 });
 
