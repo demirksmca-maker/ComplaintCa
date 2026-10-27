@@ -838,7 +838,7 @@
     ];
     var TABS = [['tasarim', 'Tasarım'], ['tema', 'Tema'], ['mobil', 'Mobil'], ['veri', 'Veri']];
     // Elements that show data (MP lists, lawyers, numbers…) open on the Veri tab.
-    var DATA = /milletvekil|vekil|represent|repr[ée]sent|\bmp\b|deput|diputad|avukat|lawyer|abogad|stk|ngo|ong\b|istatist|statist|estad[ií]st|liste|list|tablo|table|kay[ıi]t|veri|data|datos|\d{2,}/i;
+    var DATA = /milletvekil|representative|d[ée]put[ée]|diputad|avukat|lawyer|abogad|istatisti|statistic|estad[íi]stic|\bmps?\b/i;
     function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
     function doc() { try { return frame.contentDocument; } catch (e) { return null; } }
     function sel(el) {
@@ -850,12 +850,11 @@
       }
       return parts.join(' > ');
     }
+    // Only the tapped element and its own card/button, not the whole section.
     function isData(el) {
-      if (el.closest('table,ul,ol,dl,select')) return true;
-      // The element plus its card (closest clickable box) and its onclick/href hint.
-      var box = el.closest('a,button,[onclick],[role="button"],section,article') || el;
-      var hint = (box.innerText || '') + ' ' + (box.getAttribute('href') || '') + ' ' + (box.getAttribute('onclick') || '') + ' ' + (box.id || '') + ' ' + box.className;
-      return DATA.test(hint.slice(0, 400));
+      if (el.closest('table,dl')) return true;
+      var box = el.closest('a,button,[onclick],[role="button"]') || el;
+      return DATA.test(((box.innerText || '').slice(0, 200) + ' ' + (box.getAttribute('href') || '') + ' ' + (box.getAttribute('onclick') || '')));
     }
     function paint() {
       var d = doc(); if (!d) return;
@@ -882,13 +881,22 @@
     // Pop-up beside the element: below it if there is room, otherwise above.
     function place() {
       var m = marks[cur]; if (!m || pop.hidden) return;
-      var host = $('v-site').getBoundingClientRect(), f = frame.getBoundingClientRect(), r = m.el.getBoundingClientRect();
-      var top = f.top - host.top + r.bottom + 8, left = f.left - host.left + r.left;
-      var w = pop.offsetWidth, h = pop.offsetHeight, H = host.height, W = host.width;
-      if (top + h > H - 8) top = f.top - host.top + r.top - h - 8;
+      var host = $('v-site').getBoundingClientRect(), f = frame.getBoundingClientRect(), H = host.height, W = host.width;
+      var w = pop.offsetWidth, h = pop.offsetHeight, top, left;
+      // Element gone (the frame changed page): centre it near the top.
+      if (!m.el.isConnected) { top = 8; left = (W - w) / 2; }
+      else {
+        var r = m.el.getBoundingClientRect(), below = f.top - host.top + r.bottom + 8, above = f.top - host.top + r.top - h - 8;
+        // Below if it fits, else above; a tall element that leaves no room gets it at the bottom.
+        top = below + h <= H - 8 ? below : above >= 8 ? above : H - h - 8;
+        left = f.left - host.left + r.left;
+      }
       pop.style.top = Math.max(8, Math.min(top, H - h - 8)) + 'px';
       pop.style.left = Math.max(8, Math.min(left, W - w - 8)) + 'px';
     }
+    // At most one placement per frame while the page scrolls.
+    var rafPlace = 0;
+    function placeSoon() { if (!rafPlace) rafPlace = requestAnimationFrame(function () { rafPlace = 0; place(); }); }
     function drawQs() {
       var m = marks[cur];
       $('mkTabs').innerHTML = TABS.map(function (t) {
@@ -922,8 +930,8 @@
       var st = d.createElement('style');
       st.textContent = '.dias-mk{outline:3px solid #b76fff!important;outline-offset:2px}.dias-mk-n{position:absolute;z-index:99999;pointer-events:none;background:#8f39e5;color:#fff;font:700 12px/20px sans-serif;width:20px;text-align:center;border-radius:50%}html.dias-mk-on *{cursor:crosshair!important}';
       d.head.appendChild(st);
-      d.defaultView.addEventListener('resize', function () { paint(); place(); });
-      d.defaultView.addEventListener('scroll', place, { passive: true });
+      d.defaultView.addEventListener('resize', function () { paint(); placeSoon(); });
+      d.defaultView.addEventListener('scroll', placeSoon, { passive: true });
       d.documentElement.classList.toggle('dias-mk-on', on);
       d.addEventListener('click', function (e) {
         if (!on) return;
