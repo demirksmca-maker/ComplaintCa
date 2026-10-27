@@ -63,14 +63,34 @@
   .pg-sw button[aria-pressed="true"]{background:var(--s1);color:#fff}
   .mk-btn{position:absolute;top:10px;right:10px;z-index:3;padding:8px 12px;font-size:.8rem;font-weight:700;background:#380b31;border:1px solid var(--edge);box-shadow:0 2px 10px rgba(0,0,0,.4)}
   .mk-btn[aria-pressed="true"]{background:var(--s1);color:#fff}
-  .mk-sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:3;max-height:55%;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
-  .mk-item{display:flex;flex-direction:column;gap:4px}
-  .mk-item b{font-size:.75rem;color:var(--warn);overflow-wrap:anywhere}
-  .mk-item input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.85rem}
-  .mk-chips{display:flex;flex-wrap:wrap;gap:6px}
-  .mk-chips button{padding:5px 9px;font-size:.72rem;background:var(--bg);border:1px solid var(--line)}
+  /* Mark mode: slim bar at the bottom, a pop-up toolbar beside the tapped element. */
+  .mk-sheet{position:absolute;left:8px;right:8px;bottom:8px;z-index:3;padding:8px;display:flex;flex-direction:column;gap:6px}
+  .mk-list{display:flex;align-items:center;gap:6px;overflow-x:auto;font-size:.75rem;color:var(--mute)}
+  .mk-list button{flex:none;width:26px;height:26px;padding:0;border-radius:50%;background:var(--s1);color:#fff;font-size:.75rem;font-weight:700}
+  .mk-list button.has{box-shadow:0 0 0 2px var(--ok)}
   .mk-row{display:flex;gap:8px}.mk-row button{flex:1;padding:9px;background:var(--bg);border:1px solid var(--line)}
   .mk-row .mk-send{background:var(--s1);color:#fff;border-color:var(--s1);font-weight:700}
+  .mk-pop{position:absolute;z-index:4;width:min(340px,calc(100% - 16px));max-height:min(62%,420px);display:flex;flex-direction:column;border-radius:16px;
+    background:linear-gradient(180deg,rgba(72,18,86,.97),rgba(48,10,42,.97));border:1px solid var(--edge);box-shadow:0 12px 34px rgba(0,0,0,.55),0 0 18px rgba(143,57,229,.25);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:mkIn .16s ease-out}
+  @keyframes mkIn{from{opacity:0;transform:translateY(6px) scale(.97)}}
+  @media (prefers-reduced-motion:reduce){.mk-pop{animation:none}}
+  .mk-pop-hd,.mk-tabs,.mk-pop-ft{flex:none}
+  .mk-pop-hd{display:flex;align-items:center;gap:8px;padding:10px 10px 6px}
+  .mk-pop-hd b{flex:1;min-width:0;font-size:.78rem;color:var(--warn);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mk-pop-hd button{width:28px;height:28px;padding:0;background:transparent;color:var(--mute);font-size:1.1rem}
+  .mk-tabs{display:flex;gap:4px;padding:0 10px 8px;overflow-x:auto}
+  .mk-tabs button{flex:none;padding:5px 10px;font-size:.72rem;font-weight:700;background:var(--bg);border:1px solid var(--line);color:var(--mute)}
+  .mk-tabs button[aria-pressed="true"]{background:var(--s1);border-color:var(--s1);color:#fff}
+  .mk-tabs button.hot::after{content:'';display:inline-block;width:6px;height:6px;margin-left:5px;border-radius:50%;background:var(--ok);vertical-align:middle}
+  .mk-qs{flex:1;min-height:0;overflow-y:auto;padding:0 10px;display:flex;flex-direction:column;gap:5px}
+  .mk-qs button{text-align:left;padding:8px 10px;font-size:.8rem;background:rgba(33,6,29,.7);border:1px solid var(--line);display:flex;gap:8px;align-items:center}
+  .mk-qs button::before{content:'';flex:none;width:14px;height:14px;border-radius:5px;border:1.5px solid var(--edge)}
+  .mk-qs button[aria-pressed="true"]{border-color:var(--s1);background:rgba(143,57,229,.22)}
+  .mk-qs button[aria-pressed="true"]::before{background:var(--s1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3 7l3 3 5-6' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E") center/12px no-repeat;border-color:var(--s1)}
+  .mk-pop-ft{display:flex;flex-direction:column;gap:6px;padding:8px 10px 10px}
+  .mk-pop-ft input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.82rem}
+  .mk-pop-ft .mk-row button{padding:7px;font-size:.8rem}
   #mkMsg{font-size:.72rem;color:var(--mute)}
   .lock{width:100%;padding:12px;background:var(--card);border:1px solid var(--line);font-size:.88rem}
   .lock.on{border-color:var(--bad);color:var(--bad)}
@@ -342,9 +362,14 @@
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
       <div class="mk-sheet card" id="mkSheet" hidden>
         <div class="mk-list" id="mkList"></div>
-        <div class="chips mk-chips" id="mkChips"></div>
         <div class="mk-row"><button type="button" id="mkClear">Temizle</button><button type="button" class="mk-send" id="mkSend">Claude'a gönder</button></div>
         <small id="mkMsg"></small>
+      </div>
+      <div class="mk-pop" id="mkPop" role="dialog" aria-label="Öğe önerileri" hidden>
+        <div class="mk-pop-hd"><b id="mkPopT"></b><button type="button" id="mkPopX" aria-label="Kapat">✕</button></div>
+        <div class="mk-tabs" id="mkTabs"></div>
+        <div class="mk-qs" id="mkQs"></div>
+        <div class="mk-pop-ft"><input id="mkNote" placeholder="Başka ne yapılsın? (isteğe bağlı)"><div class="mk-row"><button type="button" id="mkDrop">İşareti kaldır</button><button type="button" class="mk-send" id="mkOk">Tamam</button></div></div>
       </div></section>
 
     <!-- GÜVENLİK -->
@@ -774,10 +799,46 @@
   })();
 
   var mkReset;
-  // Site tab mark mode: tap elements on the live page, write a note per mark, send all to Claude Code.
+  // Site tab mark mode: tap an element on the live page, a toolbar opens beside it
+  // with design, theme and data questions; all marks go to Claude Code in one message.
   (function () {
-    var on = false, marks = [], last = null, frame = $('siteFrame');
-    var CHIPS = ['Rengini değiştir', 'Büyüt', 'Küçült', 'Yazıyı değiştir', 'Kaldır', 'Temaya uydur', 'Mobilde düzelt'];
+    var on = false, marks = [], cur = -1, tab = 'tasarim', frame = $('siteFrame'), pop = $('mkPop');
+    // 30 questions: [tab, question shown, request sent to Claude].
+    var QS = [
+      ['tasarim', 'Rengini değiştireyim mi?', 'Rengini değiştir'],
+      ['tasarim', 'Büyüteyim mi?', 'Büyüt'],
+      ['tasarim', 'Küçülteyim mi?', 'Küçült'],
+      ['tasarim', 'Yazıyı değiştireyim mi?', 'Yazıyı değiştir'],
+      ['tasarim', 'Yazı tipini değiştireyim mi?', 'Yazı tipini değiştir'],
+      ['tasarim', 'Boşlukları açayım mı?', 'Boşlukları aç'],
+      ['tasarim', 'Köşeleri yumuşatayım mı?', 'Köşeleri yuvarla'],
+      ['tasarim', 'Gölge ve derinlik ekleyeyim mi?', 'Gölge/derinlik ekle'],
+      ['tasarim', 'Hafif animasyon ekleyeyim mi?', 'Hafif animasyon ekle'],
+      ['tasarim', 'Bu öğeyi kaldırayım mı?', 'Kaldır'],
+      ['tema', 'Mor temaya uydurayım mı?', 'Mor temaya uydur'],
+      ['tema', 'Altın vurgu ekleyeyim mi?', 'Altın vurgu ekle'],
+      ['tema', 'Cam (glass) efekti olsun mu?', 'Cam efekti ver'],
+      ['tema', 'Arka planı koyulaştırayım mı?', 'Arka planı koyulaştır'],
+      ['tema', 'Kontrastı artırayım mı?', 'Kontrastı artır'],
+      ['tema', 'İkonu temaya uydurayım mı?', 'İkonu temaya uydur'],
+      ['tema', 'Kenarlara parlama ekleyeyim mi?', 'Kenar parlaması ekle'],
+      ['tema', 'Diğer kartlarla aynı stile getireyim mi?', 'Diğer kartlarla aynı stile getir'],
+      ['mobil', 'Mobilde düzelteyim mi?', 'Mobilde düzelt'],
+      ['mobil', 'Dokunma alanını büyüteyim mi?', 'Dokunma alanını büyüt'],
+      ['mobil', 'Okunurluğu artırayım mı?', 'Okunurluğu artır'],
+      ['mobil', 'Hizalamayı düzelteyim mi?', 'Hizalamayı düzelt'],
+      ['veri', 'Buradaki verileri güncelleyeyim mi?', 'Verileri güncelle'],
+      ['veri', 'Bilgilerin kaynağını kontrol edeyim mi?', 'Kaynağı kontrol et'],
+      ['veri', 'Son güncelleme tarihi ekleyeyim mi?', 'Son güncelleme tarihi ekle'],
+      ['veri', 'Eksik kayıtları tamamlayayım mı?', 'Eksik kayıtları tamamla'],
+      ['veri', 'Eski / yanlış bilgileri düzelteyim mi?', 'Eski/yanlış bilgileri düzelt'],
+      ['veri', 'Otomatik güncelleme (haftalık) kurayım mı?', 'Haftalık otomatik güncelleme kur'],
+      ['veri', 'Arama ve filtre ekleyeyim mi?', 'Arama/filtre ekle'],
+      ['veri', 'Sayı ve istatistik göstereyim mi?', 'Sayı/istatistik göster']
+    ];
+    var TABS = [['tasarim', 'Tasarım'], ['tema', 'Tema'], ['mobil', 'Mobil'], ['veri', 'Veri']];
+    // Elements that show data (MP lists, lawyers, numbers…) open on the Veri tab.
+    var DATA = /milletvekil|vekil|represent|repr[ée]sent|\bmp\b|deput|diputad|avukat|lawyer|abogad|stk|ngo|ong\b|istatist|statist|estad[ií]st|liste|list|tablo|table|kay[ıi]t|veri|data|datos|\d{2,}/i;
     function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
     function doc() { try { return frame.contentDocument; } catch (e) { return null; } }
     function sel(el) {
@@ -788,6 +849,13 @@
         parts.unshift(el.tagName.toLowerCase() + (cls.length ? '.' + cls.join('.') : ''));
       }
       return parts.join(' > ');
+    }
+    function isData(el) {
+      if (el.closest('table,ul,ol,dl,select')) return true;
+      // The element plus its card (closest clickable box) and its onclick/href hint.
+      var box = el.closest('a,button,[onclick],[role="button"],section,article') || el;
+      var hint = (box.innerText || '') + ' ' + (box.getAttribute('href') || '') + ' ' + (box.getAttribute('onclick') || '') + ' ' + (box.id || '') + ' ' + box.className;
+      return DATA.test(hint.slice(0, 400));
     }
     function paint() {
       var d = doc(); if (!d) return;
@@ -806,32 +874,69 @@
     function render() {
       $('mkSheet').hidden = !on && !marks.length;
       $('mkList').innerHTML = marks.length ? marks.map(function (m, i) {
-        return '<div class="mk-item"><b>' + (i + 1) + '. ' + esc(m.path) + ' · ' + esc(m.sel) + (m.text ? ' · “' + esc(m.text) + '”' : '') + '</b><input data-i="' + i + '" value="' + esc(m.note) + '" placeholder="Ne yapılsın?"></div>';
-      }).join('') : '<small style="color:var(--mute)">Sayfada bir öğeye dokun, işaretlensin.</small>';
-      each('#mkList input', function (x) {
-        x.addEventListener('input', function () { marks[+x.getAttribute('data-i')].note = x.value; });
-        x.addEventListener('focus', function () { last = x; });
-      });
+        return '<button type="button" data-i="' + i + '"' + (m.picks.length || m.note ? ' class="has"' : '') + ' aria-label="İşaret ' + (i + 1) + '">' + (i + 1) + '</button>';
+      }).join('') + '<span>' + marks.length + ' işaret</span>' : 'Sayfada bir öğeye dokun, yanında öneriler açılsın.';
+      each('#mkList button', function (b) { b.addEventListener('click', function () { openPop(+b.getAttribute('data-i')); }); });
       paint();
     }
+    // Pop-up beside the element: below it if there is room, otherwise above.
+    function place() {
+      var m = marks[cur]; if (!m || pop.hidden) return;
+      var host = $('v-site').getBoundingClientRect(), f = frame.getBoundingClientRect(), r = m.el.getBoundingClientRect();
+      var top = f.top - host.top + r.bottom + 8, left = f.left - host.left + r.left;
+      var w = pop.offsetWidth, h = pop.offsetHeight, H = host.height, W = host.width;
+      if (top + h > H - 8) top = f.top - host.top + r.top - h - 8;
+      pop.style.top = Math.max(8, Math.min(top, H - h - 8)) + 'px';
+      pop.style.left = Math.max(8, Math.min(left, W - w - 8)) + 'px';
+    }
+    function drawQs() {
+      var m = marks[cur];
+      $('mkTabs').innerHTML = TABS.map(function (t) {
+        return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (t[0] === tab) + '"' + (t[0] === 'veri' && m.data ? ' class="hot"' : '') + '>' + t[1] + '</button>';
+      }).join('');
+      $('mkQs').innerHTML = QS.map(function (q, i) {
+        return q[0] === tab ? '<button type="button" data-q="' + i + '" aria-pressed="' + (m.picks.indexOf(i) >= 0) + '">' + esc(q[1]) + '</button>' : '';
+      }).join('');
+      each('#mkTabs button', function (b) { b.addEventListener('click', function () { tab = b.getAttribute('data-t'); drawQs(); place(); }); });
+      each('#mkQs button', function (b) { b.addEventListener('click', function () {
+        var q = +b.getAttribute('data-q'), k = m.picks.indexOf(q);
+        if (k >= 0) m.picks.splice(k, 1); else m.picks.push(q);
+        b.setAttribute('aria-pressed', k < 0 ? 'true' : 'false');
+      }); });
+    }
+    function openPop(i) {
+      cur = i; var m = marks[i];
+      tab = m.data ? 'veri' : 'tasarim';
+      $('mkPopT').textContent = (i + 1) + '. ' + (m.text || m.sel);
+      $('mkNote').value = m.note;
+      pop.hidden = false; drawQs(); place();
+    }
+    function closePop() { if (marks[cur]) marks[cur].note = $('mkNote').value.trim(); pop.hidden = true; cur = -1; render(); }
+    $('mkPopX').addEventListener('click', closePop);
+    $('mkOk').addEventListener('click', closePop);
+    $('mkDrop').addEventListener('click', function () { marks.splice(cur, 1); pop.hidden = true; cur = -1; render(); });
+    $('mkNote').addEventListener('keydown', function (e) { if (e.key === 'Enter') closePop(); });
     function hook() {
       var d = doc(); if (!d || d.__diasMk) return;
       d.__diasMk = true;
       var st = d.createElement('style');
       st.textContent = '.dias-mk{outline:3px solid #b76fff!important;outline-offset:2px}.dias-mk-n{position:absolute;z-index:99999;pointer-events:none;background:#8f39e5;color:#fff;font:700 12px/20px sans-serif;width:20px;text-align:center;border-radius:50%}html.dias-mk-on *{cursor:crosshair!important}';
       d.head.appendChild(st);
-      d.defaultView.addEventListener('resize', paint);
+      d.defaultView.addEventListener('resize', function () { paint(); place(); });
+      d.defaultView.addEventListener('scroll', place, { passive: true });
       d.documentElement.classList.toggle('dias-mk-on', on);
       d.addEventListener('click', function (e) {
         if (!on) return;
         e.preventDefault(); e.stopPropagation();
         var el = e.target, hit = -1;
         marks.forEach(function (m, i) { if (m.el === el) hit = i; });
-        if (hit >= 0) marks.splice(hit, 1);
-        else marks.push({ el: el, path: frame.contentWindow.location.pathname, sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), note: '' });
-        render();
-        var inputs = document.querySelectorAll('#mkList input');
-        if (hit < 0 && inputs.length) inputs[inputs.length - 1].focus();
+        if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
+        // Tapping a marked element reopens its toolbar; a new one is marked and opened.
+        if (hit < 0) {
+          marks.push({ el: el, path: frame.contentWindow.location.pathname, sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '' });
+          hit = marks.length - 1;
+        }
+        render(); openPop(hit);
       }, true);
       paint();
     }
@@ -839,27 +944,24 @@
     // Same-origin access only while marking: the frame is fully sandboxed otherwise.
     var SANDBOX = frame.getAttribute('sandbox');
     mkReset = function () {
-      on = false; marks = []; $('mkToggle').setAttribute('aria-pressed', 'false'); $('mkMsg').textContent = '';
+      on = false; marks = []; cur = -1; pop.hidden = true; $('mkToggle').setAttribute('aria-pressed', 'false'); $('mkMsg').textContent = '';
       frame.setAttribute('sandbox', SANDBOX); render();
     };
     $('mkToggle').addEventListener('click', function () {
       on = !on; this.setAttribute('aria-pressed', on ? 'true' : 'false');
       if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = sitePage(); }
       var d = doc(); if (d) { hook(); d.documentElement.classList.toggle('dias-mk-on', on); }
+      if (!on && !pop.hidden) closePop();
       render();
     });
-    $('mkChips').innerHTML = CHIPS.map(function (c) { return '<button type="button">' + esc(c) + '</button>'; }).join('');
-    each('#mkChips button', function (b) { b.addEventListener('mousedown', function (e) { e.preventDefault(); }); b.addEventListener('click', function () {
-      var x = last && document.contains(last) ? last : Array.prototype.slice.call(document.querySelectorAll('#mkList input')).pop();
-      if (!x) return;
-      x.value = x.value ? x.value + ', ' + b.textContent.toLowerCase() : b.textContent;
-      marks[+x.getAttribute('data-i')].note = x.value;
-    }); });
-    $('mkClear').addEventListener('click', function () { marks = []; $('mkMsg').textContent = ''; render(); });
+    $('mkClear').addEventListener('click', function () { marks = []; cur = -1; pop.hidden = true; $('mkMsg').textContent = ''; render(); });
     $('mkSend').addEventListener('click', function () {
+      if (!pop.hidden) closePop();
       if (!marks.length) { $('mkMsg').textContent = 'Önce bir öğe işaretle.'; return; }
-      var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : 'Test') + ' üzerinden işaretlediğim öğeler (tema/görünüm):\n' + marks.map(function (m, i) {
-        return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + '\n   İstek: ' + (m.note.trim() || '(not yok)');
+      var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : 'Test') + ' üzerinden işaretlediğim öğeler (tema/görünüm/veri):\n' + marks.map(function (m, i) {
+        var req = m.picks.map(function (q) { return QS[q][2]; });
+        if (m.note) req.push(m.note);
+        return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + (m.data ? '\n   Veri içeriyor: evet' : '') + '\n   İstek: ' + (req.join(', ') || '(not yok)');
       }).join('\n');
       var box = document.createElement('textarea');
       box.value = text; box.style.position = 'fixed'; box.style.opacity = '0';
