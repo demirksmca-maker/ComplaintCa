@@ -63,8 +63,8 @@
     '#cc-steps .cs-card:hover{transform:translateY(-2px);filter:brightness(1.08)}',
     '#cc-steps .cs-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(255,215,160,.55),transparent) top/100% 1px no-repeat}#cc-steps .cs-card>*{position:relative}#cc-steps .cs-card>.cs-n,#cc-steps .cs-card>.cs-ok{position:absolute}',
     '#cc-steps .cs-card:focus-visible,#cc-steps button:focus-visible{outline:2px solid #fff;outline-offset:3px}',
-    '#cc-steps .cs-card b{display:block;font:800 17px/1.25 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#fff}',
-    '#cc-steps .cs-card small{display:block;margin-top:4px;font:500 13px/1.35 Inter,sans-serif;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+    '#cc-steps .cs-card b{display:block;font:700 16px/1.2 Cinzel,Georgia,serif;letter-spacing:.02em;color:#fff;background:linear-gradient(100deg,#fff 0%,#fff 38%,#f6dcae 50%,#fff 62%,#fff 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:csGild 7s ease-in-out infinite}',
+    '#cc-steps .cs-card small{display:block;margin-top:4px;font:italic 400 15px/1.3 \'EB Garamond\',Georgia,serif;letter-spacing:.01em;color:rgba(246,220,174,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
     '#cc-steps .cs-n{position:absolute;top:12px;right:14px;font:700 12px/1 Cinzel,Georgia,serif;color:rgba(255,215,160,.75);letter-spacing:.06em}',
     '#cc-steps .cs-ok{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:#fff;color:#1d4ed8;display:none;place-items:center;font:800 14px/1 Inter,sans-serif}',
     '#cc-steps .cs-card.done .cs-ok{display:grid}#cc-steps .cs-card.done .cs-n{display:none}',
@@ -149,8 +149,8 @@
     '@keyframes csIn{from{opacity:0}to{opacity:1}}@keyframes csUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}',
     '@keyframes csShine{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}@keyframes csBreathe{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.04);filter:brightness(1.12)}}',
     '@keyframes csRing{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.35);opacity:0}}@keyframes csFill{from{transform:translateX(-100%)}to{transform:none}}',
-    '@keyframes csBlink{50%{opacity:0}}@keyframes csPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}@keyframes csSway{0%,100%{transform:skewY(0) scale(1)}50%{transform:skewY(-1.2deg) scale(1.02) translateX(-.6%)}}',
-    '@media (max-height:720px){#cc-steps .cs-card>svg{width:24px;height:24px}#cc-steps .cs-card b{font-size:16px}#cc-steps .cs-card small{font-size:12px}}',
+    '@keyframes csGild{0%,60%{background-position:100% 0}100%{background-position:0 0}}@keyframes csBlink{50%{opacity:0}}@keyframes csPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}@keyframes csSway{0%,100%{transform:skewY(0) scale(1)}50%{transform:skewY(-1.2deg) scale(1.02) translateX(-.6%)}}',
+    '@media (max-height:720px){#cc-steps .cs-card>svg{width:24px;height:24px}#cc-steps .cs-card b{font-size:15px}#cc-steps .cs-card small{font-size:14px}}',
     '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::after{animation:none!important;transition:none!important}}'
   ].join('\n');
 
