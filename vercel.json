@@ -50,6 +50,10 @@
       "destination": "/api/route?shield=1"
     },
     {
+      "source": "/rapor",
+      "destination": "/api/route?rapor=1"
+    },
+    {
       "source": "/api/blog-rating",
       "destination": "/api/route?blograting=1"
     },
