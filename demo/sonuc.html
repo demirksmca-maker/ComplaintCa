@@ -105,6 +105,14 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .tg i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
 .tg.on i{background:#8b3fd1}.tg.on i::after{transform:translateX(18px)}
 
+.find{display:flex;gap:8px}
+.in{flex:1;min-width:0;padding:12px 14px;border-radius:12px;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.6);color:#f7eef1;font:400 17px/1.3 'EB Garamond',Georgia,serif;outline:none}
+.in:focus{border-color:#d5b9eb}
+.fbtn{flex:none;padding:0 18px;border-radius:12px;border:1px solid rgba(214,190,255,.4);background:linear-gradient(180deg,#8b3fd1,#5a1d9a 55%,#3a0f68);font:700 13px/1 Cinzel,serif;letter-spacing:.1em;cursor:pointer}
+.res{color:#f7eef1;text-decoration:none;cursor:default}a.res{cursor:pointer}
+.res .av{width:44px;height:44px;flex:none;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:rgba(110,45,180,.5);font-size:20px}
+.res .av img{width:100%;height:100%;object-fit:cover}
+.res .mini{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:999px;border:1px solid rgba(196,160,255,.5);color:#eadcf3;text-decoration:none;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em}
 .refbox{text-align:center;padding:16px;border-radius:16px;background:linear-gradient(155deg,rgba(138,92,246,.5),rgba(190,24,93,.35));border:1px solid rgba(244,214,255,.28)}
 .refbox small{font:700 11px/1 Cinzel,serif;letter-spacing:.2em;color:#cfb0e8}
 .refbox strong{display:block;margin-top:8px;font:700 22px/1 Cinzel,serif;letter-spacing:.1em}
@@ -142,10 +150,10 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
       <div><b>Institutions</b><span id="c-inst">Choose where it goes</span></div></button>
     <button class="card" data-s="letter"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><i class="n">IV</i><i class="ok">✓</i>
       <div><b>Your Letter</b><span>Preview &amp; edit</span></div></button>
-    <button class="card" data-s="lawyer"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M12 15l-1.5 3L12 21l1.5-3z"/></svg><i class="n">V</i><i class="ok">✓</i>
-      <div><b>Ask a Lawyer</b><span id="c-lawyer">Free case review</span></div></button>
-    <button class="card" data-s="track"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><i class="n">VI</i><i class="ok">✓</i>
-      <div><b>Track</b><span id="c-track">After sending</span></div></button>
+    <button class="card" data-s="lawyer"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M12 15l-1.5 3L12 21l1.5-3z"/></svg><i class="n">V</i><i class="ok">✓</i>
+      <div><b>Free Lawyer</b><span id="c-lawyer">Near your address</span></div></button>
+    <button class="card" data-s="mp"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/></svg><i class="n">VI</i><i class="ok">✓</i>
+      <div><b>Find My MP</b><span id="c-mp">By your address</span></div></button>
   </div>
 
   <div class="orn"><i></i>✦<i></i></div>
@@ -158,7 +166,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 
 <script>
 (function(){
-  var C = { who:'NovaTel Mobile', topic:'Consumer — billing', city:'Toronto, ON', what:'Charged $84 extra for 3 months after I cancelled. They refuse to refund.', email:'you@example.ca' };
+  var C = { who:'NovaTel Mobile', topic:'Consumer — billing', city:'Toronto, ON', what:'Charged $84 extra for 3 months after I cancelled. They refuse to refund.', email:'you@example.ca', addr:'M5V 2T6' };
   var RIGHTS = [
     ['Refund of wrong charges', 'If you were billed for a service you cancelled, the company must refund it. Keep your cancellation proof.', 'Consumer Protection Act, 2002 (ON)'],
     ['Clear, written contract', 'Prices and fees must be shown clearly. Hidden or surprise fees can be disputed.', 'Wireless Code — CRTC'],
@@ -174,7 +182,33 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     ['bbb', 'Better Business Bureau', 'Public business rating', '', false],
     ['mp', 'Your MP', 'Political pressure, if nothing works', '', false]
   ];
-  var S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'' };
+  // Free legal help per province (official legal aid, law-society referral, pro bono, clinics)
+  var LAW = {
+    ON: [['Legal Aid Ontario', 'Free lawyer if your income is low', 'FREE', 'https://www.legalaid.on.ca'],
+         ['Law Society Referral Service', 'Free 30-minute talk with a lawyer', 'FREE 30 MIN', 'https://lso.ca/public-resources/finding-a-lawyer-or-paralegal/law-society-referral-service'],
+         ['Pro Bono Ontario', 'Free advice hotline', 'FREE', 'https://www.probonoontario.org'],
+         ['Community Legal Clinics', 'Free help near your address', 'FREE', 'https://www.legalaid.on.ca/legal-clinics/']],
+    BC: [['Legal Aid BC', 'Free lawyer if your income is low', 'FREE', 'https://legalaid.bc.ca'],
+         ['Access Pro Bono', 'Free advice clinics across BC', 'FREE', 'https://accessprobono.ca'],
+         ['Clicklaw HelpMap', 'Free legal help near you', 'FREE', 'https://www.clicklaw.bc.ca/helpmap']],
+    AB: [['Legal Aid Alberta', 'Free lawyer if your income is low', 'FREE', 'https://www.legalaid.ab.ca'],
+         ['Lawyer Referral Service', 'Free 30-minute talk with a lawyer', 'FREE 30 MIN', 'https://www.lawsociety.ab.ca/public/lawyer-referral/'],
+         ['Pro Bono Law Alberta', 'Free legal help for those in need', 'FREE', 'https://www.pbla.ca']],
+    QC: [['Commission des services juridiques', 'Aide juridique — free lawyer', 'FREE', 'https://www.csj.qc.ca'],
+         ['Juripop', 'Low-cost and free legal help', 'LOW COST', 'https://juripop.org']],
+    XX: [['Provincial Legal Aid', 'Free lawyer if your income is low', 'FREE', 'https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'],
+         ['Pro Bono Canada', 'Free legal help in your province', 'FREE', 'https://www.probonocanada.org']]
+  };
+  var PROV_N = { ON:'Ontario', BC:'British Columbia', AB:'Alberta', QC:'Quebec', XX:'your province' };
+  var PC_RE = /([ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z])\s?(\d[ABCEGHJ-NPRSTV-Z]\d)/i;
+  function provOf(a){
+    var m = a.match(PC_RE);
+    if (m){ var c = m[1][0].toUpperCase(); return 'KLMNP'.indexOf(c) > -1 ? 'ON' : c === 'V' ? 'BC' : c === 'T' ? 'AB' : 'GHJ'.indexOf(c) > -1 ? 'QC' : 'XX'; }
+    var p = (a.toUpperCase().match(/\b(ON|BC|AB|QC)\b/) || [])[1];
+    if (p) return p;
+    return /ontario|toronto|ottawa/i.test(a) ? 'ON' : /british columbia|vancouver/i.test(a) ? 'BC' : /alberta|calgary|edmonton/i.test(a) ? 'AB' : /qu[eé]bec|montr[eé]al/i.test(a) ? 'QC' : 'XX';
+  }
+  var S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:null };
   INST.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
 
   var $ = function(id){ return document.getElementById(id); };
@@ -189,17 +223,17 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     card('rights').classList.toggle('done', nr === RIGHTS.length);
     $('c-inst').textContent = ni ? ni + ' selected' : 'Choose where it goes';
     card('inst').classList.toggle('done', ni > 0);
-    $('c-lawyer').textContent = S.lawyer ? 'Shared with lawyers' : 'Free case review';
-    card('lawyer').classList.toggle('done', S.lawyer);
+    $('c-lawyer').textContent = S.lawProv ? LAW[S.lawProv].length + ' free options' : 'Near your address';
+    card('lawyer').classList.toggle('done', !!S.lawProv);
+    $('c-mp').textContent = S.mp ? S.mp : 'By your address';
+    card('mp').classList.toggle('done', !!S.mp);
     $('c-send').textContent = S.sent ? 'Sent ✓' : (ni ? 'Ready to send' : 'Pick institutions first');
     card('send').classList.toggle('done', S.sent);
-    $('c-track').textContent = S.sent ? S.ref : 'After sending';
-    card('track').classList.toggle('done', S.sent);
   }
 
   var VIEWS = {
     send: function(){
-      if (S.sent) return ['Complaint Sent', '<div class="seal">✓</div><p class="p" style="text-align:center">Sent to <em>' + picked().map(function(i){ return esc(i[1]); }).join(', ') + '</em>.</p><div class="refbox" style="margin-top:14px"><small>REFERENCE NO.</small><strong>' + S.ref + '</strong></div><button class="go" data-go="track">Track It <span class="ca">CA</span></button>'];
+      if (S.sent) return ['Complaint Sent', '<div class="seal">✓</div><p class="p" style="text-align:center">Sent to <em>' + picked().map(function(i){ return esc(i[1]); }).join(', ') + '</em>.</p><div class="refbox" style="margin-top:14px"><small>REFERENCE NO.</small><strong>' + S.ref + '</strong></div><div class="steps"><div class="on">Received by ComplaintCA</div><div class="on">Sent to institutions</div><div>Institution reviewing</div><div>Answer received</div></div><div class="tg' + (S.notify ? ' on' : '') + '" id="tg-not"><div>Email me when it moves</div><i></i></div><button class="go" id="do-copy">Copy Reference <span class="ca">CA</span></button>'];
       var ni = picked().length;
       return ['Send Complaint',
         '<div class="sum">' +
@@ -230,11 +264,15 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
       return ['Your Letter', '<div class="letter"><p>To whom it may concern,</p><p>I am filing a complaint against <b>' + esc(C.who) + '</b> regarding ' + esc(C.topic.toLowerCase()) + '.</p><p>' + esc(C.what) + '</p><p>I ask for a full refund of the wrong charges within 30 days.</p><p>Sincerely,<br>— Filed via ComplaintCA</p></div><button class="go" data-go="send">Looks Good</button>'];
     },
     lawyer: function(){
-      return ['Ask a Lawyer', '<p class="p">Partner lawyers in your province can see your case (without your email) and offer a <em>free first review</em>. You choose if you reply.</p><div class="tg' + (S.lawyer ? ' on' : '') + '" id="tg-law"><div>Share my case with partner lawyers</div><i></i></div><button class="go" data-go="send">Done</button>'];
+      return ['Free Lawyer', '<p class="p" style="margin-bottom:10px">Free legal help depends on <em>where you live</em>. Check your address:</p>' +
+        '<div class="find"><input class="in" id="law-in" value="' + esc(C.addr) + '" placeholder="Postal code or address"><button class="fbtn" id="do-law">Find</button></div>' +
+        '<div id="law-res"></div>' +
+        '<div class="tg' + (S.lawyer ? ' on' : '') + '" id="tg-law"><div>Also let partner lawyers see my case <em>(no email shared)</em></div><i></i></div>'];
     },
-    track: function(){
-      if (!S.sent) return ['Track', '<p class="p" style="text-align:center">You get a reference number as soon as you send.</p><button class="go" data-go="send">Go to Send</button>'];
-      return ['Track', '<div class="refbox"><small>REFERENCE NO.</small><strong>' + S.ref + '</strong></div><div class="steps"><div class="on">Received by ComplaintCA</div><div class="on">Sent to institutions</div><div>Institution reviewing</div><div>Answer received</div></div><div class="tg' + (S.notify ? ' on' : '') + '" id="tg-not"><div>Email me when it moves</div><i></i></div><button class="go" id="do-copy">Copy Reference</button>'];
+    mp: function(){
+      return ['Find My MP', '<p class="p" style="margin-bottom:10px">Your MP and provincial member can push the institution. Enter your <em>postal code</em>:</p>' +
+        '<div class="find"><input class="in" id="mp-in" value="' + esc(C.addr) + '" placeholder="e.g. M5V 2T6" autocomplete="postal-code"><button class="fbtn" id="do-mp">Find</button></div>' +
+        '<div id="mp-res"></div>'];
     }
   };
 
@@ -244,9 +282,48 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     $('sh-t').textContent = v[0]; $('sh-b').innerHTML = v[1];
     $('dim').classList.add('on'); $('sheet').classList.add('on'); $('sheet').scrollTop = 0;
     if (k === 'rights') prog();
+    if (k === 'lawyer' && S.lawProv) findLaw();
+    if (k === 'mp' && S.mpList) renderMp(S.mpList);
   }
   function close(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); cur = ''; refresh(); }
   function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / RIGHTS.length * 100) + '%'; }
+
+  function findLaw(){
+    var pv = provOf($('law-in').value.trim()); S.lawProv = pv;
+    var h = '<p class="hint" style="margin:12px 0 8px">Free options in <em>' + PROV_N[pv] + '</em></p>';
+    LAW[pv].forEach(function(l){
+      h += '<a class="inst res" href="' + l[3] + '" target="_blank" rel="noopener"><span class="av">⚖</span><div><b>' + esc(l[0]) + '</b><small>' + esc(l[1]) + '</small></div><em>' + l[2] + '</em></a>';
+    });
+    $('law-res').innerHTML = h; refresh();
+  }
+  function lvl(r){
+    var t = ((r.representative_set_name || '') + ' ' + (r.elected_office || '')).toLowerCase();
+    return t.indexOf('house of commons') > -1 || /\bmp\b/.test(t) ? [1, 'FEDERAL · MP'] : /legislative|national assembly|mpp|mla|mna/.test(t) ? [2, 'PROVINCIAL'] : [3, 'LOCAL'];
+  }
+  function renderMp(reps){
+    var list = reps.map(function(r){ return { r:r, l:lvl(r) }; }).filter(function(x){ return x.l[0] < 3; }).sort(function(a, b){ return a.l[0] - b.l[0]; });
+    if (!list.length){ $('mp-res').innerHTML = '<p class="hint">No representative found for this address.</p>'; return; }
+    var h = '';
+    list.forEach(function(x){
+      var r = x.r, photo = /^https:\/\//.test(r.photo_url || '') ? r.photo_url : '';
+      var mail = r.email ? 'mailto:' + encodeURIComponent(r.email) + '?subject=' + encodeURIComponent('Constituent complaint ' + (S.ref || '')) : '';
+      h += '<div class="inst res"><span class="av">' + (photo ? '<img src="' + esc(photo) + '" alt="" onerror="this.remove()">' : '👤') + '</span><div><b>' + esc(r.name || '—') + '</b><small>' + esc([r.party_name, r.district_name].filter(Boolean).join(' · ')) + '</small>' +
+        (mail ? '<a class="mini" href="' + mail + '">✉ Send my complaint</a>' : '') + '</div><em>' + x.l[1] + '</em></div>';
+    });
+    $('mp-res').innerHTML = h;
+    S.mp = list[0].r.name; refresh();
+  }
+  function findMp(){
+    var v = $('mp-in').value.trim(), m = v.match(PC_RE), btn = $('do-mp');
+    if (!m){ $('mp-res').innerHTML = '<p class="hint">Please enter a Canadian postal code (A1A 1A1).</p>'; return; }
+    btn.disabled = true; btn.textContent = '…';
+    $('mp-res').innerHTML = '<p class="hint">Looking up your district…</p>';
+    fetch('https://represent.opennorth.ca/postcodes/' + (m[1] + m[2]).toUpperCase() + '/')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(d){ S.mpList = (d.representatives_concordance && d.representatives_concordance.length) ? d.representatives_concordance : (d.representatives_centroid || []); renderMp(S.mpList); })
+      .catch(function(){ $('mp-res').innerHTML = '<p class="hint">Could not reach the lookup service. Try again.</p>'; })
+      .then(function(){ btn.disabled = false; btn.textContent = 'Find'; });
+  }
 
   document.querySelectorAll('.card').forEach(function(c){ c.onclick = function(){ open(c.dataset.s); }; });
   $('dim').onclick = close; $('sh-x').onclick = close;
@@ -255,12 +332,19 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
   $('sh-b').addEventListener('toggle', function(e){
     var d = e.target; if (d.open && d.dataset.i != null){ S.read[d.dataset.i] = 1; prog(); refresh(); }
   }, true);
+  $('sh-b').addEventListener('keydown', function(e){
+    if (e.key !== 'Enter') return;
+    if (e.target.id === 'law-in') findLaw();
+    if (e.target.id === 'mp-in') findMp();
+  });
   $('sh-b').addEventListener('click', function(e){
     var t = e.target.closest('button,.tg'); if (!t) return;
     if (t.dataset.go){ open(t.dataset.go); return; }
     if (t.dataset.k){ S.inst[t.dataset.k] ? delete S.inst[t.dataset.k] : S.inst[t.dataset.k] = 1; t.classList.toggle('on'); refresh(); return; }
     if (t.id === 'tg-law'){ S.lawyer = !S.lawyer; t.classList.toggle('on'); refresh(); return; }
     if (t.id === 'tg-not'){ S.notify = !S.notify; t.classList.toggle('on'); return; }
+    if (t.id === 'do-law'){ findLaw(); return; }
+    if (t.id === 'do-mp'){ findMp(); return; }
     if (t.id === 'do-copy'){ try { navigator.clipboard.writeText(S.ref).then(function(){ toast('Copied: ' + S.ref); }, function(){ toast(S.ref); }); } catch (x) { toast(S.ref); } return; }
     if (t.id === 'do-send'){
       t.disabled = true; t.firstChild.textContent = 'Sending… ';
