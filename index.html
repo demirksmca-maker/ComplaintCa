@@ -36,7 +36,7 @@
 
 <script
   src="https://js.sentry-cdn.com/2cbc8d3dc7490cf8cf827660a3c902ee.min.js"
-  crossorigin="anonymous"
+  crossorigin="anonymous" async
 ></script>
 
 <script type="application/ld+json">
@@ -84,10 +84,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ComplaintCA">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"></noscript>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -4924,6 +4926,7 @@ document.addEventListener('click',e=>{
 function _initMap(lat,lng){
   const el=document.getElementById('map-preview');if(!el)return;el.style.display='block';
   if(!_mapReady){
+    const c=document.createElement('link');c.rel='stylesheet';c.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(c);
     const s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
     s.onload=()=>{_mapReady=true;_renderMap(lat,lng);};
     document.head.appendChild(s);
