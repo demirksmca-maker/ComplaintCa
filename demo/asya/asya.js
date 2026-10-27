@@ -925,8 +925,8 @@
       done.addEventListener('click', () => { close(); setTimeout(() => { emit({ type:'reset' }); F = build(); }, 400); });
       // Gold maple seal: a small official mark at the right end of the record band.
       const recH = el('p','af1-rec-h fx', TX('Complaint and tracking information')), mark = el('i','af1-rec-mark'); mark.setAttribute('aria-hidden','true');
-      mark.innerHTML = '<svg viewBox="0 0 100 100"><defs><linearGradient id="afGoldM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3c4"/><stop offset=".55" stop-color="#e6c35c"/><stop offset="1" stop-color="#a67c22"/></linearGradient></defs>'
-        + '<circle cx="50" cy="50" r="47" fill="#0b1d3d" stroke="url(#afGoldM)" stroke-width="4"/><circle cx="50" cy="50" r="40" fill="none" stroke="url(#afGoldM)" stroke-width="1" stroke-dasharray="2 3"/>'
+      mark.innerHTML = '<svg viewBox="0 0 100 100"><defs><linearGradient id="afGoldM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3d1f2"/><stop offset=".55" stop-color="#cfb0e8"/><stop offset="1" stop-color="#6b26a2"/></linearGradient></defs>'
+        + '<circle cx="50" cy="50" r="47" fill="#3d0b35" stroke="url(#afGoldM)" stroke-width="4"/><circle cx="50" cy="50" r="40" fill="none" stroke="url(#afGoldM)" stroke-width="1" stroke-dasharray="2 3"/>'
         + '<path fill="url(#afGoldM)" transform="translate(50 52) scale(.55) translate(-50 -50)" d="M50 4L58 22 68 17 64 42 80 28 84 36 96 32 90 50 98 56 72 72 76 82 54 78 54 96 46 96 46 78 24 82 28 72 2 56 10 50 4 32 16 36 20 28 36 42 32 17 42 22Z"/></svg>';
       recH.appendChild(mark);
       // Compact head: emblem · ASYA · seal side by side (the big emblem and title above are hidden on this screen).
