@@ -11,9 +11,10 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#160a1c}
-body{min-height:100dvh;color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover fixed no-repeat;-webkit-tap-highlight-color:transparent}
+body{min-height:100dvh;color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(26,6,32,.8),rgba(14,3,18,.94)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover fixed no-repeat;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit}
 .wrap{max-width:560px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.framed .wrap{padding-top:56px}
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 @keyframes spin{to{--a:360deg}}
 @keyframes up{from{transform:translateY(14px);opacity:0}}
@@ -114,6 +115,15 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 .letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
 .warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
 [hidden]{display:none!important}
+/* test tools: topic switch + live strength meter */
+.tabs{display:flex;gap:6px;justify-content:center;margin:0 0 16px}
+.tabs button{flex:1;max-width:150px;padding:9px 6px;border-radius:12px;border:1px solid rgba(196,160,255,.35);background:rgba(24,4,16,.55);color:#d5b9eb;font:700 11px/1 Cinzel,serif;letter-spacing:.08em;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:linear-gradient(180deg,#f3ecff,#cdb6f5);border-color:#fff;color:#2a0814}
+.meter{margin:0 4px 16px;padding:12px 14px;border-radius:14px;background:rgba(24,4,16,.6);border:1px solid rgba(196,160,255,.3)}
+.meter div{display:flex;justify-content:space-between;font:700 11px/1 Cinzel,serif;letter-spacing:.12em;color:#cfb0e8}
+.meter b{color:#fff}
+.meter .prog{margin:8px 0 8px}
+.meter small{display:block;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(234,220,243,.85)}
 .safe{margin-bottom:14px;padding:14px 16px;border-radius:16px;background:linear-gradient(155deg,rgba(124,58,237,.35),rgba(46,16,80,.5));border:1px solid rgba(196,160,255,.4);font:400 17px/1.4 'EB Garamond',Georgia,serif;color:#f3eaff}
 .safe a{color:#fff;font-weight:600}
 .help em{background:#5a1d9a;font-size:10.5px}
@@ -151,9 +161,11 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 </head>
 <body>
 <main class="wrap">
+  <div class="tabs" role="group" aria-label="Senaryo"><button type="button" data-t="consumer">Tüketici</button><button type="button" data-t="gov">Devlet</button><button type="button" data-t="serious">Hassas</button></div>
   <h1 id="h1">Şikayetin Hazır</h1>
   <p class="sub" id="sub"></p>
   <div class="safe" id="safe"><b>Yalnız değilsin.</b> Tehlikedeysen hemen <a href="tel:911">911</a>’i ara. Bu sayfada hiçbir şey sen onaylamadan gönderilmez.</div>
+  <div class="meter" id="meter"><div><span>DAVA GÜCÜ</span><b id="m-pct"></b></div><div class="prog"><i id="m-bar"></i></div><small id="m-next"></small></div>
   <blockquote class="quote" id="quote">Geciken adalet, adalet değildir.<cite>W·E·GLADSTONE</cite></blockquote>
 
   <div class="grid">
@@ -182,6 +194,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 <script>
 // Inside the Dias Panel frame its Site/Test switch sits on top: leave room for it.
 (function(){
+  if (window.top !== window) document.body.classList.add('framed');
   var ADDR = 'M5V 2T6';   // the user's OWN address from the Location step
   var IC = {
     mp: '<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/></svg>',
@@ -288,7 +301,8 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     C = Object.assign({}, T[k], { inst: T[k].inst.slice() }); S = { read:{}, inst:{}, lawyer:false, notify:true, sent:false, ref:'', lawProv:'', mp:false };
     C.inst.forEach(function(i){ if (i[4]) S.inst[i[0]] = 1; });
     $('sub').textContent = C.sub;
-    $('quote').hidden = !C.game; $('safe').hidden = C.game;
+    $('quote').hidden = !C.game; $('safe').hidden = C.game; $('meter').hidden = !C.game;
+    document.querySelectorAll('.tabs button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.t === k ? 'true' : 'false'); });
     $('h1').textContent = C.game ? 'Şikayetin Hazır' : 'Seçeneklerin Hazır';
     $('c-send-b').textContent = C.game ? 'Şikayet Gönder' : 'Bildir';
     $('c-letter-b').textContent = C.game ? 'Mektubun' : 'Beyanın';
@@ -317,6 +331,8 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     else { $('c6-s').textContent = S.inst.mp ? (MP.name || 'Eklendi') + ' ✓' : MP.name ? MP.name + (C.mpRec ? '' : ' · istersen ekle') : MP.state === 'busy' ? 'Adresinden bulunuyor…' : 'İstersen ekle'; c6.classList.toggle('done', !!S.inst.mp); }
     $('c-send').textContent = S.sent ? 'Gönderildi ✓' : !ni ? 'Önce kurum seç' : !C.game ? 'Sen onaylayınca' : strength() >= 70 ? 'Güçlü — hazır' : 'Güç %' + strength();
     card('send').classList.toggle('done', S.sent);
+    var st = strength(); $('m-pct').textContent = '%' + st; $('m-bar').style.width = st + '%';
+    $('m-next').textContent = S.sent ? 'Gönderildi — referans: ' + S.ref : nr < C.rights.length ? 'Sıradaki adım: II. kartta haklarını aç (+%' + Math.round(60 / C.rights.length) + ' her biri)' : !ni ? 'Sıradaki adım: III. karttan kurum seç (+%10)' : !(S.lawProv || S.mp) ? 'Sıradaki adım: V. kartta avukat bul (+%10)' : 'Hazır — I. karttan gönder';
   }
 
   function mpRow(r, lv){
@@ -461,6 +477,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
       }, 900);
     }
   });
+  document.querySelectorAll('.tabs button').forEach(function(b){ b.onclick = function(){ close(); setTopic(b.dataset.t); }; });
   setTopic('consumer');
   autoMp();
 })();
