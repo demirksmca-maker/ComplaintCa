@@ -32,10 +32,10 @@
   };
   var STEPS = [
     ['loc', 'Location', 'City or postal code'],
-    ['who', 'Who is it about?', 'Company, office, school, landlord'],
-    ['topic', 'Topic', 'Consumer, renting, work, cyber…'],
+    ['who', 'Who is it about?', 'Company, landlord…'],
+    ['topic', 'Topic', 'Consumer, rent, cyber…'],
     ['what', 'What happened?', 'In your own words'],
-    ['proof', 'Evidence', 'Photo of a receipt, bill or screen'],
+    ['proof', 'Evidence', 'Receipt, bill or screen'],
     ['mail', 'Email', 'Only to verify it’s you']
   ];
   var REQ = ['loc', 'what', 'mail'];
@@ -64,7 +64,7 @@
     '#cc-steps .cs-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(255,215,160,.55),transparent) top/100% 1px no-repeat}#cc-steps .cs-card>*{position:relative}#cc-steps .cs-card>.cs-n,#cc-steps .cs-card>.cs-ok{position:absolute}',
     '#cc-steps .cs-card:focus-visible,#cc-steps button:focus-visible{outline:2px solid #fff;outline-offset:3px}',
     '#cc-steps .cs-card b{display:block;font:800 17px/1.25 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#fff}',
-    '#cc-steps .cs-card small{display:block;margin-top:4px;font:500 13px/1.35 Inter,sans-serif;color:rgba(255,255,255,.72);overflow-wrap:anywhere}',
+    '#cc-steps .cs-card small{display:block;margin-top:4px;font:500 13px/1.35 Inter,sans-serif;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
     '#cc-steps .cs-n{position:absolute;top:12px;right:14px;font:700 12px/1 Cinzel,Georgia,serif;color:rgba(255,215,160,.75);letter-spacing:.06em}',
     '#cc-steps .cs-ok{position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:#fff;color:#1d4ed8;display:none;place-items:center;font:800 14px/1 Inter,sans-serif}',
     '#cc-steps .cs-card.done .cs-ok{display:grid}#cc-steps .cs-card.done .cs-n{display:none}',
