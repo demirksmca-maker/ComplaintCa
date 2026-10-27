@@ -54,7 +54,7 @@
     '#cc-steps .cs-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:720px;margin:0 auto;padding:clamp(10px,2.2vh,20px) max(16px,env(safe-area-inset-right,0px)) calc(clamp(10px,2vh,32px) + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}',
     '#cc-steps .cs-ln{display:flex;align-items:center;justify-content:center;gap:10px;margin:clamp(4px,1vh,10px) 0 clamp(4px,.8vh,8px);color:#c9a8ff;font-size:11px}',
     '#cc-steps .cs-ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,#c9a8ff)}#cc-steps .cs-ln i:last-child{transform:scaleX(-1)}',
-    '#cc-steps .cs-hd{display:flex;justify-content:flex-end;align-items:center;margin-top:clamp(4px,1vh,10px);font:700 13px/1 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#8991a3}',
+    '#cc-steps .cs-hd{display:flex;justify-content:flex-end;align-items:center;margin-top:clamp(14px,2.2vh,20px);font:700 13px/1 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#8991a3}',
     '#cc-steps .cs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
     '#cc-steps .cs-quote{position:relative;flex:1;min-width:0;margin-right:14px;padding:2px 0 2px 13px;quotes:none;text-align:left;font:italic 500 clamp(13.5px,3.7vw,15.5px)/1.3 \'EB Garamond\',Georgia,serif;letter-spacing:.005em;color:#dcc5ee;text-shadow:0 1px 2px rgba(0,0,0,.55)}',
     '#cc-steps .cs-quote::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:1.5px;border-radius:2px;background:linear-gradient(180deg,transparent,#cfb0e8 20%,#cfb0e8 80%,transparent);transform-origin:50% 0;animation:csRule .9s cubic-bezier(.2,.7,.2,1) both}',
@@ -68,7 +68,7 @@
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:10px;margin-top:clamp(10px,1.6vh,16px)}',
     '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:0;overflow:hidden;padding:12px 14px clamp(14px,2vh,18px);border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;cursor:pointer;background:var(--g);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
     '#cc-steps .cs-card:hover{transform:translateY(-2px);filter:brightness(1.08)}',
-    '#cc-steps .cs-perch{position:absolute;left:calc(50% + 14px);top:-34px;z-index:3;width:46px;height:37px;pointer-events:none;background:url(/assets/dove-perch.webp) 0 0/400% 100% no-repeat;animation:csIdle 9s infinite}',
+    '#cc-steps .cs-perch{position:absolute;left:-8px;top:-35px;z-index:3;width:46px;height:37px;pointer-events:none;background:url(/assets/dove-perch.webp) 0 0/400% 100% no-repeat;animation:csIdle 9s infinite}',
     '#cc-steps .cs-perch.fl{animation:csFlut .7s 1}#cc-steps .cs-perch.off{visibility:hidden}',
     '@keyframes csIdle{0%,88%{background-position:0 0;animation-timing-function:steps(1,end)}90%,94%,98%{background-position:33.333% 0;animation-timing-function:steps(1,end)}92%,96%{background-position:66.667% 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}',
     '@keyframes csFlut{0%{background-position:33.333% 0;animation-timing-function:steps(1,end)}20%,60%{background-position:66.667% 0;animation-timing-function:steps(1,end)}40%,80%{background-position:33.333% 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}',
@@ -213,7 +213,7 @@
       '<div class="as-btns"><button type="button" class="as-use">Use this</button><button type="button" class="as-keep">Keep mine</button></div></div></div></div>' +
       '<div class="cs-toast" role="status"></div>';
     (document.getElementById('cc-steps-host') || document.body).appendChild(root);
-    var pe = document.createElement('div'); pe.className = 'cs-perch'; pe.setAttribute('aria-hidden', 'true'); q('.cs-grid').appendChild(pe);
+    var pe = document.createElement('div'); pe.className = 'cs-perch'; pe.setAttribute('aria-hidden', 'true'); q('.cs-quote').appendChild(pe);
     root.addEventListener('click', function(e){
       var c = e.target.closest('.cs-card'); if (c) return openSheet(c.dataset.k);
       var a = e.target.closest('[data-act]'); if (!a) return;
