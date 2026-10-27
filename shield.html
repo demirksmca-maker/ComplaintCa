@@ -977,7 +977,7 @@
         if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
         // Tapping a marked element reopens its toolbar; a new one is marked and opened.
         if (hit < 0) {
-          marks.push({ el: el, path: frame.contentWindow.location.pathname, href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '' });
+          marks.push({ el: el, path: pagePath(frame.contentWindow), href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '' });
           hit = marks.length - 1;
         }
         render(); openPop(hit);
@@ -1018,7 +1018,7 @@
       // The element under the middle of the drawing names the mark.
       var el = d.elementFromPoint(b.x + b.w / 2 - w.scrollX, b.y + b.h / 2 - w.scrollY) || d.body;
       if (cur >= 0) marks[cur].note = $('mkNote').value.trim();
-      marks.push({ el: el, path: w.location.pathname, href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '', draw: p, box: b });
+      marks.push({ el: el, path: pagePath(w), href: link(el), sel: sel(el), text: (el.innerText || el.alt || '').replace(/\s+/g, ' ').trim().slice(0, 60), data: isData(el), picks: [], note: '', draw: p, box: b });
       render(); openPop(marks.length - 1);
     }
     cv.addEventListener('pointerup', endStroke);
@@ -1033,7 +1033,7 @@
     };
     $('mkToggle').addEventListener('click', function () {
       on = !on; this.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); frame.src = sitePage(); }
+      if (on && frame.getAttribute('sandbox') === SANDBOX) { frame.setAttribute('sandbox', SANDBOX + ' allow-same-origin'); loadFrame(sitePage()); }
       var d = doc(); if (d) { hook(); d.documentElement.classList.toggle('dias-mk-on', on); }
       if (!on) { setPen(false); if (!pop.hidden) closePop(); }
       render();
@@ -1066,15 +1066,34 @@
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
     // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
-    if (name === 'site') $('siteFrame').src = sitePage(); else { $('siteFrame').removeAttribute('src'); mkReset(); }
+    if (name === 'site') loadFrame(sitePage()); else { loadFrame(''); mkReset(); }
   }
   // Site tab shows the live home page or the test page (/demo/sonuc.html); the choice is remembered.
   var PG = 'shieldPage';
-  function sitePage() { var p = store(PG); return p === '/demo/sonuc.html' ? p : '/'; }
+  var TEST = '/demo/sonuc.html', frameSeq = 0;
+  function sitePage() { var p = store(PG); return p === TEST ? p : '/'; }
+  // The Test page comes straight from GitHub main, so a merge shows here without
+  // waiting for a Vercel deploy; if GitHub fails, the live copy is used.
+  function ghTest() {
+    return fetch('https://api.github.com/repos/demirksmca-maker/ComplaintCa/contents/demo/sonuc.html?ref=main', { cache: 'no-store', headers: { Accept: 'application/vnd.github.raw' } })
+      .then(function (r) { return r.ok ? r.text() : null; }).catch(function () { return null; });
+  }
+  function loadFrame(p) {
+    var fr = $('siteFrame'), n = ++frameSeq;
+    fr.removeAttribute('srcdoc'); fr.setAttribute('data-pg', p);
+    if (!p) { fr.removeAttribute('src'); return; }
+    if (p !== TEST) { fr.src = p; return; }
+    ghTest().then(function (t) {
+      if (n !== frameSeq) return;
+      if (t == null) { fr.src = p; return; }
+      fr.srcdoc = t.replace(/<head>/i, '<head><base href="' + location.origin + '/demo/">');
+    });
+  }
+  function pagePath(w) { var p = w.location.pathname; return p === 'srcdoc' ? TEST : p; }
   function paintPg() { each('.pg-sw button', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-pg') === sitePage() ? 'true' : 'false'); }); }
   each('.pg-sw button', function (b) { b.addEventListener('click', function () {
     var p = b.getAttribute('data-pg'); if (p === sitePage()) return;
-    store(PG, p === '/' ? '' : p); paintPg(); mkReset(); $('siteFrame').src = p;
+    store(PG, p === '/' ? '' : p); paintPg(); mkReset(); loadFrame(p);
   }); });
   paintPg();
   each('.bar-nav button', function (b) { b.addEventListener('click', function () { showSec(b.getAttribute('data-sec')); }); });
@@ -1295,9 +1314,9 @@
   // site tab. A change since the last visit (remembered per device) or while
   // the panel is open shows the bar.
   (function () {
-    var seen = {}, UPD = 'dias:upd:';
+    var seen = {}, UPD = 'dias:upd:', tick = 0;
     function sig(url) {
-      return fetch(url, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; })
+      return (url === TEST ? ghTest() : fetch(url, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; }))
         .then(function (t) { if (t == null) return null; var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return String(h); })
         .catch(function () { return null; });
     }
@@ -1305,7 +1324,10 @@
     function check() {
       if (!getKey()) return;
       var fr = document.getElementById('siteFrame');
-      var urls = [location.pathname, fr && fr.getAttribute('src')].filter(Boolean);
+      var pg = fr && fr.getAttribute('data-pg');
+      // GitHub allows 60 calls an hour without a key: check the Test page every 2 min.
+      if (pg === TEST && tick++ % 4) pg = '';
+      var urls = [location.pathname, pg].filter(Boolean);
       urls.forEach(function (u) {
         sig(u).then(function (h) {
           if (h == null) return;
