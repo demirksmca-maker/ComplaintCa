@@ -290,9 +290,14 @@
   .d3-foot{font-size:.7rem;color:var(--mute);text-align:center}
   .d3-foot button{background:none;color:#bf7fff;text-decoration:underline;font-size:.7rem;padding:0}
   @media (prefers-reduced-motion:reduce){.d3-card,.d3-arrow{transition:none}.d3-more .d3-card{animation:none}}
+  /* Update bar: shows when a new deploy changes the panel or the Test page. */
+  .upd{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:100000;width:min(480px,100%);display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));background:linear-gradient(180deg,#5b1a74,#3d0d42);border-bottom:1px solid var(--edge);box-shadow:0 6px 18px rgba(0,0,0,.5);font-size:.85rem;font-weight:700}
+  .upd span{flex:1}
+  .upd button{padding:7px 14px;background:var(--ok);color:#10301f;font-weight:800}
 </style>
 </head>
 <body>
+<div class="upd" id="updBar" hidden role="status"><span>✨ Yeni değişiklik geldi</span><button type="button" id="updBtn">Yenile</button></div>
 <main>
   <header class="head" id="hero">
     <div class="mid">
@@ -1286,6 +1291,32 @@
   setInterval(function () { if (!document.hidden && getKey() && gscLoaded) loadGsc(false, true); }, 10 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
+  // Update bar: every minute, re-fetch the panel and the page open in the
+  // site tab; if either changed since we first saw it, offer a reload.
+  (function () {
+    var seen = {};
+    function sig(url) {
+      return fetch(url, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; })
+        .then(function (t) { if (t == null) return null; var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return h; })
+        .catch(function () { return null; });
+    }
+    function check() {
+      if (document.hidden) return;
+      var fr = document.getElementById('siteFrame');
+      var urls = [location.pathname, fr && fr.getAttribute('src')].filter(Boolean);
+      urls.forEach(function (u) {
+        sig(u).then(function (h) {
+          if (h == null) return;
+          if (!(u in seen)) seen[u] = h;
+          else if (seen[u] !== h) document.getElementById('updBar').hidden = false;
+        });
+      });
+    }
+    document.getElementById('updBtn').onclick = function () { location.reload(); };
+    check();
+    setInterval(check, 60000);
+    document.addEventListener('visibilitychange', check);
+  })();
 })();
 </script>
 </body>
