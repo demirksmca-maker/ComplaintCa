@@ -139,20 +139,25 @@ export function summarizeRecent(hourRows, dateRows, now = Date.now()) {
     return byT.get(t) || { t, clicks: 0, impressions: 0, position: 0 };
   }) : [];
   const days = (dateRows || []).filter(r => r.impressions > 0).sort((a, b) => (a.keys[0] < b.keys[0] ? -1 : 1));
-  const weeks = [];
-  for (const r of days) {
-    const w = weekOf(r.keys[0]);
-    const last = weeks[weeks.length - 1];
-    if (last && last.week === w) { last.impressions += r.impressions; last.clicks += r.clicks; }
-    else weeks.push({ week: w, impressions: r.impressions, clicks: r.clicks });
-  }
+  // Weekly and monthly totals; days counts the days with data so a running
+  // (partial) week or month can be compared by its daily average.
+  const group = (keyOf, name) => {
+    const out = [];
+    for (const r of days) {
+      const k = keyOf(r.keys[0]), last = out[out.length - 1];
+      if (last && last[name] === k) { last.impressions += r.impressions; last.clicks += r.clicks; last.days++; }
+      else out.push({ [name]: k, impressions: r.impressions, clicks: r.clicks, days: 1 });
+    }
+    return out;
+  };
+  const weeks = group(weekOf, 'week'), months = group(d => d.slice(0, 7), 'month');
   const sum = (list, k) => list.reduce((n, x) => n + x[k], 0);
   // Hours without a position yet are left out rather than counted as 0.
   const avgPos = list => { const ok = list.filter(x => x.position > 0), imp = sum(ok, 'impressions'); return imp ? Math.round(ok.reduce((n, x) => n + x.position * x.impressions, 0) / imp * 10) / 10 : 0; };
   return {
     // Average position weighted by impressions, as Search Console averages it.
     day: hours.length ? { impressions: sum(hours, 'impressions'), clicks: sum(hours, 'clicks'), position: avgPos(hours), hours, last: lastT } : null,
-    since: days.length ? { start: days[0].keys[0], impressions: sum(days, 'impressions'), clicks: sum(days, 'clicks'), weeks } : null
+    since: days.length ? { start: days[0].keys[0], impressions: sum(days, 'impressions'), clicks: sum(days, 'clicks'), weeks, months } : null
   };
 }
 

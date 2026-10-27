@@ -50,6 +50,8 @@ test('summarizeRecent: last 24 h from hourly rows, since-start from daily rows',
   assert.equal(r.day.hours[23].impressions, 60); assert.equal(r.day.hours[0].impressions, 70);
   assert.equal(r.since.start, '2026-07-02'); assert.equal(r.since.impressions, 18);
   assert.deepEqual(r.since.weeks.map(w => [w.week, w.impressions]), [['2026-06-29', 3], ['2026-07-06', 15]]);
+  assert.deepEqual(r.since.weeks.map(w => w.days), [1, 2]);
+  assert.deepEqual(r.since.months, [{ month: '2026-07', impressions: 18, clicks: 3, days: 3 }]);
   assert.equal(weekOf('2026-10-20'), '2026-10-19');
   assert.equal(summarizeRecent([], [], now).day, null);
 });
