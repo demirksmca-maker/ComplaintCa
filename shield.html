@@ -1291,7 +1291,7 @@
   setInterval(function () { if (!document.hidden && getKey() && gscLoaded) loadGsc(false, true); }, 10 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load(); }, 30 * 60000);
   setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
-  // Update bar: every minute, re-fetch the panel and the page open in the
+  // Update bar: every 30 s, re-fetch the panel and the page open in the
   // site tab; if either changed since we first saw it, offer a reload.
   (function () {
     var seen = {};
@@ -1314,7 +1314,7 @@
     }
     document.getElementById('updBtn').onclick = function () { location.reload(); };
     check();
-    setInterval(check, 60000);
+    setInterval(check, 30000);
     document.addEventListener('visibilitychange', check);
   })();
 })();
