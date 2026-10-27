@@ -149,6 +149,15 @@
           "value": "SAMEORIGIN"
         }
       ]
+    },
+    {
+      "source": "/demo/sonuc.html",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
     }
   ]
 }
