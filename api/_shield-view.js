@@ -12,7 +12,6 @@ import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
-import { diasTask } from './_dias-task.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -192,9 +191,6 @@ export async function shieldView(req, res) {
     await pipeline([['INCR', badKey], ['EXPIRE', badKey, 600]]).catch(() => {});
     return res.status(403).json({ error: 'forbidden' });
   }
-
-  // ?task=1 POST {text} gives Claude a task; ?task=N reads its reply (_dias-task.js).
-  if (req.query && req.query.task) return diasTask(req, res);
 
   if (req.query && req.query.funnel) {
     try { return res.status(200).json(await funnelPanel(pipeline)); }
