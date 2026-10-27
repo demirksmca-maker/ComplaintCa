@@ -68,11 +68,14 @@
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:10px;margin-top:clamp(10px,1.6vh,16px)}',
     '#cc-steps .cs-card{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:0;overflow:hidden;padding:12px 14px clamp(14px,2vh,18px);border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;cursor:pointer;background:var(--g);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s;animation:csUp .6s ease-out both;font:inherit}',
     '#cc-steps .cs-card:hover{transform:translateY(-2px);filter:brightness(1.08)}',
-    '#cc-steps .cs-dove{position:fixed;left:0;top:0;z-index:310;width:84px;height:84px;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(20,0,30,.55)) drop-shadow(0 0 10px rgba(216,180,254,.45))}',
-    '#cc-steps .cs-dove b{position:absolute;inset:0;animation:csBob 1.4s ease-in-out infinite alternate}#cc-steps .cs-dove i{position:absolute;inset:0;background:url(/assets/dove.webp) 0 0/400% 100% no-repeat;opacity:0;animation:.75s linear infinite}',
-    '#cc-steps .cs-dove .f0{animation-name:csF0}#cc-steps .cs-dove .f1{background-position:33.333% 0;animation-name:csF1}#cc-steps .cs-dove .f2{background-position:66.667% 0;animation-name:csF2}',
-    '@keyframes csF0{0%,17%,92%,100%{opacity:1}25%,84%{opacity:0}}@keyframes csF1{0%,17%,50%,67%,100%{opacity:0}25%,42%,75%,92%{opacity:1}}@keyframes csF2{0%,42%,75%,100%{opacity:0}50%,67%{opacity:1}}',
-    '@keyframes csBob{from{transform:translateY(-4px) rotate(-3deg)}to{transform:translateY(4px) rotate(2deg)}}',
+    '#cc-steps .cs-perch{position:absolute;left:calc(50% + 14px);top:-34px;z-index:3;width:46px;height:37px;pointer-events:none;background:url(/assets/dove-perch.webp) 0 0/400% 100% no-repeat;animation:csIdle 9s infinite}',
+    '#cc-steps .cs-perch.fl{animation:csFlut .7s 1}#cc-steps .cs-perch.off{visibility:hidden}',
+    '@keyframes csIdle{0%,88%{background-position:0 0;animation-timing-function:steps(1,end)}90%,94%,98%{background-position:33.333% 0;animation-timing-function:steps(1,end)}92%,96%{background-position:66.667% 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}',
+    '@keyframes csFlut{0%{background-position:33.333% 0;animation-timing-function:steps(1,end)}20%,60%{background-position:66.667% 0;animation-timing-function:steps(1,end)}40%,80%{background-position:33.333% 0;animation-timing-function:steps(1,end)}100%{background-position:0 0}}',
+    '#cc-steps .cs-fly{position:fixed;left:0;top:0;z-index:311;width:50px;height:74px;pointer-events:none;display:none;will-change:transform;background:url(/assets/dove-fly-letter.webp) 0 0/600% 100% no-repeat;animation:csWing .42s steps(6) infinite}',
+    '#cc-steps .cs-fly.empty{background-image:url(/assets/dove-fly.webp)}@keyframes csWing{to{background-position:120% 0}}',
+    '#cc-steps .cs-env{position:fixed;left:0;top:0;z-index:312;width:20px;height:13px;border-radius:2px;pointer-events:none;will-change:transform;background:linear-gradient(to bottom right,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 0 0/50% 60% no-repeat,linear-gradient(to bottom left,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 100% 0/50% 60% no-repeat,#f6ecd9;box-shadow:0 2px 5px rgba(0,0,0,.45)}',
+    '#cc-steps .cs-env::after{content:"";position:absolute;left:7px;top:4px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e0464a,#8e0c1c)}',
     '#cc-steps .cs-asya.got{animation:csGot .6s ease-out}@keyframes csGot{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(216,180,254,.35),0 0 24px rgba(216,180,254,.8)}100%{transform:scale(1)}}',
     '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{text-wrap:balance}',
     '#cc-steps .cs-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}#cc-steps .cs-card>*{position:relative}#cc-steps .cs-card>.cs-n,#cc-steps .cs-card>.cs-ok{position:absolute}',
@@ -210,6 +213,7 @@
       '<div class="as-btns"><button type="button" class="as-use">Use this</button><button type="button" class="as-keep">Keep mine</button></div></div></div></div>' +
       '<div class="cs-toast" role="status"></div>';
     (document.getElementById('cc-steps-host') || document.body).appendChild(root);
+    var pe = document.createElement('div'); pe.className = 'cs-perch'; pe.setAttribute('aria-hidden', 'true'); q('.cs-grid').appendChild(pe);
     root.addEventListener('click', function(e){
       var c = e.target.closest('.cs-card'); if (c) return openSheet(c.dataset.k);
       var a = e.target.closest('[data-act]'); if (!a) return;
@@ -324,22 +328,49 @@
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
     closeSheet(); sync(); dove(c);
   }
-  // A carrier dove takes the saved answer from the card to the ASYA badge.
-  var DOVE = '<b><i class="f0"></i><i class="f1"></i><i class="f2"></i></b>'; (new Image()).src = '/assets/dove.webp';
+  // A carrier dove lives on the Who card. A saved answer flies to its beak as a
+  // sealed letter; the dove takes it far up to the ASYA badge and lands back.
+  ['perch', 'fly-letter', 'fly'].forEach(function(n){ (new Image()).src = '/assets/dove-' + n + '.webp'; });
+  var dq = [], dBusy = false;
   function dove(from){
-    var to = q('.cs-asya');
-    if (!from || !to || !root.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
-    var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
-    var x0 = a.left + 4, y0 = a.top + 4, x1 = b.left + b.width / 2 - 42, y1 = b.top + b.height / 2 - 42;
-    var f = x1 < x0 ? -1 : 1, W = innerWidth, top = Math.max(Math.min(y0, y1) - 60, 6);
-    var p1x = Math.min(Math.max(x0 - 60 * f, 6), W - 90), p2x = Math.min(Math.max((x0 + x1) / 2 + 30 * f, 6), W - 90);
-    var d = document.createElement('div'); d.className = 'cs-dove'; d.innerHTML = DOVE; root.appendChild(d);
-    function T(x, y, sc, r){ return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + sc * f + ',' + sc + ') rotate(' + r * f + 'deg)' }; }
-    var k = [T(x0, y0, .3, -15), T(x0, y0 - 30, .9, -14), T(p1x, (y0 + top) / 2, 1, -6), T(p2x, top, 1, 4), T(x1 - 20 * f, y1 - 24, .8, 8), T(x1, y1, .3, 12)];
-    k[0].opacity = 0; k[1].opacity = 1; k[4].opacity = 1; k[5].opacity = 0;
-    k[1].offset = .1; k[2].offset = .35; k[3].offset = .62; k[4].offset = .88;
-    var an = d.animate(k, { duration: 6000, easing: 'ease-in-out' });
-    an.onfinish = function(){ d.remove(); to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); };
+    var to = q('.cs-asya'), pe = q('.cs-perch');
+    if (!from || !to || !pe || !root.animate || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) { if (to) { to.classList.remove('got'); void to.offsetWidth; to.classList.add('got'); } return; }
+    dq.push(from); if (!dBusy) doveRun();
+  }
+  function doveRun(){
+    var from = dq.shift(); if (!from) { dBusy = false; return; }
+    dBusy = true;
+    var to = q('.cs-asya'), pe = q('.cs-perch');
+    var a = from.getBoundingClientRect(), p = pe.getBoundingClientRect();
+    var bx = p.left + 42, by = p.top + 7;
+    var env = document.createElement('div'); env.className = 'cs-env'; root.appendChild(env);
+    var ex = a.left + a.width / 2 - 10, ey = a.top + a.height / 2 - 6, hx = Math.min(ex, bx) + Math.abs(bx - ex) / 2, hy = Math.min(ey, by) - 50;
+    env.animate([
+      { transform: 'translate(' + ex + 'px,' + ey + 'px) scale(1.4) rotate(-8deg)', opacity: 0 },
+      { transform: 'translate(' + ex + 'px,' + (ey - 10) + 'px) scale(1.3) rotate(-4deg)', opacity: 1, offset: .15 },
+      { transform: 'translate(' + hx + 'px,' + hy + 'px) scale(1) rotate(10deg)', offset: .6 },
+      { transform: 'translate(' + (bx - 6) + 'px,' + (by - 4) + 'px) scale(.55) rotate(0deg)', opacity: 1 }
+    ], { duration: 1100, easing: 'cubic-bezier(.45,0,.35,1)' }).onfinish = function(){ env.remove(); doveFly(pe, to); };
+  }
+  function doveFly(pe, to){
+    var fl = q('.cs-fly'); if (!fl) { fl = document.createElement('div'); fl.className = 'cs-fly'; fl.setAttribute('aria-hidden', 'true'); root.appendChild(fl); }
+    var p = pe.getBoundingClientRect(), b = to.getBoundingClientRect();
+    var x0 = p.left - 2, y0 = p.top - 20, tx = b.left + b.width / 2 - 42, ty = b.top - 36, W = innerWidth;
+    var mx = Math.min(Math.max((x0 + tx) / 2, 10), W - 60), hi = Math.max(Math.min(y0, ty) - 90, 4);
+    function T(x, y, s, f, r){ return { transform: 'translate(' + x + 'px,' + y + 'px) scale(' + s * f + ',' + s + ') rotate(' + r * f + 'deg)' }; }
+    fl.className = 'cs-fly'; fl.style.display = 'block'; pe.classList.add('off');
+    var out = [T(x0, y0, 1, 1, 0), T(x0 - 26, y0 - 50, .62, 1, -14), T(mx, hi, .42, 1, -4), T(tx - 10, ty - 26, .72, 1, 6), T(tx, ty, .8, 1, 0)];
+    out[1].offset = .22; out[2].offset = .55; out[3].offset = .84;
+    fl.animate(out, { duration: 2600, easing: 'ease-in-out', fill: 'forwards' }).onfinish = function(){
+      to.classList.remove('got'); void to.offsetWidth; to.classList.add('got');
+      fl.className = 'cs-fly empty';
+      var back = [T(tx, ty, .8, 1, 0), T(tx + 4, ty - 8, .78, -1, -4), T(mx, hi + 10, .45, -1, -6), T(x0 + 30, y0 - 46, .7, -1, 8), T(x0 + 6, y0 - 8, .95, 1, -4), T(x0, y0, 1, 1, 0)];
+      back[1].offset = .08; back[2].offset = .45; back[3].offset = .75; back[4].offset = .92;
+      fl.animate(back, { duration: 2500, delay: 250, easing: 'ease-in-out', fill: 'forwards' }).onfinish = function(){
+        fl.style.display = 'none'; fl.getAnimations().forEach(function(x){ if (!x.animationName) x.cancel(); }); pe.classList.remove('off', 'fl'); void pe.offsetWidth; pe.classList.add('fl');
+        setTimeout(function(){ pe.classList.remove('fl'); doveRun(); }, 700);
+      };
+    };
   }
   function sync(){ q('.cs-prog').textContent = STEPS.filter(function(s){ return V[s[0]]; }).length + '/6'; q('.cs-go').disabled = !REQ.every(function(k){ return V[k]; }); }
 
