@@ -12,7 +12,6 @@ import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
-import { pushDeploy, vapidKeys, publicKey, saveSub } from './_shield-push.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -177,12 +176,6 @@ export async function shieldView(req, res) {
     return (await r.json()).map(x => x.result);
   };
 
-  // GET /api/shield?deploy=1 → no key: phone push once per new deploy (_shield-push.js).
-  if (req.query && req.query.deploy) {
-    try { return res.status(200).json(await pushDeploy(pipeline)); }
-    catch { return res.status(502).json({ error: 'upstash' }); }
-  }
-
   // Only wrong keys count toward the limit, so the panel's own refreshes
   // never lock the owner out; after BAD_KEY_LIMIT misses the IP waits
   // 10 minutes, even with the right key (no brute forcing).
@@ -232,14 +225,6 @@ export async function shieldView(req, res) {
       console.error('stats panel error:', err && err.message);
       return res.status(502).json({ ok: false, reason: 'error' });
     }
-  }
-
-  // ?push=1: GET → VAPID public key, POST → save this device's subscription.
-  if (req.query && req.query.push) {
-    try {
-      if (req.method === 'POST') return res.status(200).json({ ok: await saveSub(pipeline, req.body) });
-      return res.status(200).json({ key: publicKey(await vapidKeys(pipeline)) });
-    } catch { return res.status(502).json({ error: 'upstash' }); }
   }
 
   if (req.method === 'POST') {

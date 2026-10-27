@@ -329,7 +329,6 @@
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
       <div id="d3road"></div>
       <div class="card install" id="install" hidden><span id="installText">Telefona uygulama olarak ekle</span><button type="button" id="installBtn">Ekle</button></div>
-      <div class="card install" id="notif" hidden><span id="notifText">🔔 Değişiklik olunca telefona bildirim gelsin</span><button type="button" id="notifBtn">Aç</button></div>
       </div>
     </section>
 
@@ -1294,7 +1293,7 @@
   setInterval(function () { if (!document.hidden && getKey()) d3Load24(); }, 10 * 60000);
   // Update bar: every 30 s, re-fetch the panel and the page open in the
   // site tab. A change since the last visit (remembered per device) or while
-  // the panel is open shows the bar and, if allowed, a phone notification.
+  // the panel is open shows the bar.
   (function () {
     var seen = {}, UPD = 'dias:upd:';
     function sig(url) {
@@ -1302,14 +1301,7 @@
         .then(function (t) { if (t == null) return null; var h = 0; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return String(h); })
         .catch(function () { return null; });
     }
-    function notify() {
-      if ($('updBar').hidden === false) return;
-      $('updBar').hidden = false;
-      if (!('Notification' in window) || Notification.permission !== 'granted' || !navigator.serviceWorker) return;
-      navigator.serviceWorker.ready.then(function (r) {
-        r.showNotification('Dias Panel', { body: '✨ Yeni değişiklik geldi', icon: '/icons/icon-192.png', tag: 'dias-upd' });
-      }).catch(function () {});
-    }
+    function notify() { $('updBar').hidden = false; }
     function check() {
       if (!getKey()) return;
       var fr = document.getElementById('siteFrame');
@@ -1322,34 +1314,6 @@
         });
       });
     }
-    // Web Push (api/_shield-push.js): saves this device so a new deploy
-    // notifies it even while the app is closed.
-    function subscribe() {
-      if (!getKey() || !('PushManager' in window) || Notification.permission !== 'granted') return;
-      var h = { 'x-shield-key': getKey() };
-      Promise.all([navigator.serviceWorker.ready, fetch('/api/shield?push=1', { headers: h, cache: 'no-store' }).then(function (r) { return r.json(); })])
-        .then(function (a) {
-          var k = atob(a[1].key.replace(/-/g, '+').replace(/_/g, '/')), key = new Uint8Array(k.length);
-          for (var i = 0; i < k.length; i++) key[i] = k.charCodeAt(i);
-          return a[0].pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
-        })
-        .then(function (sub) {
-          h['Content-Type'] = 'application/json';
-          return fetch('/api/shield?push=1', { method: 'POST', headers: h, body: JSON.stringify(sub) });
-        }).catch(function () {});
-    }
-    // Genel's 🔔 card asks for permission (browsers need a tap); hidden once allowed.
-    function paintNotif() {
-      var p = 'Notification' in window && 'PushManager' in window ? Notification.permission : 'none';
-      $('notif').hidden = p === 'granted' || p === 'none';
-      if (p === 'denied') { $('notifText').textContent = '🔕 Bildirim engelli · tarayıcı ayarlarından izin ver'; $('notifBtn').hidden = true; }
-      fitHome();
-    }
-    $('notifBtn').addEventListener('click', function () {
-      Notification.requestPermission().then(function () { paintNotif(); subscribe(); });
-    });
-    paintNotif();
-    if ('Notification' in window) subscribe();
     document.getElementById('updBtn').onclick = function () { location.reload(); };
     check();
     setInterval(check, 30000);
