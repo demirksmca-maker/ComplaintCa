@@ -27,6 +27,8 @@ test('raporPage: 401 with a login prompt, 200 with the report, never indexed', a
   const ok = fakeRes();
   await raporPage({ headers: { authorization: basic('dias:asya') } }, ok);
   assert.equal(ok.code, 200);
+  assert.equal(typeof ok.body, 'string');
+  assert.ok(ok.body.startsWith('<!doctype html>'));
   assert.match(ok.body, /<title>Dias Panel Haftalık Rapor<\/title>/);
   assert.equal(ok.headers['Cache-Control'], 'private, no-store');
 });

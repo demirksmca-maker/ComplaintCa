@@ -19,7 +19,9 @@ export async function raporPage(req, res) {
     res.setHeader('WWW-Authenticate', 'Basic realm="Dias Panel Rapor", charset="UTF-8"');
     return res.status(401).send('Giriş gerekli.');
   }
-  const { default: html } = await import('./_rapor-html.js');
+  // The bundler may wrap the module once more ({ default: { default } }).
+  const mod = await import('./_rapor-html.js');
+  const html = typeof mod.default === 'string' ? mod.default : mod.default.default;
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   return res.status(200).send(html);
 }
