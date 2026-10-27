@@ -159,5 +159,8 @@
         }
       ]
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": { "claude/**": false, "ccr-*": false }
+  }
 }
