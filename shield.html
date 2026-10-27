@@ -771,7 +771,7 @@
   })();
 
   var mkReset;
-  // Site tab mark mode: tap elements on the live page, write a note per mark, send all to Claude Code.
+  // Site tab mark mode: tap elements on the live page, write a note per mark, send all to Claude (/api/shield?task).
   (function () {
     var on = false, marks = [], last = null, frame = $('siteFrame');
     var CHIPS = ['Rengini değiştir', 'Büyüt', 'Küçült', 'Yazıyı değiştir', 'Kaldır', 'Temaya uydur', 'Mobilde düzelt'];
@@ -858,15 +858,19 @@
       var text = 'Dias Panel > Site üzerinden işaretlediğim öğeler (tema/görünüm):\n' + marks.map(function (m, i) {
         return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + '\n   İstek: ' + (m.note.trim() || '(not yok)');
       }).join('\n');
-      var box = document.createElement('textarea');
-      box.value = text; box.style.position = 'fixed'; box.style.opacity = '0';
-      document.body.appendChild(box); box.select();
-      var copied = false;
-      try { copied = document.execCommand('copy'); } catch (e) { /* not supported */ }
-      box.remove();
-      var win = window.open('https://claude.ai/code', '_blank');
-      if (win) win.opener = null;
-      $('mkMsg').textContent = copied ? 'Panoya kopyalandı; Claude Code\'da yapıştırıp gönder.' : 'Kopyalanamadı.';
+      $('mkMsg').textContent = 'Gönderiliyor…';
+      // Same route as the Claude tab: a task Claude answers there, so the owner stays in the panel.
+      fetch('/api/shield?task=1', { method: 'POST', cache: 'no-store', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ text: text }) })
+        .then(function (r) { return r.json().then(function (d) { if (!r.ok) throw new Error(d.error || r.status); return d; }); })
+        .then(function (d) {
+          try {
+            var list = JSON.parse(localStorage.getItem('diasClaudeLog') || '[]');
+            list.push({ me: true, text: text, t: Date.now() }, { me: false, task: d.number, url: d.url, text: 'Gönderildi (#' + d.number + '). Claude işe başlayınca cevabı burada görünecek.', t: Date.now() });
+            localStorage.setItem('diasClaudeLog', JSON.stringify(list.slice(-100)));
+          } catch (e) { /* private mode */ }
+          $('mkMsg').textContent = 'Claude\'a gönderildi (#' + d.number + '). Cevap Claude sekmesinde.';
+        })
+        .catch(function (e) { $('mkMsg').textContent = 'Gönderilemedi (' + e.message + ').'; });
     });
   })();
 
