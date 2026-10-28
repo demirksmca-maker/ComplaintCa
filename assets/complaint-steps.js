@@ -123,7 +123,6 @@
     '#cc-steps .cs-chip.on{background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;border-color:#fff}',
     '#cc-steps .cs-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}',
     '#cc-steps .cs-mini{padding:10px 14px;border-radius:999px;border:1.5px solid rgba(196,160,255,.5);background:transparent;color:#f7eef1;font:700 11.5px/1 Cinzel,Georgia,serif;letter-spacing:.12em;cursor:pointer}',
-    '#cc-steps .cs-mini.asya{background:linear-gradient(90deg,rgba(110,45,180,.55),rgba(130,60,210,.55))}',
     '#cc-steps .cs-addr{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:8px}#cc-steps select.cs-in{appearance:none;-webkit-appearance:none;cursor:pointer}#cc-steps select.cs-in option{background:#1a0612;color:#f7eef1}#cc-steps .cs-st{margin-top:8px}',
     '#cc-steps .cs-sugg{display:grid;gap:8px;margin-top:12px}',
     '#cc-steps .cs-sg{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:12px 14px;border-radius:14px;background:rgba(24,4,16,.5);border:1.5px solid rgba(196,160,255,.35);cursor:pointer;text-align:left;color:#f7eef1;font:500 17px/1.3 \'EB Garamond\',Georgia,serif}',
@@ -180,6 +179,57 @@
     '@keyframes csRing{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.35);opacity:0}}@keyframes csFill{from{transform:translateX(-100%)}to{transform:none}}',
     '@keyframes csGild{0%,60%{background-position:100% 0}100%{background-position:0 0}}@keyframes csBlink{50%{opacity:0}}@keyframes csPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}@keyframes csSway{0%,100%{transform:skewY(0) scale(1)}50%{transform:skewY(-1.2deg) scale(1.02) translateX(-.6%)}}',
     '@media (max-height:720px){#cc-steps .cs-card>svg{width:24px;height:24px}#cc-steps .cs-card b{font-size:15px}#cc-steps .cs-card small{font-size:14px}}',
+    // Gilded sheet: gold frame (same art as the choice card), emblem seal, marble fields, platinum for what is picked.
+    // It drops from the top of the screen, so an open keyboard never covers it. Nothing is focused on open, so no keyboard pops up by itself.
+    '#cc-steps .cs-sheet{top:calc(56px + env(safe-area-inset-top,0px));width:min(440px,calc(100% - 20px));max-height:none;overflow:visible;padding:clamp(48px,13vw,58px) clamp(26px,7vw,34px) clamp(30px,8vw,38px);border:0;border-radius:22px;background:none;box-shadow:0 24px 60px -12px rgba(0,0,0,.85);transform:translate(-50%,-28px);transition:transform .32s cubic-bezier(.2,.9,.3,1.1),opacity .22s}#cc-steps .cs-sheet.on{transform:translate(-50%,0)}',
+    '#cc-steps .cs-sheet::before{content:"";position:absolute;inset:0;border-style:solid;border-width:clamp(46px,13vw,58px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}',
+    '#cc-steps .cs-sheet>:not(.cs-x):not(.cs-seal){position:relative}#cc-steps .cs-sheet .cs-x{position:absolute;z-index:3}',
+    '#cc-steps .cs-seal{position:absolute!important;left:50%;top:-40px;width:84px;height:84px;transform:translateX(-50%);filter:drop-shadow(0 6px 12px rgba(0,0,0,.7));pointer-events:none;z-index:2}',
+    '#cc-steps .cs-sheet .cs-sh-h{position:relative;justify-content:center;padding:0 44px;margin:0}#cc-steps .cs-sheet .cs-sh-i{display:none}',
+    '#cc-steps .cs-sheet .cs-sh-h b{font:700 clamp(18px,5.4vw,22px)/1.2 Cinzel,Georgia,serif;letter-spacing:.06em;color:#f1d27a;text-align:center;text-shadow:0 2px 6px rgba(0,0,0,.6)}',
+    '#cc-steps .cs-sh-o{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 14px;color:#e9c56a;font-size:12px}#cc-steps .cs-sh-o i{width:56px;height:1px;background:linear-gradient(90deg,transparent,#e9c56a)}#cc-steps .cs-sh-o i:last-child{transform:scaleX(-1)}',
+    '#cc-steps .cs-sheet .cs-x{top:clamp(46px,13vw,56px);right:clamp(24px,7vw,32px);width:34px;height:34px;padding:0;border-radius:10px;border:2px solid transparent;color:transparent;font-size:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(0,0,0,.25) 70%) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;box-shadow:0 3px 8px rgba(0,0,0,.55),inset 0 0 0 1px rgba(0,0,0,.35)}',
+    '#cc-steps .cs-sheet .cs-x::before,#cc-steps .cs-sheet .cs-x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:1px;background:linear-gradient(90deg,#b8862c,#fff0b8,#b8862c);box-shadow:0 1px 1px rgba(0,0,0,.7);transform:translate(-50%,-50%) rotate(45deg)}#cc-steps .cs-sheet .cs-x::after{transform:translate(-50%,-50%) rotate(-45deg)}',
+    '#cc-steps .cs-sheet .cs-sh-b{max-height:max(180px,calc(100vh - 300px - env(safe-area-inset-top,0px)));max-height:max(180px,calc(100dvh - 300px - env(safe-area-inset-top,0px)));overflow:auto;margin:0 -4px;padding:4px}',
+    '#cc-steps .cs-sheet .cs-in{min-height:50px;padding:12px 16px;border-radius:12px;border:1.5px solid transparent;background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,rgba(246,220,138,.75),rgba(154,106,28,.55),rgba(255,240,184,.75)) border-box;box-shadow:inset 0 2px 8px rgba(0,0,0,.6);color:#f6ead2;font-size:17px}',
+    '#cc-steps .cs-sheet .cs-in::placeholder{color:rgba(241,210,122,.55)}',
+    '#cc-steps .cs-sheet .cs-in:focus{background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,#8e9196 0%,#f4f6f8 20%,#b9bdc3 40%,#fff 55%,#a2a6ac 75%,#e6e9ec 100%) border-box;box-shadow:inset 0 2px 8px rgba(0,0,0,.6),0 0 0 3px rgba(230,234,240,.16),0 0 16px rgba(230,234,240,.3)}',
+    '#cc-steps .cs-sheet select.cs-in{padding-right:34px;background:url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 10 6\'%3E%3Cpath d=\'M0 0h10L5 6z\' fill=\'%23e9c56a\'/%3E%3C/svg%3E") right 14px center/10px 6px no-repeat padding-box,linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,rgba(246,220,138,.75),rgba(154,106,28,.55),rgba(255,240,184,.75)) border-box}',
+    '#cc-steps .cs-sheet .cs-addr{grid-template-columns:1fr 1fr;gap:10px}#cc-steps .cs-sheet .cs-st{margin-top:10px}',
+    '#cc-steps .cs-sheet .cs-row{justify-content:center;margin-top:12px}',
+    '#cc-steps .cs-sheet .cs-mini{padding:9px 16px;border-radius:999px;border:2px solid transparent;background:linear-gradient(rgba(20,8,0,.25),rgba(20,8,0,.4)) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;color:#f6ead2;font-size:11.5px;letter-spacing:.1em;text-shadow:0 1px 3px #000}',
+    '#cc-steps .cs-sheet .cs-sh-b>.cs-hint{text-align:center;color:rgba(246,234,210,.75)}',
+    '#cc-steps .cs-sheet .cs-sugg{margin-top:6px;gap:0;border-radius:12px;overflow:hidden;border:1px solid rgba(233,197,106,.45);background:rgba(18,4,24,.9)}#cc-steps .cs-sheet .cs-sugg:empty{display:none}',
+    '#cc-steps .cs-sheet .cs-sg{border:0;border-bottom:1px solid rgba(233,197,106,.18);border-radius:0;background:none;color:#f6ead2}#cc-steps .cs-sheet .cs-sg:last-child{border-bottom:0}',
+    '#cc-steps .cs-sheet .cs-sg:hover,#cc-steps .cs-sheet .cs-sg:focus-visible{background:linear-gradient(90deg,rgba(230,234,240,.22),rgba(230,234,240,.06));box-shadow:inset 3px 0 0 #e6e9ec}',
+    '#cc-steps .cs-sheet .cs-sg em{background:none;border-color:#c9a24a;color:#f1d27a}',
+    '#cc-steps .cs-sheet .cs-cats{gap:8px}',
+    '#cc-steps .cs-sheet .cs-cat{min-height:48px;padding:8px 10px;border-radius:12px;border:1.5px solid transparent;background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,rgba(246,220,138,.75),rgba(154,106,28,.55),rgba(255,240,184,.75)) border-box;color:#f6ead2;font-size:15.5px}',
+    '#cc-steps .cs-sheet .cs-cat span{width:28px;height:28px;border-radius:8px;border:1.5px solid transparent;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(0,0,0,.25) 70%) padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;color:#f6dc8a}',
+    '#cc-steps .cs-sheet .cs-cat.on{background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%) padding-box,linear-gradient(135deg,#c9ccd1,#eef0f2 35%,#aeb2b8 60%,#dfe2e5) padding-box,linear-gradient(135deg,#8e9196 0%,#f4f6f8 20%,#b9bdc3 40%,#fff 55%,#a2a6ac 75%,#e6e9ec 100%) border-box;color:#2a1a34;box-shadow:0 0 16px rgba(220,225,235,.4),inset 0 -6px 10px rgba(0,0,0,.18)}#cc-steps .cs-sheet .cs-cat.on span{color:#f6dc8a}',
+    '#cc-steps .cs-sheet .cs-chips{justify-content:center}',
+    '#cc-steps .cs-sheet .cs-chip{padding:7px 13px;border:1px solid rgba(233,197,106,.6);background:rgba(22,6,30,.6);color:#f6ead2;font-size:15.5px}',
+    '#cc-steps .cs-sheet .cs-chip.on{background:linear-gradient(135deg,#c9ccd1,#f6f7f9 35%,#aeb2b8 65%,#e3e6e9);color:#2a1a34;border-color:transparent;box-shadow:0 0 12px rgba(220,225,235,.45)}',
+    '#cc-steps .cs-sheet .cs-info div{background:rgba(18,4,24,.7);border-color:rgba(233,197,106,.45)}#cc-steps .cs-sheet .cs-info b{color:#f1d27a}#cc-steps .cs-sheet .cs-info span{color:#f6ead2}',
+    '#cc-steps .cs-sheet .cs-drop{min-height:130px;border:1.5px dashed rgba(233,197,106,.7);background:rgba(22,6,30,.6) url(/assets/choice/marble.webp) center/cover;background-blend-mode:multiply;color:#f1d27a}',
+    '#cc-steps .cs-sheet .cs-save{margin-top:16px;padding:15px;border-radius:14px;border:2.5px solid transparent;background:linear-gradient(rgba(40,10,60,.25),rgba(40,10,60,.45)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;color:#fff;font-size:17px;letter-spacing:.14em;text-shadow:0 1px 3px rgba(0,0,0,.8);box-shadow:0 8px 18px -8px #000}',
+    '#cc-steps .cs-sheet .cs-save::before{content:"";position:absolute;inset:3px;border-radius:10px;border:1px solid rgba(255,226,150,.35);pointer-events:none}',
+    // What happened: a taller box with a strip at the bottom for the ASYA switch and the counter.
+    '#cc-steps .cs-ta{border-radius:12px;border:1.5px solid transparent;background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,rgba(246,220,138,.75),rgba(154,106,28,.55),rgba(255,240,184,.75)) border-box;box-shadow:inset 0 2px 8px rgba(0,0,0,.6);overflow:hidden}',
+    '#cc-steps .cs-ta:focus-within{background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,#8e9196 0%,#f4f6f8 20%,#b9bdc3 40%,#fff 55%,#a2a6ac 75%,#e6e9ec 100%) border-box;box-shadow:inset 0 2px 8px rgba(0,0,0,.6),0 0 0 3px rgba(230,234,240,.16),0 0 16px rgba(230,234,240,.3)}',
+    '#cc-steps .cs-sheet .cs-ta textarea.cs-in{display:block;min-height:clamp(170px,32dvh,280px);resize:none;border:0;border-radius:0;background:none;box-shadow:none;font-size:18px;line-height:1.35}',
+    '#cc-steps .cs-ta-f{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;padding:0 12px;border-top:1px solid rgba(233,197,106,.28);background:linear-gradient(rgba(10,2,14,.35),rgba(10,2,14,.55))}',
+    '#cc-steps .cs-ta-f .cs-hint{margin:0;font-style:normal;font-size:14px;color:rgba(241,210,122,.75)}',
+    '#cc-steps .cs-ay{display:inline-flex;align-items:center;gap:10px;height:34px;padding:0 5px 0 6px;border-radius:999px;background:linear-gradient(180deg,#1c0a1e,#0e0410);box-shadow:0 0 0 1px rgba(214,178,98,.55),0 0 0 3px rgba(14,4,16,.9),0 0 0 3.6px rgba(214,178,98,.22),0 6px 14px rgba(0,0,0,.55)}',
+    '#cc-steps .cs-ay-q{width:22px;height:22px;padding:0;border-radius:50%;border:1px solid rgba(214,178,98,.7);background:none;color:#d6b262;font:500 12px/1 "EB Garamond",Georgia,serif;cursor:pointer}',
+    '#cc-steps .cs-ay-sw{display:inline-flex;align-items:center;gap:10px;padding:0;border:0;background:none;cursor:pointer}',
+    '#cc-steps .cs-ay-sw b{font:600 10.5px/1 Cinzel,Georgia,serif;letter-spacing:.32em;color:transparent;background:linear-gradient(180deg,#f7e7bd,#c99b4a 55%,#e8cf8e);-webkit-background-clip:text;background-clip:text}',
+    '#cc-steps .cs-ay-sw i{position:relative;width:40px;height:22px;border-radius:999px;background:#120510;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 0 0 1px rgba(214,178,98,.45)}',
+    '#cc-steps .cs-ay-sw i::before{content:"";position:absolute;inset:2px;border-radius:999px;background:linear-gradient(180deg,#5a0e22,#2e0611);opacity:0;transition:opacity .2s}',
+    '#cc-steps .cs-ay-sw i::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0,#f1ecee 30%,#c7bec4 75%,#9d949b 100%);box-shadow:0 1px 3px rgba(0,0,0,.7),0 0 0 .8px rgba(214,178,98,.8);transition:left .2s}',
+    '#cc-steps .cs-ay-sw[aria-checked="true"] i::before{opacity:1}#cc-steps .cs-ay-sw[aria-checked="true"] i::after{left:20px;animation:csBlue 2s ease-in-out infinite}',
+    '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}',
+    '@keyframes csBlue{0%,60%,100%{filter:none}25%{filter:drop-shadow(0 0 5px rgba(120,180,255,.75))}}',
     '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::before,#cc-steps *::after{animation:none!important;transition:none!important}#cc-steps .cs-quote .w,#cc-steps .cs-quote cite{opacity:1;filter:none;transform:none}}'
   ].join('\n');
 
@@ -207,8 +257,8 @@
       '<button type="button" class="cs-go" data-act="send" disabled>File Complaint <span class="cs-ca">CA</span></button>' +
       '<p class="cs-note">Location, what happened and your email are needed. You review everything before it is sent.</p></div>' +
       '<div class="cs-scrim" data-act="close"></div>' +
-      '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
-      '<div class="cs-sh-h"><span class="cs-sh-i"></span><b id="cs-sh-t"></b></div>' +
+      '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><img class="cs-seal" src="/assets/emblem-clear.webp" alt="" width="84" height="84" decoding="async"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
+      '<div class="cs-sh-h"><span class="cs-sh-i"></span><b id="cs-sh-t"></b></div><div class="cs-sh-o" aria-hidden="true"><i></i>✦<i></i></div>' +
       '<div class="cs-sh-b"></div><button type="button" class="cs-save" data-act="save">Save</button></section>' +
       '<div class="as" role="dialog" aria-modal="true" aria-label="ASYA">' + FLAG + '<div class="as-dim"></div><div class="as-in">' +
       '<button type="button" class="cs-x" data-act="as-close" aria-label="Close">×</button>' +
@@ -296,11 +346,13 @@
         if (V.cat) { pick(V.cat); if (V.sub) qa('#cs-subc .cs-chip').forEach(function(x){ if (x.dataset.v === V.sub) { x.classList.add('on'); tmp.topic = V.sub; } }); }
       },
       get: function(){ if (!tmp.cat || !tmp.topic) return ''; V.cat = tmp.cat; V.sub = tmp.topic; return CATS[tmp.cat].l + ' · ' + tmp.topic; } },
-    what: { b: function(){ return '<textarea class="cs-in" id="cs-f" maxlength="5000" placeholder="When, where and what happened? Tell it in your own words…">' + esc(V.what || '') + '</textarea>' +
-        '<div class="cs-row" style="justify-content:space-between"><button type="button" class="cs-mini asya" id="cs-ab">✦ Improve with ASYA</button><span class="cs-hint" id="cs-cnt" style="margin:0">0 / 5000</span></div>'; },
+    // ASYA is on by default: Save first shows ASYA's rewrite, and the person picks theirs or ASYA's.
+    what: { b: function(){ return '<div class="cs-ta"><textarea class="cs-in" id="cs-f" maxlength="5000" aria-label="What happened?" placeholder="When, where and what happened? Tell it in your own words…">' + esc(V.what || '') + '</textarea>' +
+        '<div class="cs-ta-f"><span class="cs-ay"><button type="button" class="cs-ay-q" id="cs-aq" aria-label="What does ASYA do?">?</button><button type="button" class="cs-ay-sw" id="cs-as" role="switch" aria-checked="' + (V.asyaOff ? 'false' : 'true') + '"><b>ASYA</b><i></i></button></span><span class="cs-hint" id="cs-cnt">0 / 5000</span></div></div>'; },
       init: function(){
-        var f = q('#cs-f'), c = q('#cs-cnt'), u = function(){ c.textContent = f.value.length + ' / 5000'; }; f.oninput = u; u();
-        q('#cs-ab').onclick = function(){ var raw = f.value.trim(); if (raw.length < 10) { toast('Write a few sentences first, then ASYA can help.'); return; } asyaShow(raw, function(out){ f.value = out; u(); }); };
+        var f = q('#cs-f'), c = q('#cs-cnt'), sw = q('#cs-as'), u = function(){ c.textContent = f.value.length + ' / 5000'; }; f.oninput = u; u();
+        sw.onclick = function(){ V.asyaOff = sw.getAttribute('aria-checked') === 'true'; sw.setAttribute('aria-checked', V.asyaOff ? 'false' : 'true'); };
+        q('#cs-aq').onclick = function(){ toast('ASYA tidies your text when you tap Save. You see it first and choose.'); };
       },
       get: function(){ return q('#cs-f').value.trim(); } },
     proof: { b: function(){ return '<label class="cs-drop" for="cs-file">📷 Add a photo<small class="cs-hint" style="margin:0">Receipt, bill or screenshot. ASYA reads it and adds what it shows to your story.</small></label>' +
@@ -338,6 +390,12 @@
   function closeSheet(){ q('.cs-scrim').classList.remove('on'); q('.cs-sheet').classList.remove('on'); cur = null; }
   function save(){
     var v = S[cur].get();
+    // Each text goes to ASYA once; the answer (or "Keep mine") saves it.
+    if (cur === 'what' && v.length >= 10 && !V.asyaOff && tmp.asked !== v && V.what !== v) {
+      tmp.asked = v; var f = q('#cs-f'); f.blur();
+      var again = function(){ if (cur === 'what') save(); };
+      return asyaShow(v, function(out){ if (cur !== 'what') return; f.value = out; tmp.asked = f.value.trim(); save(); }, again);
+    }
     if (!v) { toast(cur === 'mail' ? 'Enter a valid email address.' : cur === 'topic' ? 'Pick a topic and what happened.' : cur === 'loc' ? 'Pick a province and type a city.' : 'Type or pick something first.'); return; }
     V[cur] = v; var c = card(cur), sm = c.querySelector('small'); c.classList.add('done');
     sm.textContent = cur === 'proof' ? v.length + (v.length > 1 ? ' photos' : ' photo') : cur === 'what' ? v.slice(0, 40) + (v.length > 40 ? '…' : '') : v;
@@ -421,7 +479,7 @@
           .then(function(r){ return r.json(); }).then(function(d){ return (d.content && d.content[0] && d.content[0].text || '').trim(); }).catch(function(){ return ''; }); });
   }
   function strength(s){ var n = 35; if (RE_DATE.test(s)) n += 20; if (/\$\s?\d|\d+\s?(dollars|cad)\b/i.test(s)) n += 15; if (RE_ASK.test(s)) n += 15; n += Math.min(15, Math.floor(s.length / 25)); return Math.min(100, n); }
-  function asyaShow(raw, onUse){
+  function asyaShow(raw, onUse, onKeep){
     var box = q('.as'), st = q('.as-st'), steps = qa('.as-steps span'), res = q('.as-res'), orb = q('.orb');
     var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     box.classList.add('on'); res.classList.remove('on'); orb.classList.remove('small'); steps.forEach(function(s){ s.classList.remove('on'); }); asAlive = true; var run = ++asRun, live = function(){ return asAlive && run === asRun; };
@@ -431,7 +489,7 @@
     asyaRewrite(raw).then(function(out){ out = out.slice(0, 5000);
       setTimeout(function(){
         if (!live()) return;
-        if (!out) { st.textContent = 'ASYA isn’t available right now. You can continue with your own words.'; return; }
+        if (!out) { if (onKeep) { asEnd(); onKeep(); toast('ASYA isn’t available right now. Your own words are kept.'); return; } st.textContent = 'ASYA isn’t available right now. You can continue with your own words.'; return; }
         orb.classList.add('small'); st.textContent = 'Done. Here is my suggestion:'; res.classList.add('on');
         var score = strength(out), v = q('.meter .vl'), n = q('.meter .num'), k = 0;
         requestAnimationFrame(function(){ v.style.strokeDashoffset = 219.9 * (1 - score / 100); });
@@ -440,7 +498,7 @@
         var four = [['Clear sentences', true], ['Facts kept', true], ['Date', RE_DATE.test(out)], ['What you want', RE_ASK.test(out)]];
         var done = function(){ T.textContent = out; tg.innerHTML = four.map(function(f, j){ return '<span class="' + (f[1] ? 'ok' : 'add') + '" style="animation-delay:' + (j * .1) + 's"><em>' + (f[1] ? '✓' : '+') + '</em>' + (f[1] ? f[0] : 'Add ' + f[0].toLowerCase()) + '</span>'; }).join(''); };
         if (rm) done(); else (function type(){ T.innerHTML = esc(out.slice(0, i += 2)) + '<span class="cur"></span>'; if (!live()) return; if (i < out.length) setTimeout(type, 16); else done(); })();
-        q('.as-use').onclick = function(){ onUse(out); asEnd(); }; q('.as-keep').onclick = asEnd;
+        q('.as-use').onclick = function(){ asEnd(); onUse(out); }; q('.as-keep').onclick = function(){ asEnd(); if (onKeep) onKeep(); };
       }, rm ? 0 : Math.max(0, 2700 - (Date.now() - started)));
     });
   }
