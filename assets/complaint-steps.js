@@ -230,7 +230,7 @@
     '#cc-steps .cs-ay-sw[aria-checked="true"] i::before{opacity:1}#cc-steps .cs-ay-sw[aria-checked="true"] i::after{left:20px;animation:csBlue 2s ease-in-out infinite}',
     '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}',
     '@keyframes csBlue{0%,60%,100%{filter:none}25%{filter:drop-shadow(0 0 5px rgba(120,180,255,.75))}}',
-    // ASYA in the site's gold: framed page, crystal maple crest, gold step bars, marble suggestion card.
+    // ASYA in the site's gold: framed page, crystal maple crest (spins like a ball of light while ASYA works), gold step bars, marble suggestion card.
     '#cc-steps .as{background:linear-gradient(rgba(18,4,22,.55),rgba(18,4,22,.55)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover}#cc-steps .as .as-flag,#cc-steps .as .as-dim{display:none}',
     '#cc-steps .as::before{content:"";position:fixed;inset:6px;z-index:0;border-style:solid;border-width:clamp(46px,13vw,58px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}',
     '#cc-steps .as .as-in{z-index:1;padding:calc(clamp(46px,13vw,58px) + env(safe-area-inset-top,0px)) clamp(30px,9vw,40px) calc(clamp(46px,13vw,58px) + env(safe-area-inset-bottom,0px));justify-content:flex-start}#cc-steps .as .orb.small{margin-top:-4px}',
@@ -238,10 +238,10 @@
     '#cc-steps .as .cs-x::before,#cc-steps .as .cs-x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:1px;background:linear-gradient(90deg,#b8862c,#fff0b8,#b8862c);transform:translate(-50%,-50%) rotate(45deg)}#cc-steps .as .cs-x::after{transform:translate(-50%,-50%) rotate(-45deg)}',
     '#cc-steps .as .orb{width:150px;height:150px;margin-top:0}#cc-steps .as .orb.small{width:100px;height:100px}',
     '#cc-steps .as .orb i{border-color:rgba(233,197,106,.6)}',
-    '#cc-steps .as .orb b{inset:16%;overflow:hidden;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 8px 16px rgba(0,0,0,.5);animation:csRuby 2.2s ease-in-out infinite}',
+    '#cc-steps .as .orb b{inset:16%;overflow:hidden;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 8px 16px rgba(0,0,0,.5),0 0 30px 6px rgba(255,255,255,.45),0 0 60px 14px rgba(255,235,240,.2);filter:brightness(1.08);animation:csOrbSpin 3.6s linear infinite}#cc-steps .as .orb.small b{animation:none}',
     '#cc-steps .as .orb b::after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.85) 48%,rgba(255,255,255,.2) 54%,transparent 62%);transform:translateX(-120%);animation:csGlint 3.2s .6s ease-in-out infinite}',
     '#cc-steps .as .orb::after{content:"";position:absolute;inset:4%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(246,220,138,.9) 85%,transparent 100%);-webkit-mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);animation:csSpin 2.4s linear infinite}#cc-steps .as .orb.small::after{animation-duration:6s;opacity:.6}',
-    '@keyframes csGlint{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}@keyframes csSpin{to{transform:rotate(360deg)}}@keyframes csRuby{0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(255,70,95,.25))}50%{transform:scale(1.04);filter:drop-shadow(0 0 26px rgba(255,70,95,.6))}}#cc-steps .as .orb b svg{display:none}#cc-steps .as .orb.small b{inset:0}',
+    '@keyframes csGlint{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}@keyframes csSpin{to{transform:rotate(360deg)}}@keyframes csOrbSpin{to{transform:rotate(360deg)}}#cc-steps .as .orb b svg{display:none}#cc-steps .as .orb.small b{inset:0}',
     '#cc-steps .as .as-name{margin-top:12px;font-size:20px;letter-spacing:.36em;color:transparent;background:linear-gradient(180deg,#f7e7bd,#c99b4a 55%,#e8cf8e);-webkit-background-clip:text;background-clip:text;text-shadow:none}',
     '#cc-steps .as .as-st{font:italic 400 17px/1.4 "EB Garamond",Georgia,serif;color:rgba(246,234,210,.88)}',
     '#cc-steps .as .as-steps span{width:34px;height:3px;border-radius:2px;background:rgba(233,197,106,.22)}',
