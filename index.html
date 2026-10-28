@@ -655,7 +655,6 @@ textarea{resize:vertical;min-height:90px}
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
-<script src="/result-v2.js" defer></script>
 </head>
 <body>
 <!-- Choice screen: opened by the "File a Complaint" tile; "Complain CA" opens the complaint form -->
@@ -743,20 +742,15 @@ function ccChoiceOpen(){document.getElementById('cc-choice').classList.add('on')
 function ccChoiceClose(){document.getElementById('cc-choice').classList.remove('on');document.documentElement.style.overflow=''}
 // Keep the choice screen up until the form has replaced the home page, so the home page never flashes
 function ccChoiceComplain(btn){
-  // New six-step screen; the old direct-to-form path stays as the fallback
-  if(window.ccStepsOpen&&!window._ccOldPanel){ccChoiceClose();window.ccStepsOpen();return}
-  btn.disabled=true;btn.style.opacity='.7';try{openAsyaPanel()}catch(e){ccChoiceClose();btn.disabled=false;btn.style.opacity='';throw e}
-  var land=document.getElementById('pg-land'),t0=Date.now();
-  (function wait(){
-    if((land&&land.style.display==='none')||Date.now()-t0>8000){ccChoiceClose();btn.disabled=false;btn.style.opacity='';return}
-    setTimeout(wait,50);
-  })();
+  // Six-step screen; the classic form is only the fallback if it could not load
+  ccChoiceClose();
+  if(window.ccFileOpen) window.ccFileOpen(); else goApp('new');
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClose()});
 // No visible close button: a tap on the dimmed page around the card closes it.
 document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-card,.cc-srx'))ccChoiceClose()});
 </script>
-<script defer src="/assets/complaint-steps.js?v=20261028a"></script>
+<script defer src="/assets/complaint-steps.js?v=20261028b"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
@@ -965,7 +959,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
   </div>
 
   <div id="cc-steps-host"></div>
-  <div id="cc-panel-host"></div>
+  <div id="cc-sonuc-host"></div>
   <div class="amain">
     <div id="view-new">
       <div id="form-sec">
@@ -974,7 +968,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
           <div class="new-prog-dot" style="flex:1;height:4px;border-radius:3px;background:var(--off)"></div>
         </div>
         <div id="new-step-1">
-        <p style="text-align:center;margin:0 0 10px;font-size:.78rem"><a href="#" onclick="event.preventDefault();ccUsePanel('new')" style="color:var(--blue)">✨ Try the new ASYA panel</a></p>
         <div class="card" style="padding:14px 16px">
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;align-items:center;gap:8px">
@@ -2916,9 +2909,10 @@ window.addEventListener('popstate',function(e){
     if(!s||!s.tab){
       goHome();
     }else{
-      // A refresh or Back on File reopens the complaint screen (six steps, or the ASYA form if it is open), not the classic form.
-      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') _ccFileRestore(); else goApp(s.tab);
-      if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
+      // A refresh or Back on File reopens the complaint screen (six steps, or SONUÇ while a complaint waits), not the classic form.
+      var _f=s.tab==='new'&&!!window.ccStepsOpen;
+      if(_f) _ccFileRestore(); else goApp(s.tab);
+      if(s.step&&!_f){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
         else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
@@ -2936,8 +2930,9 @@ document.addEventListener('DOMContentLoaded',function(){
   if(s&&s.tab){
     _suppressNavPush=true;
     try{
-      if(s.tab==='new'&&!_ccOldPanel&&typeof openAsyaPanel==='function') _ccFileRestore(); else goApp(s.tab);
-      if(s.step&&!(s.tab==='new'&&!_ccOldPanel)){
+      var _f=s.tab==='new'&&!!window.ccStepsOpen;
+      if(_f) _ccFileRestore(); else goApp(s.tab);
+      if(s.step&&!_f){
         if(s.tab==='new'&&typeof newGoStep==='function') newGoStep(s.step);
         else if(s.tab==='cyber'&&typeof cyGoStep==='function') cyGoStep(s.step);
         else if(s.tab==='lawyer'&&typeof lwGoStep==='function') lwGoStep(s.step);
@@ -2953,56 +2948,25 @@ document.addEventListener('DOMContentLoaded',function(){
 
 function goHome(){
   if(window.ccStepsClose) window.ccStepsClose();
+  if(window.ccSonuc) window.ccSonuc.hide();
   document.getElementById('pg-land').style.display='block';
   document.getElementById('pg-app').style.display='none';
   document.getElementById('back-btn').classList.remove('show');
   window.scrollTo(0,0);
   if(!_suppressNavPush) _pushNav(null);
 }
-// New complaint panel (ASYA story view) is the working page for now: the classic form stays the default.
-// ?panel=new opens the new panel (loaded on first tap); a load failure falls back to the classic form.
-// New ASYA panel is the default for filing; ?panel=old or the person's saved choice keeps the classic form.
-var _ccPanelPref='';try{_ccPanelPref=localStorage.getItem('cc_panel')||'';}catch(e){}
-var _ccOldPanel=/[?&]panel=old\b/.test(location.search)||(_ccPanelPref==='old'&&!/[?&]panel=new\b/.test(location.search));
-// File opens the six-step screen inside the page; the ASYA form stays the fallback.
-function ccFileTab(){ if(_ccOldPanel) showTab('new'); else if(window.ccStepsOpen) window.ccStepsOpen(); else openAsyaPanel(); }
-// Back/Forward or a refresh on File: keep the ASYA form if it is open, otherwise the six-step screen.
-function _ccFileRestore(){ if(window._ccEmbedded||!window.ccStepsOpen) openAsyaPanel(); else window.ccStepsOpen(); }
+// File: the six-step screen; its answers go to the SONUÇ screen (assets/sonuc.js, loaded on first use), the one result
+// screen, which stays on File while the complaint waits to be sent. The classic form is only the fallback if they could not load.
+function ccFileTab(){ if(window.ccFileOpen) window.ccFileOpen(); else showTab('new'); }
+// Back/Forward or a refresh on File: same as tapping File.
+function _ccFileRestore(){ ccFileTab(); }
 // Go to the File tab without adding a second history entry when already there.
 function _ccGoFile(){
   var _same=history.state&&history.state.tab==='new', _was=_suppressNavPush; if(_same) _suppressNavPush=true;
   try{ goApp('new'); }finally{ _suppressNavPush=_was; }
 }
-function ccUsePanel(which){ try{localStorage.setItem('cc_panel',which);}catch(e){} _ccOldPanel=(which==='old'); if(which==='old') goApp('new'); else openAsyaPanel(); }
-// ?lang=tr etc. for the working panel, read now because the page tidies the URL later.
-var _ccPanelLang=(location.search.match(/[?&]lang=([a-z]{2})\b/)||[])[1]||'';
-// ?test=1: the working panel files test complaints (saved, no institution email) for the owner's own trials.
+// ?test=1: complaints are filed as tests (saved, no institution email) for the owner's own trials.
 var _ccPanelTest=/[?&]test=1\b/.test(location.search);
-// Open the panel inside the app: the site's top bar and tabs stay visible, File is the active tab.
-// The panel sits in the page itself (#cc-panel-host), so the page scrolls as one and nothing floats over it.
-function _ccEmbed(){
-  _ccGoFile();
-  document.body.classList.add('cc-panel-on');
-  window.openComplaintFlow({host:document.getElementById('cc-panel-host'),mode:'complaint'});
-  // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies); the six-step screen counts its own open.
-  if(!window._ccFromSteps){ try{ navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); }catch(e){} }
-  window._ccFromSteps=false;
-  window._ccEmbedded=true;
-  window.scrollTo(0,0);
-}
-// Closing the panel goes back to the home screen (not to the classic form underneath).
-window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
-// Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261028b';
-function openAsyaPanel(){
-  if(_ccOldPanel){ goApp('new'); return; }
-  if(window.openComplaintFlow){ _ccEmbed(); return; }
-  if(window._asyaLoading) return; window._asyaLoading=true;
-  var fail=function(){ window._asyaLoading=false; _ccOldPanel=true; goApp('new'); };
-  var add=function(src,next){ var s=document.createElement('script'); s.src=src; s.onload=next; s.onerror=fail; document.head.appendChild(s); };
-  var l=document.createElement('link'); l.rel='stylesheet'; l.href='/demo/asya/asya.css?v='+_ccAsyaV; document.head.appendChild(l);
-  add('/demo/asya/i18n.js?v='+_ccAsyaV,function(){ add('/demo/asya/asya.js?v='+_ccAsyaV,function(){ window._asyaLoading=false; if(window.openComplaintFlow) _ccEmbed(); else fail(); }); });
-}
 function goApp(tab){
   document.getElementById('pg-land').style.display='none';
   document.getElementById('pg-app').style.display='block';
@@ -3022,8 +2986,8 @@ let _complaints=JSON.parse(localStorage.getItem('vc_comp')||'[]');
 let _authRedirectTab=null;
 
 function showTab(tab){
-  // Another tab while the embedded complaint panel is open: close the panel, stay in the app.
-  if(tab!=='new'&&window._ccEmbedded&&window.closeComplaintFlow){ window._ccTabSwitch=true; window.closeComplaintFlow(); }
+  // Another tab hides the complaint screens; their answers stay.
+  if(tab!=='new'&&window.ccSonuc) window.ccSonuc.hide();
   if(tab!=='new'&&window.ccStepsClose) window.ccStepsClose();
   // "feed" (nav tab, labelled Havuz) and "lawyerpanel" (reached via the lawyer-
   // referral CTA) both show the same Case Pool view — sign-in required either way.
@@ -4460,8 +4424,6 @@ async function doSubmit(){
   // Serious-case → specialist lawyer suggestion
   showLawyerSuggestion(cat, _selPri, c.location);
   prepareLegalOutreach(c);
-  // New 6-card result screen drawn over the classic one (/?new=0 keeps the classic one).
-  if(window.ccResultV2) try{ccResultV2.show({c:c,ref:ref,auths:auths,draft:emailDraft,chain:_ch,prov:_guessProvinceFull(c.location),area:CATEGORY_TO_LW_AREA[c.category]});}catch(e){}
 
   // Show sync status under ref number
   var syncNote=document.getElementById('sync-note');
@@ -5349,8 +5311,8 @@ function selectLangDD(code,label,el){
   if(m) m.classList.remove('open');
 V.lang(code,null);
   try{if(['en','tr','fr','zh','es','ar','pa'].indexOf(code)>-1){_aLang=code;}}catch(e){}
-  // The open complaint panel follows the new language right away.
-  if(window._ccEmbedded&&window.openComplaintFlow) _ccEmbed();
+  // The open SONUÇ screen follows the new language right away.
+  if(window.ccSonuc) window.ccSonuc.relang();
 }
 document.addEventListener('click',function(e){
   var dd=document.getElementById('lang-dd');
@@ -5456,7 +5418,7 @@ function _handleGoLink(){
     if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
     if(go==='asya'){ if(typeof _aToggle==='function') _aToggle(); return; }
     var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
-    if(go==='new'){ openAsyaPanel(); return; }
+    if(go==='new'){ ccFileTab(); return; }
     if(allowed[go]) goApp(go);
     // From the complaint panel: lawyer finder with province and area already chosen.
     if(go==='lawyer'){ var _p=(_q.get('lwp')||'').replace(/[^a-z]/g,''),_a=(_q.get('lwa')||'').replace(/[^a-z]/g,'');
