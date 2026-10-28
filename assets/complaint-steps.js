@@ -63,6 +63,7 @@
     '#cc-steps .cs-quote cite::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}',
     '@keyframes csInk{to{opacity:1;transform:none}}@keyframes csRule{from{transform:scaleY(0);opacity:0}to{transform:none;opacity:1}}@keyframes csCite{from{opacity:0}to{opacity:1}}',
     '#cc-steps .cs-asya{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:7px;flex-shrink:0;font:700 12px/1 Cinzel,Georgia,serif;letter-spacing:.24em;color:#d5b9eb;padding:10px 16px 10px 13px;border-radius:999px;border:1px solid rgba(207,176,232,.55);background:linear-gradient(145deg,#4a1a5e 0%,#2a0d3a 55%,#3d0f2e 100%);box-shadow:inset 0 1px 0 rgba(220,197,238,.25),inset 0 -6px 12px rgba(10,2,18,.5),0 6px 18px -6px rgba(120,30,140,.7)}',
+    '#cc-steps button.cs-asya{cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}',
     '#cc-steps .cs-asya::before{content:"\\2726";font-size:10px;letter-spacing:0;color:#cfb0e8;text-shadow:0 0 6px rgba(207,176,232,.7)}',
     '#cc-steps .cs-asya::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(229,212,243,.22) 50%,transparent 65%) 0 0/250% 100%;animation:csGild 7s ease-in-out infinite;pointer-events:none}',
     '#cc-steps .cs-grid{position:relative;display:grid;flex:1 0 auto;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,minmax(120px,1fr));gap:10px;margin-top:clamp(10px,1.6vh,16px)}',
@@ -282,7 +283,7 @@
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
       '<div class="cs-wrap"><h2 class="cs-sr" id="cs-title">File a Complaint</h2>' +
-      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + 'If it is not right, do not do it; if it is not true, do not say it.'.split(' ').map(function(w, i){ return '<span class="w" style="--i:' + i + '">' + w + '</span>'; }).join(' ') + '<cite>Marcvs·Avrelivs</cite></q><span class="cs-asya">ASYA</span></div>' +
+      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + 'If it is not right, do not do it; if it is not true, do not say it.'.split(' ').map(function(w, i){ return '<span class="w" style="--i:' + i + '">' + w + '</span>'; }).join(' ') + '<cite>Marcvs·Avrelivs</cite></q><button type="button" class="cs-asya" data-act="asya" aria-label="Open ASYA">ASYA</button></div>' +
       '<div class="cs-grid">' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
@@ -308,7 +309,7 @@
       var c = e.target.closest('.cs-card'); if (c) return openSheet(c.dataset.k);
       var a = e.target.closest('[data-act]'); if (!a) return;
       var act = a.dataset.act;
-      if (act === 'close') closeSheet(); else if (act === 'save') save(); else if (act === 'send') send(); else if (act === 'as-close') asEnd();
+      if (act === 'close') closeSheet(); else if (act === 'save') save(); else if (act === 'send') send(); else if (act === 'as-close') asEnd(); else if (act === 'asya' && typeof window._aToggle === 'function') window._aToggle();
     });
     document.addEventListener('keydown', function(e){
       if (e.key !== 'Escape' || !root.classList.contains('on')) return;
