@@ -111,6 +111,10 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
 @keyframes glow{50%{box-shadow:0 0 18px rgba(255,77,121,.9)}}
 .card .flag~.n{display:none}
 .card.done .flag{display:none}
+.boost{display:inline-flex;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(134,239,172,.16);border:1px solid rgba(134,239,172,.6);color:#bbf7d0;font:700 10.5px/1 Cinzel,serif;font-style:normal;letter-spacing:.08em;animation:bglow 1.8s ease-in-out infinite}
+@keyframes bglow{50%{box-shadow:0 0 16px rgba(134,239,172,.75);border-color:#86efac}}
+.card.done .boost{animation:none}
+.rate{display:flex;justify-content:space-between;margin:0 0 4px;font:700 10.5px/1.6 Cinzel,serif;letter-spacing:.12em;color:#bbf7d0}
 .cited{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(134,239,172,.14);border:1px solid rgba(134,239,172,.5);color:#bbf7d0;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em;animation:pop .4s both}
 .letter .law-c{background:rgba(139,63,209,.14);border-radius:4px;padding:0 3px}
 .warn{margin-top:12px;padding:12px 14px;border-radius:14px;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.5);font:400 16px/1.35 'EB Garamond',Georgia,serif;color:#fed7aa}
@@ -161,7 +165,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     <button class="card" data-s="send"><svg viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/></svg><i class="n">I</i><i class="ok">✓</i>
       <div><b id="c-send-b">Şikayet Gönder</b><span id="c-send">Kontrol et, gönder</span></div></button>
     <button class="card main" data-s="rights"><i class="flag">BURADAN BAŞLA</i><svg viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><i class="n">II</i><i class="ok">✓</i>
-      <div><b>Yasal Hakların</b><span id="c-rights"></span></div></button>
+      <div><b>Yasal Hakların</b><span id="c-rights"></span><i class="boost" id="c-boost" hidden></i></div></button>
     <button class="card" data-s="inst"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6z"/></svg><i class="n">III</i><i class="ok">✓</i>
       <div><b>Kurumlar</b><span id="c-inst"></span></div></button>
     <button class="card" data-s="letter"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><i class="n">IV</i><i class="ok">✓</i>
@@ -294,6 +298,10 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     card('send').classList.toggle('main', C.game && strength() >= 70 && !S.sent);
     $('c-rights').textContent = nr ? nr + '/' + C.rights.length + (C.game ? ' eklendi' : ' okundu') : C.game ? C.rights.length + ' kanun senin yanında' : C.rights.length + ' hakkın var';
     card('rights').classList.toggle('done', nr === C.rights.length);
+    // Card II shows what reading the rights adds to the success rate, and the rate once used.
+    var gain = Math.round((C.rights.length - nr) * 60 / C.rights.length);
+    $('c-boost').hidden = !C.game;
+    $('c-boost').textContent = !nr ? '+%' + gain + ' BAŞARI' : 'BAŞARI %' + strength() + (gain ? ' · +%' + gain : '');
     $('c-inst').textContent = ni ? ni + ' seçildi' : 'Nereye gideceğini seç';
     card('inst').classList.toggle('done', ni > 0);
     $('c-lawyer').textContent = S.lawProv ? (C.card6 === 'help' ? 1 : 0) + LAW[S.lawProv].length + ' ücretsiz seçenek' : 'Adresine yakın';
@@ -333,7 +341,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
         (ni ? '' : '<button class="go" data-go="inst" style="margin-top:10px">Kurum Seç</button>')];
     },
     rights: function(){
-      var h = '<p class="p" style="margin-bottom:10px">' + (C.game ? '<em>' + esc(C.topic) + '</em> konusunda kanun senin tarafında. <b>Açtığın her hak mektubuna eklenir</b> — ve davanı güçlendirir.' : 'Acele yok. Bunlar senin hakların; okuduklarını beyanına ekleyebilirsin.') + '</p><div class="prog"><i id="prog"></i></div>';
+      var h = '<p class="p" style="margin-bottom:10px">' + (C.game ? '<em>' + esc(C.topic) + '</em> konusunda kanun senin tarafında. <b>Açtığın her hak mektubuna eklenir</b> — ve davanı güçlendirir.' : 'Acele yok. Bunlar senin hakların; okuduklarını beyanına ekleyebilirsin.') + '</p>' + (C.game ? '<div class="rate"><span>BAŞARI ORANI</span><span id="rate">%' + strength() + '</span></div>' : '') + '<div class="prog"><i id="prog"></i></div>';
       C.rights.forEach(function(r, i){
         h += '<details class="acc" data-i="' + i + '"' + (S.read[i] ? ' open' : '') + '><summary><i>' + (S.read[i] ? '✓' : i + 1) + '</i>' + esc(r[0]) + '</summary><div class="p">' + esc(r[1]) + '<br><span class="law">' + esc(r[2]) + '</span><br><span class="cited" hidden>✓ ' + (C.game ? 'MEKTUBUNA EKLENDİ · +%' + Math.round(60 / C.rights.length) : 'BEYANINA EKLENDİ') + '</span></div></details>';
       });
@@ -388,7 +396,7 @@ h1{text-align:center;font:700 24px/1.15 Cinzel,Georgia,serif;letter-spacing:.04e
     if (k === 'lawyer') findLaw();
   }
   function close(){ $('dim').classList.remove('on'); $('sheet').classList.remove('on'); cur = ''; refresh(); }
-  function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / C.rights.length * 100) + '%'; }
+  function prog(){ var p = $('prog'); if (p) p.style.width = (Object.keys(S.read).length / C.rights.length * 100) + '%'; var r = $('rate'); if (r) r.textContent = '%' + strength(); }
 
   function findLaw(){
     var pv = provOf($('law-in').value.trim()); S.lawProv = pv;
