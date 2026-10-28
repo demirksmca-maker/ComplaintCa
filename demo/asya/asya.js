@@ -519,7 +519,7 @@
     const o_orgHint = el('em', null, ''), o_orgLb = el('label'); o_orgLb.append(document.createTextNode(L2.against), o_orgHint);
     const o_orgBox = el('div','af1-f'); o_orgBox.append(o_orgLb, o_org);
     const o_mailLb = el('div','af1-q', L2.mailTo), o_paper = el('div','af1-paper'), o_edit = el('button','af1-link', L2.edit); o_edit.type = 'button';
-    const p1 = el('div','af1-p'), p2 = el('div','af1-p'), p3 = el('div','af1-p'), p4 = el('div','af1-p'), o_dots = el('div','af1-dots'), panes = [p1, p2, p3, p4];
+    const p1 = el('div','af1-p'), p2 = el('div','af1-p'), p3 = el('div','af1-p'), p4 = el('div','af1-p'), p5 = el('div','af1-p'), p6 = el('div','af1-p'), o_dots = el('div','af1-dots'), panes = [p1, p2, p3, p4, p5, p6];
     for (let i = 0; i < 4; i++) o_dots.appendChild(el('i'));
     // E-mail check: the first Send e-mails a 6-digit code; the right code earns a 30-day pass kept on this device.
     const MP_KEY = 'cc_mail_pass';
@@ -554,7 +554,7 @@
       o_code.hidden = true; o_btn.click();
     });
     p1.append(o_orgBox, o_mailLb, o_paper, o_edit); p2.append(o_an); p3.append(el('div','af1-q af1-who', L1.whom), o_list); p4.append(o_nameBox, o_agreeRow, o_terms, o_ts, o_btn, o_code, o_err, o_note, o_sos);
-    o_body.append(o_dots, p1, p2, p3, p4);
+    o_body.append(o_dots, p1, p2, p3, p4, p5, p6);
     let step = 0, Rt = null, draftSecs = [], draftEdited = '', editing = false, orgAuto = false;
     function showStep(n){
       step = Math.max(0, Math.min(3, n)); panes.forEach((p, i) => { p.hidden = i !== step; });
@@ -564,6 +564,62 @@
       o_body.scrollTop = 0;
     }
     o_next.addEventListener('click', () => showStep(step + 1)); o_back.addEventListener('click', () => showStep(step - 1));
+    // ── Ready screen (the /demo/sonuc.html theme): after the analysis six cards replace the four-tab sheet.
+    // Each card opens one part of the same sheet, so the letter, the law, the recipients and the send stay one case file.
+    const L6 = trObj({ h:'Your Complaint Is Ready', sub:'A complaint based on the law gets an answer. Make it stronger before you send.', quote:'Justice delayed is justice denied.',
+      send:'Send Complaint', sendS:'Check and send', rights:'Your Rights', rightsS:'The law is on your side', noLaw:'What happens next', inst:'Institutions', instS:'{n} selected',
+      letter:'Your Letter', letterS:'Preview, edit', lawyer:'Free Lawyer', lawyerS:'Near you', mp:'Your MP', mpS:'If you want', start:'START HERE',
+      note:'Institutions must answer a formal complaint. Nothing is sent until you approve.', edit:'Edit my complaint', lawP:'Free legal help depends on where you live:',
+      mpP:'Not required. An MP office can often speak to an institution directly. Find yours by postal code.', mpGo:'Find My MP' });
+    const ICO6 = { send:'<path d="M21 3L10 14"/><path d="M21 3l-7 18-4-7-7-4z"/>', rights:'<path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0zM8 21h8"/>',
+      inst:'<path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-6 10 6z"/>', letter:'<path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+      lawyer:'<circle cx="12" cy="7" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M12 15l-1.5 3L12 21l1.5-3z"/>', mp:'<path d="M3 21h18M5 21V11M19 21V11M9 21v-6h6v6M3 11l9-7 9 7"/>' };
+    // card key → [roman numeral, title, pane index in the sheet]
+    const SIX = [['send','I',L6.send,3],['rights','II',L6.rights,1],['inst','III',L6.inst,2],['letter','IV',L6.letter,0],['lawyer','V',L6.lawyer,4],['mp','VI',L6.mp,5]];
+    const o_six = el('div','af6'); o_six.hidden = true;
+    const o_sixGrid = el('div','af6-grid'), o_sixEdit = el('button','af6-edit', '✎ ' + L6.edit); o_sixEdit.type = 'button';
+    const o_sixQ = el('blockquote','af6-quote', L6.quote); o_sixQ.appendChild(el('cite', null, 'W·E·GLADSTONE'));
+    o_six.append(el('h2','af6-h', L6.h), el('p','af6-sub', L6.sub), o_sixQ, o_sixGrid, el('div','af6-orn', '✦'), el('p','af6-note', L6.note), o_sixEdit);
+    const seen6 = new Set(); let ready = false, frameOpen = false;
+    SIX.forEach(([k, n, t, pane]) => {
+      const c = el('button','af6-card'); c.type = 'button'; c.dataset.k = k;
+      c.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICO6[k] + '</svg>';
+      const tx_ = el('div'); tx_.append(el('b', null, t), el('span')); c.append(el('i','af6-n', n), el('i','af6-ok', '✓'), tx_);
+      c.addEventListener('click', () => openSix(k, pane)); o_sixGrid.appendChild(c);
+    });
+    function drawSix(){
+      const card6 = k => o_sixGrid.querySelector('[data-k="' + k + '"]'), sub6 = (k, v) => { card6(k).querySelector('span').textContent = v; };
+      const hasLaw = !!cleanLaw(V && V.law), nOn = 1 + sel.filter(x => x.on).length;
+      sub6('send', L6.sendS); sub6('rights', hasLaw ? L6.rightsS : L6.noLaw); sub6('inst', L6.instS.replace('{n}', nOn));
+      sub6('letter', L6.letterS); sub6('lawyer', L6.lawyerS); sub6('mp', L6.mpS);
+      SIX.forEach(([k]) => card6(k).classList.toggle('done', seen6.has(k) && k !== 'send'));
+      // The glowing ring shows the next step: read the law first, then send.
+      const first = !seen6.has('rights') ? 'rights' : 'send', fl = o_sixGrid.querySelector('.af6-flag'); if (fl) fl.remove();
+      SIX.forEach(([k]) => card6(k).classList.toggle('main', k === first));
+      card6(first).insertBefore(el('i','af6-flag', L6.start), card6(first).firstChild);
+    }
+    function lawPane(){
+      p5.innerHTML = ''; const aid = LEGAL_AID[provOf(o_loc.value)] || [TX('Legal aid in your province'), 'https://www.justice.gc.ca/eng/fund-fina/gov-gouv/aid-aide.html'];
+      const a = el('a','af6-link'); a.href = aid[1]; a.target = '_blank'; a.rel = 'noopener'; a.append(el('b', null, aid[0]), el('small', null, TX('Free legal help if your income qualifies')));
+      p5.append(el('p','af1-q', L6.lawP), a, el('p','af1-rdisc', TX('Send your complaint first — lawyer and free legal-aid options come right after.')));
+    }
+    function mpPane(){
+      p6.innerHTML = ''; const a = el('a','af6-link'); a.href = 'https://www.ourcommons.ca/members/en'; a.target = '_blank'; a.rel = 'noopener'; a.append(el('b', null, L6.mpGo));
+      p6.append(el('p','af1-q', L6.mpP), a);
+    }
+    function openSix(k, pane){
+      seen6.add(k); if (pane === 4) lawPane(); if (pane === 5) mpPane();
+      panes.forEach((p, i) => { p.hidden = i !== pane; });
+      if (!sumDone) { const sm = o_sum.querySelector('small'); if (sm) sm.textContent = SIX.find(x => x[0] === k)[2]; }
+      drawSix(); setSheet('open');
+    }
+    function showSix(){
+      ready = true; o_sheet.classList.add('af6-on'); o_nav.hidden = true; drawSix();
+      o_six.hidden = false; o_frame.hidden = !frameOpen; setSheet('hid');
+      if (!frameOpen) toTop({ top:0, behavior:'smooth' });
+    }
+    function hideSix(){ ready = false; o_sheet.classList.remove('af6-on'); o_six.hidden = true; o_frame.hidden = false; }
+    o_sixEdit.addEventListener('click', () => { frameOpen = true; o_frame.hidden = false; toTop({ top:0, behavior:'smooth' }); });
     const NAME_TOKEN = '[Your name]';
     function buildDraft(){
       const story = o_story.value.trim(), org = o_org.value.trim(), high = !!(A && A.priority === 'high'), law = cleanLaw(V && V.law), sanc = cleanLaw(V && V.sanctions);
@@ -664,7 +720,7 @@
     const o_classic = el('button','af1-classic', TX('Prefer the classic form?')); o_classic.type = 'button';
     if (IS_DEMO || !window.ccUsePanel) o_classic.hidden = true;
     o_classic.addEventListener('click', () => { close(); setTimeout(() => window.ccUsePanel('old'), 300); });
-    one.append(o_frame, o_wait, o_auto, o_classic);
+    one.append(o_frame, o_six, o_wait, o_auto, o_classic);
     const o_done = el('div','af1-done');
     let A = null, V = null, oFor = '', oTimer = 0, oBusy = false, pool = false, named = false;
     const sel = [];   // extra recipients to prepare a letter for
@@ -702,7 +758,7 @@
       const t = el('div'); t.append(el('b', null, sumDone ? '✓ ' + L1.dTitle : sumTitle), el('small', null, sumDone ? sumDone : sumCount + ' ' + TX('institutions you can reach')));
       o_sum.append(el('i','af1-dot ' + (sumDone ? 'low' : sumPr)), t, el('span','af1-chev','⌃'));
     }
-    function setSheet(st){ o_sheet.hidden = st === 'hid'; o_sheet.classList.toggle('open', st === 'open'); o_bd.hidden = st !== 'open'; if (st === 'open') o_body.scrollTop = 0; }
+    function setSheet(st){ if (ready && st === 'peek') st = 'hid'; if (ready && st === 'hid') drawSix(); o_sheet.hidden = st === 'hid'; o_sheet.classList.toggle('open', st === 'open'); o_bd.hidden = st !== 'open'; if (st === 'open') o_body.scrollTop = 0; }
     const togSheet = () => setSheet(o_sheet.classList.contains('open') ? 'peek' : 'open');
     o_grab.addEventListener('click', togSheet); o_sum.addEventListener('click', togSheet); o_bd.addEventListener('click', () => setSheet('peek'));
     // "Your rights": what the person may recover and the deadline to claim; only when ASYA sees a real legal-rights case.
@@ -745,7 +801,7 @@
       ms.addEventListener('click', () => { const v = !ms.classList.contains('on'); free(v); });
       function free(v){ switches.forEach(s => { if (s.disabled) return; flip(s, v); }); rows.forEach((rw, i) => { const r = sel.find(x => x.n === rw.n); if (r) r.on = v; }); if (A && switches.length > rows.length) pool = v; drawName(); syncAll(); }
       drawName(); loadTs2(); emit({ type:'ai', ...(A || { priority:'medium' }) });
-      sumCount = switches.length; buildDraft(); drawDraft(); drawSum(); o_nav.hidden = false; showStep(0); setSheet('open');
+      sumCount = switches.length; buildDraft(); drawDraft(); drawSum(); showSix();
     }
     function loadTs2(){
       if (tsWidget !== null) return; tsWidget = false;
@@ -794,12 +850,12 @@
     }
     async function analyse(){
       const d = o_story.value.trim(); if (d === oFor) return;
-      if (!enough(d)) { oFor = ''; setSheet('hid'); o_ask.hidden = true; o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
+      if (!enough(d)) { oFor = ''; hideSix(); setSheet('hid'); o_ask.hidden = true; o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
       if (oFor !== d) return;
-      if (c && c.isComplaint === false) { setSheet('hid'); o_ask.hidden = true; o_wait.textContent = TX('This doesn’t look like a problem yet. Tell ASYA what went wrong.'); return; }
+      if (c && c.isComplaint === false) { hideSix(); setSheet('hid'); o_ask.hidden = true; o_wait.textContent = TX('This doesn’t look like a problem yet. Tell ASYA what went wrong.'); return; }
       // What the story already says goes into the empty fields, with a short gold glow; only real gaps are asked.
       if (c) {
         const glow = inp => { const f = inp.closest('.af1-f'); f.classList.add('af1-found'); setTimeout(() => f.classList.remove('af1-found'), 2200); };
@@ -813,7 +869,7 @@
         }
       }
       const miss = stillMissing(c);
-      if (miss.some(m => NEED.includes(m))) { setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
+      if (miss.some(m => NEED.includes(m))) { hideSix(); setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
       o_ask.hidden = true;
       if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = routeCategory(c, val.who);
@@ -823,7 +879,7 @@
       if (oFor !== d) return; V = Vv; verdict = Vv; drawRes(R);
     }
     function finishOne(d){
-      o_done.innerHTML = '';
+      hideSix(); o_done.innerHTML = '';
       const inst = d.institution || {}, letter = V && (V.emailDraft || V.complaint) || '';
       const rows = [], seen = new Set();
       const add = (n, line, url) => { const k = String(n || '').toLowerCase().replace(/[^a-z0-9]/g, ''); if (!k || seen.has(k)) return; seen.add(k); rows.push({ n, line, url }); };
@@ -992,8 +1048,8 @@
     o_btn.addEventListener('click', async () => {
       o_err.textContent = '';
       const mail = o_mail.value.trim(), what_ = o_story.value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; setSheet('peek'); o_mail.focus(); return; }
-      if (!enough(what_)) { o_err.textContent = L1.eStory; setSheet('peek'); o_story.focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { o_err.textContent = L1.eMail; setSheet('peek'); o_frame.hidden = false; frameOpen = true; o_mail.focus(); return; }
+      if (!enough(what_)) { o_err.textContent = L1.eStory; setSheet('peek'); o_frame.hidden = false; frameOpen = true; o_story.focus(); return; }
       if (oNeedName() && !(val.name || '').trim()) { o_err.textContent = L1.eName; return; }
       if (!o_cb.checked) { o_err.textContent = L1.eAgree; return; }
       const mPass = passFor(mail);
