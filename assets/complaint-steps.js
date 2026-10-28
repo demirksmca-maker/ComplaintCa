@@ -166,10 +166,10 @@
     '#cc-steps .as-card p{margin:0;font:400 16px/1.7 Inter,sans-serif;color:#f6eeff;text-align:left;white-space:pre-wrap}',
     '#cc-steps .as-card .cur{display:inline-block;width:2px;height:1.05em;background:#fff;vertical-align:-2px;margin-left:2px;animation:csBlink 1s steps(1) infinite}',
     '#cc-steps .as-tags{display:grid;grid-template-columns:1fr 1fr;gap:10px}',
-    '#cc-steps .as-tags span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;border-radius:14px;font:600 13.5px/1.2 Inter,sans-serif;animation:csPop .4s ease-out both}',
+    '#cc-steps .as-tags span,#cc-steps .as-tags button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;border-radius:14px;font:600 13.5px/1.2 Inter,sans-serif;animation:csPop .4s ease-out both}',
     '#cc-steps .as-tags em{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px}',
     '#cc-steps .as-tags .ok{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.35)}#cc-steps .as-tags .ok em{background:#fff;color:#4c0b42}',
-    '#cc-steps .as-tags .add{border:1px dashed rgba(205,156,255,.7);color:#e7cfff}#cc-steps .as-tags .add em{border:1px solid rgba(205,156,255,.8)}',
+    '#cc-steps .as-tags .add{width:100%;margin:0;-webkit-appearance:none;appearance:none;font:600 13.5px/1.2 Inter,sans-serif;background:none;cursor:pointer;border:1px dashed rgba(205,156,255,.7);color:#e7cfff}#cc-steps .as-tags .add em{border:1px solid rgba(205,156,255,.8)}',
     '#cc-steps .as-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}',
     '#cc-steps .as-btns button{position:relative;overflow:hidden;height:52px;border-radius:999px;font:700 16px/1 Inter,sans-serif;cursor:pointer}',
     '#cc-steps .as-use{border:0;background:linear-gradient(180deg,#fff,#eddbff);color:#4c0b42;box-shadow:0 10px 30px -12px rgba(255,255,255,.6)}',
@@ -309,8 +309,18 @@
       init: function(){
         var f = q('#cs-f'), pv = q('#cs-pv'), st = q('#cs-st'), sg = q('#cs-sg'), t = 0;
         var fill = function(a){ a = a || {}; var c = osmPart(a); if (c.city) f.value = c.city; if (c.pv) pv.value = c.pv; if (c.st) st.value = c.st; };
-        q('#cs-geo').onclick = function(){ if (!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(function(p){
-          fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=17&addressdetails=1&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(function(r){ return r.json(); }).then(function(d){ fill(d.address); }).catch(function(){}); }, function(){}, { timeout:8000 }); };
+        // The button says what happens; a late answer after the sheet changed is dropped.
+        var geo = q('#cs-geo'), geoTxt = geo.textContent, geoT = 0, geoEnd = function(m){ clearTimeout(geoT); if (!geo.isConnected || cur !== 'loc' || !geo.disabled) return false; geo.disabled = false; geo.textContent = geoTxt; if (m) toast(m); return true; };
+        geo.onclick = function(){ if (!navigator.geolocation) return toast('Your browser can’t share your location. Please type it.');
+          geo.disabled = true; geo.textContent = '📍 Finding you…';
+          geoT = setTimeout(function(){ geoEnd('Couldn’t find your location. Please type it.'); }, 20000);
+          navigator.geolocation.getCurrentPosition(function(p){
+            fetch('https://nominatim.openstreetmap.org/reverse?format=json&zoom=17&addressdetails=1&lat=' + p.coords.latitude + '&lon=' + p.coords.longitude).then(function(r){ return r.ok ? r.json() : {}; })
+              .then(function(d){ var a = d.address || {}, c = osmPart(a), inCa = PROV.some(function(x){ return x[0] === c.pv; });
+                if (!inCa || !c.city) return geoEnd('Couldn’t find a Canadian address here. Please type it.');
+                if (geoEnd('Location added. Please check it.')) fill(a); })
+              .catch(function(){ geoEnd('Couldn’t look up your address. Please type it.'); }); },
+            function(e){ geoEnd(e && e.code === 1 ? 'Location is off for this site. Please type it.' : 'Couldn’t find your location. Please type it.'); }, { timeout:8000 }); };
         f.oninput = function(){ clearTimeout(t); var v = f.value.trim(); if (v.length < 3) { sg.innerHTML = ''; return; }
           t = setTimeout(function(){ osm(v).then(function(rs){ sg.innerHTML = rs.map(function(r, i){ var c = osmCity(r.address) || r.display_name; return '<button type="button" class="cs-sg" data-i="' + i + '"><span>' + esc(c) + '</span></button>'; }).join('');
             qa('#cs-sg .cs-sg').forEach(function(b){ b.onclick = function(){ var a = rs[b.dataset.i].address || {}; var c = osmPart(a); f.value = c.city || f.value; if (c.pv) pv.value = c.pv; sg.innerHTML = ''; }; }); }); }, 450); };
@@ -496,7 +506,10 @@
         (function cnt(){ n.textContent = k; if (k < score) { k = Math.min(score, k + Math.max(1, Math.round(score / 40))); setTimeout(cnt, 28); } })();
         var T = q('.as-t'), tg = q('.as-tags'), i = 0; tg.innerHTML = '';
         var four = [['Clear sentences', true], ['Facts kept', true], ['Date', RE_DATE.test(out)], ['What you want', RE_ASK.test(out)]];
-        var done = function(){ T.textContent = out; tg.innerHTML = four.map(function(f, j){ return '<span class="' + (f[1] ? 'ok' : 'add') + '" style="animation-delay:' + (j * .1) + 's"><em>' + (f[1] ? '✓' : '+') + '</em>' + (f[1] ? f[0] : 'Add ' + f[0].toLowerCase()) + '</span>'; }).join(''); };
+        var done = function(){ T.textContent = out; tg.innerHTML = four.map(function(f, j){ var st = ' style="animation-delay:' + (j * .1) + 's"';
+            return f[1] ? '<span class="ok"' + st + '><em>✓</em>' + f[0] + '</span>' : '<button type="button" class="add" data-j="' + j + '"' + st + '><em>+</em>Add ' + f[0].toLowerCase() + '</button>'; }).join('');
+          // A missing part sends the person back to their own text to add it.
+          qa('.as-tags .add').forEach(function(b){ b.onclick = function(){ asEnd(); toast(b.dataset.j === '2' ? 'Add the date to your story, then tap Save.' : 'Add what you want them to do, then tap Save.'); var f = q('#cs-f'); if (f) f.focus(); }; }); };
         if (rm) done(); else (function type(){ T.innerHTML = esc(out.slice(0, i += 2)) + '<span class="cur"></span>'; if (!live()) return; if (i < out.length) setTimeout(type, 16); else done(); })();
         q('.as-use').onclick = function(){ asEnd(); onUse(out); }; q('.as-keep').onclick = function(){ asEnd(); if (onKeep) onKeep(); };
       }, rm ? 0 : Math.max(0, 2700 - (Date.now() - started)));
