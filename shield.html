@@ -160,7 +160,7 @@
   .quiet{color:var(--ok);font-size:.82rem;text-align:center;padding:14px 0}
 
   /* Bottom toolbar */
-  .bar-nav{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));border-top:1px solid var(--edge);background:#0b0910;padding:6px 8px max(6px,env(safe-area-inset-bottom))}
+  .bar-nav{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));border-top:1px solid rgba(184,79,216,.18);background:rgba(11,9,16,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:6px 8px max(6px,env(safe-area-inset-bottom))}
   .bar-nav a{text-decoration:none}
   .bar-nav button,.bar-nav a{background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.62rem;letter-spacing:-.2px;white-space:nowrap;color:var(--mute)}
   .bar-nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -212,10 +212,10 @@
   .d3-now div:first-child b::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);margin-right:4px;vertical-align:middle}
   .d3-sites{flex:none;display:flex;align-items:center;gap:4px;background:#13101e;border:1px solid var(--line);border-radius:10px;padding:3px}
   .d3-sites button{padding:4px 10px;border-radius:7px;font-size:.75rem;color:var(--mute);background:none}
-  .d3-sites button[aria-pressed=true]{background:#791992;color:var(--ink)}
+  .d3-sites button[aria-pressed=true]{background:linear-gradient(90deg,#791992,#5e1072);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.4)}
   .d3-card{position:relative;transition:transform .25s ease-out;
-    border-radius:16px;padding:12px 12px 10px;background:linear-gradient(145deg,#5e1072,#13101e 55%,#0b0910);border:1px solid #9a21b8;
-    box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06) inset,0 0 30px rgba(184,79,216,.25)}
+    border-radius:16px;padding:12px 12px 10px;background:radial-gradient(90% 60% at 100% 0,rgba(154,33,184,.16),transparent 70%),rgba(19,16,30,.78);border:1px solid rgba(184,79,216,.28);
+    box-shadow:0 15px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08),0 0 20px rgba(154,33,184,.15)}
   /* Sharp text: at rest a card is flat (no 3D layer, so the browser draws
      text at full resolution); the depth comes from light and shadow. It
      tilts only while a finger or mouse is on it. The gloss sits behind the
@@ -227,7 +227,7 @@
   .d3-when{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
   .d3-when>span:first-child{flex:none}
   .d3-grow{min-width:0;overflow:hidden;text-overflow:ellipsis;margin:0 8px 0 auto;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:0;text-transform:none;white-space:nowrap;color:#6ee7b7;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.5);box-shadow:0 0 12px rgba(52,211,153,.25)}
-  .d3-arrow{flex:none;width:28px;height:28px;border-radius:50%;background:#791992;border:1px solid #9a21b8;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
+  .d3-arrow{flex:none;width:28px;height:28px;border-radius:50%;background:#050408;border:1px solid rgba(184,79,216,.4);color:#b84fd8;display:grid;place-items:center;font-size:1rem;transition:transform .3s;box-shadow:0 6px 12px rgba(0,0,0,.5)}
   .d3-arrow[aria-expanded=true]{transform:rotate(180deg)}
   .d3-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 8px;text-align:center}
   .d3-hero b{display:block;font-size:1.7rem;font-weight:800;line-height:1}
@@ -241,8 +241,8 @@
   .d3-d.flat{color:var(--mute)}
   /* Site road map: one glowing road, a stop per step from arriving on the
      site to sending a complaint. Big card vertical, period cards in a row. */
-  .rd-card{background:radial-gradient(120% 90% at 0 0,#1a1426,#0e0b16 55%,#0b0910);border-color:#791992;box-shadow:0 30px 40px -18px rgba(0,0,0,.8),0 0 30px rgba(52,211,153,.18)}
-  .rd-card .d3-arrow{background:#5e1072;border-color:#9a21b8}
+  .rd-card{background:radial-gradient(90% 60% at 0 0,rgba(229,228,226,.05),transparent 70%),rgba(19,16,30,.78);border-color:rgba(184,79,216,.2);box-shadow:0 15px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
+  .rd-card .d3-arrow{background:#050408;border-color:rgba(184,79,216,.4)}
   .rd{position:relative;margin:6px 0 0;padding-left:34px}
   .rd::before{content:'';position:absolute;left:12px;top:14px;bottom:14px;width:6px;border-radius:3px;background:linear-gradient(#b84fd8,#34d399 60%,#f0abfc);box-shadow:0 0 10px rgba(52,211,153,.45)}
   .rd::after{content:'';position:absolute;left:14px;top:14px;bottom:14px;width:2px;background:repeating-linear-gradient(#fff 0 6px,transparent 6px 14px);opacity:.35}
