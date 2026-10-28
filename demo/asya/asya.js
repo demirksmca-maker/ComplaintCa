@@ -852,6 +852,8 @@
       const d = o_story.value.trim(); if (d === oFor) return;
       if (!enough(d)) { oFor = ''; hideSix(); setSheet('hid'); o_ask.hidden = true; o_wait.hidden = false; o_wait.textContent = d.length ? L1.short + ' (' + Math.min(d.length, MIN_STORY) + '/' + MIN_STORY + ')' : L1.wait; return; }
       oFor = d; if (!o_sheet.hidden) setSheet('peek');
+      // Filled from the six-step screen: hide the form while ASYA works and skip the follow-up questions.
+      const fromSteps = !!window._ccStepsFill; window._ccStepsFill = false; if (fromSteps) o_frame.hidden = true;
       o_wait.hidden = false; o_wait.textContent = L1.busy; o_wait.appendChild(el('span','af1-bar')); emit({ type:'thinking' });
       let c = null; try { const x = await post('/api/classify', { desc:d }); if (x.ok) c = await x.json(); } catch (e) {}
       if (oFor !== d) return;
@@ -869,7 +871,7 @@
         }
       }
       const miss = stillMissing(c);
-      if (miss.some(m => NEED.includes(m))) { hideSix(); setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
+      if (!fromSteps && miss.some(m => NEED.includes(m))) { hideSix(); setSheet('hid'); o_wait.hidden = true; drawAsk(miss); return; }
       o_ask.hidden = true;
       if (c && photoThreat) c = { ...c, priority:'high' }; A = c; ai = c; val.urg = c ? c.priority : ''; val.who = whoType || guessTarget(d, c);
       const loc = o_loc.value.trim(), cat = routeCategory(c, val.who);

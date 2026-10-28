@@ -756,7 +756,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
 // No visible close button: a tap on the dimmed page around the card closes it.
 document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-card,.cc-srx'))ccChoiceClose()});
 </script>
-<script defer src="/assets/complaint-steps.js?v=20261027b"></script>
+<script defer src="/assets/complaint-steps.js?v=20261028a"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
@@ -2993,7 +2993,7 @@ function _ccEmbed(){
 // Closing the panel goes back to the home screen (not to the classic form underneath).
 window.ccPanelClosed=function(){ if(!window._ccEmbedded) return; window._ccEmbedded=false; document.body.classList.remove('cc-panel-on'); if(!window._ccTabSwitch&&typeof goHome==='function') goHome(); window._ccTabSwitch=false; };
 // Bump on every panel change so phones never keep an old copy of the panel files.
-var _ccAsyaV='20261028a';
+var _ccAsyaV='20261028b';
 function openAsyaPanel(){
   if(_ccOldPanel){ goApp('new'); return; }
   if(window.openComplaintFlow){ _ccEmbed(); return; }

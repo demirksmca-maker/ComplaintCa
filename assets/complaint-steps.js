@@ -470,6 +470,8 @@
       var m = set('.af1-frame input[type=email]', data.mail); if (m) m.dispatchEvent(new Event('change', { bubbles:true }));
       set('.af1-locrow input', data.loc);
       set('.af1-whobox input', data.who);
+      // The six steps already asked for everything: the panel goes straight to its ready screen (no follow-up questions).
+      window._ccStepsFill = true;
       ta.value = data.story; ta.dispatchEvent(new Event('input', { bubbles:true })); ta.dispatchEvent(new Event('blur'));
       exit(true); reset();
     })();
