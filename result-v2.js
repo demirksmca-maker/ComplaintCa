@@ -2,15 +2,15 @@
 // submit engine. doSubmit() saves, e-mails and fills the classic #scs-screen
 // exactly as before; this only draws the 6-card screen over it from the same data.
 // The classic screen stays underneath as the backup ("Classic view").
-// Opt-in while testing: /?new=1 turns it on for this browser, /?new=0 turns it off.
+// On for everyone. /?new=0 switches back to the classic screen for this browser, /?new=1 undoes that.
 (function(){
   var KEY = 'cc_rv2';
   try{
     var q = new URLSearchParams(location.search).get('new');
-    if (q === '1') localStorage.setItem(KEY, '1');
-    else if (q === '0') localStorage.removeItem(KEY);
+    if (q === '0') localStorage.setItem(KEY, '0');
+    else if (q === '1') localStorage.removeItem(KEY);
   }catch(e){}
-  function on(){ try{ return localStorage.getItem(KEY) === '1'; }catch(e){ return false; } }
+  function on(){ try{ return localStorage.getItem(KEY) !== '0'; }catch(e){ return true; } }
 
   var D = {
     en:{h:'Complaint Sent', sub:'Your complaint is on its way. Here is everything you can do next.', quote:'Justice delayed is justice denied.',

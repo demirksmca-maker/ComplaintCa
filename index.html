@@ -4460,7 +4460,7 @@ async function doSubmit(){
   // Serious-case → specialist lawyer suggestion
   showLawyerSuggestion(cat, _selPri, c.location);
   prepareLegalOutreach(c);
-  // New 6-card result screen (/?new=1) drawn over the classic one; no-op when off.
+  // New 6-card result screen drawn over the classic one (/?new=0 keeps the classic one).
   if(window.ccResultV2) try{ccResultV2.show({c:c,ref:ref,auths:auths,draft:emailDraft,chain:_ch,prov:_guessProvinceFull(c.location),area:CATEGORY_TO_LW_AREA[c.category]});}catch(e){}
 
   // Show sync status under ref number
