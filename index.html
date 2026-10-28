@@ -181,7 +181,9 @@ html[data-restoring-tab] #pg-app{display:block}
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;border-bottom:0;background:transparent}
 .topbar::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;background:radial-gradient(1px 1px at 22% 30%,#fff,transparent),radial-gradient(1px 1px at 31% 72%,#fff,transparent),radial-gradient(1.5px 1.5px at 68% 24%,#fff,transparent),radial-gradient(1px 1px at 79% 66%,#fff,transparent),radial-gradient(1px 1px at 88% 38%,#fff,transparent),radial-gradient(1.5px 1.5px at 14% 60%,#fff,transparent);animation:tbStars 4s ease-in-out infinite}
 @keyframes tbStars{0%,100%{opacity:.35}50%{opacity:.95}}
-.topbar::after{content:none}
+/* Once the page scrolls the bar turns solid (the tabs' dark), so cards never show through it; over the top of the page it stays clear. */
+.topbar::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#26040d 0%,#1c0003 100%);opacity:0;transition:opacity .25s ease}
+.topbar.solid::after{opacity:1}
 .topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
 .logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;height:46px}
 .topbar-right{display:flex;align-items:center;gap:8px;height:46px}
@@ -856,6 +858,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
     </div>
   </div>
 </header>
+<script>(function(){var t=document.querySelector('.topbar');if(!t)return;var f=function(){t.classList.toggle('solid',(window.scrollY||document.documentElement.scrollTop||0)>4)};addEventListener('scroll',f,{passive:true});f()})();</script>
 
 <!-- LANDING -->
 <div id="pg-land">
