@@ -230,6 +230,38 @@
     '#cc-steps .cs-ay-sw[aria-checked="true"] i::before{opacity:1}#cc-steps .cs-ay-sw[aria-checked="true"] i::after{left:20px;animation:csBlue 2s ease-in-out infinite}',
     '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}',
     '@keyframes csBlue{0%,60%,100%{filter:none}25%{filter:drop-shadow(0 0 5px rgba(120,180,255,.75))}}',
+    // ASYA in the site's gold: framed page, crystal maple crest, gold step bars, marble suggestion card.
+    '#cc-steps .as{background:linear-gradient(rgba(18,4,22,.55),rgba(18,4,22,.55)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover}#cc-steps .as .as-flag,#cc-steps .as .as-dim{display:none}',
+    '#cc-steps .as::before{content:"";position:fixed;inset:6px;z-index:0;border-style:solid;border-width:clamp(46px,13vw,58px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}',
+    '#cc-steps .as .as-in{z-index:1;padding:calc(clamp(46px,13vw,58px) + env(safe-area-inset-top,0px)) clamp(30px,9vw,40px) calc(clamp(46px,13vw,58px) + env(safe-area-inset-bottom,0px));justify-content:center}',
+    '#cc-steps .as .cs-x{top:calc(clamp(40px,12vw,52px) + env(safe-area-inset-top,0px));right:clamp(30px,9vw,40px);width:34px;height:34px;padding:0;border-radius:10px;border:2px solid transparent;color:transparent;font-size:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(0,0,0,.25) 70%) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;box-shadow:0 3px 8px rgba(0,0,0,.55)}',
+    '#cc-steps .as .cs-x::before,#cc-steps .as .cs-x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:1px;background:linear-gradient(90deg,#b8862c,#fff0b8,#b8862c);transform:translate(-50%,-50%) rotate(45deg)}#cc-steps .as .cs-x::after{transform:translate(-50%,-50%) rotate(-45deg)}',
+    '#cc-steps .as .orb{width:150px;height:150px;margin-top:0}#cc-steps .as .orb.small{width:100px;height:100px}',
+    '#cc-steps .as .orb i{border-color:rgba(233,197,106,.6)}',
+    '#cc-steps .as .orb b{inset:16%;overflow:hidden;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 8px 16px rgba(0,0,0,.5);animation:csRuby 2.2s ease-in-out infinite}',
+    '#cc-steps .as .orb b::after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.85) 48%,rgba(255,255,255,.2) 54%,transparent 62%);transform:translateX(-120%);animation:csGlint 3.2s .6s ease-in-out infinite}',
+    '#cc-steps .as .orb::after{content:"";position:absolute;inset:4%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(246,220,138,.9) 85%,transparent 100%);-webkit-mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);animation:csSpin 2.4s linear infinite}#cc-steps .as .orb.small::after{animation-duration:6s;opacity:.6}',
+    '@keyframes csGlint{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}@keyframes csSpin{to{transform:rotate(360deg)}}@keyframes csRuby{0%,100%{transform:scale(1);filter:drop-shadow(0 0 10px rgba(255,70,95,.25))}50%{transform:scale(1.04);filter:drop-shadow(0 0 26px rgba(255,70,95,.6))}}#cc-steps .as .orb b svg{display:none}#cc-steps .as .orb.small b{inset:0}',
+    '#cc-steps .as .as-name{margin-top:12px;font-size:20px;letter-spacing:.36em;color:transparent;background:linear-gradient(180deg,#f7e7bd,#c99b4a 55%,#e8cf8e);-webkit-background-clip:text;background-clip:text;text-shadow:none}',
+    '#cc-steps .as .as-st{font:italic 400 17px/1.4 "EB Garamond",Georgia,serif;color:rgba(246,234,210,.88)}',
+    '#cc-steps .as .as-steps span{width:34px;height:3px;border-radius:2px;background:rgba(233,197,106,.22)}',
+    '#cc-steps .as .as-steps span.on::after{background:linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%)}',
+    // One card holds the score, the suggestion and the checklist, so the result reads as one piece.
+    '#cc-steps .as .as-res.on{gap:16px}',
+    '#cc-steps .as .as-card{padding:14px 16px 12px;border-radius:14px;border:1.5px solid transparent;background:linear-gradient(rgba(22,6,30,.82),rgba(22,6,30,.82)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,rgba(246,220,138,.75),rgba(154,106,28,.55),rgba(255,240,184,.75)) border-box;box-shadow:inset 0 2px 10px rgba(0,0,0,.6),0 14px 30px -16px #000;text-align:left}',
+    '#cc-steps .as .as-ch{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(233,197,106,.25)}',
+    '#cc-steps .as .meter{flex:none;width:56px;height:56px}#cc-steps .as .meter .tk{stroke:rgba(233,197,106,.18)}#cc-steps .as .meter .vl{stroke:url(#cs-mg)}',
+    '#cc-steps .as .meter .num{font:700 18px/1 Cinzel,Georgia,serif;color:#f1d27a}#cc-steps .as .meter small{display:none}',
+    '#cc-steps .as .as-cht h4{margin:0;font:700 11px/1.2 Cinzel,Georgia,serif;letter-spacing:.22em;color:#f1d27a}#cc-steps .as .as-cht small{display:block;margin-top:4px;font:italic 400 14px/1 "EB Garamond",Georgia,serif;color:rgba(246,234,210,.65)}',
+    '#cc-steps .as .as-card p{margin:12px 0 0;font:500 18px/1.45 "EB Garamond",Georgia,serif;color:#f6ead2;text-align:left}',
+    '#cc-steps .as .as-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:12px;padding-top:10px;border-top:1px solid rgba(233,197,106,.25)}',
+    '#cc-steps .as .as-tags span,#cc-steps .as .as-tags button{min-height:0;width:auto;padding:2px 0;gap:6px;border:0;border-radius:0;background:none;font:600 10px/1.2 Cinzel,Georgia,serif;letter-spacing:.08em;color:rgba(246,234,210,.8)}',
+    '#cc-steps .as .as-tags em{width:15px;height:15px;font-size:9px;color:#2a1206;background:linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%)}',
+    '#cc-steps .as .as-tags .add{color:#f1d27a;border-bottom:1px dashed rgba(233,197,106,.85)}#cc-steps .as .as-tags .add em{color:#f1d27a;background:none;border:1px solid #e9c56a}',
+    '#cc-steps .as .as-btns button{height:50px;border-radius:14px;border:2.5px solid transparent;font:700 14px/1 Cinzel,Georgia,serif;letter-spacing:.12em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);box-shadow:0 8px 18px -8px #000}',
+    '#cc-steps .as .as-btns button::before{content:"";position:absolute;inset:3px;border-radius:10px;border:1px solid rgba(255,226,150,.35);pointer-events:none}',
+    '#cc-steps .as .as-use{background:linear-gradient(rgba(40,10,60,.2),rgba(40,10,60,.4)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box}',
+    '#cc-steps .as .as-keep{background:linear-gradient(rgba(20,8,0,.25),rgba(20,8,0,.4)) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;color:#f6ead2}',
     '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::before,#cc-steps *::after{animation:none!important;transition:none!important}#cc-steps .cs-quote .w,#cc-steps .cs-quote cite{opacity:1;filter:none;transform:none}}'
   ].join('\n');
 
@@ -264,9 +296,9 @@
       '<button type="button" class="cs-x" data-act="as-close" aria-label="Close">×</button>' +
       '<div class="orb"><i></i><i></i><i></i><b><svg viewBox="0 0 100 100"><path fill="#fff" d="' + LEAF + '"/></svg></b></div>' +
       '<div class="as-name">ASYA</div><div class="as-st" aria-live="polite"></div><div class="as-steps"><span></span><span></span><span></span></div>' +
-      '<div class="as-res"><div class="meter"><svg viewBox="0 0 80 80"><circle class="tk" cx="40" cy="40" r="35" fill="none" stroke-width="5"/><circle class="vl" cx="40" cy="40" r="35" fill="none" stroke-width="5" stroke-dasharray="219.9" stroke-dashoffset="219.9"/></svg>' +
-      '<div class="mid"><span class="num">0</span><small>STRENGTH</small></div></div>' +
-      '<div class="as-card"><h4>ASYA’S SUGGESTION</h4><div class="cs-ln" aria-hidden="true"><i></i>✦<i></i></div><p class="as-t"></p></div><div class="as-tags"></div>' +
+      '<div class="as-res"><div class="as-card"><div class="as-ch"><div class="meter"><svg viewBox="0 0 80 80"><defs><linearGradient id="cs-mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc8a"/><stop offset=".5" stop-color="#b8862c"/><stop offset="1" stop-color="#fff0b8"/></linearGradient></defs><circle class="tk" cx="40" cy="40" r="35" fill="none" stroke-width="5"/><circle class="vl" cx="40" cy="40" r="35" fill="none" stroke-width="5" stroke-dasharray="219.9" stroke-dashoffset="219.9"/></svg>' +
+      '<div class="mid"><span class="num">0</span><small>STRENGTH</small></div></div><div class="as-cht"><h4>ASYA’S SUGGESTION</h4><small>Strength score</small></div></div>' +
+      '<p class="as-t"></p><div class="as-tags"></div></div>' +
       '<div class="as-btns"><button type="button" class="as-use">Use this</button><button type="button" class="as-keep">Keep mine</button></div></div></div></div>' +
       '<div class="cs-toast" role="status"></div>';
     (document.getElementById('cc-steps-host') || document.body).appendChild(root);
