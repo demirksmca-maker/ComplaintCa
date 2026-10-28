@@ -3,6 +3,7 @@
 ## İletişim
 - Kullanıcıyla Türkçe konuş.
 - Token harcama. Kısa, basit, günlük kelimeler kullan. Uzun cümle, uzun liste, uzun tablo yok.
+- Basit soruya tek kelime/tek satır cevap ver ("Evet.", "Aşağı kaydır."). Açıklama gerekirse en fazla birkaç cümle.
 - Yanıt en fazla 5-6 satır. Daha uzun gerekiyorsa sadece sonucu yaz, ayrıntıyı sorulursa ver.
 - Kısa ve öz yaz. Gereksiz açıklama, özet, tekrar yok.
 - Yapılan işi 1-3 satırda bildir: ne değişti, hangi dosya.
