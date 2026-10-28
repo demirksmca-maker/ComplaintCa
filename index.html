@@ -5598,7 +5598,17 @@ try{
     }
     if(typeof window._applyAuthUI==='function') window._applyAuthUI(); // keep the Sign In tab in sync
   });
-  window._fbSave=async function(c){return await addDoc(collection(db,'complaints'),c);};
+  // Anonymous copy for the public list (publicFeed/{ref}), same shape as api/_complaint-core.js publicSummary(); a failure never blocks the filing.
+  function _savePublicSummary(c){
+    if(!c||!/^(VC|CY)-\d{4}-[A-Z0-9]{6}$/.test(c.ref||'')) return;
+    var place=String(c.location||'').split(',').map(function(x){return x.trim();}).filter(function(x){return x&&!/\d/.test(x);}).slice(-2).join(', ').slice(0,60)||'Canada';
+    var t=String(c.title||String(c.desc||'').split(/\n|[.!?]\s/)[0]||'').replace(/\S+@\S+/g,'').replace(/https?:\/\/\S+|www\.\S+/gi,'').replace(/\+?\d[\d\s().-]{5,}\d/g,'').replace(/[<>\n\r]/g,' ').replace(/\s+/g,' ').trim();
+    if(t.length>80) t=t.slice(0,79).trimEnd()+'…';
+    var f={ref:{stringValue:c.ref},category:{stringValue:String(c.category||'other').slice(0,40)},city:{stringValue:place},date:{stringValue:String(c.date||new Date().toISOString()).slice(0,40)},status:{stringValue:'received'}};
+    if(t) f.title={stringValue:t};
+    fetch('https://firestore.googleapis.com/v1/projects/ajan-d6070/databases/(default)/documents/publicFeed?documentId='+encodeURIComponent(c.ref)+'&key=AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(function(){});
+  }
+  window._fbSave=async function(c){var r=await addDoc(collection(db,'complaints'),c); _savePublicSummary(c); return r;};
   window._fbTrack=async function(ref){const q=query(collection(db,'complaints'),where('ref','==',ref),limit(1));const s=await getDocs(q);return s.empty?null:s.docs[0].data();};
     window._fbAccountPass=async function(){
     const u=authInst.currentUser; if(!u) return null;
