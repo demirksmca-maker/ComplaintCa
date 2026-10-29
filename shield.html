@@ -1066,7 +1066,9 @@
 
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
   function showSec(name) {
-    each('[data-sec]', function (b) { var on = b.getAttribute('data-sec') === name; on ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); $('v-' + b.getAttribute('data-sec')).hidden = !on; });
+    // Sections toggle on their own: Huni has no tab but still opens from #funnel links.
+    each('.sec', function (v) { v.hidden = v.id !== 'v-' + name; });
+    each('[data-sec]', function (b) { b.getAttribute('data-sec') === name ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'); });
     if (name !== 'site') store(SEC, name);
     if (name === 'home') fitHome();
     if (name === 'google' && !gscLoaded) loadGsc();
@@ -1307,8 +1309,8 @@
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
   // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
   var hashSec = location.hash.slice(1);
-  function hasTab(n) { return !!document.querySelector('[data-sec="' + n + '"]'); }
-  showSec(hasTab(hashSec) ? hashSec : hasTab(store(SEC)) ? store(SEC) : 'home');
+  var savedSec = store(SEC);
+  showSec($('v-' + hashSec) ? hashSec : $('v-' + savedSec) ? savedSec : 'home');
   load();
   // Genel's 3D cards (stats cached 3 h on the server).
   if (getKey()) d3Load();
