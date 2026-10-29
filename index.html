@@ -265,39 +265,15 @@ a,button,[onclick]{-webkit-tap-highlight-color:transparent;touch-action:manipula
 .hub-tile:nth-of-type(6){background:linear-gradient(155deg,rgba(44,51,64,.4),rgba(26,30,38,.25))}
 .hub-numeral{display:none}
 .hub-tile::before,.hub-tile::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit}
-.hub-tile::before{background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.16),transparent 60%)}
+.hub-tile::before{background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.2),transparent 60%);animation:hubGlow 7s ease-in-out infinite alternate}
 .hub-tile::after{background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.34) 50%,transparent 65%);transform:translateX(-130%);animation:hubShine 6s ease-in-out infinite}
 .hub-tile:nth-of-type(2)::after,.hub-tile:nth-of-type(3)::after{animation-delay:.6s}
 .hub-tile:nth-of-type(4)::after,.hub-tile:nth-of-type(5)::after{animation-delay:1.2s}
 .hub-tile:nth-of-type(6)::after{animation-delay:1.8s}
 .hub-tile>*{z-index:1}.hub-icon,.hub-tile-body{position:relative}
-.hub-art{position:absolute;left:44%;top:35%;height:min(38%,84px);aspect-ratio:1;transform:translate(-50%,-50%);color:#fff;opacity:.72;pointer-events:none;z-index:0!important}
-.hub-art::before{content:"";position:absolute;inset:-35%;border-radius:50%;background:radial-gradient(circle,rgba(255,220,250,.38),rgba(200,140,255,.12) 45%,transparent 70%);animation:haGlow 4s ease-in-out infinite}
-.hub-art svg{position:relative;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(255,210,250,.65));overflow:visible}
-.hub-art svg *{transform-box:fill-box;transform-origin:center}
-.ha-spark{fill:#fff;stroke:none;animation:haTw 2.6s ease-in-out infinite}.ha-spark.d2{animation-delay:1.3s}
-.ha-l{stroke-dasharray:22;stroke-dashoffset:22;animation:haDraw 5s ease-in-out infinite}.ha-l2{animation-delay:.5s}.ha-l3{animation-delay:1s}
-.ha-seal{animation:haPop 5s ease-in-out infinite}
-.ha-beam{transform-origin:50% 0!important;animation:haTilt 3.6s ease-in-out infinite}
-.ha-flag{transform-origin:0 50%!important;animation:haWave 1.4s ease-in-out infinite}
-.ha-win{fill:#fff;stroke:none;animation:haTw 3s ease-in-out infinite}.ha-win.d2{animation-delay:1s}.ha-win.d3{animation-delay:2s}
-.ha-ring{animation:haRing 2.8s ease-out infinite}.ha-ring.d2{animation-delay:1.4s}
-.ha-scan{animation:haScan 2.8s ease-in-out infinite}
-.ha-lens{animation:haLens 4s ease-in-out infinite}
-.ha-page{transform-origin:0 50%!important;animation:haFlip 3.2s ease-in-out infinite}
-@keyframes haGlow{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
-@keyframes haTw{0%,100%{opacity:.15;transform:scale(.5)}50%{opacity:1;transform:scale(1.15)}}
-@keyframes haDraw{0%,8%{stroke-dashoffset:22;opacity:1}35%,80%{stroke-dashoffset:0;opacity:1}92%,100%{stroke-dashoffset:0;opacity:0}}
-@keyframes haPop{0%,40%{transform:scale(0);opacity:0}50%{transform:scale(1.25);opacity:1}58%,82%{transform:scale(1);opacity:1}92%,100%{transform:scale(1);opacity:0}}
-@keyframes haTilt{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
-@keyframes haWave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-12deg) scaleX(.85)}}
-@keyframes haRing{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.7);opacity:0}}
-@keyframes haScan{0%,100%{transform:translateY(-9px);opacity:0}15%,85%{opacity:1}50%{transform:translateY(9px)}}
-@keyframes haLens{0%,100%{transform:translate(-6px,-4px)}25%{transform:translate(6px,-6px)}50%{transform:translate(5px,6px)}75%{transform:translate(-5px,4px)}}
-@keyframes haFlip{0%,15%{transform:scaleX(1)}55%,100%{transform:scaleX(-1);opacity:.2}}
-@media (prefers-reduced-motion:reduce){.hub-art *,.hub-art::before{animation:none!important}.ha-l{stroke-dashoffset:0}}
+@keyframes hubGlow{0%{opacity:.7}50%{opacity:1}100%{opacity:.8;filter:brightness(1.25)}}
 @keyframes hubShine{0%{transform:translateX(-130%)}33%,100%{transform:translateX(130%)}}
-@media (prefers-reduced-motion:reduce){.hub-tile::after{animation:none;display:none}}
+@media (prefers-reduced-motion:reduce){.hub-tile::after{animation:none;display:none}.hub-tile::before{animation:none}}
 .hub-icon{flex-shrink:0;width:clamp(20px,4.2vh,26px);height:clamp(20px,4.2vh,26px);color:#fff}
 .hub-tile-body{width:100%}
 .hub-tile-title{font-family:-apple-system,'Segoe UI',Inter,sans-serif;text-transform:none;font-weight:800;font-size:clamp(.7rem,2.4vh,.82rem);color:#fff;letter-spacing:0;line-height:1.25;white-space:normal}
@@ -795,7 +771,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
       <button id="a-fab" onclick="_aToggle()"><span class="a-smoke a-smoke-blue"></span><span class="a-smoke a-smoke-pink"></span><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><rect x="9" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="4;10;4" dur="1.3s" repeatCount="indefinite" begin="0s"/><animate attributeName="y" values="14;11;14" dur="1.3s" repeatCount="indefinite" begin="0s"/></rect><rect x="14" y="9" width="3" height="14" rx="1.5" fill="white"><animate attributeName="height" values="5;14;5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/><animate attributeName="y" values="13.5;9;13.5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/></rect><rect x="19" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="3;10;3" dur="1.3s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="y" values="14.5;11;14.5" dur="1.3s" repeatCount="indefinite" begin="0.4s"/></rect></svg><span id="a-status">ASYA</span></button>
       <a class="hub-tile hub-primary" onclick="ccChoiceOpen()">
         <div class="hub-numeral">I</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="17" y="8" width="30" height="42" rx="3"/><path class="ha-l ha-l1" d="M23 19h18"/><path class="ha-l ha-l2" d="M23 27h18"/><path class="ha-l ha-l3" d="M23 35h11"/><g class="ha-seal"><circle cx="44" cy="47" r="8"/><path d="M40.5 47l2.5 2.5 4.5-5"/></g><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="l-cta1">File a Complaint</div>
@@ -806,7 +781,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
       <a class="hub-tile" onclick="goApp('lawyer')">
         <div class="hub-numeral">II</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="10" r="2.5"/><path d="M32 13v39M22 54h20"/><g class="ha-beam"><path d="M12 17h40"/><path d="M12 17l-6 13h12zM52 17l-6 13h12z"/><path d="M6 30a6 3 0 0012 0M46 30a6 3 0 0012 0"/></g><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="hub-lawyer-t">Free Lawyer &amp; Civil Society</div>
@@ -817,7 +791,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
       <a class="hub-tile" onclick="mvOpen('')">
         <div class="hub-numeral">III</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M8 55h48M13 55V35h38v20M26 35V20h12v15M26 20l6-8 6 8M32 12V3"/><path class="ha-flag" d="M32 3h9l-2.5 3 2.5 3h-9"/><rect class="ha-win" x="17" y="40" width="4" height="6" rx="1"/><rect class="ha-win d2" x="43" y="40" width="4" height="6" rx="1"/><rect class="ha-win d3" x="30" y="25" width="4" height="5" rx="1"/><path d="M29 55v-8h6v8"/><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="l-mv-btn">Find My Representative</div>
@@ -828,7 +801,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
       <a class="hub-tile" onclick="goApp('cyber')">
         <div class="hub-numeral">IV</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><circle class="ha-ring" cx="32" cy="31" r="20"/><circle class="ha-ring d2" cx="32" cy="31" r="20"/><path d="M32 8l18 8v11c0 12-8 20-18 23-10-3-18-11-18-23V16z"/><path d="M25 30l5 5 9-10"/><path class="ha-scan" d="M20 30h24" stroke-opacity=".6"/><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="hub-cyber-t">Cyber Crime Report</div>
@@ -839,7 +811,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
       <a class="hub-tile" onclick="goApp('verify')">
         <div class="hub-numeral">V</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="12" y="8" width="30" height="42" rx="3"/><path d="M18 18h18M18 26h18M18 34h12"/><g class="ha-lens"><circle cx="38" cy="36" r="10" fill="rgba(255,255,255,.12)"/><path d="M45 43l9 9"/></g><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/><path d="M8 10.5h5"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="hub-verify-t">Verify a Document</div>
@@ -850,7 +821,6 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
       <a class="hub-tile" href="/guides/">
         <div class="hub-numeral">VI</div>
-        <div class="hub-art" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 16c-6-4-16-5-22-3v34c6-2 16-1 22 3z"/><path d="M32 16c6-4 16-5 22-3v34c-6-2-16-1-22 3z"/><path class="ha-page" d="M32 16c5-3 12-4 18-3v32c-6-1-13 0-18 3z" fill="rgba(255,255,255,.1)"/><path d="M32 16v34"/><path class="ha-spark" d="M54 6l1.2 3 3 1.2-3 1.2L54 14.4l-1.2-3-3-1.2 3-1.2z"/><path class="ha-spark d2" d="M9 46l.9 2.2 2.2.9-2.2.9L9 52.2l-.9-2.2-2.2-.9 2.2-.9z"/></svg></div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
         <div class="hub-tile-body">
           <div class="hub-tile-title" id="hub-guides-t">Guides</div>
