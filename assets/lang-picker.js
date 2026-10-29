@@ -1,11 +1,18 @@
-// Language picker: the gold "EN" button on the home page opens a framed
-// "Choose Your Language" card (same frame as the "How can we help?" card).
-// The site's own languages switch via selectLangDD; Tagalog and
-// "More languages" use the Google Translate website widget.
+// Language picker, loaded on every Canada page by /ga-init.js.
+// A gold "EN" button opens a framed "Choose Your Language" card (same frame as
+// the home page's "How can we help?" card). On the home page the site's own
+// languages switch via selectLangDD; everywhere else, and for Tagalog and
+// "More languages", the Google Translate website widget does the work.
+// The choice follows the visitor from page to page (cc_lang + Google's googtrans cookie).
 (function(){
-  if (window.ccLangOpen) return;
+  if (window.ccLangOpen || /^\/es(\/|$)/.test(location.pathname)) return;
   var SITE = [['en','EN','English'],['fr','FR','Français'],['tr','TR','Türkçe'],['zh','ZH','中文'],['es','ES','Español'],['ar','AR','العربية'],['pa','PA','ਪੰਜਾਬੀ']];
   var GT = [['tl','TL','Tagalog']];
+  // Site language code <-> Google Translate code
+  function toG(c){ return c === 'zh' ? 'zh-CN' : c; }
+  function fromG(g){ g = g === 'zh-CN' ? 'zh' : g; return SITE.some(function(l){ return l[0] === g; }) ? g : ''; }
+  // Pages with their own translations (the home page app) expose selectLangDD and its menu.
+  function isHome(){ return typeof siteSelect === 'function' && !!document.querySelector('.lang-dd-item'); }
 
   function star(cx, cy, r, f){
     var p = [];
@@ -72,14 +79,17 @@
     return loadGoogle().then(function(sel){ sel.value = code; sel.dispatchEvent(new Event('change')); setLabel(code); });
   }
 
-  // The dialog reuses the "How can we help?" card styles, copied under its own id.
-  function cloneChoiceCss(){
-    var src = [].slice.call(document.querySelectorAll('style')).filter(function(s){ return s.textContent.indexOf('#cc-choice .cc-card') > -1; });
-    return src.map(function(s){ return s.textContent; }).join('\n').replace(/#cc-choice/g, '#cc-lang');
+  // The dialog reuses the "How can we help?" card styles, renamed to its own id.
+  var cssReady = null;
+  function loadCss(){
+    if (!cssReady) cssReady = fetch('/assets/cc-choice.css?v=20261029a').then(function(r){ return r.ok ? r.text() : ''; }).catch(function(){ return ''; }).then(function(t){
+      var st = document.createElement('style'); st.textContent = t.replace(/#cc-choice/g, '#cc-lang') + '\n' + CSS; document.head.appendChild(st);
+    });
+    return cssReady;
   }
   var CSS = [
     '#cc-lang .cc-hero{width:min(30vw,120px)!important}',
-    '#cc-lang .cc-title{margin-bottom:14px!important}',
+    '#cc-lang .cc-title{margin-bottom:14px!important;border:0!important;padding:0!important;background:none!important}',
     '#cc-lang nav.cc-bars{grid-template-columns:1fr 1fr!important;gap:10px!important}',
     '#cc-lang .cc-bar{min-height:50px!important;gap:8px!important;padding:7px 8px 7px 7px!important}',
     '#cc-lang .cc-bar.cc-more{grid-column:1/-1}',
@@ -97,12 +107,17 @@
     'body{top:0!important}.goog-text-highlight{background:none!important;box-shadow:none!important}'
   ].join('\n');
 
+  // Button on pages other than the home page (the home page places its own)
+  var FLOAT_CSS = [
+    '#lang-fab.cc-float{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;left:auto;z-index:9990;display:flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;cursor:pointer;background:rgba(22,8,28,.82);border:1px solid rgba(230,191,94,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 14px rgba(0,0,0,.35)}',
+    '#lang-fab.cc-float b{font:700 11.5px/1 Cinzel,Georgia,serif;letter-spacing:.22em;background:linear-gradient(180deg,#fff1c1 0%,#e6bf5e 40%,#9c7424 70%,#f3d27a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}'
+  ].join('\n');
+
   var root, nav;
   function bar(code, label, name, g){
     return '<button type="button" class="cc-bar cc-info" data-l="' + code + '"' + (g ? ' data-g="1"' : '') + '><span class="cc-med">' + label + '</span><span class="cc-txt"><b>' + name + '</b></span><span></span></button>';
   }
   function build(){
-    var st = document.createElement('style'); st.textContent = cloneChoiceCss() + '\n' + CSS; document.head.appendChild(st);
     root = document.createElement('div'); root.id = 'cc-lang'; root.className = 'notranslate'; root.setAttribute('translate', 'no');
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'cc-lang-t');
     root.innerHTML = '<div class="cc-card"><div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="400" height="400" decoding="async"></div>' +
@@ -119,10 +134,9 @@
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && root.classList.contains('on')) close(); });
   }
   function mark(){
-    // A Google translation only lights its own bar; otherwise the site language is shown.
-    var g = gLang(), cur = g || siteLang();
+    var g = gLang(), cur = fromG(g) || g || siteLang();
     nav.querySelectorAll('.cc-bar[data-l]').forEach(function(b){
-      var on = b.dataset.l === cur && !!b.dataset.g === !!g;
+      var on = b.dataset.l === cur;
       b.classList.toggle('on', on);
       if (on && FLAG[cur]){
         var svg = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 100" preserveAspectRatio="xMidYMid slice">' + FLAG[cur] + '</svg>');
@@ -136,13 +150,14 @@
     p.textContent = msg;
   }
   var FAIL = 'Google Translate could not be loaded. Please try again.';
-  // Google translates from English, so a site language is switched back to English first.
+  function remember(code){ try { localStorage.setItem('cc_lang', code); } catch(e){} }
+  // Google translates from English, so on the home page a site language is switched back to English first.
   function toEnglish(){
-    if (siteLang() === 'en') return;
-    var item = ddItem('en');
-    if (item && typeof siteSelect === 'function') siteSelect('en', 'EN', item); else { try { localStorage.setItem('cc_lang', 'en'); } catch(e){} }
+    if (!isHome() || siteLang() === 'en') return;
+    var item = ddItem('en'); if (item) siteSelect('en', 'EN', item);
   }
   function ddItem(code){ return [].slice.call(document.querySelectorAll('.lang-dd-item')).filter(function(i){ return (i.getAttribute('onclick') || '').indexOf("'" + code + "'") > -1; })[0]; }
+  function viaGoogle(code){ toEnglish(); translateTo(code).then(close).catch(function(){ err(FAIL); }); }
   function pick(code){
     if (code === 'more'){
       var box = nav.querySelector('.cc-gtbox'); box.classList.add('on');
@@ -151,27 +166,31 @@
         var sel = document.createElement('select'); sel.setAttribute('aria-label', 'More languages');
         [].forEach.call(src.options, function(o){ sel.appendChild(new Option(o.text || 'Select a language…', o.value)); });
         box.innerHTML = ''; box.appendChild(sel); sel.focus();
-        sel.onchange = function(){ if (!sel.value) return; toEnglish(); translateTo(sel.value).then(close).catch(function(){ err(FAIL); }); };
+        sel.onchange = function(){ if (!sel.value) return; var s = fromG(sel.value); if (s) return pick(s); viaGoogle(sel.value); };
       }).catch(function(){ box.classList.remove('on'); err(FAIL); });
       return;
     }
     var site = SITE.filter(function(l){ return l[0] === code; })[0];
-    if (site){
+    if (site && isHome()){
       if (gLang()){
         // Leaving a Google translation: drop its cookie and reload in the chosen site language.
-        try { localStorage.setItem('cc_lang', code); } catch(e){}
-        clearGoogle(); location.reload(); return;
+        remember(code); clearGoogle(); location.reload(); return;
       }
-      var item = ddItem(code);
-      if (item && typeof siteSelect === 'function') siteSelect(code, site[1], item);
+      var item = ddItem(code); if (item) siteSelect(code, site[1], item);
       setLabel(code); close(); return;
     }
-    // Google-only language (Tagalog)
-    toEnglish();
-    translateTo(code).then(close).catch(function(){ err(FAIL); });
+    if (site) remember(code);
+    if (code === 'en'){
+      if (gLang()){ clearGoogle(); location.reload(); return; }
+      setLabel('en'); close(); return;
+    }
+    viaGoogle(toG(code));
   }
   var opener = null;
   function open(){
+    loadCss().then(show);
+  }
+  function show(){
     if (!root) build();
     var box = nav.querySelector('.cc-gtbox'); box.classList.remove('on'); box.innerHTML = '';
     var e = nav.querySelector('.cc-err'); if (e) e.remove();
@@ -186,23 +205,41 @@
     if (opener && opener.focus) opener.focus(); opener = null;
   }
   function setLabel(code){
-    var el = document.getElementById('lang-fab-l'); if (el) el.textContent = String(code || 'en').split('-')[0].toUpperCase();
+    var el = document.getElementById('lang-fab-l'); if (el) el.textContent = (fromG(code) || String(code || 'en').split('-')[0]).toUpperCase();
   }
 
   window.ccLangOpen = open;
   window.ccLangClose = close;
   var siteSelect = null;
+  function addButton(){
+    if (document.getElementById('lang-fab')) return;
+    var b = document.createElement('button'); b.type = 'button'; b.id = 'lang-fab'; b.className = 'cc-float notranslate'; b.setAttribute('translate', 'no'); b.setAttribute('aria-label', 'Language');
+    b.innerHTML = GLOBE.replace('width="20" height="20"', 'width="13" height="13"').replace('currentColor', '#e6bf5e') + '<b id="lang-fab-l">EN</b>';
+    var st = document.createElement('style'); st.textContent = FLOAT_CSS; document.head.appendChild(st);
+    b.onclick = open; document.body.appendChild(b);
+  }
   function init(){
-    // The header dropdown also picks site languages: while a Google translation is on,
-    // that pick must drop it (reload), or Google would re-translate the new text as English.
     siteSelect = window.selectLangDD;
-    if (typeof siteSelect === 'function') window.selectLangDD = function(code){
-      if (gLang()){ try { localStorage.setItem('cc_lang', code); } catch(e){} clearGoogle(); location.reload(); return; }
-      return siteSelect.apply(this, arguments);
-    };
+    if (isHome()){
+      // The header dropdown also picks site languages: while a Google translation is on,
+      // that pick must drop it (reload), or Google would re-translate the new text as English.
+      window.selectLangDD = function(code){
+        if (gLang()){ remember(code); clearGoogle(); location.reload(); return; }
+        return siteSelect.apply(this, arguments);
+      };
+      // A site language picked on another page (via Google) is shown with the site's own translation here.
+      var s = fromG(gLang());
+      if (s){ clearGoogle(); if (siteLang() !== s){ var item = ddItem(s); if (item) siteSelect(s, s.toUpperCase(), item); } }
+      else if (gLang()) toEnglish();
+    } else {
+      addButton();
+      // The language chosen on the home page carries over: Google applies it on load.
+      var pref = siteLang();
+      if (!gLang() && pref !== 'en' && fromG(pref)) document.cookie = 'googtrans=/en/' + toG(pref) + ';path=/';
+    }
     setLabel(current());
     try { new MutationObserver(function(){ setLabel(current()); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] }); } catch(e){}
-    // A Google translation chosen earlier stays on after reload.
+    // A Google translation chosen earlier stays on after reload and on other pages.
     if (gLang()) loadGoogle().catch(function(){});
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
