@@ -7,6 +7,6 @@ gtag('config', 'G-LNW0LJL3KF');
 
 // Language picker (Google Translate for more languages) on every page that loads this file.
 (function(){
-  var s = document.createElement('script'); s.src = '/assets/lang-picker.js?v=20261029g'; s.async = true;
+  var s = document.createElement('script'); s.src = '/assets/lang-picker.js?v=20261029h'; s.async = true;
   document.head.appendChild(s);
 })();
