@@ -75,9 +75,7 @@
     gtReady.catch(function(){ gtReady = null; });
     return gtReady;
   }
-  function translateTo(code){
-    return loadGoogle().then(function(sel){ sel.value = code; sel.dispatchEvent(new Event('change')); setLabel(code); });
-  }
+
 
   // The dialog reuses the "How can we help?" card styles, renamed to its own id.
   var cssReady = null;
@@ -151,40 +149,30 @@
   }
   var FAIL = 'Google Translate could not be loaded. Please try again.';
   function remember(code){ try { localStorage.setItem('cc_lang', code); } catch(e){} }
-  // Google translates from English, so on the home page a site language is switched back to English first.
-  function toEnglish(){
-    if (!isHome() || siteLang() === 'en') return;
-    var item = ddItem('en'); if (item) siteSelect('en', 'EN', item);
-  }
   function ddItem(code){ return [].slice.call(document.querySelectorAll('.lang-dd-item')).filter(function(i){ return (i.getAttribute('onclick') || '').indexOf("'" + code + "'") > -1; })[0]; }
-  function viaGoogle(code){ toEnglish(); translateTo(code).then(close).catch(function(){ err(FAIL); }); }
+  // Every pick is applied the same way: the site's own language (cc_lang) for the parts the
+  // site translates itself, plus Google (googtrans cookie) for everything else, then a reload.
+  // Google always works from English, so a Google-only language keeps the site in English.
+  function apply(code){
+    remember(fromG(code) || 'en');
+    clearGoogle();
+    if (code !== 'en') document.cookie = 'googtrans=/en/' + toG(code) + ';path=/';
+    location.reload();
+  }
   function pick(code){
     if (code === 'more'){
       var box = nav.querySelector('.cc-gtbox'); box.classList.add('on');
       loadGoogle().then(function(src){
-        // Our own copy of Google's language list; picking one drives Google's hidden select.
+        // Our own copy of Google's language list
         var sel = document.createElement('select'); sel.setAttribute('aria-label', 'More languages');
         [].forEach.call(src.options, function(o){ sel.appendChild(new Option(o.text || 'Select a language…', o.value)); });
         box.innerHTML = ''; box.appendChild(sel); sel.focus();
-        sel.onchange = function(){ if (!sel.value) return; var s = fromG(sel.value); if (s) return pick(s); viaGoogle(sel.value); };
+        sel.onchange = function(){ if (sel.value) apply(fromG(sel.value) || sel.value); };
       }).catch(function(){ box.classList.remove('on'); err(FAIL); });
       return;
     }
-    var site = SITE.filter(function(l){ return l[0] === code; })[0];
-    if (site && isHome()){
-      if (gLang()){
-        // Leaving a Google translation: drop its cookie and reload in the chosen site language.
-        remember(code); clearGoogle(); location.reload(); return;
-      }
-      var item = ddItem(code); if (item) siteSelect(code, site[1], item);
-      setLabel(code); close(); return;
-    }
-    if (site) remember(code);
-    if (code === 'en'){
-      if (gLang()){ clearGoogle(); location.reload(); return; }
-      setLabel('en'); close(); return;
-    }
-    viaGoogle(toG(code));
+    if (code === current() || toG(code) === gLang()) return close();
+    apply(code);
   }
   var opener = null;
   function open(){
@@ -220,26 +208,18 @@
   }
   function init(){
     siteSelect = window.selectLangDD;
+    var pref = siteLang();
     if (isHome()){
-      // The header dropdown also picks site languages: while a Google translation is on,
-      // that pick must drop it (reload), or Google would re-translate the new text as English.
-      window.selectLangDD = function(code){
-        if (gLang()){ remember(code); clearGoogle(); location.reload(); return; }
-        return siteSelect.apply(this, arguments);
-      };
-      // A site language picked on another page (via Google) is shown with the site's own translation here.
-      var s = fromG(gLang());
-      if (s){ clearGoogle(); if (siteLang() !== s){ var item = ddItem(s); if (item) siteSelect(s, s.toUpperCase(), item); } }
-      else if (gLang()) toEnglish();
-    } else {
-      addButton();
-      // The language chosen on the home page carries over: Google applies it on load.
-      var pref = siteLang();
-      if (!gLang() && pref !== 'en' && fromG(pref)) document.cookie = 'googtrans=/en/' + toG(pref) + ';path=/';
-    }
+      // The header dropdown picks languages the same way as the card.
+      window.selectLangDD = function(code){ if (code !== siteLang() || gLang()) apply(code); else siteSelect.apply(this, arguments); };
+      // A Google-only language needs the English page underneath.
+      if (gLang() && !fromG(gLang()) && pref !== 'en'){ var en = ddItem('en'); if (en) siteSelect('en', 'EN', en); }
+    } else addButton();
+    // A site language also turns Google on, so text the site has no translation for
+    // (forms, articles, other pages) is translated too.
+    if (pref !== 'en' && fromG(pref) && (!gLang() || fromG(gLang()))) { clearGoogle(); document.cookie = 'googtrans=/en/' + toG(pref) + ';path=/'; }
     setLabel(current());
     try { new MutationObserver(function(){ setLabel(current()); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] }); } catch(e){}
-    // A Google translation chosen earlier stays on after reload and on other pages.
     if (gLang()) loadGoogle().catch(function(){});
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
