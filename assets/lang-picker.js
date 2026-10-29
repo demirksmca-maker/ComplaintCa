@@ -48,6 +48,10 @@
   function combo(){ var s = document.querySelector('#cc-gt select.goog-te-combo'); return s && s.options.length > 1 ? s : null; }
   function loadGoogle(){
     if (gtReady) return gtReady;
+    // Pages that opt out of browser translation (<html translate="no">, meta google notranslate)
+    // would also block this widget; once a visitor picks a language, the opt-out is lifted.
+    document.documentElement.removeAttribute('translate');
+    [].forEach.call(document.querySelectorAll('meta[name="google"][content="notranslate"]'), function(m){ m.remove(); });
     gtReady = new Promise(function(res, rej){
       if (combo()) return res(combo());
       var box = document.getElementById('cc-gt');
