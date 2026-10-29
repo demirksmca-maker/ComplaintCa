@@ -103,10 +103,13 @@
     '#cc-lang .cc-gtbox{grid-column:1/-1;display:none}#cc-lang .cc-gtbox.on{display:block}',
     '#cc-lang .cc-gtbox select{width:100%;padding:12px;border-radius:12px;border:2px solid #b8862c;background:#2a1408;color:#f6ead2;font:600 15px Inter,sans-serif}',
     '#cc-lang .cc-err{grid-column:1/-1;margin:0;text-align:center;font:13px Inter,sans-serif;color:#ffd2d2}',
-    '#cc-gt{position:absolute;left:-9999px;top:0}',
-    // Hide Google's own top bar, tooltips and hover highlight
-    'body>.skiptranslate,iframe.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame{display:none!important}',
-    'body{top:0!important}.goog-text-highlight{background:none!important;box-shadow:none!important}'
+    '#cc-gt{position:absolute;left:-9999px;top:0}'
+  ].join('\n');
+  // Google's own top bar ("Translated to … / Show original"), tooltips and hover highlight.
+  // Old and current class names; the picker replaces the bar.
+  var HIDE_GT_CSS = [
+    'body>.skiptranslate,iframe.skiptranslate,iframe.goog-te-banner-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,.VIpgJd-ZVi9od-aZ2wEe-OiiCO{display:none!important}',
+    'html,body{top:0!important}.goog-text-highlight,.VIpgJd-yAWNEb-VIpgJd-fmcmS-sn54Q{background:none!important;box-shadow:none!important}'
   ].join('\n');
 
   // Button on pages other than the home page (the home page places its own)
@@ -211,6 +214,7 @@
     b.onclick = open; document.body.appendChild(b);
   }
   function init(){
+    var hide = document.createElement('style'); hide.textContent = HIDE_GT_CSS; document.head.appendChild(hide);
     siteSelect = window.selectLangDD;
     var pref = siteLang();
     if (isHome()){
