@@ -49,133 +49,12 @@
       dSent:'Delivered to {n}.', dForm:'{n} only accepts its official form. Please file there:', dFormGo:'Official Form', dFail:'Automatic sending failed. Please send it from your email app:', dFailGo:'Open My Email App',
       dTest:'TEST · no institution was emailed', dSaved:'Your complaint was saved. Your next steps are in card II.', dMail:'We emailed you the reference number.',
       track:'Track My Complaint', another:'New Complaint', close:'Close', aid:'Legal aid in your province'
-    },
-    tr: {
-      hLoad:'Şikayetin Hazırlanıyor', subLoad:'ASYA cevaplarını okuyor. Birkaç saniye sürer.',
-      h:'Şikayetin Hazır', sub:'Kanuna dayanan şikayet cevap alır. Kontrol et, sonra gönder.',
-      hHelp:'Seçeneklerin Hazır', subHelp:'Ne olacağına sen karar verirsin. Hakların, seçeneklerin ve destek burada.',
-      hSent:'Şikayetin Gönderildi', subSent:'Şikayetin yola çıktı. Bundan sonra yapabileceğin her şey burada.',
-      quote:'Geciken adalet, adalet değildir.', safe:'<b>Yalnız değilsin.</b> Tehlikedeysen hemen <a href="tel:911">911</a>’i ara. Burada hiçbir şey sen onaylamadan gönderilmez.',
-      load:['Cevapların okunuyor…','Doğru kurum bulunuyor…','Eyaletinin kanunlarına bakılıyor…','Mektubun yazılıyor…'],
-      wait:'ASYA hazırlıyor…', note:'Kurumlar resmi bir şikayete cevap vermek zorundadır. Sen onaylamadan hiçbir şey gönderilmez.', noteHelp:'Sen onaylamadan kimseye hiçbir şey gönderilmez. İstediğin an durabilirsin.',
-      noteSent:'Referans numaranı sakla. Kurumlar resmi bir şikayete cevap vermek zorundadır.', edit:'✎ Cevaplarımı düzenle',
-      cSend:'Şikayet Gönder', cSendS:'Kontrol et, gönder', cSendSent:'Gönderildi · {ref}', cRights:'Yasal Hakların', cRightsS:'{n} kural senin yanında', cRightsNone:'Sonra ne olur', cRightsSent:'Cevap gelmezse',
-      cInst:'Kurumlar', cInstS:'{n} seçildi', cInstNone:'Sadece sonraki adımlar', cInstSent:'{n} kurum', cLetter:'Mektubun', cLetterS:'Önizle, düzenle', cLetterSent:'Gör, kopyala',
-      cLawyer:'Ücretsiz Avukat', cLawyerS:'Adresine yakın', cMp:'Milletvekilin', cMpS:'İstersen ekle', cMpSent:'Ona da ilet', cHelp:'Hemen Yardım Al', cHelpS:'7/24 · ücretsiz · gizli',
-      start:'BURADAN BAŞLA', ready:'HAZIR', next:'SIRADAKİ ADIM', boost:'+{n} YEDEK YOL', inLetter:'MEKTUBUNDA',
-      sum:{ to:'KİME', about:'KİMİN HAKKINDA', topic:'KONU', where:'NEREDE', mail:'E-POSTA', also:'AYRICA' }, toNone:'Kaydedilir, sonraki adımlarla', alsoN:'{n} kurum için hazır mektup + bağlantı',
-      anon:'Adım kurumla paylaşılmasın', namePh:'Adın soyadın', nameWhy:'Acil şikayet ya da avukat havuzu için adın gerekli.',
-      agree:'ComplaintCA’nın bu şikayeti benim adıma kuruma göndermesine ve cevapları almasına izin veriyorum. Bilgiler doğrudur.', terms:'Beyan ve şartlar',
-      send:'Şikayeti Gönder', sending:'Gönderiliyor…', hint:'E-postan kurumla asla paylaşılmaz.', sos:'Biri tehlikedeyse 911’i ara.',
-      codeMsg:'{m} adresine 6 haneli bir kod gönderdik. Spam klasörüne de bak, sonra kodu buraya yaz:', codeOk:'Doğrula ve Gönder', codeRe:'Kodu tekrar gönder',
-      codeBad:'Kod yanlış ya da süresi dolmuş.', codeMany:'Çok fazla kod istendi. Birkaç dakika bekle.', codeFail:'Kod gönderilemedi. Tekrar dene.',
-      high:'Bu şikayet acil olarak işaretli; kuruma resmi ve güçlü bir bildirim gider. Yazdıkların doğru mu?', highOk:'Evet, Gönder', highNo:'Vazgeç',
-      eMail:'E-posta adresin geçerli değil. Cevaplarından düzelt.', eName:'Lütfen adını yaz.', eAgree:'Lütfen yukarıdaki beyanı onayla.', eFail:'Bir şeyler ters gitti. Tekrar dene.',
-      eCool:'Yeni bir şikayet göndermeden önce birkaç dakika bekle.', eVerify:'Yukarıdaki kontrolü tamamla, sonra tekrar dene.', eSave:'Şikayetin kaydedilemedi. Biraz sonra tekrar dene.', eUnver:'Lütfen e-postanı tekrar doğrula.',
-      chkBlank:'Mektupta hâlâ doldurulmamış bir boşluk var.', chkTo:'Mektup, gönderildiği kuruma hitap etmiyor.', chkSame:'Mektubu alan kurum, şikayet ettiğin kurumla aynı.', chkProv:'Yazılan kanun başka bir eyalete ait.', chkAgain:'Mektubun kartından düzelt ya da olduğu gibi göndermek için tekrar Gönder’e bas.',
-      rIntro:'Kanun senin yanında. “Mektubunda” yazanlar mektuba zaten eklendi.', rIntroSent:'Normal sürede cevap gelmezse sıradaki adımların bunlar:',
-      rLaw:'Yasal dayanak', rSanc:'Cevap vermezlerse', rDead:'Cevap süreleri', rDeadB:'{a} tarihine kadar alındı onayı. {b} tarihine kadar yazılı cevap.', rRemedy:'Neyi geri alabilirsin', rClaim:'Talep için son tarih: {d}',
-      rLimit:'Şikayet için süre sınırı', rChain:'Yedek yollar', rNoLaw:'ASYA şu an tam kanunu doğrulayamadı. Ücretsiz bir avukat (V. kart) nerede durduğunu söyler.',
-      disc:'Genel bilgidir, hukuki tavsiye değildir.', seeLetter:'Mektubumu Gör',
-      iIntro:'ASYA konuna ve adresine göre kurumları seçti. Ek kurumları ekle ya da çıkar.', iIntroSent:'Şikayetinin gittiği yer ve ulaşabileceğin diğer kurumlar.',
-      iPrimary:'ASYA GÖNDERİR', iExtra:'MEKTUP + BAĞLANTI', iSent:'GİTTİ', iForm:'FORM', iPhone:'TELEFON', iPool:'Avukat havuzu', iPoolS:'Dosyan adın olmadan ortak avukatlara açılır; adın gerekir.',
-      iNone:'Bu yer ve konu için otomatik kurum yok. Şikayetin kaydedilir ve sonraki adımlar gösterilir.', done:'Tamam', open:'Aç', copyLetter:'Mektubu Kopyala',
-      lIntro:'Kurumun alacağı mektup bu.', lIntroSent:'Şikayetinle birlikte giden mektup.', lEdit:'Düzenle', lDone:'Bitti', lOk:'Güzel Olmuş',
-      wIntro:'Yaşadığın yerde ücretsiz ve ucuz hukuk yardımı:', wAid:'Gelirin uygunsa ücretsiz hukuk yardımı', wFirst:'Önce şikayetini gönder. Bu seçenekler sonra da burada.', wGo:'Avukat Bulucuyu Aç',
-      mText:'Zorunlu değil. Milletvekili ofisleri kurumla çoğu zaman doğrudan konuşabilir. Posta kodunla bul.', mGo:'Milletvekilimi Bul',
-      hText:'Ne olacağına sen karar verirsin. Bu hatlar ücretsiz ve gizli; polise gitmek zorunda değilsin.', exit:'⎋ Hızlı çıkış',
-      ref:'REFERANS', copy:'Kopyala', copied:'Kopyalandı', keep:'Bu numarayla şikayetini her cihazdan takip edebilirsin.',
-      st:['ComplaintCA teslim aldı','Kuruma gönderildi','Kurum inceliyor','Cevap geldi'],
-      dSent:'{n} kurumuna ulaştı.', dForm:'{n} sadece kendi resmi formunu kabul ediyor. Lütfen oradan başvur:', dFormGo:'Resmi Form', dFail:'Otomatik gönderim olmadı. Lütfen kendi e-posta uygulamandan gönder:', dFailGo:'E-posta Uygulamamı Aç',
-      dTest:'TEST · hiçbir kuruma e-posta gitmedi', dSaved:'Şikayetin kaydedildi. Sonraki adımların II. kartta.', dMail:'Referans numaranı e-postana gönderdik.',
-      track:'Şikayetimi Takip Et', another:'Yeni Şikayet', close:'Kapat', aid:'Eyaletindeki adli yardım'
-    },
-    fr: {
-      hLoad:'Préparation de votre plainte', subLoad:'ASYA lit vos réponses. Cela prend quelques secondes.',
-      h:'Votre plainte est prête', sub:'Une plainte fondée sur la loi obtient une réponse. Vérifiez-la, puis envoyez.',
-      hHelp:'Vos options sont prêtes', subHelp:'C’est vous qui décidez. Vos droits, vos options et du soutien sont ici.',
-      hSent:'Plainte envoyée', subSent:'Votre plainte est en route. Voici tout ce que vous pouvez faire ensuite.',
-      quote:'Justice différée est justice refusée.', safe:'<b>Vous n’êtes pas seul·e.</b> En danger, appelez le <a href="tel:911">911</a> maintenant. Rien n’est envoyé sans votre accord.',
-      load:['Lecture de vos réponses…','Recherche du bon organisme…','Vérification de la loi de votre province…','Rédaction de votre lettre…'],
-      wait:'ASYA prépare…', note:'Les organismes doivent répondre à une plainte officielle. Rien n’est envoyé sans votre accord.', noteHelp:'Rien n’est envoyé à personne sans votre accord. Vous pouvez arrêter à tout moment.',
-      noteSent:'Gardez votre numéro de référence. Les organismes doivent répondre à une plainte officielle.', edit:'✎ Modifier mes réponses',
-      cSend:'Envoyer la plainte', cSendS:'Vérifier et envoyer', cSendSent:'Envoyée · {ref}', cRights:'Vos droits', cRightsS:'{n} règles en votre faveur', cRightsNone:'La suite', cRightsSent:'Sans réponse',
-      cInst:'Organismes', cInstS:'{n} choisi(s)', cInstNone:'Prochaines étapes', cInstSent:'{n} organismes', cLetter:'Votre lettre', cLetterS:'Voir, modifier', cLetterSent:'Voir, copier',
-      cLawyer:'Avocat gratuit', cLawyerS:'Près de chez vous', cMp:'Votre député', cMpS:'Si vous voulez', cMpSent:'Lui transmettre', cHelp:'Aide immédiate', cHelpS:'24/7 · gratuit · confidentiel',
-      start:'COMMENCEZ ICI', ready:'PRÊTE', next:'PROCHAINE ÉTAPE', boost:'+{n} RECOURS', inLetter:'DANS VOTRE LETTRE',
-      sum:{ to:'À', about:'CONCERNE', topic:'SUJET', where:'LIEU', mail:'COURRIEL', also:'AUSSI' }, toNone:'Enregistrée, avec les prochaines étapes', alsoN:'Lettre + lien pour {n} de plus',
-      anon:'Ne pas donner mon nom à l’organisme', namePh:'Votre nom complet', nameWhy:'Votre nom est requis pour une plainte urgente ou le bassin d’avocats.',
-      agree:'J’autorise ComplaintCA à envoyer cette plainte à l’organisme en mon nom et à recevoir les réponses. Les informations sont exactes.', terms:'Déclaration et conditions',
-      send:'Envoyer la plainte', sending:'Envoi…', hint:'Votre courriel n’est jamais transmis à l’organisme.', sos:'Si quelqu’un est en danger, appelez le 911.',
-      codeMsg:'Nous avons envoyé un code à 6 chiffres à {m}. Vérifiez aussi vos indésirables, puis entrez-le ici :', codeOk:'Vérifier et envoyer', codeRe:'Renvoyer le code',
-      codeBad:'Code erroné ou expiré.', codeMany:'Trop de codes. Attendez quelques minutes.', codeFail:'Le code n’a pas pu être envoyé. Réessayez.',
-      high:'Cette plainte est marquée urgente : un avis officiel et ferme est envoyé à l’organisme. Tout ce que vous avez écrit est-il exact ?', highOk:'Oui, envoyer', highNo:'Annuler',
-      eMail:'Votre adresse courriel n’est pas valide. Corrigez-la dans vos réponses.', eName:'Veuillez entrer votre nom.', eAgree:'Veuillez confirmer la déclaration ci-dessus.', eFail:'Une erreur est survenue. Réessayez.',
-      eCool:'Attendez quelques minutes avant d’envoyer une autre plainte.', eVerify:'Terminez la vérification ci-dessus, puis réessayez.', eSave:'Votre plainte n’a pas pu être enregistrée. Réessayez dans un moment.', eUnver:'Veuillez confirmer votre courriel à nouveau.',
-      chkBlank:'La lettre contient encore un champ à remplir.', chkTo:'La lettre n’est pas adressée à l’organisme qui la reçoit.', chkSame:'L’organisme qui reçoit la lettre est celui dont vous vous plaignez.', chkProv:'La loi citée est d’une autre province.', chkAgain:'Corrigez dans Votre lettre, ou touchez Envoyer de nouveau pour l’envoyer telle quelle.',
-      rIntro:'La loi est de votre côté. Tout ce qui est marqué « Dans votre lettre » y figure déjà.', rIntroSent:'Sans réponse dans le délai habituel, voici vos prochaines étapes :',
-      rLaw:'Fondement juridique', rSanc:'S’ils ne répondent pas', rDead:'Délais de réponse', rDeadB:'Accusé de réception au plus tard le {a}. Réponse écrite au plus tard le {b}.', rRemedy:'Ce que vous pourriez obtenir', rClaim:'Délai pour réclamer : {d}',
-      rLimit:'Délai pour porter plainte', rChain:'Recours de rechange', rNoLaw:'ASYA n’a pas pu confirmer la loi exacte. Un avocat gratuit (carte V) peut vous dire où vous en êtes.',
-      disc:'Information générale, pas un avis juridique.', seeLetter:'Voir ma lettre',
-      iIntro:'ASYA a choisi les organismes selon votre sujet et votre lieu. Ajoutez ou retirez les autres.', iIntroSent:'Où votre plainte est allée, et qui d’autre contacter.',
-      iPrimary:'ASYA ENVOIE', iExtra:'LETTRE + LIEN', iSent:'ENVOYÉE', iForm:'FORMULAIRE', iPhone:'TÉLÉPHONE', iPool:'Bassin d’avocats', iPoolS:'Votre dossier est ouvert aux avocats partenaires sans votre nom; votre nom est requis.',
-      iNone:'Aucun organisme ne correspond automatiquement à ce lieu et ce sujet. Votre plainte est enregistrée et vous recevez les prochaines étapes.', done:'Terminé', open:'Ouvrir', copyLetter:'Copier la lettre',
-      lIntro:'Voici la lettre que l’organisme reçoit.', lIntroSent:'La lettre envoyée avec votre plainte.', lEdit:'Modifier', lDone:'Terminé', lOk:'C’est bon',
-      wIntro:'Aide juridique gratuite ou à faible coût près de chez vous :', wAid:'Aide juridique gratuite si votre revenu y donne droit', wFirst:'Envoyez d’abord votre plainte. Ces options restent ici ensuite.', wGo:'Trouver un avocat',
-      mText:'Facultatif. Le bureau d’un député peut souvent parler directement à l’organisme. Trouvez le vôtre par code postal.', mGo:'Trouver mon député',
-      hText:'C’est vous qui décidez. Ces lignes sont gratuites et confidentielles; vous n’êtes pas obligé·e d’aller à la police.', exit:'⎋ Sortie rapide',
-      ref:'RÉFÉRENCE', copy:'Copier', copied:'Copié', keep:'Ce numéro permet de suivre votre plainte depuis n’importe quel appareil.',
-      st:['ComplaintCA l’a reçue','Envoyée à l’organisme','En examen','Réponse reçue'],
-      dSent:'Livrée à {n}.', dForm:'{n} accepte seulement son formulaire officiel. Veuillez déposer là :', dFormGo:'Formulaire officiel', dFail:'L’envoi automatique a échoué. Envoyez-la depuis votre application courriel :', dFailGo:'Ouvrir mon courriel',
-      dTest:'TEST · aucun organisme n’a reçu de courriel', dSaved:'Votre plainte est enregistrée. Vos prochaines étapes sont dans la carte II.', dMail:'Nous vous avons envoyé le numéro de référence par courriel.',
-      track:'Suivre ma plainte', another:'Nouvelle plainte', close:'Fermer', aid:'Aide juridique de votre province'
-    },
-    es: {
-      hLoad:'Preparando tu queja', subLoad:'ASYA está leyendo tus respuestas. Tarda unos segundos.',
-      h:'Tu queja está lista', sub:'Una queja basada en la ley recibe respuesta. Revísala y envíala.',
-      hHelp:'Tus opciones están listas', subHelp:'Tú decides qué pasa. Tus derechos, opciones y apoyo están aquí.',
-      hSent:'Queja enviada', subSent:'Tu queja va en camino. Aquí tienes todo lo que puedes hacer ahora.',
-      quote:'Justicia que tarda no es justicia.', safe:'<b>No estás solo/a.</b> Si estás en peligro, llama al <a href="tel:911">911</a> ahora. Nada se envía sin tu aprobación.',
-      load:['Leyendo tus respuestas…','Buscando la institución correcta…','Revisando la ley de tu provincia…','Escribiendo tu carta…'],
-      wait:'ASYA está preparando…', note:'Las instituciones deben responder a una queja formal. Nada se envía sin tu aprobación.', noteHelp:'Nada se envía a nadie sin tu aprobación. Puedes parar cuando quieras.',
-      noteSent:'Guarda tu número de referencia. Las instituciones deben responder a una queja formal.', edit:'✎ Editar mis respuestas',
-      cSend:'Enviar queja', cSendS:'Revisar y enviar', cSendSent:'Enviada · {ref}', cRights:'Tus derechos', cRightsS:'{n} reglas a tu favor', cRightsNone:'Qué pasa después', cRightsSent:'Si no responden',
-      cInst:'Instituciones', cInstS:'{n} elegidas', cInstNone:'Solo próximos pasos', cInstSent:'{n} instituciones', cLetter:'Tu carta', cLetterS:'Ver, editar', cLetterSent:'Ver, copiar',
-      cLawyer:'Abogado gratis', cLawyerS:'Cerca de ti', cMp:'Tu diputado', cMpS:'Si quieres', cMpSent:'Reenviársela', cHelp:'Ayuda ahora', cHelpS:'24/7 · gratis · confidencial',
-      start:'EMPIEZA AQUÍ', ready:'LISTA', next:'SIGUIENTE PASO', boost:'+{n} VÍAS EXTRA', inLetter:'EN TU CARTA',
-      sum:{ to:'PARA', about:'SOBRE', topic:'TEMA', where:'LUGAR', mail:'CORREO', also:'TAMBIÉN' }, toNone:'Se guarda, con próximos pasos', alsoN:'Carta + enlace para {n} más',
-      anon:'No compartir mi nombre con la institución', namePh:'Tu nombre completo', nameWhy:'Tu nombre es obligatorio para una queja urgente o la bolsa de abogados.',
-      agree:'Autorizo a ComplaintCA a enviar esta queja a la institución en mi nombre y a recibir las respuestas. La información es correcta.', terms:'Declaración y condiciones',
-      send:'Enviar queja', sending:'Enviando…', hint:'Tu correo nunca se comparte con la institución.', sos:'Si alguien está en peligro, llama al 911.',
-      codeMsg:'Enviamos un código de 6 dígitos a {m}. Mira también el correo no deseado y escríbelo aquí:', codeOk:'Verificar y enviar', codeRe:'Enviar el código otra vez',
-      codeBad:'Código incorrecto o caducado.', codeMany:'Demasiados códigos. Espera unos minutos.', codeFail:'No se pudo enviar el código. Inténtalo de nuevo.',
-      high:'Esta queja está marcada como urgente: se envía un aviso formal y firme a la institución. ¿Todo lo que escribiste es correcto?', highOk:'Sí, enviar', highNo:'Cancelar',
-      eMail:'Tu correo no es válido. Corrígelo en tus respuestas.', eName:'Escribe tu nombre.', eAgree:'Confirma la declaración de arriba.', eFail:'Algo salió mal. Inténtalo de nuevo.',
-      eCool:'Espera unos minutos antes de enviar otra queja.', eVerify:'Completa la verificación de arriba y vuelve a intentarlo.', eSave:'No pudimos guardar tu queja. Inténtalo en un momento.', eUnver:'Confirma tu correo otra vez.',
-      chkBlank:'La carta todavía tiene un espacio sin rellenar.', chkTo:'La carta no está dirigida a la institución que la recibe.', chkSame:'La institución que recibe la carta es la misma de la que te quejas.', chkProv:'La ley citada es de otra provincia.', chkAgain:'Corrígelo en Tu carta, o pulsa Enviar otra vez para enviarla así.',
-      rIntro:'La ley está de tu lado. Lo marcado «En tu carta» ya está incluido.', rIntroSent:'Si no hay respuesta en el plazo habitual, estos son tus siguientes pasos:',
-      rLaw:'Base legal', rSanc:'Si no responden', rDead:'Plazos de respuesta', rDeadB:'Acuse de recibo antes del {a}. Respuesta por escrito antes del {b}.', rRemedy:'Lo que podrías recuperar', rClaim:'Plazo para reclamar: {d}',
-      rLimit:'Plazo para quejarte', rChain:'Vías extra', rNoLaw:'ASYA no pudo confirmar la ley exacta ahora. Un abogado gratuito (tarjeta V) puede decirte dónde estás.',
-      disc:'Información general, no asesoría legal.', seeLetter:'Ver mi carta',
-      iIntro:'ASYA eligió las instituciones según tu tema y lugar. Añade o quita las extra.', iIntroSent:'Adónde fue tu queja y a quién más puedes contactar.',
-      iPrimary:'ASYA ENVÍA', iExtra:'CARTA + ENLACE', iSent:'ENVIADA', iForm:'FORMULARIO', iPhone:'TELÉFONO', iPool:'Bolsa de abogados', iPoolS:'Tu caso se abre a abogados asociados sin tu nombre; tu nombre es obligatorio.',
-      iNone:'Ninguna institución coincide automáticamente con este lugar y tema. Tu queja se guarda y recibes los próximos pasos.', done:'Listo', open:'Abrir', copyLetter:'Copiar carta',
-      lIntro:'Esta es la carta que recibe la institución.', lIntroSent:'La carta enviada con tu queja.', lEdit:'Editar', lDone:'Listo', lOk:'Está bien',
-      wIntro:'Ayuda legal gratuita o de bajo costo donde vives:', wAid:'Ayuda legal gratuita si tus ingresos califican', wFirst:'Envía primero tu queja. Estas opciones siguen aquí después.', wGo:'Buscar abogado',
-      mText:'No es obligatorio. La oficina de un diputado a menudo habla directamente con la institución. Búscalo por código postal.', mGo:'Buscar mi diputado',
-      hText:'Tú decides qué pasa. Estas líneas son gratuitas y confidenciales; no tienes que ir a la policía.', exit:'⎋ Salida rápida',
-      ref:'REFERENCIA', copy:'Copiar', copied:'Copiado', keep:'Con este número puedes seguir tu queja desde cualquier dispositivo.',
-      st:['ComplaintCA la recibió','Enviada a la institución','En revisión','Respuesta recibida'],
-      dSent:'Entregada a {n}.', dForm:'{n} solo acepta su formulario oficial. Preséntala allí:', dFormGo:'Formulario oficial', dFail:'El envío automático falló. Envíala desde tu aplicación de correo:', dFailGo:'Abrir mi correo',
-      dTest:'PRUEBA · no se envió correo a ninguna institución', dSaved:'Tu queja se guardó. Tus siguientes pasos están en la tarjeta II.', dMail:'Te enviamos el número de referencia por correo.',
-      track:'Seguir mi queja', another:'Nueva queja', close:'Cerrar', aid:'Asistencia legal de tu provincia'
     }
   };
   var AGREEMENT = ['By submitting, I confirm the information I provide is accurate and that I am not filing a false or malicious report.',
     'ComplaintCA is an intermediary platform, not a law firm. It provides tools and information — not legal advice or representation — and does not guarantee any outcome or resolution.',
     'I understand my complaint is processed, including by automated and AI systems, solely to handle this matter. My personal information is never shared with a lawyer or any third party unless I explicitly choose to be contacted, and I may request deletion of my data at any time.',
     'All legal and criminal responsibility arising from the content I submit is mine alone.'];
-  function lang(){ var l = ''; try { l = document.documentElement.lang || localStorage.getItem('cc_lang') || ''; } catch (e) {} l = String(l).slice(0, 2).toLowerCase(); return T[l] ? l : 'en'; }
   var L = T.en;
   var fmt = function(s, o){ return String(s).replace(/\{(\w+)\}/g, function(m, k){ return o[k] != null ? o[k] : m; }); };
 
@@ -372,7 +251,7 @@
       var place = A ? [A.city, A.address].filter(Boolean).join(' ') : '';
       return Promise.all([
         getJson(post('/api/route', { category:cat, target:target, location:D.loc, targetAddress:(A && A.address) || '', targetName:org, place:place }), 12000),
-        getJson(post('/api/verdict', { title:story.slice(0, 80), desc:story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:document.documentElement.lang === 'fr' ? 'fr' : 'en' }), 25000)
+        getJson(post('/api/verdict', { title:story.slice(0, 80), desc:story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:'en' }), 25000)
       ]);
     };
     // A chosen topic already fixes the category: classify, route and verdict run side by side.
@@ -450,7 +329,7 @@
   }
   function draw(){
     if (!D) return;
-    L = T[lang()];
+    L = T.en;
     var help = card6 === 'help' && phase !== 'load', sent = phase === 'sent';
     q('.sn-h').textContent = phase === 'load' ? L.hLoad : sent ? L.hSent : help ? L.hHelp : L.h;
     q('.sn-sub').textContent = phase === 'load' ? L.subLoad : sent ? L.subSent : help ? L.subHelp : L.sub;
@@ -696,7 +575,7 @@
     var test = !!(window._ccPanelTest || /[?&]test=1\b/.test(location.search));
     var body = { test:test, title:title, desc:D.story, target:target, targetName:org, targetAddress:'', location:D.loc, place:A ? [A.city, A.address].filter(Boolean).join(' ') : '', category:cat, priority:prio,
       ctype:pool ? 'legal' : 'notice', anonymous:!isNamed, name:isNamed ? nameVal.trim() : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' },
-      turnstileToken:tsToken, mailPass:pass, lang:document.documentElement.lang || 'en', emailDraft:letter };
+      turnstileToken:tsToken, mailPass:pass, lang:window.ccLang ? window.ccLang() : 'en', emailDraft:letter };
     var r0 = null;
     post('/api/complaint', body).then(function(r){ r0 = r; return r.json().catch(function(){ return {}; }); }).catch(function(){ return { error:'network' }; }).then(function(d){
       busy = false; SP.btn.disabled = false; SP.btn.firstChild.textContent = L.send; highOk = false;
@@ -741,7 +620,6 @@
       var o = phase === 'sent' ? null : saved(); if (!o) return false;
       window.ccSonuc.open(o.d, o); return true;
     },
-    waiting: function(){ return !!saved(); },
-    relang: function(){ if (root && root.classList.contains('on')) draw(); }
+    waiting: function(){ return !!saved(); }
   };
 })();
