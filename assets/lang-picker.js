@@ -211,7 +211,13 @@
     var pref = siteLang();
     if (isHome()){
       // The header dropdown picks languages the same way as the card.
-      window.selectLangDD = function(code){ if (code !== siteLang() || gLang()) apply(code); else siteSelect.apply(this, arguments); };
+      // The page itself also calls it on load to restore the saved language; that is not a
+      // new pick and must not reload (or it would reload forever).
+      window.selectLangDD = function(code){
+        var same = code === siteLang() && (code === 'en' ? !gLang() : !gLang() || toG(code) === gLang());
+        if (same) return siteSelect.apply(this, arguments);
+        apply(code);
+      };
       // A Google-only language needs the English page underneath.
       if (gLang() && !fromG(gLang()) && pref !== 'en'){ var en = ddItem('en'); if (en) siteSelect('en', 'EN', en); }
     } else addButton();
