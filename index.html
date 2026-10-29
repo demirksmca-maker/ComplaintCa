@@ -662,7 +662,7 @@ textarea{resize:vertical;min-height:90px}
   <h2 class="cc-title" id="cc-choice-t">How can we help?</h2>
   <nav class="cc-bars">
     <a class="cc-bar cc-info" href="/guides/"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg></span><span class="cc-txt"><b>Know Your Rights</b></span><span class="cc-arr" aria-hidden="true">›</span></a>
-    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceComplain(this)"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><span class="cc-txt"><b>Complain <span class="cc-ca">CA</span></b></span></button>
+    <button type="button" class="cc-bar cc-complain" onclick="ccChoiceComplain(this)"><span class="cc-med"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg></span><span class="cc-txt"><b>Complain <span class="cc-ca notranslate" translate="no">CA</span></b></span></button>
   </nav>
   <div class="cc-orn" aria-hidden="true"><i></i>✦<i></i></div>
   <p class="cc-quote">“Don't be discouraged.<br>When you fail, come back again.”<cite>Marcus Aurelius · Meditations 5.9</cite></p>
@@ -681,7 +681,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
 // No visible close button: a tap on the dimmed page around the card closes it.
 document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-card,.cc-srx'))ccChoiceClose()});
 </script>
-<script defer src="/assets/complaint-steps.js?v=20261029b"></script>
+<script defer src="/assets/complaint-steps.js?v=20261029c"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
@@ -734,7 +734,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
   <path d="M88 48 Q102 44 118 48" stroke="#cfb0e8" stroke-width="1" fill="none" opacity="0.3"/>
 </svg>
       <span class="logo-wrap">
-        <span class="logo-text notranslate" translate="no" lang="en" style="font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;font-kerning:none;font-feature-settings:'kern' 0;line-height:1;white-space:nowrap">Complaint<span style="color:#ff5a5a;-webkit-text-fill-color:#ff5a5a;background:none">CA</span></span>
+        <span class="logo-text notranslate" translate="no" lang="en" style="font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;font-kerning:none;font-feature-settings:'kern' 0;line-height:1;white-space:nowrap">Complaint<span style="color:#ff5a5a;-webkit-text-fill-color:#ff5a5a;background:none" class="notranslate" translate="no">CA</span></span>
       </span>
     </button>
     <img class="topbar-emblem" src="/assets/emblem-ruby.webp" alt="" width="36" height="36">

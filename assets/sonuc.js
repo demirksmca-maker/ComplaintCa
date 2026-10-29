@@ -40,6 +40,8 @@
       iIntro:'ASYA picked the institutions for your topic and place. Add or remove the extra ones.', iIntroSent:'Where your complaint went, and who else you can contact.',
       iPrimary:'ASYA SENDS', iExtra:'LETTER + LINK', iSent:'SENT', iForm:'FORM', iPhone:'PHONE', iPool:'Lawyer pool', iPoolS:'Your case opens to partner lawyers without your name; your name is required.',
       iNone:'No institution matches this place and topic automatically. Your complaint is saved and you get the next steps.', done:'Done', open:'Open', copyLetter:'Copy Letter',
+      llBusy:'Writing the French letter…', llQc:'Québec: a French letter is recommended.', llFail:'The French letter could not be written. Please try again.',
+      llLose:'Your edits to the letter will be lost. Switch language?',
       lIntro:'This is the letter the institution receives.', lIntroSent:'The letter sent with your complaint.', lEdit:'Edit', lDone:'Done', lOk:'Looks Good',
       wIntro:'Free and low-cost legal help where you live:', wAid:'Free legal help if your income qualifies', wFirst:'Send your complaint first. These options stay here after.', wGo:'Open Lawyer Finder',
       mText:'Not required. An MP office can often speak to an institution directly. Find yours by postal code.', mGo:'Find My MP',
@@ -81,8 +83,8 @@
   var HELP = [['🚨','911','Emergency · if you are in danger now','tel:911'],['☎️','9-8-8 Suicide Crisis Helpline','24/7, call or text 988','tel:988'],
     ['🌸','Assaulted Women’s Helpline','24/7 · 1-866-863-0511 · 200+ languages','tel:18668630511'],['📞','Kids Help Phone','24/7 · 1-800-668-6868','tel:18006686868'],
     ['🪶','Hope for Wellness','24/7 · 1-855-242-3310','tel:18552423310'],['🤝','211','Community and social services · free, 24/7','tel:211']];
-  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  function addBD(n){ var x = new Date(), k = 0; while (k < n) { x.setDate(x.getDate() + 1); var w = x.getDay(); if (w !== 0 && w !== 6) k++; } return x.getDate() + ' ' + MON[x.getMonth()] + ' ' + x.getFullYear(); }
+  var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], MON_FR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  function addBD(n){ var x = new Date(), k = 0; while (k < n) { x.setDate(x.getDate() + 1); var w = x.getDay(); if (w !== 0 && w !== 6) k++; } return x.getDate() + ' ' + (ll === 'fr' ? MON_FR : MON)[x.getMonth()] + ' ' + x.getFullYear(); }
   function provOf(s){ s = String(s || '');
     var m = s.match(/\b(ON|BC|AB|QC|MB|SK|NS|NB|PE|NL|YT|NT|NU)\b/); if (m) return m[1];
     var low = s.toLowerCase(), P = [['ON',/ontario|toronto|ottawa|mississauga|hamilton|brampton/],['BC',/british columbia|vancouver|victoria|surrey|burnaby/],['AB',/alberta|calgary|edmonton/],
@@ -171,6 +173,7 @@
     '#sn .acts{display:flex;gap:6px;flex:none}#sn .mini{display:inline-block;padding:7px 12px;border-radius:999px;border:1px solid rgba(196,160,255,.5);background:rgba(24,4,16,.4);color:#eadcf3;text-decoration:none;font:700 10.5px/1 Cinzel,serif;letter-spacing:.08em;cursor:pointer}',
     '#sn .letter{padding:16px;border-radius:12px;background:#f6ecd9;color:#2a0814;font:400 16px/1.45 "EB Garamond",Georgia,serif;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:inset 0 0 30px rgba(120,80,40,.15)}',
     '#sn .letter .subj{display:block;margin-bottom:10px;font-weight:600}#sn .letter h4{margin:12px 0 2px;font:700 11px/1.4 Cinzel,serif;letter-spacing:.12em;color:#5a1d9a}',
+    '#sn .llang{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px}#sn .llang .mini.on{background:#f6ecd9;color:#2a0814;border-color:#f6ecd9}#sn .llang .hint{margin:0;font-size:12.5px}',
     '#sn textarea.letter{display:block;width:100%;min-height:360px;border:0;outline:2px solid #b36bff;resize:vertical}',
     '#sn .tg{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:10px;border-radius:14px;background:rgba(24,4,16,.45);border:1px solid rgba(196,160,255,.3);cursor:pointer;width:100%;text-align:left}',
     '#sn .tg div{flex:1;font:400 16px/1.3 "EB Garamond",Georgia,serif}#sn .tg i{position:relative;width:44px;height:26px;flex:none;border-radius:99px;background:rgba(207,176,232,.25);transition:background .2s}',
@@ -210,6 +213,8 @@
 
   var root, q, D = null, phase = 'off', run = 0, A = null, R = null, Vd = null, res = null, cat = '', target = 'other', org = '', prio = 'medium', card6 = 'mp';
   var rows = [], pool = false, named = false, nameVal = '', agreed = false, seen = {}, read = {}, letterEdited = '', editing = false, cur = '';
+  // Letter language: English, or French (Québec, federal bodies). VdFr is the French verdict, fetched on demand.
+  var ll = 'en', VdFr = null, frBusy = false, llErr = false;
   var tsToken = '', tsWidget = null, codeTok = '', codeFor = '', pendingCode = false, busy = false, highOk = false, overrideCheck = false, loadTimer = 0;
   // The answers (and a 6-digit code already e-mailed) survive a reload in this tab, e.g. when a phone drops the page while the person reads the code.
   function save(){ try { sessionStorage.setItem(SAVE_KEY, JSON.stringify({ t:Date.now(), d:D, tok:codeTok, to:codeFor })); } catch (e) {} }
@@ -238,6 +243,7 @@
   // ── Analysis: ASYA reads the answers; whatever fails, the screen still opens with what it has ──
   function analyse(){
     var my = ++run, story = D.story;
+    ll = 'en'; VdFr = null; frBusy = false; llErr = false;
     var fixed = D.cat && TOPIC_CAT[D.cat] ? (TOPIC_CAT[D.cat][D.sub] || TOPIC_CAT[D.cat]._) : '';
     var cls = getJson(post('/api/classify', { desc:story }), 12000);
     var go = function(c){
@@ -251,7 +257,7 @@
       var place = A ? [A.city, A.address].filter(Boolean).join(' ') : '';
       return Promise.all([
         getJson(post('/api/route', { category:cat, target:target, location:D.loc, targetAddress:(A && A.address) || '', targetName:org, place:place }), 12000),
-        getJson(post('/api/verdict', { title:story.slice(0, 80), desc:story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:'en' }), 25000)
+        verdict('en')
       ]);
     };
     // A chosen topic already fixes the category: classify, route and verdict run side by side.
@@ -264,6 +270,8 @@
       pool = false; makeRows(); buildLetter(); phase = 'ready'; draw();
     }).catch(function(){ if (my !== run) return; R = null; Vd = null; makeRows(); buildLetter(); phase = 'ready'; draw(); });
   }
+  // Same inputs for the English verdict (page) and the French one (letter only).
+  var verdict = function(lang){ return getJson(post('/api/verdict', { title:D.story.slice(0, 80), desc:D.story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:lang }), 25000); };
   function makeRows(){
     rows = []; var seenN = {};
     var add = function(n, line, url, primary){ var k = String(n || '').toLowerCase().replace(/[^a-z0-9]/g, ''); if (!k || seenN[k]) return; seenN[k] = 1; rows.push({ n:n, line:line || '', url:url || '', primary:!!primary, on:true }); };
@@ -279,31 +287,63 @@
   // The letter the institution receives (ASYA's rewrite of the story when it has one).
   var secs = [];
   function buildLetter(){
-    var high = prio === 'high', law = clean(Vd && Vd.law), sanc = clean(Vd && Vd.sanctions), to = recipient();
-    var incident = ((Vd && Vd.complaint) || D.what || D.story).replace(/[#*_`]+/g, '').replace(/^\s*-{3,}\s*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1500);
+    var fr = ll === 'fr', V = fr ? VdFr : Vd;
+    var high = prio === 'high', law = clean(V && V.law), sanc = clean(V && V.sanctions), to = recipient();
+    var incident = ((V && V.complaint) || D.what || D.story).replace(/[#*_`]+/g, '').replace(/^\s*-{3,}\s*$/gm, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1500);
     if (D.notes && incident.indexOf(D.notes.slice(0, 40)) < 0) incident = (incident + '\n\n' + D.notes).slice(0, 2000);
-    var asks = high ? ['Investigate this report immediately.', 'Tell me in writing what steps you will take, including interim measures to keep the person affected safe.', 'Meet or speak with me within 3 business days.']
-      : ['Review this complaint.', 'Tell me in writing what you will do to resolve it.', 'Confirm who is handling my file.'];
-    var legal = Vd && Vd.deadline && !/not applicable/i.test(Vd.deadline) ? clean(Vd.deadline) : '';
+    var asks = fr
+      ? (high ? ['Faire enquête sur ce signalement sans délai.', 'M’indiquer par écrit les mesures que vous prendrez, y compris les mesures provisoires pour assurer la sécurité de la personne concernée.', 'Me rencontrer ou me parler d’ici 3 jours ouvrables.']
+        : ['Examiner la présente plainte.', 'M’indiquer par écrit ce que vous ferez pour la régler.', 'Me confirmer qui est responsable de mon dossier.'])
+      : (high ? ['Investigate this report immediately.', 'Tell me in writing what steps you will take, including interim measures to keep the person affected safe.', 'Meet or speak with me within 3 business days.']
+        : ['Review this complaint.', 'Tell me in writing what you will do to resolve it.', 'Confirm who is handling my file.']);
+    var legal = V && V.deadline && !/not applicable|sans objet|non applicable/i.test(V.deadline) ? clean(V.deadline) : '';
     var next = rows.filter(function(r){ return !r.primary && r.on; }).slice(0, 2).map(function(r){ return r.n; });
-    var escl = next.length ? 'I will escalate this to ' + next.join(', then ') + '.' : (sanc || 'I will escalate this to the appropriate oversight body.');
-    var reserve = '';
-    if (Vd && Vd.poolSuggest && law) reserve = '\nI reserve my right to pursue this matter under the ' + law.replace(/\s*\(.*$/, '').replace(/[.;]+$/, '').replace(/^the\s+/i, '') + (Vd.claimDeadline ? ' within the legal time limit (' + Vd.claimDeadline.replace(/[.]+$/, '') + ')' : '') + '.';
+    var escl = next.length ? (fr ? 'Je porterai cette affaire devant ' + next.join(', puis ') + '.' : 'I will escalate this to ' + next.join(', then ') + '.')
+      : (sanc || (fr ? 'Je porterai cette affaire devant l’organisme de surveillance compétent.' : 'I will escalate this to the appropriate oversight body.'));
+    var reserve = '', act = law.replace(/\s*\(.*$/, '').replace(/[.;]+$/, '').replace(/^the\s+/i, ''), cd = V && V.claimDeadline ? V.claimDeadline.replace(/[.]+$/, '') : '';
+    if (V && V.poolSuggest && law) reserve = fr
+      ? '\nJe me réserve le droit de faire valoir mes droits en vertu de : ' + act + (cd ? ', dans le délai prévu par la loi (' + cd + ')' : '') + '.'
+      : '\nI reserve my right to pursue this matter under the ' + act + (cd ? ' within the legal time limit (' + cd + ')' : '') + '.';
     var other = org && org !== to;
-    secs = [
+    secs = fr ? [
+      { h:'', b:(to ? 'À l’attention de ' + to + '\n\n' : '') + 'Madame, Monsieur,' + (other ? '\n\nObjet : Plainte contre ' + org : '') + '\n\nJe vous écris pour déposer une plainte officielle' + (other ? ' concernant ' + org : '') + ' et pour vous demander votre aide afin de la régler. Les détails sont présentés ci-dessous.' },
+      { h:'Les faits', b:incident },
+      { h:'Mes demandes', b:asks.map(function(x){ return '• ' + x; }).join('\n') }
+    ] : [
       { h:'', b:'Dear Sir or Madam' + (to ? ' at ' + to : '') + ',' + (other ? '\n\nRe: Complaint against ' + org : '') + '\n\nI am writing to file a formal complaint' + (other ? ' about ' + org : '') + ' and to ask for your help in resolving it. The details are set out below.' },
       { h:'Incident', b:incident },
       { h:'What I ask', b:asks.map(function(x){ return '• ' + x; }).join('\n') }
     ];
-    if (law) secs.push({ h:'Legal basis', b:law });
-    secs.push({ h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : '') });
-    secs.push({ h:'If there is no reply', b:escl + reserve });
-    secs.push({ h:'', b:'Thank you for your attention to this matter. I can provide further details or documents on request.\n\nSincerely,\n' + NAME_TOKEN });
+    if (law) secs.push({ h:fr ? 'Fondement juridique' : 'Legal basis', b:law });
+    secs.push(fr ? { h:'Délais de réponse', b:'Accusé de réception d’ici le ' + addBD(3) + '\nRéponse écrite d’ici le ' + addBD(10) + (legal ? '\n(' + legal + ')' : '') }
+      : { h:'Reply deadlines', b:'Confirm receipt by ' + addBD(3) + '\nWritten reply by ' + addBD(10) + (legal ? '\n(' + legal + ')' : '') });
+    secs.push({ h:fr ? 'En l’absence de réponse' : 'If there is no reply', b:escl + reserve });
+    secs.push({ h:'', b:fr ? 'Je vous remercie de l’attention portée à cette affaire. Je peux vous fournir d’autres détails ou documents sur demande.\n\nVeuillez agréer, Madame, Monsieur, mes salutations distinguées.\n' + NAME_TOKEN
+      : 'Thank you for your attention to this matter. I can provide further details or documents on request.\n\nSincerely,\n' + NAME_TOKEN });
+  }
+  // Switch the letter's language; the French verdict (law, facts) is written once, on first use.
+  function setLL(code){
+    if (code === ll || frBusy || editing || phase !== 'ready') return;
+    if (letterEdited && !window.confirm(L.llLose)) return;
+    var show = function(){ if (cur === 'letter') openSheet('letter', true); };
+    var done = function(){ ll = code; letterEdited = ''; overrideCheck = false; llErr = false; buildLetter(); show(); };
+    if (code === 'en' || VdFr) return done();
+    frBusy = true; llErr = false; show();
+    var my = run;
+    verdict('fr').then(function(v){
+      if (my !== run) return;
+      frBusy = false;
+      if (!v) { llErr = true; show(); return; }       // not cached: the next tap tries again
+      VdFr = v;
+      if (phase !== 'ready' || editing) { show(); return; }   // sent or being edited meanwhile: keep it for the next tap
+      done();
+    });
   }
   var letterPlain = function(){ return secs.map(function(s){ return (s.h ? s.h.toUpperCase() + '\n' : '') + s.b; }).join('\n\n'); };
   var letterText = function(){ return letterEdited || letterPlain(); };
-  var subject = function(){ return 'Formal complaint: ' + label() + (org ? ' · ' + org : ''); };
-  var signed = function(){ var nm = (needName() || named) && nameVal.trim() ? nameVal.trim() : 'Complainant'; return letterText().split(NAME_TOKEN).join(nm); };
+  // The topic label is English, so the French subject names only the organisation.
+  var subject = function(){ return ll === 'fr' ? 'Plainte officielle' + (org ? ' : ' + org : '') : 'Formal complaint: ' + label() + (org ? ' · ' + org : ''); };
+  var signed = function(){ var nm = (needName() || named) && nameVal.trim() ? nameVal.trim() : (ll === 'fr' ? 'Le plaignant' : 'Complainant'); return letterText().split(NAME_TOKEN).join(nm); };
 
   // ── Drawing ──
   function rightsList(){
@@ -395,7 +435,10 @@
       var sent = phase === 'sent', h = '<p class="p" style="margin-bottom:10px">' + esc(sent ? L.lIntroSent : L.lIntro) + '</p>';
       if (editing && !sent) return [L.cLetter, h + '<textarea class="letter" id="sn-led" maxlength="6000">' + esc(letterText()) + '</textarea><button type="button" class="go" data-a="ledit">' + esc(L.lDone) + '</button>'];
       var body = letterEdited ? '<div>' + esc(letterEdited) + '</div>' : secs.map(function(s){ return (s.h ? '<h4>' + esc(s.h) + '</h4>' : '') + '<div>' + esc(s.b) + '</div>'; }).join('');
-      h += '<div class="letter"><span class="subj">' + esc(subject()) + '</span>' + body + '</div>';
+      if (!sent) h += '<div class="llang notranslate" translate="no">' + [['en','English'],['fr','Français']].map(function(x){ return '<button type="button" class="mini' + (ll === x[0] ? ' on' : '') + '" data-a="ll-' + x[0] + '">' + x[1] + '</button>'; }).join('') +
+        (frBusy ? '<span class="hint">' + esc(L.llBusy) + '</span>' : llErr ? '<span class="hint">' + esc(L.llFail) + '</span>' : ll === 'en' && provOf(D.loc) === 'QC' ? '<span class="hint">' + esc(L.llQc) + '</span>' : '') + '</div>';
+      // A French letter is shown as written: Google Translate (lang-picker) works from English and would garble it.
+      h += '<div class="letter' + (ll === 'fr' ? ' notranslate" translate="no' : '') + '"><span class="subj">' + esc(subject()) + '</span>' + body + '</div>';
       return [L.cLetter, h + (sent ? '<button type="button" class="go" data-a="copyletter">' + esc(L.copyLetter) + '</button>'
         : '<div class="two"><button type="button" class="ghost" data-a="ledit">' + esc(L.lEdit) + '</button></div><button type="button" class="go" data-go="send">' + esc(L.lOk) + '</button>')];
     },
@@ -425,7 +468,7 @@
       p.innerHTML = '<div class="sp-sum sum"></div><div class="sp-name"></div><button type="button" class="tg" data-a="agree"><div></div><i></i></button>' +
         '<details class="terms"><summary></summary>' + AGREEMENT.map(function(t){ return '<p>' + esc(t) + '</p>'; }).join('') + '</details><div class="ts"></div>' +
         '<div class="warn sp-high" hidden><p class="p"></p><div class="two"><button type="button" class="ghost" data-a="highno"></button><button type="button" class="go" data-a="highok" style="margin-top:10px"></button></div></div>' +
-        '<button type="button" class="go sp-btn" data-a="send"><span></span> <span class="ca">CA</span></button>' +
+        '<button type="button" class="go sp-btn" data-a="send"><span></span> <span class="ca notranslate" translate="no">CA</span></button>' +
         '<div class="code" hidden><p class="p sp-cmsg"></p><input class="in sp-cin" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••"><button type="button" class="go" data-a="code"></button><p class="err sp-cerr"></p><p class="hint"><a href="#" data-a="recode"></a></p></div>' +
         '<p class="err sp-err" role="status"></p><p class="hint sp-hint"></p><p class="hint sp-sos"></p><div class="sp-done"></div>';
       SP = { sum:p.querySelector('.sp-sum'), name:p.querySelector('.sp-name'), agree:p.querySelector('[data-a="agree"]'), terms:p.querySelector('.terms summary'), ts:p.querySelector('.ts'),
@@ -507,6 +550,7 @@
     if (a === 'anon') { named = !named; drawName(); return; }
     if (a === 'agree') { agreed = !agreed; t.classList.toggle('on', agreed); return; }
     if (a === 'ledit') { if (editing) { var ta = q('#sn-led'); if (ta) letterEdited = ta.value.trim() === letterPlain().trim() ? '' : ta.value; } editing = !editing; overrideCheck = false; openSheet('letter', true); return; }
+    if (a === 'll-en' || a === 'll-fr') { setLL(a.slice(3)); return; }
     if (a === 'copyletter') { copy(res ? (res.letter || signed()) : signed(), t); return; }
     if (a === 'copyref') { copy(res.ref, t); return; }
     if (a === 'send') { send(); return; }
@@ -546,11 +590,11 @@
   }
   // Same checks as before anything leaves: problems are listed once; a second tap sends anyway.
   function checkCase(letter){
-    var out = [], low = function(s){ return String(s || '').toLowerCase().trim(); }, to = recipient(), pv = provOf(D.loc), law = clean(Vd && Vd.law);
-    var greet = letter.split('\n').filter(function(l){ return /^\s*dear\b/i.test(l); })[0] || '';
+    var out = [], low = function(s){ return String(s || '').toLowerCase().trim(); }, to = recipient(), pv = provOf(D.loc), law = clean((ll === 'fr' ? VdFr : Vd) && (ll === 'fr' ? VdFr : Vd).law);
+    var greet = letter.split('\n').filter(function(l){ return /^\s*(dear\b|à l[’']attention)/i.test(l); })[0] || '';
     if (to && low(greet).indexOf(low(to)) < 0) out.push(L.chkTo);
     if (to && org && low(to) === low(org)) out.push(L.chkSame);
-    if (/\[(your name|name|ref|date|deadline|address)\]/i.test(letter)) out.push(L.chkBlank);
+    if (/\[(your name|name|ref|date|deadline|address|votre nom|nom|adresse|délai)\]/i.test(letter)) out.push(L.chkBlank);
     if (pv && law && Object.keys(PROV_ACT).some(function(k){ return k !== pv && PROV_ACT[k].test(law); })) out.push(L.chkProv);
     return out;
   }
@@ -575,7 +619,7 @@
     var test = !!(window._ccPanelTest || /[?&]test=1\b/.test(location.search));
     var body = { test:test, title:title, desc:D.story, target:target, targetName:org, targetAddress:'', location:D.loc, place:A ? [A.city, A.address].filter(Boolean).join(' ') : '', category:cat, priority:prio,
       ctype:pool ? 'legal' : 'notice', anonymous:!isNamed, name:isNamed ? nameVal.trim() : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' },
-      turnstileToken:tsToken, mailPass:pass, lang:window.ccLang ? window.ccLang() : 'en', emailDraft:letter };
+      turnstileToken:tsToken, mailPass:pass, lang:ll === 'fr' ? 'fr' : (window.ccLang && window.ccLang() === 'tr' ? 'tr' : 'en'), emailDraft:letter };
     var r0 = null;
     post('/api/complaint', body).then(function(r){ r0 = r; return r.json().catch(function(){ return {}; }); }).catch(function(){ return { error:'network' }; }).then(function(d){
       busy = false; SP.btn.disabled = false; SP.btn.firstChild.textContent = L.send; highOk = false;

@@ -287,7 +287,7 @@
       '<div class="cs-grid">' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
-      '<button type="button" class="cs-go" data-act="send" disabled>File Complaint <span class="cs-ca">CA</span></button>' +
+      '<button type="button" class="cs-go" data-act="send" disabled>File Complaint <span class="cs-ca notranslate" translate="no">CA</span></button>' +
       '<p class="cs-note">Location, what happened and your email are needed. You review everything before it is sent.</p></div>' +
       '<div class="cs-scrim" data-act="close"></div>' +
       '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><img class="cs-seal" src="/assets/emblem-clear.webp" alt="" width="84" height="84" decoding="async"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
@@ -553,7 +553,7 @@
   // ── Hand-off: the SONUÇ screen analyses the answers and sends the complaint. The answers stay here
   // (Edit my answers comes back to them) until the complaint is sent.
   // The SONUÇ screen loads on first use, so the home page never carries it.
-  var SONUC_SRC = '/assets/sonuc.js?v=20261029b';
+  var SONUC_SRC = '/assets/sonuc.js?v=20261029c';
   function withSonuc(cb){
     if (window.ccSonuc) return cb();
     var s = document.querySelector('script[data-sonuc]');
