@@ -1,44 +1,55 @@
 /* ComplaintCA — shared styles for /guides/*-guide.html pages. Page-specific rules stay inline. */
 *{box-sizing:border-box}
-body{margin:0;background:var(--dbg);color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5}
-.guide-app{height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+body{margin:0;background:#300a2a linear-gradient(180deg,#5b3c4b 0,#3c1237 42%,#26071f 100%) fixed;color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5}
+.guide-app{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.guide-app main{overflow:visible}
+.guide-app .step-grid{grid-template-rows:repeat(3,minmax(96px,1fr))}
+.guide-app .step-grid>.path-card{min-height:96px}
 .guide-app::after{content:"";flex:0 0 calc(13px + .93rem)}
-.topbar{flex:0 0 auto;background:rgba(15,41,82,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
-.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;width:100%}
+.topbar{flex:0 0 auto;background:rgba(36,8,34,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(244,214,255,.14)}
+.topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
 .logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
-.logo-text{font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;color:#fff;line-height:1;white-space:nowrap}
-.logo-ca{color:#ff5a5a}
-.topbar-right{display:flex;align-items:center;gap:8px;height:46px}
-.hero{flex:0 0 auto;background:var(--dbg);color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
-.hero .eyebrow{display:flex;align-items:center;gap:6px;font-size:.66rem;font-weight:600;color:#8991a3;letter-spacing:.02em;margin:0 0 6px}
-.hero .eyebrow .edot{width:4px;height:4px;border-radius:50%;background:#8991a3;display:inline-block}
-.hero h1 em{font-style:normal;color:#7c5cff}
+.logo-text{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;letter-spacing:2px;color:#e9e1f2;line-height:1;white-space:nowrap;text-shadow:0 0 10px rgba(210,195,255,.45)}
+.logo-ca{color:#fff;font-size:1.3rem;font-weight:900}
+.topbar-right{position:absolute;right:20px;top:0;display:flex;align-items:center;gap:8px;height:46px}
+.hero{flex:0 0 auto;background:transparent;color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
+.hero .eyebrow{display:flex;align-items:center;gap:6px;font:700 .6rem Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,230,234,.72);margin:0 0 6px}
+.hero .eyebrow .edot{width:5px;height:5px;border-radius:50%;background:#ff5ea8;display:inline-block}
+.guide-app .hero h1{font-family:'Cinzel',Georgia,serif;font-weight:700;letter-spacing:.03em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+.hero h1 em{display:block;margin-top:2px;font:italic 500 1.08em 'EB Garamond',Georgia,serif;letter-spacing:.005em;color:#e7d3f7;text-shadow:none}
 .hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(124,92,255,.12);border:1.5px solid var(--gold);border-radius:20px;padding:7px 16px;color:#fff;font-weight:700;font-size:.74rem;text-decoration:none;white-space:nowrap;flex-shrink:0}
-h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#8fb4f0;text-align:left;border-top:1px solid rgba(255,255,255,.1);padding-top:12px;margin:30px 0 18px;font-weight:700}
-.more-link{text-decoration:none;font-size:.72rem;color:#8fb4f0;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(143,180,240,.4);margin-top:2px}
+.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(60,15,60,.7);border:1.5px solid rgba(207,176,232,.6);border-radius:20px;padding:7px 16px;color:#fff;font:700 .72rem Cinzel,Georgia,serif;letter-spacing:.18em;text-decoration:none;white-space:nowrap;flex-shrink:0}
+h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#d8b4fe;text-align:left;border-top:1px solid rgba(244,214,255,.14);padding-top:12px;margin:30px 0 18px;font-weight:700}
+.guide-app .section-hint{font:700 .6rem Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,230,234,.6)}
+.more-link{text-decoration:none;font-size:.72rem;color:#d8b4fe;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(173,92,255,.5)}
 .dc-toolbar{width:100%;max-width:460px}
+.dc-toolbar .dc-pill{padding:6px 3px;gap:3px;background:rgba(40,8,40,.55);border:1px solid rgba(244,214,255,.3);box-shadow:none}
+.dc-toolbar .dc-pl{font-family:'Cinzel',Georgia,serif;text-transform:uppercase;letter-spacing:0;font-size:.54rem}
 .path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
-.path-card .picon{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.path-card .picon{position:absolute;left:14px;top:12px;width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
+.guide-app .path-card{align-items:flex-end;text-align:right;border:1px solid rgba(244,214,255,.22);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55)}
+.step-grid>.path-card:nth-child(odd){background:linear-gradient(155deg,rgba(138,92,246,.55),rgba(88,28,135,.38) 55%,rgba(46,16,80,.3))}
+.step-grid>.path-card:nth-child(even){background:linear-gradient(155deg,rgba(190,24,93,.55),rgba(120,20,70,.38) 55%,rgba(60,10,40,.3))}
 .path-card .arrow{position:absolute;top:12px;right:14px;color:rgba(255,255,255,.55);font-size:.72rem}
-.path-card h3{margin:0;font-weight:800;font-size:clamp(.7rem,2.3vh,.85rem);line-height:1.22;color:#fff}
-.path-card .tag{font-size:.66rem;color:rgba(255,255,255,.7);font-weight:600}
-.pc-1{background:linear-gradient(155deg,#7c5cff,#4b2fc9)}
-.pc-2{background:linear-gradient(155deg,#00c2a8,#008a76)}
-.pc-3{background:linear-gradient(155deg,#ff8a3d,#e0522a)}
-.pc-4{background:linear-gradient(155deg,#3d8bff,#1c57c9)}
-.pc-5{background:linear-gradient(155deg,#ff4d8d,#c22463)}
-.track-row{width:100%;max-width:460px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px}
-.feat-row{display:flex;gap:10px;flex-wrap:wrap;color:#6b7d99;font-size:.62rem}
-.feat-row span::before{content:'●';color:#7c5cff;margin-right:4px;font-size:.5rem}
-.guide-info{border-top:1px solid rgba(255,255,255,.1);background:#0a1426}
+.path-card h3{margin:0;font:700 clamp(.72rem,2.3vh,.84rem)/1.22 'Cinzel',Georgia,serif;letter-spacing:.03em;color:#fff;text-wrap:balance}
+.path-card .tag{font:italic 400 .85rem/1.2 'EB Garamond',Georgia,serif;color:rgba(255,235,250,.8)}
+.guide-cta{width:100%;max-width:460px;flex:0 0 auto;text-align:center}
+.guide-orn{display:flex;align-items:center;justify-content:center;gap:10px;color:#cfb0e8;font-size:11px;margin:2px 0 8px}
+.guide-orn i{width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.guide-orn i:last-child{transform:scaleX(-1)}
+.guide-go{display:flex;align-items:center;justify-content:center;gap:12px;padding:clamp(12px,2vh,16px) 20px;border:1.5px solid transparent;border-radius:18px;font:700 15px/1 Cinzel,Georgia,serif;letter-spacing:.08em;color:#fff;text-decoration:none;background:linear-gradient(160deg,#3a1248,#24092f 55%,#2e0a24) padding-box,linear-gradient(100deg,rgba(207,176,232,.45),rgba(255,160,200,.9) 50%,rgba(207,176,232,.45)) border-box;box-shadow:0 0 24px -8px rgba(228,192,255,.7)}
+.guide-go:hover{filter:brightness(1.15)}
+.guide-go b{padding:4px 8px 4px 9px;border-radius:8px;background:linear-gradient(145deg,#4a1a5e,#2a0d3a);border:1px solid rgba(207,176,232,.55);color:#d5b9eb;font:700 11px/1 Cinzel,Georgia,serif;letter-spacing:.18em}
+.guide-cta .more-link{display:inline-block;margin-top:10px;font-size:.8rem}
+.indep{margin:6px 0 0;font:italic 400 .85rem/1.3 'EB Garamond',Georgia,serif;color:rgba(243,230,234,.7)}.indep a{color:#d8b4fe}
+.guide-info{border-top:1px solid rgba(244,214,255,.14);background:#1b0a1a}
 .info-modal{max-width:720px;margin:0 auto;padding:36px 20px 48px}
 .step-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
 .step-overlay.show{display:flex}
 @keyframes pcPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.guide-app .step-modal{background:#2a0e2a;border-color:rgba(244,214,255,.35)}
 .step-modal .mclose{float:right;background:none;border:none;color:var(--dmuted);font-size:1.4rem;cursor:pointer;line-height:1}
 .step-modal h3{margin:0 0 14px;font-size:1.15rem;font-weight:700}
-.cta{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:var(--radius);padding:30px 24px;margin:44px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border:1px solid rgba(212,175,55,.25)}
+.cta{background:linear-gradient(135deg,#5a2a7a,#2e0a3a);color:#fff;border-radius:var(--radius);padding:30px 24px;margin:44px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;border:1px solid rgba(212,175,55,.25)}
 .cta p{margin:0;font-size:1rem;max-width:28ch}
 .cta a{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Cinzel',serif;font-weight:700;font-size:.82rem;text-decoration:none;padding:13px 30px;letter-spacing:.5px;border-radius:8px}
 .faq-item{margin:0 0 12px;text-align:left;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;overflow:hidden}
@@ -58,7 +69,7 @@ footer{flex:0 0 auto;text-align:center;padding:6px;font-size:.62rem;color:var(--
 .trust-box a{color:var(--gold)}
 .related-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:20px 22px;text-align:left}
 .related-box ul{margin:0;padding-left:20px;font-size:.92rem;line-height:1.9;color:var(--dsub)}
-.related-box a{color:#8fb4f0;text-decoration:none}
+.related-box a{color:#d8b4fe;text-decoration:none}
 .related-box a:hover{text-decoration:underline}
 .path-card:focus-visible,.more-link:focus-visible,.mclose:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .asya-box h2{margin-top:30px}
