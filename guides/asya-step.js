@@ -60,7 +60,7 @@
     '.ga-hr{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px 0 20px;font-size:13px;line-height:1;color:#e9c56a}',
     '.ga-hr i{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(233,197,106,.7))}.ga-hr i:last-child{transform:scaleX(-1)}',
     '.ga-hd{display:flex;align-items:center;gap:16px;margin-bottom:16px}',
-    '.ga-orb{flex:none;width:64px;height:64px;margin:5px;border-radius:50%;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 0 26px 5px rgba(255,255,255,.35)}',
+    '.ga-orb{flex:none;width:50px;height:50px;margin:5px;border-radius:50%;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 0 26px 5px rgba(255,255,255,.35)}',
     '.ga-nm{display:inline-block;font:700 28px/1.15 Cinzel,Georgia,serif;letter-spacing:.34em;color:transparent;background:linear-gradient(110deg,#b8862c 0%,#f6dc8a 22%,#fff0b8 38%,#c99b4a 54%,#f7e7bd 74%,#b8862c 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 12px rgba(233,197,106,.35));animation:gaWord 4s ease-in-out infinite}@keyframes gaWord{50%{background-position:100% 0}}',
     '.ga-sub{margin-top:2px;font:italic 400 17px/1.3 "EB Garamond",Georgia,serif;color:rgba(246,234,210,.7)}',
     '.ga-log{display:flex;flex-direction:column;min-height:56px}',
