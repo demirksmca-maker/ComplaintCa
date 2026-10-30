@@ -19,11 +19,25 @@ function _guideClose(overlay){
   _guideLastFocus = null;
 }
 
+// A step window marked data-asya gets ASYA's guided questions (guides/asya-step.js, loaded once, on first open).
+// The window works as before until that file arrives, and stays as it was if it never does.
+var _guideAsyaFile = null;
+function _guideAsyaMount(modal){
+  if (!modal.hasAttribute('data-asya')) return;
+  if (!_guideAsyaFile) _guideAsyaFile = new Promise(function(ok, no){
+    var sc = document.createElement('script');
+    sc.src = '/guides/asya-step.js?v=20261030a'; sc.onload = ok; sc.onerror = no;
+    document.body.appendChild(sc);
+  });
+  _guideAsyaFile.then(function(){ if (window.ccGuideAsya) window.ccGuideAsya.mount(modal); }, function(){ _guideAsyaFile = null; });
+}
+
 function openStep(id){
   document.querySelectorAll('.step-modal').forEach(function(m){m.style.display='none'});
   var modal = document.getElementById(id);
   modal.style.display='block';
   _guideOpen(_guideOverlay('step-overlay'), modal);
+  _guideAsyaMount(modal);
 }
 function closeStep(){
   _guideClose(_guideOverlay('step-overlay'));
