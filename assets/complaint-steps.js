@@ -237,13 +237,15 @@
     '#cc-steps .as .as-in{z-index:1;padding:calc(clamp(46px,13vw,58px) + env(safe-area-inset-top,0px)) max(clamp(36px,10vw,46px),env(safe-area-inset-right,0px)) calc(clamp(46px,13vw,58px) + env(safe-area-inset-bottom,0px)) max(clamp(36px,10vw,46px),env(safe-area-inset-left,0px));justify-content:flex-start}#cc-steps .as .orb.small{margin-top:-4px}',
     '#cc-steps .as .cs-x{top:calc(clamp(40px,12vw,52px) + env(safe-area-inset-top,0px));right:max(clamp(36px,10vw,46px),env(safe-area-inset-right,0px));width:34px;height:34px;padding:0;border-radius:10px;border:2px solid transparent;color:transparent;font-size:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(0,0,0,.25) 70%) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;box-shadow:0 3px 8px rgba(0,0,0,.55)}',
     '#cc-steps .as .cs-x::before,#cc-steps .as .cs-x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:1px;background:linear-gradient(90deg,#b8862c,#fff0b8,#b8862c);transform:translate(-50%,-50%) rotate(45deg)}#cc-steps .as .cs-x::after{transform:translate(-50%,-50%) rotate(-45deg)}',
-    '#cc-steps .as .orb{width:150px;height:150px;margin-top:0}#cc-steps .as .orb.small{width:100px;height:100px}',
+    '#cc-steps .as .orb{width:124px;height:124px;margin-top:0}#cc-steps .as .orb.small{width:76px;height:76px}',
     '#cc-steps .as .orb i{border-color:rgba(233,197,106,.6)}',
     '#cc-steps .as .orb b{inset:16%;overflow:hidden;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 0 0 2px #e9c56a,0 0 0 4px rgba(20,4,26,.8),0 0 0 5px rgba(233,197,106,.5),0 8px 16px rgba(0,0,0,.5),0 0 30px 6px rgba(255,255,255,.45),0 0 60px 14px rgba(255,235,240,.2);filter:brightness(1.08);animation:csOrbSpin 3.6s linear infinite}#cc-steps .as .orb.small b{animation:none}',
     '#cc-steps .as .orb b::after{content:"";position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.85) 48%,rgba(255,255,255,.2) 54%,transparent 62%);transform:translateX(-120%);animation:csGlint 3.2s .6s ease-in-out infinite}',
     '#cc-steps .as .orb::after{content:"";position:absolute;inset:4%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(246,220,138,.9) 85%,transparent 100%);-webkit-mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 70%,transparent 71%);animation:csRingSpin 2.4s linear infinite}#cc-steps .as .orb.small::after{animation-duration:6s;opacity:.6}#cc-steps .as .orb.small b::after{animation:none;opacity:0}',
     '@keyframes csGlint{0%{transform:translateX(-120%)}45%,100%{transform:translateX(120%)}}@keyframes csRingSpin{to{transform:rotate(360deg)}}@keyframes csOrbSpin{to{transform:rotate(360deg)}}#cc-steps .as .orb b svg{display:none}#cc-steps .as .orb.small b{inset:0}',
-    '#cc-steps .as .as-name{margin-top:12px;font-size:20px;letter-spacing:.36em;color:transparent;background:linear-gradient(180deg,#f7e7bd,#c99b4a 55%,#e8cf8e);-webkit-background-clip:text;background-clip:text;text-shadow:none}',
+    // ASYA logo: the crystal maple orb with the gold ASYA lettering under it (light sweep while ASYA works, smaller once the suggestion shows).
+    '#cc-steps .as .as-name{margin-top:14px;padding-left:.34em;font:700 clamp(34px,10.5vw,44px)/1.1 Cinzel,Georgia,serif;letter-spacing:.34em;color:transparent;background:linear-gradient(110deg,#b8862c 0%,#f6dc8a 22%,#fff0b8 38%,#c99b4a 54%,#f7e7bd 74%,#b8862c 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;text-shadow:none;filter:drop-shadow(0 0 16px rgba(233,197,106,.4)) drop-shadow(0 3px 6px rgba(0,0,0,.6));animation:csWord 3.4s ease-in-out infinite;transition:font-size .7s cubic-bezier(.2,.8,.2,1),margin .7s}',
+    '#cc-steps .as .as-name.small{margin-top:8px;font-size:clamp(22px,6.5vw,28px);animation-duration:8s}@keyframes csWord{50%{background-position:100% 0}}',
     '#cc-steps .as .as-st{font:italic 400 17px/1.4 "EB Garamond",Georgia,serif;color:rgba(246,234,210,.88)}',
     '#cc-steps .as .as-steps span{width:34px;height:3px;border-radius:2px;background:rgba(233,197,106,.22)}',
     '#cc-steps .as .as-steps span.on::after{background:linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%)}',
@@ -296,7 +298,7 @@
       '<div class="as" role="dialog" aria-modal="true" aria-label="ASYA">' + FLAG + '<div class="as-dim"></div><div class="as-in">' +
       '<button type="button" class="cs-x" data-act="as-close" aria-label="Close">×</button>' +
       '<div class="orb"><i></i><i></i><i></i><b><svg viewBox="0 0 100 100"><path fill="#fff" d="' + LEAF + '"/></svg></b></div>' +
-      '<div class="as-name">ASYA</div><div class="as-st" aria-live="polite"></div><div class="as-steps"><span></span><span></span><span></span></div>' +
+      '<div class="as-name notranslate" translate="no">ASYA</div><div class="as-st" aria-live="polite"></div><div class="as-steps"><span></span><span></span><span></span></div>' +
       '<div class="as-res"><div class="as-card"><div class="as-ch"><div class="meter"><svg viewBox="0 0 80 80"><defs><linearGradient id="cs-mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc8a"/><stop offset=".5" stop-color="#b8862c"/><stop offset="1" stop-color="#fff0b8"/></linearGradient></defs><circle class="tk" cx="40" cy="40" r="35" fill="none" stroke-width="5"/><circle class="vl" cx="40" cy="40" r="35" fill="none" stroke-width="5" stroke-dasharray="219.9" stroke-dashoffset="219.9"/></svg>' +
       '<div class="mid"><span class="num">0</span><small>STRENGTH</small></div></div><div class="as-cht"><h4>ASYA’S SUGGESTION</h4><small>Strength score</small></div></div>' +
       '<p class="as-t"></p><div class="as-tags"></div></div>' +
@@ -523,9 +525,9 @@
   }
   function strength(s){ var n = 35; if (RE_DATE.test(s)) n += 20; if (/\$\s?\d|\d+\s?(dollars|cad)\b/i.test(s)) n += 15; if (RE_ASK.test(s)) n += 15; n += Math.min(15, Math.floor(s.length / 25)); return Math.min(100, n); }
   function asyaShow(raw, onUse, onKeep){
-    var box = q('.as'), st = q('.as-st'), steps = qa('.as-steps span'), res = q('.as-res'), orb = q('.orb');
+    var box = q('.as'), st = q('.as-st'), steps = qa('.as-steps span'), res = q('.as-res'), orb = q('.orb'), mark = q('.as-name');
     var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    box.classList.add('on'); res.classList.remove('on'); orb.classList.remove('small'); steps.forEach(function(s){ s.classList.remove('on'); }); asAlive = true; var run = ++asRun, live = function(){ return asAlive && run === asRun; };
+    box.classList.add('on'); res.classList.remove('on'); orb.classList.remove('small'); mark.classList.remove('small'); steps.forEach(function(s){ s.classList.remove('on'); }); asAlive = true; var run = ++asRun, live = function(){ return asAlive && run === asRun; };
     var lines = ['Reading…', 'Looking for the date, amount and what you want…', 'Turning it into clear, formal wording…'];
     lines.forEach(function(l, i){ setTimeout(function(){ if (!live()) return; st.style.opacity = 0; setTimeout(function(){ st.textContent = l; st.style.opacity = 1; }, 150); steps[i].classList.add('on'); }, rm ? 0 : i * 900); });
     var started = Date.now();
@@ -533,7 +535,7 @@
       setTimeout(function(){
         if (!live()) return;
         if (!out) { if (onKeep) { asEnd(); onKeep(); toast('ASYA isn’t available right now. Your own words are kept.'); return; } st.textContent = 'ASYA isn’t available right now. You can continue with your own words.'; return; }
-        orb.classList.add('small'); st.textContent = 'Done. Here is my suggestion:'; res.classList.add('on');
+        orb.classList.add('small'); mark.classList.add('small'); st.textContent = 'Done. Here is my suggestion:'; res.classList.add('on');
         var score = strength(out), v = q('.meter .vl'), n = q('.meter .num'), k = 0;
         requestAnimationFrame(function(){ v.style.strokeDashoffset = 219.9 * (1 - score / 100); });
         (function cnt(){ n.textContent = k; if (k < score) { k = Math.min(score, k + Math.max(1, Math.round(score / 40))); setTimeout(cnt, 28); } })();
@@ -599,4 +601,25 @@
   };
   // The complaint was sent: the next one starts empty.
   window.ccStepsReset = function(){ if (root) reset(); };
+  // ASYA in a guide step hands over what the person told it while reading (index.html _applyGuideHandoff).
+  // Only empty answers are filled, so nothing typed here is replaced. Location counts as done only with a
+  // province and a city; with just a city, the sheet opens with it already typed.
+  window.ccStepsPrefill = function(p){
+    if (!p || typeof p !== 'object') return false;
+    if (!root) build();
+    var one = function(s, n){ return String(s == null ? '' : s).replace(/\s+/g, ' ').trim().slice(0, n); };
+    var who = one(p.who, 120), city = one(p.city, 80), pv = String(p.pv || '').toUpperCase();
+    var what = String(p.what == null ? '' : p.what).replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim().slice(0, 5000);
+    var n = 0, put = function(k, v, text){ V[k] = v; var c = card(k); c.classList.add('done'); c.querySelector('small').textContent = text; n++; };
+    if (who && !V.who) put('who', who, who);
+    if (what && !V.what) put('what', what, what.slice(0, 40) + (what.length > 40 ? '…' : ''));
+    if (city && !V.loc) {
+      var ok = PROV.some(function(x){ return x[0] === pv; });
+      V.locP = { st: '', city: city, pv: ok ? pv : '' };
+      if (ok) put('loc', city + ', ' + pv, city + ', ' + pv);
+    }
+    sync();
+    if (n) toast('ASYA added what you told it. Check it and finish the rest.');
+    return n > 0;
+  };
 })();

@@ -683,7 +683,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')ccChoiceClos
 // No visible close button: a tap on the dimmed page around the card closes it.
 document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.target.closest('.cc-card,.cc-srx'))ccChoiceClose()});
 </script>
-<script defer src="/assets/complaint-steps.js?v=20261029c"></script>
+<script defer src="/assets/complaint-steps.js?v=20261030a"></script>
 <a href="/trap/archive" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">archive</a>
 
 
@@ -4848,7 +4848,7 @@ document.addEventListener('keydown',function(e){
   el.click();
 });
 
-document.addEventListener('DOMContentLoaded',function(){V.init();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_handleReplyLink();});
+document.addEventListener('DOMContentLoaded',function(){V.init();_handleGoLink();_applyGuideHandoff('');_handleGuidePrefill();_handleTrackLink();_handleReplyLink();});
 
 // Guide pages (/guides/*.html) hand off a typed-out complaint via ?d=... —
 // land straight in the category step with it pre-filled and classified,
@@ -4925,12 +4925,31 @@ function _handleGoLink(){
     if(go==='rep'){ if(typeof mvOpen==='function') mvOpen(''); return; }
     if(go==='asya'){ if(typeof _aToggle==='function') _aToggle(); return; }
     var allowed={'new':1,'lawyer':1,'cyber':1,'verify':1,'track':1};
-    if(go==='new'){ ccFileTab(); return; }
+    if(go==='new'){ ccFileTab(); _applyGuideHandoff(_q.get('h')); return; }
     if(allowed[go]) goApp(go);
     // From the complaint panel: lawyer finder with province and area already chosen.
     if(go==='lawyer'){ var _p=(_q.get('lwp')||'').replace(/[^a-z]/g,''),_a=(_q.get('lwa')||'').replace(/[^a-z]/g,'');
       setTimeout(function(){ try{ var pe=_p&&document.querySelector('[onclick="selLwProv(\''+_p+'\',this)"]'); if(pe) pe.click();
         var ae=_a&&document.querySelector('[onclick="selLwArea(\''+_a+'\',this)"]'); if(ae) ae.click(); if(pe&&ae&&typeof lwGoStep==='function') lwGoStep(3); }catch(e){} },900); }
+  }catch(e){}
+}
+// ASYA in a guide step leaves the person's answers in localStorage (not in the link, so complaint text stays out of
+// history, server logs and analytics; only if the browser blocks storage does the older ?d= link carry it) and opens
+// /?go=new&h=<id>. The id ties this visit to that hand-over, so an old one can never fill a later complaint, and a
+// hand-over older than 10 minutes is dropped. A complaint already waiting in SONUÇ opens first, as it always did.
+// If anything is off, File simply opens as usual.
+function _applyGuideHandoff(id){
+  try{
+    var raw=localStorage.getItem('cc_handoff'); if(!raw) return;
+    var h=null; try{ h=JSON.parse(raw); }catch(e){}
+    var live=!!h&&h.v===1&&Date.now()-h.t<600000, mine=live&&!!id&&h.id===id;
+    if(!live||mine) localStorage.removeItem('cc_handoff');
+    if(!mine) return;
+    if(window.ccStepsPrefill) window.ccStepsPrefill(h);
+    else if(!window.ccFileOpen){
+      var d=document.getElementById('inp-desc');
+      if(d&&h.what){ d.value=String(h.what).slice(0,5000); if(typeof updateCC==='function') updateCC(); if(typeof suggestCategoryAI==='function') suggestCategoryAI(); }
+    }
   }catch(e){}
 }
 function _handleGuidePrefill(){
