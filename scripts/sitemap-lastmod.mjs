@@ -32,7 +32,7 @@ function withArticle(html, loc, date) {
   const title = html.match(/<title>([^<]*)<\/title>/);
   const desc = html.match(/<meta name="description" content="([^"]*)">/);
   if (!title || !desc) return html;
-  const org = { '@type': 'Organization', name: 'ComplaintCA', url: ORIGIN + '/' };
+  const org = { '@type': 'Organization', name: 'Complaint CA', url: ORIGIN + '/' };
   const article = {
     '@context': 'https://schema.org',
     '@type': 'Article',
