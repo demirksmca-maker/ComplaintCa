@@ -227,9 +227,9 @@
     '#cc-steps .cs-ay-sw b{font:600 10.5px/1 Cinzel,Georgia,serif;letter-spacing:.32em;color:transparent;background:linear-gradient(180deg,#f7e7bd,#c99b4a 55%,#e8cf8e);-webkit-background-clip:text;background-clip:text}',
     '#cc-steps .cs-ay-sw i{position:relative;width:40px;height:22px;border-radius:999px;background:#120510;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 0 0 1px rgba(214,178,98,.45)}',
     '#cc-steps .cs-ay-sw i::before{content:"";position:absolute;inset:2px;border-radius:999px;background:linear-gradient(180deg,#5a0e22,#2e0611);opacity:0;transition:opacity .2s}',
-    '#cc-steps .cs-ay-sw i::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#fff 0,#f1ecee 30%,#c7bec4 75%,#9d949b 100%);box-shadow:0 1px 3px rgba(0,0,0,.7),0 0 0 .8px rgba(214,178,98,.8);transition:left .2s}',
+    '#cc-steps .cs-ay-sw i::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:url(/assets/asya-orb.webp) center/cover;box-shadow:0 1px 3px rgba(0,0,0,.7),0 0 0 .8px rgba(214,178,98,.8),0 0 8px rgba(255,255,255,.35);transition:left .2s,filter .2s}',
     '#cc-steps .cs-ay-sw[aria-checked="true"] i::before{opacity:1}#cc-steps .cs-ay-sw[aria-checked="true"] i::after{left:20px;animation:csBlue 2s ease-in-out infinite}',
-    '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}',
+    '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}#cc-steps .cs-ay-sw[aria-checked="false"] i::after{filter:grayscale(.8) brightness(.8)}',
     '@keyframes csBlue{0%,60%,100%{filter:none}25%{filter:drop-shadow(0 0 5px rgba(120,180,255,.75))}}',
     // ASYA in the site's gold: framed page, crystal maple crest (spins like a ball of light while ASYA works), gold step bars, marble suggestion card.
     '#cc-steps .as{background:linear-gradient(rgba(18,4,22,.55),rgba(18,4,22,.55)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover}#cc-steps .as .as-flag,#cc-steps .as .as-dim{display:none}',
