@@ -16,12 +16,6 @@ const pages = ['index.html', ...guides];
 const index = read('guides/index.html');
 const sitemap = read('sitemap.xml');
 
-// Categories defined in support-tools.js (top-level keys of CATS).
-const tools = read('guides/support-tools.js');
-const catsBlock = tools.slice(tools.indexOf('var CATS = {'), tools.indexOf('\n  };', tools.indexOf('var CATS = {')));
-const cats = new Set([...catsBlock.matchAll(/^ {4}([a-z_]+): \{/gm)].map((m) => m[1]));
-if (!cats.size) fail('guides/support-tools.js', 'could not read CATS');
-
 for (const f of pages) {
   const html = read('guides/' + f);
   const rel = 'guides/' + f;
@@ -41,9 +35,6 @@ for (const f of pages) {
   if (f === 'index.html') continue;
   const url = `https://www.complaintca.ca/guides/${f}`;
 
-  for (const [, key] of html.matchAll(/data-dc="([^"]*)"/g)) {
-    if (!cats.has(key)) fail(rel, `data-dc="${key}" has no entry in support-tools.js`);
-  }
   if (!html.includes('href="/guides/guide.css"')) fail(rel, 'missing /guides/guide.css');
   if (!html.includes('src="/guides/guide.js"')) fail(rel, 'missing /guides/guide.js');
   if (!html.includes(`<link rel="canonical" href="${url}">`)) fail(rel, 'canonical does not match file name');
@@ -65,4 +56,4 @@ if (errors.length) {
   console.error(`${errors.length} problem(s) in /guides/:\n  ` + errors.join('\n  '));
   process.exit(1);
 }
-console.log(`guides OK — ${guides.length} guides, ${cats.size} support-tool categories`);
+console.log(`guides OK — ${guides.length} guides`);

@@ -29,9 +29,6 @@ body #lang-fab.cc-float svg{display:none}
 h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#d8b4fe;text-align:left;border-top:1px solid rgba(244,214,255,.14);padding-top:12px;margin:30px 0 18px;font-weight:700}
 .guide-app .section-hint{font:700 .6rem Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,230,234,.6)}
 .more-link{text-decoration:none;font-size:.72rem;color:#d8b4fe;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(173,92,255,.5)}
-.dc-toolbar{width:100%;max-width:460px}
-.dc-toolbar .dc-pill{padding:6px 3px;gap:3px;background:rgba(40,8,40,.55);border:1px solid rgba(244,214,255,.3);box-shadow:none}
-.dc-toolbar .dc-pl{font-family:'Cinzel',Georgia,serif;text-transform:uppercase;letter-spacing:0;font-size:.54rem}
 .path-card:hover{transform:translateY(-2px);filter:brightness(1.08)}
 .path-card .picon{position:absolute;left:14px;top:12px;width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;opacity:.95}
 .guide-app .path-card{align-items:flex-end;text-align:right;border:1px solid rgba(244,214,255,.22);-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55)}
