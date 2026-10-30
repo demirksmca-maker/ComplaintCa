@@ -1,24 +1,31 @@
 /* ComplaintCA — shared styles for /guides/*-guide.html pages. Page-specific rules stay inline. */
 *{box-sizing:border-box}
-body{margin:0;background:#300a2a linear-gradient(180deg,#5b3c4b 0,#3c1237 42%,#26071f 100%) fixed;color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5}
+body{margin:0;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover fixed no-repeat;color:var(--dtext);font-family:'Inter',sans-serif;line-height:1.5}
 .guide-app{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 .guide-app main{overflow:visible}
 .guide-app .step-grid{grid-template-rows:repeat(3,minmax(96px,1fr))}
 .guide-app .step-grid>.path-card{min-height:96px}
 .guide-app::after{content:"";flex:0 0 calc(13px + .93rem)}
-.topbar{flex:0 0 auto;background:rgba(36,8,34,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(244,214,255,.14)}
+.topbar{flex:0 0 auto;position:relative;background:transparent}
+.topbar::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;background:radial-gradient(1px 1px at 22% 30%,#fff,transparent),radial-gradient(1px 1px at 31% 72%,#fff,transparent),radial-gradient(1.5px 1.5px at 68% 24%,#fff,transparent),radial-gradient(1px 1px at 79% 66%,#fff,transparent),radial-gradient(1px 1px at 88% 38%,#fff,transparent),radial-gradient(1.5px 1.5px at 14% 60%,#fff,transparent);animation:tbStars 4s ease-in-out infinite}
+@keyframes tbStars{0%,100%{opacity:.35}50%{opacity:.95}}
+@media (prefers-reduced-motion:reduce){.topbar::before{animation:none}}
+.logo-btn img{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)) drop-shadow(0 0 5px rgba(207,176,232,.35))}
 .topbar-inner{max-width:1080px;margin:0 auto;padding:0 20px;height:46px;display:flex;align-items:center;justify-content:center;width:100%;position:relative}
 .logo-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:7px;height:46px;text-decoration:none}
-.logo-text{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;letter-spacing:2px;color:#e9e1f2;line-height:1;white-space:nowrap;text-shadow:0 0 10px rgba(210,195,255,.45)}
-.logo-ca{color:#fff;font-size:1.3rem;font-weight:900}
+.logo-text{font-family:'Cinzel',serif;font-size:1.15rem;font-weight:900;letter-spacing:2px;line-height:1;white-space:nowrap;background:linear-gradient(100deg,#d9d5e6 0%,#bfb9d1 30%,#f2f0f8 44%,#fff 50%,#f2f0f8 56%,#a8a2bc 72%,#d9d5e6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 0 rgba(255,255,255,.35)) drop-shadow(0 2px 2px rgba(20,8,40,.75)) drop-shadow(0 0 10px rgba(210,195,255,.45))}
+.logo-ca{font-size:1.4rem}
+body #lang-fab.cc-float{background:none;border:0;padding:4px;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+body #lang-fab.cc-float svg{display:none}
 .topbar-right{position:absolute;right:20px;top:0;display:flex;align-items:center;gap:8px;height:46px}
 .hero{flex:0 0 auto;background:transparent;color:#fff;padding:16px 20px 8px;text-align:left;max-width:1080px;margin:0 auto;width:100%}
 .hero .eyebrow{display:flex;align-items:center;gap:6px;font:700 .6rem Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,230,234,.72);margin:0 0 6px}
 .hero .eyebrow .edot{width:5px;height:5px;border-radius:50%;background:#ff5ea8;display:inline-block}
 .guide-app .hero h1{font-family:'Cinzel',Georgia,serif;font-weight:700;letter-spacing:.03em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55)}
 .hero h1 em{display:block;margin-top:2px;font:italic 500 1.08em 'EB Garamond',Georgia,serif;letter-spacing:.005em;color:#e7d3f7;text-shadow:none}
-.hero-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(60,15,60,.7);border:1.5px solid rgba(207,176,232,.6);border-radius:20px;padding:7px 16px;color:#fff;font:700 .72rem Cinzel,Georgia,serif;letter-spacing:.18em;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.guide-app .hero h1{min-width:0;font-size:clamp(1.05rem,5.2vw,1.3rem)}
+.asya-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(60,15,60,.7);border:1.5px solid rgba(207,176,232,.6);border-radius:20px;padding:7px 12px;color:#fff;font:700 .7rem Cinzel,Georgia,serif;letter-spacing:.14em;text-decoration:none;white-space:nowrap;flex-shrink:0}
 h2{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:2.5px;text-transform:uppercase;color:#d8b4fe;text-align:left;border-top:1px solid rgba(244,214,255,.14);padding-top:12px;margin:30px 0 18px;font-weight:700}
 .guide-app .section-hint{font:700 .6rem Cinzel,Georgia,serif;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,230,234,.6)}
 .more-link{text-decoration:none;font-size:.72rem;color:#d8b4fe;font-weight:600;cursor:pointer;border-bottom:1px dashed rgba(173,92,255,.5)}
