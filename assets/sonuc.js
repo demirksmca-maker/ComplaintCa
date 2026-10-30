@@ -267,8 +267,8 @@
       if (my !== run) return;
       R = x[0]; Vd = x[1]; prio = (A && A.priority) || 'medium';
       card6 = (A && A.support) || cat === 'harassment' || cat === 'sexual' || (D.cat === 'humanrights' && prio === 'high') ? 'help' : 'mp';
-      pool = false; makeRows(); buildLetter(); phase = 'ready'; draw();
-    }).catch(function(){ if (my !== run) return; R = null; Vd = null; makeRows(); buildLetter(); phase = 'ready'; draw(); });
+      pool = poolOffered(); makeRows(); buildLetter(); phase = 'ready'; draw();
+    }).catch(function(){ if (my !== run) return; R = null; Vd = null; pool = poolOffered(); makeRows(); buildLetter(); phase = 'ready'; draw(); });
   }
   // Same inputs for the English verdict (page) and the French one (letter only).
   var verdict = function(lang){ return getJson(post('/api/verdict', { title:D.story.slice(0, 80), desc:D.story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:lang }), 25000); };
