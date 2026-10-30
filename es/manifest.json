@@ -1,6 +1,6 @@
 {
-  "name": "ComplaintES — Quejas en España",
-  "short_name": "ComplaintES",
+  "name": "Complaint CA España — Quejas en España",
+  "short_name": "Complaint CA",
   "description": "Presente quejas gratis en España, con IA y de forma anónima.",
   "start_url": "/es/",
   "scope": "/es/",
