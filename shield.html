@@ -1110,18 +1110,28 @@
     if (out.dataset.done) { out.hidden = !out.hidden; return; }
     var src = card.querySelector('.t').textContent + '\n\n' + card.querySelector('.bd').textContent;
     btn.disabled = true; btn.textContent = '…'; out.hidden = false; out.textContent = 'Çevriliyor…';
-    fetch('/api/groq-proxy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
-      model: 'llama-3.1-8b-instant', max_tokens: 3000, temperature: 0,
-      messages: [{ role: 'system', content: 'Verilen şikayet metnini doğal, akıcı Türkçeye çevir. İlk satır başlıktır. Sadece çeviriyi yaz, yorum ekleme.' }, { role: 'user', content: src }]
-    }) })
-      .then(function (r) { return r.json(); })
+    var sys = 'Verilen şikayet metnini doğal, akıcı Türkçeye çevir. İlk satır başlıktır. Sadece çeviriyi yaz, yorum ekleme.';
+    var post = function (url, body) {
+      return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { d.__st = r.status; return d; }); });
+    };
+    var fromGroq = function (d) { return d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content; };
+    var fromClaude = function (d) { return d && d.content && d.content.map(function (c) { return c.text || ''; }).join(''); };
+    var why = '';
+    post('/api/groq-proxy', { model: 'llama-3.1-8b-instant', max_tokens: 2000, temperature: 0, messages: [{ role: 'system', content: sys }, { role: 'user', content: src }] })
       .then(function (d) {
-        var t = d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
-        if (!t) throw new Error('x');
-        out.textContent = t.trim(); out.dataset.done = '1'; btn.textContent = '🇹🇷 TR';
+        var t = fromGroq(d);
+        if (t) return t;
+        why = 'groq ' + d.__st + (d.error ? ' ' + (d.error.message || d.error) : '');
+        return post('/api/claude-proxy', { max_tokens: 2000, temperature: 0, system: sys, messages: [{ role: 'user', content: src }] })
+          .then(function (d2) { var t2 = fromClaude(d2); if (!t2) why += ' · claude ' + d2.__st + (d2.error ? ' ' + (d2.error.message || d2.error) : ''); return t2; });
       })
-      .catch(function () { out.textContent = 'Çevrilemedi, tekrar dene.'; btn.textContent = '🇹🇷 TR'; })
-      .then(function () { btn.disabled = false; });
+      .then(function (t) {
+        if (!t) throw new Error('x');
+        out.textContent = t.trim(); out.dataset.done = '1';
+      })
+      .catch(function () { out.textContent = 'Çevrilemedi' + (why ? ' (' + String(why).slice(0, 160) + ')' : '') + '. Tekrar dene.'; })
+      .then(function () { btn.textContent = '🇹🇷 TR'; btn.disabled = false; });
   });
   function showSec(name) {
     // Sections toggle on their own: Huni has no tab but still opens from #funnel links.
