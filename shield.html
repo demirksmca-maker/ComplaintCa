@@ -1083,6 +1083,8 @@
   })();
 
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
+  var CMP_CAT = { service: 'Hizmet', education: 'Eğitim', repairs: 'Tamirat', cybercrime: 'Siber suç', billing: 'Fatura', disc: 'Ayrımcılık', consumer: 'Tüketici', tenancy: 'Kiracı', employment: 'İş', human_rights: 'İnsan hakları', health: 'Sağlık', police: 'Polis', privacy: 'Gizlilik', energy: 'Enerji', schools: 'Okul', condo: 'Kondo' };
+  var CMP_ST = { received: 'Alındı', reply: 'Cevap geldi', resolved: 'Çözüldü', closed: 'Kapandı' };
   function loadComplaints() {
     var box = $('cmpList');
     fetch('/api/shield?complaints=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
@@ -1094,7 +1096,7 @@
           var day = c.date ? String(c.date).slice(0, 10) : '';
           var chip = function (txt, cls) { return txt ? '<i' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(txt) + '</i>' : ''; };
           return '<details class="cm"><summary><span class="t">' + esc(c.title || c.ref) + '</span><span class="m">' +
-            chip(c.category, 'cat') + chip(c.city) + chip(c.status, 'st') + chip(day) + (c.anonymous === true ? chip('anonim') : '') +
+            chip(CMP_CAT[c.category] || c.category, 'cat') + chip(c.city) + chip(CMP_ST[c.status] || c.status, 'st') + chip(day) + (c.anonymous === true ? chip('anonim') : '') +
             '</span></summary><div class="body"><div class="bd">' + esc(c.desc || 'Metin yok.') + '</div><button type="button" class="trb">🇹🇷 TR</button><div class="tr" hidden></div><span class="ref">' + esc(c.ref || '') + (c.targetName ? ' · ' + esc(c.targetName) : '') + '</span></div></details>';
         }).join('');
       })
