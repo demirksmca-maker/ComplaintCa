@@ -24,7 +24,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#520f47">
 <script>try{localStorage.removeItem('cc_theme')}catch(e){}</script>
-<script>(function(){try{if(history.state&&history.state.tab)document.documentElement.setAttribute('data-restoring-tab','1');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,t=history.state&&history.state.tab;if(!t){var g=(location.search.match(/[?&]go=([a-z]+)/)||[])[1];if(/^(new|lawyer|cyber|verify|track)$/.test(g))t=g;}if(t){d.setAttribute('data-restoring-tab','1');d.setAttribute('data-restoring-view',String(t).replace(/[^a-z]/g,''));}}catch(e){}})();</script>
 <!-- Google Identity Services: native Google sign-in that works without third-party
      storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
      onerror flags when the script is blocked (ad-blocker / privacy filter) so the
@@ -163,6 +163,9 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 #pg-land{display:block}#pg-app{display:none}#pg-land .hero{transition:none}
 html[data-restoring-tab] #pg-land{display:none}
 html[data-restoring-tab] #pg-app{display:block}
+/* Reload / deep link: show only the tab being restored, so the other pages (the standard form) never flash before the script runs. */
+html[data-restoring-view] .amain>[id^="view-"]{display:none!important}
+html[data-restoring-view="track"] #view-track,html[data-restoring-view="lawyer"] #view-lawyer,html[data-restoring-view="cyber"] #view-cyber,html[data-restoring-view="verify"] #view-verify,html[data-restoring-view="new"] #view-new{display:block!important}
 
 /* ── TOPBAR ── */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(180deg,#3d0309 0%,#2a0206 50%,#1c0003 100%);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
@@ -2876,6 +2879,7 @@ window.addEventListener('popstate',function(e){
     _suppressNavPush=false;
   }
 });
+setTimeout(function(){var d=document.documentElement;if(!d.hasAttribute('data-restoring-view'))return;d.removeAttribute('data-restoring-view');var a=document.getElementById('pg-app');if(!a||a.style.display!=='block')d.removeAttribute('data-restoring-tab');},8000);
 document.addEventListener('DOMContentLoaded',function(){
   // A hard refresh keeps the same history entry (and its state), but until now
   // nothing read it back — this restores whatever tab/step the user was on
@@ -2997,6 +3001,7 @@ function showTab(tab){
   document.getElementById('view-cyber').style.display=tab==='cyber'?'':'none';
   var lp=document.getElementById('view-lawyerpanel');
   if(lp) lp.style.display=(tab==='lawyerpanel'||tab==='feed')?'':'none';
+  document.documentElement.removeAttribute('data-restoring-view');
   ['tab-new','tab-feed','tab-track','tab-lawyer','tab-cyber','tab-verify'].forEach(function(id){
     var el=document.getElementById(id);
     if(el) el.classList.remove('active');
