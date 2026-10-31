@@ -1,9 +1,9 @@
 // GET /api/shield?complaints=1 → the latest complaints for the owner's shield page.
 // Read with the service account (the rules keep them closed to the public), and
-// only the fields the panel shows: never the e-mail, name or story text.
+// only the fields the panel shows (story text included, never the e-mail).
 import { fsAdmin, FS } from './_gauth.js';
 
-const FIELDS = ['ref', 'title', 'category', 'status', 'date', 'city', 'targetName', 'isLegal', 'anonymous'];
+const FIELDS = ['ref', 'title', 'category', 'status', 'date', 'city', 'targetName', 'isLegal', 'anonymous', 'desc'];
 const val = f => f == null ? null : (f.stringValue ?? f.booleanValue ?? f.integerValue ?? f.timestampValue ?? null);
 
 export async function complaintList(limit = 50, fs = fsAdmin) {
