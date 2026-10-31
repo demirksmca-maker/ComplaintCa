@@ -46,12 +46,12 @@ async function feedRefs(fs) {
   return refs;
 }
 
-export async function complaintList(limit = 100, fs = fsAdmin) {
+export async function complaintList(limit = 500, fs = fsAdmin) {
   const body = { structuredQuery: {
     from: [{ collectionId: 'complaints' }],
     select: { fields: FIELDS.map(fieldPath => ({ fieldPath })) },
     orderBy: [{ field: { fieldPath: 'date' }, direction: 'DESCENDING' }],
-    limit: Math.min(Math.max(Number(limit) || 100, 1), 100)
+    limit: Math.min(Math.max(Number(limit) || 500, 1), 500)
   } };
   const [r, feed] = await Promise.all([fs(`${FS}:runQuery`, { method: 'POST', body: JSON.stringify(body) }), feedRefs(fs).catch(() => null)]);
   if (!r) return { ok: false, reason: 'no_service_account' };
@@ -67,7 +67,8 @@ export async function complaintList(limit = 100, fs = fsAdmin) {
     if (c.anonymous === true) c.name = null;
     return c;
   });
-  return { ok: true, list };
+  // more: the newest `limit` only; older complaints were left out.
+  return { ok: true, list, more: list.length >= body.structuredQuery.limit };
 }
 
 // Deletes the complaint, its Case Pool copy (publicFeed), cached precedents and institution replies.

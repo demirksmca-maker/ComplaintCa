@@ -158,6 +158,9 @@
   .cx-h1{text-align:center;font:700 1.3rem/1.2 Cinzel,Georgia,serif;letter-spacing:.06em;background:linear-gradient(100deg,#fff,#d5b9eb,#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .cx-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:-4px;color:#cfb0e8;font:italic 15px 'EB Garamond',Georgia,serif}
   .cx-orn i{display:block;width:48px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.cx-orn i:last-child{transform:scaleX(-1)}
+  .cx-per{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;flex:none}
+  .cx-per button{font:700 12px 'Plus Jakarta Sans',sans-serif;padding:7px 12px;border-radius:99px;background:rgba(255,255,255,.07);color:#cdb6e0;border:1px solid rgba(244,214,255,.15)}
+  .cx-per button[aria-pressed=true]{background:#d5b9eb;color:#2a0814;border-color:#d5b9eb}
   .cx-grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:112px;gap:10px;flex:none}
   .cx-card{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:8px;overflow:hidden;padding:12px 14px 14px;border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55)}
   .cx-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}
@@ -448,6 +451,7 @@
     <section class="sec" id="v-complaints" hidden>
       <div id="cxHome" style="display:contents">
         <h3 class="cx-h1">Şikayetler</h3><div class="cx-orn"><i></i><span id="cxTotal">…</span><i></i></div>
+        <div class="cx-per" id="cxPer" role="group" aria-label="Dönem"></div>
         <div class="cx-grid" id="cxGrid"></div>
         <p class="cx-sub" id="cxSub"></p>
         <div id="cxList" style="display:contents"><p class="empty">Yükleniyor…</p></div>
@@ -1152,7 +1156,19 @@
   var CX_TYPE = { notice: 'Kuruma bildir', legal: 'Yasal hak', access: 'Bilgi edinme' };
   // seen: not green any more (also everything present on the first visit); read: opened here (✓).
   var CX_SEEN = 'dias_cx_seen', CX_READ = 'dias_cx_read', CX_TR = 'dias_cx_tr', CX_SEL = 'dias_cx_sel';
-  var cx = { list: [], seen: null, read: {}, tr: {}, sel: store(CX_SEL) || '', open: null };
+  // Period of the six cards and the list: today (counts start again at midnight), or the last 7–90 days.
+  var CX_PER = [['day', 'Bugün', 0], ['7', '1 hafta', 7], ['30', '1 ay', 30], ['60', '2 ay', 60], ['90', '3 ay', 90]], CX_PERK = 'dias_cx_per';
+  var cx = { list: [], more: false, seen: null, read: {}, tr: {}, sel: store(CX_SEL) || '', open: null, per: store(CX_PERK) || 'day' };
+  function cxPer() { return CX_PER.filter(function (p) { return p[0] === cx.per; })[0] || CX_PER[0]; }
+  function cxView() {
+    var p = cxPer(), now = new Date();
+    var from = p[2] ? now.getTime() - p[2] * 864e5 : new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    var view = cx.list.filter(function (c) { return Date.parse(c.date) >= from; });
+    // The server sends the newest 500 only: when the oldest of them is still inside the period, counts are a minimum.
+    var last = cx.list[cx.list.length - 1];
+    view.cut = cx.more && last && Date.parse(last.date) >= from;
+    return view;
+  }
   try { (JSON.parse(store(CX_READ) || '[]') || []).forEach(function (id) { cx.read[id] = 1; }); } catch (e) { cx.read = {}; }
   try { cx.tr = JSON.parse(store(CX_TR) || '{}') || {}; } catch (e) { cx.tr = {}; }
   function cxG(k) { return CX_G.filter(function (g) { return g[0] === k; })[0] || CX_G[0]; }
@@ -1200,23 +1216,24 @@
   }
   function cxRender() {
     var box = $('cxHome'); box.hidden = false; $('cxDetail').hidden = true; cx.open = null;
-    var count = {}, fresh = {};
-    cx.list.forEach(function (c) { count[c.group] = (count[c.group] || 0) + 1; if (cxNew(c)) fresh[c.group] = (fresh[c.group] || 0) + 1; });
+    var count = {}, fresh = {}, view = cxView(), per = cxPer();
+    view.forEach(function (c) { count[c.group] = (count[c.group] || 0) + 1; if (cxNew(c)) fresh[c.group] = (fresh[c.group] || 0) + 1; });
     if (!cx.sel) cx.sel = (CX_G.filter(function (g) { return fresh[g[0]]; })[0] || CX_G[0])[0];
-    $('cxTotal').textContent = cx.list.length + ' şikayet';
+    $('cxTotal').textContent = view.length + (view.cut ? '+' : '') + ' şikayet · ' + per[1].toLocaleLowerCase('tr-TR');
+    $('cxPer').innerHTML = CX_PER.map(function (p) { return '<button type="button" data-per="' + p[0] + '" aria-pressed="' + (p[0] === per[0]) + '">' + p[1] + '</button>'; }).join('');
     $('cxGrid').innerHTML = CX_G.map(function (g) {
       var f = fresh[g[0]] || 0;
       return '<button type="button" class="cx-card' + (g[0] === cx.sel ? ' on' : '') + (f ? ' new' : '') + '" data-g="' + g[0] + '"><span class="cx-n">' + g[1] + '</span>' +
         (f ? '<span class="cx-nb">● ' + f + ' yeni</span>' : '') + cxSvg(g[3]) + '<span><b>' + esc(g[2]) + '</b><small>' + (count[g[0]] || 0) + ' şikayet</small></span></button>';
     }).join('');
-    var g = cxG(cx.sel), items = cx.list.filter(function (c) { return c.group === cx.sel; });
+    var g = cxG(cx.sel), items = view.filter(function (c) { return c.group === cx.sel; });
     $('cxSub').textContent = g[1] + ' · ' + g[2].toLocaleUpperCase('tr-TR');
     $('cxList').innerHTML = items.length ? items.map(function (c) {
       return '<button type="button" class="cx-it' + (cxNew(c) ? ' new' : '') + '" data-id="' + esc(c.id) + '"><div class="cx-t">' +
         (cxNew(c) ? '<span class="cx-yeni">YENİ</span>' : '') + (c.test === true ? '<span class="cx-test">TEST</span>' : '') + esc(cxTitle(c)) + '</div>' +
         '<div class="cx-m">' + esc(cxCity(c)) + ' · ' + esc(cxWhen(c.date)) + '</div>' +
         (cx.read[c.id] ? '<svg class="cx-tick" viewBox="0 0 24 24" aria-label="Okundu"><path d="M4 12.5l5 5L20 6.5"/></svg>' : '') + '</button>';
-    }).join('') : '<p class="empty">Bu kategoride şikayet yok.</p>';
+    }).join('') : '<p class="empty">Bu dönemde bu kategoride şikayet yok.</p>';
   }
   function cxDetail(id, lang) {
     var c = cx.list.filter(function (x) { return x.id === id; })[0];
@@ -1256,7 +1273,7 @@
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || !d.ok) { $('cxList').innerHTML = '<p class="empty">Şikayetler alınamadı' + (d && d.reason ? ' (' + esc(d.reason) + ')' : '') + '.</p>'; return; }
-        cx.list = d.list || [];
+        cx.list = d.list || []; cx.more = !!d.more;
         // First visit on this device: everything already here counts as seen.
         var raw = store(CX_SEEN);
         cx.seen = {};
@@ -1271,6 +1288,7 @@
     var t = e.target.closest ? e.target.closest('button') : null;
     if (!t) return;
     if (t.dataset.g) { cx.sel = t.dataset.g; store(CX_SEL, cx.sel); return cxRender(); }
+    if (t.dataset.per) { cx.per = t.dataset.per; store(CX_PERK, cx.per); return cxRender(); }
     if (t.dataset.id) return cxDetail(t.dataset.id);
     if (t.dataset.back) return cxRender();
     if (t.dataset.lang) return cxDetail(cx.open, t.dataset.lang);
