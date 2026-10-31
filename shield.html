@@ -199,6 +199,7 @@
   .cx-txt{font-size:.9rem;line-height:1.65;color:#f0e6f7;white-space:pre-wrap;word-break:break-word}
   .cx-dl{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:.84rem}
   .cx-dl dt{color:rgba(213,185,235,.75)}.cx-dl dd{margin:0;text-align:right;font-weight:600;word-break:break-word}
+  .cx-pool{margin-left:8px;font:700 11px 'Plus Jakarta Sans',sans-serif;padding:4px 10px;border-radius:99px;background:#d5b9eb;color:#2a0814}
   .cx-del{width:100%;padding:14px;border-radius:14px;font-weight:800;font-size:.88rem;background:rgba(225,29,72,.22);border:1px solid rgba(251,113,133,.5);color:#fecdd3;flex:none}
   .cx-sheet{border:1px solid rgba(251,113,133,.5);border-radius:20px;padding:18px 16px;background:linear-gradient(155deg,rgba(159,18,57,.5),rgba(45,10,55,.6));display:flex;flex-direction:column;gap:10px;box-shadow:0 0 30px rgba(225,29,72,.35);flex:none}
   .cx-sheet h3{font:700 17px Cinzel,Georgia,serif}
@@ -448,13 +449,13 @@
         <div class="cx-grid" id="cxGrid"></div>
         <p class="cx-sub" id="cxSub"></p>
         <div id="cxList" style="display:contents"><p class="empty">Yükleniyor…</p></div>
+        <button type="button" class="cx-no" id="feedFill" style="flex:none;margin-top:6px">📋 Tüm şikayetleri havuzla eşitle</button>
       </div>
       <div id="cxDetail" style="display:contents" hidden></div>
     </section>
     <section class="sec" id="v-security" hidden>
       <h3 class="ptitle">AI güvenlik ve ajan analizi</h3>
       <button type="button" class="lock" id="lock">🔓 Acil kilit kapalı · dokun, 1 saat kilitle</button>
-      <button type="button" class="lock" id="feedFill">📋 Eksik şikayetleri havuza aktar</button>
       <div class="card pad"><h2>Saldırı gelen ülkeler · son kayıtlar</h2><div class="hb" id="attackGeo"></div></div>
       <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button><button type="button" data-list="risks" aria-pressed="false">Risk</button></div>
       <div class="card pad list" id="reports"></div>
@@ -1229,7 +1230,8 @@
       '<div class="cx-box"><div class="cx-bh">BİLGİLER</div><dl class="cx-dl">' +
       '<dt>Ref</dt><dd>' + esc(c.ref || '—') + '</dd><dt>Kurum</dt><dd>' + esc(c.targetName || '—') + '</dd>' +
       '<dt>Tür</dt><dd>' + esc(CX_TYPE[c.ctype] || (c.isLegal ? 'Yasal hak' : 'Kuruma bildir')) + '</dd><dt>Durum</dt><dd>' + esc(CMP_ST[c.status] || c.status || '—') + '</dd>' +
-      '<dt>Gönderen</dt><dd>' + esc(c.name || 'Anonim') + '</dd><dt>Havuz</dt><dd>' + pool + '</dd>' + (c.test === true ? '<dt>Test</dt><dd>Evet</dd>' : '') + '</dl></div>' +
+      '<dt>Gönderen</dt><dd>' + esc(c.name || 'Anonim') + '</dd><dt>Havuz</dt><dd>' + pool +
+      (c.isLegal === true ? '' : ' <button type="button" class="cx-pool" data-pool="' + (c.pool === true ? '0' : '1') + '">' + (c.pool === true ? 'Çıkar' : 'Ekle') + '</button>') + '</dd>' + (c.test === true ? '<dt>Test</dt><dd>Evet</dd>' : '') + '</dl></div>' +
       '<button type="button" class="cx-del" data-del="1">🗑 Şikayeti sil</button><div id="cxSheet"></div>';
     $('v-complaints').scrollTop = 0;
     if (!orig && !tr.d && story) {
@@ -1274,6 +1276,14 @@
       return;
     }
     if (t.dataset.no) { $('cxSheet').innerHTML = ''; return; }
+    if (t.dataset.pool && c) {
+      var on = t.dataset.pool === '1'; t.disabled = true; t.textContent = '…';
+      fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ poolComplaint: c.id, on: on }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) { if (!d.ok) { t.disabled = false; t.textContent = 'Olmadı (' + (d.reason || 'hata') + ')'; return; } c.pool = d.pool; cxDetail(c.id); })
+        .catch(function () { t.disabled = false; t.textContent = 'Hata'; });
+      return;
+    }
     if (t.dataset.yes && c) {
       t.disabled = true; t.textContent = 'Siliniyor…';
       fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ deleteComplaint: c.id }) })
@@ -1513,11 +1523,11 @@
   });
 
   $('feedFill').addEventListener('click', function () {
-    var b = this; b.disabled = true; b.textContent = '📋 Aktarılıyor…';
+    var b = this; b.disabled = true; b.textContent = '📋 Eşitleniyor…';
     fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ backfillFeed: 1 }) })
       .then(function (r) { return r.json().catch(function () { return {}; }); })
-      .then(function (d) { b.textContent = d.ok ? '📋 ' + d.added + ' eklendi · ' + d.existed + ' zaten vardı' + (d.failed ? ' · ' + d.failed + ' hata' : '') : '📋 Aktarılamadı (' + (d.reason || 'hata') + ')'; })
-      .catch(function () { b.textContent = '📋 Aktarılamadı'; })
+      .then(function (d) { b.textContent = d.ok ? '📋 ' + d.written + ' şikayet havuzda' + (d.failed ? ' · ' + d.failed + ' hata' : '') : '📋 Eşitlenemedi (' + (d.reason || 'hata') + ')'; if (d.ok) loadComplaints(); })
+      .catch(function () { b.textContent = '📋 Eşitlenemedi'; })
       .then(function () { b.disabled = false; });
   });
 

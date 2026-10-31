@@ -13,7 +13,7 @@ import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
 import { complaintList, deleteComplaint } from './_shield-complaints.js';
-import { backfillFeed } from './_feed-backfill.js';
+import { backfillFeed, poolComplaint } from './_feed-backfill.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -244,6 +244,11 @@ export async function shieldView(req, res) {
     if ((req.body || {}).deleteComplaint) {
       try { const out = await deleteComplaint(req.body.deleteComplaint); return res.status(out.ok ? 200 : out.reason === 'not_found' ? 404 : out.reason === 'bad_id' ? 400 : 502).json(out); }
       catch (err) { console.error('complaint delete error:', err && err.message); return res.status(502).json({ ok: false, reason: 'error' }); }
+    }
+    // POST {poolComplaint:id, on} → show one complaint in the Case Pool, or take it out.
+    if ((req.body || {}).poolComplaint) {
+      try { const out = await poolComplaint(req.body.poolComplaint, req.body.on === true); return res.status(out.ok ? 200 : out.reason === 'not_found' ? 404 : out.reason === 'bad_id' ? 400 : 502).json(out); }
+      catch (err) { console.error('pool toggle error:', err && err.message); return res.status(502).json({ ok: false, reason: 'error' }); }
     }
     if ((req.body || {}).backfillFeed) {
       try { return res.status(200).json(await backfillFeed()); }
