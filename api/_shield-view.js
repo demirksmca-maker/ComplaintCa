@@ -12,6 +12,7 @@ import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
+import { complaintList } from './_shield-complaints.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -190,6 +191,15 @@ export async function shieldView(req, res) {
   if (!keyOk(req.headers['x-shield-key'], process.env.SHIELD_KEY)) {
     await pipeline([['INCR', badKey], ['EXPIRE', badKey, 600]]).catch(() => {});
     return res.status(403).json({ error: 'forbidden' });
+  }
+
+  // GET /api/shield?complaints=1 → the latest complaints (no e-mail, no story).
+  if (req.query && req.query.complaints) {
+    try { return res.status(200).json(await complaintList()); }
+    catch (err) {
+      console.error('complaint list error:', err && err.message);
+      return res.status(502).json({ ok: false, reason: 'error' });
+    }
   }
 
   if (req.query && req.query.funnel) {
