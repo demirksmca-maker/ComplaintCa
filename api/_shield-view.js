@@ -5,13 +5,14 @@
 // devices, hour heatmap, complaint funnel; plus attack countries, the
 // funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
-// or off (0). ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
+// or off (0); POST {backfillFeed:1} fills the public complaint list. ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
 // site road map of Genel's 3D cards, ?gsc24=1 Search Console's last 24 hours. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
+import { backfillFeed } from './_feed-backfill.js';
 
 const DAYS = 7;
 const MAX_LOCKDOWN_HOURS = 6;
@@ -228,6 +229,11 @@ export async function shieldView(req, res) {
   }
 
   if (req.method === 'POST') {
+    // POST {backfillFeed:1} → copy real complaints missing from the public list (_feed-backfill.js).
+    if ((req.body || {}).backfillFeed) {
+      try { return res.status(200).json(await backfillFeed()); }
+      catch (err) { console.error('feed backfill error:', err && err.message); return res.status(502).json({ ok: false, reason: 'error' }); }
+    }
     const hours = Math.min(Math.max(Math.round(Number((req.body || {}).lockdownHours) || 0), 0), MAX_LOCKDOWN_HOURS);
     await pipeline([hours ? ['SET', 'shield:lockdown', 'owner', 'EX', hours * 3600] : ['DEL', 'shield:lockdown']]);
     return res.status(200).json({ lockdown: hours * 3600 });
