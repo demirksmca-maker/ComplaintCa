@@ -32,3 +32,20 @@ test('parseList reads the JSON array out of surrounding text', () => {
   assert.equal(parseList('Here: [{"url":"x"}] done').length, 1);
   assert.deepEqual(parseList('no json'), []);
 });
+
+import { readNotice } from './_precedents.js';
+test('readNotice needs a valid ref, a real signed-in user and a pool entry', async () => {
+  const realFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({ users: [{ localId: 'u' }] }) });
+    const fsIn = async () => ({ ok: true }), fsOut = async () => ({ ok: false, status: 404 });
+    const find = async () => ({ name: 'projects/p/databases/(default)/documents/complaints/doc9', fields: { title: { stringValue: 'T' }, desc: { stringValue: 'Story' } } });
+    assert.equal(await readNotice('bad', 'tok', fsIn, find), null);
+    assert.equal(await readNotice('VC-2026-ABC123', '', fsIn, find), null);
+    assert.equal(await readNotice('VC-2026-ABC123', 'tok', fsOut, find), null);
+    const n = await readNotice('VC-2026-ABC123', 'tok', fsIn, find);
+    assert.equal(n.id, 'doc9'); assert.equal(n.case.desc, 'Story');
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({}) });
+    assert.equal(await readNotice('VC-2026-ABC123', 'tok', fsIn, find), null);
+  } finally { globalThis.fetch = realFetch; }
+});

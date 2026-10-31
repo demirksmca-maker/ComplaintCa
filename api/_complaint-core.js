@@ -343,8 +343,16 @@ export function decideClass(parsed) {
 
 // Short public headline, like the Lawyer Panel rows: the title with e-mails, links and
 // phone/long numbers taken out, cut to 80 characters. Empty when nothing is left.
+// The site form puts "Topic: <topic> · <subtopic>" before the story (assets/complaint-steps.js).
+const FORM_SUBS = ['Billing error', 'Hidden fee', 'No refund', 'Poor service', 'Never delivered', 'Faulty product', 'Contract / cancellation',
+  'Repairs not done', 'Deposit not returned', 'Rent increase', 'Eviction threat', 'Mould / pests', 'No heat',
+  'Unpaid wages', 'Overtime', 'Unfair dismissal', 'Harassment', 'Workplace safety', 'Race', 'Disability', 'Sex / gender', 'Religion', 'Age',
+  'I was scammed', 'Identity theft', 'Fake message', 'Account hacked', 'Online shopping',
+  'Immigration (IRCC)', 'Taxes (CRA)', 'Passport', 'EI / benefits', 'City service', 'Other'];
+const TOPIC_RE = new RegExp('^\\s*Topic:[^·\\n]*(·\\s*(' + FORM_SUBS.map(x => x.replace(/[()/]/g, '\\$&')).join('|') + '))?\\s*', 'i');
+
 export function publicTitle(t) {
-  const s = String(t || '')
+  const s = String(t || '').replace(TOPIC_RE, '')
     .replace(/\S+@\S+/g, '')
     .replace(/https?:\/\/\S+|www\.\S+/gi, '')
     .replace(/\+?\d[\d\s().-]{5,}\d/g, '')

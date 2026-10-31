@@ -6,9 +6,11 @@
 // looks for up to 10 similar Canadian decisions on CanLII; a decision is kept
 // only when its link really came back from the search (no invented cases).
 
-import { FS, fsAdmin } from './_gauth.js';
+import { FS, fsAdmin, findByRef } from './_gauth.js';
 
 const PROJECT = 'ajan-d6070';
+const WEB_KEY = process.env.FIREBASE_WEB_API_KEY || 'AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g';
+const REF_RE = /^(VC|CY)-\d{4}-[A-Z0-9]{6}$/;
 const MAX = 10;
 const cache = new Map(); // warm-instance cache: complaint id → result
 const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // a case is searched again after a month
@@ -44,6 +46,23 @@ export async function readCase(id, idToken) {
   const f = (await r.json()).fields || {};
   if (fsVal(f.isLegal) !== true) return null;
   return { title: fsVal(f.title), desc: fsVal(f.desc), category: fsVal(f.category), location: fsVal(f.location) };
+}
+
+// A notice in the Case Pool (publicFeed) by its reference, for a signed-in user.
+// Notices aren't readable through the rules, so the token is checked with Firebase
+// Auth and the story is read as the service account; it is only used for the search,
+// never sent back.
+export async function readNotice(ref, idToken, fs = fsAdmin, find = findByRef) {
+  if (!REF_RE.test(ref || '') || !idToken) return null;
+  const who = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${WEB_KEY}`,
+    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken }) }).catch(() => null);
+  if (!who || !who.ok || !((await who.json()).users || []).length) return null;
+  const inPool = await fs(`${FS}/publicFeed/${ref}`);
+  if (!inPool || !inPool.ok) return null;
+  const doc = await find(ref);
+  if (!doc) return null;
+  const f = doc.fields || {};
+  return { id: String(doc.name || '').split('/').pop(), case: { title: fsVal(f.title), desc: fsVal(f.desc), category: fsVal(f.category), location: fsVal(f.location) } };
 }
 
 // Every URL the search tool actually returned (shape varies, so walk it).
@@ -128,9 +147,11 @@ async function claudeSearch(c) {
   return { list: parseList(text), found: foundUrls(d.content.filter(b => b.type === 'web_search_tool_result')) };
 }
 
-export async function precedentsFor(id, idToken) {
-  const c = await readCase(id, idToken);
-  if (!c) { console.error('precedents: case not readable', id); return { error: 'forbidden' }; }
+export async function precedentsFor(id, idToken, ref = '') {
+  let c = null;
+  if (ref) { const n = await readNotice(ref, idToken); if (n) { id = n.id; c = n.case; } }
+  else c = await readCase(id, idToken);
+  if (!c) { console.error('precedents: case not readable', id || ref); return { error: 'forbidden' }; }
   if (cache.has(id)) return cache.get(id);
   const saved = await loadSaved(id);
   if (saved) { cache.set(id, saved); return saved; }

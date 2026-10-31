@@ -74,6 +74,11 @@ async function saveToFirestore(record) {
 
 // Anonymous copy for the public list (publicFeed/{ref}); a failure here never blocks the filing.
 async function savePublicSummary(record) {
+  // As the service account first, so the priority goes along; the public rules path is the fallback.
+  const pub = publicSummary(record);
+  const admin = await fsAdmin(`https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/publicFeed/${encodeURIComponent(record.ref)}`,
+    { method: 'PATCH', body: JSON.stringify({ fields: toFirestore({ ...pub, priority: record.priority }).mapValue.fields }) }).catch(() => null);
+  if (admin && admin.ok) return true;
   const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/publicFeed?documentId=${encodeURIComponent(record.ref)}&key=${FIREBASE_API_KEY}`;
   try {
     const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: toFirestore(publicSummary(record)).mapValue.fields }) });

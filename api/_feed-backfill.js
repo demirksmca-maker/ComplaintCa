@@ -9,7 +9,7 @@ import { publicSummary } from './_complaint-core.js';
 
 const REF = /^(VC|CY)-\d{4}-[A-Z0-9]{6}$/;
 const ID = /^[A-Za-z0-9_-]{1,128}$/;
-const READ = ['ref', 'title', 'desc', 'category', 'location', 'date', 'isLegal', 'test'];
+const READ = ['ref', 'title', 'desc', 'category', 'location', 'date', 'priority', 'isLegal', 'test'];
 
 const str = v => (v && (v.stringValue ?? v.timestampValue)) || '';
 
@@ -20,9 +20,12 @@ export function isPublishable(f) {
   return !(f.test && f.test.booleanValue === true);
 }
 
-function summaryFields(f) {
+// Admin writes may also carry the priority (the Case Pool's red / lilac dot); the
+// public rules only allow the summary fields, so browser writes go without it.
+export function summaryFields(f) {
   const s = publicSummary({ ref: str(f.ref), title: str(f.title), desc: str(f.desc).replace(/^Topic: [^\n]*\n+/, ''),
     category: str(f.category), location: str(f.location), date: str(f.date) });
+  if (['low', 'medium', 'high'].includes(str(f.priority))) s.priority = str(f.priority);
   return Object.fromEntries(Object.entries(s).map(([k, v]) => [k, { stringValue: String(v || '').slice(0, 80) }]));
 }
 

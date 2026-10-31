@@ -178,6 +178,8 @@
   .cx-card:nth-of-type(6){--g:linear-gradient(155deg,rgba(159,18,57,.55) 0%,rgba(97,22,90,.38) 55%,rgba(45,10,55,.3) 100%)}
   .cx-sub{margin-top:8px;text-align:center;font:700 13px Cinzel,Georgia,serif;letter-spacing:.08em;color:#d5b9eb}
   .cx-it{display:block;width:100%;text-align:left;border:1px solid rgba(244,214,255,.18);border-radius:16px;padding:13px 14px;background:linear-gradient(155deg,rgba(138,92,246,.18),rgba(46,16,80,.25));flex:none}
+  .cx-it{position:relative;padding-right:46px}
+  .cx-tick{position:absolute;right:14px;top:50%;width:24px;height:24px;margin-top:-12px;fill:none;stroke:#6ee7b7;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 6px rgba(52,211,153,.6))}
   .cx-it.new{border-color:#6ee7b7;box-shadow:0 0 16px rgba(52,211,153,.45)}
   .cx-t{font:700 15px/1.35 Cinzel,Georgia,serif;color:#fff}
   .cx-m{font:italic 15px 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85);margin-top:3px}
@@ -1148,8 +1150,10 @@
     'I was scammed': 'Dolandırıldım', 'Identity theft': 'Kimlik hırsızlığı', 'Fake message': 'Sahte mesaj', 'Account hacked': 'Hesap ele geçirildi', 'Online shopping': 'Online alışveriş',
     'Immigration (IRCC)': 'Göçmenlik (IRCC)', 'Taxes (CRA)': 'Vergi (CRA)', 'Passport': 'Pasaport', 'EI / benefits': 'İşsizlik / yardımlar', 'City service': 'Belediye hizmeti' };
   var CX_TYPE = { notice: 'Kuruma bildir', legal: 'Yasal hak', access: 'Bilgi edinme' };
-  var CX_SEEN = 'dias_cx_seen', CX_TR = 'dias_cx_tr', CX_SEL = 'dias_cx_sel';
-  var cx = { list: [], seen: null, tr: {}, sel: store(CX_SEL) || '', open: null };
+  // seen: not green any more (also everything present on the first visit); read: opened here (✓).
+  var CX_SEEN = 'dias_cx_seen', CX_READ = 'dias_cx_read', CX_TR = 'dias_cx_tr', CX_SEL = 'dias_cx_sel';
+  var cx = { list: [], seen: null, read: {}, tr: {}, sel: store(CX_SEL) || '', open: null };
+  try { (JSON.parse(store(CX_READ) || '[]') || []).forEach(function (id) { cx.read[id] = 1; }); } catch (e) { cx.read = {}; }
   try { cx.tr = JSON.parse(store(CX_TR) || '{}') || {}; } catch (e) { cx.tr = {}; }
   function cxG(k) { return CX_G.filter(function (g) { return g[0] === k; })[0] || CX_G[0]; }
   function cxSvg(d) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + d + '</svg>'; }
@@ -1210,7 +1214,8 @@
     $('cxList').innerHTML = items.length ? items.map(function (c) {
       return '<button type="button" class="cx-it' + (cxNew(c) ? ' new' : '') + '" data-id="' + esc(c.id) + '"><div class="cx-t">' +
         (cxNew(c) ? '<span class="cx-yeni">YENİ</span>' : '') + (c.test === true ? '<span class="cx-test">TEST</span>' : '') + esc(cxTitle(c)) + '</div>' +
-        '<div class="cx-m">' + esc(cxCity(c)) + ' · ' + esc(cxWhen(c.date)) + '</div></button>';
+        '<div class="cx-m">' + esc(cxCity(c)) + ' · ' + esc(cxWhen(c.date)) + '</div>' +
+        (cx.read[c.id] ? '<svg class="cx-tick" viewBox="0 0 24 24" aria-label="Okundu"><path d="M4 12.5l5 5L20 6.5"/></svg>' : '') + '</button>';
     }).join('') : '<p class="empty">Bu kategoride şikayet yok.</p>';
   }
   function cxDetail(id, lang) {
@@ -1218,6 +1223,7 @@
     if (!c) return cxRender();
     cx.open = id; $('cxHome').hidden = true; var box = $('cxDetail'); box.hidden = false;
     if (!cx.seen[id]) { cx.seen[id] = 1; cxSaveSeen(); }
+    if (!cx.read[id]) { cx.read[id] = 1; store(CX_READ, JSON.stringify(Object.keys(cx.read))); }
     var g = cxG(c.group), tr = cx.tr[id] || {}, orig = lang === 'orig';
     var topic = /^Topic: [^\n]*· ([^\n]+)/.exec(c.desc || ''), story = String(c.desc || '').replace(/^Topic: [^\n]*\n+/, '');
     var text = orig ? story : (tr.d || 'Çevriliyor…');
