@@ -163,6 +163,8 @@
   .cm .m i.cat{background:rgba(245,158,11,.18);color:#fbbf24}
   .cm .m i.st{background:rgba(52,211,153,.16);color:#34d399}
   .cm .body{padding:0 2px 14px;font-size:.82rem;line-height:1.5;color:#e5e1f0;white-space:pre-wrap;word-break:break-word}
+  .cm .trb{margin-top:12px;padding:7px 14px;border-radius:99px;font-size:.74rem;font-weight:700;background:rgba(245,158,11,.18);color:#fbbf24;border:1px solid rgba(245,158,11,.4)}
+  .cm .tr{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border-left:3px solid #f59e0b}
   .cm .ref{display:block;margin-top:10px;font-size:.68rem;color:var(--mute)}
   .list time{display:block;color:var(--mute);font-size:.7rem;margin-bottom:2px}
   .list .hit{color:var(--bad);word-break:break-all}
@@ -1093,11 +1095,32 @@
           var chip = function (txt, cls) { return txt ? '<i' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(txt) + '</i>' : ''; };
           return '<details class="cm"><summary><span class="t">' + esc(c.title || c.ref) + '</span><span class="m">' +
             chip(c.category, 'cat') + chip(c.city) + chip(c.status, 'st') + chip(day) + (c.anonymous === true ? chip('anonim') : '') +
-            '</span></summary><div class="body">' + esc(c.desc || 'Metin yok.') + '<span class="ref">' + esc(c.ref || '') + (c.targetName ? ' · ' + esc(c.targetName) : '') + '</span></div></details>';
+            '</span></summary><div class="body"><div class="bd">' + esc(c.desc || 'Metin yok.') + '</div><button type="button" class="trb">🇹🇷 TR</button><div class="tr" hidden></div><span class="ref">' + esc(c.ref || '') + (c.targetName ? ' · ' + esc(c.targetName) : '') + '</span></div></details>';
         }).join('');
       })
       .catch(function () { box.innerHTML = '<p class="empty">Şikayetler alınamadı.</p>'; });
   }
+  // TR button: translates one complaint (title + text) to Turkish through /api/groq-proxy; kept after the first time.
+  $('cmpList').addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.trb') : null;
+    if (!btn) return;
+    var card = btn.closest('.cm'), out = card.querySelector('.tr');
+    if (out.dataset.done) { out.hidden = !out.hidden; return; }
+    var src = card.querySelector('.t').textContent + '\n\n' + card.querySelector('.bd').textContent;
+    btn.disabled = true; btn.textContent = '…'; out.hidden = false; out.textContent = 'Çevriliyor…';
+    fetch('/api/groq-proxy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+      model: 'llama-3.1-8b-instant', max_tokens: 3000, temperature: 0,
+      messages: [{ role: 'system', content: 'Verilen şikayet metnini doğal, akıcı Türkçeye çevir. İlk satır başlıktır. Sadece çeviriyi yaz, yorum ekleme.' }, { role: 'user', content: src }]
+    }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var t = d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+        if (!t) throw new Error('x');
+        out.textContent = t.trim(); out.dataset.done = '1'; btn.textContent = '🇹🇷 TR';
+      })
+      .catch(function () { out.textContent = 'Çevrilemedi, tekrar dene.'; btn.textContent = '🇹🇷 TR'; })
+      .then(function () { btn.disabled = false; });
+  });
   function showSec(name) {
     // Sections toggle on their own: Huni has no tab but still opens from #funnel links.
     each('.sec', function (v) { v.hidden = v.id !== 'v-' + name; });
