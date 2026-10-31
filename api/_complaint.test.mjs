@@ -285,10 +285,18 @@ describe('public summary (publicFeed)', () => {
     assert.equal(publicSummary({ ref: 'VC-2026-ABC123', desc: 'Dealer kept my deposit. More text.' }).title, 'Dealer kept my deposit.');
     assert.ok(!('title' in publicSummary({ ref: 'VC-2026-ABC123' })));
   });
-  test('test filings are not published; live filings are', async () => {
+  test('panel test filings are not published; real filings are, in the pilot too', async () => {
     mockFetch();
     await call(good());
     assert.equal(calls.filter(c => c.url.includes('/publicFeed')).length, 0);
+    mockFetch();
+    await call({ ...good(), test: true });
+    assert.equal(calls.filter(c => c.url.includes('/publicFeed')).length, 0);
+    delete process.env.COMPLAINT_LIVE;
+    mockFetch();
+    const pilot = await call({ ...good(), test: false });
+    assert.equal(pilot.data.test, true);
+    assert.equal(calls.filter(c => c.url.includes('/publicFeed')).length, 1);
     process.env.COMPLAINT_LIVE = '1';
     mockFetch();
     await call({ ...good(), desc: good().desc + ' The tenant next door is Jane Roe.', test: false });

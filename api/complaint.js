@@ -126,7 +126,8 @@ export default async function handler(req, res) {
     const record = buildRecord(input, { ref: genRef(), test: !live });
     const saved = await saveToFirestore(record);
     if (!saved) return res.status(502).json({ error: 'save_failed' });
-    if (!record.test) await savePublicSummary(record);
+    // Real filings (test:false) go to the public list even in the pilot; panel/?test=1 filings never do.
+    if (body.test === false) await savePublicSummary(record);
 
     const conf = confirmationEmail(record);
     const confirmationSent = await sendEmail(record.email, record.name || '', conf.subject, conf.body);
