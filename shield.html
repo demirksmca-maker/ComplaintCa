@@ -410,6 +410,7 @@
     <section class="sec" id="v-security" hidden>
       <h3 class="ptitle">AI güvenlik ve ajan analizi</h3>
       <button type="button" class="lock" id="lock">🔓 Acil kilit kapalı · dokun, 1 saat kilitle</button>
+      <button type="button" class="lock" id="feedFill">📋 Eksik şikayetleri havuza aktar</button>
       <div class="card pad"><h2>Saldırı gelen ülkeler · son kayıtlar</h2><div class="hb" id="attackGeo"></div></div>
       <div class="seg" role="group"><button type="button" data-list="reports" aria-pressed="true">Bildirimler</button><button type="button" data-list="events" aria-pressed="false">Engellenen</button><button type="button" data-list="risks" aria-pressed="false">Risk</button></div>
       <div class="card pad list" id="reports"></div>
@@ -1357,6 +1358,15 @@
     fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ lockdownHours: hours }) })
       .then(function (r) { if (!r.ok) throw new Error('Kilit değiştirilemedi (' + r.status + ').'); load(); })
       .catch(function (e) { $('heroState').textContent = e.message; });
+  });
+
+  $('feedFill').addEventListener('click', function () {
+    var b = this; b.disabled = true; b.textContent = '📋 Aktarılıyor…';
+    fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ backfillFeed: 1 }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (d) { b.textContent = d.ok ? '📋 ' + d.added + ' eklendi · ' + d.existed + ' zaten vardı' + (d.failed ? ' · ' + d.failed + ' hata' : '') : '📋 Aktarılamadı (' + (d.reason || 'hata') + ')'; })
+      .catch(function () { b.textContent = '📋 Aktarılamadı'; })
+      .then(function () { b.disabled = false; });
   });
 
   // Phone app: Android/Chrome offers an install prompt; iPhone needs Share → Add to Home Screen.
