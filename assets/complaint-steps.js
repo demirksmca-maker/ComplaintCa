@@ -58,7 +58,7 @@
     '#cc-steps .cs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}',
     '#cc-steps .cs-quote{position:relative;flex:1;min-width:0;margin-right:14px;padding:2px 0 2px 13px;quotes:none;text-align:left;font:italic 500 clamp(13.5px,3.7vw,15.5px)/1.3 \'EB Garamond\',Georgia,serif;letter-spacing:.005em;color:#dcc5ee;text-shadow:0 1px 2px rgba(0,0,0,.55)}',
     '#cc-steps .cs-quote::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:1.5px;border-radius:2px;background:linear-gradient(180deg,transparent,#cfb0e8 20%,#cfb0e8 80%,transparent);transform-origin:50% 0;animation:csRule .9s cubic-bezier(.2,.7,.2,1) both}',
-    '#cc-steps .cs-quote .w{display:inline-block;opacity:0;transform:translateY(5px);animation:csInk .8s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(.35s + var(--i) * 75ms)}',
+    '#cc-steps .cs-quote .t{display:block;opacity:0;transform:translateY(5px);animation:csInk .9s cubic-bezier(.2,.7,.2,1) .35s forwards}',
     '#cc-steps .cs-quote cite{display:flex;align-items:center;gap:8px;margin-top:7px;font:700 clamp(8.5px,2.3vw,9.5px)/1 Cinzel,Georgia,serif;font-style:normal;letter-spacing:.3em;color:#cfb0e8;opacity:0;animation:csCite .9s ease-out 1.9s forwards}',
     '#cc-steps .cs-quote cite::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}',
     '@keyframes csInk{to{opacity:1;transform:none}}@keyframes csRule{from{transform:scaleY(0);opacity:0}to{transform:none;opacity:1}}@keyframes csCite{from{opacity:0}to{opacity:1}}',
@@ -266,7 +266,7 @@
     '#cc-steps .as .as-btns button::before{content:"";position:absolute;inset:3px;border-radius:10px;border:1px solid rgba(255,226,150,.35);pointer-events:none}',
     '#cc-steps .as .as-use{background:linear-gradient(rgba(40,10,60,.2),rgba(40,10,60,.4)) padding-box,url(/assets/choice/marble.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box}',
     '#cc-steps .as .as-keep{background:linear-gradient(rgba(20,8,0,.25),rgba(20,8,0,.4)) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;color:#f6ead2}',
-    '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::before,#cc-steps *::after{animation:none!important;transition:none!important}#cc-steps .cs-quote .w,#cc-steps .cs-quote cite{opacity:1;filter:none;transform:none}}'
+    '@media (prefers-reduced-motion:reduce){#cc-steps *,#cc-steps *::before,#cc-steps *::after{animation:none!important;transition:none!important}#cc-steps .cs-quote .t,#cc-steps .cs-quote cite{opacity:1;filter:none;transform:none}}'
   ].join('\n');
 
   var FLAG = '<svg class="as-flag" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>' +
@@ -286,9 +286,9 @@
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
       '<div class="cs-wrap"><h2 class="cs-sr" id="cs-title">File a Complaint</h2>' +
-      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + 'If it is not right, do not do it; if it is not true, do not say it.'.split(' ').map(function(w, i){ return '<span class="w" style="--i:' + i + '">' + w + '</span>'; }).join(' ') + '<cite>Marcvs·Avrelivs</cite></q><button type="button" class="cs-asya" data-act="asya" aria-label="Open ASYA">ASYA</button></div>' +
+      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + '<span class="t">If it is not right, do not do it; if it is not true, do not say it.</span><cite class="notranslate" translate="no">Marcvs·Avrelivs</cite></q><button type="button" class="cs-asya notranslate" translate="no" data-act="asya" aria-label="Open ASYA">ASYA</button></div>' +
       '<div class="cs-grid">' +
-      STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
+      STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n notranslate" translate="no">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
       '<button type="button" class="cs-go" data-act="send" disabled>File Complaint <span class="cs-ca notranslate" translate="no">CA</span></button>' +
       '<p class="cs-note">Location, what happened and your email are needed. You review everything before it is sent.</p></div>' +
