@@ -5,14 +5,14 @@
 // devices, hour heatmap, complaint funnel; plus attack countries, the
 // funnel per day, complaint totals and
 // the risk score per IP of the last 24 h (_shield-risk.js). POST {lockdownHours} turns emergency lockdown on (1-6 h)
-// or off (0); POST {backfillFeed:1} fills the public complaint list. ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
+// or off (0); POST {backfillFeed:1} fills the public complaint list; POST {deleteComplaint:id} deletes a complaint. ?stats=1 is the İstatistik panel (_stats.js), ?funnel=1 the
 // site road map of Genel's 3D cards, ?gsc24=1 Search Console's last 24 hours. The key is the SHIELD_KEY env var; wrong keys are rate limited.
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
 import { statsPanel } from './_stats.js';
 import { riskList } from './_shield-risk.js';
-import { complaintList } from './_shield-complaints.js';
+import { complaintList, deleteComplaint } from './_shield-complaints.js';
 import { backfillFeed } from './_feed-backfill.js';
 
 const DAYS = 7;
@@ -194,7 +194,7 @@ export async function shieldView(req, res) {
     return res.status(403).json({ error: 'forbidden' });
   }
 
-  // GET /api/shield?complaints=1 → the latest complaints (no e-mail, no story).
+  // GET /api/shield?complaints=1 → the latest complaints (no e-mail).
   if (req.query && req.query.complaints) {
     try { return res.status(200).json(await complaintList()); }
     catch (err) {
@@ -240,6 +240,11 @@ export async function shieldView(req, res) {
 
   if (req.method === 'POST') {
     // POST {backfillFeed:1} → copy real complaints missing from the public list (_feed-backfill.js).
+    // POST {deleteComplaint:id} → delete one complaint and its Case Pool copy.
+    if ((req.body || {}).deleteComplaint) {
+      try { const out = await deleteComplaint(req.body.deleteComplaint); return res.status(out.ok ? 200 : out.reason === 'not_found' ? 404 : out.reason === 'bad_id' ? 400 : 502).json(out); }
+      catch (err) { console.error('complaint delete error:', err && err.message); return res.status(502).json({ ok: false, reason: 'error' }); }
+    }
     if ((req.body || {}).backfillFeed) {
       try { return res.status(200).json(await backfillFeed()); }
       catch (err) { console.error('feed backfill error:', err && err.message); return res.status(502).json({ ok: false, reason: 'error' }); }

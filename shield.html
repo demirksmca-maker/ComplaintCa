@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#050408">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700&family=EB+Garamond:ital@1&display=swap">
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="DİAS">
@@ -153,19 +153,58 @@
 
   .list .row{padding:9px 0;border-top:1px solid var(--line);font-size:.8rem}
   .list .row:first-child{border-top:0;padding-top:0}
-  .cm{border-top:1px solid var(--line);padding:2px 0}
-  .cm:first-child{border-top:0}
-  .cm summary{list-style:none;cursor:pointer;padding:12px 2px;display:block}
-  .cm summary::-webkit-details-marker{display:none}
-  .cm .t{display:block;font-weight:700;font-size:.92rem;line-height:1.3;color:#fff;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-  .cm .m{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
-  .cm .m i{font-style:normal;font-size:.68rem;padding:2px 8px;border-radius:99px;background:rgba(255,255,255,.07);color:var(--mute)}
-  .cm .m i.cat{background:rgba(245,158,11,.18);color:#fbbf24}
-  .cm .m i.st{background:rgba(52,211,153,.16);color:#34d399}
-  .cm .body{padding:0 2px 14px;font-size:.82rem;line-height:1.5;color:#e5e1f0;white-space:pre-wrap;word-break:break-word}
-  .cm .trb{margin-top:12px;padding:7px 14px;border-radius:99px;font-size:.74rem;font-weight:700;background:rgba(245,158,11,.18);color:#fbbf24;border:1px solid rgba(245,158,11,.4)}
-  .cm .tr{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.06);border-left:3px solid #f59e0b}
-  .cm .ref{display:block;margin-top:10px;font-size:.68rem;color:var(--mute)}
+  /* Şikayetler: the six topic cards of the site's home page (assets/complaint-steps.js
+     .cs-card), a list per topic, and a detail view with Turkish text and delete. */
+  .cx-h1{text-align:center;font:700 1.3rem/1.2 Cinzel,Georgia,serif;letter-spacing:.06em;background:linear-gradient(100deg,#fff,#d5b9eb,#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .cx-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:-4px;color:#cfb0e8;font:italic 15px 'EB Garamond',Georgia,serif}
+  .cx-orn i{display:block;width:48px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}.cx-orn i:last-child{transform:scaleX(-1)}
+  .cx-grid{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:112px;gap:10px;flex:none}
+  .cx-card{position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:8px;overflow:hidden;padding:12px 14px 14px;border:1px solid rgba(244,214,255,.22);border-radius:16px;text-align:left;color:#fff;background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55)}
+  .cx-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}
+  .cx-card>span:last-child{align-self:flex-end;width:100%;text-align:right}
+  .cx-card b{display:block;font:700 15px/1.2 Cinzel,Georgia,serif;letter-spacing:.02em}
+  .cx-card small{display:block;margin-top:3px;font:italic 400 15px/1.3 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85)}
+  .cx-card svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cx-n{position:absolute;top:12px;right:14px;font:700 12px/1 Cinzel,Georgia,serif;color:rgba(211,181,234,.75);letter-spacing:.06em}
+  .cx-card.on{border-color:rgba(255,245,255,.95);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),inset 0 0 36px rgba(242,225,255,.45),0 0 22px 4px rgba(228,192,255,.55)}
+  .cx-card.new{border-color:#6ee7b7;box-shadow:inset 0 0 0 1px rgba(110,231,183,.8),inset 0 0 30px rgba(52,211,153,.3),0 0 22px 5px rgba(52,211,153,.55);animation:cxPulse 1.8s ease-in-out infinite}
+  @keyframes cxPulse{50%{box-shadow:inset 0 0 0 1px rgba(110,231,183,.8),inset 0 0 30px rgba(52,211,153,.3),0 0 34px 10px rgba(52,211,153,.8)}}
+  .cx-nb{position:absolute;top:10px;left:50%;transform:translateX(-50%);font:700 11px 'Plus Jakarta Sans',sans-serif;background:#34d399;color:#04150d;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .cx-card:nth-of-type(1){--g:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
+  .cx-card:nth-of-type(2){--g:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
+  .cx-card:nth-of-type(3){--g:linear-gradient(155deg,rgba(124,58,237,.55) 0%,rgba(109,40,140,.38) 55%,rgba(50,14,70,.3) 100%)}
+  .cx-card:nth-of-type(4){--g:linear-gradient(155deg,rgba(225,29,72,.55) 0%,rgba(136,19,55,.38) 55%,rgba(70,10,35,.3) 100%)}
+  .cx-card:nth-of-type(5){--g:linear-gradient(155deg,rgba(168,85,247,.55) 0%,rgba(126,34,206,.38) 55%,rgba(60,12,90,.3) 100%)}
+  .cx-card:nth-of-type(6){--g:linear-gradient(155deg,rgba(159,18,57,.55) 0%,rgba(97,22,90,.38) 55%,rgba(45,10,55,.3) 100%)}
+  .cx-sub{margin-top:8px;text-align:center;font:700 13px Cinzel,Georgia,serif;letter-spacing:.08em;color:#d5b9eb}
+  .cx-it{display:block;width:100%;text-align:left;border:1px solid rgba(244,214,255,.18);border-radius:16px;padding:13px 14px;background:linear-gradient(155deg,rgba(138,92,246,.18),rgba(46,16,80,.25));flex:none}
+  .cx-it.new{border-color:#6ee7b7;box-shadow:0 0 16px rgba(52,211,153,.45)}
+  .cx-t{font:700 15px/1.35 Cinzel,Georgia,serif;color:#fff}
+  .cx-m{font:italic 15px 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85);margin-top:3px}
+  .cx-yeni{display:inline-block;font:700 10px 'Plus Jakarta Sans',sans-serif;background:#34d399;color:#04150d;padding:2px 7px;border-radius:99px;margin-right:6px;vertical-align:2px}
+  .cx-test{display:inline-block;font:700 10px 'Plus Jakarta Sans',sans-serif;background:rgba(245,158,11,.2);color:#fbbf24;padding:2px 7px;border-radius:99px;margin-right:6px;vertical-align:2px}
+  .cx-top{display:flex;align-items:center;justify-content:space-between;flex:none}
+  .cx-back{font:700 13px Cinzel,Georgia,serif;color:#d5b9eb;background:none;padding:6px 0}
+  .cx-hero{position:relative;overflow:hidden;border:1px solid rgba(244,214,255,.25);border-radius:18px;padding:16px;background:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),0 14px 30px -18px rgba(190,24,93,.55);flex:none}
+  .cx-hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%)}
+  .cx-hero>*{position:relative}
+  .cx-cat{display:flex;align-items:center;gap:8px;font:italic 15px 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.9)}
+  .cx-cat svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .cx-ht{font:700 18px/1.3 Cinzel,Georgia,serif;margin-top:8px;word-break:break-word}
+  .cx-box{border:1px solid rgba(244,214,255,.18);border-radius:16px;padding:14px;background:linear-gradient(155deg,rgba(138,92,246,.14),rgba(46,16,80,.25));flex:none}
+  .cx-bh{font:700 12px Cinzel,Georgia,serif;letter-spacing:.08em;color:#d5b9eb;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+  .cx-sw{display:flex;background:rgba(0,0,0,.3);border-radius:99px;padding:2px}
+  .cx-sw button{font:700 11px 'Plus Jakarta Sans',sans-serif;padding:4px 10px;border-radius:99px;color:#cdb6e0;background:none}
+  .cx-sw button[aria-pressed=true]{background:#d5b9eb;color:#2a0814}
+  .cx-txt{font-size:.9rem;line-height:1.65;color:#f0e6f7;white-space:pre-wrap;word-break:break-word}
+  .cx-dl{display:grid;grid-template-columns:auto 1fr;gap:9px 14px;font-size:.84rem}
+  .cx-dl dt{color:rgba(213,185,235,.75)}.cx-dl dd{margin:0;text-align:right;font-weight:600;word-break:break-word}
+  .cx-del{width:100%;padding:14px;border-radius:14px;font-weight:800;font-size:.88rem;background:rgba(225,29,72,.22);border:1px solid rgba(251,113,133,.5);color:#fecdd3;flex:none}
+  .cx-sheet{border:1px solid rgba(251,113,133,.5);border-radius:20px;padding:18px 16px;background:linear-gradient(155deg,rgba(159,18,57,.5),rgba(45,10,55,.6));display:flex;flex-direction:column;gap:10px;box-shadow:0 0 30px rgba(225,29,72,.35);flex:none}
+  .cx-sheet h3{font:700 17px Cinzel,Georgia,serif}
+  .cx-sheet p{font-size:.84rem;line-height:1.55;color:#f3dbe6}
+  .cx-go{padding:13px;border-radius:12px;font-weight:800;background:#fb7185;color:#2a0510}
+  .cx-no{padding:13px;border-radius:12px;font-weight:700;background:rgba(255,255,255,.1)}
   .list time{display:block;color:var(--mute);font-size:.7rem;margin-bottom:2px}
   .list .hit{color:var(--bad);word-break:break-all}
   .list a{color:var(--s1)}
@@ -402,10 +441,15 @@
         <div class="mk-pop-ft"><input id="mkNote" placeholder="Başka ne yapılsın? (isteğe bağlı)"><div class="mk-row"><button type="button" id="mkDrop">İşareti kaldır</button><button type="button" id="mkGo" hidden>Sayfaya git →</button><button type="button" class="mk-send" id="mkOk">Tamam</button></div></div>
       </div></section>
 
-    <!-- GÜVENLİK -->
+    <!-- ŞİKAYETLER -->
     <section class="sec" id="v-complaints" hidden>
-      <h3 class="ptitle">Şikayetler · son 50</h3>
-      <div class="card pad list" id="cmpList"><p class="empty">Yükleniyor…</p></div>
+      <div id="cxHome" style="display:contents">
+        <h3 class="cx-h1">Şikayetler</h3><div class="cx-orn"><i></i><span id="cxTotal">…</span><i></i></div>
+        <div class="cx-grid" id="cxGrid"></div>
+        <p class="cx-sub" id="cxSub"></p>
+        <div id="cxList" style="display:contents"><p class="empty">Yükleniyor…</p></div>
+      </div>
+      <div id="cxDetail" style="display:contents" hidden></div>
     </section>
     <section class="sec" id="v-security" hidden>
       <h3 class="ptitle">AI güvenlik ve ajan analizi</h3>
@@ -1084,55 +1128,163 @@
   })();
 
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
-  var CMP_CAT = { service: 'Hizmet', education: 'Eğitim', repairs: 'Tamirat', cybercrime: 'Siber suç', billing: 'Fatura', disc: 'Ayrımcılık', consumer: 'Tüketici', tenancy: 'Kiracı', employment: 'İş', human_rights: 'İnsan hakları', health: 'Sağlık', police: 'Polis', privacy: 'Gizlilik', energy: 'Enerji', schools: 'Okul', condo: 'Kondo' };
+  // ── Şikayetler: six topic cards → list → detail (Turkish text, delete). ──
+  // Topics are the site form's six (api/_shield-complaints.js groupOf). A card
+  // glows green while it holds complaints not opened here yet.
+  var CX_G = [
+    ['consumer', 'I', 'Tüketici', '<path d="M3 4h2l2.5 11h10L20 8H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>'],
+    ['tenancy', 'II', 'Kiracı', '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>'],
+    ['employment', 'III', 'İş', '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 12h18"/>'],
+    ['humanrights', 'IV', 'İnsan Hakları', '<path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>'],
+    ['cyber', 'V', 'Siber Suç', '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/>'],
+    ['mp', 'VI', 'Devlet', '<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>']
+  ];
   var CMP_ST = { received: 'Alındı', reply: 'Cevap geldi', resolved: 'Çözüldü', closed: 'Kapandı' };
+  var CX_SUB = { 'Billing error': 'Fatura hatası', 'Hidden fee': 'Gizli ücret', 'No refund': 'İade yok', 'Poor service': 'Kötü hizmet', 'Never delivered': 'Teslim edilmedi', 'Faulty product': 'Arızalı ürün', 'Contract / cancellation': 'Sözleşme / iptal', 'Other': 'Diğer',
+    'Repairs not done': 'Tamir yapılmadı', 'Deposit not returned': 'Depozito iade edilmedi', 'Rent increase': 'Kira artışı', 'Eviction threat': 'Tahliye tehdidi', 'Mould / pests': 'Küf / haşere', 'No heat': 'Isıtma yok',
+    'Unpaid wages': 'Ödenmeyen maaş', 'Overtime': 'Fazla mesai', 'Unfair dismissal': 'Haksız işten çıkarma', 'Harassment': 'Taciz', 'Workplace safety': 'İş güvenliği',
+    'Race': 'Irk', 'Disability': 'Engellilik', 'Sex / gender': 'Cinsiyet', 'Religion': 'Din', 'Age': 'Yaş',
+    'I was scammed': 'Dolandırıldım', 'Identity theft': 'Kimlik hırsızlığı', 'Fake message': 'Sahte mesaj', 'Account hacked': 'Hesap ele geçirildi', 'Online shopping': 'Online alışveriş',
+    'Immigration (IRCC)': 'Göçmenlik (IRCC)', 'Taxes (CRA)': 'Vergi (CRA)', 'Passport': 'Pasaport', 'EI / benefits': 'İşsizlik / yardımlar', 'City service': 'Belediye hizmeti' };
+  var CX_TYPE = { notice: 'Kuruma bildir', legal: 'Yasal hak', access: 'Bilgi edinme' };
+  var CX_SEEN = 'dias_cx_seen', CX_TR = 'dias_cx_tr', CX_SEL = 'dias_cx_sel';
+  var cx = { list: [], seen: null, tr: {}, sel: store(CX_SEL) || '', open: null };
+  try { cx.tr = JSON.parse(store(CX_TR) || '{}') || {}; } catch (e) { cx.tr = {}; }
+  function cxG(k) { return CX_G.filter(function (g) { return g[0] === k; })[0] || CX_G[0]; }
+  function cxSvg(d) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + d + '</svg>'; }
+  function cxSaveTr() { var keep = {}; cx.list.forEach(function (c) { if (cx.tr[c.id]) keep[c.id] = cx.tr[c.id]; }); cx.tr = keep; store(CX_TR, JSON.stringify(keep)); }
+  function cxSaveSeen() { store(CX_SEEN, JSON.stringify(Object.keys(cx.seen))); }
+  function cxNew(c) { return !cx.seen[c.id]; }
+  function cxCity(c) { return String(c.location || '').split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x && !/\d/.test(x); }).slice(-2).join(', ') || 'Kanada'; }
+  function cxWhen(iso, withTime) {
+    var d = new Date(iso); if (isNaN(d)) return '';
+    var day = function (x) { return new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime(); };
+    var n = Math.round((day(new Date()) - day(d)) / 864e5), hm = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    var s = n <= 0 ? 'bugün' : n === 1 ? 'dün' : n < 7 ? n + ' gün önce' : d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' });
+    return withTime ? s + ' ' + hm : s;
+  }
+  function cxTitle(c) { var t = cx.tr[c.id] && cx.tr[c.id].t; return t || c.title || c.ref || 'Başlıksız'; }
+  // One Turkish translation: Groq first, Claude if Groq fails. Resolves to text or ''.
+  function cxAsk(sys, text, max) {
+    var post = function (url, body) {
+      return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json().catch(function () { return {}; }); });
+    };
+    return post('/api/groq-proxy', { model: 'llama-3.1-8b-instant', max_tokens: max, temperature: 0, messages: [{ role: 'system', content: sys }, { role: 'user', content: text }] })
+      .then(function (d) {
+        var t = d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+        if (t) return t;
+        return post('/api/claude-proxy', { max_tokens: max, temperature: 0, system: sys, messages: [{ role: 'user', content: text }] })
+          .then(function (d2) { return (d2 && d2.content && d2.content.map(function (c) { return c.text || ''; }).join('')) || ''; });
+      })
+      .catch(function () { return ''; });
+  }
+  // Titles not translated yet go in one numbered batch.
+  function cxTranslateTitles() {
+    var todo = cx.list.filter(function (c) { return c.title && !(cx.tr[c.id] && cx.tr[c.id].t); }).slice(0, 40);
+    if (!todo.length) return;
+    var src = todo.map(function (c, i) { return (i + 1) + '. ' + String(c.title).replace(/\s+/g, ' '); }).join('\n');
+    cxAsk('Her numaralı satırı doğal Türkçeye çevir. Aynı numaralarla, satır satır yaz. Sadece çeviriyi yaz.', src, 1500).then(function (out) {
+      String(out || '').split('\n').forEach(function (line) {
+        var m = /^\s*(\d+)[.)]\s*(.+)$/.exec(line), c = m && todo[Number(m[1]) - 1];
+        if (c) { cx.tr[c.id] = cx.tr[c.id] || {}; cx.tr[c.id].t = m[2].trim(); }
+      });
+      cxSaveTr();
+      if (cx.open) cxDetail(cx.open); else cxRender();
+    });
+  }
+  function cxRender() {
+    var box = $('cxHome'); box.hidden = false; $('cxDetail').hidden = true; cx.open = null;
+    var count = {}, fresh = {};
+    cx.list.forEach(function (c) { count[c.group] = (count[c.group] || 0) + 1; if (cxNew(c)) fresh[c.group] = (fresh[c.group] || 0) + 1; });
+    if (!cx.sel) cx.sel = (CX_G.filter(function (g) { return fresh[g[0]]; })[0] || CX_G[0])[0];
+    $('cxTotal').textContent = cx.list.length + ' şikayet';
+    $('cxGrid').innerHTML = CX_G.map(function (g) {
+      var f = fresh[g[0]] || 0;
+      return '<button type="button" class="cx-card' + (g[0] === cx.sel ? ' on' : '') + (f ? ' new' : '') + '" data-g="' + g[0] + '"><span class="cx-n">' + g[1] + '</span>' +
+        (f ? '<span class="cx-nb">● ' + f + ' yeni</span>' : '') + cxSvg(g[3]) + '<span><b>' + esc(g[2]) + '</b><small>' + (count[g[0]] || 0) + ' şikayet</small></span></button>';
+    }).join('');
+    var g = cxG(cx.sel), items = cx.list.filter(function (c) { return c.group === cx.sel; });
+    $('cxSub').textContent = g[1] + ' · ' + g[2].toLocaleUpperCase('tr-TR');
+    $('cxList').innerHTML = items.length ? items.map(function (c) {
+      return '<button type="button" class="cx-it' + (cxNew(c) ? ' new' : '') + '" data-id="' + esc(c.id) + '"><div class="cx-t">' +
+        (cxNew(c) ? '<span class="cx-yeni">YENİ</span>' : '') + (c.test === true ? '<span class="cx-test">TEST</span>' : '') + esc(cxTitle(c)) + '</div>' +
+        '<div class="cx-m">' + esc(cxCity(c)) + ' · ' + esc(cxWhen(c.date)) + '</div></button>';
+    }).join('') : '<p class="empty">Bu kategoride şikayet yok.</p>';
+  }
+  function cxDetail(id, lang) {
+    var c = cx.list.filter(function (x) { return x.id === id; })[0];
+    if (!c) return cxRender();
+    cx.open = id; $('cxHome').hidden = true; var box = $('cxDetail'); box.hidden = false;
+    if (!cx.seen[id]) { cx.seen[id] = 1; cxSaveSeen(); }
+    var g = cxG(c.group), tr = cx.tr[id] || {}, orig = lang === 'orig';
+    var topic = /^Topic: [^\n]*· ([^\n]+)/.exec(c.desc || ''), story = String(c.desc || '').replace(/^Topic: [^\n]*\n+/, '');
+    var text = orig ? story : (tr.d || 'Çevriliyor…');
+    var pool = c.pool === true ? 'Görünüyor' : c.pool === false ? 'Görünmüyor' : '—';
+    box.innerHTML = '<div class="cx-top"><button type="button" class="cx-back" data-back="1">‹ ' + esc(g[2]) + '</button><span class="cx-n" style="position:static">' + g[1] + '</span></div>' +
+      '<div class="cx-hero"><div class="cx-cat">' + cxSvg(g[3]) + esc(g[2]) + (topic ? ' · ' + esc(CX_SUB[topic[1].trim()] || topic[1]) : '') + '</div>' +
+      '<div class="cx-ht">' + esc(cxTitle(c)) + '</div><div class="cx-m">' + esc(cxCity(c)) + ' · ' + esc(cxWhen(c.date, true)) + '</div></div>' +
+      '<div class="cx-box"><div class="cx-bh">ŞİKAYET<span class="cx-sw"><button type="button" data-lang="tr" aria-pressed="' + !orig + '">Türkçe</button><button type="button" data-lang="orig" aria-pressed="' + orig + '">Orijinal</button></span></div>' +
+      '<p class="cx-txt">' + esc(text || 'Metin yok.') + '</p></div>' +
+      '<div class="cx-box"><div class="cx-bh">BİLGİLER</div><dl class="cx-dl">' +
+      '<dt>Ref</dt><dd>' + esc(c.ref || '—') + '</dd><dt>Kurum</dt><dd>' + esc(c.targetName || '—') + '</dd>' +
+      '<dt>Tür</dt><dd>' + esc(CX_TYPE[c.ctype] || (c.isLegal ? 'Yasal hak' : 'Kuruma bildir')) + '</dd><dt>Durum</dt><dd>' + esc(CMP_ST[c.status] || c.status || '—') + '</dd>' +
+      '<dt>Gönderen</dt><dd>' + esc(c.name || 'Anonim') + '</dd><dt>Havuz</dt><dd>' + pool + '</dd>' + (c.test === true ? '<dt>Test</dt><dd>Evet</dd>' : '') + '</dl></div>' +
+      '<button type="button" class="cx-del" data-del="1">🗑 Şikayeti sil</button><div id="cxSheet"></div>';
+    $('v-complaints').scrollTop = 0;
+    if (!orig && !tr.d && story) {
+      cxAsk('Verilen şikayet metnini doğal, akıcı Türkçeye çevir. Sadece çeviriyi yaz, yorum ekleme.', story, 2500).then(function (t) {
+        if (t) { cx.tr[id] = cx.tr[id] || {}; cx.tr[id].d = t.trim(); cxSaveTr(); }
+        if (cx.open === id) {
+          var p = box.querySelector('.cx-txt'), on = box.querySelector('[data-lang="tr"]');
+          if (p && on && on.getAttribute('aria-pressed') === 'true') p.textContent = t ? t.trim() : 'Çevrilemedi. Orijinal\'e bakabilirsin.';
+        }
+      });
+    }
+  }
   function loadComplaints() {
-    var box = $('cmpList');
+    if (!cx.open) $('cxList').innerHTML = '<p class="empty">Yükleniyor…</p>';
     fetch('/api/shield?complaints=1', { headers: { 'x-shield-key': getKey() }, cache: 'no-store' })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (!d || !d.ok) { box.innerHTML = '<p class="empty">Şikayetler alınamadı' + (d && d.reason ? ' (' + esc(d.reason) + ')' : '') + '.</p>'; return; }
-        if (!d.list.length) { box.innerHTML = '<p class="empty">Henüz şikayet yok.</p>'; return; }
-        box.innerHTML = d.list.map(function (c) {
-          var day = c.date ? String(c.date).slice(0, 10) : '';
-          var chip = function (txt, cls) { return txt ? '<i' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(txt) + '</i>' : ''; };
-          return '<details class="cm"><summary><span class="t">' + esc(c.title || c.ref) + '</span><span class="m">' +
-            chip(CMP_CAT[c.category] || c.category, 'cat') + chip(c.city) + chip(CMP_ST[c.status] || c.status, 'st') + chip(day) + (c.anonymous === true ? chip('anonim') : '') +
-            '</span></summary><div class="body"><div class="bd">' + esc(c.desc || 'Metin yok.') + '</div><button type="button" class="trb">🇹🇷 TR</button><div class="tr" hidden></div><span class="ref">' + esc(c.ref || '') + (c.targetName ? ' · ' + esc(c.targetName) : '') + '</span></div></details>';
-        }).join('');
+        if (!d || !d.ok) { $('cxList').innerHTML = '<p class="empty">Şikayetler alınamadı' + (d && d.reason ? ' (' + esc(d.reason) + ')' : '') + '.</p>'; return; }
+        cx.list = d.list || [];
+        // First visit on this device: everything already here counts as seen.
+        var raw = store(CX_SEEN);
+        cx.seen = {};
+        if (raw) { try { JSON.parse(raw).forEach(function (id) { cx.seen[id] = 1; }); } catch (e) { /* bad store */ } }
+        else { cx.list.forEach(function (c) { cx.seen[c.id] = 1; }); cxSaveSeen(); }
+        if (cx.open) cxDetail(cx.open); else cxRender();
+        cxTranslateTitles();
       })
-      .catch(function () { box.innerHTML = '<p class="empty">Şikayetler alınamadı.</p>'; });
+      .catch(function () { $('cxList').innerHTML = '<p class="empty">Şikayetler alınamadı.</p>'; });
   }
-  // TR button: translates one complaint (title + text) to Turkish through /api/groq-proxy; kept after the first time.
-  $('cmpList').addEventListener('click', function (e) {
-    var btn = e.target.closest ? e.target.closest('.trb') : null;
-    if (!btn) return;
-    var card = btn.closest('.cm'), out = card.querySelector('.tr');
-    if (out.dataset.done) { out.hidden = !out.hidden; return; }
-    var src = card.querySelector('.t').textContent + '\n\n' + card.querySelector('.bd').textContent;
-    btn.disabled = true; btn.textContent = '…'; out.hidden = false; out.textContent = 'Çevriliyor…';
-    var sys = 'Verilen şikayet metnini doğal, akıcı Türkçeye çevir. İlk satır başlıktır. Sadece çeviriyi yaz, yorum ekleme.';
-    var post = function (url, body) {
-      return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { d.__st = r.status; return d; }); });
-    };
-    var fromGroq = function (d) { return d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content; };
-    var fromClaude = function (d) { return d && d.content && d.content.map(function (c) { return c.text || ''; }).join(''); };
-    var why = '';
-    post('/api/groq-proxy', { model: 'llama-3.1-8b-instant', max_tokens: 2000, temperature: 0, messages: [{ role: 'system', content: sys }, { role: 'user', content: src }] })
-      .then(function (d) {
-        var t = fromGroq(d);
-        if (t) return t;
-        why = 'groq ' + d.__st + (d.error ? ' ' + (d.error.message || d.error) : '');
-        return post('/api/claude-proxy', { max_tokens: 2000, temperature: 0, system: sys, messages: [{ role: 'user', content: src }] })
-          .then(function (d2) { var t2 = fromClaude(d2); if (!t2) why += ' · claude ' + d2.__st + (d2.error ? ' ' + (d2.error.message || d2.error) : ''); return t2; });
-      })
-      .then(function (t) {
-        if (!t) throw new Error('x');
-        out.textContent = t.trim(); out.dataset.done = '1';
-      })
-      .catch(function () { out.textContent = 'Çevrilemedi' + (why ? ' (' + String(why).slice(0, 160) + ')' : '') + '. Tekrar dene.'; })
-      .then(function () { btn.textContent = '🇹🇷 TR'; btn.disabled = false; });
+  $('v-complaints').addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('button') : null;
+    if (!t) return;
+    if (t.dataset.g) { cx.sel = t.dataset.g; store(CX_SEL, cx.sel); return cxRender(); }
+    if (t.dataset.id) return cxDetail(t.dataset.id);
+    if (t.dataset.back) return cxRender();
+    if (t.dataset.lang) return cxDetail(cx.open, t.dataset.lang);
+    var c = cx.list.filter(function (x) { return x.id === cx.open; })[0];
+    if (t.dataset.del && c) {
+      $('cxSheet').innerHTML = '<div class="cx-sheet"><h3>Bu şikayet silinsin mi?</h3><p><b>' + esc(c.ref || '') + '</b>' + (c.targetName ? ' · ' + esc(c.targetName) : '') +
+        '<br>Şikayet ve havuzdaki kopyası kalıcı olarak silinir. Geri alınamaz.</p><button type="button" class="cx-go" data-yes="1">Evet, sil</button><button type="button" class="cx-no" data-no="1">Vazgeç</button></div>';
+      $('cxSheet').scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
+    if (t.dataset.no) { $('cxSheet').innerHTML = ''; return; }
+    if (t.dataset.yes && c) {
+      t.disabled = true; t.textContent = 'Siliniyor…';
+      fetch('/api/shield', { method: 'POST', headers: { 'x-shield-key': getKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ deleteComplaint: c.id }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (d) {
+          if (!d.ok && d.reason !== 'not_found') { t.disabled = false; t.textContent = 'Silinemedi (' + (d.reason || 'hata') + '), tekrar dene'; return; }
+          cx.list = cx.list.filter(function (x) { return x.id !== c.id; });
+          delete cx.tr[c.id]; cxSaveTr(); cxRender();
+        })
+        .catch(function () { t.disabled = false; t.textContent = 'Silinemedi, tekrar dene'; });
+    }
   });
   function showSec(name) {
     // Sections toggle on their own: Huni has no tab but still opens from #funnel links.
