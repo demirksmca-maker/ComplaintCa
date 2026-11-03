@@ -263,7 +263,7 @@
   #d3{display:flex;flex-direction:column;gap:12px}
   .d3-top{display:flex;align-items:stretch;gap:8px}
   /* Live row: today so far, refreshed every minute with the rest of the panel. */
-  .d3-now{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;background:#13101e;border:1px solid var(--line);border-radius:10px;padding:3px 4px}
+  .d3-now{flex:1;min-width:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;background:#13101e;border:1px solid var(--line);border-radius:10px;padding:3px 4px}
   .d3-now div{min-width:0;text-align:center;line-height:1.1;padding:2px 0}
   .d3-now b{display:block;font-size:.9rem}
   .d3-now span{display:block;font-size:.56rem;color:#a8a6b0;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -388,7 +388,7 @@
       <div id="homeFit">
       <h3 class="ptitle">Bütünleşik master panel</h3>
       <div class="d3-top">
-        <div class="d3-now" id="d3now" title="Ziyaretçi: Google Analytics, son 30 dk · Sayfa: bugün"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
+        <div class="d3-now" id="d3now" title="Canlı: Google Analytics, son 30 dk · Ziyaretçi: son 24 saat · Sayfa: bugün"><div><b>–</b><span>Canlı</span></div><div><b>–</b><span>Ziyaretçi 24s</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
         <div class="d3-sites" role="group" aria-label="Site"><button type="button" data-d3site="all">Hepsi</button><button type="button" data-d3site="ca">🇨🇦</button><button type="button" data-d3site="es">🇪🇸</button></div>
       </div>
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
@@ -809,10 +809,10 @@
     if (!d || !d.now) return;
     var keys = d3Site === 'all' ? ['ca', 'es'] : [d3Site], sum = function (f) { return keys.reduce(function (n, k) { return n + d.now[k][f]; }, 0); };
     // Both sites: one person on / and /es/ counts once.
-    var people = d3Site === 'all' ? d.now.visitors : sum('visitors'), lv = d.now.live;
-    // Google Analytics realtime (last 30 min) when reachable, as GA shows it.
-    if (lv) people = d3Site === 'all' ? lv.all : d3Site === 'es' ? lv.es : Math.max(lv.all - lv.es, 0);
-    $('d3now').innerHTML = '<div><b>' + d3Num(people) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(d.now.blocked) + '</b><span>Engellenen</span></div>';
+    var people = d3Site === 'all' ? d.now.visitors : sum('visitors'), lv = d.now.live, live = null;
+    // Canlı: Google Analytics realtime (last 30 min). Ziyaretçi: own counter, last 24 hours.
+    if (lv) live = d3Site === 'all' ? lv.all : d3Site === 'es' ? lv.es : Math.max(lv.all - lv.es, 0);
+    $('d3now').innerHTML = '<div><b>' + d3Num(live) + '</b><span>Canlı</span></div><div><b>' + d3Num(people) + '</b><span>Ziyaretçi 24s</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(d.now.blocked) + '</b><span>Engellenen</span></div>';
   }
   function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }
   d3Pressed();
