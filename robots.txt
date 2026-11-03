@@ -4,4 +4,4 @@ Disallow: /trap/
 
 Sitemap: https://www.complaintca.ca/sitemap.xml
 
-# /demo/ test pages are noindex (X-Robots-Tag header in vercel.json). Blog test, SEO-safe layout.
+# /demo/ test pages are noindex (X-Robots-Tag header in vercel.json). Blog test, one-line tiles.
