@@ -43,7 +43,7 @@
   "@type": "NewsArticle",
   "headline": "Canada's Immigration Backlog Dropped to 935,000 — But Some Categories Still Take 10+ Years",
   "datePublished": "2026-08-30",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-11-03",
   "image": ["https://www.complaintca.ca/og-image.png"],
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.complaintca.ca/blog/ircc-backlog-2026.html" },
   "author": { "@type": "Organization", "name": "Complaint CA", "url": "https://www.complaintca.ca/" },
@@ -145,11 +145,54 @@ footer{
   text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
   border-top:1px solid var(--border);letter-spacing:.5px;
 }
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 10px;text-align:left}
+.faq-item summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.5}
+.faq-item p{margin:10px 0 0;font-size:.9rem;color:var(--sub);line-height:1.65}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 <link rel="stylesheet" href="/assets/blog-dark.css" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How big is the IRCC backlog in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IRCC's April 30, 2026 data showed a total inventory of 2,153,900 applications, with 922,700 in backlog (past service standards). That is the lowest backlog level since July 2025."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there an ombudsman for IRCC delays?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Unlike telecom (CCTS) or banking (OBSI), immigration has no independent ombudsman. IRCC's service standards are targets, not enforceable deadlines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can I do if my IRCC file is stuck?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Once you are past the stated processing time for your category, use IRCC's official webform to request an update. You can also ask your MP's office to request a status update. For extreme delays, a mandamus application to the Federal Court may become realistic, so get legal advice first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which immigration categories are slowest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Permanent residence and citizenship remain the slowest areas. Humanitarian and Compassionate applications and the Federal Self-Employed and Start-Up Visa programs have processing times above ten years in most cases. Express Entry is the fastest, with a 6-month service standard for 80% of applications."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -199,6 +242,24 @@ footer{
 <p>A long queue is a good time to make sure nothing expires. Keep a calendar of passport validity, medical exam and police certificate dates, and check whether any document will need renewing before a decision is likely. Update IRCC promptly if your address, family situation or job changes.</p>
 <p>Use IRCC&#x27;s processing-times tool to see where your category stands before you write, and quote the application number in every message. Keep a short file of what you sent and when, so a webform or MP request can be answered from facts instead of memory.</p>
   </div>
+  <h2>Frequently Asked</h2>
+  <details class="faq-item">
+    <summary>How big is the IRCC backlog in 2026?</summary>
+    <p>IRCC's April 30, 2026 data showed a total inventory of 2,153,900 applications, with 922,700 in backlog (past service standards). That is the lowest backlog level since July 2025.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Is there an ombudsman for IRCC delays?</summary>
+    <p>No. Unlike telecom (CCTS) or banking (OBSI), immigration has no independent ombudsman. IRCC's service standards are targets, not enforceable deadlines.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What can I do if my IRCC file is stuck?</summary>
+    <p>Once you are past the stated processing time for your category, use IRCC's official webform to request an update. You can also ask your MP's office to request a status update. For extreme delays, a mandamus application to the Federal Court may become realistic, so get legal advice first.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Which immigration categories are slowest?</summary>
+    <p>Permanent residence and citizenship remain the slowest areas. Humanitarian and Compassionate applications and the Federal Self-Employed and Start-Up Visa programs have processing times above ten years in most cases. Express Entry is the fastest, with a 6-month service standard for 80% of applications.</p>
+  </details>
+
   <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
     <p>Figures in this article are drawn from IRCC's own published processing data, as compiled and analyzed by:</p>

@@ -43,7 +43,7 @@
   "@type": "NewsArticle",
   "headline": "Canadians Lost $704 Million to Fraud in 2025 — the Worst Year on Record",
   "datePublished": "2026-09-11",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-11-03",
   "image": ["https://www.complaintca.ca/og-image.png"],
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.complaintca.ca/blog/online-fraud-losses-record-2026.html" },
   "author": { "@type": "Organization", "name": "Complaint CA", "url": "https://www.complaintca.ca/" },
@@ -109,11 +109,54 @@ p.body-text{font-size:.95rem;color:var(--sub);line-height:1.75;margin:0 0 16px;t
 .trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
 
 footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);letter-spacing:.5px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 10px;text-align:left}
+.faq-item summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.5}
+.faq-item p{margin:10px 0 0;font-size:.9rem;color:var(--sub);line-height:1.65}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 <link rel="stylesheet" href="/assets/blog-dark.css" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much did Canadians lose to fraud in 2025?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Canadian Anti-Fraud Centre recorded $704 million in reported fraud losses in 2025, up from $643 million in 2024. The CAFC estimates that fewer than 1 in 10 frauds are reported."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "In what order should I report fraud in Canada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "First contact your bank or card issuer right away if money already moved. Then report to the Canadian Anti-Fraud Centre at 1-888-495-8501. Then file with local police if you have specific loss details."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will reporting to the CAFC get my money back?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not by itself. A CAFC report documents the pattern so it can be flagged for others, but recovery depends on contacting whoever moved the money, such as your bank or card issuer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the way I paid change my chances of recovery?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. With a credit card you can ask for a chargeback. For Interac e-Transfer or bank transfer, phone your bank's fraud line at once, because recovery is much harder after funds are accepted. For gift cards, keep the card and receipt and contact the issuer immediately."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -172,6 +215,24 @@ footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border
   <div class="path-card">
 <p>When you file with the CAFC or police, write the story in order: how you first met the seller or message, what you were promised, what you paid and when. Include phone numbers, emails, website addresses and wallet or account identifiers. Investigators link reports through these details, so a short but exact report is worth more than a long emotional one.</p>
   </div>
+  <h2>Frequently Asked</h2>
+  <details class="faq-item">
+    <summary>How much did Canadians lose to fraud in 2025?</summary>
+    <p>The Canadian Anti-Fraud Centre recorded $704 million in reported fraud losses in 2025, up from $643 million in 2024. The CAFC estimates that fewer than 1 in 10 frauds are reported.</p>
+  </details>
+  <details class="faq-item">
+    <summary>In what order should I report fraud in Canada?</summary>
+    <p>First contact your bank or card issuer right away if money already moved. Then report to the Canadian Anti-Fraud Centre at 1-888-495-8501. Then file with local police if you have specific loss details.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Will reporting to the CAFC get my money back?</summary>
+    <p>Not by itself. A CAFC report documents the pattern so it can be flagged for others, but recovery depends on contacting whoever moved the money, such as your bank or card issuer.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Does the way I paid change my chances of recovery?</summary>
+    <p>Yes. With a credit card you can ask for a chargeback. For Interac e-Transfer or bank transfer, phone your bank's fraud line at once, because recovery is much harder after funds are accepted. For gift cards, keep the card and receipt and contact the issuer immediately.</p>
+  </details>
+
   <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
     <p>The loss totals quoted above are the CAFC&#x27;s own 2025 numbers and press coverage of them:</p>

@@ -108,11 +108,54 @@ p.body-text{font-size:.95rem;color:var(--sub);line-height:1.75;margin:0 0 16px;t
 .trust-sources a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--border)}
 
 footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border-top:1px solid var(--border);letter-spacing:.5px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 10px;text-align:left}
+.faq-item summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.5}
+.faq-item p{margin:10px 0 0;font-size:.9rem;color:var(--sub);line-height:1.65}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 <link rel="stylesheet" href="/assets/blog-dark.css" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is gov-refund.com a real Government of Canada website?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It is not a Government of Canada site. When we checked, the domain had been registered only one day earlier and a reputation check returned a suspicious verdict."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I check if a refund website is real?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Look up the domain age with a WHOIS lookup (a domain under 30 days old is a strong warning sign), view the page safely with urlscan.io, and check it on VirusTotal. Never use a link or number from the suspicious message itself to verify it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I do if I already entered my information?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Contact your bank right away, then report it to the Canadian Anti-Fraud Centre at 1-888-495-8501. Do not wait to see if anything happens."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I report a fake tax refund text or email in Canada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Report it to the Canadian Anti-Fraud Centre. If you also lost money or shared personal details, contact your bank and your local police."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -158,6 +201,24 @@ footer{text-align:center;padding:24px;font-size:.72rem;color:var(--muted);border
     <p>Got a link, email, or text that looks like this? Upload it for a free AI-assisted check before you click anything.</p>
     <a href="https://www.complaintca.ca?go=verify" target="_blank" rel="noopener">Verify a Document Now →</a>
   </div>
+
+  <h2>Frequently Asked</h2>
+  <details class="faq-item">
+    <summary>Is gov-refund.com a real Government of Canada website?</summary>
+    <p>No. It is not a Government of Canada site. When we checked, the domain had been registered only one day earlier and a reputation check returned a suspicious verdict.</p>
+  </details>
+  <details class="faq-item">
+    <summary>How can I check if a refund website is real?</summary>
+    <p>Look up the domain age with a WHOIS lookup (a domain under 30 days old is a strong warning sign), view the page safely with urlscan.io, and check it on VirusTotal. Never use a link or number from the suspicious message itself to verify it.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What should I do if I already entered my information?</summary>
+    <p>Contact your bank right away, then report it to the Canadian Anti-Fraud Centre at 1-888-495-8501. Do not wait to see if anything happens.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Where do I report a fake tax refund text or email in Canada?</summary>
+    <p>Report it to the Canadian Anti-Fraud Centre. If you also lost money or shared personal details, contact your bank and your local police.</p>
+  </details>
 
   <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
