@@ -165,7 +165,7 @@ body{margin:0;color:var(--text);font-family:'EB Garamond',Georgia,serif;font-siz
 a{color:var(--lav)}
 .hero{padding:36px 18px 10px;text-align:left;max-width:680px;margin:0 auto}
 .hero .eyebrow{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(243,230,234,.72);margin:0 0 10px}
-.hero h1{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:1.55rem;line-height:1.2;letter-spacing:.03em;text-transform:uppercase;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);margin:0 0 10px;text-wrap:balance}
+.hero h1{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:1.55rem;line-height:1.2;letter-spacing:.02em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);margin:0 0 10px;text-wrap:balance}
 .hero .dateline{font-style:italic;font-size:.95rem;color:var(--muted)}.hero .dateline b{color:var(--sub);font-weight:500}
 main{max-width:680px;margin:0 auto;padding:8px 14px 56px}
 .stat-lede{border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:0 0 18px;text-align:center;background:rgba(20,4,30,.35);backdrop-filter:blur(6px)}
@@ -180,7 +180,7 @@ main{max-width:680px;margin:0 auto;padding:8px 14px 56px}
 .panel:nth-of-type(even){background:linear-gradient(155deg,rgba(190,24,93,.55),rgba(120,20,70,.38) 55%,rgba(60,10,40,.3))}
 .panel::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.22),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.16),transparent 60%)}
 .panel>*{position:relative}
-.panel>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:20px 16px;font-family:Cinzel,Georgia,serif;font-weight:700;font-size:.86rem;letter-spacing:.05em;text-transform:uppercase;color:#fff;text-wrap:balance}
+.panel>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;padding:20px 16px;font-family:Cinzel,Georgia,serif;font-weight:700;font-size:.95rem;letter-spacing:.03em;color:#fff;text-wrap:balance}
 .panel>summary::-webkit-details-marker{display:none}
 .panel>summary .pn{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.55);font-size:.7rem;display:grid;place-items:center;letter-spacing:0}
 .panel>summary::after{content:'\2192';margin-left:auto;color:rgba(243,230,234,.7);font-size:1rem;transition:transform .2s}
@@ -189,7 +189,7 @@ main{max-width:680px;margin:0 auto;padding:8px 14px 56px}
 h2{font-family:Cinzel,serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lav);margin:14px 0 8px;font-weight:700}
 p.body-text{color:var(--sub);margin:0 0 12px}
 .path-card{background:rgba(20,4,30,.4);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin:0 0 10px}
-.path-card h3{margin:0 0 6px;font-family:Cinzel,serif;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:#fff;line-height:1.4}
+.path-card h3{margin:0 0 6px;font-family:Cinzel,serif;font-size:.85rem;letter-spacing:.03em;color:#fff;line-height:1.4}
 .path-card p{margin:0 0 9px;color:var(--sub)}.path-card p:last-child{margin-bottom:0}
 .path-card ul{margin:0;padding-left:20px;color:var(--sub);line-height:1.8}
 .path-card b{color:#fff;font-weight:600}
@@ -211,6 +211,23 @@ p.body-text{color:var(--sub);margin:0 0 12px}
 .trust-box p{color:var(--sub);margin:0 0 10px;font-size:1rem}
 footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:var(--muted)}footer a{color:inherit}
 .demo-note{background:#d8b4fe;color:#2a0d3a;text-align:center;font:700 .6rem Cinzel,serif;letter-spacing:.15em;padding:6px}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;max-width:680px;margin:0 auto}
+.top img{width:54px;height:54px;object-fit:contain}
+.top .wm{font-family:Cinzel,serif;font-weight:700;font-size:1.6rem;letter-spacing:.06em;background:linear-gradient(180deg,#fff,#e9d9f5 55%,#b79ad6);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.top .sp{width:54px}
+.hero{padding:6px 18px 6px}
+.hero h1{font-size:1.7rem;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.55)}
+.kick{font:700 .72rem Cinzel,serif;letter-spacing:.22em;text-transform:uppercase;color:rgba(243,230,234,.6);margin:6px 2px 12px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 20px}
+.tile{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;text-align:right;min-height:130px;padding:14px;border-radius:18px;border:1px solid var(--line);text-decoration:none;color:#fff;overflow:hidden;backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);font:700 1rem/1.25 Cinzel,Georgia,serif;letter-spacing:.03em;text-wrap:balance;-webkit-tap-highlight-color:transparent}
+.tile:nth-child(odd){background:linear-gradient(155deg,rgba(138,92,246,.55),rgba(88,28,135,.38) 55%,rgba(46,16,80,.3))}
+.tile:nth-child(even){background:linear-gradient(155deg,rgba(190,24,93,.55),rgba(120,20,70,.38) 55%,rgba(60,10,40,.3))}
+.tile::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.2),transparent 60%)}
+.tile svg{position:absolute;top:14px;left:14px;width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile i{position:absolute;top:12px;right:14px;font-style:normal;color:rgba(243,230,234,.6);font-size:.85rem}
+.tile:active{transform:scale(.97)}
+.panel>summary .pn{display:none}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
@@ -218,6 +235,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 </head>
 <body>
 <div class="demo-note">DEMO: new blog design test, not indexed</div>
+<div class="top"><img src="/assets/emblem-clear.webp" alt=""><span class="wm">ComplaintCA</span><span class="sp"></span></div>
 
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Consumer Alerts</div>
@@ -233,8 +251,9 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 
   <p class="lede"><b>Short answer:</b> put it in writing to the principal first, then the school board. If the problem is the teacher's own professional conduct, you can also report it to your province's teacher regulator, such as the Ontario College of Teachers. Which path you need depends on what went wrong, and picking the wrong one can cost you weeks.</p>
 
-  <div class="tools"><button type="button" id="toggleAll">Open all</button></div>
-<details class="panel" open><summary><span class="pn">1</span>Two Paths, Two Problems</summary><div class="pbody">
+  <div class="kick">Six Steps to Justice</div><div class="tiles"><a class="tile" href="#p1" data-p="p1"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><i>&rarr;</i>Two Paths, Two Problems</a><a class="tile" href="#p2" data-p="p2"><svg viewBox="0 0 24 24"><path d="M12 4v16M6 8h12M6 8l-3 6a3 3 0 006 0zM18 8l-3 6a3 3 0 006 0z"/></svg><i>&rarr;</i>Path A: Principal, Board, Ombudsman</a><a class="tile" href="#p3" data-p="p3"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><path d="M5 20a7 7 0 0114 0"/></svg><i>&rarr;</i>Path B: Teacher Regulator</a><a class="tile" href="#p4" data-p="p4"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><i>&rarr;</i>What to Include</a><a class="tile" href="#p5" data-p="p5"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><i>&rarr;</i>Frequently Asked</a><a class="tile" href="#p6" data-p="p6"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><i>&rarr;</i>Sources &amp; Related</a></div>
+<div class="tools"><button type="button" id="toggleAll">Open all</button></div>
+<details class="panel" id="p1" open><summary><span class="pn">1</span>Two Paths, Two Problems</summary><div class="pbody">
   <div class="path-card">
     <h3>Path A — A school or board decision</h3>
     <p>Examples: a discipline decision, bullying the school didn't act on, special education support that never came, a busing or enrolment problem. This goes to the <b>principal</b>, then the <b>school board</b>, then, in some provinces, the <b>provincial Ombudsman</b>.</p>
@@ -246,7 +265,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
   <p class="body-text">Some situations call for both paths. A school that ignored a teacher's misconduct is a board problem, and the misconduct itself is a regulator problem.</p>
 
   </div></details>
-<details class="panel"><summary><span class="pn">2</span>Path A: Principal, Board, Ombudsman</summary><div class="pbody">
+<details class="panel" id="p2"><summary><span class="pn">2</span>Path A: Principal, Board, Ombudsman</summary><div class="pbody">
 <h2>Path A</h2>
   <div class="path-card">
     <p><span class="step-num">1</span><b>Write to the teacher or principal.</b> Most boards require this before they'll accept a formal complaint, and it gives you a paper trail.</p>
@@ -263,7 +282,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
   </div>
 
   </div></details>
-<details class="panel"><summary><span class="pn">3</span>Path B: Teacher Regulator</summary><div class="pbody">
+<details class="panel" id="p3"><summary><span class="pn">3</span>Path B: Teacher Regulator</summary><div class="pbody">
   <div class="path-card">
     <table class="wait-table wrap">
       <tr><th>Province</th><th>Teacher regulator</th></tr>
@@ -280,7 +299,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
   </div>
 
   </div></details>
-<details class="panel"><summary><span class="pn">4</span>What to Include</summary><div class="pbody">
+<details class="panel" id="p4"><summary><span class="pn">4</span>What to Include</summary><div class="pbody">
   <div class="path-card">
     <p><span class="step-num">1</span><b>Full names.</b> Your name and contact details, the teacher's full name, and the school.</p>
     <p><span class="step-num">2</span><b>Dates and facts.</b> What happened, when, and who saw it. Stick to facts, not opinions.</p>
@@ -293,7 +312,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
   </div>
 
   </div></details>
-<details class="panel"><summary><span class="pn">5</span>Frequently Asked</summary><div class="pbody">
+<details class="panel" id="p5"><summary><span class="pn">5</span>Frequently Asked</summary><div class="pbody">
   <details class="faq-item">
     <summary>How do I report a teacher in Canada?</summary>
     <p>Put your concern in writing to the principal first. If it&#x27;s about how the school or board handled something, escalate through the school board&#x27;s formal complaints policy. If it&#x27;s about the teacher&#x27;s own professional conduct, you can also report it to your province&#x27;s teacher regulator, such as the Ontario College of Teachers or BC&#x27;s Commissioner for Teacher Regulation.</p>
@@ -328,7 +347,7 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
   </details>
 
   </div></details>
-<details class="panel"><summary><span class="pn">6</span>Sources &amp; Related</summary><div class="pbody">
+<details class="panel" id="p6"><summary><span class="pn">6</span>Sources &amp; Related</summary><div class="pbody">
 <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
     <p>Figures and contacts in this article come from official sources:</p>
@@ -364,6 +383,6 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 
 <script defer src="/assets/site-rail.js"></script>
 <script defer src="/assets/blog-rating.js"></script>
-<script>var b=document.getElementById("toggleAll");if(b)b.onclick=function(){var p=document.querySelectorAll("details.panel"),o=b.dataset.o!=="1";p.forEach(function(d){d.open=o});b.dataset.o=o?"1":"0";b.textContent=o?"Close all":"Open all"}</script>
+<script>var b=document.getElementById("toggleAll");document.querySelectorAll("a.tile").forEach(function(a){a.onclick=function(e){e.preventDefault();var d=document.getElementById(a.dataset.p);d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"})}});if(b)b.onclick=function(){var p=document.querySelectorAll("details.panel"),o=b.dataset.o!=="1";p.forEach(function(d){d.open=o});b.dataset.o=o?"1":"0";b.textContent=o?"Close all":"Open all"}</script>
 </body>
 </html>
