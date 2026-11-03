@@ -370,7 +370,7 @@
         <div class="stage" aria-hidden="true"><div class="shield3d" id="shield3d"></div></div>
         <div><h1>Dias Panel</h1><div class="state"><span class="dot"></span><span id="heroState">complaintca.ca</span></div></div>
       </div>
-      <img class="emblem" src="/assets/emblem-ruby.webp" alt="" width="40" height="40" decoding="async">
+      <a href="/" id="siteLink" target="_blank" rel="noopener" aria-label="Siteyi aç" style="flex:none;line-height:0"><img class="emblem" src="/assets/emblem-ruby.webp" alt="" width="40" height="40" decoding="async"></a>
     </div>
   </header>
 
@@ -1571,6 +1571,8 @@
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function () {});
 
   $('loginForm').addEventListener('submit', function (ev) { ev.preventDefault(); setKey($('key').value.trim()); load(); d3Load(); });
+  // Logo: marks this device as the owner's, then opens the site (not counted as a visitor).
+  $('siteLink').addEventListener('click', function () { ownerCookie(true); });
   $('logout').addEventListener('click', function () { setKey(''); ownerCookie(false); showLogin(); });
   // /shield.html#funnel etc. (links from the Paylaşım page) open that section.
   var hashSec = location.hash.slice(1);
