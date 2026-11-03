@@ -10,7 +10,7 @@
 import { timingSafeEqual } from 'node:crypto';
 import { searchConsole, searchRecent } from './_search-console.js';
 import { fetchComplaints } from './mcp.js';
-import { statsPanel } from './_stats.js';
+import { statsPanel, gaRealtime } from './_stats.js';
 import { riskList } from './_shield-risk.js';
 import { complaintList, deleteComplaint } from './_shield-complaints.js';
 import { backfillFeed, poolComplaint } from './_feed-backfill.js';
@@ -275,9 +275,9 @@ export async function shieldView(req, res) {
   for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', ...hours(site)]);
   cmds.push(['PFCOUNT', ...hours('ca'), ...hours('es')]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
-  let out, stats, comp;
+  let out, stats, comp, live;
   try {
-    [out, stats, comp] = await Promise.all([pipeline(cmds), periodStats(pipeline, period), complaints(pipeline).catch(() => null)]);
+    [out, stats, comp, live] = await Promise.all([pipeline(cmds), periodStats(pipeline, period), complaints(pipeline).catch(() => null), gaRealtime().catch(() => null)]);
   } catch {
     return res.status(502).json({ error: 'upstash' });
   }
@@ -295,6 +295,7 @@ export async function shieldView(req, res) {
   const now = {};
   for (const site of ['ca', 'es']) now[site] = { views: Number(out[i++]) || 0, visitors: Number(out[i++]) || 0 };
   now.visitors = Number(out[i++]) || 0;
+  now.live = live;
   // Attacks blocked since Toronto midnight, from the last 200 events.
   now.blocked = events.filter(e => !String(e.agent).startsWith('suspect') && lastDays(new Date(e.t), 1)[0] === days[0]).length;
   const attackCountries = {};

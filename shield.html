@@ -388,7 +388,7 @@
       <div id="homeFit">
       <h3 class="ptitle">Bütünleşik master panel</h3>
       <div class="d3-top">
-        <div class="d3-now" id="d3now" title="Ziyaretçi: son 24 saat · Sayfa: bugün"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
+        <div class="d3-now" id="d3now" title="Ziyaretçi: Google Analytics, son 30 dk · Sayfa: bugün"><div><b>–</b><span>Ziyaretçi</span></div><div><b>–</b><span>Sayfa</span></div><div><b>–</b><span>Engellenen</span></div></div>
         <div class="d3-sites" role="group" aria-label="Site"><button type="button" data-d3site="all">Hepsi</button><button type="button" data-d3site="ca">🇨🇦</button><button type="button" data-d3site="es">🇪🇸</button></div>
       </div>
       <div id="d3"><p class="empty">Yükleniyor…</p></div>
@@ -809,7 +809,9 @@
     if (!d || !d.now) return;
     var keys = d3Site === 'all' ? ['ca', 'es'] : [d3Site], sum = function (f) { return keys.reduce(function (n, k) { return n + d.now[k][f]; }, 0); };
     // Both sites: one person on / and /es/ counts once.
-    var people = d3Site === 'all' ? d.now.visitors : sum('visitors');
+    var people = d3Site === 'all' ? d.now.visitors : sum('visitors'), lv = d.now.live;
+    // Google Analytics realtime (last 30 min) when reachable, as GA shows it.
+    if (lv) people = d3Site === 'all' ? lv.all : d3Site === 'es' ? lv.es : Math.max(lv.all - lv.es, 0);
     $('d3now').innerHTML = '<div><b>' + d3Num(people) + '</b><span>Ziyaretçi</span></div><div><b>' + d3Num(sum('views')) + '</b><span>Sayfa</span></div><div><b>' + d3Num(d.now.blocked) + '</b><span>Engellenen</span></div>';
   }
   function d3Pressed() { each('[data-d3site]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-d3site') === d3Site ? 'true' : 'false'); }); }

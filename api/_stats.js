@@ -180,6 +180,19 @@ async function gaConnect() {
   return { ok: true, id, auth: { Authorization: `Bearer ${tok}` }, setup };
 }
 
+// Live users right now (GA4 realtime: the last 30 minutes), all pages and the
+// Spanish pages. Null when GA4 is not reachable.
+export async function gaRealtime() {
+  const c = await gaConnect();
+  if (!c.ok) return null;
+  const run = filter => fetch(`${GA}/properties/${c.id}:runRealtimeReport`, {
+    method: 'POST', headers: { ...c.auth, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ metrics: [{ name: 'activeUsers' }], ...(filter ? { dimensionFilter: { filter: { fieldName: 'unifiedPagePathScreen', stringFilter: { matchType: 'BEGINS_WITH', value: filter } } } } : {}) })
+  }).then(r => (r.ok ? r.json() : Promise.reject(new Error('ga_rt')))).then(j => Number(j.totals && j.totals[0] && j.totals[0].metricValues[0].value) || Number(j.rows && j.rows[0] && j.rows[0].metricValues[0].value) || 0);
+  const [all, es] = await Promise.all([run(null), run('/es')]);
+  return { all, es };
+}
+
 async function gaSite(c, site, ranges) {
   const requests = [];
   for (let i = 0; i < ranges.length; i += 4) {
