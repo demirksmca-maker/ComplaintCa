@@ -32,7 +32,7 @@ export function keyOk(given, expected) {
 // Start value: Vercel Analytics' last-24-hours visitors when the panel switched
 // to the 24-hour view. It counts for 24 h from then; the own visitor counter
 // (hourly buckets) is added on top, and after 24 h it stands alone.
-export const SEED = { t: 1793687180676, n: 80 };
+export const SEED = { t: 1793687180676, n: 0 };
 export const seedBase = (now = Date.now()) => (now < SEED.t + 86400000 ? SEED.n : 0);
 export const seedHour = (now = Date.now()) => (now < SEED.t + 86400000 ? Math.floor(SEED.t / 3600000) : 0);
 
