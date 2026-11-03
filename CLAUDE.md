@@ -36,6 +36,7 @@
 - Doğrulandı (3 Kas 2026): CRA Ombudsperson 1-866-586-3839; OEB/IPC/CPSO alan adları ve CPSO 1-800-268-7096 doğru. Açık iş yok.
 - AI-arama işi (Kanada blog+guides, ES blog) bitti: net cevap kutusu, tarih, sitemap lastmod, llms.txt, iç linkler, Article görseli, Organization şeması. Tekrar uğraşma; sadece yeni sayfaya aynı formatı uygula. `es/index.html` artık indeksli ve test kilidi kaldırıldı (API/Firebase açık). Açık risk: ES yetkili kurum linkleri doğrulanmadı (kod yorumu), Firestore canlı Kanada projesiyle ortak.
 - İsteğe bağlı sonraki: BC, Quebec, Saskatchewan, Healthcare, Police guides (ince). Önce Search Console'da 2-3 hafta sonra sonuçlara bak.
+- Blog tasarımı (Kanada, `blog/`): ana sayfa teması `/assets/blog-theme.css`. Yazıda inline `<style>` yok. Yeni yazıda mevcut bir yazıyı kopyala: üst bar, kısa cevap (`.lede`), `nav.toc` içinde 6 kart (tek satır kısa etiket, 4 bölüm + FAQ + Sources), her H2 bir `section.sec`. `blog-theme.test.mjs` kontrol eder.
 - AI format: (1) net soru başlığı, (2) en üstte tek cümlelik cevap, (3) numaralı kısa adımlar (kime, ne, ne kadar sürer; kurum adı tam), (4) 3-5 kısa SSS (rakam/süre ile) + FAQPage şeması, `dateModified` güncelle.
 - Kural: bilgiyi resmi kaynaktan/aramayla doğrula; doğrulayamadığını yazma.
 - Her canlıya almadan önce AXX1/AXX2'yi kendin seç (sorma); test + /code-review çalıştır.
