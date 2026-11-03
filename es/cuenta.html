@@ -369,5 +369,6 @@ applyLang();
 const sp = savedPass();
 if (sp) { $('em').value = sp.e; load(sp.e, sp.p).then(r => { if (!r._ok && r.error !== 'email_unverified') $('err').textContent = r.error === 'cooldown' ? T.cd : T.err; }); }
 </script>
+<script>try{navigator.sendBeacon&&navigator.sendBeacon('/api/beacon?e=visit&p='+encodeURIComponent(location.pathname))}catch(e){}</script>
 </body>
 </html>

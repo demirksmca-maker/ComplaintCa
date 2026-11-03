@@ -5,6 +5,9 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-LNW0LJL3KF');
 
+// Visitor count for the shield panel: only pages whose JS runs count (not bots fetching HTML).
+try { if (!/(?:^|;\s*)cc_owner=1(?:;|$)/.test(document.cookie) && navigator.sendBeacon) navigator.sendBeacon('/api/beacon?e=visit&p=' + encodeURIComponent(location.pathname)); } catch (e) {}
+
 // Language picker (Google Translate for more languages) on every page that loads this file.
 (function(){
   var s = document.createElement('script'); s.src = '/assets/lang-picker.js?v=20261029k'; s.async = true;

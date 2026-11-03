@@ -189,9 +189,9 @@ const PAGE_RE = /^\/(es\/)?([a-z0-9-]+\/)*([a-z0-9-]+(\.html)?)?$/;
 function countVisit(request, url, ip, ua, source) {
   const site = url.pathname === '/es' || url.pathname.startsWith('/es/') ? 'es' : 'ca';
   const day = visitDay();
-  const views = `shield:views:${site}:${day}`, uniq = `shield:uv:${site}:${day}`, stats = `shield:stats:${day}`;
+  const views = `shield:views:${site}:${day}`, stats = `shield:stats:${day}`;
   // No EXPIRE here: a few small keys a day, and it halves the Upstash calls.
-  const cmds = [['INCR', views], ['PFADD', uniq, ip], ['HINCRBY', stats, `d:${deviceOf(ua)}`, 1], ['HINCRBY', stats, `h:${visitHour()}`, 1]];
+  const cmds = [['INCR', views], ['HINCRBY', stats, `d:${deviceOf(ua)}`, 1], ['HINCRBY', stats, `h:${visitHour()}`, 1]];
   // Only real-looking paths, so junk URLs can't flood the top-pages list.
   if (url.pathname.length <= 80 && PAGE_RE.test(url.pathname)) cmds.push(['HINCRBY', stats, `p:${url.pathname}`, 1]);
   const country = request.headers.get('x-vercel-ip-country');
@@ -237,6 +237,12 @@ export default async function middleware(request) {
   }
   if (url.pathname === '/api/beacon') {
     if (url.searchParams.get('e') === 'open' && ua && !BOT_RE.test(ua) && !isOwner(request)) await redis([['PFADD', `shield:fun:open:${visitDay()}`, ip]]);
+    // A person's JS ran on a page: counts as a visitor (bots that only fetch HTML never fire this).
+    if (url.searchParams.get('e') === 'visit' && request.method === 'POST' && request.headers.get('sec-fetch-site') !== 'cross-site' && ua && !BOT_RE.test(ua) && !isOwner(request)) {
+      const p = (url.searchParams.get('p') || '').slice(0, 80);
+      const site = p === '/es' || p.startsWith('/es/') ? 'es' : 'ca';
+      if (p.startsWith('/')) await redis([['PFADD', `shield:uv:${site}:${visitDay()}`, ip]]);
+    }
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }
 

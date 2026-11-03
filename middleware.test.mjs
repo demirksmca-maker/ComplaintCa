@@ -191,3 +191,9 @@ test('Google fetchers without a Googlebot UA are never banned', async () => {
   assert.equal(calls.length, 3);
   assert.ok(calls.every(b => !b.includes('shield:ban:')));
 });
+
+test('visit beacon is answered at the edge', async () => {
+  delete process.env.KV_REST_API_URL;
+  const res = await middleware(new Request('https://complaintca.ca/api/beacon?e=visit&p=/es/', { method: 'POST', headers: { 'user-agent': 'Mozilla/5.0' } }));
+  assert.equal(res.status, 204);
+});
