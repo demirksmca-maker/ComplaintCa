@@ -2,23 +2,6 @@
 <html lang="es" translate="no">
 <head>
 <meta charset="UTF-8">
-<script>
-// ES TEST: veri yok. API, Firebase ve dış istekler kapalı; sadece mail motoru açık.
-(function(){
-  var ok=function(u){try{var x=new URL(u,location.href);return x.origin===location.origin&&!/^\/api\//.test(x.pathname);}catch(e){return false;}};
-  // Only the mail engine is open (confirmation e-mails + the anti-bot check it needs); AI and Firebase stay off.
-  var mail=function(u){try{var x=new URL(u,location.href);return x.origin===location.origin&&/^\/api\/(send-email|verify-turnstile)$/.test(x.pathname);}catch(e){return false;}};
-  var f=window.fetch;
-  window.fetch=function(u,o){var url=(u&&u.url)||u;var m=((o&&o.method)||(u&&u.method)||'GET').toUpperCase();
-    if((m==='GET'&&ok(url))||(m==='POST'&&mail(url)))return f.apply(this,arguments);
-    return Promise.resolve(new Response('{}',{status:200,headers:{'Content-Type':'application/json'}}));};
-  var xo=XMLHttpRequest.prototype.open,xs=XMLHttpRequest.prototype.send;
-  XMLHttpRequest.prototype.open=function(m,u){this._b=!(String(m).toUpperCase()==='GET'&&ok(u));return xo.apply(this,arguments);};
-  XMLHttpRequest.prototype.send=function(){if(this._b)return;return xs.apply(this,arguments);};
-  if(navigator.sendBeacon)navigator.sendBeacon=function(){return true;};
-  window.WebSocket=function(){throw new Error('test: kapalı');};
-})();
-</script>
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
