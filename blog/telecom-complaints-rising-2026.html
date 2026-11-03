@@ -43,7 +43,7 @@
   "@type": "NewsArticle",
   "headline": "Telecom Complaints in Canada Are Up 61% — Billing Is Still the #1 Reason",
   "datePublished": "2026-08-30",
-  "dateModified": "2026-10-21",
+  "dateModified": "2026-11-03",
   "image": ["https://www.complaintca.ca/og-image.png"],
   "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.complaintca.ca/blog/telecom-complaints-rising-2026.html" },
   "author": { "@type": "Organization", "name": "Complaint CA", "url": "https://www.complaintca.ca/" },
@@ -145,11 +145,54 @@ footer{
   text-align:center;padding:24px;font-size:.72rem;color:var(--muted);
   border-top:1px solid var(--border);letter-spacing:.5px;
 }
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:0 0 10px;text-align:left}
+.faq-item summary{cursor:pointer;font-weight:700;color:var(--navy);font-size:.93rem;line-height:1.5}
+.faq-item p{margin:10px 0 0;font-size:.9rem;color:var(--sub);line-height:1.65}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 <link rel="stylesheet" href="/assets/blog-dark.css" media="(prefers-color-scheme: dark)">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How many complaints did the CCTS receive in 2025-26?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Preliminary numbers for August 2025 to July 2026 show a record 53,195 complaints received (up 79%) and 41,235 accepted (up 74%). The CCTS resolved 87.2% of concluded complaints."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the CCTS free, and do I have to complain to my provider first?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes to both. The CCTS is free and providers must participate. You must first give your provider a chance to resolve the issue and receive their final position, or wait the set period without a response."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What remedies can the CCTS give?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Decisions can include bill credits, contract cancellation without penalty, or other remedies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which providers get the most CCTS complaints?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Between August 2025 and January 2026: Rogers (including Shaw) 27%, Telus 21% and Bell 17%. Together they account for about two-thirds of accepted complaints."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -207,6 +250,24 @@ footer{
   <div class="path-card">
 <p>Cancelling a service during a dispute can add fees or break a promotion. Ask your provider in writing what happens if you leave, note the answer, and consider filing with the CCTS first so the complaint is recorded while the service is still active.</p>
   </div>
+  <h2>Frequently Asked</h2>
+  <details class="faq-item">
+    <summary>How many complaints did the CCTS receive in 2025-26?</summary>
+    <p>Preliminary numbers for August 2025 to July 2026 show a record 53,195 complaints received (up 79%) and 41,235 accepted (up 74%). The CCTS resolved 87.2% of concluded complaints.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Is the CCTS free, and do I have to complain to my provider first?</summary>
+    <p>Yes to both. The CCTS is free and providers must participate. You must first give your provider a chance to resolve the issue and receive their final position, or wait the set period without a response.</p>
+  </details>
+  <details class="faq-item">
+    <summary>What remedies can the CCTS give?</summary>
+    <p>Decisions can include bill credits, contract cancellation without penalty, or other remedies.</p>
+  </details>
+  <details class="faq-item">
+    <summary>Which providers get the most CCTS complaints?</summary>
+    <p>Between August 2025 and January 2026: Rogers (including Shaw) 27%, Telus 21% and Bell 17%. Together they account for about two-thirds of accepted complaints.</p>
+  </details>
+
   <div class="trust-box">
     <h2 style="margin-top:0">Sources &amp; Verification</h2>
     <p>Figures in this article are drawn from the CCTS's own reporting, including:</p>
