@@ -32,11 +32,11 @@
 (function () {
   // Add or remove jobs here: [title, note, text sent to Claude].
   var TODO = [
-    ['BC rehberi', 'Kanada guides: ince kalan sayfa', 'Yapılacak > BC (British Columbia) guide sayfasını güçlendir: net cevap kutusu, numaralı adımlar, 4+ SSS + FAQPage şeması. Bilgiyi resmi kaynaktan doğrula.'],
-    ['Quebec rehberi', 'Kanada guides: ince kalan sayfa', 'Yapılacak > Quebec guide sayfasını güçlendir: net cevap kutusu, numaralı adımlar, 4+ SSS + FAQPage şeması. Bilgiyi resmi kaynaktan doğrula.'],
-    ['Saskatchewan rehberi', 'Kanada guides: ince kalan sayfa', 'Yapılacak > Saskatchewan guide sayfasını güçlendir: net cevap kutusu, numaralı adımlar, 4+ SSS + FAQPage şeması. Bilgiyi resmi kaynaktan doğrula.'],
-    ['Healthcare ve Police rehberleri', 'Kanada guides: ince kalan sayfalar', 'Yapılacak > Healthcare ve Police guide sayfalarını güçlendir: net cevap kutusu, numaralı adımlar, 4+ SSS + FAQPage şeması. Bilgiyi resmi kaynaktan doğrula.'],
-    ['ES kurum linkleri', 'İspanya sitesi: doğrulanmadı', 'Yapılacak > es/ altındaki yetkili kurum linklerini ve telefonlarını resmi kaynaktan doğrula, yanlış olanı düzelt.']
+    ["Search Console kontrolü", "Hastane sorgularında görünüyor muyuz?", "Search Console Performance ekran görüntüsünü atacağım. Şunları oku: \"hospital complaint Ontario/Toronto\" gibi sorgularda gösterim, tıklama, ortalama sıra; 0 tıklı sayfalar. Hiçbir dosyayı değiştirme, sadece 5 satırda raporla."],
+    ["Hastane rehberi: Ontario bölümü", "guides/healthcare-complaint-canada-guide.html", "guides/healthcare-complaint-canada-guide.html dosyasına Toronto/Ontario hastane şikayeti bölümü ekle. Sıra: hastanenin Patient Relations birimi, sonra Patient Ombudsman, doktor için CPSO. Telefon, form ve adresleri resmi sayfadan doğrula; doğrulayamadığını yazma. Başlık ve meta açıklamayı \"how to file a hospital complaint in Ontario\" aramasına göre yaz, URL değişmesin. En üstte net cevap kutusu, 3-5 SSS + FAQPage şeması, dateModified ve sitemap lastmod güncelle. Sonra AXX1, testler, /code-review, canlıya al."],
+    ["Ana sayfada Türkçe metin listesi", "Sadece liste, değişiklik yok", "index.html içinde İngilizce sayfada görünen Türkçe metinleri bul (örneğin Milletvekiline İlet, Havuz, Güvenli Belge Doğrulama Merkezi). Hiçbir şeyi değiştirme. Çıktı: satır no, metin, önerilen İngilizce karşılık. Hangilerinin Asya veya panel işlevi için bilerek orada durduğunu da belirt."],
+    ["Dış bağlantı listesi", "Toronto / Ontario kurumları", "Toronto ve Ontario'da ComplaintCA rehberine link verebilecek 15 gerçek kurum bul (community legal clinic, hasta hakları grubu, göçmen yerleşim servisi). Her biri için iletişim sayfası URL'si ver, doğrulayamadığını listeye koyma. Sonra kısa, sıcak, profesyonel İngilizce tek bir tanıtım e-postası şablonu yaz. Hiçbir şey gönderme."],
+    ["İspanya sitesi: kurum linkleri", "es/ altındaki resmi linkler", "es/ klasöründeki yetkili kurum linklerini ve telefonları tek tek resmi kaynaktan doğrula. Önce rapor ver (doğru, yanlış, doğrulanamadı). Hiçbir dosyayı değiştirme, onayımı bekle."]
   ];
   var list = document.getElementById('list'), msg = document.getElementById('msg');
   function copy(text) {
