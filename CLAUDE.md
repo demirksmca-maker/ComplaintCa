@@ -34,7 +34,7 @@
 - Kullanıcı "Ax" derse: yeni sohbet açılmış demektir. Önceki işe buradan bağlan, baştan sorma.
 - Konu: Search Console 0-tık sayfaları için SEO + yapay zeka (AI Mode) alıntı formatı. BİTTİ: aşama 1-4, 62 blog yazısının hepsinde 4+ SSS + FAQPage şeması (EN+ES), markalı yazılar, guides: Ontario, CRA, Banking, Alberta, Canada Post, Airline, Telecom, Insurance.
 - Doğrulandı (3 Kas 2026): CRA Ombudsperson 1-866-586-3839; OEB/IPC/CPSO alan adları ve CPSO 1-800-268-7096 doğru. Açık iş yok.
-- AI-arama işi (Kanada blog+guides, ES blog) bitti: net cevap kutusu, tarih, sitemap lastmod, llms.txt, iç linkler, Article görseli, Organization şeması. Tekrar uğraşma; sadece yeni sayfaya aynı formatı uygula. Not: `es/index.html` bilerek `noindex` (ES TEST).
+- AI-arama işi (Kanada blog+guides, ES blog) bitti: net cevap kutusu, tarih, sitemap lastmod, llms.txt, iç linkler, Article görseli, Organization şeması. Tekrar uğraşma; sadece yeni sayfaya aynı formatı uygula. `es/index.html` artık indeksli (noindex kaldırıldı, canonical + sitemap eklendi).
 - İsteğe bağlı sonraki: BC, Quebec, Saskatchewan, Healthcare, Police guides (ince). Önce Search Console'da 2-3 hafta sonra sonuçlara bak.
 - AI format: (1) net soru başlığı, (2) en üstte tek cümlelik cevap, (3) numaralı kısa adımlar (kime, ne, ne kadar sürer; kurum adı tam), (4) 3-5 kısa SSS (rakam/süre ile) + FAQPage şeması, `dateModified` güncelle.
 - Kural: bilgiyi resmi kaynaktan/aramayla doğrula; doğrulayamadığını yazma.
