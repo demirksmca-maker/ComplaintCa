@@ -32,8 +32,9 @@
 
 ## Ax (yeni sohbette devam)
 - Kullanıcı "Ax" derse: yeni sohbet açılmış demektir. Önceki işe buradan bağlan, baştan sorma.
-- Konu: Search Console'daki 0-tık sayfaların SEO + yapay zeka (AI Mode) alıntı formatı. Aşama 1-4 bitti (Ontario, CRA, Banking, Alberta, Canada Post, başlık/açıklama kısaltmaları, ES ana sayfa, privacy).
-- Sıradaki: AI'ın en çok alıntıladığı yazılara (report-a-teacher, school-principal vb.) aşağıdaki formatı uygula. Önce ES üçlüsü (hoja-de-reclamaciones, abogado-gratis, banco-SAC) + gov-refund SSS şeması.
+- Konu: Search Console 0-tık sayfaları için SEO + yapay zeka (AI Mode) alıntı formatı. BİTTİ: aşama 1-4, 62 blog yazısının hepsinde 4+ SSS + FAQPage şeması (EN+ES), markalı yazılar, guides: Ontario, CRA, Banking, Alberta, Canada Post, Airline, Telecom, Insurance.
+- Açık işler (kullanıcı kontrol edecek): CRA Ombudsperson telefonu (1-866-586-3839) doğrulanmadı; Ontario rehberinde OEB/IPC/CPSO linkleri doğrulanmadı.
+- İsteğe bağlı sonraki: BC, Quebec, Saskatchewan, Healthcare, Police guides (ince). Önce Search Console'da 2-3 hafta sonra sonuçlara bak.
 - AI format: (1) net soru başlığı, (2) en üstte tek cümlelik cevap, (3) numaralı kısa adımlar (kime, ne, ne kadar sürer; kurum adı tam), (4) 3-5 kısa SSS (rakam/süre ile) + FAQPage şeması, `dateModified` güncelle.
-- Kural: bilgiyi resmi kaynaktan/aramayla doğrula; doğrulayamadığını yazma. Açık işler: CRA Ombudsperson telefonu (1-866-586-3839) doğrulanmadı; Ontario rehberinde OEB/IPC/CPSO linkleri tıklanıp doğrulanmadı.
-- Her canlıya almadan önce AXX1/AXX2 sor; test + /code-review çalıştır.
+- Kural: bilgiyi resmi kaynaktan/aramayla doğrula; doğrulayamadığını yazma.
+- Her canlıya almadan önce AXX1/AXX2 sor (kullanıcı önceden söylediyse sorma); test + /code-review çalıştır.
