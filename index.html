@@ -205,7 +205,7 @@ html[data-restoring-tab] #pg-app{display:block}
 .back-btn{display:none;align-items:center;gap:6px;color:rgba(255,255,255,.7);font-size:.8rem;font-weight:600;cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
 .back-btn:hover{color:white}
 .back-btn.show{display:flex}
-.topbar-inner{position:relative}
+.topbar,.topbar-inner{pointer-events:none}.topbar-inner>*{pointer-events:auto}.topbar-inner{position:relative}
 .topbar .logo-btn,.topbar .back-btn{display:none!important}
 .topbar-right{margin-left:auto}
 .topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;white-space:nowrap}
