@@ -228,39 +228,59 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 .tile i{position:absolute;top:12px;right:14px;font-style:normal;color:rgba(243,230,234,.6);font-size:.85rem}
 .tile:active{transform:scale(.97)}
 .panel>summary .pn{display:none}
+
+html,body{margin:0;height:100%}
+body{overflow:hidden}
+.demo-note{display:none}
+.screen{height:100dvh;display:flex;flex-direction:column;max-width:720px;margin:0 auto;padding:0 14px 118px}
+.top{padding:8px 0 0;max-width:none;margin:0}.top img{width:40px;height:40px}.top .wm{font-size:1.2rem}.top .sp{width:40px}
+.hero{padding:2px 4px 0;max-width:none}
+.hero .eyebrow{display:none}
+.hero h1{font-size:clamp(.95rem,2.9vh,1.2rem);max-width:none;margin:0 0 4px}
+.hero .dateline{font-size:.8rem}
+.lede{font-size:clamp(.85rem,2.3vh,1rem);margin:6px 0 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+.lede b{font-size:.68rem}
+.kick{margin:2px 2px 8px}
+.tiles{flex:1;min-height:0;grid-template-rows:repeat(3,1fr);margin:0;gap:10px}
+.tile{min-height:0;font-size:clamp(.78rem,2.2vh,.92rem)}
+.sheet{display:none;position:fixed;inset:0;z-index:40;overflow:auto;background:linear-gradient(rgba(34,10,40,.93),rgba(22,6,28,.97)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover;padding-bottom:130px;-webkit-overflow-scrolling:touch}
+.sheet:target{display:block}
+.sbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:14px;padding:12px 16px;background:rgba(22,6,28,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);font:700 .9rem Cinzel,serif;color:#fff;max-width:none}
+.sbar .back{font:700 .62rem Cinzel,serif;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:8px 14px;white-space:nowrap}
+.sbar{padding-right:96px;font-size:.8rem;line-height:1.2}.sbody{max-width:720px;margin:0 auto;padding:16px 16px 0}
+.tools,.panel{display:none}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LNW0LJL3KF"></script>
 <script src="/ga-init.js"></script>
 </head>
 <body>
-<div class="demo-note">DEMO: yeni blog tasarımı testi, indekslenmez</div>
+<div class="screen">
 <div class="top"><img src="/assets/emblem-clear.webp" alt=""><span class="wm">ComplaintCA</span><span class="sp"></span></div>
 <div class="hero">
   <div class="eyebrow">ComplaintCA · Tüketici Uyarıları</div>
   <h1>Kanada'da Bir Öğretmen Nasıl Şikâyet Edilir: Okul Kurulu, Ombudsman mı, Öğretmen Düzenleyici Kurumu mu?</h1>
   <div class="dateline">Yayın <b>3 Ekim 2026</b> · Güncelleme <b>3 Kasım 2026</b> · 4 dk okuma</div>
 </div>
-<main>
 <p class="lede"><b>Kısa cevap:</b> önce müdüre, sonra okul kuruluna yazılı olarak bildir. Sorun öğretmenin kendi mesleki davranışıysa, eyaletindeki öğretmen düzenleyici kuruma da (örneğin Ontario College of Teachers) bildirebilirsin. Hangi yolun gerektiği ne olduğuna bağlı; yanlış yolu seçmek haftalarını alabilir.</p>
-<div class="kick">Adalete Altı Adım</div><div class="tiles"><a class="tile" href="#p1" data-p="p1"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><i>&rarr;</i>İki Yol, İki Sorun</a><a class="tile" href="#p2" data-p="p2"><svg viewBox="0 0 24 24"><path d="M12 4v16M6 8h12M6 8l-3 6a3 3 0 006 0zM18 8l-3 6a3 3 0 006 0z"/></svg><i>&rarr;</i>Yol A: Müdür, Kurul, Ombudsman</a><a class="tile" href="#p3" data-p="p3"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><path d="M5 20a7 7 0 0114 0"/></svg><i>&rarr;</i>Yol B: Öğretmen Düzenleyici Kurumu</a><a class="tile" href="#p4" data-p="p4"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><i>&rarr;</i>Neler Yazılmalı</a><a class="tile" href="#p5" data-p="p5"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><i>&rarr;</i>Sık Sorulanlar</a><a class="tile" href="#p6" data-p="p6"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><i>&rarr;</i>Kaynaklar ve İlgili Yazılar</a></div>
-<div class="stat-lede"><div class="big">~9.000</div><div class="cap">Ontario Ombudsman'ın ilk 10 yıllık denetiminde (2015–2025) ele aldığı Ontario okul kurulu şikâyeti sayısı.</div></div>
-<div class="tools"><button type="button" id="toggleAll">Hepsini aç</button></div>
-<details class="panel" id="p1" open><summary>İki Yol, İki Sorun</summary><div class="pbody">
+<div class="kick">Adalete Altı Adım</div><div class="tiles"><a class="tile" href="#p1"><svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><i>&rarr;</i>İki Yol, İki Sorun</a><a class="tile" href="#p2"><svg viewBox="0 0 24 24"><path d="M12 4v16M6 8h12M6 8l-3 6a3 3 0 006 0zM18 8l-3 6a3 3 0 006 0z"/></svg><i>&rarr;</i>Yol A: Müdür, Kurul, Ombudsman</a><a class="tile" href="#p3"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.5"/><path d="M5 20a7 7 0 0114 0"/></svg><i>&rarr;</i>Yol B: Öğretmen Düzenleyici Kurumu</a><a class="tile" href="#p4"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><i>&rarr;</i>Neler Yazılmalı</a><a class="tile" href="#p5"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><i>&rarr;</i>Sık Sorulanlar</a><a class="tile" href="#p6"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><i>&rarr;</i>Kaynaklar ve İlgili Yazılar</a></div>
+</div>
+<section class="sheet" id="p1"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>İki Yol, İki Sorun</span></div><div class="sbody"><div class="stat-lede"><div class="big">~9.000</div><div class="cap">Ontario Ombudsman'ın ilk 10 yıllık denetiminde (2015–2025) ele aldığı Ontario okul kurulu şikâyeti sayısı.</div></div>
 <div class="path-card"><h3>Yol A — Okul veya kurul kararı</h3><p>Örnekler: disiplin kararı, okulun harekete geçmediği zorbalık, hiç gelmeyen özel eğitim desteği, servis veya kayıt sorunu. Sıra: <b>müdür</b>, sonra <b>okul kurulu</b>, bazı eyaletlerde de <b>eyalet Ombudsmanı</b>.</p></div>
 <div class="path-card"><h3>Yol B — Öğretmenin kendi mesleki davranışı</h3><p>Örnekler: öğrenciye uygunsuz davranış, ciddi yetersizlik veya öğretmene yakışmayan tutum. Okula bildirmenin yanında, öğretmeni eyaletindeki <b>öğretmenlik ruhsatını veren kuruma</b> da bildirebilirsin. Bu kurum soruşturabilir ve öğretmenlik belgesine yaptırım uygulayabilir.</p></div>
-<p class="body-text">Bazen iki yol da gerekir. Öğretmenin kötü davranışını görmezden gelen okul kurul sorunudur; davranışın kendisi ise düzenleyici kurum sorunudur.</p></div></details>
-<details class="panel" id="p2"><summary>Yol A: Müdür, Kurul, Ombudsman</summary><div class="pbody">
-<div class="path-card"><p><span class="step-num">1</span><b>Öğretmene veya müdüre yaz.</b> Çoğu kurul, resmi şikâyeti kabul etmeden önce bunu ister; ayrıca yazılı kayıt oluşturur.</p><p><span class="step-num">2</span><b>Okul kuruluna çık.</b> Resmi şikâyet politikasını adıyla iste. Seçilmiş okul temsilcin (trustee) takılan şikâyetleri ilerletmeye yardım edebilir.</p><p style="margin-bottom:0"><span class="step-num">3</span><b>Kurul çözmezse eyalet Ombudsmanına git.</b> Ontario Ombudsmanı 72 okul kurulunu ve 10 okul otoritesini denetler. En sık şikâyetler kayıt, öğrenci güvenliği ve özel ihtiyaçlı öğrencilere destek konusundadır. BC ve Manitoba'da benzer denetim var. <a href="/guides/school-complaint-canada-guide.html">Okul şikâyeti rehberimizde</a> tüm eyaletler ve telefonlar var.</p></div><h2>Okul Kuruluna Nasıl Bildirilir</h2><div class="path-card"><p><span class="step-num">1</span><b>Kurulun şikâyet politikasını bul.</b> Kurulun sitesinde "parent concerns" veya "complaint resolution" ara. Genelde sıra: öğretmen, müdür, okulun süpervizörü (superintendent).</p><p><span class="step-num">2</span><b>Superintendent'a yaz.</b> Müdür çözmediyse kısa bir mektup veya e-posta gönder: öğretmenin adı, okul, tarihler, ne oldu, kime söylediğin ve ne istediğin.</p><p><span class="step-num">3</span><b>Yazılı cevap ve süre iste.</b> Her şeyin kopyasını sakla. Cevap gelmezse takip et ve okul temsilcini kopyaya ekle.</p><p style="margin-bottom:0"><span class="step-num">4</span><b>Şikâyet müdür hakkındaysa</b> müdürü atla, doğrudan superintendent'a git. <a href="/blog/school-principal-complaint-ontario.html">Ontario'da müdür şikâyeti</a> yazımıza bak.</p></div></div></details>
-<details class="panel" id="p3"><summary>Yol B: Öğretmen Düzenleyici Kurumu</summary><div class="pbody">
+<p class="body-text">Bazen iki yol da gerekir. Öğretmenin kötü davranışını görmezden gelen okul kurul sorunudur; davranışın kendisi ise düzenleyici kurum sorunudur.</p></div></section>
+<section class="sheet" id="p2"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>Yol A: Müdür, Kurul, Ombudsman</span></div><div class="sbody">
+<div class="path-card"><p><span class="step-num">1</span><b>Öğretmene veya müdüre yaz.</b> Çoğu kurul, resmi şikâyeti kabul etmeden önce bunu ister; ayrıca yazılı kayıt oluşturur.</p><p><span class="step-num">2</span><b>Okul kuruluna çık.</b> Resmi şikâyet politikasını adıyla iste. Seçilmiş okul temsilcin (trustee) takılan şikâyetleri ilerletmeye yardım edebilir.</p><p style="margin-bottom:0"><span class="step-num">3</span><b>Kurul çözmezse eyalet Ombudsmanına git.</b> Ontario Ombudsmanı 72 okul kurulunu ve 10 okul otoritesini denetler. En sık şikâyetler kayıt, öğrenci güvenliği ve özel ihtiyaçlı öğrencilere destek konusundadır. BC ve Manitoba'da benzer denetim var. <a href="/guides/school-complaint-canada-guide.html">Okul şikâyeti rehberimizde</a> tüm eyaletler ve telefonlar var.</p></div><h2>Okul Kuruluna Nasıl Bildirilir</h2><div class="path-card"><p><span class="step-num">1</span><b>Kurulun şikâyet politikasını bul.</b> Kurulun sitesinde "parent concerns" veya "complaint resolution" ara. Genelde sıra: öğretmen, müdür, okulun süpervizörü (superintendent).</p><p><span class="step-num">2</span><b>Superintendent'a yaz.</b> Müdür çözmediyse kısa bir mektup veya e-posta gönder: öğretmenin adı, okul, tarihler, ne oldu, kime söylediğin ve ne istediğin.</p><p><span class="step-num">3</span><b>Yazılı cevap ve süre iste.</b> Her şeyin kopyasını sakla. Cevap gelmezse takip et ve okul temsilcini kopyaya ekle.</p><p style="margin-bottom:0"><span class="step-num">4</span><b>Şikâyet müdür hakkındaysa</b> müdürü atla, doğrudan superintendent'a git. <a href="/blog/school-principal-complaint-ontario.html">Ontario'da müdür şikâyeti</a> yazımıza bak.</p></div></div></section>
+<section class="sheet" id="p3"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>Yol B: Öğretmen Düzenleyici Kurumu</span></div><div class="sbody">
 <div class="path-card"><table class="wait-table wrap"><tr><th>Eyalet</th><th>Öğretmen düzenleyici kurumu</th></tr><tr><td>Ontario</td><td>Ontario College of Teachers</td></tr><tr><td>British Columbia</td><td>Commissioner for Teacher Regulation</td></tr><tr><td>Alberta</td><td>Alberta Teaching Profession Commission</td></tr></table></div>
 <div class="path-card"><p><b>Ontario College of Teachers.</b> Herkes, Ontario sertifikalı bir öğretmen hakkında kaygı iletebilir. Online formu kullan, 437-880-3000 (ücretsiz 1-833-966-5588) numarasını ara veya Registrar'a yaz. Adını, iletişim bilgini, öğretmenin adını ve olanları yaz. İsimsiz bildirimler genelde soruşturulmaz; kurum yalnızca mesleki suistimal, yetersizlik veya ehliyetsizliği ele alır.</p>
 <p><b>BC Commissioner for Teacher Regulation.</b> BC'de sertifikalı öğretmenlerin davranış ve yeterliliğini inceler; herkes şikâyet edebilir. Başvuru: trb.intake@gov.bc.ca veya 604-775-4870.</p>
 <p><b>Alberta Teaching Profession Commission.</b> Öğretmenin mesleki davranışı şikâyetlerine bakar: 780-427-3663.</p>
-<p style="margin-bottom:0">Diğer eyaletlerde, öğretmen belgesi ve disiplini işini hangi kurumun yürüttüğünü okul kuruluna sor.</p></div></div></details>
-<details class="panel" id="p4"><summary>Neler Yazılmalı</summary><div class="pbody">
-<div class="path-card"><p><span class="step-num">1</span><b>Tam isimler.</b> Senin adın ve iletişim bilgin, öğretmenin tam adı ve okul.</p><p><span class="step-num">2</span><b>Tarihler ve olgular.</b> Ne oldu, ne zaman, kim gördü. Yorum değil, olgu yaz.</p><p><span class="step-num">3</span><b>Önceki temaslar.</b> Kime söyledin (öğretmen, müdür, superintendent), ne zaman ve ne dediler. Bu e-postaları ekle.</p><p style="margin-bottom:0"><span class="step-num">4</span><b>Ne istediğin.</b> Net ol ve yazılı cevap iste.</p></div><div class="callout"><b>Bir çocuk tehlikede olabilirse</b> şikâyet sürecini bekleme. Hemen polisi veya yerel çocuk koruma kurumunu ara.</div></div></details>
-<details class="panel" id="p5"><summary>Sık Sorulanlar</summary><div class="pbody">
+<p style="margin-bottom:0">Diğer eyaletlerde, öğretmen belgesi ve disiplini işini hangi kurumun yürüttüğünü okul kuruluna sor.</p></div></div></section>
+<section class="sheet" id="p4"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>Neler Yazılmalı</span></div><div class="sbody">
+<div class="path-card"><p><span class="step-num">1</span><b>Tam isimler.</b> Senin adın ve iletişim bilgin, öğretmenin tam adı ve okul.</p><p><span class="step-num">2</span><b>Tarihler ve olgular.</b> Ne oldu, ne zaman, kim gördü. Yorum değil, olgu yaz.</p><p><span class="step-num">3</span><b>Önceki temaslar.</b> Kime söyledin (öğretmen, müdür, superintendent), ne zaman ve ne dediler. Bu e-postaları ekle.</p><p style="margin-bottom:0"><span class="step-num">4</span><b>Ne istediğin.</b> Net ol ve yazılı cevap iste.</p></div><div class="callout"><b>Bir çocuk tehlikede olabilirse</b> şikâyet sürecini bekleme. Hemen polisi veya yerel çocuk koruma kurumunu ara.</div><div class="cta"><p>Okula, kurula veya düzenleyici kuruma göndermeden önce şikâyetini tarihler ve söylenenlerle net şekilde yaz.</p><a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener">Asya ile Yaz →</a></div>
+</div></section>
+<section class="sheet" id="p5"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>Sık Sorulanlar</span></div><div class="sbody">
 <details class="faq-item"><summary>Kanada'da bir öğretmen nasıl şikâyet edilir?</summary><p>Önce müdüre yazılı olarak bildir. Konu okulun veya kurulun bir işi nasıl ele aldığıysa, kurulun resmi şikâyet politikasıyla yukarı çık. Konu öğretmenin kendi mesleki davranışıysa, eyaletinin öğretmen düzenleyici kurumuna da bildirebilirsin (Ontario College of Teachers, BC Commissioner for Teacher Regulation gibi).</p></details>
 <details class="faq-item"><summary>Ontario College of Teachers'a nasıl bildirilir?</summary><p>Online başvuru formunu kullan, 437-880-3000 (ücretsiz 1-833-966-5588) numarasını ara veya Registrar'a yaz. Adını, iletişim bilgini, öğretmenin adını ve olanları ekle. Kurum genelde isimsiz bildirimleri soruşturmaz.</p></details>
 <details class="faq-item"><summary>Ontario Ombudsmanı bir öğretmeni soruşturabilir mi?</summary><p>Ombudsman Ontario okul kurullarını denetler, tek tek öğretmenlerin mesleki davranışını değil. Okul ve kurul cevap verdikten sonra kurulun şikâyetini nasıl ele aldığını inceleyebilir. Öğretmen suistimali Ontario College of Teachers'a gider.</p></details>
@@ -269,8 +289,8 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 <details class="faq-item"><summary>Bir öğretmeni bildirirken neler yazmalıyım?</summary><p>Adın ve iletişim bilgin, öğretmenin tam adı ve okulu, olayların tarih ve olguları, kime söylediğin ve ne dediler, ne istediğin. Önceki e-postaları ekle ve yazılı cevap iste.</p></details>
 <details class="faq-item"><summary>Bir öğretmeni isimsiz bildirebilir miyim?</summary><p>İsmini vermeden kaygını iletebilirsin ama işlem yapmak zorlaşır. Okul kurulları genelde seninle iletişime geçmek ister; Ontario College of Teachers isimsiz bildirimleri genelde soruşturmaz. Bir çocuk tehlikedeyse hemen polisi veya çocuk korumayı ara.</p></details>
 <details class="faq-item"><summary>Bir müdürü okul kuruluna nasıl bildiririm?</summary><p>Müdür şikâyet ettiğin kişi olduğu için okuldan sorumlu superintendent'a yaz. Kurul çözmezse Ontario, BC veya Manitoba'da eyalet Ombudsmanına gidebilirsin.</p></details>
-</div></details>
-<details class="panel" id="p6"><summary>Kaynaklar ve İlgili Yazılar</summary><div class="pbody">
+</div></section>
+<section class="sheet" id="p6"><div class="sbar"><a class="back" href="#">&larr; Geri</a><span>Kaynaklar ve İlgili Yazılar</span></div><div class="sbody">
 <div class="trust-box"><h2 style="margin-top:0">Kaynaklar ve Doğrulama</h2><p>Bu yazıdaki rakamlar ve iletişim bilgileri resmi kaynaklardan alındı:</p><ul class="trust-sources">
 <li><a href="https://www.newswire.ca/news-releases/ombudsman-marks-10-years-of-oversight-of-ontario-school-boards-847156772.html" target="_blank" rel="noopener">Ontario Ombudsman — Okul kurulu denetiminin 10. yılı (2 Eylül 2025)</a></li>
 <li><a href="https://www.oct.ca/en-ca/public-protection/concerns-and-complaints/submit-a-concern" target="_blank" rel="noopener">Ontario College of Teachers — Kaygı ilet</a></li>
@@ -281,12 +301,9 @@ footer{text-align:center;padding:22px;font-style:italic;font-size:.9rem;color:va
 <li><a href="/guides/school-complaint-canada-guide.html">Kanada'da okul, öğretmen veya müdür nasıl şikâyet edilir</a></li>
 <li><a href="/guides/human-rights-complaint-canada-guide.html">Kanada'da insan hakları şikâyeti</a></li>
 <li><a href="/guides/free-legal-help-canada-guide.html">Kanada'da ücretsiz hukuki yardım</a></li>
-<li><a href="/blog/">Tüm blog yazıları →</a></li></ul></div></div></details>
-<div class="cta"><p>Okula, kurula veya düzenleyici kuruma göndermeden önce şikâyetini tarihler ve söylenenlerle net şekilde yaz.</p><a href="https://www.complaintca.ca?go=asya" target="_blank" rel="noopener">Asya ile Yaz →</a></div>
-</main>
-<footer>ComplaintCA · complaintca.ca · <a href="/about.html">Hakkımızda</a> · <a href="/blog/">Blog</a> · <a href="/contact.html">İletişim</a> · <a href="/privacy.html">Gizlilik</a></footer>
+<li><a href="/blog/">Tüm blog yazıları →</a></li></ul></div></div></section>
+<footer style="display:none"></footer>
 <script defer src="/assets/site-rail.js"></script>
 <script defer src="/assets/blog-rating.js"></script>
-<script>var b=document.getElementById("toggleAll");document.querySelectorAll("a.tile").forEach(function(a){a.onclick=function(e){e.preventDefault();var d=document.getElementById(a.dataset.p);d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"})}});if(b)b.onclick=function(){var p=document.querySelectorAll("details.panel"),o=b.dataset.o!=="1";p.forEach(function(d){d.open=o});b.dataset.o=o?"1":"0";b.textContent=o?"Hepsini kapat":"Hepsini aç"}</script>
 </body>
 </html>
