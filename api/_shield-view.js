@@ -29,6 +29,13 @@ export function keyOk(given, expected) {
 
 // Toronto days, newest first. Steps whole calendar days from today, so a
 // 23 or 25 hour DST day never skips or repeats a date.
+// Start value: Vercel Analytics' last-24-hours visitors when the panel switched
+// to the 24-hour view. It counts for 24 h from then; the own visitor counter
+// (hourly buckets) is added on top, and after 24 h it stands alone.
+export const SEED = { t: 1793687180676, n: 80 };
+export const seedBase = (now = Date.now()) => (now < SEED.t + 86400000 ? SEED.n : 0);
+export const seedHour = (now = Date.now()) => (now < SEED.t + 86400000 ? Math.floor(SEED.t / 3600000) : 0);
+
 export function lastDays(now = new Date(), n = DAYS) {
   const noon = Date.parse(now.toLocaleDateString('en-CA', { timeZone: 'America/Toronto' }) + 'T12:00:00Z');
   return Array.from({ length: n }, (_, i) => new Date(noon - i * 86400000).toISOString().slice(0, 10));
@@ -273,7 +280,7 @@ export async function shieldView(req, res) {
   const h = Math.floor(Date.now() / 3600000);
   const hours = site => Array.from({ length: 24 }, (_, k) => `shield:uvh:${site}:${h - k}`);
   for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', ...hours(site)]);
-  cmds.push(['PFCOUNT', ...hours('ca'), ...hours('es')]);
+  cmds.push(['PFCOUNT', ...hours('ca').filter((_, k) => h - k >= seedHour(Date.now())), ...hours('es').filter((_, k) => h - k >= seedHour(Date.now()))]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
   let out, stats, comp, live;
   try {
@@ -294,7 +301,7 @@ export async function shieldView(req, res) {
   const ttl = Number(out[i++]);
   const now = {};
   for (const site of ['ca', 'es']) now[site] = { views: Number(out[i++]) || 0, visitors: Number(out[i++]) || 0 };
-  now.visitors = Number(out[i++]) || 0;
+  now.visitors = seedBase(Date.now()) + (Number(out[i++]) || 0);
   now.live = live;
   // Attacks blocked since Toronto midnight, from the last 200 events.
   now.blocked = events.filter(e => !String(e.agent).startsWith('suspect') && lastDays(new Date(e.t), 1)[0] === days[0]).length;
