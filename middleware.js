@@ -149,6 +149,11 @@ export function isPageView(request, url, ua) {
   return /text\/html/.test(h('accept')) && !!h('accept-language');
 }
 
+// Hourly visitor buckets (UTC hour), unioned by the panel into "last 24 hours".
+export function hourKey(site, now = Date.now()) {
+  return `shield:uvh:${site}:${Math.floor(now / 3600000)}`;
+}
+
 export function visitDay(now = new Date()) {
   return now.toLocaleDateString('en-CA', { timeZone: 'America/Toronto' });
 }
@@ -241,7 +246,7 @@ export default async function middleware(request) {
     if (url.searchParams.get('e') === 'visit' && request.method === 'POST' && request.headers.get('sec-fetch-site') !== 'cross-site' && ua && !BOT_RE.test(ua) && !isOwner(request)) {
       const p = (url.searchParams.get('p') || '').slice(0, 80);
       const site = p === '/es' || p.startsWith('/es/') ? 'es' : 'ca';
-      if (p.startsWith('/')) await redis([['PFADD', `shield:uv:${site}:${visitDay()}`, ip]]);
+      if (p.startsWith('/')) { const hk = hourKey(site); await redis([['PFADD', `shield:uv:${site}:${visitDay()}`, ip], ['PFADD', hk, ip], ['EXPIRE', hk, 100000]]); }
     }
     return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
   }

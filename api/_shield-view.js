@@ -269,8 +269,11 @@ export async function shieldView(req, res) {
   cmds.push(['LRANGE', 'shield:reports', 0, 49], ['LRANGE', 'shield:events', 0, 199], ['TTL', 'shield:lockdown']);
   // Today so far (Genel's live row and road map): page views and unique
   // visitors per site, and unique visitors of both sites together.
-  for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', `shield:uv:${site}:${days[0]}`]);
-  cmds.push(['PFCOUNT', `shield:uv:ca:${days[0]}`, `shield:uv:es:${days[0]}`]);
+  // Visitors are the last 24 hours (hourly buckets, like Vercel Analytics).
+  const h = Math.floor(Date.now() / 3600000);
+  const hours = site => Array.from({ length: 24 }, (_, k) => `shield:uvh:${site}:${h - k}`);
+  for (const site of ['ca', 'es']) cmds.push(['GET', `shield:views:${site}:${days[0]}`], ['PFCOUNT', ...hours(site)]);
+  cmds.push(['PFCOUNT', ...hours('ca'), ...hours('es')]);
   const period = PERIODS.includes(Number(req.query && req.query.days)) ? Number(req.query.days) : 7;
   let out, stats, comp;
   try {
