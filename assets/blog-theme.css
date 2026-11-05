@@ -11,7 +11,7 @@
 html{scroll-behavior:smooth;background:#160a1c}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;color:var(--text);font-family:'EB Garamond',Georgia,serif;font-size:1.06rem;line-height:1.6;-webkit-text-size-adjust:100%}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.9)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat}
 a{color:var(--lav)}
 .vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 

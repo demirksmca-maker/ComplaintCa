@@ -1,5 +1,5 @@
 /* "How can we help?" framed card. Also reused (renamed to #cc-lang) by assets/lang-picker.js. */
-#cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;color:#fff;font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(140,60,210,.22),transparent 70%),linear-gradient(rgba(34,10,40,.7),rgba(18,4,22,.92)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}
+#cc-choice{position:fixed;inset:0;z-index:99999;display:none;overflow-y:auto;color:#fff;font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(140,60,210,.22),transparent 70%),linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat}
 #cc-choice.on{display:grid;align-content:center;padding:24px 0}
 #cc-choice .cc-hero{position:relative;width:min(72vw,340px);aspect-ratio:1;margin:0 auto 22px;animation:ccIn 1s ease-out both}
 #cc-choice .cc-hero::after{content:"";position:absolute;inset:8%;border-radius:50%;box-shadow:0 0 90px 30px rgba(150,60,220,.28);z-index:-1}

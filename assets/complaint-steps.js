@@ -46,7 +46,7 @@
   var V = {}, tmp = {}, cur = null, root, companies = null;
 
   var CSS = [
-    '#cc-steps{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(34,10,40,.62),rgba(22,6,28,.86)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat}',
+    '#cc-steps{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat}',
     '#cc-steps.on{display:flex;flex-direction:column}',
     '#cc-steps *{box-sizing:border-box}',
     'body.cc-steps-on .amain{display:none!important}',
@@ -233,7 +233,7 @@
     '#cc-steps .cs-ay-sw[aria-checked="false"] b{opacity:.55}#cc-steps .cs-ay-sw[aria-checked="false"] i::after{filter:grayscale(.85) brightness(.75)}',
     '@keyframes csBlue{0%,100%{filter:drop-shadow(0 0 3px rgba(255,240,245,.35))}50%{filter:drop-shadow(0 0 9px rgba(255,235,240,.85)) brightness(1.1)}}',
     // ASYA in the site's gold: framed page, crystal maple crest (spins like a ball of light while ASYA works), gold step bars, marble suggestion card.
-    '#cc-steps .as{background:linear-gradient(rgba(18,4,22,.55),rgba(18,4,22,.55)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover}#cc-steps .as .as-flag,#cc-steps .as .as-dim{display:none}',
+    '#cc-steps .as{background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover}#cc-steps .as .as-flag,#cc-steps .as .as-dim{display:none}',
     '#cc-steps .as::before{content:"";position:fixed;inset:6px max(6px,calc(50% - 300px));z-index:0;border-style:solid;border-width:clamp(46px,13vw,58px);border-image:url(/assets/choice/card.webp) 180 fill stretch;pointer-events:none}',
     '#cc-steps .as .as-in{z-index:1;padding:calc(clamp(46px,13vw,58px) + env(safe-area-inset-top,0px)) max(clamp(36px,10vw,46px),env(safe-area-inset-right,0px)) calc(clamp(46px,13vw,58px) + env(safe-area-inset-bottom,0px)) max(clamp(36px,10vw,46px),env(safe-area-inset-left,0px));justify-content:flex-start}#cc-steps .as .orb.small{margin-top:-4px}',
     '#cc-steps .as .cs-x{top:calc(clamp(40px,12vw,52px) + env(safe-area-inset-top,0px));right:max(clamp(36px,10vw,46px),env(safe-area-inset-right,0px));width:34px;height:34px;padding:0;border-radius:10px;border:2px solid transparent;color:transparent;font-size:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.18),rgba(0,0,0,.25) 70%) padding-box,url(/assets/choice/walnut.webp) center/cover padding-box,linear-gradient(135deg,#7a5418 0%,#f6dc8a 22%,#b8862c 45%,#fff0b8 62%,#9a6a1c 82%,#e9c56a 100%) border-box;box-shadow:0 3px 8px rgba(0,0,0,.55)}',

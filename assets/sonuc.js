@@ -111,7 +111,7 @@
     '@property --sna{syntax:"<angle>";inherits:false;initial-value:0deg}',
     '@keyframes snSpin{to{--sna:360deg}}@keyframes snUp{from{transform:translateY(14px);opacity:0}}@keyframes snGild{50%{background-position:100% 0}}@keyframes snShine{40%,100%{transform:translateX(120%)}}',
     '@keyframes snPop{from{transform:scale(.4);opacity:0}}@keyframes snGlow{50%{box-shadow:0 0 18px rgba(255,77,121,.9)}}@keyframes snBglow{50%{box-shadow:0 0 18px rgba(250,204,21,.7);border-color:#fde047}}@keyframes snFloat{50%{transform:translateY(-2px)}}@keyframes snShim{to{background-position:-200% 0}}',
-    '#sn{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;text-align:left;background:linear-gradient(rgba(26,6,32,.8),rgba(14,3,18,.94)),#160a1c url(/assets/brand/flag-aubergine-wave.webp) center/cover no-repeat;-webkit-tap-highlight-color:transparent}',
+    '#sn{position:relative;display:none;margin-top:46px;min-height:max(620px,calc(100dvh - 85px));color:#fff;font-family:Inter,system-ui,sans-serif;text-align:left;background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat;-webkit-tap-highlight-color:transparent}',
     '#sn.on{display:block}body.cc-sonuc-on .amain{display:none!important}#sn *{box-sizing:border-box}#sn [hidden]{display:none!important}',
     '#sn button{font:inherit;color:inherit}#sn a{color:inherit}',
     '#sn .sn-wrap{max-width:560px;margin:0 auto;padding:22px max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}',
