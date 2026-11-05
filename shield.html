@@ -478,7 +478,7 @@
     </section>
 
     <section class="sec" id="v-agents" hidden>
-      <h3 class="ptitle">Ajanlar · otomatik çalışanlar</h3>
+      <h3 class="ptitle">Ajanlar · yapay zekâ</h3>
       <div class="card pad" id="agList"><p class="empty">Yükleniyor…</p></div>
       <p class="empty" id="agSub">Son durum GitHub Actions'tan gelir.</p>
     </section>
@@ -1335,16 +1335,10 @@
         .catch(function () { t.disabled = false; t.textContent = 'Silinemedi, tekrar dene'; });
     }
   });
-  // Ajanlar tab: the repo's automated workers, with their last GitHub Actions run (public API, one request).
+  // Ajanlar tab: the repo's AI agents (ones that call Claude), with their last GitHub Actions run (public API, one request).
   var AGENT_LIST = [
     ['shield-agent.yml', '🛡️', 'Kalkan ajanı', 'Claude saldırı kayıtlarını okur, ısrarcı IP\'leri banlar', '10 dakikada bir'],
-    ['copy-watch.yml', '🕵️', 'Kopya avcısı', 'Claude web\'de site kopyalarını arar, bildirir', 'Günde 1'],
-    ['uptime.yml', '💓', 'Nabız', 'Site ve şikayet sunucusu ayakta mı bakar', '30 dakikada bir'],
-    ['social-post.yml', '📣', 'Sosyal medya', 'Sıradaki gönderileri FB, IG, LinkedIn\'e atar', 'Günde 2'],
-    ['shield-weekly.yml', '📬', 'Haftalık rapor', 'Haftanın özetini e-postayla yollar', 'Pazartesi'],
-    ['indexnow.yml', '⚡', 'IndexNow', 'Değişen sayfaları Bing\'e haber verir', 'Her yüklemede'],
-    ['on-schools-data.yml', '🏫', 'Okul verisi', 'Ontario okul listesini günceller', 'Ayda 1'],
-    ['ai-classifier-eval.yml', '🧪', 'Sınıflandırıcı testi', 'Yapay zekâ şikayet sınıflandırmasını ölçer', 'Elle']
+    ['copy-watch.yml', '🕵️', 'Kopya avcısı', 'Claude web\'de site kopyalarını arar, bildirir', 'Günde 1']
   ];
   var agLoaded = 0;
   function agAgo(t) {
