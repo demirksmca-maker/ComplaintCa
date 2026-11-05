@@ -271,7 +271,7 @@
     }).catch(function(){ if (my !== run) return; R = null; Vd = null; pool = poolOffered(); makeRows(); buildLetter(); phase = 'ready'; draw(); });
   }
   // Same inputs for the English verdict (page) and the French one (letter only).
-  var verdict = function(lang){ return getJson(post('/api/verdict', { title:D.story.slice(0, 80), desc:D.story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:lang }), 25000); };
+  var verdict = function(lang){ return getJson(post('/api/verdict', { title:shortTitle(D.story), desc:D.story, category:cat, location:D.loc, targetName:org, ctype:'notice', anonymous:true, lang:lang }), 25000); };
   function makeRows(){
     rows = []; var seenN = {};
     var add = function(n, line, url, primary){ var k = String(n || '').toLowerCase().replace(/[^a-z0-9]/g, ''); if (!k || seenN[k]) return; seenN[k] = 1; rows.push({ n:n, line:line || '', url:url || '', primary:!!primary, on:true }); };
@@ -282,6 +282,8 @@
   var needName = function(){ return prio === 'high' || pool; };
   var recipient = function(){ return rows[0] && rows[0].primary ? rows[0].n : ''; };
   // The topic the person picked wins over ASYA's guess ("Human Rights · Other" reads as "Human Rights").
+  // First sentence, max 80 chars, cut at a whole word (was: mid-word slice).
+  var shortTitle = function(t){ t = String(t || '').replace(/\s+/g, ' ').trim(); var f = t.split(/(?<=[.!?])\s/)[0] || t; if (f.length <= 80) return f; var c = f.slice(0, 78), sp = c.lastIndexOf(' '); return (sp > 40 ? c.slice(0, sp) : c).replace(/[\s,;:–—-]+$/, '') + '…'; };
   var label = function(){ var t = String(D.topic || '').split(' · '); return (t[1] && t[1] !== 'Other' ? t[1] : t[0]) || (A && A.label) || 'Complaint'; };
 
   // The letter the institution receives (ASYA's rewrite of the story when it has one).
@@ -615,7 +617,7 @@
     if (Date.now() - last < COOLDOWN_MS) { err(L.eCool); return; }
     if (prio === 'high' && !highOk) { SP.high._on = true; SP.high.hidden = false; SP.high.scrollIntoView({ block:'center', behavior:'smooth' }); return; }
     busy = true; SP.btn.disabled = true; SP.btn.firstChild.textContent = L.sending;
-    var isNamed = needName() || named, letter = signed(), title = D.what.replace(/\s+/g, ' ').trim().slice(0, 80) || label();
+    var isNamed = needName() || named, letter = signed(), title = shortTitle(D.what) || label();
     var test = !!(window._ccPanelTest || /[?&]test=1\b/.test(location.search));
     var body = { test:test, title:title, desc:D.story, target:target, targetName:org, targetAddress:'', location:D.loc, place:A ? [A.city, A.address].filter(Boolean).join(' ') : '', category:cat, priority:prio,
       ctype:pool ? 'legal' : 'notice', anonymous:!isNamed, name:isNamed ? nameVal.trim() : '', email:mail, photoCount:0, legalAccepted:true, consent:{ authorize:true, v:'2026-10' },

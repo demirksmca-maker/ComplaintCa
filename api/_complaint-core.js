@@ -29,8 +29,11 @@ const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
 // A short title when the user didn't give one: first sentence of the description.
 export function titleFromDesc(desc) {
-  const first = desc.split(/(?<=[.!?。！？])\s+|\n/)[0] || desc;
-  return first.length > 120 ? first.slice(0, 117).trimEnd() + '…' : first;
+  const first = (desc.split(/(?<=[.!?。！？])\s+|\n/)[0] || desc).trim();
+  if (first.length <= 120) return first;
+  // Cut at the last whole word, never mid-word.
+  const cut = first.slice(0, 117), sp = cut.lastIndexOf(' ');
+  return (sp > 60 ? cut.slice(0, sp) : cut).replace(/[\s,;:–—-]+$/, '') + '…';
 }
 
 // Validates and normalises the request body. Returns { ok, errors, input }.

@@ -1,6 +1,7 @@
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import { isRateLimited } from './_rateLimit.js';
 import { buildBrandedHtml, SENDER } from './send-email.js';
+import { accessToken } from './_gauth.js';
 
 // ComplaintCA connector for Claude (MCP over Streamable HTTP, JSON responses).
 // Add it in Claude → Settings → Connectors → Add custom connector with the URL
@@ -122,7 +123,7 @@ export function authorized(req, secret) {
 // ---------- complaints (public fields only) ----------
 const val = (f) => f == null ? null : (f.stringValue ?? f.booleanValue ?? f.integerValue ?? f.timestampValue ?? null);
 
-export async function fetchComplaints(fetchImpl, fields = ['category', 'date', 'status', 'priority', 'ctype']) {
+export async function fetchComplaints(fetchImpl, fields = ['category', 'date', 'status', 'priority', 'ctype'], token = accessToken) {
   const body = {
     structuredQuery: {
       from: [{ collectionId: 'complaints' }],
@@ -132,8 +133,13 @@ export async function fetchComplaints(fetchImpl, fields = ['category', 'date', '
       limit: 5000,
     },
   };
-  const r = await fetchImpl(`${FIRESTORE}?key=${FIREBASE_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  if (!r.ok) throw new Error(`Firestore HTTP ${r.status}`);
+  // Since Oct 2026 the rules close complaints to the public, so read as the
+  // service account (FIREBASE_SERVICE_ACCOUNT); the select above still limits it
+  // to non-personal fields. Without that env it falls back to the web key.
+  const tok = await Promise.resolve().then(() => token && token()).catch(() => null);
+  const headers = { 'Content-Type': 'application/json', ...(tok ? { Authorization: 'Bearer ' + tok } : {}) };
+  const r = await fetchImpl(tok ? FIRESTORE : `${FIRESTORE}?key=${FIREBASE_KEY}`, { method: 'POST', headers, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(`Firestore HTTP ${r.status}${tok ? '' : ' (FIREBASE_SERVICE_ACCOUNT not set)'}`);
   const rows = await r.json();
   return rows.filter((x) => x.document).map((x) => {
     const f = x.document.fields || {};
