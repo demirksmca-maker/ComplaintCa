@@ -1,5 +1,5 @@
 {
-  "_help": "Each run (08:00 and 20:00 Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); two posts on one date go out morning and evening. 'video' is an MP4 in social/videos/ (Instagram Reel), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Published ids are recorded in social/posted.json.",
+  "_help": "Each run (once a day, evening Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); one post per date means one post per day. 'video' is an MP4 in social/videos/ (Instagram Reel), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Published ids are recorded in social/posted.json.",
   "posts": [
     {
       "id": "v01-scam-check",
@@ -19,7 +19,7 @@
     },
     {
       "id": "v03-three-steps",
-      "date": "2026-10-21",
+      "date": "2026-11-06",
       "video": "social/videos/v03-three-steps.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Filing a complaint in Canada in 3 steps:\n\n1️⃣ Tell us what happened, in your own language\n2️⃣ We match it to the right authority for your province\n3️⃣ Send it and keep your reference number\n\ncomplaintca.ca",
@@ -27,7 +27,7 @@
     },
     {
       "id": "v04-landlord",
-      "date": "2026-10-22",
+      "date": "2026-11-07",
       "video": "social/videos/v04-landlord.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Tenant rights: mould, no heat, repairs ignored? 🏚️\n\nEvery province has a tenancy board that can order your landlord to make repairs. Find yours on ComplaintCA.\n\ncomplaintca.ca",
@@ -35,7 +35,7 @@
     },
     {
       "id": "v05-unpaid-wages",
-      "date": "2026-10-22",
+      "date": "2026-11-08",
       "video": "social/videos/v05-unpaid-wages.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Unpaid wages in Ontario? You generally have 2 years to file an Employment Standards claim with the Ministry of Labour — and it's free.\n\nOther provinces have their own deadlines. Check yours on ComplaintCA.\n\ncomplaintca.ca",
@@ -43,7 +43,7 @@
     },
     {
       "id": "v06-bank-obsi",
-      "date": "2026-10-23",
+      "date": "2026-11-09",
       "video": "social/videos/v06-bank-obsi.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Bank complaint denied? That's not the end. 🏦\n\n✓ Banks must respond within 56 days\n✓ Then you can go to OBSI — free and independent\n✓ File with OBSI within 180 days of the bank's final answer\n\ncomplaintca.ca",
@@ -51,7 +51,7 @@
     },
     {
       "id": "v07-human-rights",
-      "date": "2026-10-23",
+      "date": "2026-11-10",
       "video": "social/videos/v07-human-rights.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Discrimination at work, in housing or in services?\n\nIn Ontario, you must apply to the Human Rights Tribunal within one year of the last incident. Find the right body for your province on ComplaintCA.\n\ncomplaintca.ca",
@@ -59,7 +59,7 @@
     },
     {
       "id": "v08-languages",
-      "date": "2026-10-24",
+      "date": "2026-11-11",
       "video": "social/videos/v08-languages.mp4",
       "platforms": ["instagram", "story"],
       "caption": "File a complaint in your own language. 🌐\n\nComplaintCA works in English, Français, 中文, Español, العربية, ਪੰਜਾਬੀ and Türkçe.\n\ncomplaintca.ca",
@@ -67,7 +67,7 @@
     },
     {
       "id": "v09-anonymous",
-      "date": "2026-10-24",
+      "date": "2026-11-12",
       "video": "social/videos/v09-anonymous.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Anonymous complaint? You can. 🔒\n\nReport anonymously on ComplaintCA. Some bodies can't open a formal file without your identity — we tell you when, so you can decide.\n\ncomplaintca.ca",
@@ -75,11 +75,19 @@
     },
     {
       "id": "v10-find-mp",
-      "date": "2026-10-25",
+      "date": "2026-11-13",
       "video": "social/videos/v10-find-mp.mp4",
       "platforms": ["instagram", "story"],
       "caption": "Find your MP and MPP by postal code. 🏛️\n\nEnter your postal code on ComplaintCA to find your federal and provincial representatives and contact them directly.\n\ncomplaintca.ca",
       "hashtags": "#FindYourMP #CdnPoli #CivicEngagement #Canada #ComplaintCA"
+    },
+    {
+      "id": "v11-easy-show",
+      "date": "2026-11-14",
+      "video": "social/videos/v11-easy-show.mp4",
+      "platforms": ["instagram", "story"],
+      "caption": "Got ripped off? Complaining in Canada is THIS easy 👇\n\n1️⃣ Tap “File a Complaint”\n2️⃣ Choose “Complain CA”\n3️⃣ Fill 6 simple cards\n4️⃣ Send it\n\nAnonymous option, 100+ languages, live tracking.\n\ncomplaintca.ca",
+      "hashtags": "#ConsumerRights #KnowYourRights #Canada #HowTo #ComplaintCA"
     }
   ]
 }
