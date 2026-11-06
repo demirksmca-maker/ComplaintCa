@@ -6,6 +6,9 @@ import { readFileSync, readdirSync } from 'node:fs';
 
 const dir = new URL('./blog/', import.meta.url);
 const files = readdirSync(dir).filter((f) => f.endsWith('.html'));
+// The business section (/business/) uses the same article format, hub page included.
+const bizDir = new URL('./business/', import.meta.url);
+const bizFiles = readdirSync(bizDir).filter((f) => f.endsWith('.html'));
 
 test('blog index uses the shared theme', () => {
   const s = readFileSync(new URL('index.html', dir), 'utf8');
@@ -13,9 +16,13 @@ test('blog index uses the shared theme', () => {
   assert.doesNotMatch(s, /blog-dark\.css/);
 });
 
-for (const f of files.filter((f) => f !== 'index.html')) {
-  test(`blog/${f}: theme, tiles and schema`, () => {
-    const s = readFileSync(new URL(f, dir), 'utf8');
+const articles = [
+  ...files.filter((f) => f !== 'index.html').map((f) => ['blog', f]),
+  ...bizFiles.map((f) => ['business', f]),
+];
+for (const [folder, f] of articles) {
+  test(`${folder}/${f}: theme, tiles and schema`, () => {
+    const s = readFileSync(new URL(`./${folder}/${f}`, import.meta.url), 'utf8');
     assert.match(s, /<link rel="stylesheet" href="\/assets\/blog-theme\.css">/);
     assert.doesNotMatch(s, /<style>/, 'styles belong in /assets/blog-theme.css');
     assert.doesNotMatch(s, /blog-dark\.css/);
@@ -33,6 +40,7 @@ for (const f of files.filter((f) => f !== 'index.html')) {
     const sections = (main.match(/<section class="sec" id="/g) || []).length;
     assert.equal(sections, (main.match(/<h2\b/g) || []).length - 1, 'each H2 opens a section.sec');
     assert.match(s, /"@type": "FAQPage"/);
-    assert.match(s, /<link rel="canonical" href="https:\/\/www\.complaintca\.ca\/blog\//);
+    const own = folder === 'business' && f === 'index.html' ? '' : f;
+    assert.ok(s.includes(`<link rel="canonical" href="https://www.complaintca.ca/${folder}/${own}">`), 'canonical points at this page');
   });
 }
