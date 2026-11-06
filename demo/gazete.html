@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Haftanın Ekonomisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@500;700&display=swap">
+<style>
+:root{--paper:#f6f1e7;--ink:#1a1714;--muted:#5d564c;--rule:#1a1714;--soft:#cfc6b6;--red:#a3121b;--up:#1d6b34;--down:#a3121b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 "Source Serif 4",Georgia,serif}
+a{color:inherit;text-decoration:none}
+a:hover h2,a:hover h3{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.demo{background:var(--red);color:#fff;font:600 12px/1 Inter,sans-serif;text-align:center;padding:7px 16px;letter-spacing:.04em}
+.mast{text-align:center;padding:22px 0 10px;border-bottom:4px double var(--rule)}
+.mast .kick{font:700 11px Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.mast h1{font:900 clamp(40px,8vw,92px)/1 "Playfair Display",serif;margin:8px 0 6px;letter-spacing:-.01em}
+.mast .motto{font-style:italic;color:var(--muted);margin:0}
+.dl{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:600 12px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;padding:8px 0;border-bottom:1px solid var(--rule)}
+nav.sec{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font:700 13px Inter,sans-serif;padding:10px 0;border-bottom:1px solid var(--rule)}
+nav.sec a:hover{color:var(--red)}
+.tick{display:flex;gap:26px;overflow-x:auto;white-space:nowrap;font:600 13px Inter,sans-serif;padding:9px 0;border-bottom:3px solid var(--rule);scrollbar-width:none}
+.tick::-webkit-scrollbar{display:none}
+.tick b{font-weight:700}
+.up{color:var(--up)}.down{color:var(--down)}
+.label{display:inline-block;font:700 11px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.front{display:grid;grid-template-columns:2fr 1fr;gap:0;padding:22px 0;border-bottom:1px solid var(--rule)}
+.lead{padding-right:24px;border-right:1px solid var(--soft)}
+.lead h2{font:900 clamp(30px,4.6vw,52px)/1.05 "Playfair Display",serif;margin:0 0 10px}
+.lead .deck{font-size:20px;font-style:italic;color:var(--muted);margin:0 0 14px}
+.by{font:600 12px Inter,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.fig{height:260px;margin:0 0 14px;background:linear-gradient(135deg,#2b2620,#5a4f42);position:relative;overflow:hidden}
+.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.cap{font:13px/1.4 Inter,sans-serif;color:var(--muted);margin:-8px 0 14px}
+.cols{column-count:2;column-gap:24px;column-rule:1px solid var(--soft)}
+.cols p{margin:0 0 12px}
+.cols p:first-child::first-letter{float:left;font:900 64px/.8 "Playfair Display",serif;padding:6px 8px 0 0}
+.side{padding-left:24px}
+.box{border:2px solid var(--rule);padding:14px 16px;margin-bottom:18px}
+.box h3{font:900 22px "Playfair Display",serif;margin:0 0 8px;border-bottom:1px solid var(--rule);padding-bottom:6px}
+.num{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dotted var(--soft);font-family:Inter,sans-serif;font-size:14px}
+.num:last-child{border-bottom:0}
+.num b{font-size:16px}
+.mini{padding:12px 0;border-bottom:1px solid var(--soft)}
+.mini:last-child{border-bottom:0}
+.mini h3{font:700 20px/1.2 "Playfair Display",serif;margin:0 0 4px}
+.mini p{margin:0;font-size:15px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);padding:20px 0;border-bottom:3px solid var(--rule)}
+.grid article{padding:0 18px;border-right:1px solid var(--soft)}
+.grid article:first-child{padding-left:0}
+.grid article:last-child{border-right:0;padding-right:0}
+.grid h3{font:700 21px/1.2 "Playfair Display",serif;margin:0 0 8px}
+.grid p{margin:0;font-size:15.5px}
+.lower{display:grid;grid-template-columns:1fr 2fr;gap:0;padding:22px 0;border-bottom:1px solid var(--rule)}
+.opinion{padding-right:24px;border-right:1px solid var(--soft)}
+.opinion h3{font:italic 700 26px/1.2 "Playfair Display",serif;margin:0 0 8px}
+.opinion blockquote{margin:12px 0 0;padding-left:14px;border-left:3px solid var(--red);font-style:italic;font-size:19px}
+.cal{padding-left:24px}
+.cal h3{font:900 24px "Playfair Display",serif;margin:0 0 10px}
+.cal table{width:100%;border-collapse:collapse;font:14px Inter,sans-serif}
+.cal th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid var(--rule);padding:6px 4px}
+.cal td{padding:8px 4px;border-bottom:1px solid var(--soft)}
+.foot{text-align:center;font:12px Inter,sans-serif;color:var(--muted);padding:18px 0 32px}
+.foot b{font:900 20px "Playfair Display",serif;color:var(--ink);display:block;margin-bottom:4px}
+@media (max-width:900px){
+  .front,.lower{grid-template-columns:1fr}
+  .lead,.opinion{padding-right:0;border-right:0;border-bottom:1px solid var(--soft);padding-bottom:18px;margin-bottom:18px}
+  .side,.cal{padding-left:0}
+  .grid{grid-template-columns:1fr 1fr;row-gap:20px}
+  .grid article{padding:0 14px}
+  .grid article:nth-child(odd){padding-left:0}
+  .grid article:nth-child(even){border-right:0;padding-right:0}
+}
+@media (max-width:600px){
+  .cols{column-count:1}
+  .grid{grid-template-columns:1fr}
+  .grid article{padding:0 0 16px;border-right:0;border-bottom:1px solid var(--soft)}
+  .grid article:last-child{border-bottom:0;padding-bottom:0}
+  .fig{height:190px}
+  nav.sec{gap:14px}
+}
+</style>
+</head>
+<body>
+<div class="demo">ÖRNEK TASARIM · Haberler ve rakamlar temsilidir, gerçek değildir</div>
+<div class="wrap">
+  <header class="mast">
+    <div class="kick">Her Pazartesi · Türkiye ve Dünya</div>
+    <h1>Haftanın Ekonomisi</h1>
+    <p class="motto">Bir haftanın piyasası, beş dakikada.</p>
+  </header>
+  <div class="dl"><span>Sayı 1</span><span>2 – 6 Kasım 2026</span><span>Haftalık Bülten</span></div>
+  <nav class="sec" aria-label="Bölümler">
+    <a href="#piyasa">Piyasalar</a><a href="#mb">Merkez Bankası</a><a href="#doviz">Döviz &amp; Altın</a><a href="#dunya">Dünya</a><a href="#takvim">Takvim</a><a href="#yorum">Yorum</a>
+  </nav>
+  <div class="tick" aria-label="Haftalık kapanışlar">
+    <span>BIST 100 <b>10.240</b> <span class="up">▲ 2,1%</span></span>
+    <span>USD/TRY <b>42,85</b> <span class="up">▲ 0,4%</span></span>
+    <span>EUR/TRY <b>49,60</b> <span class="down">▼ 0,2%</span></span>
+    <span>Gram Altın <b>5.480 ₺</b> <span class="up">▲ 1,3%</span></span>
+    <span>Brent <b>$71,4</b> <span class="down">▼ 1,8%</span></span>
+    <span>S&amp;P 500 <b>6.910</b> <span class="up">▲ 0,9%</span></span>
+    <span>Bitcoin <b>$98.200</b> <span class="down">▼ 3,0%</span></span>
+  </div>
+
+  <section class="front" id="mb">
+    <article class="lead">
+      <span class="label">Manşet · Merkez Bankası</span>
+      <a href="#"><h2>Faiz Kararı Piyasayı Rahatlattı, Borsa Haftayı Yükselişle Kapattı</h2></a>
+      <p class="deck">Beklentilere paralel gelen karar sonrası bankacılık hisseleri öne çıktı; kurda oynaklık sınırlı kaldı.</p>
+      <div class="by">Ekonomi Masası · 6 Kasım 2026 · 4 dk okuma</div>
+      <div class="fig" role="img" aria-label="Borsa endeksi haftalık grafiği">
+        <svg viewBox="0 0 600 260" preserveAspectRatio="none" aria-hidden="true"><g stroke="rgba(255,255,255,.12)"><path d="M0 65H600M0 130H600M0 195H600"/></g><path d="M0 200 L60 185 L120 192 L180 160 L240 170 L300 130 L360 140 L420 100 L480 112 L540 70 L600 60" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M0 200 L60 185 L120 192 L180 160 L240 170 L300 130 L360 140 L420 100 L480 112 L540 70 L600 60 V260 H0Z" fill="rgba(243,210,122,.15)"/></svg>
+      </div>
+      <p class="cap">BIST 100 endeksi hafta boyunca kademeli yükseldi. (Temsili grafik)</p>
+      <div class="cols">
+        <p>Haftanın en çok beklenen gelişmesi olan faiz kararı, piyasa beklentisiyle uyumlu açıklandı. Karar metnindeki temkinli ama dengeli dil, yatırımcılara para politikasında sürpriz olmayacağı mesajı verdi.</p>
+        <p>Kararın ardından bankacılık endeksi günü yükselişle tamamlarken, Türk lirası dolar karşısında dar bir bantta hareket etti. Uzmanlar, önümüzdeki hafta açıklanacak enflasyon verisinin yönü belirleyeceğini vurguluyor.</p>
+        <p>Analistlere göre asıl soru, yılın kalanında atılacak adımların hızı. Piyasalar, yeni verilerin ardından politika yolunun daha net görülmesini bekliyor.</p>
+        <p>Yatırımcıların gündeminde ayrıca yurt dışı faiz beklentileri ve emtia fiyatlarındaki düşüş var. Brent petroldeki geri çekilme, enerji ithalatçısı ekonomiler için olumlu bir sinyal olarak okunuyor.</p>
+      </div>
+    </article>
+    <aside class="side">
+      <div class="box" id="doviz">
+        <h3>Haftanın Rakamları</h3>
+        <div class="num"><span>Politika faizi</span><b>%39,50</b></div>
+        <div class="num"><span>Yıllık enflasyon</span><b>%32,9</b></div>
+        <div class="num"><span>Gram altın</span><b class="up">5.480 ₺</b></div>
+        <div class="num"><span>Dolar / TL</span><b>42,85</b></div>
+        <div class="num"><span>10 yıllık tahvil</span><b>%31,2</b></div>
+      </div>
+      <div class="mini"><span class="label">Döviz</span><a href="#"><h3>Kurda Sakin Hafta: Dalgalanma Yılın En Düşüğünde</h3></a><p>Kur oynaklığı geriledi, ithalatçılar rahat nefes aldı.</p></div>
+      <div class="mini"><span class="label">Altın</span><a href="#"><h3>Altın Yeniden Yükselişte, Gram 5.500 Sınırında</h3></a><p>Küresel faiz beklentileri ons fiyatını destekledi.</p></div>
+    </aside>
+  </section>
+
+  <section class="grid" id="piyasa">
+    <article><span class="label">Piyasalar</span><a href="#"><h3>Bankalar Endeksi Haftanın Yıldızı</h3></a><p>Faiz kararının ardından banka hisseleri %5'e yakın değer kazandı.</p></article>
+    <article id="dunya"><span class="label">Dünya</span><a href="#"><h3>Fed Tutanakları Temkinli İyimserlik Gösterdi</h3></a><p>ABD'de istihdam verisi beklentinin biraz altında kaldı.</p></article>
+    <article><span class="label">Avrupa</span><a href="#"><h3>Euro Bölgesinde Büyüme Yavaş Ama Pozitif</h3></a><p>Almanya'daki toparlanma işaretleri euroyu destekledi.</p></article>
+    <article><span class="label">Emtia</span><a href="#"><h3>Petrol Fiyatları Arz Endişesiyle Geriledi</h3></a><p>Brent haftayı %1,8 düşüşle 71 doların üzerinde kapattı.</p></article>
+  </section>
+
+  <section class="lower">
+    <article class="opinion" id="yorum">
+      <span class="label">Haftanın Yorumu</span>
+      <h3>Sabır, Bu Piyasanın En Değerli Varlığı</h3>
+      <p>Sert dalgalanmaların yerini sakin bir seyre bırakması, kısa vadeli kazanç arayanları sıkabilir. Ama uzun vadede istikrar, herkesin kazancı.</p>
+      <blockquote>“Veri gelmeden karar vermek, hava raporuna bakmadan denize açılmaktır.”</blockquote>
+    </article>
+    <div class="cal" id="takvim">
+      <h3>Gelecek Haftanın Takvimi</h3>
+      <table>
+        <thead><tr><th>Gün</th><th>Veri / Olay</th><th>Beklenti</th></tr></thead>
+        <tbody>
+          <tr><td>Pazartesi</td><td>Türkiye cari işlemler dengesi</td><td>Açık daralıyor</td></tr>
+          <tr><td>Salı</td><td>Almanya ZEW endeksi</td><td>Hafif artış</td></tr>
+          <tr><td>Çarşamba</td><td>ABD enflasyonu (TÜFE)</td><td>Yatay</td></tr>
+          <tr><td>Perşembe</td><td>Türkiye sanayi üretimi</td><td>Ilımlı artış</td></tr>
+          <tr><td>Cuma</td><td>Kredi derecelendirme notu</td><td>Görünüm izleniyor</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <b>Haftanın Ekonomisi</b>
+    Yatırım tavsiyesi değildir. Kaynaklar her haberin altında belirtilir.
+  </footer>
+</div>
+</body>
+</html>

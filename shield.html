@@ -437,7 +437,7 @@
     </section>
 
     <!-- SİTE -->
-    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button><button type="button" data-pg="/demo/yapilacak.html" aria-pressed="false">Yapılacak</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
+    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button><button type="button" data-pg="/demo/yapilacak.html" aria-pressed="false">Yapılacak</button><button type="button" data-pg="/demo/gazete.html" aria-pressed="false">Gazete</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
       <button type="button" class="mk-btn mk-pen" id="mkPen" aria-pressed="false">🖍 Çiz</button>
       <canvas class="mk-cv" id="mkCv" hidden></canvas>
@@ -1406,8 +1406,8 @@
   }
   // Site tab shows the live home page or the test page (/demo/sonuc.html) or the to-do page (/demo/yapilacak.html); the choice is remembered.
   var PG = 'shieldPage';
-  var TEST = '/demo/sonuc.html', TODO = '/demo/yapilacak.html', frameSeq = 0;
-  function isDemo(p) { return p === TEST || p === TODO; }
+  var TEST = '/demo/sonuc.html', TODO = '/demo/yapilacak.html', NEWS = '/demo/gazete.html', frameSeq = 0;
+  function isDemo(p) { return p === TEST || p === TODO || p === NEWS; }
   function sitePage() { var p = store(PG); return isDemo(p) ? p : '/'; }
   // The Test page comes straight from GitHub main, so a merge shows here without
   // waiting for a Vercel deploy; if GitHub fails, the live copy is used.
