@@ -22,6 +22,11 @@
       "permanent": false
     },
     {
+      "source": "/business",
+      "destination": "/business/",
+      "permanent": true
+    },
+    {
       "source": "/new-complaint",
       "destination": "/?go=new&panel=new",
       "permanent": false

@@ -2,13 +2,13 @@
 // section tiles that point at real sections, and still carries its FAQ schema.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
 const dir = new URL('./blog/', import.meta.url);
 const files = readdirSync(dir).filter((f) => f.endsWith('.html'));
 // The business section (/business/) uses the same article format, hub page included.
 const bizDir = new URL('./business/', import.meta.url);
-const bizFiles = readdirSync(bizDir).filter((f) => f.endsWith('.html'));
+const bizFiles = existsSync(bizDir) ? readdirSync(bizDir).filter((f) => f.endsWith('.html')) : [];
 
 test('blog index uses the shared theme', () => {
   const s = readFileSync(new URL('index.html', dir), 'utf8');
