@@ -7,7 +7,7 @@
       "permanent": true
     },
     {
-      "source": "/(about|contact|privacy|terms|start|presentation|account)",
+      "source": "/(about|contact|privacy|terms|start|presentation|account|weekly)",
       "destination": "/$1.html",
       "permanent": true
     },
