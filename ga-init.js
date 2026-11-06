@@ -10,6 +10,6 @@ try { if (!/(?:^|;\s*)cc_owner=1(?:;|$)/.test(document.cookie) && navigator.send
 
 // Language picker (Google Translate for more languages) on every page that loads this file.
 (function(){
-  var s = document.createElement('script'); s.src = '/assets/lang-picker.js?v=20261106a'; s.async = true;
+  var s = document.createElement('script'); s.src = '/assets/lang-picker.js?v=20261106b'; s.async = true;
   document.head.appendChild(s);
 })();

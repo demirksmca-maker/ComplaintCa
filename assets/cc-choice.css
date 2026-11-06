@@ -57,3 +57,15 @@
 @keyframes ccShine{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}
 #cc-choice .cc-bars{grid-template-columns:1fr!important}#cc-choice .cc-complain{order:-1}#cc-choice .cc-txt b{text-wrap:balance}
 @media (prefers-reduced-motion:reduce){#cc-choice,#cc-choice *,#cc-choice *::before,#cc-choice *::after{animation:none!important;transition:none!important}}
+/* Button row: two dark smoked-glass buttons side by side, plain outline icon, cream caps */
+#cc-choice .cc-hero{width:min(22vw,88px)!important;margin:0 auto 12px!important}
+#cc-choice .cc-title{text-transform:uppercase;font-size:clamp(15px,4.2vw,19px)!important;letter-spacing:.12em!important;color:#f3e6d8!important;margin-bottom:16px!important}
+#cc-choice .cc-bars{grid-template-columns:1fr 1fr!important;gap:10px!important}
+#cc-choice .cc-bar,#cc-choice .cc-complain,#cc-choice .cc-info{min-height:50px;padding:8px 12px!important;gap:8px!important;grid-template-columns:auto 1fr!important;border-radius:8px!important;background:linear-gradient(180deg,rgba(28,20,24,.72),rgba(10,6,10,.82))!important;border:1px solid rgba(255,236,214,.2)!important;box-shadow:inset 0 1px 0 rgba(255,240,225,.1),0 8px 18px -10px rgba(0,0,0,.9)!important;color:#f3e6d8!important}
+#cc-choice .cc-bar:hover{border-color:rgba(255,236,214,.4)!important}
+#cc-choice .cc-med,#cc-choice .cc-info .cc-med{width:22px!important;height:22px!important;background:none!important;border:0!important;border-radius:0!important;color:#f3e6d8!important}
+#cc-choice .cc-med svg{width:20px!important;height:20px!important}
+#cc-choice .cc-txt b{font-size:clamp(11px,3vw,14px)!important;letter-spacing:.04em!important;text-transform:uppercase;color:#f3e6d8!important;line-height:1.2!important}
+#cc-choice .cc-arr{display:none}
+#cc-choice .cc-ca{color:#f3e6d8!important;margin-left:3px}
+#cc-choice .cc-complain .cc-txt b{white-space:nowrap}
