@@ -9,17 +9,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;700&display=swap">
 <style>
-:root{--bg:#101215;--ink:#ece6da;--muted:#9a9488;--line:#2a2d33;--accent:#e2483d;--gold:#e9c46a;--up:#7cc79a;--down:#ff8a7a}
+:root{--bg:#1d0a1a;--ink:#f3ecf5;--muted:#a593a6;--line:#3a2238;--accent:#e0314a;--gold:#e7b955;--up:#6fd59a;--down:#ff8b98;--hover:#271024}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink)}
-body{font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:radial-gradient(1200px 500px at 50% -200px,#3a1236,transparent) no-repeat,var(--bg);font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
 .serif{font-family:Fraunces,Georgia,serif}
 
 /* masthead */
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 14px;border-bottom:1px solid var(--line)}
-.brand{font:800 clamp(20px,3.4vw,28px)/1 Fraunces,serif;letter-spacing:-.01em}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:46px;height:46px;filter:drop-shadow(0 2px 10px rgba(224,49,74,.35))}
+.brand small{display:block;font:700 10px Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.brand .t{font:800 clamp(20px,3.4vw,28px)/1 Fraunces,serif;letter-spacing:-.01em}
 .brand i{font-style:normal;color:var(--accent)}
 .meta{font:500 12px Inter,sans-serif;color:var(--muted);text-align:right;letter-spacing:.04em}
 .pill{display:inline-block;border:1px solid var(--accent);color:var(--accent);border-radius:99px;padding:2px 8px;font:700 10px Inter,sans-serif;letter-spacing:.12em;margin-left:6px;vertical-align:1px}
@@ -43,18 +46,24 @@ a{color:inherit;text-decoration:none}
 @keyframes inB{from{clip-path:inset(0 100% 0 0);transform:translateX(-48px)}to{clip-path:inset(0 0 0 0);transform:none}}
 @keyframes outF{to{transform:translateX(-5%) scale(.97);opacity:0;filter:blur(2px)}}
 @keyframes outB{to{transform:translateX(5%) scale(.97);opacity:0;filter:blur(2px)}}
-.wipe{position:fixed;top:0;bottom:0;width:3px;background:var(--accent);box-shadow:0 0 24px var(--accent);z-index:9;opacity:0;pointer-events:none}
+.wipe{position:fixed;top:0;bottom:0;width:2px;background:linear-gradient(transparent,var(--gold),transparent);z-index:9;opacity:0;pointer-events:none}
 .wipe.go.fwd{animation:wipeF .62s cubic-bezier(.2,.7,.1,1)}
 .wipe.go.bwd{animation:wipeB .62s cubic-bezier(.2,.7,.1,1)}
+.dove{position:fixed;top:30vh;left:0;width:64px;height:94px;z-index:10;pointer-events:none;opacity:0;background:url(/assets/dove-fly-letter.webp) 0 0/600% 100% no-repeat;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.dove.go.fwd{animation:flap .36s steps(6) infinite,doveF .9s cubic-bezier(.3,.6,.4,1) both}
+.dove.go.bwd{animation:flap .36s steps(6) infinite,doveB .9s cubic-bezier(.3,.6,.4,1) both}
+@keyframes flap{from{background-position:0 0}to{background-position:120% 0}}
+@keyframes doveF{0%{transform:translate(-90px,40px) rotate(-6deg);opacity:1}100%{transform:translate(calc(100vw + 20px),-50px) rotate(-10deg);opacity:1}}
+@keyframes doveB{0%{transform:translate(calc(100vw + 20px),40px) scaleX(-1);opacity:1}100%{transform:translate(-90px,-50px) scaleX(-1);opacity:1}}
 @keyframes wipeF{0%{left:100%;opacity:1}90%{opacity:1}100%{left:0;opacity:0}}
 @keyframes wipeB{0%{left:0;opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
-@media (prefers-reduced-motion:reduce){.page.in,.page.leave,.wipe.go{animation-duration:1ms!important}}
+@media (prefers-reduced-motion:reduce){.page.in,.page.leave,.wipe.go{animation-duration:1ms!important}.dove{display:none}}
 
 /* type */
 .kicker{font:700 11px Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 h1.head{font:800 clamp(36px,6.4vw,72px)/1.02 Fraunces,serif;letter-spacing:-.025em;margin:12px 0 16px;max-width:18ch}
 h1.head a:hover{color:var(--gold)}
-.deck{font:400 clamp(18px,2.2vw,22px)/1.45 Fraunces,serif;color:#c9c2b5;max-width:40ch;margin:0}
+.deck{font:400 clamp(18px,2.2vw,22px)/1.45 Fraunces,serif;color:#d3c6d6;max-width:40ch;margin:0}
 .by{font:500 12px Inter,sans-serif;color:var(--muted);margin-top:16px;letter-spacing:.04em}
 
 /* cover */
@@ -69,8 +78,15 @@ h1.head a:hover{color:var(--gold)}
 .stat .n small{font-size:.5em;color:var(--muted)}
 .stat .l{font:500 13px Inter,sans-serif;color:var(--muted);margin-top:8px}
 .body2{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;padding:30px 0 10px}
-.body2 p{margin:0 0 14px;color:#d6d0c4}
+.body2 p{margin:0 0 14px;color:#e0d6e2}
 .body2 p:first-child::first-letter{font:800 54px/.8 Fraunces,serif;float:left;padding:6px 10px 0 0;color:var(--accent)}
+.you{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin:26px 0 6px;padding:20px 22px;border:1px solid rgba(231,185,85,.35);border-radius:14px;background:linear-gradient(120deg,rgba(231,185,85,.07),rgba(224,49,74,.06))}
+.you img{width:56px;height:56px}
+.you h3{font:600 21px/1.25 Fraunces,serif;margin:2px 0 6px}
+.you p{margin:0;color:var(--muted);font-size:14.5px}
+.you .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.you .links a{font:600 13px Inter,sans-serif;border:1px solid var(--line);border-radius:99px;padding:7px 13px;transition:border-color .2s,color .2s}
+.you .links a:hover{border-color:var(--gold);color:var(--gold)}
 .also h3{font:600 20px/1.25 Fraunces,serif;margin:6px 0 6px}
 .also a:hover h3{color:var(--gold)}
 .also p{margin:0;font-size:14.5px;color:var(--muted)}
@@ -86,7 +102,7 @@ h1.head a:hover{color:var(--gold)}
 .list{counter-reset:s;border-top:1px solid var(--line)}
 .list a{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);transition:background .2s,padding .2s}
 .list a::before{counter-increment:s;content:counter(s,decimal-leading-zero);font:600 22px Fraunces,serif;color:var(--accent)}
-@media (hover:hover){.list a:hover{background:#16191d;padding-left:10px;padding-right:10px}}
+@media (hover:hover){.list a:hover{background:var(--hover);padding-left:10px;padding-right:10px}}
 .list h3{font:600 clamp(20px,2.6vw,26px)/1.2 Fraunces,serif;margin:4px 0 6px;letter-spacing:-.01em}
 .list p{margin:0;font-size:15px;color:var(--muted);max-width:62ch}
 .list .go{font:600 18px Inter,sans-serif;color:var(--muted)}
@@ -95,7 +111,7 @@ h1.head a:hover{color:var(--gold)}
 .quote{padding:10px 0 40px;border-bottom:1px solid var(--line)}
 .quote blockquote{margin:16px 0 18px;font:600 clamp(30px,5vw,56px)/1.08 Fraunces,serif;letter-spacing:-.02em;max-width:18ch}
 .quote blockquote::before{content:"“";color:var(--accent)}
-.quote p{max-width:56ch;color:#c9c2b5;margin:0}
+.quote p{max-width:56ch;color:#d3c6d6;margin:0}
 .cal{padding-top:30px}
 .cal h2{font:800 28px Fraunces,serif;margin:8px 0 18px}
 .ev{display:grid;grid-template-columns:110px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
@@ -128,13 +144,19 @@ h1.head a:hover{color:var(--gold)}
   .ev{grid-template-columns:1fr auto;gap:4px 12px}
   .ev .day{grid-column:1/-1}
   .top .meta span:first-child{display:block;margin-bottom:4px}
+  .brand img{width:38px;height:38px}
+  .brand .t{font-size:19px;white-space:nowrap}
+  .top .meta{font-size:11px}
+  .top .meta span:first-child{white-space:nowrap}
+  .you{grid-template-columns:1fr;padding:18px}
+  .you img{width:44px;height:44px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand">The Weekly <i>Economy</i></div>
+    <a class="brand" href="https://complaintca.ca/" target="_blank" rel="noopener"><img src="/assets/emblem-ruby-88.webp" alt="ComplaintCA" width="46" height="46"><span><small>ComplaintCA presents</small><span class="t">The Weekly <i>Economy</i></span></span></a>
     <div class="meta"><span>No. 1 · Nov 2–6, 2026</span><span class="pill">TEST</span></div>
   </header>
   <nav class="tabs" role="tablist" aria-label="Pages">
@@ -155,12 +177,12 @@ h1.head a:hover{color:var(--gold)}
         </div>
         <figure class="chart" style="margin:0">
           <svg viewBox="0 0 400 220" role="img" aria-label="Unemployment rate: April 6.9%, September 6.5%, October 6.7%">
-            <g stroke="#2a2d33"><path d="M0 40H400M0 110H400M0 180H400"/></g>
-            <g font-family="Inter" font-size="11" fill="#9a9488"><text x="0" y="34">7.0%</text><text x="0" y="104">6.7%</text><text x="0" y="174">6.4%</text></g>
-            <path d="M30 54 L330 157 L380 110 V200 H30Z" fill="rgba(226,72,61,.12)"/>
-            <path d="M30 54 L330 157 L380 110" fill="none" stroke="#e2483d" stroke-width="3" stroke-linejoin="round"/>
-            <g fill="#101215" stroke="#e2483d" stroke-width="3"><circle cx="30" cy="54" r="5"/><circle cx="330" cy="157" r="5"/><circle cx="380" cy="110" r="6" fill="#e2483d"/></g>
-            <g font-family="Inter" font-size="12" font-weight="600" fill="#ece6da"><text x="40" y="50">Apr 6.9%</text><text x="268" y="178">Sep 6.5%</text><text x="330" y="96">Oct 6.7%</text></g>
+            <g stroke="#3a2238"><path d="M0 40H400M0 110H400M0 180H400"/></g>
+            <g font-family="Inter" font-size="11" fill="#a593a6"><text x="0" y="34">7.0%</text><text x="0" y="104">6.7%</text><text x="0" y="174">6.4%</text></g>
+            <path d="M30 54 L330 157 L380 110 V200 H30Z" fill="rgba(224,49,74,.14)"/>
+            <path d="M30 54 L330 157 L380 110" fill="none" stroke="#e0314a" stroke-width="3" stroke-linejoin="round"/>
+            <g fill="#1d0a1a" stroke="#e0314a" stroke-width="3"><circle cx="30" cy="54" r="5"/><circle cx="330" cy="157" r="5"/><circle cx="380" cy="110" r="6" fill="#e0314a"/></g>
+            <g font-family="Inter" font-size="12" font-weight="600" fill="#f3ecf5"><text x="40" y="50">Apr 6.9%</text><text x="268" y="178">Sep 6.5%</text><text x="330" y="96">Oct 6.7%</text></g>
           </svg>
           <figcaption class="cap">Unemployment rate, 2026</figcaption>
         </figure>
@@ -179,6 +201,15 @@ h1.head a:hover{color:var(--gold)}
           <article><span class="kicker">Bank of Canada</span><a href="https://boereport.com/2026/10/28/text-of-the-bank-of-canadas-latest-policy-interest-rate-decision/" target="_blank" rel="noopener"><h3>First hike since 2023: rate up to 2.5%</h3></a><p>A quarter point, aimed at energy-driven inflation.</p></article>
           <article><span class="kicker">Inflation</span><a href="https://www150.statcan.gc.ca/n1/daily-quotidien/261019/dq261019a-eng.htm" target="_blank" rel="noopener"><h3>Gas pushes inflation to 3.1%</h3></a><p>Gasoline up 27.8% in a year. Without it: 2.2%.</p></article>
         </aside>
+      </div>
+      <div class="you">
+        <img src="/assets/emblem-ruby-88.webp" alt="" width="56" height="56">
+        <div>
+          <span class="kicker" style="color:var(--gold)">What it means for you</span>
+          <h3>Rates up, jobs down. Know where to turn.</h3>
+          <p>Trouble with your bank or mortgage, or a problem at work? You can file a complaint for free. Our guides show you who to contact and how.</p>
+          <div class="links"><a href="https://complaintca.ca/guides/banking-complaint-canada-guide.html" target="_blank" rel="noopener">Banking &amp; mortgages →</a><a href="https://complaintca.ca/guides/employment-complaint-canada-guide.html" target="_blank" rel="noopener">Work &amp; job loss →</a><a href="https://complaintca.ca/guides/debt-collector-complaint-canada-guide.html" target="_blank" rel="noopener">Debt collectors →</a></div>
+        </div>
       </div>
     </section>
 
@@ -225,13 +256,13 @@ h1.head a:hover{color:var(--gold)}
     <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
     <button type="button" data-go="1">Next →</button>
   </div>
-  <p class="foot">Real news from Nov 2–6, 2026. Figures come from news reports and some are intraday, so treat them as approximate. Not investment advice. Headlines link to the original story.</p>
+  <p class="foot"><b style="color:var(--ink)">A ComplaintCA bulletin</b> · <a href="https://complaintca.ca/" target="_blank" rel="noopener" style="color:var(--gold)">complaintca.ca</a><br>Real news from Nov 2–6, 2026. Figures come from news reports and some are intraday, so treat them as approximate. Not investment advice. Headlines link to the original story.</p>
 </div>
-<div class="wipe" id="wipe" aria-hidden="true"></div>
+<div class="wipe" id="wipe" aria-hidden="true"></div><div class="dove" id="dove" aria-hidden="true"></div>
 <script>
 (function(){
   var pages=[].slice.call(document.querySelectorAll('.page')),tabs=[].slice.call(document.querySelectorAll('.tabs button')),
-      dots=[].slice.call(document.querySelectorAll('.dots i')),wipe=document.getElementById('wipe'),
+      dots=[].slice.call(document.querySelectorAll('.dots i')),wipe=document.getElementById('wipe'),dove=document.getElementById('dove'),dt=0,
       prev=document.querySelector('[data-go="-1"]'),next=document.querySelector('[data-go="1"]'),cur=0,busy=false;
   function paint(){
     tabs.forEach(function(t,i){t.setAttribute('aria-selected',i===cur)});
@@ -244,6 +275,7 @@ h1.head a:hover{color:var(--gold)}
     a.classList.remove('on');a.classList.add('leave',dir);
     b.classList.add('on','in',dir);
     wipe.className='wipe';void wipe.offsetWidth;wipe.className='wipe go '+dir;
+    clearTimeout(dt);dove.className='dove';void dove.offsetWidth;dove.className='dove go '+dir;dt=setTimeout(function(){dove.className='dove'},920);
     var top=document.querySelector('.tabs').getBoundingClientRect().top;if(top<0)window.scrollBy({top:top,behavior:'smooth'});
     cur=to;paint();
     setTimeout(function(){a.classList.remove('leave','fwd','bwd');b.classList.remove('in','fwd','bwd');wipe.className='wipe';busy=false;},640);
