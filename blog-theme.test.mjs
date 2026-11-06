@@ -16,9 +16,13 @@ test('blog index uses the shared theme', () => {
   assert.doesNotMatch(s, /blog-dark\.css/);
 });
 
+// The Weekly Economy topic pages (/weekly/) use the same article format; its hub (index.html) is a custom page.
+const weeklyDir = new URL('./weekly/', import.meta.url);
+const weeklyFiles = existsSync(weeklyDir) ? readdirSync(weeklyDir).filter((f) => f.endsWith('.html') && f !== 'index.html') : [];
 const articles = [
   ...files.filter((f) => f !== 'index.html').map((f) => ['blog', f]),
   ...bizFiles.map((f) => ['business', f]),
+  ...weeklyFiles.map((f) => ['weekly', f]),
 ];
 for (const [folder, f] of articles) {
   test(`${folder}/${f}: theme, tiles and schema`, () => {

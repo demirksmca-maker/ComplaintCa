@@ -2,12 +2,12 @@
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)demo' ':(exclude)CLAUDE.md'",
   "redirects": [
     {
-      "source": "/(guides|blog|business)/([a-z0-9-]+)",
+      "source": "/(guides|blog|business|weekly)/([a-z0-9-]+)",
       "destination": "/$1/$2.html",
       "permanent": true
     },
     {
-      "source": "/(about|contact|privacy|terms|start|presentation|account|weekly)",
+      "source": "/(about|contact|privacy|terms|start|presentation|account)",
       "destination": "/$1.html",
       "permanent": true
     },
@@ -20,6 +20,16 @@
       "source": "/es",
       "destination": "/es/",
       "permanent": false
+    },
+    {
+      "source": "/weekly",
+      "destination": "/weekly/",
+      "permanent": true
+    },
+    {
+      "source": "/weekly.html",
+      "destination": "/weekly/",
+      "permanent": true
     },
     {
       "source": "/business",
