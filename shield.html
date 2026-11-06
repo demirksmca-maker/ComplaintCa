@@ -844,6 +844,22 @@
   }
   window.addEventListener('resize', fitHome);
 
+  // Wide portrait screens (tablets, phones in "desktop site" mode) left the
+  // 480px panel small and far away: scale the whole panel up to fill the width.
+  // The height is set in px so the zoomed panel still fills the screen exactly.
+  function fitScreen() {
+    var m = document.querySelector('main'), w = innerWidth, h = innerHeight;
+    m.style.zoom = ''; m.style.height = '';
+    if (w > 600 && h > w) {
+      var z = Math.min(w / 500, 2.4);
+      m.style.zoom = z;
+      m.style.height = (h / z) + 'px';
+    }
+    fitHome();
+  }
+  window.addEventListener('resize', fitScreen);
+  fitScreen();
+
   // Card follows the pointer a little; springs back when it leaves.
   function d3Tilt(el) {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
