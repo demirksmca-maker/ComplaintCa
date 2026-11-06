@@ -80,7 +80,7 @@
   // The dialog reuses the "How can we help?" card styles, renamed to its own id.
   var cssReady = null;
   function loadCss(){
-    if (!cssReady) cssReady = fetch('/assets/cc-choice.css?v=20261029a').then(function(r){ return r.ok ? r.text() : ''; }).catch(function(){ return ''; }).then(function(t){
+    if (!cssReady) cssReady = fetch('/assets/cc-choice.css?v=20261106b').then(function(r){ return r.ok ? r.text() : ''; }).catch(function(){ return ''; }).then(function(t){
       var st = document.createElement('style'); st.textContent = t.replace(/#cc-choice/g, '#cc-lang') + '\n' + CSS; document.head.appendChild(st);
     });
     return cssReady;
@@ -92,12 +92,12 @@
     '#cc-lang .cc-bar{min-height:50px!important;gap:8px!important;padding:7px 8px 7px 7px!important}',
     '#cc-lang .cc-bar.cc-more{grid-column:1/-1}',
     '#cc-lang .cc-med{width:32px!important;height:32px!important;font:700 13px Cinzel,Georgia,serif;letter-spacing:.06em}',
-    '#cc-lang .cc-txt b{font:600 14.5px Inter,sans-serif!important;letter-spacing:0!important}',
+    '#cc-lang .cc-txt b{font:600 14.5px Inter,sans-serif!important;letter-spacing:0!important;text-transform:none!important}',
     '#cc-lang .cc-more .cc-txt b{font:700 14px Cinzel,Georgia,serif!important;letter-spacing:.08em!important}',
     '#cc-lang .cc-more small{font:400 11.5px Inter,sans-serif;letter-spacing:0;opacity:.7}',
-    '#cc-lang .cc-bar.on{box-shadow:0 0 0 1px rgba(255,240,184,.6),0 0 18px rgba(246,220,138,.55),0 8px 18px -8px rgba(0,0,0,.7)!important}',
+    '#cc-lang .cc-bar.on{box-shadow:0 0 0 1px rgba(216,180,254,.7),0 0 18px rgba(190,120,255,.45),0 8px 18px -8px rgba(0,0,0,.7)!important}',
     '#cc-lang .cc-gtbox{grid-column:1/-1;display:none}#cc-lang .cc-gtbox.on{display:block}',
-    '#cc-lang .cc-gtbox select{width:100%;padding:12px;border-radius:12px;border:2px solid #b8862c;background:#2a1408;color:#f6ead2;font:600 15px Inter,sans-serif}',
+    '#cc-lang .cc-gtbox select{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(216,180,254,.45);background:#1c0a28;color:#f3e6ea;font:600 15px Inter,sans-serif}',
     '#cc-lang .cc-err{grid-column:1/-1;margin:0;text-align:center;font:13px Inter,sans-serif;color:#ffd2d2}',
     '#cc-gt{position:absolute;left:-9999px;top:0}'
   ].join('\n');
