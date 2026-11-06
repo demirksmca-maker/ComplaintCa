@@ -7,234 +7,249 @@
 <title>The Weekly Economy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;700&display=swap">
 <style>
-:root{--paper:#f6f1e7;--ink:#1a1714;--muted:#5d564c;--rule:#1a1714;--soft:#cfc6b6;--red:#a3121b;--up:#1d6b34;--down:#a3121b}
+:root{--bg:#101215;--ink:#ece6da;--muted:#9a9488;--line:#2a2d33;--accent:#e2483d;--gold:#e9c46a;--up:#7cc79a;--down:#ff8a7a}
 *{box-sizing:border-box}
-body{margin:0;background:#e4dccd;color:var(--ink);font:17px/1.55 "Source Serif 4",Georgia,serif}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-a:hover h2,a:hover h3{text-decoration:underline}
-.wrap{max-width:1180px;margin:0 auto;padding:0 16px;overflow:hidden}
-.demo{background:var(--red);color:#fff;font:600 12px/1 Inter,sans-serif;text-align:center;padding:7px 16px;letter-spacing:.04em}
-.mast{text-align:center;padding:22px 0 10px;border-bottom:4px double var(--rule)}
-.mast .kick{font:700 11px Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-.mast h1{font:900 clamp(40px,8vw,92px)/1 "Playfair Display",serif;margin:8px 0 6px;letter-spacing:-.01em}
-.mast .motto{font-style:italic;color:var(--muted);margin:0}
-.dl{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:600 12px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;padding:8px 0;border-bottom:1px solid var(--rule)}
-nav.sec{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font:700 13px Inter,sans-serif;padding:10px 0;border-bottom:1px solid var(--rule)}
-nav.sec a:hover{color:var(--red)}
-.tick{display:flex;gap:26px;overflow-x:auto;white-space:nowrap;font:600 13px Inter,sans-serif;padding:9px 0;border-bottom:3px solid var(--rule);scrollbar-width:none}
-.tick::-webkit-scrollbar{display:none}
-.tick b{font-weight:700}
-.up{color:var(--up)}.down{color:var(--down)}
-.label{display:inline-block;font:700 11px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:6px}
-.front{display:grid;grid-template-columns:2fr 1fr;gap:0;padding:22px 0;border-bottom:1px solid var(--rule)}
-.lead{padding-right:24px;border-right:1px solid var(--soft)}
-.lead h2{font:900 clamp(30px,4.6vw,52px)/1.05 "Playfair Display",serif;margin:0 0 10px}
-.lead .deck{font-size:20px;font-style:italic;color:var(--muted);margin:0 0 14px}
-.by{font:600 12px Inter,sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-.fig{height:260px;margin:0 0 14px;background:linear-gradient(135deg,#2b2620,#5a4f42);position:relative;overflow:hidden}
-.fig svg{position:absolute;inset:0;width:100%;height:100%}
-.cap{font:13px/1.4 Inter,sans-serif;color:var(--muted);margin:-8px 0 14px}
-.cols{column-count:2;column-gap:24px;column-rule:1px solid var(--soft)}
-.cols p{margin:0 0 12px}
-.cols p:first-child::first-letter{float:left;font:900 64px/.8 "Playfair Display",serif;padding:6px 8px 0 0}
-.side{padding-left:24px}
-.box{border:2px solid var(--rule);padding:14px 16px;margin-bottom:18px}
-.box h3{font:900 22px "Playfair Display",serif;margin:0 0 8px;border-bottom:1px solid var(--rule);padding-bottom:6px}
-.num{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dotted var(--soft);font-family:Inter,sans-serif;font-size:14px}
-.num:last-child{border-bottom:0}
-.num b{font-size:16px}
-.mini{padding:12px 0;border-bottom:1px solid var(--soft)}
-.mini:last-child{border-bottom:0}
-.mini h3{font:700 20px/1.2 "Playfair Display",serif;margin:0 0 4px}
-.mini p{margin:0;font-size:15px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);padding:20px 0;border-bottom:3px solid var(--rule)}
-.grid article{padding:0 18px;border-right:1px solid var(--soft)}
-.grid article:first-child{padding-left:0}
-.grid article:last-child{border-right:0;padding-right:0}
-.grid h3{font:700 21px/1.2 "Playfair Display",serif;margin:0 0 8px}
-.grid p{margin:0;font-size:15.5px}
-.lower{display:grid;grid-template-columns:1fr 2fr;gap:0;padding:22px 0;border-bottom:1px solid var(--rule)}
-.opinion{padding-right:24px;border-right:1px solid var(--soft)}
-.opinion h3{font:italic 700 26px/1.2 "Playfair Display",serif;margin:0 0 8px}
-.opinion blockquote{margin:12px 0 0;padding-left:14px;border-left:3px solid var(--red);font-style:italic;font-size:19px}
-.cal{padding-left:24px}
-.cal h3{font:900 24px "Playfair Display",serif;margin:0 0 10px}
-.cal table{width:100%;border-collapse:collapse;font:14px Inter,sans-serif}
-.cal th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid var(--rule);padding:6px 4px}
-.cal td{padding:8px 4px;border-bottom:1px solid var(--soft)}
-.foot{text-align:center;font:12px Inter,sans-serif;color:var(--muted);padding:18px 0 32px}
-.foot b{font:900 20px "Playfair Display",serif;color:var(--ink);display:block;margin-bottom:4px}
-.book{display:grid;grid-template-columns:minmax(0,1fr);perspective:2200px;padding:18px 0 8px}
-.page{grid-area:1/1;background:var(--paper);padding:0 22px 18px;box-shadow:0 1px 0 #d9cfbd,0 10px 30px rgba(40,30,15,.18);transform-origin:left center;backface-visibility:hidden;position:relative;visibility:hidden;min-width:0}
-.page.on{visibility:visible;z-index:2}
-.page.under{visibility:visible;z-index:1}
-.page::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,0) 40%);opacity:0}
-.page.out{z-index:3;animation:turnOut .75s cubic-bezier(.45,.05,.3,1) forwards}
-.page.back{z-index:3;visibility:visible;animation:turnIn .75s cubic-bezier(.45,.05,.3,1) forwards}
-.page.out::after,.page.back::after{animation:shade .75s forwards}
-.page.back::after{animation-direction:reverse}
-@keyframes turnOut{0%{transform:rotateY(0)}100%{transform:rotateY(-110deg);visibility:hidden}}
-@keyframes turnIn{0%{transform:rotateY(-110deg)}100%{transform:rotateY(0)}}
-@keyframes shade{0%{opacity:0}100%{opacity:1}}
-.corner{position:absolute;right:0;bottom:0;width:34px;height:34px;background:linear-gradient(225deg,var(--paper) 50%,#d8ccb6 50%,#efe6d4 100%);box-shadow:-2px -2px 4px rgba(0,0,0,.12);cursor:pointer;border:0;padding:0}
-.ph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px double var(--rule);padding:14px 0 6px;font:600 12px Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em}
-.ph b{font:900 26px "Playfair Display",serif;text-transform:none;letter-spacing:0}
-.pager{display:flex;justify-content:center;align-items:center;gap:16px;font:700 13px Inter,sans-serif;padding:10px 0 4px}
-.pager button{font:inherit;background:var(--ink);color:var(--paper);border:0;padding:9px 16px;cursor:pointer}
-.pager button:disabled{opacity:.3;cursor:default}
-.more{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:20px 0}
-.more article{padding:0 18px 0 0}
-.more article+article{padding:0 0 0 18px;border-left:1px solid var(--soft)}
-.more h3{font:700 26px/1.15 "Playfair Display",serif;margin:0 0 8px}
-@media (prefers-reduced-motion:reduce){.page.out,.page.back,.page.out::after,.page.back::after{animation-duration:1ms}}
-@media (max-width:600px){.page{padding:0 14px 14px}.more{grid-template-columns:1fr}.more article+article{padding:16px 0 0;border-left:0;border-top:1px solid var(--soft);margin-top:16px}}
-@media (max-width:900px){
-  .front,.lower{grid-template-columns:1fr}
-  .lead,.opinion{padding-right:0;border-right:0;border-bottom:1px solid var(--soft);padding-bottom:18px;margin-bottom:18px}
-  .side,.cal{padding-left:0}
-  .grid{grid-template-columns:1fr 1fr;row-gap:20px}
-  .grid article{padding:0 14px}
-  .grid article:nth-child(odd){padding-left:0}
-  .grid article:nth-child(even){border-right:0;padding-right:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.serif{font-family:Fraunces,Georgia,serif}
+
+/* masthead */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 0 14px;border-bottom:1px solid var(--line)}
+.brand{font:800 clamp(20px,3.4vw,28px)/1 Fraunces,serif;letter-spacing:-.01em}
+.brand i{font-style:normal;color:var(--accent)}
+.meta{font:500 12px Inter,sans-serif;color:var(--muted);text-align:right;letter-spacing:.04em}
+.pill{display:inline-block;border:1px solid var(--accent);color:var(--accent);border-radius:99px;padding:2px 8px;font:700 10px Inter,sans-serif;letter-spacing:.12em;margin-left:6px;vertical-align:1px}
+.tabs{display:flex;gap:6px;padding:12px 0 0;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{font:600 13px Inter,sans-serif;color:var(--muted);background:none;border:0;padding:8px 12px 12px;cursor:pointer;position:relative;white-space:nowrap}
+.tabs button b{font:600 11px Inter,sans-serif;color:var(--accent);margin-right:6px}
+.tabs button[aria-selected=true]{color:var(--ink)}
+.tabs button[aria-selected=true]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent)}
+
+/* pages + transition */
+.book{position:relative;padding:34px 0 20px}
+.page{display:none}
+.page.on{display:block}
+.page.leave{display:block;position:absolute;inset:34px 0 auto 0;pointer-events:none}
+.page.in.fwd{animation:inF .62s cubic-bezier(.2,.7,.1,1) both}
+.page.in.bwd{animation:inB .62s cubic-bezier(.2,.7,.1,1) both}
+.page.leave.fwd{animation:outF .5s cubic-bezier(.4,0,.6,1) both}
+.page.leave.bwd{animation:outB .5s cubic-bezier(.4,0,.6,1) both}
+@keyframes inF{from{clip-path:inset(0 0 0 100%);transform:translateX(48px)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes inB{from{clip-path:inset(0 100% 0 0);transform:translateX(-48px)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes outF{to{transform:translateX(-5%) scale(.97);opacity:0;filter:blur(2px)}}
+@keyframes outB{to{transform:translateX(5%) scale(.97);opacity:0;filter:blur(2px)}}
+.wipe{position:fixed;top:0;bottom:0;width:3px;background:var(--accent);box-shadow:0 0 24px var(--accent);z-index:9;opacity:0;pointer-events:none}
+.wipe.go.fwd{animation:wipeF .62s cubic-bezier(.2,.7,.1,1)}
+.wipe.go.bwd{animation:wipeB .62s cubic-bezier(.2,.7,.1,1)}
+@keyframes wipeF{0%{left:100%;opacity:1}90%{opacity:1}100%{left:0;opacity:0}}
+@keyframes wipeB{0%{left:0;opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+@media (prefers-reduced-motion:reduce){.page.in,.page.leave,.wipe.go{animation-duration:1ms!important}}
+
+/* type */
+.kicker{font:700 11px Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+h1.head{font:800 clamp(36px,6.4vw,72px)/1.02 Fraunces,serif;letter-spacing:-.025em;margin:12px 0 16px;max-width:18ch}
+h1.head a:hover{color:var(--gold)}
+.deck{font:400 clamp(18px,2.2vw,22px)/1.45 Fraunces,serif;color:#c9c2b5;max-width:40ch;margin:0}
+.by{font:500 12px Inter,sans-serif;color:var(--muted);margin-top:16px;letter-spacing:.04em}
+
+/* cover */
+.cover{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.chart{position:relative}
+.chart svg{width:100%;height:auto;display:block}
+.chart .cap{font:12px Inter,sans-serif;color:var(--muted);margin-top:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.stat{padding:26px 20px 26px 0}
+.stat+.stat{padding-left:20px;border-left:1px solid var(--line)}
+.stat .n{font:600 clamp(40px,6vw,64px)/1 Fraunces,serif;letter-spacing:-.03em}
+.stat .n small{font-size:.5em;color:var(--muted)}
+.stat .l{font:500 13px Inter,sans-serif;color:var(--muted);margin-top:8px}
+.body2{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;padding:30px 0 10px}
+.body2 p{margin:0 0 14px;color:#d6d0c4}
+.body2 p:first-child::first-letter{font:800 54px/.8 Fraunces,serif;float:left;padding:6px 10px 0 0;color:var(--accent)}
+.also h3{font:600 20px/1.25 Fraunces,serif;margin:6px 0 6px}
+.also a:hover h3{color:var(--gold)}
+.also p{margin:0;font-size:14.5px;color:var(--muted)}
+.also article+article{margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+
+/* markets */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:34px}
+.tile{background:var(--bg);padding:18px 16px}
+.tile .k{font:600 11px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font:600 28px/1.15 Fraunces,serif;margin:8px 0 4px;letter-spacing:-.02em}
+.tile .d{font:600 13px Inter,sans-serif}
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--muted)}
+.list{counter-reset:s;border-top:1px solid var(--line)}
+.list a{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);transition:background .2s,padding .2s}
+.list a::before{counter-increment:s;content:counter(s,decimal-leading-zero);font:600 22px Fraunces,serif;color:var(--accent)}
+@media (hover:hover){.list a:hover{background:#16191d;padding-left:10px;padding-right:10px}}
+.list h3{font:600 clamp(20px,2.6vw,26px)/1.2 Fraunces,serif;margin:4px 0 6px;letter-spacing:-.01em}
+.list p{margin:0;font-size:15px;color:var(--muted);max-width:62ch}
+.list .go{font:600 18px Inter,sans-serif;color:var(--muted)}
+
+/* desk */
+.quote{padding:10px 0 40px;border-bottom:1px solid var(--line)}
+.quote blockquote{margin:16px 0 18px;font:600 clamp(30px,5vw,56px)/1.08 Fraunces,serif;letter-spacing:-.02em;max-width:18ch}
+.quote blockquote::before{content:"“";color:var(--accent)}
+.quote p{max-width:56ch;color:#c9c2b5;margin:0}
+.cal{padding-top:30px}
+.cal h2{font:800 28px Fraunces,serif;margin:8px 0 18px}
+.ev{display:grid;grid-template-columns:110px 1fr auto;gap:18px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.ev .day{font:600 13px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.ev .what{font:600 18px/1.3 Fraunces,serif}
+.ev .what span{display:block;font:400 13px Inter,sans-serif;color:var(--muted);margin-top:2px}
+.ev .t{font:500 13px Inter,sans-serif;color:var(--muted)}
+
+/* footer nav */
+.pager{display:flex;justify-content:space-between;align-items:center;padding:22px 0 10px;border-top:1px solid var(--line);margin-top:30px}
+.pager button{font:600 14px Inter,sans-serif;color:var(--ink);background:none;border:1px solid var(--line);border-radius:99px;padding:10px 18px;cursor:pointer;transition:border-color .2s,color .2s}
+.pager button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pager button:disabled{opacity:.25;cursor:default}
+.dots{display:flex;gap:8px}
+.dots i{width:8px;height:8px;border-radius:99px;background:var(--line);transition:width .3s,background .3s}
+.dots i.on{width:26px;background:var(--accent)}
+.foot{font:12px/1.5 Inter,sans-serif;color:var(--muted);padding:8px 0 36px}
+
+@media (max-width:820px){
+  .cover,.body2{grid-template-columns:1fr;gap:26px}
+  .tiles{grid-template-columns:repeat(2,1fr)}
 }
-@media (max-width:600px){
-  .cols{column-count:1}
-  .grid{grid-template-columns:1fr}
-  .grid article{padding:0 0 16px;border-right:0;border-bottom:1px solid var(--soft)}
-  .grid article:last-child{border-bottom:0;padding-bottom:0}
-  .fig{height:190px}
-  nav.sec{gap:14px}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr}
+  .stat,.stat+.stat{padding:18px 0;border-left:0}
+  .stat+.stat{border-top:1px solid var(--line)}
+  .list a{grid-template-columns:40px 1fr;gap:12px}
+  .list a::before{font-size:18px}
+  .list .go{display:none}
+  .ev{grid-template-columns:1fr auto;gap:4px 12px}
+  .ev .day{grid-column:1/-1}
+  .top .meta span:first-child{display:block;margin-bottom:4px}
 }
 </style>
 </head>
 <body>
-<div class="demo">TEST PAGE · Real news from the week of Nov 2–6, 2026 · Figures from news reports, approximate</div>
 <div class="wrap">
-<div class="book" id="book">
-<div class="page on" data-n="1">
-  <header class="mast">
-    <div class="kick">Every Monday · Canada &amp; the World</div>
-    <h1>The Weekly Economy</h1>
-    <p class="motto">A week of markets, in five minutes.</p>
+  <header class="top">
+    <div class="brand">The Weekly <i>Economy</i></div>
+    <div class="meta"><span>No. 1 · Nov 2–6, 2026</span><span class="pill">TEST</span></div>
   </header>
-  <div class="dl"><span>Issue 1</span><span>Nov 2 – 6, 2026</span><span>Weekly Brief</span></div>
-  <nav class="sec" aria-label="Sections">
-    <a href="#piyasa">Markets</a><a href="#mb">Jobs</a><a href="#doviz">Rates &amp; Loonie</a><a href="#dunya">World</a><a href="#takvim">Calendar</a><a href="#yorum">Opinion</a>
+  <nav class="tabs" role="tablist" aria-label="Pages">
+    <button type="button" role="tab" data-to="0" aria-selected="true"><b>01</b>Cover</button>
+    <button type="button" role="tab" data-to="1" aria-selected="false"><b>02</b>Markets &amp; World</button>
+    <button type="button" role="tab" data-to="2" aria-selected="false"><b>03</b>The Desk</button>
   </nav>
-  <div class="tick" aria-label="Weekly market snapshot">
-    <span>S&amp;P/TSX <b>~35,760</b> <span class="up">▲ ~0.4% wk</span></span>
-    <span>CAD/USD <b>71.4¢</b></span>
-    <span>S&amp;P 500 <span class="down">▼ ~2–3% wk</span></span>
-    <span>Nasdaq <span class="down">▼ ~5% wk</span></span>
-    <span>Gold <b>~$4,050</b> <span class="down">▼ ~1% Fri</span></span>
-    <span>WTI Oil <b>~$90</b></span>
-    <span>Bitcoin <b>$75,871</b> <span class="down">▼ 5.4% Fri</span></span>
+
+  <main class="book" id="book">
+    <!-- 1 · COVER -->
+    <section class="page on" aria-label="Cover">
+      <div class="cover">
+        <div>
+          <span class="kicker">Jobs · Canada</span>
+          <h1 class="head"><a href="https://www150.statcan.gc.ca/n1/daily-quotidien/261106/dq261106a-eng.htm" target="_blank" rel="noopener">Canada sheds jobs. Unemployment hits a six-month high.</a></h1>
+          <p class="deck">Economists expected 13,600 new jobs. Instead, 4,700 disappeared, one week after the Bank of Canada raised rates.</p>
+          <div class="by">Economy Desk · November 6, 2026 · Source: Statistics Canada</div>
+        </div>
+        <figure class="chart" style="margin:0">
+          <svg viewBox="0 0 400 220" role="img" aria-label="Unemployment rate: April 6.9%, September 6.5%, October 6.7%">
+            <g stroke="#2a2d33"><path d="M0 40H400M0 110H400M0 180H400"/></g>
+            <g font-family="Inter" font-size="11" fill="#9a9488"><text x="0" y="34">7.0%</text><text x="0" y="104">6.7%</text><text x="0" y="174">6.4%</text></g>
+            <path d="M30 54 L330 157 L380 110 V200 H30Z" fill="rgba(226,72,61,.12)"/>
+            <path d="M30 54 L330 157 L380 110" fill="none" stroke="#e2483d" stroke-width="3" stroke-linejoin="round"/>
+            <g fill="#101215" stroke="#e2483d" stroke-width="3"><circle cx="30" cy="54" r="5"/><circle cx="330" cy="157" r="5"/><circle cx="380" cy="110" r="6" fill="#e2483d"/></g>
+            <g font-family="Inter" font-size="12" font-weight="600" fill="#ece6da"><text x="40" y="50">Apr 6.9%</text><text x="268" y="178">Sep 6.5%</text><text x="330" y="96">Oct 6.7%</text></g>
+          </svg>
+          <figcaption class="cap">Unemployment rate, 2026</figcaption>
+        </figure>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">6.7<small>%</small></div><div class="l">Unemployment, October</div></div>
+        <div class="stat"><div class="n down">−4,700</div><div class="l">Jobs lost in October</div></div>
+        <div class="stat"><div class="n">2.50<small>%</small></div><div class="l">Bank of Canada rate, up from 2.25%</div></div>
+      </div>
+      <div class="body2">
+        <div>
+          <p>Private employers cut 52,500 jobs in October. New public-sector jobs (49,600) covered most of it. Unemployment for 15 to 24-year-olds climbed to 13.7%, while workers aged 25 to 54 held steady. Job losses for 2026 so far add up to about 46,000.</p>
+          <p>The timing is awkward. On October 28 the Bank of Canada made its first rate hike since 2023 to stop high gas prices spreading into everything else. Its next decision is December 9.</p>
+        </div>
+        <aside class="also">
+          <article><span class="kicker">Bank of Canada</span><a href="https://boereport.com/2026/10/28/text-of-the-bank-of-canadas-latest-policy-interest-rate-decision/" target="_blank" rel="noopener"><h3>First hike since 2023: rate up to 2.5%</h3></a><p>A quarter point, aimed at energy-driven inflation.</p></article>
+          <article><span class="kicker">Inflation</span><a href="https://www150.statcan.gc.ca/n1/daily-quotidien/261019/dq261019a-eng.htm" target="_blank" rel="noopener"><h3>Gas pushes inflation to 3.1%</h3></a><p>Gasoline up 27.8% in a year. Without it: 2.2%.</p></article>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 2 · MARKETS -->
+    <section class="page" aria-label="Markets and World">
+      <span class="kicker">The week in numbers</span>
+      <h1 class="head" style="max-width:20ch">An election, an AI sell-off, and a loonie under 72¢.</h1>
+      <div class="tiles" style="margin-top:26px">
+        <div class="tile"><div class="k">S&amp;P/TSX</div><div class="v">~35,760</div><div class="d flat">≈ flat for the week</div></div>
+        <div class="tile"><div class="k">Loonie</div><div class="v">71.4¢</div><div class="d down">▼ from 71.6¢</div></div>
+        <div class="tile"><div class="k">Nasdaq</div><div class="v">−5%</div><div class="d down">▼ worst week since June</div></div>
+        <div class="tile"><div class="k">Bitcoin</div><div class="v">$75,871</div><div class="d down">▼ 5.4% Friday</div></div>
+      </div>
+      <div class="list">
+        <a href="https://www.aljazeera.com/economy/2026/11/5/ai-stocks-plunge-after-election-driving-down-us-markets" target="_blank" rel="noopener"><div><span class="kicker">U.S. midterms</span><h3>Democrats win big, AI stocks crash</h3><p>Fear of AI regulation hit chips. The Dow fell 1,833 points Thursday, its worst day since April 2025.</p></div><span class="go">↗</span></a>
+        <a href="https://www.bnnbloomberg.ca/markets/2026/11/05/sptsx-composite-down-nearly-500-points-us-stock-markets-also-fall/" target="_blank" rel="noopener"><div><span class="kicker">TSX</span><h3>Toronto rides the rollercoaster</h3><p>Up 2.3% Wednesday, down 2.0% Thursday as tech and base metals sold off.</p></div><span class="go">↗</span></a>
+        <a href="https://cp24.com/news/world/2026/11/05/canada-braces-for-trump-fallout-as-democrats-win-big-in-us-midterms" target="_blank" rel="noopener"><div><span class="kicker">Trade</span><h3>Canada braces for Trump fallout</h3><p>Ottawa watches how a changed Congress could shift tariffs and trade talks.</p></div><span class="go">↗</span></a>
+        <a href="https://www.cnbc.com/2026/11/06/ai-data-center-midterms-selloff.html" target="_blank" rel="noopener"><div><span class="kicker">Chips</span><h3>Nvidia, AMD, Micron tumble</h3><p>Nvidia fell over 8% and Micron over 14% Thursday. Chips led a partial rebound Friday.</p></div><span class="go">↗</span></a>
+        <a href="https://abc.net.au/news/2026-11-06/asx-markets-business-live-news/107353758" target="_blank" rel="noopener"><div><span class="kicker">Gold</span><h3>Goldman cuts its gold forecast</h3><p>Year-end target down to $4,150 an ounce from $4,650, citing a more hawkish Fed.</p></div><span class="go">↗</span></a>
+        <a href="https://decrypt.co/382700/morning-minute-bitcoin-erases-election-rally-as-ai-stocks-crater" target="_blank" rel="noopener"><div><span class="kicker">Crypto</span><h3>Bitcoin erases its election rally</h3><p>The tech sell-off spilled into crypto; Ether fell even harder.</p></div><span class="go">↗</span></a>
+      </div>
+    </section>
+
+    <!-- 3 · DESK -->
+    <section class="page" aria-label="The Desk">
+      <div class="quote">
+        <span class="kicker">Opinion</span>
+        <blockquote>Higher rates, fewer jobs. Something has to give.</blockquote>
+        <p>The Bank of Canada raised rates to fight gas-driven inflation. A week later, private employers cut 52,500 jobs. December 9 will show which worry wins.</p>
+      </div>
+      <div class="cal">
+        <span class="kicker">Next week</span>
+        <h2>On the calendar</h2>
+        <div class="ev"><div class="day">Tue · Nov 10</div><div class="what">U.S. inflation<span>October CPI</span></div><div class="t">8:30 ET</div></div>
+        <div class="ev"><div class="day">Wed · Nov 11</div><div class="what">Remembrance Day<span>Veterans Day in the U.S.</span></div><div class="t">—</div></div>
+        <div class="ev"><div class="day">Mon · Nov 16</div><div class="what">Canada inflation<span>October CPI (expected date)</span></div><div class="t">8:30 ET</div></div>
+        <div class="ev"><div class="day">Wed · Dec 9</div><div class="what">Bank of Canada decision<span>Hike, hold or cut?</span></div><div class="t">9:45 ET</div></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="pager">
+    <button type="button" data-go="-1">← Prev</button>
+    <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+    <button type="button" data-go="1">Next →</button>
   </div>
-
-  <section class="front" id="mb">
-    <article class="lead">
-      <span class="label">Lead · Jobs</span>
-      <a href="https://www150.statcan.gc.ca/n1/daily-quotidien/261106/dq261106a-eng.htm" target="_blank" rel="noopener"><h2>Canada Sheds 4,700 Jobs; Unemployment Hits Six-Month High of 6.7%</h2></a>
-      <p class="deck">Economists expected a gain of about 13,600. Private employers cut 52,500 jobs, and youth unemployment rose to 13.7%.</p>
-      <div class="by">Economy Desk · November 6, 2026 · 4 min read</div>
-      <div class="fig" role="img" aria-label="Canada unemployment rate: April 6.9%, September 6.5%, October 6.7%">
-        <svg viewBox="0 0 600 260" preserveAspectRatio="none" aria-hidden="true"><g stroke="rgba(255,255,255,.12)"><path d="M0 65H600M0 130H600M0 195H600"/></g><path d="M0 50 L540 190 L600 120" fill="none" stroke="#f3d27a" stroke-width="4"/><path d="M0 50 L540 190 L600 120 V260 H0Z" fill="rgba(243,210,122,.15)"/></svg>
-      </div>
-      <p class="cap">Unemployment rate: 6.9% in April, 6.5% in September, 6.7% in October. Source: Statistics Canada.</p>
-      <div class="cols">
-        <p>Canada's labour market weakened again in October. Statistics Canada says employment fell by about 4,700, and the unemployment rate rose to 6.7% from 6.5% in September. That's the highest since April.</p>
-        <p>The private sector did the damage: it lost 52,500 jobs, partly offset by 49,600 new public-sector jobs. The employment rate slipped to 60.5%.</p>
-        <p>Young people felt it most. Unemployment for those aged 15 to 24 climbed to 13.7%, while the rate for workers aged 25 to 54 held steady. Job losses for 2026 so far add up to about 46,000.</p>
-        <p>The weak report lands a week after the Bank of Canada <em>raised</em> rates. Its next decision is December 9.</p>
-      </div>
-    </article>
-    <aside class="side">
-      <div class="box" id="doviz">
-        <h3>Numbers of the Week</h3>
-        <div class="num"><span>BoC policy rate</span><b class="down">2.50%</b></div>
-        <div class="num"><span>Unemployment (Oct)</span><b class="down">6.7%</b></div>
-        <div class="num"><span>CPI inflation (Sep)</span><b>3.1%</b></div>
-        <div class="num"><span>CPI excl. gasoline (Sep)</span><b>2.2%</b></div>
-        <div class="num"><span>Loonie</span><b>71.4¢ US</b></div>
-        <div class="num"><span>Next BoC decision</span><b>Dec 9</b></div>
-      </div>
-      <div class="mini"><span class="label">Bank of Canada</span><a href="https://boereport.com/2026/10/28/text-of-the-bank-of-canadas-latest-policy-interest-rate-decision/" target="_blank" rel="noopener"><h3>First Rate Hike Since 2023: BoC Moves to 2.5%</h3></a><p>On October 28 the Bank raised rates by a quarter point to stop high energy prices from spreading to other goods.</p></div>
-      <div class="mini"><span class="label">Inflation</span><a href="https://www150.statcan.gc.ca/n1/daily-quotidien/261019/dq261019a-eng.htm" target="_blank" rel="noopener"><h3>Gas Pushes Inflation to 3.1%</h3></a><p>Gasoline was up 27.8% from a year earlier in September. Without gas, prices rose just 2.2%.</p></div>
-    </aside>
-  </section>
-  <button class="corner" data-go="next" aria-label="Turn the page"></button>
+  <p class="foot">Real news from Nov 2–6, 2026. Figures come from news reports and some are intraday, so treat them as approximate. Not investment advice. Headlines link to the original story.</p>
 </div>
-
-<div class="page" data-n="2">
-  <div class="ph"><span>Page 2</span><b>Markets &amp; World</b><span>Nov 2 – 6, 2026</span></div>
-  <section class="grid" id="piyasa">
-    <article><span class="label">TSX</span><a href="https://www.bnnbloomberg.ca/markets/2026/11/05/sptsx-composite-down-nearly-500-points-us-stock-markets-also-fall/" target="_blank" rel="noopener"><h3>TSX Rides the Rollercoaster</h3></a><p>Up 2.3% Wednesday, down 2.0% Thursday as tech and base metals sold off. Roughly flat for the week.</p></article>
-    <article id="dunya"><span class="label">U.S.</span><a href="https://www.aljazeera.com/economy/2026/11/5/ai-stocks-plunge-after-election-driving-down-us-markets" target="_blank" rel="noopener"><h3>Midterms Spark AI Stock Sell-off</h3></a><p>After big Democratic wins, fear of AI regulation hit chips. The Dow fell 1,833 points Thursday, its worst day since April 2025.</p></article>
-    <article><span class="label">Chips</span><a href="https://www.cnbc.com/2026/11/06/ai-data-center-midterms-selloff.html" target="_blank" rel="noopener"><h3>Nvidia, AMD, Micron Tumble</h3></a><p>Nvidia fell over 8% and Micron over 14% Thursday. Chips led a partial rebound Friday.</p></article>
-    <article><span class="label">Gold</span><a href="https://abc.net.au/news/2026-11-06/asx-markets-business-live-news/107353758" target="_blank" rel="noopener"><h3>Goldman Cuts Gold Forecast</h3></a><p>Year-end target lowered to $4,150 an ounce from $4,650, citing a more hawkish Fed.</p></article>
-  </section>
-  <section class="more">
-    <article><span class="label">Trade</span><a href="https://cp24.com/news/world/2026/11/05/canada-braces-for-trump-fallout-as-democrats-win-big-in-us-midterms" target="_blank" rel="noopener"><h3>Canada Braces for Trump Fallout After the Midterms</h3></a><p>With Democrats winning big in the U.S. midterms, Ottawa is watching how a changed Congress could shift trade talks and tariffs with its largest partner.</p></article>
-    <article><span class="label">Crypto</span><a href="https://decrypt.co/382700/morning-minute-bitcoin-erases-election-rally-as-ai-stocks-crater" target="_blank" rel="noopener"><h3>Bitcoin Erases Its Election Rally: $75,871</h3></a><p>The tech sell-off spilled into crypto. Bitcoin dropped 5.4% Friday to below its pre-election level, and Ether fell harder.</p></article>
-  </section>
-  <button class="corner" data-go="next" aria-label="Turn the page"></button>
-</div>
-
-<div class="page" data-n="3">
-  <div class="ph"><span>Page 3</span><b>Opinion &amp; Calendar</b><span>Nov 2 – 6, 2026</span></div>
-  <section class="lower">
-    <article class="opinion" id="yorum">
-      <span class="label">Opinion</span>
-      <h3>Higher Rates, Fewer Jobs</h3>
-      <p>The Bank of Canada raised rates to fight gas-driven inflation. A week later, private employers cut 52,500 jobs. December 9 will show which worry wins.</p>
-      <blockquote>“Making a call before the data is in is like sailing before checking the weather.”</blockquote>
-    </article>
-    <div class="cal" id="takvim">
-      <h3>Next Week's Calendar</h3>
-      <table>
-        <thead><tr><th>Day</th><th>Data / Event</th><th>Time (ET)</th></tr></thead>
-        <tbody>
-          <tr><td>Tue 10</td><td>U.S. inflation (October CPI)</td><td>8:30</td></tr>
-          <tr><td>Wed 11</td><td>Remembrance Day (Canada) · Veterans Day (U.S.)</td><td>—</td></tr>
-          <tr><td>Mon 16</td><td>Canada inflation (October CPI), expected</td><td>8:30</td></tr>
-          <tr><td>Wed Dec 9</td><td>Bank of Canada rate decision</td><td>9:45</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <footer class="foot">
-    <b>The Weekly Economy</b>
-    Not investment advice. Headlines link to the original story (Statistics Canada, BNN Bloomberg, CP24, Al Jazeera, CNBC, Decrypt, ABC).
-  </footer>
-</div>
-</div>
-<div class="pager"><button type="button" data-go="prev">◀ Previous</button><span id="pn">Page 1 / 3</span><button type="button" data-go="next">Next ▶</button></div>
-</div>
+<div class="wipe" id="wipe" aria-hidden="true"></div>
 <script>
 (function(){
-  var pages=[].slice.call(document.querySelectorAll('.page')),cur=0,busy=false,pn=document.getElementById('pn');
-  function paint(){pn.textContent='Page '+(cur+1)+' / '+pages.length;
-    document.querySelector('.pager [data-go=prev]').disabled=cur===0;
-    document.querySelector('.pager [data-go=next]').disabled=cur===pages.length-1;}
+  var pages=[].slice.call(document.querySelectorAll('.page')),tabs=[].slice.call(document.querySelectorAll('.tabs button')),
+      dots=[].slice.call(document.querySelectorAll('.dots i')),wipe=document.getElementById('wipe'),
+      prev=document.querySelector('[data-go="-1"]'),next=document.querySelector('[data-go="1"]'),cur=0,busy=false;
+  function paint(){
+    tabs.forEach(function(t,i){t.setAttribute('aria-selected',i===cur)});
+    dots.forEach(function(d,i){d.classList.toggle('on',i===cur)});
+    prev.disabled=cur===0;next.disabled=cur===pages.length-1;
+  }
   function go(to){
     if(busy||to===cur||to<0||to>=pages.length)return;busy=true;
-    var a=pages[cur],b=pages[to],fwd=to>cur;
-    if(fwd){b.classList.add('under');a.classList.add('out');}
-    else{a.classList.remove('on');a.classList.add('under');b.classList.add('back');}
-    var top=document.getElementById('book').getBoundingClientRect().top;if(top<0)window.scrollBy({top:top-10,behavior:'smooth'});
-    setTimeout(function(){
-      a.classList.remove('on','out','under');b.classList.remove('under','back');b.classList.add('on');
-      cur=to;busy=false;paint();
-    },760);
+    var a=pages[cur],b=pages[to],dir=to>cur?'fwd':'bwd';
+    a.classList.remove('on');a.classList.add('leave',dir);
+    b.classList.add('on','in',dir);
+    wipe.className='wipe';void wipe.offsetWidth;wipe.className='wipe go '+dir;
+    var top=document.querySelector('.tabs').getBoundingClientRect().top;if(top<0)window.scrollBy({top:top,behavior:'smooth'});
+    cur=to;paint();
+    setTimeout(function(){a.classList.remove('leave','fwd','bwd');b.classList.remove('in','fwd','bwd');wipe.className='wipe';busy=false;},640);
   }
-  document.addEventListener('click',function(e){
-    var t=e.target.closest('[data-go]');if(t){go(cur+(t.getAttribute('data-go')==='next'?1:-1));return;}
-    var l=e.target.closest('a[href^="#"]');if(l&&l.getAttribute('href').length>1){var el=document.querySelector(l.getAttribute('href'));
-      if(el){var p=el.closest('.page');if(p&&p!==pages[cur]){e.preventDefault();go(pages.indexOf(p));}}}
-  });
+  tabs.forEach(function(t){t.addEventListener('click',function(){go(+t.dataset.to)})});
+  prev.addEventListener('click',function(){go(cur-1)});next.addEventListener('click',function(){go(cur+1)});
   document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1);});
   var x0=null,y0=0;
   document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
