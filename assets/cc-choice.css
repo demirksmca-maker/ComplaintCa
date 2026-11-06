@@ -68,4 +68,4 @@
 #cc-choice .cc-txt b{font-size:clamp(11px,3vw,14px)!important;letter-spacing:.04em!important;text-transform:uppercase;color:#f3e6d8!important;line-height:1.2!important}
 #cc-choice .cc-arr{display:none}
 #cc-choice .cc-ca{color:#f3e6d8!important;margin-left:3px}
-#cc-choice .cc-complain .cc-txt b{white-space:nowrap}
+@media (max-width:360px){#cc-choice .cc-card{padding:24px 14px 22px}#cc-choice .cc-bar,#cc-choice .cc-complain,#cc-choice .cc-info{padding:8px!important;gap:6px!important}#cc-choice .cc-med svg{width:17px!important;height:17px!important}#cc-choice .cc-txt b{font-size:10.5px!important;letter-spacing:.02em!important}}
