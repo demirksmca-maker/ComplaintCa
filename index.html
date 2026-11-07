@@ -322,17 +322,14 @@ a,button,[onclick]{-webkit-tap-highlight-color:transparent;touch-action:manipula
 @media (prefers-reduced-motion:reduce){#pg-land .hero-title em{animation:none}}
 
 /* ── APP ── */
-.nav-tabs{background:linear-gradient(180deg,#1c0003 0%,#120002 100%);border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(220,215,240,.35);box-shadow:0 8px 20px -12px rgba(0,0,0,.7);position:sticky;top:46px;z-index:90}
-.nav-inner{max-width:680px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav-tabs{background:linear-gradient(180deg,rgba(48,10,44,.97),rgba(36,8,36,.97));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(207,177,231,.14);box-shadow:0 10px 22px -14px rgba(0,0,0,.8);position:sticky;top:46px;z-index:90;padding:8px 12px}
+.nav-inner{max-width:680px;margin:0 auto;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(207,177,231,.2);box-shadow:inset 0 1px 3px rgba(0,0,0,.45);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .nav-inner::-webkit-scrollbar{display:none}
-.nav-tab{position:relative;flex:1;min-width:64px;padding:13px 4px;text-align:center;font-weight:600;font-size:.66rem;letter-spacing:.12em;color:rgba(240,226,232,.62);text-shadow:0 1px 0 rgba(0,0,0,.85),0 -1px 0 rgba(255,255,255,.06);cursor:pointer;border-bottom:0;transition:color .25s,text-shadow .25s;font-family:'Cinzel',serif;text-transform:uppercase;white-space:nowrap;line-height:1}
-.nav-tab:hover{color:rgba(236,228,255,.85)}
-.nav-tab.active{color:#fff;font-weight:700;text-shadow:0 1px 0 rgba(0,0,0,.85),0 0 12px rgba(255,200,215,.85)}
-.nav-tab+.nav-tab::before{content:"";position:absolute;left:0;top:30%;bottom:30%;width:1px;background:linear-gradient(180deg,transparent,rgba(255,220,230,.35),transparent)}
-.nav-tab::after{content:"";position:absolute;left:18%;right:18%;bottom:0;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#bdb7cf,#fff,#bdb7cf,transparent);box-shadow:0 0 8px rgba(235,228,255,.9);transform:scaleX(0);opacity:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
-.nav-tab.active::after{transform:scaleX(1);opacity:1}
-#tab-lawyer.active{color:#cfb0e8!important}
-#tab-cyber.active{color:#ff8a9d!important}
+.nav-tab{position:relative;flex:1;min-width:0;padding:9px 6px;border-radius:999px;text-align:center;font-weight:600;font-size:.62rem;letter-spacing:.08em;color:rgba(232,220,245,.6);cursor:pointer;transition:color .25s,background .3s,box-shadow .3s;font-family:'Cinzel',serif;text-transform:uppercase;white-space:nowrap;line-height:1}
+.nav-tab:hover{color:#fff}
+.nav-tab:focus-visible{outline:1px solid #cfb1e7;outline-offset:1px}
+.nav-tab.active{color:#fff;font-weight:700;background:linear-gradient(135deg,#7b3fa8,#9c2a62);box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 4px 14px -4px rgba(156,42,98,.75)}
+@media (min-width:480px){.nav-tab{font-size:.68rem;letter-spacing:.12em;padding:10px 8px}}
 .cy-plat.cyp-sel{border-color:var(--blue)!important;background:var(--blue)!important;color:white!important}
 .cy-crime.sel{border-color:var(--blue)!important;background:linear-gradient(160deg,rgba(154,77,232,.12),rgba(154,77,232,.08))!important}
 .cy-crime.sel div:first-child{background:rgba(133,26,160,.12)!important}
@@ -850,7 +847,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
 
   <!-- NAV TABS -->
   <div class="nav-tabs">
-    <div class="nav-inner" style="overflow-x:auto;scrollbar-width:none">
+    <div class="nav-inner">
       <div class="nav-tab active" tabindex="0" role="button" id="tab-new" onclick="ccFileTab()" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-new-lbl">File</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-feed" onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Havuz</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-track" onclick="showTab('track')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-track-lbl">Track</span></div>
