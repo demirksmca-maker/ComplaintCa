@@ -80,7 +80,7 @@
     '#cc-steps .cs-env{position:absolute;left:0;top:0;z-index:299;width:20px;height:13px;border-radius:2px;pointer-events:none;will-change:transform;background:linear-gradient(to bottom right,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 0 0/50% 60% no-repeat,linear-gradient(to bottom left,transparent 48%,rgba(120,80,40,.35) 50%,transparent 53%) 100% 0/50% 60% no-repeat,#f6ecd9;box-shadow:0 2px 5px rgba(0,0,0,.45)}',
     '#cc-steps .cs-env::after{content:"";position:absolute;left:7px;top:4px;width:6px;height:6px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e0464a,#8e0c1c)}',
     '#cc-steps .cs-asya.got{animation:csGot .6s ease-out}@keyframes csGot{0%{transform:scale(1)}35%{transform:scale(1.12);box-shadow:0 0 0 4px rgba(216,180,254,.35),0 0 24px rgba(216,180,254,.8)}100%{transform:scale(1)}}',
-    '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{text-wrap:balance}',
+    '#cc-steps .cs-card>span:last-child{align-self:flex-end;width:100%;text-align:right}#cc-steps .cs-card>span:last-child b{white-space:nowrap}',
     '#cc-steps .cs-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}#cc-steps .cs-card>*{position:relative}#cc-steps .cs-card>.cs-n,#cc-steps .cs-card>.cs-ok{position:absolute}',
     '#cc-steps .cs-card:focus-visible,#cc-steps button:focus-visible{outline:2px solid #fff;outline-offset:3px}',
     '#cc-steps .cs-card b{display:block;font:700 16px/1.2 Cinzel,Georgia,serif;letter-spacing:.02em;color:#fff;background:linear-gradient(100deg,#fff 0%,#fff 38%,#d5b9eb 50%,#fff 62%,#fff 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-position:100% 0}',
@@ -316,10 +316,23 @@
       var act = a.dataset.act;
       if (act === 'close') closeSheet(); else if (act === 'save') save(); else if (act === 'send') send(); else if (act === 'as-close') asEnd(); else if (act === 'asya' && typeof window._aToggle === 'function') window._aToggle();
     });
+    // Card titles stay on one line: a long title (or a longer translation) shrinks to fit the card.
+    var fitT = 0, refit = function(){ cancelAnimationFrame(fitT); fitT = requestAnimationFrame(fitTitles); };
+    window.addEventListener('resize', refit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+    if (window.MutationObserver) new MutationObserver(refit).observe(q('.cs-grid'), { childList:true, characterData:true, subtree:true });
     document.addEventListener('keydown', function(e){
       if (e.key !== 'Escape' || !root.classList.contains('on')) return;
       if (q('.as').classList.contains('on')) asEnd(); else if (cur) closeSheet();
     });
+  }
+  function fitTitles(){
+    if (!root || !root.classList.contains('on')) return;
+    // One shared size, so every card title matches the smallest one that fits.
+    var bs = qa('.cs-card b'), k = 1;
+    bs.forEach(function(b){ b.style.fontSize = ''; });
+    bs.forEach(function(b){ var w = b.clientWidth, sw = b.scrollWidth; if (w && sw > w) k = Math.min(k, w / sw); });
+    if (k < 1) { var fs = Math.max(11, parseFloat(getComputedStyle(bs[0]).fontSize) * k - .3) + 'px'; bs.forEach(function(b){ b.style.fontSize = fs; }); }
   }
   function q(s){ return root.querySelector(s); }
   function qa(s){ return Array.prototype.slice.call(root.querySelectorAll(s)); }
@@ -591,7 +604,7 @@
     if (window._ccGoFile) window._ccGoFile(); else if (window.goApp) window.goApp('new');
     // Complaint funnel step 1 for the owner's shield panel (counted at the edge, no cookies).
     try { navigator.sendBeacon && navigator.sendBeacon('/api/beacon?e=open'); } catch (e) {}
-    document.body.classList.add('cc-steps-on'); root.classList.add('on'); window.scrollTo(0, 0);
+    document.body.classList.add('cc-steps-on'); root.classList.add('on'); window.scrollTo(0, 0); fitTitles();
     loadCompanies();
   };
   // Another tab (or the SONUÇ screen) takes over the page: hide the screen, keep the answers.
