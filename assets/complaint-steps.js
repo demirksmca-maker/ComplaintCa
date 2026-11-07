@@ -39,6 +39,16 @@
     ['mail', 'Email', 'Only to verify it’s you']
   ];
   var REQ = ['loc', 'what', 'mail'];
+  // Marcus Aurelius, Meditations: one line per box, shown once that box is saved.
+  var QT = {
+    start: 'What stands in the way becomes the way.',                          // 5.20
+    loc: 'Where a man can live, there he can also live well.',                // 5.16
+    who: 'Define what is in front of you; see plainly what it is.',           // 3.11
+    topic: 'Of each thing ask: what is it in itself?',                        // 8.11
+    what: 'If it is not right, do not do it; if it is not true, do not say it.', // 12.17
+    proof: 'If anyone can show me I am wrong, I will gladly change.',         // 6.21
+    mail: 'Waste no more time arguing what a good man should be. Be one.'     // 10.16
+  };
   var RE_DATE = /\b\d{1,2}[\/.\- ]\d{1,2}|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\b(yesterday|today|last (week|month|year))\b|\b20\d\d\b/i;
   var RE_ASK = /\b(refund|reimburs|compensat|apolog|fix|repair|cancel|remove|want|request|ask)\w*/i;
   var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); };
@@ -288,7 +298,7 @@
     root = document.createElement('div'); root.id = 'cc-steps'; root.setAttribute('role', 'region'); root.setAttribute('aria-labelledby', 'cs-title');
     root.innerHTML =
       '<div class="cs-wrap"><h2 class="cs-sr" id="cs-title">File a Complaint</h2>' +
-      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="If it is not right, do not do it; if it is not true, do not say it. Marcus Aurelius">' + '<span class="t">If it is not right, do not do it; if it is not true, do not say it.</span><cite class="notranslate" translate="no">Marcvs·Avrelivs</cite></q><button type="button" class="cs-asya notranslate" translate="no" data-act="asya" aria-label="Open ASYA">ASYA</button></div>' +
+      '<div class="cs-hd"><span class="cs-sr" aria-live="polite">Progress · <span class="cs-prog">0/6</span></span><q class="cs-quote" aria-label="' + QT.start + ' Marcus Aurelius">' + '<span class="t">' + QT.start + '</span><cite class="notranslate" translate="no" lang="la">Marcvs·Avrelivs</cite></q><button type="button" class="cs-asya notranslate" translate="no" data-act="asya" aria-label="Open ASYA">ASYA</button></div>' +
       '<div class="cs-grid">' +
       STEPS.map(function(s, i){ return '<button type="button" class="cs-card" data-k="' + s[0] + '"><span class="cs-ok">✓</span><span class="cs-n notranslate" translate="no">' + ['I','II','III','IV','V','VI'][i] + '</span>' + SV(IC[s[0]]) + '<span><b>' + s[1] + '</b><small>' + s[2] + '</small></span></button>'; }).join('') +
       '</div><div class="cs-orn" aria-hidden="true"><i></i>✦<i></i></div>' +
@@ -461,7 +471,13 @@
     V[cur] = v; var c = card(cur), sm = c.querySelector('small'); c.classList.add('done');
     sm.textContent = cur === 'proof' ? v.length + (v.length > 1 ? ' photos' : ' photo') : cur === 'what' ? v.slice(0, 40) + (v.length > 40 ? '…' : '') : v;
     if (cur === 'mail') { try { localStorage.setItem('cc_af_mail', v); } catch (e) {} }
-    closeSheet(); sync(); dove(c);
+    var k = cur; closeSheet(); sync(); dove(c); quote(k);
+  }
+  // Swap the quote and replay its ink-in.
+  function quote(k){
+    var t = q('.cs-quote .t'), txt = QT[k]; if (!t || !txt || t.textContent === txt) return;
+    t.style.animation = 'none'; t.textContent = txt; void t.offsetWidth; t.style.animation = '';
+    q('.cs-quote').setAttribute('aria-label', txt + ' Marcus Aurelius');
   }
   // A carrier dove perches on the quote. A saved answer flies to its beak as a
   // sealed letter; the dove carries it to the ASYA badge and lands back.
