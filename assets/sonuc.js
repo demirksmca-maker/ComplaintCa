@@ -15,7 +15,7 @@
       h:'Your Complaint Is Ready', sub:'A complaint based on the law gets an answer. Check it, then send.',
       hHelp:'Your Options Are Ready', subHelp:'You decide what happens. Your rights, options and support are here.',
       hSent:'Complaint Sent', subSent:'Your complaint is on its way. Here is everything you can do next.',
-      quote:'Justice delayed is justice denied.', safe:'<b>You are not alone.</b> If you are in danger, call <a href="tel:911">911</a> now. Nothing here is sent until you approve it.',
+      quote:'To no one will we deny or delay right or justice.', safe:'<b>You are not alone.</b> If you are in danger, call <a href="tel:911">911</a> now. Nothing here is sent until you approve it.',
       load:['Reading your answers…','Finding the right institution…','Checking the law for your province…','Writing your letter…'],
       wait:'ASYA is preparing…', note:'Institutions must answer a formal complaint. Nothing is sent until you approve.', noteHelp:'Nothing is sent to anyone until you approve. You can stop at any time.',
       noteSent:'Keep your reference number. Institutions must reply to a formal complaint.', edit:'✎ Edit my answers',
@@ -225,7 +225,7 @@
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
     root = document.createElement('section'); root.id = 'sn'; root.setAttribute('aria-labelledby', 'sn-h');
     root.innerHTML = '<div class="sn-wrap"><h2 class="sn-h" id="sn-h"></h2><p class="sn-sub"></p><div class="sn-safe" hidden></div>' +
-      '<blockquote class="sn-quote"><span></span><cite>W·E·GLADSTONE</cite></blockquote><p class="sn-status" aria-live="polite"></p><div class="sn-grid">' +
+      '<blockquote class="sn-quote"><span></span><cite class="notranslate" translate="no">MAGNA·CARTA·MCCXV</cite></blockquote><p class="sn-status" aria-live="polite"></p><div class="sn-grid">' +
       KEYS.map(function(k, i){ return '<button type="button" class="sn-card" data-k="' + k + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + IC[k] + '</svg><i class="sn-n">' + NUM[i] + '</i><i class="sn-ok">✓</i><div><b></b><span></span><i class="sn-boost" hidden></i></div></button>'; }).join('') +
       '</div><div class="sn-orn" aria-hidden="true"><i></i>✦<i></i></div><p class="sn-note"></p><div class="sn-after"></div><button type="button" class="sn-edit"></button></div>' +
       '<div class="sn-dim"></div><section class="sn-sheet" role="dialog" aria-modal="true" aria-labelledby="sn-sh-t"><div class="sn-grab"></div><div class="sn-sh"><h3 id="sn-sh-t"></h3><button type="button" class="sn-x">×</button></div><div class="sn-body"></div><div class="sn-sendp"></div></section>' +

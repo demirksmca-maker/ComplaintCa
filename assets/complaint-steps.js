@@ -587,7 +587,7 @@
   // ── Hand-off: the SONUÇ screen analyses the answers and sends the complaint. The answers stay here
   // (Edit my answers comes back to them) until the complaint is sent.
   // The SONUÇ screen loads on first use, so the home page never carries it.
-  var SONUC_SRC = '/assets/sonuc.js?v=20261105a';
+  var SONUC_SRC = '/assets/sonuc.js?v=20261107a';
   function withSonuc(cb){
     if (window.ccSonuc) return cb();
     var s = document.querySelector('script[data-sonuc]');
