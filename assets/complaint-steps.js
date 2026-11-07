@@ -52,6 +52,8 @@
     'body.cc-steps-on .amain{display:none!important}',
     '#cc-steps .cs-x{width:38px;height:38px;border-radius:50%;border:1px solid rgba(196,160,255,.45);background:rgba(24,4,16,.5);color:#fff;font-size:19px;line-height:1;cursor:pointer}',
     '#cc-steps .cs-wrap{flex:1;min-height:0;display:flex;flex-direction:column;width:100%;max-width:720px;margin:0 auto;padding:clamp(10px,2.2vh,20px) max(16px,env(safe-area-inset-right,0px)) calc(clamp(10px,2vh,32px) + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}',
+    // Inner panel: recessed "well" so the cards sit deep inside the page.
+    '#cc-steps .cs-wrap{position:relative;width:calc(100% - 16px);margin:6px auto 10px;border-radius:26px;border:1px solid rgba(8,2,14,.65);background:linear-gradient(180deg,rgba(6,1,12,.62) 0%,rgba(14,3,22,.42) 18%,rgba(18,4,26,.32) 70%,rgba(8,2,14,.5) 100%);box-shadow:inset 0 14px 28px -6px rgba(0,0,0,.85),inset 0 4px 10px rgba(0,0,0,.6),inset 0 -10px 22px -10px rgba(0,0,0,.6),inset 10px 0 20px -14px rgba(0,0,0,.7),inset -10px 0 20px -14px rgba(0,0,0,.7),0 1px 0 rgba(220,180,255,.16),0 -1px 0 rgba(0,0,0,.4)}',
     '#cc-steps .cs-ln{display:flex;align-items:center;justify-content:center;gap:10px;margin:clamp(4px,1vh,10px) 0 clamp(4px,.8vh,8px);color:#c9a8ff;font-size:11px}',
     '#cc-steps .cs-ln i{display:block;width:50px;height:1px;background:linear-gradient(90deg,transparent,#c9a8ff)}#cc-steps .cs-ln i:last-child{transform:scaleX(-1)}',
     '#cc-steps .cs-hd{display:flex;justify-content:flex-end;align-items:center;margin-top:clamp(14px,2.2vh,20px);font:700 13px/1 -apple-system,\'Segoe UI\',Inter,sans-serif;color:#8991a3}',
