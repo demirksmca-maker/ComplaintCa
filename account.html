@@ -8,6 +8,7 @@
 <title>My Account — ComplaintCA</title>
 <link rel="icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>/* Signed in (30-day pass): skip the sign-in form on refresh while the record loads */try{var o=JSON.parse(localStorage.getItem('cc_mail_pass')||'null');if(o&&o.e&&+String(o.p).split('.')[0]>Date.now())document.documentElement.className+=' cc-auto';}catch(e){}</script>
 <style>
 :root{--gold:#cfb0e8;--gold2:#cfb0e8;--cream:#ddc6ef;--mute:#a9b0c4;--red:#d52b1e}
 *{box-sizing:border-box}
@@ -170,6 +171,10 @@ html[dir=rtl] .head,html[dir=rtl] #records{text-align:right}
 .nav-tab{flex:1;min-width:0;padding:9px 5px;border-radius:999px;text-align:center;font:600 .58rem/1 'Cinzel',Georgia,serif;letter-spacing:.05em;color:rgba(232,220,245,.7);text-decoration:none;text-transform:uppercase;white-space:nowrap;transition:color .25s,background .3s}
 .nav-tab:hover,.nav-tab:focus-visible{color:#fff;background:linear-gradient(135deg,#7b3fa8,#9c2a62);outline:none}
 @media (min-width:480px){.nav-tab{font-size:.68rem;letter-spacing:.1em;padding:10px 8px}}
+html.cc-auto #login{display:none}
+.ld{display:none;justify-content:center;gap:8px;padding:48px 0}html.cc-auto .ld{display:flex}
+.ld i{width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:.3;animation:ldp 1s ease-in-out infinite}.ld i:nth-child(2){animation-delay:.15s}.ld i:nth-child(3){animation-delay:.3s}
+@keyframes ldp{50%{opacity:1}}
 </style>
 </head>
 <body translate="no">
@@ -194,6 +199,7 @@ html[dir=rtl] .head,html[dir=rtl] #records{text-align:right}
   </header>
   <div class="rule"></div>
 
+  <div class="ld" aria-hidden="true"><i></i><i></i><i></i></div>
   <section class="login" id="login">
     <h2 data-t="si_t"></h2>
     <p data-t="si_i"></p>
@@ -381,7 +387,9 @@ $('skip').onclick = endIntro;
 
 applyLang();
 const sp = savedPass();
-if (sp) { $('em').value = sp.e; load(sp.e, sp.p).then(r => { if (!r._ok && r.error !== 'email_unverified') $('err').textContent = r.error === 'cooldown' ? T.cd : T.err; }); }
+// Loaded or not, drop the cc-auto cover: the record shows, or the sign-in form comes back.
+const auto = () => document.documentElement.classList.remove('cc-auto');
+if (sp) { $('em').value = sp.e; load(sp.e, sp.p).then(r => { auto(); if (!r._ok && r.error !== 'email_unverified') $('err').textContent = r.error === 'cooldown' ? T.cd : T.err; }, () => { auto(); $('err').textContent = T.err; }); } else auto();
 </script>
 </body>
 </html>
