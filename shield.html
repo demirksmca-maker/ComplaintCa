@@ -437,7 +437,7 @@
     </section>
 
     <!-- SİTE -->
-    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button><button type="button" data-pg="/demo/yapilacak.html" aria-pressed="false">Yapılacak</button><button type="button" data-pg="/demo/gazete.html" aria-pressed="false">Gazete</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
+    <section class="sec" id="v-site" hidden style="padding:0;position:relative"><div class="pg-sw" role="group" aria-label="Sayfa"><button type="button" data-pg="/" aria-pressed="true">Site</button><button type="button" data-pg="/demo/sonuc.html" aria-pressed="false">Test</button><button type="button" data-pg="/demo/blog.html" aria-pressed="false">Blog</button><button type="button" data-pg="/demo/gazete.html" aria-pressed="false">Gazete</button></div><iframe id="siteFrame" title="ComplaintCA" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox" style="flex:1;width:100%;border:0;background:#fff"></iframe>
       <button type="button" class="mk-btn" id="mkToggle" aria-pressed="false">✎ İşaretle</button>
       <button type="button" class="mk-btn mk-pen" id="mkPen" aria-pressed="false">🖍 Çiz</button>
       <canvas class="mk-cv" id="mkCv" hidden></canvas>
@@ -1148,7 +1148,7 @@
     $('mkSend').addEventListener('click', function () {
       if (!pop.hidden) closePop();
       if (!marks.length) { $('mkMsg').textContent = 'Önce bir öğe işaretle.'; return; }
-      var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : sitePage() === TEST ? 'Test' : 'Yapılacak') + ' üzerinden işaretlediğim öğeler (tema/görünüm/veri):\n' + marks.map(function (m, i) {
+      var text = 'Dias Panel > ' + (sitePage() === '/' ? 'Site' : sitePage() === TEST ? 'Test' : sitePage() === NEWS ? 'Gazete' : 'Blog') + ' üzerinden işaretlediğim öğeler (tema/görünüm/veri):\n' + marks.map(function (m, i) {
         var req = m.picks.map(function (q) { return QS[q][2]; });
         if (m.note) req.push(m.note);
         return (i + 1) + ') Sayfa: ' + m.path + '\n   Öğe: ' + m.sel + (m.text ? '\n   Metin: "' + m.text + '"' : '') + (m.box ? '\n   Çizim: x' + m.box.x + ' y' + m.box.y + ', ' + m.box.w + '×' + m.box.h + ' px (çizilen alan)' : '') + (m.data ? '\n   Veri içeriyor: evet' : '') + '\n   İstek: ' + (req.join(', ') || '(not yok)');
@@ -1404,9 +1404,9 @@
     // Load the site only while its tab is open: a fresh home page each time, nothing running in the background.
     if (name === 'site') loadFrame(sitePage()); else { loadFrame(''); mkReset(); }
   }
-  // Site tab shows the live home page or the test page (/demo/sonuc.html) or the to-do page (/demo/yapilacak.html); the choice is remembered.
+  // Site tab shows the live home page or the test page (/demo/sonuc.html) or the blog topics page (/demo/blog.html); the choice is remembered.
   var PG = 'shieldPage';
-  var TEST = '/demo/sonuc.html', TODO = '/demo/yapilacak.html', NEWS = '/demo/gazete.html', frameSeq = 0;
+  var TEST = '/demo/sonuc.html', TODO = '/demo/blog.html', NEWS = '/demo/gazete.html', frameSeq = 0;
   function isDemo(p) { return p === TEST || p === TODO || p === NEWS; }
   function sitePage() { var p = store(PG); return isDemo(p) ? p : '/'; }
   // The Test page comes straight from GitHub main, so a merge shows here without
