@@ -23,7 +23,7 @@
 }catch(e){}})();
 </script>
 <script>try{localStorage.removeItem('cc_theme')}catch(e){}</script>
-<script>(function(){try{if(history.state&&history.state.tab)document.documentElement.setAttribute('data-restoring-tab','1');}catch(e){}})();</script>
+<script>(function(){try{var t=history.state&&history.state.tab;if(!t){var m=/[?&]go=(new|lawyer|cyber|verify|track|feed)(&|$)/.exec(location.search);if(m)t=m[1];}if(t)document.documentElement.setAttribute('data-restoring-tab',t);}catch(e){}})();</script>
 <!-- Google Identity Services: native Google sign-in that works without third-party
      storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
      onerror flags when the script is blocked (ad-blocker / privacy filter) so the
@@ -180,6 +180,10 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 #pg-land{display:block}#pg-app{display:none}#pg-land .hero{transition:none}
 html[data-restoring-tab] #pg-land{display:none}
 html[data-restoring-tab] #pg-app{display:block}
+/* Refresh or ?go= link: hide the app body until the right screen is up, so the classic form never flashes */
+html[data-restoring-tab] #pg-app .amain{visibility:hidden}
+html[data-restoring-tab="new"] #pg-app .amain{display:none}
+html[data-restoring-tab="new"] #cc-steps-host{margin-top:46px;min-height:max(620px,calc(100dvh - 85px));background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat}
 
 /* ── TOPBAR ── */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;border-bottom:0;background:transparent}
@@ -4849,6 +4853,15 @@ document.addEventListener('keydown',function(e){
 });
 
 document.addEventListener('DOMContentLoaded',function(){V.init();_handleGoLink();_applyGuideHandoff('');_handleGuidePrefill();_handleTrackLink();_handleReplyLink();});
+// The <head> script hid the app body during a refresh/?go= link; show it once the right screen is up.
+// A complaint waiting in SONUÇ loads assets/sonuc.js first, so wait for that script too (max 8 s).
+function _ccRestoreEnd(){
+  var de=document.documentElement; if(!de.hasAttribute('data-restoring-tab')) return;
+  var done=function(){ de.removeAttribute('data-restoring-tab'); };
+  var s=!window.ccSonuc&&document.querySelector('script[data-sonuc]');
+  if(s){ s.addEventListener('load',done); s.addEventListener('error',done); setTimeout(done,8000); } else done();
+}
+document.addEventListener('DOMContentLoaded',_ccRestoreEnd);
 
 // Guide pages (/guides/*.html) hand off a typed-out complaint via ?d=... —
 // land straight in the category step with it pre-filled and classified,

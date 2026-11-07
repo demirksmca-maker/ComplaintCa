@@ -7,7 +7,7 @@
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#520f47">
 <script>try{localStorage.removeItem('cc_theme')}catch(e){}</script>
-<script>(function(){try{if(history.state&&history.state.tab)document.documentElement.setAttribute('data-restoring-tab','1');}catch(e){}})();</script>
+<script>(function(){try{var t=history.state&&history.state.tab;if(!t){var m=/[?&]go=(new|lawyer|cyber|verify|track)(&|$)/.exec(location.search);if(m)t=m[1];}if(t)document.documentElement.setAttribute('data-restoring-tab',t);}catch(e){}})();</script>
 <!-- Google Identity Services: native Google sign-in that works without third-party
      storage (unlike Firebase's popup/redirect). Used with signInWithCredential.
      onerror flags when the script is blocked (ad-blocker / privacy filter) so the
@@ -146,6 +146,8 @@ body{font-family:'Inter',sans-serif;background:var(--page-bg);color:var(--text);
 #pg-land{display:block}#pg-app{display:none}#pg-land .hero{transition:none}
 html[data-restoring-tab] #pg-land{display:none}
 html[data-restoring-tab] #pg-app{display:block}
+/* Refresh or ?go= link: hide the app body until the right screen is up, so the classic form never flashes */
+html[data-restoring-tab] #pg-app .amain{visibility:hidden}
 
 /* ── TOPBAR ── */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(180deg,#3d0309 0%,#2a0206 50%,#1c0003 100%);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
@@ -5247,6 +5249,8 @@ document.addEventListener('keydown',function(e){
 });
 
 document.addEventListener('DOMContentLoaded',function(){V.init();_restoreLang();_handleGoLink();_handleGuidePrefill();_handleTrackLink();_handleReplyLink();});
+// The <head> script hid the app body during a refresh/?go= link; show it once the right screen is up.
+document.addEventListener('DOMContentLoaded',function(){ document.documentElement.removeAttribute('data-restoring-tab'); });
 
 // Guide pages (/guides/*.html) hand off a typed-out complaint via ?d=... —
 // land straight in the category step with it pre-filled and classified,
