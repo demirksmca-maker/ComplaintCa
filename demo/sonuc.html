@@ -4,135 +4,169 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
-<title>Business Dispute Roadmap | ComplaintCA</title>
+<title>Quote Designs | ComplaintCA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;600;700&display=swap">
-<link rel="stylesheet" href="/assets/blog-theme.css">
-<style>@media (max-width:639px){.tiles .tile:last-child:nth-child(odd){grid-column:span 2}}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--bg:#14061c;--card:#1d0a28;--gold:#f0cf7a;--ink:#efe3f7;--mute:#a993b8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(120% 60% at 50% 0,#3a0f4a,var(--bg) 60%) fixed,var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif;padding:16px}
+main{max-width:560px;margin:0 auto}
+h1{font:700 22px/1.2 Cinzel,serif;letter-spacing:.06em;text-align:center;margin:8px 0 4px}
+.sub{text-align:center;color:var(--mute);font-size:13px;margin:0 0 14px}
+.lang{display:flex;justify-content:center;gap:6px;margin-bottom:18px}
+.lang button,.ctl button{font:600 12px Inter,sans-serif;letter-spacing:.08em;color:var(--ink);background:#2a1238;border:1px solid #4b2a5c;border-radius:999px;padding:7px 14px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--gold);color:#2a1238;border-color:var(--gold)}
+.box{background:linear-gradient(180deg,#1b0826,#120518);border:1px solid #3a1d4a;border-radius:22px;padding:16px;margin-bottom:22px}
+.tag{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.tag b{font:700 15px Cinzel,serif;letter-spacing:.08em;color:var(--gold)}
+.tag span{font-size:12px;color:var(--mute)}
+.hd{display:flex;align-items:center;gap:12px;min-height:118px}
+.q{flex:1;min-width:0}
+.asya{flex:none;font:700 13px Cinzel,serif;letter-spacing:.2em;color:#e9dcff;border:1px solid #7a5aa8;background:#2b1640;border-radius:999px;padding:10px 16px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.mini i{font:600 10px Cinzel,serif;font-style:normal;text-align:center;padding:7px 2px;border-radius:9px;background:#2a1238;border:1px solid #42234f;color:var(--mute)}
+.mini i.on{background:#4b2a6e;color:#fff;border-color:#9b7ad0}
+.mini i.done{color:var(--gold)}
+.ctl{display:flex;gap:8px;margin-top:12px}
+.why{margin:12px 0 0;font-size:13px;color:#cdbbe0}
+.why b{color:var(--ink)}
+.why .p{color:#9fe0b0}.why .m{color:#f3a3a3}
+.la{font-variant-ligatures:none}
+
+/* A: Mermer yazıt */
+.A .q{text-align:center;padding:6px 4px}
+.A .t{font:600 clamp(13px,3.6vw,15px)/1.55 Cinzel,serif;letter-spacing:.06em;text-transform:uppercase;color:#efe6d6;text-shadow:0 1px 0 rgba(0,0,0,.6)}
+.A .c{display:block;white-space:nowrap;margin-top:8px;font:600 10px Cinzel,serif;letter-spacing:.35em;color:var(--gold)}
+.A .c::before,.A .c::after{content:"";display:inline-block;width:18px;height:1px;background:var(--gold);vertical-align:middle;margin:0 8px;opacity:.7}
+.A .fx{transition:opacity .5s,filter .5s}.A .fx.out{opacity:0;filter:blur(3px)}
+
+/* B: Parşömen mürekkep */
+.B .q{position:relative;padding-left:26px}
+.B .q::before{content:"\201C";position:absolute;left:-2px;top:-14px;font:400 58px/1 'EB Garamond',serif;color:var(--gold);opacity:.55}
+.B .t{font:italic 500 clamp(18px,4.8vw,21px)/1.3 'EB Garamond',serif;color:#f6ead2}
+.B .c{display:block;margin-top:6px;font:italic 400 14px 'EB Garamond',serif;color:var(--gold)}
+.B .fx{clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.3,.7,.2,1),opacity .3s}
+.B .fx.out{clip-path:inset(0 100% 0 0);opacity:.2;transition:clip-path .35s ease-in,opacity .35s}
+
+/* C: Sade modern */
+.C .q{padding:2px 0}
+.C .k{display:block;font:600 10.5px Inter,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.C .t{font:400 clamp(18px,4.8vw,20px)/1.35 'EB Garamond',serif;color:#fff}
+.C .c{display:block;margin-top:6px;font:400 12px Inter,sans-serif;color:var(--mute)}
+.C .fx{transition:opacity .35s,transform .35s}.C .fx.out{opacity:0;transform:translateY(6px)}
+
+/* D: Defne madalyon */
+.D .hd{flex-direction:column;align-items:stretch}
+.D .q{text-align:center;position:relative;padding:4px 8px}
+.D .coin{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;margin-bottom:6px;font:700 12px Cinzel,serif;color:#3a2206;background:radial-gradient(circle at 35% 30%,#fff3c4,#e6b850 55%,#9a6a1c);box-shadow:0 0 0 2px #3a1d4a,0 0 0 3px #c9a24f}
+.D .t{font:italic 500 clamp(17px,4.6vw,19px)/1.35 'EB Garamond',serif;color:#f3e4c4}
+.D .t .w{display:inline-block;opacity:0;transform:translateY(4px);animation:wIn .5s forwards}
+@keyframes wIn{to{opacity:1;transform:none}}
+.D .c{display:block;margin-top:6px;font:600 10px Cinzel,serif;letter-spacing:.3em;color:var(--gold)}
+.D .laur{color:var(--gold);opacity:.6;font-size:13px;letter-spacing:.4em}
+.D .asya{align-self:flex-end;margin-top:-4px;padding:7px 13px;font-size:11px}
+.D .fx{transition:opacity .3s}.D .fx.out{opacity:0}
+@media (prefers-reduced-motion:reduce){.fx,.D .t .w{transition:none!important;animation:none!important;opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}}
+
+.sum{background:#1d0a28;border:1px solid #3a1d4a;border-radius:18px;padding:14px 16px;font-size:13.5px}
+.sum h2{font:700 15px Cinzel,serif;color:var(--gold);letter-spacing:.06em;margin:0 0 8px}
+.sum ul{margin:0;padding-left:18px}.sum li{margin:4px 0}
+</style>
 </head>
 <body>
-<header class="top"><a href="/" aria-label="ComplaintCA home"><img src="/assets/emblem-ruby-88.webp" alt="" width="44" height="44" decoding="async"></a><a class="wm" href="/">ComplaintCA</a><span class="sp"></span></header>
-
-<div class="hero">
-  <div class="eyebrow">ComplaintCA · For Businesses</div>
-  <h1>Canadian Client Won't Pay Your Invoice? Here's the Path</h1>
-  <div class="dateline">Test page · <b>Roadmap draft</b> · 2 min read</div>
-</div>
-
 <main>
-  <p class="lede"><b>Short answer:</b> send a demand letter first. If they still don't pay, go to court or arbitration in their province.</p>
+  <h1>Marcus · 4 Designs</h1>
+  <p class="sub">Each box shows its own quote. Tap "Next box" to see the change.</p>
+  <div class="lang" role="group" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="tr" aria-pressed="false">TR</button><button type="button" data-l="es" aria-pressed="false">ES</button></div>
 
-  <nav class="toc" id="sections" aria-label="In this guide"><div class="kick">The Roadmap</div><div class="tiles">
-    <a class="tile" href="#s-case"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l4 4v14H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Your Case</span></a>
-    <a class="tile" href="#s-company"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Check Company</span></a>
-    <a class="tile" href="#s-deadline"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Deadline</span></a>
-    <a class="tile" href="#s-proof"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Proof</span></a>
-    <a class="tile" href="#s-letter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 6l9 7 9-7"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Demand Letter</span></a>
-    <a class="tile" href="#s-route"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M6 8h12M6 8l-3 6a3 3 0 006 0zM18 8l-3 6a3 3 0 006 0z"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Your Route</span></a>
-    <a class="tile" href="#s-paid"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Get Paid</span></a>
-    <a class="tile" href="#s-start"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">Start Now</span></a>
-    <a class="tile" href="#s-faq"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 4"/><path d="M12 17h.01"/></svg><span class="ar" aria-hidden="true">&rarr;</span><span class="lb">FAQ</span></a>
-  </div></nav>
+  <section class="box A" data-d="A">
+    <div class="tag"><b>A · Marble Inscription</b><span>Roman stone, still</span></div>
+    <div class="hd"><div class="q"><div class="fx"><span class="t"></span><span class="c la" lang="la">MARCVS · AVRELIVS</span></div></div><span class="asya">✦ ASYA</span></div>
+    <div class="mini"></div>
+    <div class="ctl"><button type="button" data-a="next">Next box ›</button><button type="button" data-a="reset">Reset</button></div>
+    <p class="why"><span class="p">+ Most "Roman", serious, trustworthy.</span> <span class="m">− Capital letters read slowly; long quotes take 3–4 lines.</span></p>
+  </section>
 
-<section class="sec" id="s-case">
-  <h2>1. Tell us your case</h2>
-  <div class="path-card">
-    <p><span class="step-num">1</span><b>Who owes you?</b> Company name and the province it is in.</p>
-    <p><span class="step-num">2</span><b>How much?</b> The unpaid amount and the invoice dates.</p>
-    <p style="margin-bottom:0"><span class="step-num">3</span><b>What did you agree?</b> A signed contract, a purchase order, or just emails.</p>
+  <section class="box B" data-d="B">
+    <div class="tag"><b>B · Ink on Parchment</b><span>written left to right</span></div>
+    <div class="hd"><div class="q"><div class="fx"><span class="t"></span><span class="c">— Marcus Aurelius, <i class="r"></i></span></div></div><span class="asya">✦ ASYA</span></div>
+    <div class="mini"></div>
+    <div class="ctl"><button type="button" data-a="next">Next box ›</button><button type="button" data-a="reset">Reset</button></div>
+    <p class="why"><span class="p">+ Warm, human, closest to the current look; source shown (trust).</span> <span class="m">− Italic is a bit harder on small screens.</span></p>
+  </section>
+
+  <section class="box C" data-d="C">
+    <div class="tag"><b>C · Clean Modern</b><span>no glow, max contrast</span></div>
+    <div class="hd"><div class="q"><div class="fx"><span class="k"></span><span class="t"></span><span class="c">Marcus Aurelius · <i class="r"></i></span></div></div><span class="asya">✦ ASYA</span></div>
+    <div class="mini"></div>
+    <div class="ctl"><button type="button" data-a="next">Next box ›</button><button type="button" data-a="reset">Reset</button></div>
+    <p class="why"><span class="p">+ Easiest to read; the label says which box the quote is for.</span> <span class="m">− Least "magic"; plainer next to the rich cards.</span></p>
+  </section>
+
+  <section class="box D" data-d="D">
+    <div class="tag"><b>D · Laurel Medallion</b><span>gold coin = step</span></div>
+    <div class="hd"><div class="q"><div class="fx"><span class="coin"></span><br><span class="t"></span><span class="c la" lang="la"><span class="laur">❦</span> MARCVS · AVRELIVS <span class="laur">❦</span></span></div></div><span class="asya">✦ ASYA</span></div>
+    <div class="mini"></div>
+    <div class="ctl"><button type="button" data-a="next">Next box ›</button><button type="button" data-a="reset">Reset</button></div>
+    <p class="why"><span class="p">+ Step coin ties quote to box; word-by-word reveal feels like a reward.</span> <span class="m">− Takes the full width; ASYA moves below.</span></p>
+  </section>
+
+  <div class="sum">
+    <h2>Current design: problems</h2>
+    <ul>
+      <li>Gold shimmer + glow lowers contrast; the eye goes to the shine, not the words.</li>
+      <li>Quote shares a row with ASYA, so it wraps tight; the 9px signature is too small.</li>
+      <li>Turkish page shows "AVRELİVS" (dotted İ). Latin needs <code>lang="la"</code> + no translate.</li>
+      <li>Gold left line + dove + glow = three effects in one small spot.</li>
+    </ul>
   </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-company">
-  <h2>2. Check the company</h2>
-  <div class="path-card">
-    <p><span class="step-num">1</span><b>Is it real and active?</b> Search the federal or provincial corporate registry for its legal name and status.</p>
-    <p style="margin-bottom:0"><span class="step-num">2</span><b>Is it bankrupt or insolvent?</b> Search the federal bankruptcy records (OSB). If it is, you don't sue: you file a proof of claim with the trustee.</p>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-deadline">
-  <h2>3. Check your deadline</h2>
-  <div class="path-card">
-    <p>Waiting can cost you the claim. In Ontario, the general deadline to sue is 2 years, and enforcing a US judgment usually has a 2-year deadline too. Other provinces have their own rules.</p>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-proof">
-  <h2>4. Gather proof</h2>
-  <div class="path-card">
-    <p>Contract, invoices, emails, delivery records and any payment promises. Check the contract for an <b>arbitration</b> or <b>jurisdiction</b> clause: it can decide where the dispute must be heard.</p>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-letter">
-  <h2>5. Send a demand letter</h2>
-  <div class="path-card">
-    <p>A formal letter with the amount owed, a clear deadline, and what you will do next. Many disputes end here, before any fees.</p>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-route">
-  <h2>6. Choose your route</h2>
-  <div class="path-card">
-    <table class="wait-table left">
-      <tr><th>Route</th><th>Best for</th></tr>
-      <tr><td>Small claims court</td><td>Smaller amounts, no lawyer needed</td></tr>
-      <tr><td>Arbitration / mediation</td><td>When the contract requires it</td></tr>
-      <tr><td>Collection agency</td><td>They chase the debt and take a cut</td></tr>
-      <tr><td>Superior court</td><td>Large amounts, with a lawyer</td></tr>
-    </table>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-paid">
-  <h2>7. Get paid</h2>
-  <div class="path-card">
-    <p>Win or settle, then enforce: garnishment, seizure, or registering a US judgment in a Canadian court.</p>
-  </div>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-faq">
-  <h2>Frequently asked</h2>
-  <details class="faq-item">
-    <summary>Do I need a lawyer?</summary>
-    <p>Not for small claims court, which is built for people without lawyers. For large amounts or superior court, a lawyer is usually worth it.</p>
-  </details>
-  <details class="faq-item">
-    <summary>How long do I have?</summary>
-    <p>In Ontario, the general deadline to sue is 2 years. Other provinces set their own deadlines, so check early.</p>
-  </details>
-  <details class="faq-item">
-    <summary>What if the company went bankrupt?</summary>
-    <p>You usually can't sue. Instead, file a proof of claim with the licensed insolvency trustee handling the case.</p>
-  </details>
-  <details class="faq-item">
-    <summary>Can I sue in a US court instead?</summary>
-    <p>Yes, but to collect from Canadian assets you then need a Canadian court to recognize the judgment. In Ontario that usually must start within 2 years.</p>
-  </details>
-  <a class="up" href="#sections">&uarr; Back to sections</a>
-</section>
-
-<section class="sec" id="s-start">
-  <h2>Start now</h2>
-  <div class="cta">
-    <p>Use our free demand letter template: fill in your details and send it today.</p>
-    <a href="/business/demand-letter-canada-business.html#s-template" target="_blank" rel="noopener">Get the Free Template →</a>
-  </div>
-  <p class="body-text" style="font-size:.85rem;text-align:center">Draft roadmap. Court limits and rules will be verified per province.</p>
-</section>
 </main>
+<script>
+(function(){
+  // Meditations (book.section). TR/ES are our own short translations.
+  var Q = [
+    {r:'5.20', k:{en:'Start',tr:'Başlangıç',es:'Inicio'}, en:'What stands in the way becomes the way.', tr:'Önündeki engel yol olur.', es:'Lo que se interpone en el camino se convierte en el camino.'},
+    {r:'5.16', k:{en:'I · Location',tr:'I · Konum',es:'I · Ubicación'}, en:'Where a man can live, there he can also live well.', tr:'Yaşanabilen her yerde iyi de yaşanabilir.', es:'Donde se puede vivir, también se puede vivir bien.'},
+    {r:'3.11', k:{en:'II · Who',tr:'II · Kim',es:'II · Quién'}, en:'Define what is in front of you; see plainly what it is.', tr:'Karşına çıkan şeyin tanımını yap; ne olduğunu açıkça gör.', es:'Define lo que tienes delante; mira con claridad qué es.'},
+    {r:'8.11', k:{en:'III · Topic',tr:'III · Başlık',es:'III · Tema'}, en:'Of each thing ask: what is it in itself?', tr:'Her şeye sor: Bu, özünde nedir?', es:'De cada cosa pregunta: ¿qué es en sí misma?'},
+    {r:'12.17', k:{en:'IV · What happened',tr:'IV · Ne oldu',es:'IV · Qué pasó'}, en:'If it is not right, do not do it; if it is not true, do not say it.', tr:'Doğru değilse yapma; gerçek değilse söyleme.', es:'Si no es correcto, no lo hagas; si no es verdad, no lo digas.'},
+    {r:'6.21', k:{en:'V · Evidence',tr:'V · Kanıt',es:'V · Pruebas'}, en:'If anyone can show me I am wrong, I will gladly change.', tr:'Biri bana yanıldığımı gösterirse seve seve değişirim.', es:'Si alguien me demuestra que me equivoco, cambiaré con gusto.'},
+    {r:'10.16', k:{en:'VI · Email',tr:'VI · E-posta',es:'VI · Correo'}, en:'Waste no more time arguing what a good man should be. Be one.', tr:'İyi insan nasıl olmalı diye tartışma; ol.', es:'No pierdas más tiempo discutiendo cómo debe ser un hombre bueno. Sé uno.'}
+  ];
+  var L = {en:['Location','Who','Topic','What happened','Evidence','Email'],tr:['Konum','Kim','Başlık','Ne oldu','Kanıt','E-posta'],es:['Ubicación','Quién','Tema','Qué pasó','Pruebas','Correo']};
+  var lang = 'en', N = ['I','II','III','IV','V','VI'];
+  var boxes = [].slice.call(document.querySelectorAll('.box')).map(function(el){ return {el:el, s:0}; });
 
-<footer>ComplaintCA · complaintca.ca · <a href="/about.html" style="color:inherit">About</a> · <a href="/blog/" style="color:inherit">Blog</a> · <a href="/contact.html" style="color:inherit">Contact</a> · <a href="/privacy.html" style="color:inherit">Privacy</a></footer>
-
-<script defer src="/assets/site-rail.js"></script>
+  function paint(b, anim){
+    var el = b.el, q = Q[b.s], fx = el.querySelector('.fx');
+    function fill(){
+      var t = el.querySelector('.t'), txt = q[lang]; t.lang = lang;
+      if (el.dataset.d === 'D') t.innerHTML = txt.split(' ').map(function(w, i){ return '<span class="w" style="animation-delay:' + (i * 70) + 'ms">' + w + '</span>'; }).join(' ');
+      else t.textContent = txt;
+      var k = el.querySelector('.k'); if (k) k.textContent = q.k[lang];
+      var r = el.querySelector('.r'); if (r) r.textContent = q.r;
+      var c = el.querySelector('.coin'); if (c) c.textContent = b.s ? N[b.s - 1] : '✦';
+      el.querySelector('.mini').innerHTML = L[lang].map(function(n, i){ return '<i class="' + (i + 1 === b.s ? 'on' : i + 1 < b.s ? 'done' : '') + '">' + N[i] + ' ' + n + '</i>'; }).join('');
+      fx.classList.remove('out');
+    }
+    if (!anim) return fill();
+    fx.classList.add('out'); setTimeout(fill, 380);
+  }
+  boxes.forEach(function(b){
+    b.el.addEventListener('click', function(e){
+      var a = e.target.closest('[data-a]'); if (!a) return;
+      b.s = a.dataset.a === 'reset' ? 0 : (b.s + 1) % Q.length; paint(b, true);
+    });
+    paint(b, false);
+  });
+  document.querySelector('.lang').addEventListener('click', function(e){
+    var x = e.target.closest('[data-l]'); if (!x) return; lang = x.dataset.l;
+    document.querySelectorAll('.lang button').forEach(function(y){ y.setAttribute('aria-pressed', y === x); });
+    boxes.forEach(function(b){ paint(b, true); });
+  });
+})();
+</script>
 </body>
 </html>
