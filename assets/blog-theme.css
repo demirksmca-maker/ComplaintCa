@@ -50,6 +50,26 @@ main{max-width:760px;margin:0 auto;padding:8px 16px 40px}
 @media (hover:hover){.tile:hover{transform:translateY(-2px);filter:brightness(1.08)}}
 .tile:active{transform:scale(.97)}
 
+/* phones and small tablets: header, short answer, shortcut strip and all six
+   tiles fit on the first screen */
+@media (max-width:639px){
+  .top{padding-top:6px}
+  .top img{width:38px;height:38px}
+  .top .sp{width:38px}
+  .top .wm{font-size:1.15rem}
+  .hero{padding:8px 16px 0}
+  .hero .eyebrow{font-size:.56rem;margin-bottom:6px}
+  .hero h1{font-size:clamp(1.08rem,4.3vw,1.45rem);margin-bottom:4px}
+  .hero .dateline{font-size:.84rem}
+  main{padding-top:6px}
+  .lede{font-size:1rem;line-height:1.5;padding:11px 14px;margin-bottom:14px}
+  .lede b{font-size:.66rem}
+  .toc .kick{font-size:.6rem;margin-bottom:8px}
+  .tile{min-height:74px;padding:10px}
+  .tile svg{top:10px;left:10px;width:22px;height:22px}
+  .tile .ar{top:8px;right:10px}
+}
+
 /* sections */
 .sec{scroll-margin-top:12px;margin:0 0 16px;padding:16px;border:1px solid var(--line);border-radius:18px;background:rgba(20,4,30,.42)}
 .sec:nth-of-type(odd){background:linear-gradient(155deg,rgba(138,92,246,.26),rgba(46,16,80,.38))}
