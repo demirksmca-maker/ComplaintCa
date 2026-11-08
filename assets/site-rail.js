@@ -11,9 +11,12 @@
     + '<rect x="16.2" y="2.8" width="2.2" height="6.4" rx=".8"/><rect x="11" y="8" width="2" height="9" rx="1"/></g>'
     + '<rect x="3" y="19.5" width="11" height="2.5" rx="1.1"/></svg>';
   var links = [
-    {href:'/?go=new',    icon:'✎', label:'File a Complaint', primary:true},
-    {href:'/?go=lawyer', svg:gavel, label:'Free Lawyer'},
-    {href:'/?go=rep',    icon:'⚑', label:'Find Your MP'}
+    {href:'/?go=new',    icon:'✎', label:'File a Complaint', short:'Complain', primary:true,
+     line:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>'},
+    {href:'/?go=lawyer', svg:gavel, label:'Free Lawyer', short:'Lawyer',
+     line:'<path d="M13 4l7 7M10 7l7 7M11.5 5.5l-4 4M18.5 12.5l-4 4"/><path d="M11 12l-6 6"/><path d="M3 21h9"/>'},
+    {href:'/?go=rep',    icon:'⚑', label:'Find Your MP', short:'Your MP',
+     line:'<path d="M6 21V4"/><path d="M6 4h11l-2 4 2 4H6"/>'}
   ];
   // Colours and fonts match the blog: off-white cards, navy text, gold accent, Cinzel labels.
   // Pages can recolour the mobile buttons with the --rail-* variables (see blog-theme.css).
@@ -42,7 +45,19 @@
     +   m + ' .i{flex:none;width:48px;height:48px;border-radius:50%;font-size:1.25rem;background:var(--rail-bg,#fff);color:var(--rail-icon,#1a4fa0)!important;border:2px solid var(--rail-ring,#c9a84c);box-shadow:0 6px 16px rgba(0,0,0,.28)}'
     +   m + ' a.p .i{background:var(--rail-primary,#c9a84c);color:var(--rail-primary-text,#0f2952)!important}'
     + '}'
-    + '@media print{#cc-rail{display:none}}';
+    // Mobile strip: the same three shortcuts as a row above the "In this guide" tiles.
+    + '#cc-strip{display:none}'
+    + '@media (max-width:1039px){'
+    +   '#cc-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 10px}'
+    +   '#cc-strip a{display:flex;align-items:center;justify-content:center;gap:6px;height:44px;border-radius:14px;border:1px solid rgba(244,214,255,.25);background:rgba(255,255,255,.06);color:#f3e6ea;text-decoration:none;font:700 .62rem Cinzel,Georgia,serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,230,250,.2);-webkit-tap-highlight-color:transparent}'
+    +   '#cc-strip a.p{background:linear-gradient(135deg,#cfb0e8,#cfb1e7,#5b208a);color:#060206;border-color:transparent}'
+    +   '#cc-strip a:active{transform:scale(.97)}'
+    +   '#cc-strip svg{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
+    +   m + '{transition:opacity .25s}'
+    +   m + '.hide{opacity:0;pointer-events:none}'
+    +   m + '.hide *{pointer-events:none!important}'
+    + '}'
+    + '@media print{#cc-rail,#cc-strip{display:none}}';
   var style = document.createElement('style');
   style.textContent = css;
   document.head.appendChild(style);
@@ -73,4 +88,27 @@
   var fold = function(){ nav.classList.toggle('fold', (window.scrollY || 0) > 160); };
   window.addEventListener('scroll', fold, {passive:true});
   fold();
+
+  // Mobile strip above the section tiles. While it is on screen the round
+  // buttons step aside, so the same shortcuts never show twice.
+  var kick = document.querySelector('.toc .kick');
+  if (!kick) return;
+  var strip = document.createElement('nav');
+  strip.id = 'cc-strip';
+  strip.setAttribute('aria-label', 'ComplaintCA shortcuts');
+  links.forEach(function(l){
+    var a = document.createElement('a');
+    a.href = l.href;
+    if (l.primary) a.className = 'p';
+    a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + l.line + '</svg>';
+    a.appendChild(document.createTextNode(l.short));
+    a.setAttribute('aria-label', l.label);
+    strip.appendChild(a);
+  });
+  kick.parentNode.insertBefore(strip, kick.nextSibling);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(e){
+      nav.classList.toggle('hide', e[0].isIntersecting);
+    }).observe(strip);
+  }
 })();
