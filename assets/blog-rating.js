@@ -7,7 +7,7 @@
   var key = 'cc-rate:' + path;
   try { if (localStorage.getItem(key)) return; } catch (e) {}
 
-  // Desktop: top-right of the article column. Mobile: just above the site rail bar.
+  // Desktop: top-right of the article column. Mobile: at the bottom edge.
   var css = ''
     + '#cc-rate{position:fixed;z-index:60;display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #dbeafe;border-radius:999px;box-shadow:0 4px 14px rgba(15,41,82,.10);font:600 12px Inter,system-ui,sans-serif;color:#0f2952;transition:opacity .4s}'
     + '#cc-rate .t{font:700 10px Cinzel,serif;letter-spacing:2px;text-transform:uppercase;color:#c9a84c}'
@@ -15,7 +15,7 @@
     + '#cc-rate button.off{color:#cbd5e1}'
     + '#cc-rate button:focus-visible{outline:2px solid #1a4fa0;border-radius:4px}'
     + '@media (min-width:1040px){#cc-rate{top:16px;right:calc(50% - 296px);padding:6px 12px}}'
-    + '@media (max-width:1039px){#cc-rate{left:12px;right:12px;bottom:calc(72px + env(safe-area-inset-bottom));justify-content:center;padding:6px 10px}}'
+    + '@media (max-width:1039px){#cc-rate{left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));justify-content:center;padding:6px 10px}}'
     + '@media print{#cc-rate{display:none}}';
   var style = document.createElement('style');
   style.textContent = css;

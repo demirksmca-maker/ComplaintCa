@@ -132,7 +132,7 @@ footer{text-align:center;padding:22px 16px;font-style:italic;font-size:.92rem;co
 footer a{color:inherit}
 
 /* shared widgets injected by site-rail.js and blog-rating.js */
-#cc-rail{background:rgba(22,6,28,.97)!important;border-color:rgba(244,214,255,.22)!important}
+#cc-rail{background:rgba(22,6,28,.97)!important;border-color:rgba(244,214,255,.22)!important;--rail-bg:rgba(28,12,36,.94);--rail-text:#f3e6ea;--rail-line:rgba(214,178,110,.55);--rail-icon:#d8b4fe;--rail-ring:#d6b26e;--rail-primary:linear-gradient(135deg,#cfb0e8,#cfb1e7,#5b208a);--rail-primary-text:#060206}
 #cc-rail .t{color:var(--lav)!important}
 #cc-rail a{background:rgba(255,255,255,.05)!important;border-color:rgba(244,214,255,.22)!important;color:#f3e6ea!important}
 #cc-rail a.p{background:linear-gradient(135deg,#cfb0e8,#cfb1e7,#5b208a)!important;border-color:transparent!important;color:#060206!important}
