@@ -46,10 +46,11 @@
     +   m + ' a.p .i{background:var(--rail-primary,#c9a84c);color:var(--rail-primary-text,#0f2952)!important}'
     + '}'
     // Mobile strip: the same three shortcuts as a row above the "In this guide" tiles.
+    // Long translated labels wrap to two lines instead of spilling out.
     + '#cc-strip{display:none}'
     + '@media (max-width:1039px){'
     +   '#cc-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 8px}'
-    +   '#cc-strip a{display:flex;align-items:center;justify-content:center;gap:6px;height:38px;border-radius:12px;border:1px solid rgba(244,214,255,.25);background:rgba(255,255,255,.06);color:#f3e6ea;text-decoration:none;font:700 .62rem Cinzel,Georgia,serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,230,250,.2);-webkit-tap-highlight-color:transparent}'
+    +   '#cc-strip a{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:38px;padding:3px 8px;overflow:hidden;text-align:center;border-radius:12px;border:1px solid rgba(244,214,255,.25);background:rgba(255,255,255,.06);color:#f3e6ea;text-decoration:none;font:700 clamp(.54rem,2.6vw,.62rem)/1.15 Cinzel,Georgia,serif;text-transform:uppercase;letter-spacing:.02em;overflow-wrap:anywhere;box-shadow:inset 0 1px 0 rgba(255,230,250,.2);-webkit-tap-highlight-color:transparent}'
     +   '#cc-strip a.p{background:linear-gradient(135deg,#cfb0e8,#cfb1e7,#5b208a);color:#060206;border-color:transparent}'
     +   '#cc-strip a:active{transform:scale(.97)}'
     +   '#cc-strip svg{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}'
