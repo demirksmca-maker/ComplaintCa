@@ -335,8 +335,26 @@ a,button,[onclick]{-webkit-tap-highlight-color:transparent;touch-action:manipula
 .nav-tab.active{color:#fff;font-weight:700;background:linear-gradient(135deg,#7b3fa8,#9c2a62);box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 4px 14px -4px rgba(156,42,98,.75)}
 @media (min-width:480px){.nav-tab{font-size:.68rem;letter-spacing:.12em;padding:10px 8px}}
 .cy-plat.cyp-sel{border-color:var(--blue)!important;background:var(--blue)!important;color:white!important}
-.cy-crime.sel{border-color:var(--blue)!important;background:linear-gradient(160deg,rgba(154,77,232,.12),rgba(154,77,232,.08))!important}
-.cy-crime.sel div:first-child{background:rgba(133,26,160,.12)!important}
+/* Cyber suç kartları: ana sayfa hub-tile cam stili */
+.cy-crime{position:relative;overflow:hidden;display:flex;align-items:flex-start;gap:8px;padding:12px 10px;border-radius:14px;border:1px solid rgba(244,214,255,.22);cursor:pointer;-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .15s,filter .15s,box-shadow .2s,border-color .2s}
+.cy-crime:nth-child(odd){background:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
+.cy-crime:nth-child(even){background:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
+.cy-crime::before,.cy-crime::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit}
+.cy-crime::before{background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.2),transparent 60%);animation:hubGlow 7s ease-in-out infinite alternate}
+.cy-crime::after{background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.34) 50%,transparent 65%);transform:translateX(-130%);animation:hubShine 6s ease-in-out infinite}
+.cy-crime:nth-child(3)::after,.cy-crime:nth-child(4)::after{animation-delay:.6s}
+.cy-crime:nth-child(5)::after,.cy-crime:nth-child(6)::after{animation-delay:1.2s}
+.cy-crime>*{position:relative;z-index:1}
+@media (hover:hover){.cy-crime:hover{transform:translateY(-2px);filter:brightness(1.08)}}
+.cy-crime:active{transform:scale(.97);filter:brightness(1.15)}
+.cy-crime:focus-visible{outline:2px solid #e9d5ff;outline-offset:2px}
+.cy-crime.sel{border-color:rgba(255,225,250,.8);filter:brightness(1.12);box-shadow:0 0 0 2px rgba(196,140,255,.6),0 0 24px -4px rgba(190,90,255,.75),inset 0 1px 0 rgba(255,230,250,.3)}
+.cy-ico{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.cy-crime.sel .cy-ico{background:rgba(255,255,255,.22)}
+.cy-crime>div:last-child{min-width:0}
+.cy-crime-title{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.6rem,2.75vw,.72rem);text-transform:uppercase;letter-spacing:0;overflow-wrap:break-word;color:#fff;line-height:1.25;margin-bottom:2px}
+.cy-crime-sub{font-size:.62rem;color:rgba(243,230,234,.75);line-height:1.4}
+@media (prefers-reduced-motion:reduce){.cy-crime::after{animation:none;display:none}.cy-crime::before{animation:none}}
 #cy-dropzone:hover{border-color:#c893fd;background:rgba(154,77,232,.10)}
 .amain{max-width:680px;margin:0 auto;padding:62px 16px 100px;min-height:calc(100vh - 46px)}
 .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shsm);border:1px solid var(--border);padding:20px;margin-bottom:16px}
@@ -1249,29 +1267,29 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
       <div class="card">
         <div class="ct"><div class="ci">I</div><span id="cy-s1-title">What type of offence?</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div class="cy-crime sel" tabindex="0" role="button" data-label="Harassment" onclick="selCyberCrime(this)" style="border:1.5px solid var(--blue);background:linear-gradient(160deg,rgba(154,77,232,.12),rgba(154,77,232,.08));border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:rgba(133,26,160,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">😡</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--blue);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c1-t">Harassment</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c1-s">Abusive messages</div></div>
+          <div class="cy-crime sel" tabindex="0" role="button" data-label="Harassment" onclick="selCyberCrime(this)">
+            <div class="cy-ico">😡</div>
+            <div><div class="cy-crime-title" id="cy-c1-t">Harassment</div><div class="cy-crime-sub" id="cy-c1-s">Abusive messages</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Threats" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🔪</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c2-t">Threats</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c2-s">Physical / death threats</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Threats" onclick="selCyberCrime(this)">
+            <div class="cy-ico">🔪</div>
+            <div><div class="cy-crime-title" id="cy-c2-t">Threats</div><div class="cy-crime-sub" id="cy-c2-s">Physical / death threats</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Stalking" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">👁️</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c3-t">Stalking</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c3-s">Persistent tracking, messages</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Stalking" onclick="selCyberCrime(this)">
+            <div class="cy-ico">👁️</div>
+            <div><div class="cy-crime-title" id="cy-c3-t">Stalking</div><div class="cy-crime-sub" id="cy-c3-s">Persistent tracking, messages</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Unauthorized Images" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📸</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c4-s">Photo/video sharing</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Unauthorized Images" onclick="selCyberCrime(this)">
+            <div class="cy-ico">📸</div>
+            <div><div class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div class="cy-crime-sub" id="cy-c4-s">Photo/video sharing</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Fake Profile" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🎭</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c5-s">Impersonation, deepfake</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Fake Profile" onclick="selCyberCrime(this)">
+            <div class="cy-ico">🎭</div>
+            <div><div class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div class="cy-crime-sub" id="cy-c5-s">Impersonation, deepfake</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Fraud" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
-            <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">💳</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c6-t">Fraud</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c6-s">Scam, phishing</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Fraud" onclick="selCyberCrime(this)">
+            <div class="cy-ico">💳</div>
+            <div><div class="cy-crime-title" id="cy-c6-t">Fraud</div><div class="cy-crime-sub" id="cy-c6-s">Scam, phishing</div></div>
           </div>
         </div>
       </div>
@@ -2709,20 +2727,8 @@ function _supportContinue(){_supportAckd=true;_hideSupport();}
 function _supportBack(){_hideSupport();var f=_supportBackFn;_supportBackFn=null;if(f)f();}
 
 function selCyberCrime(el){
-  document.querySelectorAll('.cy-crime').forEach(function(c){
-    c.classList.remove('sel');
-    c.style.border='1.5px solid var(--border)';
-    c.style.background='white';
-    c.querySelector('div').style.background='var(--off)';
-    var t=c.querySelector('.cy-crime-title');
-    if(t) t.style.color='var(--navy)';
-  });
+  document.querySelectorAll('.cy-crime').forEach(function(c){c.classList.remove('sel');});
   el.classList.add('sel');
-  el.style.border='1.5px solid var(--blue)';
-  el.style.background='linear-gradient(160deg,rgba(154,77,232,.12),rgba(154,77,232,.08))';
-  el.querySelector('div').style.background='rgba(133,26,160,.12)';
-  var selTitle=el.querySelector('.cy-crime-title');
-  if(selTitle) selTitle.style.color='var(--blue)';
   updateCyberLaw(el);
   // Cinsel taciz/istismar türleri seçilince destek sayfası.
   // "Geri" sadece paneli kapatır — seçime dokunmaz (ilk suç da tetikleyici
