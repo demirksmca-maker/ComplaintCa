@@ -352,7 +352,7 @@ body.cy-on{background:#0d0614}
 #cy-progress .cy-prog-dot{height:3px!important;opacity:.9}
 /* Suç türü kartları = cs-card */
 #cy-step-1 .card>div:last-child{grid-template-rows:repeat(3,minmax(118px,auto));gap:10px!important}
-.cy-crime{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:12px 14px 14px;border-radius:16px;border:1px solid rgba(244,214,255,.22);cursor:pointer;color:#fff;background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.cy-crime{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:12px 11px 14px;border-radius:16px;border:1px solid rgba(244,214,255,.22);cursor:pointer;color:#fff;background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
 .cy-crime:nth-child(1){--g:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
 .cy-crime:nth-child(2){--g:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
 .cy-crime:nth-child(3){--g:linear-gradient(155deg,rgba(124,58,237,.55) 0%,rgba(109,40,140,.38) 55%,rgba(50,14,70,.3) 100%)}
@@ -371,7 +371,7 @@ body.cy-on{background:#0d0614}
 .cy-crime.sel .cy-ok{display:grid}.cy-crime.sel .cy-n{display:none}
 .cy-crime.sel{border-color:rgba(255,245,255,.95);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),inset 0 0 30px rgba(242,225,255,.35),0 0 22px 4px rgba(228,192,255,.7),0 0 46px 10px rgba(255,110,195,.35)}
 .cy-txt{width:100%;min-width:0;text-align:right}
-.cy-crime-title{font:700 clamp(.78rem,3.6vw,.92rem)/1.2 Cinzel,Georgia,serif;letter-spacing:.02em;color:#fff;overflow-wrap:break-word}
+.cy-crime-title{white-space:nowrap;font:700 clamp(10px,2.9vw,.92rem)/1.2 Cinzel,Georgia,serif;letter-spacing:0;color:#fff}
 .cy-crime-sub{margin-top:4px;white-space:nowrap;font:italic 400 clamp(10.5px,2.95vw,15px)/1.25 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85)}
 /* Ornament + butonlar = cs-orn / cs-go */
 .cy-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 4px;color:#cfb0e8}
@@ -2645,6 +2645,7 @@ function showTab(tab){
   document.getElementById('view-lawyer').style.display=tab==='lawyer'?'':'none';
   document.getElementById('view-cyber').style.display=tab==='cyber'?'':'none';
   document.body.classList.toggle('cy-on',tab==='cyber');
+  if(tab==='cyber') cyFit();
   var lp=document.getElementById('view-lawyerpanel');
   if(lp) lp.style.display=(tab==='lawyerpanel'||tab==='feed')?'':'none';
   ['tab-new','tab-feed','tab-track','tab-lawyer','tab-cyber','tab-verify'].forEach(function(id){
@@ -2759,6 +2760,22 @@ function _hideSupport(){var ov=document.getElementById('support-overlay');if(ov)
 function _supportContinue(){_supportAckd=true;_hideSupport();}
 function _supportBack(){_hideSupport();var f=_supportBackFn;_supportBackFn=null;if(f)f();}
 
+// Kart başlık/alt yazısı tek satır kalsın: sığmazsa (uzun çeviri) yazıyı küçült.
+function cyFit(){
+  document.querySelectorAll('.cy-crime-title,.cy-crime-sub').forEach(function(e){
+    e.style.fontSize='';e.style.whiteSpace='';
+    var w=e.parentElement.clientWidth;if(!w)return;
+    var f=parseFloat(getComputedStyle(e).fontSize);
+    while(e.scrollWidth>w&&f>8.5){f-=.5;e.style.fontSize=f+'px';}
+    // En küçük boyutta da sığmıyorsa kesilmesin, alt satıra geçsin.
+    if(e.scrollWidth>w){e.style.fontSize='';e.style.whiteSpace='normal';}
+  });
+}
+(function(){
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(cyFit,150);});
+  var g=document.querySelector('#cy-step-1 .cy-crime');
+  if(g&&window.MutationObserver) new MutationObserver(function(){cyFit();}).observe(g.parentElement,{childList:true,characterData:true,subtree:true});
+})();
 function selCyberCrime(el){
   document.querySelectorAll('.cy-crime').forEach(function(c){c.classList.remove('sel');});
   el.classList.add('sel');
