@@ -335,32 +335,57 @@ a,button,[onclick]{-webkit-tap-highlight-color:transparent;touch-action:manipula
 .nav-tab.active{color:#fff;font-weight:700;background:linear-gradient(135deg,#7b3fa8,#9c2a62);box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 4px 14px -4px rgba(156,42,98,.75)}
 @media (min-width:480px){.nav-tab{font-size:.68rem;letter-spacing:.12em;padding:10px 8px}}
 .cy-plat.cyp-sel{border-color:var(--blue)!important;background:var(--blue)!important;color:white!important}
-/* Cyber başlık: kutu yok, ana sayfa hero stili + aurora arka plan */
-.cy-hero{position:relative;isolation:isolate;padding:18px 2px 22px;margin-bottom:12px}
-.cy-hero::before{content:"";position:absolute;z-index:-1;top:-70px;bottom:-30px;left:50%;width:100vw;transform:translateX(-50%);background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat;-webkit-mask-image:linear-gradient(transparent,#000 30%,#000 65%,transparent);mask-image:linear-gradient(transparent,#000 30%,#000 65%,transparent);pointer-events:none}
-.cy-hero-kick{display:flex;align-items:center;gap:7px;font-family:Cinzel,Georgia,serif;font-weight:700;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(243,230,234,.72);margin-bottom:8px}
-.cy-hero-title{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(1.25rem,6vw,1.6rem);letter-spacing:.03em;line-height:1.2;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);margin-bottom:8px}
-.cy-hero-sub{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:1rem;line-height:1.5;color:rgba(243,230,234,.82)}
-/* Cyber suç kartları: ana sayfa hub-tile cam stili */
-.cy-crime{position:relative;overflow:hidden;display:flex;align-items:flex-start;gap:8px;padding:12px 10px;border-radius:14px;border:1px solid rgba(244,214,255,.22);cursor:pointer;-webkit-backdrop-filter:blur(4px) saturate(130%);backdrop-filter:blur(4px) saturate(130%);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .15s,filter .15s,box-shadow .2s,border-color .2s}
-.cy-crime:nth-child(odd){background:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
-.cy-crime:nth-child(even){background:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
-.cy-crime::before,.cy-crime::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit}
-.cy-crime::before{background:radial-gradient(120% 80% at 0% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(70% 60% at 100% 100%,rgba(255,190,240,.2),transparent 60%);animation:hubGlow 7s ease-in-out infinite alternate}
-.cy-crime::after{background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.34) 50%,transparent 65%);transform:translateX(-130%);animation:hubShine 6s ease-in-out infinite}
-.cy-crime:nth-child(3)::after,.cy-crime:nth-child(4)::after{animation-delay:.6s}
-.cy-crime:nth-child(5)::after,.cy-crime:nth-child(6)::after{animation-delay:1.2s}
-.cy-crime>*{position:relative;z-index:1}
+/* Cyber sayfası: FILE (complaint-steps) iç panel tasarımı */
+body.cy-on::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(rgba(20,6,24,.3),rgba(20,6,24,.5)),#0d0614 url(/assets/brand/bg-aurora.svg) center/cover no-repeat}
+body.cy-on{background:#0d0614}
+#view-cyber{position:relative;margin:0 -8px;padding:22px 14px 18px;border-radius:26px;border:1px solid rgba(8,2,14,.65);background:linear-gradient(180deg,rgba(6,1,12,.62) 0%,rgba(14,3,22,.42) 18%,rgba(18,4,26,.32) 70%,rgba(8,2,14,.5) 100%);box-shadow:inset 0 14px 28px -6px rgba(0,0,0,.85),inset 0 4px 10px rgba(0,0,0,.6),inset 0 -10px 22px -10px rgba(0,0,0,.6),inset 10px 0 20px -14px rgba(0,0,0,.7),inset -10px 0 20px -14px rgba(0,0,0,.7),0 1px 0 rgba(220,180,255,.16),0 -1px 0 rgba(0,0,0,.4)}
+#view-cyber .card{background:transparent;border:0;box-shadow:none;padding:6px 2px;margin-bottom:6px}
+#view-cyber .ct{font-family:Cinzel,Georgia,serif;font-size:.8rem;letter-spacing:.12em;color:#e9dcf3}
+.cy-hero{position:relative;margin:2px 4px 18px;padding:2px 0 2px 13px}
+.cy-hero::before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:1.5px;border-radius:2px;background:linear-gradient(180deg,transparent,#f0cf7a 20%,#f0cf7a 80%,transparent);box-shadow:0 0 6px rgba(255,200,80,.6)}
+.cy-hero-kick{display:flex;align-items:center;gap:8px;font:700 .58rem/1 Cinzel,Georgia,serif;letter-spacing:.3em;text-transform:uppercase;color:#f0cf7a;text-shadow:0 0 8px rgba(255,200,80,.45);margin-bottom:10px}
+.cy-hero-kick .edot{display:none}
+.cy-hero-kick::before{content:"";width:22px;height:1px;background:linear-gradient(90deg,transparent,#f0cf7a)}
+.cy-hero-title{font:700 clamp(1.15rem,5.6vw,1.5rem)/1.2 Cinzel,Georgia,serif;letter-spacing:.03em;color:#f7eef1;text-shadow:0 2px 10px rgba(0,0,0,.55);margin-bottom:8px}
+.cy-hero-sub{font:italic 500 clamp(15px,4.2vw,17px)/1.35 'EB Garamond',Georgia,serif;letter-spacing:.005em;color:#dcc5ee;text-shadow:0 1px 2px rgba(0,0,0,.55)}
+#cy-progress{margin:0 4px 16px!important}
+#cy-progress .cy-prog-dot{height:3px!important;opacity:.9}
+/* Suç türü kartları = cs-card */
+#cy-step-1 .card>div:last-child{grid-template-rows:repeat(3,minmax(118px,auto));gap:10px!important}
+.cy-crime{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:12px 14px 14px;border-radius:16px;border:1px solid rgba(244,214,255,.22);cursor:pointer;color:#fff;background:var(--g);box-shadow:inset 0 1px 0 rgba(255,230,250,.22),inset 0 -20px 40px -20px rgba(20,4,30,.6),0 14px 30px -18px rgba(190,24,93,.55);transition:transform .2s,filter .2s,box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+.cy-crime:nth-child(1){--g:linear-gradient(155deg,rgba(138,92,246,.55) 0%,rgba(88,28,135,.38) 55%,rgba(46,16,80,.3) 100%)}
+.cy-crime:nth-child(2){--g:linear-gradient(155deg,rgba(190,24,93,.55) 0%,rgba(120,20,70,.38) 55%,rgba(60,10,40,.3) 100%)}
+.cy-crime:nth-child(3){--g:linear-gradient(155deg,rgba(124,58,237,.55) 0%,rgba(109,40,140,.38) 55%,rgba(50,14,70,.3) 100%)}
+.cy-crime:nth-child(4){--g:linear-gradient(155deg,rgba(225,29,72,.55) 0%,rgba(136,19,55,.38) 55%,rgba(70,10,35,.3) 100%)}
+.cy-crime:nth-child(5){--g:linear-gradient(155deg,rgba(168,85,247,.55) 0%,rgba(126,34,206,.38) 55%,rgba(60,12,90,.3) 100%)}
+.cy-crime:nth-child(6){--g:linear-gradient(155deg,rgba(159,18,57,.55) 0%,rgba(97,22,90,.38) 55%,rgba(45,10,55,.3) 100%)}
+.cy-crime::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,rgba(255,220,245,.22),transparent 55%),linear-gradient(90deg,transparent,rgba(211,181,234,.55),transparent) top/100% 1px no-repeat}
+.cy-crime>*{position:relative}
 @media (hover:hover){.cy-crime:hover{transform:translateY(-2px);filter:brightness(1.08)}}
-.cy-crime:active{transform:scale(.97);filter:brightness(1.15)}
-.cy-crime:focus-visible{outline:2px solid #e9d5ff;outline-offset:2px}
-.cy-crime.sel{border-color:rgba(255,225,250,.8);filter:brightness(1.12);box-shadow:0 0 0 2px rgba(196,140,255,.6),0 0 24px -4px rgba(190,90,255,.75),inset 0 1px 0 rgba(255,230,250,.3)}
-.cy-ico{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.cy-crime.sel .cy-ico{background:rgba(255,255,255,.22)}
-.cy-crime>div:last-child{min-width:0}
-.cy-crime-title{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.6rem,2.75vw,.72rem);text-transform:uppercase;letter-spacing:0;overflow-wrap:break-word;color:#fff;line-height:1.25;margin-bottom:2px}
-.cy-crime-sub{font-size:.62rem;color:rgba(243,230,234,.75);line-height:1.4}
-@media (prefers-reduced-motion:reduce){.cy-crime::after{animation:none;display:none}.cy-crime::before{animation:none}}
+.cy-crime:active{transform:scale(.98)}
+.cy-crime:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.cy-ico{width:28px;height:28px;color:#fff;flex-shrink:0}
+.cy-ico svg{width:100%;height:100%;display:block}
+.cy-n{position:absolute;top:12px;right:14px;font:700 12px/1 Cinzel,Georgia,serif;letter-spacing:.06em;color:rgba(211,181,234,.75)}
+.cy-ok{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#f3ecff,#cdb6f5);color:#2a0814;display:none;place-items:center;font:800 13px/1 Inter,sans-serif}
+.cy-crime.sel .cy-ok{display:grid}.cy-crime.sel .cy-n{display:none}
+.cy-crime.sel{border-color:rgba(255,245,255,.95);box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),inset 0 0 30px rgba(242,225,255,.35),0 0 22px 4px rgba(228,192,255,.7),0 0 46px 10px rgba(255,110,195,.35)}
+.cy-txt{width:100%;min-width:0;text-align:right}
+.cy-crime-title{font:700 clamp(.78rem,3.6vw,.92rem)/1.2 Cinzel,Georgia,serif;letter-spacing:.02em;color:#fff;overflow-wrap:break-word}
+.cy-crime-sub{margin-top:4px;font:italic 400 clamp(13px,3.6vw,15px)/1.25 'EB Garamond',Georgia,serif;color:rgba(213,185,235,.85)}
+/* Ornament + butonlar = cs-orn / cs-go */
+.cy-orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 4px;color:#cfb0e8}
+.cy-orn i{display:block;width:56px;height:1px;background:linear-gradient(90deg,transparent,#cfb0e8)}
+.cy-orn i:last-child{transform:scaleX(-1)}
+.cy-go,.cy-back{position:relative;overflow:hidden;width:100%;padding:15px 18px;border-radius:18px;border:1.5px solid transparent;font:700 .9rem/1 Cinzel,Georgia,serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:transform .15s,filter .15s}
+.cy-go{margin-top:10px;color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,0) 42%) padding-box,linear-gradient(160deg,#4a1a5e 0%,#2a0d3a 55%,#3d0f2e 100%) padding-box,linear-gradient(100deg,rgba(244,114,182,.85),rgba(240,207,122,.85) 50%,rgba(196,160,255,.85)) border-box;box-shadow:inset 0 1px 0 rgba(220,197,238,.25),inset 0 -12px 20px -12px rgba(10,2,18,.6),0 12px 28px -14px rgba(190,24,93,.7)}
+.cy-go::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(234,220,245,.4) 50%,transparent 70%);transform:translateX(-120%);animation:hubShine 4.5s 1.2s ease-in-out infinite;pointer-events:none}
+.cy-back{color:#d5b9eb;background:linear-gradient(160deg,rgba(58,18,72,.7),rgba(36,9,47,.7)) padding-box,linear-gradient(100deg,rgba(207,176,232,.25),rgba(207,176,232,.6) 50%,rgba(207,176,232,.25)) border-box}
+@media (hover:hover){.cy-go:hover,.cy-back:hover{transform:translateY(-2px);filter:brightness(1.12)}}
+.cy-go:active,.cy-back:active{transform:scale(.98)}
+.cy-go:disabled{cursor:default}
+.cy-back+.cy-go{margin-top:0}
+@media (prefers-reduced-motion:reduce){.cy-go::after{animation:none;display:none}}
 #cy-dropzone:hover{border-color:#c893fd;background:rgba(154,77,232,.10)}
 .amain{max-width:680px;margin:0 auto;padding:62px 16px 100px;min-height:calc(100vh - 46px)}
 .card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shsm);border:1px solid var(--border);padding:20px;margin-bottom:16px}
@@ -1273,33 +1298,34 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
       <div class="card">
         <div class="ct"><div class="ci">I</div><span id="cy-s1-title">What type of offence?</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <div class="cy-crime sel" tabindex="0" role="button" data-label="Harassment" onclick="selCyberCrime(this)">
-            <div class="cy-ico">😡</div>
-            <div><div class="cy-crime-title" id="cy-c1-t">Harassment</div><div class="cy-crime-sub" id="cy-c1-s">Abusive messages</div></div>
+          <div class="cy-crime sel" tabindex="0" role="button" data-label="Harassment" onclick="selCyberCrime(this)" data-ico="😡">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v4"/><path d="M12 14h.01"/></svg></div><span class="cy-n" aria-hidden="true">I</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c1-t">Harassment</div><div class="cy-crime-sub" id="cy-c1-s">Abusive messages</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Threats" onclick="selCyberCrime(this)">
-            <div class="cy-ico">🔪</div>
-            <div><div class="cy-crime-title" id="cy-c2-t">Threats</div><div class="cy-crime-sub" id="cy-c2-s">Physical / death threats</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Threats" onclick="selCyberCrime(this)" data-ico="🔪">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></div><span class="cy-n" aria-hidden="true">II</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c2-t">Threats</div><div class="cy-crime-sub" id="cy-c2-s">Physical / death threats</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Stalking" onclick="selCyberCrime(this)">
-            <div class="cy-ico">👁️</div>
-            <div><div class="cy-crime-title" id="cy-c3-t">Stalking</div><div class="cy-crime-sub" id="cy-c3-s">Persistent tracking, messages</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Stalking" onclick="selCyberCrime(this)" data-ico="👁️">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><span class="cy-n" aria-hidden="true">III</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c3-t">Stalking</div><div class="cy-crime-sub" id="cy-c3-s">Persistent tracking, messages</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Unauthorized Images" onclick="selCyberCrime(this)">
-            <div class="cy-ico">📸</div>
-            <div><div class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div class="cy-crime-sub" id="cy-c4-s">Photo/video sharing</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Unauthorized Images" onclick="selCyberCrime(this)" data-ico="📸">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div><span class="cy-n" aria-hidden="true">IV</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div class="cy-crime-sub" id="cy-c4-s">Photo/video sharing</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Fake Profile" onclick="selCyberCrime(this)">
-            <div class="cy-ico">🎭</div>
-            <div><div class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div class="cy-crime-sub" id="cy-c5-s">Impersonation, deepfake</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Fake Profile" onclick="selCyberCrime(this)" data-ico="🎭">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="m17 8 4 4"/><path d="m21 8-4 4"/></svg></div><span class="cy-n" aria-hidden="true">V</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div class="cy-crime-sub" id="cy-c5-s">Impersonation, deepfake</div></div>
           </div>
-          <div class="cy-crime" tabindex="0" role="button" data-label="Fraud" onclick="selCyberCrime(this)">
-            <div class="cy-ico">💳</div>
-            <div><div class="cy-crime-title" id="cy-c6-t">Fraud</div><div class="cy-crime-sub" id="cy-c6-s">Scam, phishing</div></div>
+          <div class="cy-crime" tabindex="0" role="button" data-label="Fraud" onclick="selCyberCrime(this)" data-ico="💳">
+            <div class="cy-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div><span class="cy-n" aria-hidden="true">VI</span><span class="cy-ok" aria-hidden="true">✓</span>
+            <div class="cy-txt"><div class="cy-crime-title" id="cy-c6-t">Fraud</div><div class="cy-crime-sub" id="cy-c6-s">Scam, phishing</div></div>
           </div>
         </div>
       </div>
-      <button onclick="cyGoStep(2)" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+      <div class="cy-orn" aria-hidden="true"><i></i>✦<i></i></div>
+      <button onclick="cyGoStep(2)" class="cy-go">Next →</button>
       </div>
 
       <!-- STEP II: PLATFORM -->
@@ -1319,8 +1345,8 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
         </div>
       </div>
       <div style="display:flex;gap:8px">
-        <button onclick="cyGoStep(1)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-        <button onclick="cyGoStep(3)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        <button onclick="cyGoStep(1)" class="cy-back" style="flex:1">← Back</button>
+        <button onclick="cyGoStep(3)" class="cy-go" style="flex:2">Next →</button>
       </div>
       </div>
 
@@ -1344,8 +1370,8 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
         </div>
       </div>
       <div style="display:flex;gap:8px">
-        <button onclick="cyGoStep(2)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-        <button onclick="cyGoStep(4)" id="cy-next-3-btn" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        <button onclick="cyGoStep(2)" class="cy-back" style="flex:1">← Back</button>
+        <button onclick="cyGoStep(4)" id="cy-next-3-btn" class="cy-go" style="flex:2">Next →</button>
       </div>
       </div>
 
@@ -1365,8 +1391,8 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
         <div id="cy-ai-hint" style="display:none;margin-top:10px;font-size:.7rem;color:var(--muted)">🤖 Asya is reading for urgency and safety signals…</div>
       </div>
       <div style="display:flex;gap:8px">
-        <button onclick="cyGoStep(3)" style="flex:1;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer">← Back</button>
-        <button onclick="cyGoStep(5)" style="flex:2;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px">Next →</button>
+        <button onclick="cyGoStep(3)" class="cy-back" style="flex:1">← Back</button>
+        <button onclick="cyGoStep(5)" class="cy-go" style="flex:2">Next →</button>
       </div>
       </div>
 
@@ -1397,7 +1423,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
         </div>
         <div id="cy-note" style="display:none;margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.76rem;line-height:1.5"></div>
       </div>
-      <button onclick="cyGoStep(4)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin-bottom:12px" id="cy-back-4-btn">← Back</button>
+      <button onclick="cyGoStep(4)" class="cy-back" style="margin-bottom:12px" id="cy-back-4-btn">← Back</button>
 
       <!-- AUTHORITIES -->
       <div id="cy-auth-box" style="background:var(--off);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:12px">
@@ -1435,7 +1461,7 @@ document.getElementById('cc-choice').addEventListener('click',function(e){if(!e.
       </div>
 
       <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenCyber" data-error-callback="_tsErrorCyber" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
-      <button onclick="doSubmitCyber()" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:15px;font-size:.88rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,16,46,.3);letter-spacing:1px" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Submit Cyber Crime Report</span></button>
+      <button onclick="doSubmitCyber()" class="cy-go" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Submit Cyber Crime Report</span></button>
 
       <!-- SUCCESS -->
       <div id="cy-success" style="display:none;text-align:center;padding:40px 20px">
@@ -2618,6 +2644,7 @@ function showTab(tab){
   document.getElementById('view-track').style.display=tab==='track'?'':'none';
   document.getElementById('view-lawyer').style.display=tab==='lawyer'?'':'none';
   document.getElementById('view-cyber').style.display=tab==='cyber'?'':'none';
+  document.body.classList.toggle('cy-on',tab==='cyber');
   var lp=document.getElementById('view-lawyerpanel');
   if(lp) lp.style.display=(tab==='lawyerpanel'||tab==='feed')?'':'none';
   ['tab-new','tab-feed','tab-track','tab-lawyer','tab-cyber','tab-verify'].forEach(function(id){
@@ -2754,7 +2781,7 @@ var CYBER_LAWS={
 };
 
 function updateCyberLaw(el){
-  var icon=el.querySelector('div').textContent.trim();
+  var icon=el.getAttribute('data-ico')||'';
   var lawObj=CYBER_LAWS[icon]||CYBER_LAWS['😡'];
   var cur='en';
   try{cur=V.getCur();}catch(e){}
