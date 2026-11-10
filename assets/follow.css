@@ -1,0 +1,8 @@
+/* "Síguenos" card at the end of each Spanish blog post. Fixed brand colours: works in light and dark mode. */
+.follow{margin:28px 0 8px;padding:22px 18px;text-align:center;border-radius:16px;background:linear-gradient(135deg,#3a0d34,#520f47);color:#fff}
+.follow-k{margin:0 0 4px;font:700 13px Cinzel,Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
+.follow-t{margin:0 0 14px;color:rgba(255,255,255,.8);font-size:1rem}
+.follow-row{display:flex;justify-content:center;gap:14px}
+.follow-row a{width:46px;height:46px;display:grid;place-items:center;border-radius:50%;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);transition:transform .15s,background .15s}
+.follow-row a:hover,.follow-row a:focus-visible{transform:translateY(-2px);background:rgba(255,255,255,.2)}
+.follow-row svg{width:20px;height:20px}

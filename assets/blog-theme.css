@@ -165,3 +165,12 @@ footer a{color:inherit}
 
 /* desktop: site-rail.js places its side rail beside a 640px column */
 @media (min-width:1040px){.top,.hero,main,footer{max-width:640px}.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Follow ComplaintCA card (end of each post) */
+.follow{margin:28px 0 8px;padding:22px 18px;text-align:center;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(135deg,rgba(216,180,254,.12),rgba(255,157,176,.08))}
+.follow-k{margin:0 0 4px;font:700 13px Cinzel,Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
+.follow-t{margin:0 0 14px;color:var(--sub);font-size:1rem}
+.follow-row{display:flex;justify-content:center;gap:14px}
+.follow-row a{width:46px;height:46px;display:grid;place-items:center;border-radius:50%;color:#fff;background:rgba(255,255,255,.08);border:1px solid var(--line);transition:transform .15s,background .15s}
+.follow-row a:hover,.follow-row a:focus-visible{transform:translateY(-2px);background:rgba(216,180,254,.25)}
+.follow-row svg{width:20px;height:20px}
