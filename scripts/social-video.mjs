@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-// Renders 7-second dark-theme Reels (1080x1920 MP4) from social/videos.json.
-// Each frame is a screenshot of an HTML animation seeked to an exact time, so
-// the output is identical on every run. Music: assets/brand/complaintca-theme.mp3.
+// Renders 7-second Reels (1080x1920 MP4) from social/videos.json.
+// Background: purple smoke drawn by a WebGL shader that pulses on the drum beat.
+// Text: a transparent HTML layer whose animations start on beats, laid over the smoke.
+// Each frame is seeked to an exact time, so the output is identical on every run.
+// Music: assets/brand/smoke-theme.mp3, beats: assets/brand/smoke-theme.beats.json.
 //
 //   node scripts/social-video.mjs            render every video that has no MP4 yet
 //   node scripts/social-video.mjs v01-brand  render (or re-render) just this one
@@ -9,7 +11,7 @@
 // Needs Playwright (Chromium) and ffmpeg. Output: social/videos/<id>.mp4
 
 import { readFile, mkdir, rm, access } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -22,43 +24,62 @@ const { chromium } = (() => {
   try { return require('playwright'); } catch { return require('/opt/node22/lib/node_modules/playwright'); }
 })();
 
+const MUSIC = path.join(ROOT, 'assets/brand/smoke-theme.mp3');
+const SW = 540, SH = 960; // smoke is soft, so it is drawn at half size and scaled up
+
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-export function page(v) {
-  const accent = { red: '#f0576a', green: '#2fd07a', yellow: '#e7b955', blue: '#5b9bf5' }[v.accent || 'blue'];
+// Beats inside this clip, as clip-local seconds.
+export function clipBeats(all, start, dur = DUR) {
+  return all.map((b) => +(b - start).toFixed(3)).filter((b) => b >= 0 && b < dur);
+}
+
+// First beat at or after t (falls back to t when the clip runs out of beats).
+export function onBeat(beats, t) {
+  return beats.find((b) => b >= t - 0.04) ?? t;
+}
+
+// 0..1 drum envelope: jumps to 1 on each beat and decays.
+export function pulse(beats, t) {
+  let p = 0;
+  for (const b of beats) if (t >= b) p = Math.max(p, Math.exp(-(t - b) * 5));
+  return p;
+}
+
+export function page(v, beats = []) {
+  const accent = { red: '#f0576a', green: '#2fd07a', yellow: '#e7b955', blue: '#a85bf5' }[v.accent || 'blue'];
+  const B = (t) => onBeat(beats, t);
+  const period = beats.length > 1 ? (beats.at(-1) - beats[0]) / (beats.length - 1) : 0.7;
+  const tTitle = B(0.5), tLines = B(Math.max(2.0, tTitle + 1.2)), tCta = B(4.4);
   const words = v.title.split(' ').map((w, i) =>
-    `<span class="w" style="animation-delay:${0.5 + i * 0.12}s">${esc(w)}</span>`).join(' ');
+    `<span class="w" style="animation-delay:${(tTitle + i * period / 4).toFixed(3)}s">${esc(w)}</span>`).join(' ');
   const lines = (v.lines || []).map((l, i) =>
-    `<li style="animation-delay:${2.2 + i * 0.55}s"><i></i>${esc(l)}</li>`).join('');
+    `<li style="animation-delay:${B(tLines + i * period - 0.05).toFixed(3)}s"><i></i>${esc(l)}</li>`).join('');
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:${W}px;height:${H}px;overflow:hidden;background:#070d1a;font-family:Inter,system-ui,sans-serif;color:#e9edf5}
-@keyframes drift{from{transform:translate(-8%,-6%) scale(1)}to{transform:translate(8%,6%) scale(1.25)}}
+html,body{width:${W}px;height:${H}px;overflow:hidden;background:transparent;font-family:Inter,system-ui,sans-serif;color:#f3eef8}
 @keyframes up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 ${accent}66}50%{box-shadow:0 0 0 28px ${accent}00}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 ${accent}88;transform:scale(1.08)}100%{box-shadow:0 0 0 30px ${accent}00;transform:scale(1)}}
 @keyframes out{to{opacity:0;transform:scale(.96)}}
-.glow{position:absolute;width:1400px;height:1400px;border-radius:50%;filter:blur(160px);opacity:.3;animation:drift 7s ease-in-out both alternate}
-.g1{background:${accent};top:-500px;left:-400px}
-.g2{background:#2563c0;bottom:-600px;right:-500px;animation-direction:alternate-reverse}
-.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:90px 90px}
-main{position:absolute;inset:0;padding:220px 96px 0;display:flex;flex-direction:column;animation:out .45s ease-in 6.55s both}
-.kick{font-size:40px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:${accent};animation:fade .5s ease-out .15s both}
-.bar{height:8px;width:180px;background:${accent};border-radius:4px;margin:34px 0 46px;transform-origin:left;animation:grow .6s cubic-bezier(.2,.8,.2,1) .3s both}
-h1{font-size:118px;line-height:1.04;font-weight:900;letter-spacing:-.03em}
+.scrim{position:absolute;inset:0;background:linear-gradient(180deg,#14031277 0%,#14031244 45%,#14031200 70%,#14031255 100%)}
+main{position:absolute;inset:0;padding:220px 96px 0;display:flex;flex-direction:column;animation:out .45s ease-in ${(DUR - 0.45).toFixed(2)}s both}
+.kick{font-size:40px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:${accent};animation:fade .4s ease-out ${B(0).toFixed(3)}s both}
+.bar{height:8px;width:180px;background:${accent};border-radius:4px;margin:34px 0 46px;transform-origin:left;animation:grow .5s cubic-bezier(.2,.8,.2,1) ${B(0).toFixed(3)}s both}
+h1{font-size:118px;line-height:1.04;font-weight:900;letter-spacing:-.03em;text-shadow:0 4px 40px #14031299}
 .w{display:inline-block;animation:up .55s cubic-bezier(.2,.8,.2,1) both}
 ul{list-style:none;margin-top:84px;display:flex;flex-direction:column;gap:38px}
-li{font-size:50px;font-weight:600;color:#c9d2e3;display:flex;gap:30px;align-items:center;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+li{font-size:50px;font-weight:600;color:#e4d9f0;text-shadow:0 2px 24px #140312aa;display:flex;gap:30px;align-items:center;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
 li i{flex:none;width:22px;height:22px;border-radius:50%;background:${accent}}
-.cta{position:absolute;left:96px;right:96px;bottom:400px;display:flex;align-items:center;justify-content:space-between;padding:44px 52px;border-radius:36px;background:#0f1a2ecc;border:2px solid #26334a;animation:up .6s cubic-bezier(.2,.8,.2,1) 4.6s both}
+.cta{position:absolute;left:96px;right:96px;bottom:400px;display:flex;align-items:center;justify-content:space-between;padding:44px 52px;border-radius:36px;background:#2a0b25cc;border:2px solid #5a2f63;animation:up .6s cubic-bezier(.2,.8,.2,1) ${tCta.toFixed(3)}s both}
 .cta b{font-size:62px;font-weight:800}
-.cta span{display:block;font-size:34px;color:#a9b4c9;margin-top:8px;font-weight:500}
-.go{width:120px;height:120px;border-radius:50%;background:${accent};display:grid;place-items:center;animation:pulse 1.4s ease-out 5.2s 2 both}
+.cta span{display:block;font-size:34px;color:#cbb8dc;margin-top:8px;font-weight:500}
+.go{width:120px;height:120px;border-radius:50%;background:${accent};display:grid;place-items:center;animation:pulse ${period.toFixed(3)}s ease-out ${B(tCta + 0.6).toFixed(3)}s 3 both}
 .brand{position:absolute;top:96px;left:96px;font-size:40px;font-weight:800;letter-spacing:-.01em;animation:fade .5s ease-out both}
 .brand em{font-style:normal;color:#f0576a}
 </style></head><body>
-<div class="glow g1"></div><div class="glow g2"></div><div class="grid"></div>
+<div class="scrim"></div>
 <main>
   <div class="brand">Complaint<em>CA</em></div>
   <div class="kick">${esc(v.kicker)}</div>
@@ -66,29 +87,104 @@ li i{flex:none;width:22px;height:22px;border-radius:50%;background:${accent}}
   <h1>${words}</h1>
   <ul>${lines}</ul>
   <div class="cta"><div><b>complaintca.ca</b><span>${esc(v.cta || 'Free · 7 languages · Anonymous option')}</span></div>
-    <div class="go"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#070d1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></div>
+    <div class="go"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1a0517" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></div>
 </main></body></html>`;
 }
 
-async function render(browser, v) {
+// Realistic smoke: domain-warped fBm with a fake light for self-shadowing, in the
+// site's purples. P (0..1) is the drum envelope: brighter, denser smoke and a small zoom.
+export function smokePage() {
+  return `<!doctype html><html><body style="margin:0;background:#000"><canvas id="c" width="${SW}" height="${SH}"></canvas><script>
+const gl = document.getElementById('c').getContext('webgl', { preserveDrawingBuffer: true, antialias: false });
+const fs = \`precision highp float;
+uniform vec2 R; uniform float T, P, S;
+float h(vec3 p){p=fract(p*.3183099+.1);p*=17.;return fract(p.x*p.y*p.z*(p.x+p.y+p.z));}
+float n(vec3 x){vec3 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);
+ return mix(mix(mix(h(i),h(i+vec3(1,0,0)),f.x),mix(h(i+vec3(0,1,0)),h(i+vec3(1,1,0)),f.x),f.y),
+  mix(mix(h(i+vec3(0,0,1)),h(i+vec3(1,0,1)),f.x),mix(h(i+vec3(0,1,1)),h(i+vec3(1,1,1)),f.x),f.y),f.z);}
+float fbm(vec3 p){float a=.5,s=0.;mat3 m=mat3(0.,.8,.6,-.8,.36,-.48,-.6,-.48,.64);
+ for(int i=0;i<6;i++){s+=a*n(p);p=m*p*2.03;a*=.5;}return s;}
+float smoke(vec2 uv,float off,float spd){
+ vec3 t=vec3(0.,-T*spd*.05,T*spd*.03);
+ vec3 p=vec3(uv*1.6,off+S)+t;
+ vec2 q=vec2(fbm(p+vec3(0.,0.,1.7)),fbm(p+vec3(5.2,1.3,2.8)));
+ vec2 r=vec2(fbm(p+vec3(4.*q,0.)+vec3(1.7,9.2,0.)+t*.6),fbm(p+vec3(4.*q,0.)+vec3(8.3,2.8,0.)-t*.4));
+ return fbm(p+vec3(3.5*r,0.));}
+void main(){
+ vec2 uv=(gl_FragCoord.xy-.5*R)/R.x*1.1*(1.-.035*P);
+ vec2 su=uv*vec2(1.,.75);
+ float f1=smoke(su,0.,1.),f2=smoke(su*1.8+vec2(3.1,1.7),11.,1.6);
+ float d=smoothstep(.3-.08*P,.88,f1),w=smoothstep(.45,.9,f2)*.55;
+ float den=clamp(d*.9+w*d*1.4+w*.25,0.,1.);
+ float lit=clamp((f1-smoke(su+vec2(-.035,.035),0.,1.))*6.+.55,0.,1.);
+ vec3 bg=mix(vec3(.045,.008,.04),vec3(.19,.04,.165),smoothstep(-.9,.9,uv.y+.25*uv.x));
+ vec3 sc=mix(vec3(.38,.08,.36),vec3(.66,.24,.86),lit);
+ sc=mix(sc,vec3(.81,.69,.91),pow(lit,3.)*smoothstep(.5,1.,den)*(.8+.6*P));
+ vec3 col=mix(bg,sc,den*(.9+.1*P))*(1.+.35*P);
+ col+=vec3(.6,.3,.9)*(.06+.10*P)*exp(-2.5*length(uv-vec2(0.,-.35)));
+ col*=1.-.3*pow(length(uv*vec2(1.3,.9)),2.2);
+ col+=(h(vec3(gl_FragCoord.xy,T*60.))-.5)*.018;
+ gl_FragColor=vec4(max(col,0.),1.);}\`;
+function sh(t, s) { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(o); return o; }
+const pr = gl.createProgram();
+gl.attachShader(pr, sh(gl.VERTEX_SHADER, 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}'));
+gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr); gl.useProgram(pr);
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+const u = (k) => gl.getUniformLocation(pr, k), buf = new Uint8Array(${SW * SH * 4});
+window.frame = (t, p, seed) => {
+  gl.uniform2f(u('R'), ${SW}, ${SH}); gl.uniform1f(u('T'), t); gl.uniform1f(u('P'), p); gl.uniform1f(u('S'), seed);
+  gl.drawArrays(gl.TRIANGLES, 0, 3); gl.readPixels(0, 0, ${SW}, ${SH}, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+  let s = ''; for (let i = 0; i < buf.length; i += 0x8000) s += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+</script></body></html>`;
+}
+
+const seedOf = (id) => [...id].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 997, 7) / 10;
+
+async function renderSmoke(browser, v, beats, out) {
+  const p = await browser.newPage();
+  await p.setContent(smokePage());
+  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', `${SW}x${SH}`,
+    '-r', String(FPS), '-i', '-', '-vf', 'vflip', '-c:v', 'libx264', '-crf', '8', '-preset', 'fast', '-pix_fmt', 'yuv444p', out],
+    { stdio: ['pipe', 'inherit', 'inherit'] });
+  const done = new Promise((ok, bad) => ff.on('close', (c) => (c ? bad(new Error('ffmpeg ' + c)) : ok())));
+  for (let f = 0; f < FPS * DUR; f++) {
+    const t = f / FPS;
+    const px = await p.evaluate(([t, k, s]) => frame(t, k, s), [t, pulse(beats, t), seedOf(v.id)]);
+    if (!ff.stdin.write(Buffer.from(px, 'base64'))) await new Promise((r) => ff.stdin.once('drain', r));
+  }
+  ff.stdin.end();
+  await done;
+  await p.close();
+}
+
+async function render(browser, v, allBeats) {
   const tmp = path.join(OUT, '.frames-' + v.id);
   await rm(tmp, { recursive: true, force: true });
   await mkdir(tmp, { recursive: true });
+  const start = v.musicStart ?? 0;
+  const beats = clipBeats(allBeats, start);
+  const smoke = path.join(tmp, 'smoke.mp4');
+  await renderSmoke(browser, v, beats, smoke);
   const p = await browser.newPage({ viewport: { width: W, height: H } });
-  await p.setContent(page(v));
+  await p.setContent(page(v, beats));
   await p.evaluate(() => document.fonts.ready);
   await p.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
   for (let f = 0; f < FPS * DUR; f++) {
     const ms = (f * 1000) / FPS;
     await p.evaluate((t) => document.getAnimations().forEach((a) => { a.currentTime = t; }), ms);
-    await p.screenshot({ path: path.join(tmp, String(f).padStart(4, '0') + '.jpg'), type: 'jpeg', quality: 95 });
+    await p.screenshot({ path: path.join(tmp, String(f).padStart(4, '0') + '.png'), omitBackground: true });
   }
   await p.close();
   const mp4 = path.join(OUT, v.id + '.mp4');
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(tmp, '%04d.jpg'),
-    '-ss', String(v.musicStart ?? 0), '-i', path.join(ROOT, 'assets/brand/complaintca-theme.mp3'),
-    '-t', String(DUR), '-af', `afade=t=in:d=0.4,afade=t=out:st=${DUR - 0.8}:d=0.8`,
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-crf', '20', '-r', String(FPS),
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', smoke, '-framerate', String(FPS), '-i', path.join(tmp, '%04d.png'),
+    '-ss', String(start), '-i', MUSIC,
+    '-filter_complex', `[0:v]scale=${W}:${H}:flags=lanczos[bg];[bg][1:v]overlay=format=auto,format=yuv420p[v]`,
+    '-map', '[v]', '-map', '2:a', '-t', String(DUR), '-af', `afade=t=in:d=0.3,afade=t=out:st=${DUR - 0.8}:d=0.8`,
+    '-c:v', 'libx264', '-profile:v', 'high', '-crf', '20', '-r', String(FPS),
     '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', '-movflags', '+faststart', '-shortest', mp4]);
   await rm(tmp, { recursive: true, force: true });
   console.log('✓', path.relative(ROOT, mp4));
@@ -96,6 +192,7 @@ async function render(browser, v) {
 
 async function main() {
   const { videos } = JSON.parse(await readFile(path.join(ROOT, 'social/videos.json'), 'utf8'));
+  const { beats } = JSON.parse(await readFile(path.join(ROOT, 'assets/brand/smoke-theme.beats.json'), 'utf8'));
   const only = process.argv[2];
   await mkdir(OUT, { recursive: true });
   const todo = [];
@@ -104,9 +201,9 @@ async function main() {
     todo.push(v);
   }
   if (!todo.length) return console.log('Nothing to render.');
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
   const queue = [...todo];
-  const worker = async () => { while (queue.length) await render(browser, queue.shift()); };
+  const worker = async () => { while (queue.length) await render(browser, queue.shift(), beats); };
   try { await Promise.all([worker(), worker(), worker()]); } finally { await browser.close(); }
 }
 

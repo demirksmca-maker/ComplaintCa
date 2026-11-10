@@ -1,5 +1,5 @@
 {
-  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4. accent: red, green, yellow or blue. musicStart: second of the theme to start from. Keep facts in step with the matching post in queue.json.",
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4 (purple smoke background, beat-synced). accent: red, green, yellow or blue. musicStart: second of assets/brand/smoke-theme.mp3 to start from (about 0.1s before a beat in smoke-theme.beats.json). Keep facts in step with the matching post in queue.json.",
   "videos": [
     {
       "id": "v01-scam-check",
@@ -63,7 +63,7 @@
       "kicker": "7 languages",
       "title": "Speak up in the language you think in.",
       "lines": ["English · Français · Español", "Chinese · Arabic · Punjabi", "Türkçe"],
-      "musicStart": 10.1
+      "musicStart": 19.78
     },
     {
       "id": "v09-anonymous",
@@ -71,7 +71,7 @@
       "kicker": "Privacy",
       "title": "Afraid to speak up?",
       "lines": ["Report anonymously", "We tell you when ID is required", "You decide"],
-      "musicStart": 13.9
+      "musicStart": 39.61
     },
     {
       "id": "v10-find-mp",
@@ -79,7 +79,7 @@
       "kicker": "Your representatives",
       "title": "Your MP works for you.",
       "lines": ["Enter your postal code", "Find federal and provincial reps", "Contact them directly"],
-      "musicStart": 21.1
+      "musicStart": 55.64
     }
   ]
 }
