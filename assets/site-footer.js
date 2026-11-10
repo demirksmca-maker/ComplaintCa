@@ -5,10 +5,11 @@
    +'#cc-foot b{display:block;color:#fff;font:700 14px Cinzel,Georgia,serif;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}'
    +'#cc-foot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-bottom:10px}'
    +'#cc-foot a{color:#fff;text-decoration:none;opacity:.9}#cc-foot a:hover{text-decoration:underline;opacity:1}'
+   +'#cc-foot .cc-soc{display:flex;justify-content:center;gap:6px 18px;margin-bottom:10px}'
    +'#cc-foot small{display:block;font-size:11.5px;opacity:.7;max-width:520px;margin:0 auto}';
   document.head.appendChild(s);
   var f=document.createElement('footer');f.id='cc-foot';
-  f.innerHTML='<b>ComplaintCA</b><nav><a href="/">Home</a><a href="/about.html">About</a><a href="/guides/">Guides</a><a href="/blog/">Blog</a><a href="/business/">For Businesses</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></nav>'
+  f.innerHTML='<b>ComplaintCA</b><nav><a href="/">Home</a><a href="/about.html">About</a><a href="/guides/">Guides</a><a href="/blog/">Blog</a><a href="/business/">For Businesses</a><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Service</a></nav><div class="cc-soc"><a href="https://x.com/ComplaintCa" rel="me noopener" target="_blank">X</a><a href="https://www.instagram.com/complaintca.ca/" rel="me noopener" target="_blank">Instagram</a><a href="https://www.linkedin.com/in/kas%C4%B1m-demir-a47157347" rel="me noopener" target="_blank">LinkedIn</a></div>'
    +'<small>© '+new Date().getFullYear()+' ComplaintCA · complaintca.ca. General information, not legal advice. Not affiliated with any government body.</small>';
   document.body.appendChild(f);
   // On the app page ("/"), a plain href="/" is a no-op while a tab is open:
