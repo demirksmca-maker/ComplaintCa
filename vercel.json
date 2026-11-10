@@ -19,7 +19,7 @@
     {
       "source": "/es",
       "destination": "/es/",
-      "permanent": false
+      "permanent": true
     },
     {
       "source": "/weekly",
@@ -133,6 +133,24 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(icons|assets)/(.*)\\.(png|jpg|jpeg|webp|svg|gif|ico|mp3)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(og-image\\.png|favicon\\.ico)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
         }
       ]
     },

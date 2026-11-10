@@ -270,7 +270,8 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
 <style>
 
 :root{
@@ -312,7 +313,7 @@ main{max-width:var(--maxw);margin:0 auto;padding:36px 24px 64px}
 .back-btn:hover{color:var(--blue)}
 .back-btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}
 
-h1.q{
+h1.q,h2.q{
   font-family:'Cinzel',serif;font-weight:700;font-size:1.35rem;
   line-height:1.4;letter-spacing:.2px;color:var(--text);margin:0 0 8px;text-wrap:balance;
 }
@@ -360,7 +361,7 @@ p.sub{color:var(--sub);font-size:.92rem;margin:0 0 28px;max-width:46ch}
   font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:2.5px;text-transform:uppercase;
   color:var(--blue);font-weight:700;margin:0 0 8px;
 }
-.result-head h1.q{margin:0}
+.result-head .q{margin:0}
 
 .guide-list{display:flex;flex-direction:column;gap:12px}
 .guide-card{
@@ -496,7 +497,7 @@ footer{
     <div class="back-row">
       <button class="back-btn" onclick="goScreen(1)" type="button">← Back</button>
     </div>
-    <h1 class="q">Which province or territory?</h1>
+    <h2 class="q">Which province or territory?</h2>
     <p class="sub">So we can point you to the right authority.</p>
     <div class="prov-grid" id="prov-grid"></div>
   </section>
@@ -507,7 +508,7 @@ footer{
     </div>
     <div class="result-head">
       <p class="kicker" id="result-kicker">Results</p>
-      <h1 class="q" id="result-title">Guides</h1>
+      <h2 class="q" id="result-title">Guides</h2>
     </div>
     <div class="guide-list" id="guide-list"></div>
   </section>
