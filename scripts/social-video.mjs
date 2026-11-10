@@ -150,11 +150,13 @@ async function renderSmoke(browser, v, beats, out) {
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgba', '-s', `${SW}x${SH}`,
     '-r', String(FPS), '-i', '-', '-vf', 'vflip', '-c:v', 'libx264', '-crf', '8', '-preset', 'fast', '-pix_fmt', 'yuv444p', out],
     { stdio: ['pipe', 'inherit', 'inherit'] });
-  const done = new Promise((ok, bad) => ff.on('close', (c) => (c ? bad(new Error('ffmpeg ' + c)) : ok())));
+  const done = new Promise((ok, bad) => ff.on('close', (c) => (c ? bad(new Error('ffmpeg exited ' + c)) : ok())));
+  done.catch(() => {}); // awaited below; this only stops an early exit from being "unhandled"
+  ff.stdin.on('error', () => {}); // EPIPE after an early exit surfaces through `done`
   for (let f = 0; f < FPS * DUR; f++) {
     const t = f / FPS;
     const px = await p.evaluate(([t, k, s]) => frame(t, k, s), [t, pulse(beats, t), seedOf(v.id)]);
-    if (!ff.stdin.write(Buffer.from(px, 'base64'))) await new Promise((r) => ff.stdin.once('drain', r));
+    if (!ff.stdin.write(Buffer.from(px, 'base64'))) await Promise.race([new Promise((r) => ff.stdin.once('drain', r)), done]);
   }
   ff.stdin.end();
   await done;
