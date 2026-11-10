@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Publishes due posts from social/queue.json to Facebook, Instagram (feed + Story) and LinkedIn.
-// A post with "video" (MP4 from scripts/social-video.mjs) is published as an Instagram Reel.
+// A post with "video" (MP4 from scripts/social-video.mjs) is published as an Instagram Reel
+// and a LinkedIn video (Facebook is skipped for videos).
 // Run daily by .github/workflows/social-post.yml. State lives in social/posted.json,
 // so a post (or a single platform that failed) is retried on the next run but is
 // never published twice.
@@ -8,7 +9,9 @@
 // Env (GitHub secrets):
 //   META_PAGE_ID, META_PAGE_TOKEN     Facebook Page id + non-expiring Page access token
 //   IG_USER_ID                        Instagram business account id (uses META_PAGE_TOKEN)
-//   LINKEDIN_TOKEN, LINKEDIN_AUTHOR   OAuth token + urn:li:organization:123 (or urn:li:person:abc)
+//   LINKEDIN_TOKEN                    OAuth token (scopes: openid profile w_member_social)
+//   LINKEDIN_AUTHOR (optional)        urn:li:organization:123; defaults to the token owner's
+//                                     urn:li:person:<sub> from /v2/userinfo
 // Optional: DRY_RUN=1, POST_ID (publish just this post now, ignoring its date),
 //           SITE_BASE, GRAPH_VERSION, LINKEDIN_VERSION, MAX_POSTS_PER_RUN
 // A platform whose secrets are missing is skipped (not an error).
@@ -105,20 +108,68 @@ async function postInstagram(post, mediaUrl, story = false) {
   return body.id;
 }
 
-async function postLinkedIn(post, imageBytes) {
-  const h = {
+function linkedinHeaders() {
+  return {
     Authorization: 'Bearer ' + env.LINKEDIN_TOKEN,
     'LinkedIn-Version': env.LINKEDIN_VERSION || linkedinVersion(),
     'X-Restli-Protocol-Version': '2.0.0',
     'Content-Type': 'application/json',
   };
+}
+
+// The post author: LINKEDIN_AUTHOR if set, else the person who owns the token.
+async function linkedinAuthor() {
+  if (env.LINKEDIN_AUTHOR) return env.LINKEDIN_AUTHOR;
+  const { body } = await api('https://api.linkedin.com/v2/userinfo', {
+    headers: { Authorization: 'Bearer ' + env.LINKEDIN_TOKEN },
+  }, 'linkedin userinfo');
+  if (!body.sub) throw new Error('linkedin userinfo: no "sub" (token needs the openid scope)');
+  return 'urn:li:person:' + body.sub;
+}
+
+async function linkedinImage(h, bytes) {
   const { body: init } = await api('https://api.linkedin.com/rest/images?action=initializeUpload', {
     method: 'POST', headers: h, body: JSON.stringify({ initializeUploadRequest: { owner: env.LINKEDIN_AUTHOR } }),
   }, 'linkedin upload init');
   const up = await fetch(init.value.uploadUrl, {
-    method: 'PUT', headers: { Authorization: h.Authorization, 'Content-Type': 'image/jpeg' }, body: imageBytes,
+    method: 'PUT', headers: { Authorization: h.Authorization, 'Content-Type': 'image/jpeg' }, body: bytes,
   });
   if (!up.ok) throw new Error(`linkedin image upload HTTP ${up.status}: ${(await up.text()).slice(0, 300)}`);
+  return init.value.image;
+}
+
+// Videos API: initialize → PUT each part (collect ETags) → finalize → wait until AVAILABLE.
+async function linkedinVideo(h, bytes) {
+  const { body: init } = await api('https://api.linkedin.com/rest/videos?action=initializeUpload', {
+    method: 'POST', headers: h,
+    body: JSON.stringify({ initializeUploadRequest: { owner: env.LINKEDIN_AUTHOR, fileSizeBytes: bytes.length, uploadCaptions: false, uploadThumbnail: false } }),
+  }, 'linkedin video init');
+  const { video, uploadInstructions, uploadToken = '' } = init.value;
+  const etags = [];
+  for (const part of uploadInstructions) {
+    const up = await fetch(part.uploadUrl, {
+      method: 'PUT', headers: { 'Content-Type': 'application/octet-stream' },
+      body: bytes.subarray(part.firstByte, part.lastByte + 1),
+    });
+    if (!up.ok) throw new Error(`linkedin video upload HTTP ${up.status}: ${(await up.text()).slice(0, 300)}`);
+    etags.push(up.headers.get('etag'));
+  }
+  await api('https://api.linkedin.com/rest/videos?action=finalizeUpload', {
+    method: 'POST', headers: h,
+    body: JSON.stringify({ finalizeUploadRequest: { video, uploadToken, uploadedPartIds: etags } }),
+  }, 'linkedin video finalize');
+  for (let i = 0; i < 36; i++) {
+    const { body: st } = await api(`https://api.linkedin.com/rest/videos/${encodeURIComponent(video)}`, { headers: h }, 'linkedin video status');
+    if (st.status === 'AVAILABLE') return video;
+    if (st.status === 'PROCESSING_FAILED') throw new Error('linkedin video processing failed: ' + JSON.stringify(st.processingFailureReason || ''));
+    await new Promise((r) => setTimeout(r, 5000));
+  }
+  throw new Error('linkedin video still processing after 3 minutes');
+}
+
+async function postLinkedIn(post, mediaBytes) {
+  const h = linkedinHeaders();
+  const media = post.video ? await linkedinVideo(h, mediaBytes) : await linkedinImage(h, mediaBytes);
   const { headers } = await api('https://api.linkedin.com/rest/posts', {
     method: 'POST', headers: h,
     body: JSON.stringify({
@@ -126,7 +177,9 @@ async function postLinkedIn(post, imageBytes) {
       commentary: linkedinCommentary(post.caption, post.hashtags),
       visibility: 'PUBLIC',
       distribution: { feedDistribution: 'MAIN_FEED', targetEntities: [], thirdPartyDistributionChannels: [] },
-      content: { media: { id: init.value.image, altText: post.caption.split('\n')[0].slice(0, 300) } },
+      content: { media: post.video
+        ? { id: media, title: post.caption.split('\n')[0].slice(0, 200) }
+        : { id: media, altText: post.caption.split('\n')[0].slice(0, 300) } },
       lifecycleState: 'PUBLISHED',
       isReshareDisabledByAuthor: false,
     }),
@@ -139,10 +192,17 @@ async function main() {
   let posted = {};
   try { posted = JSON.parse(await readFile(POSTED, 'utf8')); } catch {}
 
+  let failed = 0;
   const enabled = [];
   if (env.META_PAGE_ID && env.META_PAGE_TOKEN) enabled.push('facebook');
   if (env.IG_USER_ID && env.META_PAGE_TOKEN) enabled.push('instagram', 'story');
-  if (env.LINKEDIN_TOKEN && env.LINKEDIN_AUTHOR) enabled.push('linkedin');
+  if (env.LINKEDIN_TOKEN) {
+    try {
+      env.LINKEDIN_AUTHOR = await linkedinAuthor();
+      console.log(`LinkedIn author: ${env.LINKEDIN_AUTHOR}`);
+      enabled.push('linkedin');
+    } catch (e) { failed++; console.error(`✗ linkedin: ${e.message}`); }
+  }
   if (DRY) enabled.splice(0, enabled.length, 'facebook', 'instagram', 'story', 'linkedin');
   for (const pl of ['facebook', 'instagram', 'linkedin'])
     if (!enabled.includes(pl)) console.warn(`[skip] ${pl}: secrets not set`);
@@ -153,7 +213,6 @@ async function main() {
   const due = duePosts(queue, posted, today, enabled, onlyId).slice(0, MAX);
   console.log(`Today (Toronto): ${today} — ${due.length} post(s) to publish${DRY ? ' [DRY RUN]' : ''}`);
 
-  let failed = 0;
   for (const { post, todo } of due) {
     const imageUrl = `${SITE}/${post.video || post.image}`;
     const res = await fetch(imageUrl);
@@ -165,7 +224,7 @@ async function main() {
     }
     const bytes = Buffer.from(await res.arrayBuffer());
     for (const pl of todo) {
-      if (post.video && !['instagram', 'story'].includes(pl)) { console.warn(`[skip] ${post.id} → ${pl}: video posts go to Instagram only`); continue; }
+      if (post.video && pl === 'facebook') { console.warn(`[skip] ${post.id} → facebook: video posts go to Instagram and LinkedIn only`); continue; }
       if (DRY) { console.log(`• would post ${post.id} to ${pl}`); continue; }
       try {
         const id = pl === 'facebook' ? await postFacebook(post, imageUrl)
