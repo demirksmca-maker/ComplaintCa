@@ -1,5 +1,5 @@
 {
-  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4 (purple smoke background, beat-synced). accent: red, green, yellow or blue. musicStart: second of assets/brand/smoke-theme.mp3 to start from (about 0.1s before a beat in smoke-theme.beats.json). Keep facts in step with the matching post in queue.json.",
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4 (purple smoke background, beat-synced). accent: red, green, yellow or blue. template 'story' (optional): echoes, problem, turn, lines, tagline, dur. musicStart: second of assets/brand/smoke-theme.mp3 to start from (about 0.1s before a beat in smoke-theme.beats.json). Keep facts in step with the matching post in queue.json.",
   "videos": [
     {
       "id": "v01-scam-check",
@@ -80,6 +80,18 @@
       "title": "Your MP works for you.",
       "lines": ["Enter your postal code", "Find federal and provincial reps", "Contact them directly"],
       "musicStart": 55.64
+    },
+    {
+      "id": "v13-up-in-smoke",
+      "template": "story",
+      "dur": 14.5,
+      "accent": "blue",
+      "echoes": ["I called.", "I emailed.", "I waited."],
+      "problem": ["Most complaints", "go up in smoke."],
+      "turn": "Yours won't.",
+      "lines": ["Tell us what happened", "Get the right authority", "Free, in 7 languages"],
+      "tagline": "Heard. Tracked. Resolved.",
+      "musicStart": 7.82
     }
   ]
 }
