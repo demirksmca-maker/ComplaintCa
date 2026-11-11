@@ -96,6 +96,15 @@
       "platforms": ["instagram", "story", "linkedin"],
       "caption": "Your complaint. Heard. Tracked. Resolved. 🍁\n\nFile a complaint in Canada: anonymously if you choose, routed to the right place with AI, and tracked live with your reference number.\n\ncomplaintca.ca",
       "hashtags": "#ComplaintCA #Canada #ConsumerRights #KnowYourRights #FileAComplaint"
+    },
+    {
+      "id": "v13-up-in-smoke",
+      "date": "2026-11-11",
+      "video": "social/videos/v13-up-in-smoke.mp4",
+      "platforms": ["instagram", "linkedin"],
+      "coverMs": 4500,
+      "caption": "Most complaints go up in smoke. 💨 Yours won't.\n\nCalled, emailed, waited… and nothing? Tell ComplaintCA what happened and we point you to the right authority in Canada. Free, with an anonymous option.\n\ncomplaintca.ca",
+      "hashtags": "#ConsumerRights #KnowYourRights #FileAComplaint #Canada #ComplaintCA"
     }
   ]
 }
