@@ -30,7 +30,7 @@ const SW = 540, SH = 960; // smoke is soft, so it is drawn at half size and scal
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
 // Beats inside this clip, as clip-local seconds.
-export function clipBeats(all, start, dur) {
+export function clipBeats(all, start, dur = DUR) {
   return all.map((b) => +(b - start).toFixed(3)).filter((b) => b >= 0 && b < dur);
 }
 
