@@ -89,7 +89,8 @@
       "echoes": ["I called.", "I emailed.", "I waited."],
       "problem": ["Most complaints", "go up in smoke."],
       "turn": "Yours won't.",
-      "lines": ["Tell us what happened", "Get the right authority", "Free, in 7 languages"],
+      "lines": ["Tell us.", "Right authority.", "Free."],
+      "cta": "Free · Anonymous option",
       "tagline": "Heard. Tracked. Resolved.",
       "musicStart": 7.82
     }

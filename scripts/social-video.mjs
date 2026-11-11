@@ -109,8 +109,12 @@ export function storyPage(v, beats = [], dur = 14) {
   const [p1 = '', p2 = ''] = v.problem || [];
   const w2 = p2.split(' ');
   const last = w2.pop();
-  const lines = (v.lines || []).map((l, i) =>
-    `<li style="animation-delay:${b(10 + i)}s"><i>${i + 1}</i>${esc(l)}</li>`).join('');
+  // Keywords slam in one per beat ("bam bam"); each is pushed back into the smoke by the next.
+  const slams = (v.lines || []).map((l, i, all) => {
+    const back = i < all.length - 1 ? `,back .24s ease-in ${(+b(11 + i) - 0.04).toFixed(3)}s forwards` : '';
+    return `<p class="slam${i % 2 ? ' alt' : ''}" style="animation:slam .42s cubic-bezier(.2,.9,.3,1.2) ${b(10 + i)}s both${back}">${esc(l)}</p>`;
+  }).join('');
+  const shakes = [8, ...(v.lines || []).map((_, i) => 10 + i)].map((i) => `shake .22s linear ${b(i)}s`).join(',');
   return `<!doctype html><html><head><meta charset="utf-8"><style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:${W}px;height:${H}px;overflow:hidden;background:transparent;font-family:Inter,system-ui,sans-serif;color:#f3eef8;text-align:center}
@@ -129,11 +133,15 @@ html,body{width:${W}px;height:${H}px;overflow:hidden;background:transparent;font
 .s2 .a{display:block;animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(4)}s both}
 .s2 .b{display:block;animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(5)}s both}
 .s2 .smk{display:inline-block;color:${accent};animation:fade .2s ${b(5)}s both,vanish 1.3s ease-in ${b(7)}s forwards}
-.s3{top:540px;animation:out .4s ease-in ${b(15)}s both}
-.turn{font-size:150px;font-weight:900;letter-spacing:-.04em;color:#fff;text-shadow:0 0 60px ${accent}cc;animation:hit .6s cubic-bezier(.2,.8,.2,1) ${b(8)}s both}
-ul{list-style:none;margin:120px auto 0;width:880px;display:flex;flex-direction:column;gap:40px;text-align:left}
-li{display:flex;gap:34px;align-items:center;font-size:52px;font-weight:650;padding:30px 40px;border-radius:30px;background:#2a0b25b3;border:2px solid #5a2f63;animation:up .45s cubic-bezier(.2,.8,.2,1) both}
-li i{flex:none;width:72px;height:72px;border-radius:50%;background:${accent};color:#1a0517;font-style:normal;font-weight:900;font-size:40px;display:grid;place-items:center}
+@keyframes slam{0%{opacity:0;transform:scale(2.6);filter:blur(22px)}55%{opacity:1;transform:scale(.9);filter:blur(0)}78%{transform:scale(1.05)}100%{opacity:1;transform:none}}
+@keyframes back{45%{opacity:.2}to{opacity:0;transform:scale(.35) translateY(-60px);filter:blur(18px)}}
+@keyframes shake{0%{transform:translate(0,0)}20%{transform:translate(-14px,8px)}40%{transform:translate(12px,-10px)}60%{transform:translate(-8px,6px)}80%{transform:translate(5px,-3px)}100%{transform:none}}
+.s3{animation:out .4s ease-in ${b(15)}s both}
+.s3 .rig{position:absolute;inset:0;animation:${shakes}}
+.turn,.slam{position:absolute;left:50px;right:50px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-weight:900;letter-spacing:-.04em;line-height:1;text-transform:uppercase}
+.turn{font-size:150px;color:#fff;text-shadow:0 0 60px ${accent}cc;animation:hit .5s cubic-bezier(.2,.8,.2,1) ${b(8)}s both,back .24s ease-in ${(+b(10) - 0.04).toFixed(3)}s forwards}
+.slam{font-size:145px;color:#fff;text-shadow:0 0 50px ${accent},0 6px 30px #140312}
+.slam.alt{color:${accent};text-shadow:0 0 60px ${accent}aa,0 6px 30px #140312}
 .s4{top:640px}
 .logo{font-size:140px;font-weight:900;letter-spacing:-.03em;animation:hit .6s cubic-bezier(.2,.8,.2,1) ${b(16)}s both}
 .logo em{font-style:normal;color:#f0576a}
@@ -147,7 +155,7 @@ li i{flex:none;width:72px;height:72px;border-radius:50%;background:${accent};col
 </style></head><body><div class="scrim"></div><div class="all">
 <div class="scene">${echoes}</div>
 <div class="scene s2"><h2><span class="a">${esc(p1)}</span><span class="b">${esc(w2.join(' '))} <span class="smk">${esc(last)}</span></span></h2></div>
-<div class="scene s3"><div class="turn">${esc(v.turn)}</div><ul>${lines}</ul></div>
+<div class="scene s3"><div class="rig"><div class="turn">${esc(v.turn)}</div>${slams}</div></div>
 <div class="scene s4"><div class="logo">Complaint<em>CA</em></div>
   <div class="tag">${(v.tagline || '').split(' ').map((w, i) => `<span style="animation-delay:${b(16 + i)}s">${esc(w)}</span>`).join('')}</div>
   <div class="cta"><div><b>complaintca.ca</b><small>${esc(v.cta || 'Free · 7 languages · Anonymous option')}</small></div>
