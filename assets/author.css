@@ -1,0 +1,9 @@
+/* Author byline + box (blog, guides, business, weekly, es/blog). Works on dark and light themes. */
+.byline{text-align:center;font-size:.86rem;opacity:.85;margin:6px 0 14px}
+.byline a{color:#b06ee6;font-weight:600;text-decoration:none}
+.author-box{display:flex;gap:14px;align-items:flex-start;margin:16px 0;padding:16px;border:1px solid rgba(176,110,230,.35);border-radius:18px;background:rgba(176,110,230,.08)}
+.author-box .av{flex:0 0 52px;height:52px;border-radius:50%;display:grid;place-items:center;font:700 1.05rem Cinzel,serif;color:#12061a;background:linear-gradient(135deg,#d8b4fe,#f0abfc)}
+.author-box .k{font:700 .66rem Cinzel,serif;letter-spacing:.2em;text-transform:uppercase;color:#b06ee6;margin:0 0 2px}
+.author-box .n{font-weight:700;margin:0 0 6px}
+.author-box p{margin:0 0 6px;font-size:.9rem;line-height:1.55}
+.author-box .note{font-size:.8rem;opacity:.75;margin:0}
