@@ -1,5 +1,5 @@
 {
-  "_help": "Each run (once a day, evening Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); one post per date means one post per day. 'video' is an MP4 in social/videos/ (Instagram Reel + LinkedIn video; not Facebook), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Published ids are recorded in social/posted.json.",
+  "_help": "Each run (once a day, evening Toronto) publishes the oldest due post, on or after its 'date' (YYYY-MM-DD, Toronto time); one post per date means one post per day. 'video' is an MP4 in social/videos/ (Instagram Reel + LinkedIn video; not Facebook), 'image' a JPEG in social/images/. 'platforms': any of facebook, instagram, story (Instagram Story), linkedin. Optional 'instagram' / 'linkedin' objects ({caption, hashtags, title}) override the shared text on that platform. Published ids are recorded in social/posted.json.",
   "posts": [
     {
       "id": "v01-scam-check",
@@ -105,6 +105,27 @@
       "coverMs": 4500,
       "caption": "Most complaints go up in smoke. 💨 Yours won't.\n\nCalled, emailed, waited… and nothing? Tell ComplaintCA what happened and we point you to the right authority in Canada. Free, with an anonymous option.\n\ncomplaintca.ca",
       "hashtags": "#ConsumerRights #KnowYourRights #FileAComplaint #Canada #ComplaintCA"
+    },
+    {
+      "id": "v14-bullying",
+      "date": "2026-11-12",
+      "video": "social/videos/v14-bullying.mp4",
+      "platforms": [
+        "instagram",
+        "linkedin"
+      ],
+      "coverMs": 4200,
+      "caption": "For some kids, it never logs off. Bullying isn't “just kids being kids.” Signs to watch for and what to do.\n\ncomplaintca.ca",
+      "hashtags": "#StopBullying #Cyberbullying #Parenting #Canada #ComplaintCA",
+      "instagram": {
+        "caption": "For some kids, it never logs off. 📱💔\n\nBullying follows kids home: into group chats, DMs and late-night messages. It's not “just kids being kids.”\n\n👀 Watch for:\n• Afraid to go to school\n• “Sick” every morning\n• Grades dropping\n• Suddenly secretive online\n\n✅ What to do:\n1️⃣ Listen. Don't blame.\n2️⃣ Save the messages.\n3️⃣ Report it to the school, in writing.\n4️⃣ No action? Go to the school board.\n5️⃣ Threats? Call the police.\n\nKids, you're not alone 💜 Kids Help Phone: call 1-800-668-6868 or text CONNECT to 686868. Free, 24/7.\n\nSchool complaint? ComplaintCA shows you who to contact.\ncomplaintca.ca\n\n💾 Save this and share it with a parent who needs it.",
+        "hashtags": "#StopBullying #Cyberbullying #Parenting #Canada #ComplaintCA"
+      },
+      "linkedin": {
+        "title": "For some kids, it never logs off: spotting and stopping bullying",
+        "caption": "Bullying doesn't end when the school bell rings. For many kids, it follows them home on their phones.\n\nA short checklist for parents, teachers and coaches:\n\nWarning signs\n• Fear of going to school, or skipping it\n• Feeling “sick” before school\n• A drop in grades\n• Avoiding devices, or becoming secretive online\n\nWhat to do\n1. Listen first. Don't blame the child.\n2. Save the messages as evidence.\n3. Report it to the teacher and principal in writing, and ask what the school's bullying prevention policy requires.\n4. If the school doesn't act, take it to the school board.\n5. If there are threats, report it to the police.\n\nKids and teens can reach Kids Help Phone 24/7, free: call 1-800-668-6868 or text CONNECT to 686868.\n\nComplaintCA helps families in Canada find the right place to file a school complaint, free and with an anonymous option: https://www.complaintca.ca\n\nPlease share this with a parent or educator in your network.",
+        "hashtags": "#BullyingPrevention #Cyberbullying #Education #Parenting #ComplaintCA"
+      }
     }
   ]
 }

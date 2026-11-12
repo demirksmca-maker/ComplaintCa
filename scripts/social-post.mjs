@@ -52,11 +52,19 @@ export function fullCaption(post) {
   return post.caption + (post.hashtags ? '\n\n' + post.hashtags : '');
 }
 
+// Per-platform text: a post may carry "instagram" / "linkedin" objects
+// ({ caption, hashtags, title }) that override the shared caption and hashtags.
+export function textFor(post, platform) {
+  const o = post[platform] || {};
+  return { caption: o.caption ?? post.caption, hashtags: o.hashtags ?? post.hashtags, title: o.title };
+}
+
 // Instagram captions: links are not clickable there, so point to the bio link,
 // and keep to 5 hashtags (Instagram's own guidance is 3-5; more reads as spam).
 export function instagramCaption(post) {
-  const tags = (post.hashtags || '').split(/\s+/).filter(Boolean).slice(0, 5).join(' ');
-  const text = /complaintca\.ca/i.test(post.caption) ? post.caption + '\n\n🔗 Link in bio' : post.caption;
+  const { caption, hashtags } = textFor(post, 'instagram');
+  const tags = (hashtags || '').split(/\s+/).filter(Boolean).slice(0, 5).join(' ');
+  const text = /complaintca\.ca/i.test(caption) ? caption + '\n\n🔗 Link in bio' : caption;
   return text + (tags ? '\n\n' + tags : '');
 }
 
@@ -170,16 +178,17 @@ async function linkedinVideo(h, bytes) {
 async function postLinkedIn(post, mediaBytes) {
   const h = linkedinHeaders();
   const media = post.video ? await linkedinVideo(h, mediaBytes) : await linkedinImage(h, mediaBytes);
+  const li = textFor(post, 'linkedin');
   const { headers } = await api('https://api.linkedin.com/rest/posts', {
     method: 'POST', headers: h,
     body: JSON.stringify({
       author: env.LINKEDIN_AUTHOR,
-      commentary: linkedinCommentary(post.caption, post.hashtags),
+      commentary: linkedinCommentary(li.caption, li.hashtags),
       visibility: 'PUBLIC',
       distribution: { feedDistribution: 'MAIN_FEED', targetEntities: [], thirdPartyDistributionChannels: [] },
       content: { media: post.video
-        ? { id: media, title: post.caption.split('\n')[0].slice(0, 200) }
-        : { id: media, altText: post.caption.split('\n')[0].slice(0, 300) } },
+        ? { id: media, title: (li.title || li.caption.split('\n')[0]).slice(0, 200) }
+        : { id: media, altText: (li.title || li.caption.split('\n')[0]).slice(0, 300) } },
       lifecycleState: 'PUBLISHED',
       isReshareDisabledByAuthor: false,
     }),
