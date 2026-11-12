@@ -1,5 +1,5 @@
 {
-  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4 (purple smoke background, beat-synced). accent: red, green, yellow or blue. template 'story' (optional): echoes, problem, turn, lines, tagline, dur. musicStart: second of assets/brand/smoke-theme.mp3 to start from (about 0.1s before a beat in smoke-theme.beats.json). Keep facts in step with the matching post in queue.json.",
+  "_help": "7-second Reels rendered by scripts/social-video.mjs into social/videos/<id>.mp4 (purple smoke background, beat-synced). accent: red, green, yellow or blue. template 'story' (optional): echoes, problem, turn, lines, tagline, dur. template 'scenes': a list of scenes on beat numbers, see scenesPage(). musicStart: second of assets/brand/smoke-theme.mp3 to start from (about 0.1s before a beat in smoke-theme.beats.json). Keep facts in step with the matching post in queue.json.",
   "videos": [
     {
       "id": "v01-scam-check",
@@ -93,6 +93,28 @@
       "cta": "Free · Anonymous option",
       "tagline": "Heard. Tracked. Resolved.",
       "musicStart": 7.82
+    },
+    {
+      "id": "v14-bullying",
+      "template": "scenes",
+      "dur": 33.5,
+      "accent": "blue",
+      "musicStart": 30.41,
+      "clear": [[0, 0], [20, 0], [24, 0.35], [34, 0.7], [36, 1], [43, 1], [44, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 11, "scatter": 6, "from": "Unknown",
+          "messages": ["nobody wants you here", "everyone saw it 😂", "don't come tomorrow", "loser"],
+          "seen": "Seen 11:48 PM", "line": "For some kids, it never logs off." },
+        { "type": "title", "at": 11, "until": 18, "pre": "It's not just", "strike": "kids being kids.", "strikeAt": 14,
+          "after": "It's bullying.", "afterAt": 15 },
+        { "type": "slams", "at": 18, "until": 24, "kicker": "Watch for",
+          "words": ["Afraid of school.", "“Sick” every morning.", "Grades dropping.", "Secretive online."] },
+        { "type": "steps", "at": 24, "until": 35, "every": 2, "kicker": "What to do",
+          "items": ["Listen. Don't blame.", "Save the messages.", "Report it to the school, in writing.", "No action? Go to the school board.", "Threats? Call the police."] },
+        { "type": "help", "at": 35, "until": 43, "headline": "Kids: you're not alone.", "name": "Kids Help Phone",
+          "phone": "1-800-668-6868", "rows": ["Text CONNECT to 686868", "Free · 24/7 · Confidential"] },
+        { "type": "brand", "at": 43, "tagline": "School problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
     }
   ]
 }

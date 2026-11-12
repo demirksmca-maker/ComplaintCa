@@ -163,6 +163,138 @@ html,body{width:${W}px;height:${H}px;overflow:hidden;background:transparent;font
 </div></body></html>`;
 }
 
+// "scenes" template: a longer Reel built from a list of scenes in videos.json, each
+// starting on beat `at` and leaving on beat `until`. Types: chat (message bubbles that
+// pop on the beat, then scatter), title (optional strike-through on a beat), slams (one
+// keyword per beat, pushed back by the next), steps (numbered, `every` beats each),
+// help (a big phone line card) and brand. `clear` = [[beat, 0..1], ...] parts the smoke.
+export function scenesClear(v, beats) {
+  const keys = (v.clear || [[0, 0]]).map(([i, c]) => [beats[i] ?? i * 0.71, c]);
+  return (t) => {
+    if (t <= keys[0][0]) return keys[0][1];
+    for (let k = 1; k < keys.length; k++) {
+      if (t <= keys[k][0]) return keys[k - 1][1] + (keys[k][1] - keys[k - 1][1]) * smooth(keys[k - 1][0], keys[k][0], t);
+    }
+    return keys.at(-1)[1];
+  };
+}
+
+export function scenesPage(v, beats = [], dur = 30) {
+  const accent = { red: '#f0576a', green: '#2fd07a', yellow: '#e7b955', blue: '#a85bf5' }[v.accent || 'blue'];
+  const bt = (i) => beats[i] ?? i * 0.71;
+  const b = (i) => bt(i).toFixed(3);
+  const period = beats.length > 1 ? (beats.at(-1) - beats[0]) / (beats.length - 1) : 0.71;
+  const hits = [];
+  const slam = (cls, text, at, backAt) => {
+    hits.push(at);
+    const back = backAt != null ? `,back .24s ease-in ${(bt(backAt) - 0.04).toFixed(3)}s forwards` : '';
+    return `<div class="slam ${cls}" style="animation:slam .42s cubic-bezier(.2,.9,.3,1.2) ${b(at)}s both${back}">${text}</div>`;
+  };
+  const scene = (sc, inner) => {
+    const out = sc.until != null ? `,sceneOut .35s ease-in ${(bt(sc.until) - 0.3).toFixed(3)}s forwards` : '';
+    return `<section class="scene" style="animation:fade .2s ${(bt(sc.at) - 0.1).toFixed(3)}s both${out}">${inner}</section>`;
+  };
+  const html = (v.scenes || []).map((sc) => {
+    if (sc.type === 'chat') {
+      const msgs = sc.messages.map((m, i) => {
+        hits.push(sc.at + i);
+        const side = i % 2 ? 'r' : 'l';
+        const fly = `${i % 2 ? '' : '-'}${260 + i * 60}px,${-120 - i * 50}px`;
+        return `<div class="bub ${side}" style="--fly:translate(${fly}) rotate(${i % 2 ? 14 : -12}deg);animation:pop .4s cubic-bezier(.2,.9,.3,1.3) ${b(sc.at + i)}s both,scatter .7s ease-in ${b(sc.scatter)}s forwards"><small>${esc(sc.from || 'Unknown')}</small>${esc(m)}</div>`;
+      }).join('');
+      const seen = sc.seen ? `<p class="seen" style="animation:fade .3s ${b(sc.at + sc.messages.length)}s both,scatter .7s ease-in ${b(sc.scatter)}s forwards">${esc(sc.seen)}</p>` : '';
+      const line = sc.line ? `<p class="line" style="animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(sc.scatter)}s both">${esc(sc.line)}</p>` : '';
+      return scene(sc, `<div class="chat">${msgs}${seen}</div>${line}`);
+    }
+    if (sc.type === 'title') {
+      const strike = sc.strike ? `<span class="strike" style="animation:grow .3s cubic-bezier(.2,.8,.2,1) ${b(sc.strikeAt)}s both"></span>` : '';
+      if (sc.strike) hits.push(sc.strikeAt);
+      const after = sc.after ? `<p class="after" style="animation:slam .42s cubic-bezier(.2,.9,.3,1.2) ${b(sc.afterAt)}s both">${esc(sc.after)}</p>` : '';
+      if (sc.after) hits.push(sc.afterAt);
+      return scene(sc, `<div class="title"><p class="pre" style="animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(sc.at)}s both">${esc(sc.pre || '')}</p>
+        <h2 style="animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(sc.at + 1)}s both"><span class="st">${esc(sc.strike || sc.text)}${strike}</span></h2>${after}</div>`);
+    }
+    if (sc.type === 'slams') {
+      const words = sc.words.map((w, i, all) => slam(i % 2 ? 'alt' : '', esc(w), sc.at + 1 + i, i < all.length - 1 ? sc.at + 2 + i : null)).join('');
+      return scene(sc, `<p class="kick" style="animation:fade .3s ${b(sc.at)}s both">${esc(sc.kicker)}</p>${words}`);
+    }
+    if (sc.type === 'steps') {
+      const n = sc.every || 2;
+      const items = sc.items.map((it, i, all) =>
+        slam('step', `<i>${i + 1}</i><span>${esc(it)}</span>`, sc.at + 1 + i * n, i < all.length - 1 ? sc.at + 1 + (i + 1) * n : null)).join('');
+      return scene(sc, `<p class="kick" style="animation:fade .3s ${b(sc.at)}s both">${esc(sc.kicker)}</p>${items}`);
+    }
+    if (sc.type === 'help') {
+      hits.push(sc.at + 1);
+      const rows = (sc.rows || []).map((r, i) => `<p class="row" style="animation:up .45s cubic-bezier(.2,.8,.2,1) ${b(sc.at + 2 + i)}s both">${esc(r)}</p>`).join('');
+      return scene(sc, `<div class="help"><p class="hl" style="animation:up .5s cubic-bezier(.2,.8,.2,1) ${b(sc.at)}s both">${esc(sc.headline)}</p>
+        <div class="card" style="animation:hit .5s cubic-bezier(.2,.8,.2,1) ${b(sc.at + 1)}s both"><small>${esc(sc.name)}</small><b>${esc(sc.phone)}</b>${rows}</div></div>`);
+    }
+    if (sc.type === 'brand') {
+      hits.push(sc.at);
+      return scene(sc, `<div class="brand"><div class="logo" style="animation:hit .6s cubic-bezier(.2,.8,.2,1) ${b(sc.at)}s both">Complaint<em>CA</em></div>
+        <p class="tag" style="animation:up .45s cubic-bezier(.2,.8,.2,1) ${b(sc.at + 1)}s both">${esc(sc.tagline || '')}</p>
+        <div class="cta" style="animation:up .6s cubic-bezier(.2,.8,.2,1) ${b(sc.at + 2)}s both"><div><b>complaintca.ca</b><small>${esc(sc.cta || '')}</small></div>
+        <div class="go" style="animation:ring ${period.toFixed(3)}s ease-out ${b(sc.at + 3)}s 3 both"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#1a0517" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></div></div>`);
+    }
+    throw new Error('unknown scene type ' + sc.type);
+  }).join('\n');
+  const shakes = [...new Set(hits)].filter((i) => bt(i) < dur).map((i) => `shake .22s linear ${b(i)}s`).join(',');
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:${W}px;height:${H}px;overflow:hidden;background:transparent;font-family:Inter,system-ui,sans-serif;color:#f3eef8;text-align:center}
+@keyframes up{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes hit{0%{opacity:0;transform:scale(1.6);filter:blur(18px)}60%{opacity:1;transform:scale(.97);filter:blur(0)}100%{opacity:1;transform:none}}
+@keyframes slam{0%{opacity:0;transform:scale(2.6);filter:blur(22px)}55%{opacity:1;transform:scale(.9);filter:blur(0)}78%{transform:scale(1.05)}100%{opacity:1;transform:none}}
+@keyframes back{45%{opacity:.2}to{opacity:0;transform:scale(.35) translateY(-60px);filter:blur(18px)}}
+@keyframes pop{0%{opacity:0;transform:scale(.5) translateY(40px)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:none}}
+@keyframes scatter{to{opacity:0;transform:var(--fly,translateY(-200px));filter:blur(24px)}}
+@keyframes sceneOut{to{opacity:0;filter:blur(12px)}}
+@keyframes shake{0%{transform:translate(0,0)}20%{transform:translate(-14px,8px)}40%{transform:translate(12px,-10px)}60%{transform:translate(-8px,6px)}80%{transform:translate(5px,-3px)}100%{transform:none}}
+@keyframes ring{0%{box-shadow:0 0 0 0 ${accent}88;transform:scale(1.08)}100%{box-shadow:0 0 0 34px ${accent}00;transform:none}}
+.scrim{position:absolute;inset:0;background:radial-gradient(ellipse 75% 50% at 50% 48%,#14031299,#14031200)}
+.rig{position:absolute;inset:0;animation:${shakes || 'none'}}
+.scene{position:absolute;inset:0}
+.chat{position:absolute;left:80px;right:80px;top:360px;display:flex;flex-direction:column;gap:34px}
+.bub{max-width:760px;padding:30px 40px 34px;border-radius:44px;font-size:56px;font-weight:650;text-align:left;line-height:1.15;background:#3a1035ee;border:2px solid #6b3a73;box-shadow:0 20px 60px #0008}
+.bub small{display:block;font-size:28px;font-weight:600;color:#c9a9e0;margin-bottom:8px;letter-spacing:.02em}
+.bub.l{align-self:flex-start;border-bottom-left-radius:12px}
+.bub.r{align-self:flex-end;border-bottom-right-radius:12px;background:#5a1752ee}
+.seen{align-self:flex-end;font-size:30px;color:#c9a9e0;font-weight:500}
+.line{position:absolute;left:70px;right:70px;top:1380px;font-size:84px;font-weight:900;letter-spacing:-.03em;line-height:1.08;text-shadow:0 4px 40px #140312}
+.title{position:absolute;left:70px;right:70px;top:640px}
+.pre{font-size:60px;font-weight:600;color:#e4d9f0}
+.title h2{margin-top:24px;font-size:112px;font-weight:900;letter-spacing:-.035em;line-height:1.05}
+.st{position:relative;display:inline-block}
+.strike{position:absolute;left:-12px;right:-12px;top:52%;height:16px;border-radius:8px;background:${accent};box-shadow:0 0 30px ${accent};transform-origin:left}
+.after{margin-top:90px;font-size:120px;font-weight:900;letter-spacing:-.04em;color:${accent};text-shadow:0 0 50px ${accent}aa;text-transform:uppercase}
+.kick{position:absolute;left:0;right:0;top:470px;font-size:44px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:${accent}}
+.slam{position:absolute;left:60px;right:60px;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:132px;font-weight:900;letter-spacing:-.04em;line-height:1.02;text-transform:uppercase;color:#fff;text-shadow:0 0 50px ${accent},0 6px 30px #140312}
+.slam.alt{color:${accent};text-shadow:0 0 60px ${accent}aa,0 6px 30px #140312}
+.slam.step{flex-direction:column;gap:46px;font-size:104px;text-transform:none;letter-spacing:-.03em}
+.slam.step i{width:150px;height:150px;border-radius:50%;background:${accent};color:#1a0517;font-style:normal;font-size:88px;display:grid;place-items:center;text-shadow:none;box-shadow:0 0 70px ${accent}aa}
+.help{position:absolute;left:70px;right:70px;top:520px}
+.hl{font-size:110px;font-weight:900;letter-spacing:-.035em;line-height:1.05;text-shadow:0 4px 40px #140312}
+.card{margin-top:90px;padding:60px 50px;border-radius:44px;background:#2a0b25d9;border:3px solid ${accent};box-shadow:0 0 80px ${accent}55}
+.card small{display:block;font-size:44px;font-weight:700;color:${accent};letter-spacing:.06em;text-transform:uppercase}
+.card b{display:block;margin:22px 0 30px;font-size:92px;white-space:nowrap;font-weight:900;letter-spacing:-.02em}
+.row{font-size:46px;font-weight:600;color:#e4d9f0;margin-top:14px}
+.brand{position:absolute;left:0;right:0;top:640px}
+.logo{font-size:140px;font-weight:900;letter-spacing:-.03em}
+.logo em{font-style:normal;color:#f0576a}
+.tag{margin:26px 80px 0;font-size:54px;font-weight:600;color:#e4d9f0;line-height:1.2}
+.cta{margin:100px auto 0;width:860px;display:flex;align-items:center;justify-content:space-between;padding:44px 52px;border-radius:36px;background:#2a0b25cc;border:2px solid #5a2f63;text-align:left}
+.cta b{font-size:62px;font-weight:800}
+.cta small{display:block;font-size:34px;color:#cbb8dc;margin-top:8px;font-weight:500}
+.go{width:120px;height:120px;border-radius:50%;background:${accent};display:grid;place-items:center}
+.all{position:absolute;inset:0;animation:fade .45s ease-in ${(dur - 0.45).toFixed(2)}s reverse both}
+</style></head><body><div class="scrim"></div><div class="all"><div class="rig">
+${html}
+</div></div></body></html>`;
+}
+
 // Realistic smoke: domain-warped fBm with a fake light for self-shadowing, in the
 // site's purples. P (0..1) is the drum envelope: brighter, denser smoke and a small zoom.
 export function smokePage() {
@@ -245,11 +377,12 @@ async function render(browser, v, allBeats) {
   const start = v.musicStart ?? 0;
   const dur = v.dur ?? DUR;
   const beats = clipBeats(allBeats, start, dur);
-  const story = v.template === 'story';
+  const tpl = { story: [storyPage, storyClear], scenes: [scenesPage, (b) => scenesClear(v, b)] }[v.template]
+    || [page, () => () => 0];
   const smoke = path.join(tmp, 'smoke.mp4');
-  await renderSmoke(browser, v, beats, smoke, dur, story ? storyClear(beats) : () => 0);
+  await renderSmoke(browser, v, beats, smoke, dur, tpl[1](beats));
   const p = await browser.newPage({ viewport: { width: W, height: H } });
-  await p.setContent(story ? storyPage(v, beats, dur) : page(v, beats, dur));
+  await p.setContent(tpl[0](v, beats, dur));
   await p.evaluate(() => document.fonts.ready);
   await p.evaluate(() => document.getAnimations().forEach((a) => a.pause()));
   for (let f = 0; f < FPS * dur; f++) {
