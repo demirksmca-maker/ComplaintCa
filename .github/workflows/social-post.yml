@@ -1,12 +1,15 @@
 name: Social Post
 
 # Publishes due posts from social/queue.json to Facebook, Instagram and LinkedIn
-# once a day: 20:00 Toronto in summer (19:00 in winter). Records what was
+# once a day at 20:00 Toronto, all year: two crons (00:00 and 01:00 UTC) cover
+# summer and winter time, and a guard step skips the one that isn't 20:xx
+# Toronto. Records what was
 # published in social/posted.json so nothing is posted twice. Run it by hand
 # from the Actions tab with "dry_run" to preview without posting.
 on:
   schedule:
     - cron: '0 0 * * *'
+    - cron: '0 1 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -29,6 +32,14 @@ jobs:
   post:
     runs-on: ubuntu-latest
     steps:
+      - name: Only at 20:00 Toronto
+        if: github.event_name == 'schedule'
+        run: |
+          h=$(TZ=America/Toronto date +%H)
+          echo "Toronto hour: $h"
+          # 21 too: a late-starting 01:00 UTC run in winter still posts that evening
+          if [ "$h" != "20" ] && [ "$h" != "21" ]; then echo "SKIP=1" >> "$GITHUB_ENV"; fi
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -40,6 +51,7 @@ jobs:
           node-version: 20
 
       - name: Publish due posts
+        if: env.SKIP != '1'
         env:
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '1' || '0' }}
           POST_ID: ${{ inputs.post_id }}
@@ -51,7 +63,7 @@ jobs:
         run: node scripts/social-post.mjs
 
       - name: Save posted log
-        if: always()
+        if: always() && env.SKIP != '1'
         run: |
           if git diff --quiet -- social/posted.json; then exit 0; fi
           git config user.name "github-actions[bot]"
