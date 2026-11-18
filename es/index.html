@@ -216,7 +216,7 @@ html[data-restoring-tab] #pg-app .amain{visibility:hidden}
 .hero-sub{font-size:clamp(.9rem,2vw,1rem);color:rgba(255,255,255,.82);max-width:460px;line-height:1.75;margin-bottom:0;font-weight:400}
 .hero-slogan{text-align:center;margin:6px auto;max-width:560px;position:relative;z-index:1}
 .hero-slogan-main{font-family:'EB Garamond',serif;font-style:italic;font-size:clamp(.8rem,min(2.4vh,3.2vw),1.1rem);font-weight:600;color:white;letter-spacing:0;line-height:1.3;margin-bottom:3px}
-@media (max-height:680px){.hero-slogan{display:none}}
+@media (max-height:680px){.hero-slogan{display:none}#a-fab{top:-31px;padding:3px 11px 3px 7px}#hub-kicker{margin-top:8px}}
 .hero-slogan-sub{font-size:.85rem;color:rgba(255,255,255,.72);line-height:1.8;margin-bottom:20px;font-weight:400}
 .hero-divider{display:flex;align-items:center;gap:16px;justify-content:center}
 .hdl{flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,rgba(207,177,231,.5))}
@@ -630,7 +630,7 @@ body{background:#140a0c}
 .es-flag{position:absolute;inset:-6%;z-index:-1;pointer-events:none;overflow:hidden}
 .esca{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(.7rem,1.9vh,.82rem);letter-spacing:5px;text-transform:uppercase;margin:0 0 6px;background:linear-gradient(100deg,#b8913a 0%,#f3dfa2 45%,#fff6d8 50%,#f3dfa2 55%,#b8913a 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 1px 6px rgba(0,0,0,.6));animation:tbSheen 7s 1.3s ease-in-out infinite}
 
-.es-flag .img{position:absolute;top:0;bottom:0;right:0;left:7.5%;background:url('/assets/brand/es-flag.jpg') left center/cover no-repeat;
+.es-flag .img{position:absolute;top:0;bottom:0;right:0;left:7.5%;background:url('/assets/brand/es-flag.webp') left center/cover no-repeat;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%);mask-image:linear-gradient(90deg,transparent 0,#000 3%);
   filter:url(#esWave);will-change:filter}
 .es-flag .shade{display:none;position:absolute;inset:-20%;mix-blend-mode:soft-light;opacity:.9;
@@ -710,7 +710,7 @@ body{background:#140a0c}
           <span id="lang-flag-display" style="display:flex;align-items:center;line-height:0">
             <svg width="22" height="15" viewBox="0 0 30 20"><rect width="30" height="20" fill="#fff"/><rect width="7.5" height="20" fill="#c8102e"/><rect x="22.5" width="7.5" height="20" fill="#c8102e"/><path d="M15 5l.8 2.2 2.2-.7-1.4 1.8 1.8 1.1-2.3.2.5 2.3-1.6-1.7-1.6 1.7.5-2.3-2.3-.2 1.8-1.1-1.4-1.8 2.2.7z" fill="#c8102e"/></svg>
           </span>
-          <span id="lang-label" style="font-size:.72rem;color:rgba(255,255,255,.75);font-family:Inter,sans-serif;font-weight:600;margin-left:6px">EN</span>
+          <span id="lang-label" style="font-size:.72rem;color:rgba(255,255,255,.75);font-family:Inter,sans-serif;font-weight:600;margin-left:6px">ES</span>
           </span>
           <svg class="topbar-caret" width="8" height="5" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#cfb0e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -765,13 +765,13 @@ body{background:#140a0c}
     </div>
     <div class="hero-orb"></div>
     <div class="esca">Centro de Ayuda</div>
-    <div class="hero-eyebrow">🇪🇸 <span class="edot"></span><span id="l-eyebrow">Canada's Complaint Platform</span></div>
-    <h1 class="hero-title" id="l-hero-title">Your Complaint.<br><em>Heard. Tracked. Resolved.</em></h1>
+    <div class="hero-eyebrow">🇪🇸 <span class="edot"></span><span id="l-eyebrow">Plataforma de Quejas de España</span></div>
+    <h1 class="hero-title" id="l-hero-title">Presentar una <em>Queja</em> Oficial</h1>
     <div class="hero-slogan">
       <div class="hero-slogan-main" style="color:#c7cbd4;font-family:-apple-system,'Segoe UI',Inter,sans-serif;font-style:normal">"La justicia es la fuente de todas las demás virtudes."<div style="font-family:-apple-system,'Segoe UI',Inter,sans-serif;text-transform:uppercase;font-size:.6em;font-weight:700;color:#ad5cff;letter-spacing:1.5px;margin-top:2px;opacity:.9">— Marcus Aurelius</div></div>
     </div>
 
-    <div class="hub-kicker" id="hub-kicker">Six Paths to Justice</div>
+    <div class="hub-kicker" id="hub-kicker">Seis Caminos Hacia la Justicia</div>
 
     <div class="hub-tiles">
       <button id="a-fab" onclick="_aToggle()"><span class="a-smoke a-smoke-blue"></span><span class="a-smoke a-smoke-pink"></span><svg width="18" height="18" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/><rect x="9" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="4;10;4" dur="1.3s" repeatCount="indefinite" begin="0s"/><animate attributeName="y" values="14;11;14" dur="1.3s" repeatCount="indefinite" begin="0s"/></rect><rect x="14" y="9" width="3" height="14" rx="1.5" fill="white"><animate attributeName="height" values="5;14;5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/><animate attributeName="y" values="13.5;9;13.5" dur="1.3s" repeatCount="indefinite" begin="0.2s"/></rect><rect x="19" y="11" width="3" height="10" rx="1.5" fill="white" opacity="0.8"><animate attributeName="height" values="3;10;3" dur="1.3s" repeatCount="indefinite" begin="0.4s"/><animate attributeName="y" values="14.5;11;14.5" dur="1.3s" repeatCount="indefinite" begin="0.4s"/></rect></svg><span id="a-status">ASYA</span></button>
@@ -779,8 +779,8 @@ body{background:#140a0c}
         <div class="hub-numeral">I</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="l-cta1">File a Complaint</div>
-          <div class="hub-tile-desc" id="hub-file-d">Turn your voice into a formal complaint.</div>
+          <div class="hub-tile-title" id="l-cta1">Comenzar Queja</div>
+          <div class="hub-tile-desc" id="hub-file-d">Convierte tu voz en una queja oficial.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
@@ -789,8 +789,8 @@ body{background:#140a0c}
         <div class="hub-numeral">II</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M5 7l-3 6a3.5 3.5 0 007 0z"/><path d="M19 7l-3 6a3.5 3.5 0 007 0z"/><path d="M5 7h14"/><path d="M8 21h8"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="hub-lawyer-t">Free Lawyer &amp; Civil Society</div>
-          <div class="hub-tile-desc" id="hub-lawyer-d">Law Society referrals and independent non-profit help.</div>
+          <div class="hub-tile-title" id="hub-lawyer-t">Abogado Gratis y Sociedad Civil</div>
+          <div class="hub-tile-desc" id="hub-lawyer-d">Abogado y ONG emparejados por IA, borradores listos para enviar.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
@@ -799,8 +799,8 @@ body{background:#140a0c}
         <div class="hub-numeral">III</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21h16"/><path d="M5 21V9l7-6 7 6v12"/><path d="M9 21v-7h6v7"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="l-mv-btn">🏛️ Find My Representative</div>
-          <div class="hub-tile-desc" id="hub-mv-d">Locate your representative by address.</div>
+          <div class="hub-tile-title" id="l-mv-btn">🏛️ Buscar mis representantes</div>
+          <div class="hub-tile-desc" id="hub-mv-d">Encuentra a tu representante por dirección.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
@@ -809,8 +809,8 @@ body{background:#140a0c}
         <div class="hub-numeral">IV</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="hub-cyber-t">Cyber Crime Report</div>
-          <div class="hub-tile-desc" id="hub-cyber-d">Report harassment, threats, and identity theft.</div>
+          <div class="hub-tile-title" id="hub-cyber-t">Reporte de Delito Cibernético</div>
+          <div class="hub-tile-desc" id="hub-cyber-d">Reporta acoso, amenazas y robo de identidad.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
@@ -819,8 +819,8 @@ body{background:#140a0c}
         <div class="hub-numeral">V</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/><path d="M8 10.5h5"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="hub-verify-t">Verify a Document</div>
-          <div class="hub-tile-desc" id="hub-verify-d">Get an AI risk check on a suspicious email or file.</div>
+          <div class="hub-tile-title" id="hub-verify-t">Verificar un Documento</div>
+          <div class="hub-tile-desc" id="hub-verify-d">Haz que la IA verifique un correo o archivo sospechoso.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
@@ -829,22 +829,22 @@ body{background:#140a0c}
         <div class="hub-numeral">VI</div>
         <svg class="hub-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
         <div class="hub-tile-body">
-          <div class="hub-tile-title" id="hub-guides-t">Guides</div>
-          <div class="hub-tile-desc" id="hub-guides-d">Find the right authority by province and topic.</div>
+          <div class="hub-tile-title" id="hub-guides-t">Guías</div>
+          <div class="hub-tile-desc" id="hub-guides-d">Guías paso a paso para reclamar: plazos, organismos y leyes.</div>
         </div>
         <div class="hub-tile-arrow">→</div>
       </a>
     </div>
 
-    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Track My Complaint</a><span class="hub-links-sep">·</span><a href="/es/blog/" class="hub-track-link">Blog</a></div>
+    <div class="hub-links"><a href="javascript:void(0)" onclick="goApp('track')" class="hub-track-link" id="l-cta2">Rastrear mi queja</a><span class="hub-links-sep">·</span><a href="/es/blog/" class="hub-track-link">Blog</a></div>
 
     <div class="hero-trust">
-      <div class="ht-item"><span class="ht-dot"></span><span id="l-t1">Anonymous</span></div>
-      <div class="ht-item"><span class="ht-dot"></span><span id="l-t2">AI Routing</span></div>
+      <div class="ht-item"><span class="ht-dot"></span><span id="l-t1">Anónimo</span></div>
+      <div class="ht-item"><span class="ht-dot"></span><span id="l-t2">IA</span></div>
       <div class="ht-item"><span class="ht-dot"></span><span id="l-t7">Español</span></div>
-<div class="ht-item"><span class="ht-dot"></span><span id="l-t4">Live Tracking</span></div>
+<div class="ht-item"><span class="ht-dot"></span><span id="l-t4">Seguimiento</span></div>
     </div>
-    <p id="l-disc" style="margin:14px 0 0;font-size:.72rem;color:rgba(255,255,255,.5);font-family:Inter,sans-serif">ComplaintCA is an independent platform. It is not a government agency.</p>
+    <p id="l-disc" style="margin:14px 0 0;font-size:.72rem;color:rgba(255,255,255,.5);font-family:Inter,sans-serif">Complaint CA España es una plataforma independiente. No es un organismo público. · <a href="/es/privacidad.html" style="color:inherit">Privacidad</a> · <a href="/es/terminos.html" style="color:inherit">Términos</a></p>
   </section>
 </div>
 <!-- APP -->
@@ -854,11 +854,11 @@ body{background:#140a0c}
   <div class="nav-tabs">
     <div class="nav-inner">
       <div class="nav-tab active" tabindex="0" role="button" id="tab-new" onclick="ccFileTab()" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-new-lbl">File</span></div>
-      <div class="nav-tab" tabindex="0" role="button" id="tab-feed" hidden onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Havuz</span></div>
+      <div class="nav-tab" tabindex="0" role="button" id="tab-feed" hidden onclick="showTab('feed')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-feed-lbl">Bolsa</span></div>
       <div class="nav-tab" tabindex="0" role="button" id="tab-track" onclick="showTab('track')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-track-lbl">Track</span></div>
-      <div class="nav-tab" tabindex="0" role="button" id="tab-lawyer" onclick="showTab('lawyer')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-lawyer-lbl">Lawyer</span></div>
-      <div class="nav-tab" tabindex="0" role="button" id="tab-cyber" onclick="showTab('cyber')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-cyber-lbl">Cyber</span></div>
-      <div class="nav-tab" tabindex="0" role="button" id="tab-verify" onclick="showTab('verify')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-verify-lbl">Verify</span></div>
+      <div class="nav-tab" tabindex="0" role="button" id="tab-lawyer" onclick="showTab('lawyer')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-lawyer-lbl">Abogado</span></div>
+      <div class="nav-tab" tabindex="0" role="button" id="tab-cyber" onclick="showTab('cyber')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-cyber-lbl">Cibercrim.</span></div>
+      <div class="nav-tab" tabindex="0" role="button" id="tab-verify" onclick="showTab('verify')" style="white-space:nowrap;min-width:0;flex:1"> <span id="tab-verify-lbl">Verificar</span></div>
     </div>
   </div>
 
@@ -876,29 +876,29 @@ body{background:#140a0c}
             <div style="display:flex;align-items:center;gap:8px">
               <div class="ci">I</div>
               <div>
-                <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:.78rem;font-weight:700;color:var(--text);letter-spacing:.5px" id="a-who">About You</div>
-                <div style="font-size:.68rem;color:var(--muted);margin-top:1px" id="a-anon-s">Your identity will not be shared</div>
+                <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:.78rem;font-weight:700;color:var(--text);letter-spacing:.5px" id="a-who">Sobre usted</div>
+                <div style="font-size:.68rem;color:var(--muted);margin-top:1px" id="a-anon-s">Su identidad no será compartida</div>
               </div>
             </div>
             <div style="display:flex;align-items:center;gap:8px">
-              <span style="font-size:.68rem;color:var(--sub);font-weight:600" id="a-anon-l">Anonymous</span>
+              <span style="font-size:.68rem;color:var(--sub);font-weight:600" id="a-anon-l">Enviar anónimamente</span>
               <div class="tog on" tabindex="0" role="button" id="anon-tog" onclick="toggleAnon()"></div>
             </div>
           </div>
           <div id="email-required-field" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-            <label id="a-lemail" style="margin-bottom:4px">Email</label>
+            <label id="a-lemail" style="margin-bottom:4px">Correo electrónico</label>
             <input type="email" id="inp-email" placeholder="usted@correo.es" style="margin-bottom:0">
-            <div style="font-size:.65rem;color:var(--muted);margin-top:4px" id="a-anon-email-note">Obligatorio incluso en quejas anónimas: solo se usa para verificar, nunca se comparte con la institución.</div>
+            <div style="font-size:.65rem;color:var(--muted);margin-top:4px" id="a-anon-email-note">Obligatorio incluso para informes anónimos: solo se usa para verificación, nunca se comparte con la institución.</div>
           </div>
           <div id="id-fields" style="display:none;margin-top:10px">
-            <div><label id="a-lname" style="margin-bottom:4px">Full Name</label><input type="text" id="inp-name" placeholder="..." style="margin-bottom:8px"></div>
+            <div><label id="a-lname" style="margin-bottom:4px">Nombre Completo</label><input type="text" id="inp-name" placeholder="..." style="margin-bottom:8px"></div>
             <input type="tel" id="inp-phone" placeholder="+34 600 000 000" style="margin-bottom:0">
           </div>
         </div>
 
         <div class="card" style="padding:0;overflow:hidden;margin-top:12px">
           <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-            <div class="ct" style="margin-bottom:0"><div class="ci">II</div><span id="a-comp">Complaint</span></div>
+            <div class="ct" style="margin-bottom:0"><div class="ci">II</div><span id="a-comp">Queja</span></div>
             <span id="char-cnt" style="font-size:.68rem;color:var(--muted);font-weight:500">0 / 1000</span>
           </div>
           <input type="text" id="inp-title" placeholder="Título..." style="border:none;border-bottom:1px solid var(--border);border-radius:0;padding:12px 16px;font-size:.88rem;font-weight:600;color:var(--text);margin-bottom:0;background:var(--surface)">
@@ -907,32 +907,32 @@ body{background:#140a0c}
           <div id="ai-cat-strip" style="display:none;margin:0 16px 12px"></div>
           <!-- COMPLAINT TYPE -->
           <div style="margin-bottom:14px">
-            <label id="ctype-section-lbl" style="margin-bottom:8px">Complaint Type</label>
+            <label id="ctype-section-lbl" style="margin-bottom:8px">Tipo de Queja</label>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
               <div class="ctype-btn active" tabindex="0" role="button" id="ctype-notice" onclick="selCtype('notice',this)">
                 <div style="font-size:1rem;margin-bottom:4px">📢</div>
-                <div id="ctype-notice-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Notify Institution</div>
-                <div id="ctype-notice-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Formally report the issue and request resolution</div>
+                <div id="ctype-notice-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Notificar a la Institución</div>
+                <div id="ctype-notice-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Reportar formalmente el problema y solicitar una resolución</div>
               </div>
               <div class="ctype-btn" tabindex="0" role="button" id="ctype-legal" onclick="selCtype('legal',this)">
                 <div style="font-size:1rem;margin-bottom:4px">⚖️</div>
-                <div id="ctype-legal-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Assert Legal Rights</div>
-                <div id="ctype-legal-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Notify of legal action & compensation rights</div>
+                <div id="ctype-legal-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Reclamar Derechos Legales</div>
+                <div id="ctype-legal-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Notificar acción legal y derechos de compensación</div>
               </div>
             </div>
             <div class="ctype-btn" tabindex="0" role="button" id="ctype-access" onclick="selCtype('access',this)" style="width:100%;margin-top:8px">
               <div style="font-size:1rem;margin-bottom:4px">📄</div>
-              <div id="ctype-access-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Access to Information Request</div>
-              <div id="ctype-access-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Request records or information from an institution</div>
+              <div id="ctype-access-lbl" style="font-size:.75rem;font-weight:700;color:var(--text)">Solicitud de Acceso a la Información</div>
+              <div id="ctype-access-desc" style="font-size:.65rem;color:var(--muted);margin-top:3px;line-height:1.4">Solicitar documentos o información a una institución</div>
             </div>
             <div id="ctype-legal-note" style="display:none;margin-top:10px;background:rgba(154,77,232,.10);border:1px solid #c893fd;border-radius:10px;padding:12px 14px;font-size:.72rem;color:var(--sub);line-height:1.55">
-              ⚖️ <span id="ctype-legal-note-txt">This goes to our <b>Open Case Feed</b> for signed-in partner lawyers only — it is not published to the public feed. If you'd like a lawyer to review your case and discuss representing you, this is how they'll find it.</span>
+              ⚖️ <span id="ctype-legal-note-txt">Le mostraremos <b>abogados gratuitos y ONG</b> de su comunidad autónoma según su caso. Sus datos no se comparten con nadie salvo que usted lo decida.</span>
             </div>
             <div id="ctype-access-note" style="display:none;margin-top:10px;background:rgba(207,177,231,.10);border:1px solid rgba(207,177,231,.4);border-radius:10px;padding:12px 14px;font-size:.72rem;color:var(--sub);line-height:1.55">
-              📄 <span id="ctype-access-note-txt">This request is processed under Access to Information / Freedom of Information law — a different legal process than a complaint. Institutions are usually required to respond within a set number of days, and you don't need to give a reason for the request. A real name and contact are required so the institution can respond to you.</span>
+              📄 <span id="ctype-access-note-txt">Esta solicitud se procesa bajo la ley de Acceso a la Información / Libertad de Información — un proceso legal distinto de una queja. Las instituciones generalmente deben responder dentro de un plazo determinado, y no necesita dar un motivo para la solicitud. Se requiere un nombre real y datos de contacto para que la institución pueda responderle.</span>
             </div>
           </div>
-          <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Improve with AI</button>
+          <button class="ai-btn" id="ai-btn" onclick="runAI()">✨ Mejorar con IA</button>
         </div>
         <div id="s1-note" style="display:none;font-size:.75rem;color:#c8102e;background:rgba(240,87,106,.12);border:1px solid #c8102e;border-radius:8px;padding:8px 12px;margin-top:12px;text-align:center"></div>
         <button onclick="newValidateStep1()" style="width:100%;background:linear-gradient(135deg,var(--blue),var(--navy));color:white;border:none;border-radius:var(--radius);padding:13px;font-size:.82rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;letter-spacing:.5px;margin-top:12px">Siguiente →</button>
@@ -943,28 +943,28 @@ body{background:#140a0c}
 
         <div id="new-step-2" style="display:none">
         <div class="card">
-          <div class="ct"><div class="ci">III</div><span id="a-target">Who is this about?</span></div>
+          <div class="ct"><div class="ci">III</div><span id="a-target">¿A quién va dirigida?</span></div>
           <div class="tgt-chips" id="tgt-grid">
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="business" onclick="selTarget(this)"><span>🏪</span><span id="a-tbiz">Business</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="municipality" onclick="selTarget(this)"><span>🏛️</span><span id="a-tmun">Municipality</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="government" onclick="selTarget(this)"><span>🏢</span><span id="a-tgov">Government agency</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="school" onclick="selTarget(this)"><span>🏫</span><span id="a-tsch">School</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="health" onclick="selTarget(this)"><span>🏥</span><span id="a-thlth">Health care</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="landlord" onclick="selTarget(this)"><span>🏠</span><span id="a-tland">Landlord</span></div>
-            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="other" onclick="selTarget(this)"><span>•••</span><span id="a-tother">Other</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="business" onclick="selTarget(this)"><span>🏪</span><span id="a-tbiz">Empresa</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="municipality" onclick="selTarget(this)"><span>🏛️</span><span id="a-tmun">Municipio</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="government" onclick="selTarget(this)"><span>🏢</span><span id="a-tgov">Organismo público</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="school" onclick="selTarget(this)"><span>🏫</span><span id="a-tsch">Escuela</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="health" onclick="selTarget(this)"><span>🏥</span><span id="a-thlth">Salud</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="landlord" onclick="selTarget(this)"><span>🏠</span><span id="a-tland">Propietario</span></div>
+            <div class="group-card tgt-chip" tabindex="0" role="button" data-val="other" onclick="selTarget(this)"><span>•••</span><span id="a-tother">Otro</span></div>
           </div>
-          <label id="a-tname-l" for="inp-tname" style="margin-bottom:4px">Institution / Company Name</label>
+          <label id="a-tname-l" for="inp-tname" style="margin-bottom:4px">Nombre de institución/empresa</label>
           <div class="loc-wrap" style="margin-bottom:10px">
             <input type="text" id="inp-tname" list="es-company-list" placeholder="p. ej. Mercadona, ayuntamiento, instituto" oninput="_tgtDebounce();if(typeof _refreshAuthBox==='function')_refreshAuthBox()" autocomplete="off" maxlength="160" style="margin-bottom:0">
             <div class="loc-dropdown" id="tgt-dropdown"></div>
           </div>
-          <label id="a-taddr-l" for="inp-taddr" style="margin-bottom:4px">Their address</label>
+          <label id="a-taddr-l" for="inp-taddr" style="margin-bottom:4px">Su dirección</label>
           <input type="text" id="inp-taddr" placeholder="Street, city, province" autocomplete="off" maxlength="240" style="margin-bottom:4px">
-          <div id="a-thint" style="font-size:.66rem;color:var(--muted)">Pick from the suggestions to fill in the address automatically.</div>
+          <div id="a-thint" style="font-size:.66rem;color:var(--muted)">Elija una sugerencia para completar la dirección automáticamente.</div>
         </div>
 
         <div class="card">
-          <div class="ct"><div class="ci">IV</div><span id="a-loc">Location</span></div>
+          <div class="ct"><div class="ci">IV</div><span id="a-loc">Ubicación</span></div>
           <div class="lbar">
             <div class="loc-wrap">
               <input type="text" id="inp-loc" placeholder="Enter address..." oninput="_locDebounce()" autocomplete="off" style="margin-bottom:0">
@@ -985,11 +985,11 @@ body{background:#140a0c}
         </div>
 
         <div class="card" style="padding:14px 20px;margin-top:12px">
-          <div class="ct" style="margin-bottom:10px"><div class="ci">V</div><span id="a-media">Evidence</span></div>
+          <div class="ct" style="margin-bottom:10px"><div class="ci">V</div><span id="a-media">Evidencia</span></div>
           <div id="pgrid" class="pgrid" style="margin-bottom:6px"></div>
           <label style="display:flex;align-items:center;gap:10px;background:var(--off);border:1.5px dashed var(--border);border-radius:10px;padding:10px 14px;cursor:pointer;margin-bottom:0;text-transform:none;font-size:.82rem;color:var(--sub);font-weight:500" onclick="document.getElementById('photo-input').click()">
             <span style="font-size:1.1rem">📎</span>
-            <span id="a-mlab">Add photos or videos</span>
+            <span id="a-mlab">Agregar fotos o videos</span>
             <span id="photo-count" style="margin-left:auto;font-size:.72rem;color:var(--muted);font-weight:400">0 / 10</span>
           </label>
           <input type="file" id="photo-input" accept="image/*,video/*" multiple onchange="addPhotos(this)">
@@ -998,9 +998,9 @@ body{background:#140a0c}
         <div style="margin-bottom:14px">
           <div class="trow" style="border-bottom:none;padding:12px 0 8px">
             <div>
-              <div id="legal-title-lbl" style="font-size:.82rem;color:var(--text);font-weight:600">I ACCEPT FULL LEGAL RESPONSIBILITY.</div>
+              <div id="legal-title-lbl" style="font-size:.82rem;color:var(--text);font-weight:600">ACEPTO PLENA RESPONSABILIDAD LEGAL.</div>
               <div style="font-size:.72rem;color:var(--muted);margin-top:2px">
-                <span id="legal-see-lbl" onclick="var d=document.getElementById('legal-details');d.style.display=(d.style.display==='none'?'block':'none');" style="color:var(--blue);text-decoration:underline;cursor:pointer">(See Agreement)</span>
+                <span id="legal-see-lbl" onclick="var d=document.getElementById('legal-details');d.style.display=(d.style.display==='none'?'block':'none');" style="color:var(--blue);text-decoration:underline;cursor:pointer">(Ver Acuerdo)</span>
               </div>
             </div>
             <div class="tog" tabindex="0" role="button" id="legal-tog" onclick="toggleLegal(this)"></div>
@@ -1009,42 +1009,40 @@ body{background:#140a0c}
         </div>
         <div id="a-note" style="font-size:.72rem;color:var(--muted);text-align:center;margin:0 0 10px;transition:color .2s"></div>
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenNew" data-error-callback="_tsErrorNew" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
-        <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Submit Complaint</button>
+        <button class="sbtn" id="sub-btn" onclick="doSubmit()" style="opacity:.5;cursor:not-allowed">Enviar Queja</button>
         </div>
       </div>
       <div class="scs" id="scs-screen">
         <div class="sci">✅</div>
-        <div class="sct" id="a-suct">Complaint Submitted</div>
-        <div class="scs-sub" id="a-sucs">Your complaint has been received. Use your reference number to track its status.</div>
+        <div class="sct" id="a-suct">¡Queja enviada con éxito!</div>
+        <div class="scs-sub" id="a-sucs">Su queja ha sido recibida.</div>
         <div class="refno" id="ref-disp"></div>
         <div id="sync-note" style="display:none;font-size:.75rem;padding:10px 14px;border-radius:10px;margin:10px 0;text-align:left"></div>
         <div id="email-status" style="display:none;font-size:.78rem;margin:8px 0;padding:10px;border-radius:8px"></div>
         <div id="chain-success" style="display:none;text-align:left;background:var(--ice);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin:12px 0"></div>
 
-        <div style="background:var(--off);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.75rem;color:var(--sub);line-height:1.6;text-align:left" id="suc-save-note">
-          Save your reference number to track your complaint status in the <strong style="color:var(--text)">"Track My Complaint"</strong> section.
-        </div>
+        <div style="background:var(--off);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:.75rem;color:var(--sub);line-height:1.6;text-align:left" id="suc-save-note">Guarde su número de referencia para seguir el estado de su queja en la sección <strong style="color:var(--text)">"Rastrear mi queja"</strong>.</div>
         <br>
-        <button onclick="mvOpen(document.getElementById('ref-disp')?document.getElementById('ref-disp').textContent:'')" id="suc-mv-btn" style="width:100%;background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:13px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">🏛️ Milletvekiline İlet</button>
-        <button class="newbtn" onclick="resetForm()" id="a-sucn">Submit Another</button>
+        <button onclick="mvOpen(document.getElementById('ref-disp')?document.getElementById('ref-disp').textContent:'')" id="suc-mv-btn" style="width:100%;background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:13px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">🏛️ Enviar a mis representantes</button>
+        <button class="newbtn" onclick="resetForm()" id="a-sucn">Nueva queja</button>
       </div>
     </div>
     <div id="view-track" style="display:none">
 
       <!-- AUTH TABS -->
       <div style="display:flex;border-bottom:2px solid var(--border);margin-bottom:20px">
-        <button id="auth-tab-ref" onclick="switchAuthTab('ref')" style="flex:1;padding:12px;background:none;border:none;font-family:Cinzel,serif;text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--blue);border-bottom:2px solid var(--blue);margin-bottom:-2px;cursor:pointer">Reference No.</button>
-        <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:12px;background:none;border:none;font-family:Cinzel,serif;text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer">Sign In</button>
+        <button id="auth-tab-ref" onclick="switchAuthTab('ref')" style="flex:1;padding:12px;background:none;border:none;font-family:Cinzel,serif;text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--blue);border-bottom:2px solid var(--blue);margin-bottom:-2px;cursor:pointer">N.º de referencia</button>
+        <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:12px;background:none;border:none;font-family:Cinzel,serif;text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer">Iniciar sesión</button>
       </div>
 
       <!-- REF SEARCH -->
       <div id="auth-panel-ref">
         <div class="card">
-          <div class="ct"><div class="ci">🔍</div><span id="trk-card-t">Track by Reference</span></div>
-          <label id="trk-ref-lbl">Reference Number</label>
+          <div class="ct"><div class="ci">🔍</div><span id="trk-card-t">Seguir por referencia</span></div>
+          <label id="trk-ref-lbl">Número de referencia</label>
           <div class="tsearch">
             <input type="text" id="trk-inp" placeholder="VC-2026-XXXXXX" style="margin-bottom:0;text-transform:uppercase">
-            <button onclick="doTrack()" id="a-trkb" style="white-space:nowrap">Track</button>
+            <button onclick="doTrack()" id="a-trkb" style="white-space:nowrap">Rastrear</button>
           </div>
         </div>
         <div id="trk-result"></div>
@@ -1052,14 +1050,14 @@ body{background:#140a0c}
 
         <!-- MİLLETVEKİLİ BUL -->
         <div class="card" style="margin-top:16px;background:linear-gradient(135deg,rgba(154,77,232,.08),rgba(154,77,232,.06));border:1.5px solid var(--border)">
-          <div class="ct"><div class="ci">🏛️</div><span id="mv-card-t">Temsilcinize Ulaşın</span></div>
-          <div id="mv-card-s" style="font-size:.78rem;color:var(--sub);line-height:1.5;margin-bottom:12px">Şikayetiniz çözülmediyse, bölgenizin milletvekiline (MP / MPP) ileterek baskı oluşturabilirsiniz.</div>
-          <button id="mv-card-btn" onclick="mvOpen(document.getElementById('trk-inp')?document.getElementById('trk-inp').value:'')" style="width:100%;background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:13px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px">🔎 Milletvekili Bul</button>
+          <div class="ct"><div class="ci">🏛️</div><span id="mv-card-t">Contacte con sus representantes</span></div>
+          <div id="mv-card-s" style="font-size:.78rem;color:var(--sub);line-height:1.5;margin-bottom:12px">Si su queja no se resuelve, puede elevarla a los diputados de su provincia o al Defensor del Pueblo.</div>
+          <button id="mv-card-btn" onclick="mvOpen(document.getElementById('trk-inp')?document.getElementById('trk-inp').value:'')" style="width:100%;background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:13px;font-size:.85rem;font-weight:700;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px">🔎 Buscar representantes</button>
         </div>
 
         <!-- PUBLIC FEED -->
         <div class="card" id="trk-feed-card" style="margin-top:16px">
-          <div class="ct"><div class="ci">🌍</div><span id="feed-card-t">Son Şikayetler (Canlı Akış)</span></div>
+          <div class="ct"><div class="ci">🌍</div><span id="feed-card-t">Quejas recientes (en directo)</span></div>
           <div id="trk-complaint-feed"><div class="empty">Yükleniyor...</div></div>
         </div>
       </div>
@@ -1087,24 +1085,24 @@ body{background:#140a0c}
         <!-- Shown when the user is NOT signed in (the login form + Google). -->
         <div id="login-guest-block">
         <div class="card">
-          <div class="ct"><div class="ci">🔐</div><span id="si-title">Sign In</span></div>
+          <div class="ct"><div class="ci">🔐</div><span id="si-title">Iniciar sesión</span></div>
           <div id="login-status" style="display:none;font-size:.75rem;padding:8px 12px;border-radius:8px;margin-bottom:12px"></div>
-          <label id="si-email-lbl">Email</label>
+          <label id="si-email-lbl">Correo electrónico</label>
           <input type="email" id="li-email" placeholder="usted@correo.es">
-          <label id="si-pass-lbl">Password</label>
+          <label id="si-pass-lbl">Contraseña</label>
           <input type="password" id="li-pass" placeholder="••••••••">
-          <button onclick="doLogin()" class="sbtn" id="si-btn" style="margin-bottom:0">Sign In</button>
+          <button onclick="doLogin()" class="sbtn" id="si-btn" style="margin-bottom:0">Entrar</button>
         </div><div class="or-sep" style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
 <button onclick="doGoogleSignIn(this)" id="google-si-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#fff;border:1.5px solid #dadce0;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;color:#3c4043;cursor:pointer">
   <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.96 10.7c-.18-.54-.29-1.11-.29-1.7s.11-1.16.29-1.7V4.96H.96C.35 6.18 0 7.55 0 9s.35 2.82.96 4.04l3-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l3 2.34C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
-  <span id="google-si-label">Sign in with Google</span>
+  <span id="google-si-label">Entrar con Google</span>
 </button>
         <div style="text-align:center;margin-top:16px;font-size:.78rem;color:var(--muted)">
           Hesabın yok mu? <a onclick="switchAuthTab('signup')" style="color:var(--blue);font-weight:600;cursor:pointer">Hesap oluştur</a>
         </div>
         </div><!-- /login-guest-block -->
         <div id="user-complaints" style="display:none">
-          <div class="ct" style="padding:0 4px;margin:16px 0 10px"><div class="ci">📋</div><span id="my-complaints-t">My Complaints</span></div>
+          <div class="ct" style="padding:0 4px;margin:16px 0 10px"><div class="ci">📋</div><span id="my-complaints-t">Mis quejas</span></div>
           <div id="user-complaint-list"></div>
         </div>
       </div>
@@ -1112,16 +1110,16 @@ body{background:#140a0c}
       <!-- REGISTER -->
       <div id="auth-panel-signup" style="display:none">
         <div class="card">
-          <div class="ct"><div class="ci">✦</div><span id="su-title">Create Account</span></div>
+          <div class="ct"><div class="ci">✦</div><span id="su-title">Crear cuenta</span></div>
           <div id="signup-status" style="display:none;font-size:.75rem;padding:8px 12px;border-radius:8px;margin-bottom:12px"></div>
-          <label id="su-name-lbl">Full Name</label>
+          <label id="su-name-lbl">Nombre completo</label>
           <input type="text" id="su-name" placeholder="María García">
-          <label id="su-email-lbl">Email</label>
+          <label id="su-email-lbl">Correo electrónico</label>
           <input type="email" id="su-email" placeholder="usted@correo.es">
-          <label id="su-pass-lbl">Password</label>
+          <label id="su-pass-lbl">Contraseña</label>
           <input type="password" id="su-pass" placeholder="Mín. 6 caracteres">
-<button onclick="doSignup()" class="sbtn" id="su-btn" style="margin-bottom:0">Create Free Account</button>
-          <div id="su-free" style="text-align:center;margin-top:12px;font-size:.72rem;color:var(--muted)">Free forever · No credit card needed</div>
+<button onclick="doSignup()" class="sbtn" id="su-btn" style="margin-bottom:0">Crear cuenta gratis</button>
+          <div id="su-free" style="text-align:center;margin-top:12px;font-size:.72rem;color:var(--muted)">Gratis para siempre · Sin tarjeta</div>
         </div><div class="or-sep" style="text-align:center;margin:14px 0;color:var(--muted);font-size:.72rem">— or —</div>
 <button onclick="doGoogleSignIn(this)" id="google-su-btn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#fff;border:1.5px solid #dadce0;border-radius:8px;font-family:inherit;font-size:.85rem;font-weight:600;color:#3c4043;cursor:pointer">
   <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84c-.21 1.13-.84 2.09-1.8 2.73v2.27h2.91c1.7-1.57 2.69-3.88 2.69-6.64z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.27c-.81.54-1.84.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34C2.44 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.96 10.7c-.18-.54-.29-1.11-.29-1.7s.11-1.16.29-1.7V4.96H.96C.35 6.18 0 7.55 0 9s.35 2.82.96 4.04l3-2.34z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l3 2.34C4.67 5.16 6.66 3.58 9 3.58z"/></svg>
@@ -1137,9 +1135,9 @@ body{background:#140a0c}
     <!-- FIND A LAWYER -->
     <div id="view-lawyer" style="display:none">
       <div style="background:linear-gradient(135deg,#520f47,#851aa0);border-radius:14px;padding:20px 18px;margin-bottom:16px">
-        <div id="lw-eyebrow" style="font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;color:rgba(207,177,231,.9);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">⚖️ LEGAL REFERRAL</div>
-        <div id="lw-title" style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.05rem;font-weight:700;color:white;margin-bottom:6px">Find a Lawyer in Canada</div>
-        <div id="lw-sub" style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6">Official referral services by province. Licensed, verified Canadian lawyers.</div>
+        <div id="lw-eyebrow" style="font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;color:rgba(207,177,231,.9);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">ASISTENCIA JURÍDICA</div>
+        <div id="lw-title" style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.05rem;font-weight:700;color:white;margin-bottom:6px">Encontrar Abogado Gratis en España</div>
+        <div id="lw-sub" style="font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6">Justicia gratuita, Defensores del Pueblo y ONG por comunidad autónoma.</div>
       </div>
 
       <!-- STEP PROGRESS -->
@@ -1151,7 +1149,7 @@ body{background:#140a0c}
 
       <div id="lw-step-1">
       <div class="card" style="margin-bottom:16px">
-        <div class="ct"><div class="ci" style="background:rgba(207,177,231,.12);color:#cfb0e8;border-color:rgba(207,177,231,.25)">I</div><span id="lw-step1-title">Province</span></div>
+        <div class="ct"><div class="ci" style="background:rgba(207,177,231,.12);color:#cfb0e8;border-color:rgba(207,177,231,.25)">I</div><span id="lw-step1-title">Comunidad Autónoma</span></div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px" id="lw-provs">
           <div class="lw-prov" tabindex="0" role="button" data-prov="madrid" onclick="selLwProv('madrid',this)" style="border:1.5px solid var(--blue);background:var(--ice);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--blue);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Madrid</div>
           <div class="lw-prov" tabindex="0" role="button" data-prov="cataluna" onclick="selLwProv('cataluna',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:8px 4px;text-align:center;cursor:pointer;font-size:.68rem;font-weight:700;color:var(--sub);font-family:'Cinzel',serif;text-transform:uppercase;transition:all .2s">Cataluña</div>
@@ -1179,15 +1177,15 @@ body{background:#140a0c}
 
       <div id="lw-step-2" style="display:none">
       <div class="card" style="margin-bottom:16px">
-        <div class="ct"><div class="ci" style="background:rgba(207,177,231,.12);color:#cfb0e8;border-color:rgba(207,177,231,.25)">II</div><span id="lw-step2-title">Practice Area</span></div>
+        <div class="ct"><div class="ci" style="background:rgba(207,177,231,.12);color:#cfb0e8;border-color:rgba(207,177,231,.25)">II</div><span id="lw-step2-title">Área</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px" id="lw-areas">
-          <div class="lw-area" tabindex="0" role="button" data-area="tenant" onclick="selLwArea('tenant',this)" style="border:1.5px solid var(--blue);background:var(--ice);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🏠</span><div><div id="ar-tenant-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Tenant / LTB</div><div id="ar-tenant-s" style="font-size:.62rem;color:var(--muted)">Eviction, repairs</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="employment" onclick="selLwArea('employment',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">💼</span><div><div id="ar-employment-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Employment</div><div id="ar-employment-s" style="font-size:.62rem;color:var(--muted)">Wrongful dismissal</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="humanrights" onclick="selLwArea('humanrights',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">✊</span><div><div id="ar-humanrights-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Human Rights</div><div id="ar-humanrights-s" style="font-size:.62rem;color:var(--muted)">HRTO, discrimination</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="immigration" onclick="selLwArea('immigration',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🛂</span><div><div id="ar-immigration-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Immigration</div><div id="ar-immigration-s" style="font-size:.62rem;color:var(--muted)">PR, visa, refugee</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="criminal" onclick="selLwArea('criminal',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">⚖️</span><div><div id="ar-criminal-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Criminal</div><div id="ar-criminal-s" style="font-size:.62rem;color:var(--muted)">Defence, charges</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="family" onclick="selLwArea('family',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">👨‍👩‍👧</span><div><div id="ar-family-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Family Law</div><div id="ar-family-s" style="font-size:.62rem;color:var(--muted)">Divorce, custody</div></div></div>
-          <div class="lw-area" tabindex="0" role="button" data-area="consumer" onclick="selLwArea('consumer',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🛒</span><div><div id="ar-consumer-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-consumer:'Cinzel',serif;text-transform:uppercase;">Consumer</div><div id="ar-consumer-s" style="font-size:.62rem;color:var(--muted)">Banks, purchases</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="tenant" onclick="selLwArea('tenant',this)" style="border:1.5px solid var(--blue);background:var(--ice);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🏠</span><div><div id="ar-tenant-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Vivienda / Alquiler</div><div id="ar-tenant-s" style="font-size:.62rem;color:var(--muted)">Desahucios, hipotecas</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="employment" onclick="selLwArea('employment',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">💼</span><div><div id="ar-employment-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Laboral</div><div id="ar-employment-s" style="font-size:.62rem;color:var(--muted)">Despidos, salarios</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="humanrights" onclick="selLwArea('humanrights',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">✊</span><div><div id="ar-humanrights-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Derechos Humanos</div><div id="ar-humanrights-s" style="font-size:.62rem;color:var(--muted)">Discriminación, Defensor</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="immigration" onclick="selLwArea('immigration',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🛂</span><div><div id="ar-immigration-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Extranjería</div><div id="ar-immigration-s" style="font-size:.62rem;color:var(--muted)">Asilo, residencia</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="criminal" onclick="selLwArea('criminal',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">⚖️</span><div><div id="ar-criminal-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Penal</div><div id="ar-criminal-s" style="font-size:.62rem;color:var(--muted)">Víctimas, defensa</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="family" onclick="selLwArea('family',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">👨‍👩‍👧</span><div><div id="ar-family-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;">Familia</div><div id="ar-family-s" style="font-size:.62rem;color:var(--muted)">Violencia, menores</div></div></div>
+          <div class="lw-area" tabindex="0" role="button" data-area="consumer" onclick="selLwArea('consumer',this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:9px;padding:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px"><span style="font-size:1rem">🛒</span><div><div id="ar-consumer-t" style="font-size:.7rem;font-weight:700;color:var(--text);font-consumer:'Cinzel',serif;text-transform:uppercase;">Consumo</div><div id="ar-consumer-s" style="font-size:.62rem;color:var(--muted)">Bancos, compras</div></div></div>
         </div>
       </div>
       <div style="display:flex;gap:8px">
@@ -1202,8 +1200,8 @@ body{background:#140a0c}
       <div style="margin-top:16px;background:linear-gradient(135deg,#520f47,#851aa0);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goApp('lawyerpanel')">
         <div style="font-size:1.4rem">⚖️</div>
         <div style="flex:1">
-          <div style="font-family:Cinzel,serif;text-transform:uppercase;font-size:.8rem;font-weight:700;color:white" id="lw-panel-cta-t">Are you a lawyer?</div>
-          <div style="font-size:.7rem;color:rgba(255,255,255,.65)" id="lw-panel-cta-s">Browse the open case feed →</div>
+          <div style="font-family:Cinzel,serif;text-transform:uppercase;font-size:.8rem;font-weight:700;color:white" id="lw-panel-cta-t">¿Es usted abogado?</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.65)" id="lw-panel-cta-s">Explore el feed de casos abiertos →</div>
         </div>
       </div>
       <button onclick="lwGoStep(2)" style="width:100%;background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:var(--radius);padding:11px;font-size:.78rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;margin-top:12px">← Atrás</button>
@@ -1213,19 +1211,19 @@ body{background:#140a0c}
     <!-- LAWYER PANEL (case feed for legal professionals) -->
     <div id="view-lawyerpanel" style="display:none">
       <div class="lex-banner">
-        <div class="lex-eyebrow" id="lwp-eyebrow">⚖️ FOR LEGAL PROFESSIONALS</div>
-        <div class="lex-title" id="lwp-title">Open Case Feed</div>
-        <div class="lex-sub" id="lwp-sub">Browse anonymized complaints in real time. Full contact details are available to Partner Lawyers.</div>
+        <div class="lex-eyebrow" id="lwp-eyebrow">⚖️ PARA PROFESIONALES LEGALES</div>
+        <div class="lex-title" id="lwp-title">La Bolsa de Casos</div>
+        <div class="lex-sub" id="lwp-sub">Explore quejas anonimizadas en tiempo real. Los detalles de contacto completos están disponibles para Abogados Socios.</div>
         <div class="lex-partner-badge" id="lwp-partner-badge" style="display:none">✓ Partner Avukat</div>
         <div class="lex-rule"></div>
       </div>
       <div class="lex-updates" id="lwp-updates-box" style="display:none">
-        <div class="lex-updates-title" id="lwp-updates-title">📅 This Month's Legal Updates</div>
-        <div class="lex-updates-sub" id="lwp-updates-sub">Law changes and key developments relevant to open cases, compiled for Partner Lawyers.</div>
+        <div class="lex-updates-title" id="lwp-updates-title">📅 Actualizaciones Legales de Este Mes</div>
+        <div class="lex-updates-sub" id="lwp-updates-sub">Cambios legales y novedades relevantes para los casos abiertos, recopilados para Abogados Socios.</div>
         <div id="lwp-updates-list"></div>
       </div>
       <div class="lex-ledger" id="lwp-ledger" style="display:none">
-        <div class="lex-ledger-pill"><span class="lex-ledger-ico">📋</span><div><div class="n" id="lwp-ledger-n">0</div><div class="l" id="lwp-ledger-l">Open Cases</div></div></div>
+        <div class="lex-ledger-pill"><span class="lex-ledger-ico">📋</span><div><div class="n" id="lwp-ledger-n">0</div><div class="l" id="lwp-ledger-l">Casos Abiertos</div></div></div>
       </div>
       <div class="lex-stats" id="lwp-stats-box" style="display:none">
         <label class="lex-filter"><select id="lwp-filter" aria-label="Categoría"></select><span class="lex-fchev">⌄</span></label>
@@ -1233,8 +1231,8 @@ body{background:#140a0c}
       <div id="lawyer-panel-feed"></div>
       <div class="lex-notices" id="lwp-notices" style="display:none"><div class="lex-notices-h" id="lwp-notices-h"></div><div id="lwp-notices-list"></div></div>
       <div class="lex-partner" id="lwp-partner-box">
-        <div class="lex-partner-text" id="lwp-partner-text">Want full contact details on these cases? Partner Lawyer access is available for a flat monthly fee — unrelated to case outcome.</div>
-        <a href="mailto:complaintcaca@gmail.com?subject=Partner%20Lawyer%20Access" class="lex-btn" id="lwp-partner-btn">Become a Partner Lawyer</a>
+        <div class="lex-partner-text" id="lwp-partner-text">¿Desea los detalles de contacto completos de estos casos? El acceso de Abogado Socio está disponible por una tarifa mensual fija — sin relación con el resultado del caso.</div>
+        <a href="mailto:complaintcaca@gmail.com?subject=Partner%20Lawyer%20Access" class="lex-btn" id="lwp-partner-btn">Conviértase en Abogado Socio</a>
       </div>
     </div>
 
@@ -1244,7 +1242,7 @@ body{background:#140a0c}
       <div style="background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:14px;padding:22px 18px;margin-bottom:16px">
         <div style="font-family:'Cinzel',serif;font-size:.62rem;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px">DENUNCIA DE DELITOS EN LÍNEA</div>
           <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.1rem;font-weight:700;color:white;margin-bottom:6px">Reportar un Ciberdelito</div>
-          <div style="font-size:.73rem;color:rgba(255,255,255,.7);line-height:1.65" id="cy-banner-sub">Report harassment, threats, and identity theft. Upload your evidence — we'll email you a reference number and the right Canadian authority to contact.</div>
+          <div style="font-size:.73rem;color:rgba(255,255,255,.7);line-height:1.65" id="cy-banner-sub">Reporte acoso, amenazas y robo de identidad. Suba sus pruebas: le enviaremos un número de referencia y la autoridad española a la que acudir.</div>
       </div>
 
       <!-- STEP PROGRESS -->
@@ -1259,31 +1257,31 @@ body{background:#140a0c}
       <!-- STEP I: CRIME TYPE -->
       <div id="cy-step-1">
       <div class="card">
-        <div class="ct"><div class="ci">I</div><span id="cy-s1-title">What type of offence?</span></div>
+        <div class="ct"><div class="ci">I</div><span id="cy-s1-title">¿Tipo de delito?</span></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <div class="cy-crime sel" tabindex="0" role="button" data-label="Harassment" onclick="selCyberCrime(this)" style="border:1.5px solid var(--blue);background:linear-gradient(160deg,rgba(154,77,232,.12),rgba(154,77,232,.08));border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:rgba(133,26,160,.12);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">😡</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--blue);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c1-t">Harassment</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c1-s">Abusive messages</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--blue);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c1-t">Acoso</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c1-s">Mensajes abusivos</div></div>
           </div>
           <div class="cy-crime" tabindex="0" role="button" data-label="Threats" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🔪</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c2-t">Threats</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c2-s">Physical / death threats</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c2-t">Amenazas</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c2-s">Amenazas físicas/de muerte</div></div>
           </div>
           <div class="cy-crime" tabindex="0" role="button" data-label="Stalking" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">👁️</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c3-t">Stalking</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c3-s">Persistent tracking, messages</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c3-t">Acecho</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c3-s">Seguimiento persistente</div></div>
           </div>
           <div class="cy-crime" tabindex="0" role="button" data-label="Unauthorized Images" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">📸</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c4-t">Unauthorized Images</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c4-s">Photo/video sharing</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c4-t">Imágenes no autorizadas</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c4-s">Fotos/videos compartidos</div></div>
           </div>
           <div class="cy-crime" tabindex="0" role="button" data-label="Fake Profile" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">🎭</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c5-t">Fake Profile</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c5-s">Impersonation, deepfake</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c5-t">Perfil falso</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c5-s">Suplantación, deepfake</div></div>
           </div>
           <div class="cy-crime" tabindex="0" role="button" data-label="Fraud" onclick="selCyberCrime(this)" style="border:1.5px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px">
             <div style="width:32px;height:32px;border-radius:8px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">💳</div>
-            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c6-t">Fraud</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c6-s">Scam, phishing</div></div>
+            <div><div style="font-size:.72rem;font-weight:700;color:var(--text);font-family:'Cinzel',serif;text-transform:uppercase;line-height:1.25;margin-bottom:2px" class="cy-crime-title" id="cy-c6-t">Fraude</div><div style="font-size:.62rem;color:var(--muted);line-height:1.4" id="cy-c6-s">Estafa, phishing</div></div>
           </div>
         </div>
       </div>
@@ -1293,7 +1291,7 @@ body{background:#140a0c}
       <!-- STEP II: PLATFORM -->
       <div id="cy-step-2" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci">II</div><span id="cy-s2-title">Where did it happen?</span></div>
+        <div class="ct"><div class="ci">II</div><span id="cy-s2-title">¿Dónde ocurrió?</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:7px">
           <div class="cy-plat" tabindex="0" role="button" data-platform="Facebook" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📘 Facebook</div>
           <div class="cy-plat" tabindex="0" role="button" data-platform="Instagram" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📸 Instagram</div>
@@ -1303,7 +1301,7 @@ body{background:#140a0c}
           <div class="cy-plat" tabindex="0" role="button" data-platform="Email" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📧 Email</div>
           <div class="cy-plat" tabindex="0" role="button" data-platform="SMS" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📱 SMS</div>
           <div class="cy-plat" tabindex="0" role="button" data-platform="Gaming" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">🎮 Gaming</div>
-          <div class="cy-plat" tabindex="0" role="button" data-platform="Other" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📌 <span id="cy-other-lbl">Other</span></div>
+          <div class="cy-plat" tabindex="0" role="button" data-platform="Other" onclick="this.classList.toggle('cyp-sel')" style="display:flex;align-items:center;gap:6px;border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.72rem;font-weight:600;color:var(--sub);background:var(--surface);transition:all .18s">📌 <span id="cy-other-lbl">Otro</span></div>
         </div>
       </div>
       <div style="display:flex;gap:8px">
@@ -1315,16 +1313,16 @@ body{background:#140a0c}
       <!-- STEP III: EVIDENCE -->
       <div id="cy-step-3" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci">III</div><span id="cy-s3-title">Upload Evidence</span></div>
+        <div class="ct"><div class="ci">III</div><span id="cy-s3-title">Subir evidencia</span></div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px" id="cy-thumb-grid"></div>
         <label style="border:2px dashed var(--border);border-radius:11px;padding:20px;text-align:center;cursor:pointer;display:block;transition:all .2s;background:var(--surface)" id="cy-dropzone" onclick="document.getElementById('cy-file-input').click()">
           <div style="font-size:1.8rem;margin-bottom:8px">📁</div>
-          <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:.75rem;font-weight:700;color:var(--text);margin-bottom:4px" id="cy-drop-title">Drop screenshots here</div>
-          <div style="font-size:.68rem;color:var(--muted);line-height:1.55" id="cy-drop-sub">PNG, JPG, MP4 · Max 10 files<br>Screen recordings also accepted</div>
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(207,177,231,.1);border:1px solid rgba(207,177,231,.3);border-radius:20px;padding:4px 10px;font-size:.62rem;font-weight:700;color:var(--dark-gold);font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.5px;margin-top:8px">🔒 <span id="cy-enc-lbl">ENCRYPTED UPLOAD</span></div>
+          <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:.75rem;font-weight:700;color:var(--text);margin-bottom:4px" id="cy-drop-title">Suelte capturas aquí</div>
+          <div style="font-size:.68rem;color:var(--muted);line-height:1.55" id="cy-drop-sub">PNG, JPG, MP4 · Máx 10 archivos</div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(207,177,231,.1);border:1px solid rgba(207,177,231,.3);border-radius:20px;padding:4px 10px;font-size:.62rem;font-weight:700;color:var(--dark-gold);font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.5px;margin-top:8px">🔒 <span id="cy-enc-lbl">CARGA CIFRADA</span></div>
         </label>
         <input type="file" id="cy-file-input" accept="image/*,video/*" multiple style="display:none" onchange="addCyberPhotos(this)">
-        <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Include offender's username, profile URL, and timestamps in screenshots.</div>
+        <div style="font-size:.68rem;color:var(--muted);line-height:1.55;margin-top:8px" id="cy-tip">💡 Incluya el nombre de usuario, URL del perfil y marcas de tiempo.</div>
         <div id="cy-evidence-findings" style="display:none;margin-top:12px;background:linear-gradient(135deg,rgba(154,77,232,.10),rgba(154,77,232,.06));border:1.5px solid #c893fd;border-radius:10px;padding:14px">
           <div style="font-size:.62rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">🤖 Asya — Evidence Findings</div>
           <div id="cy-evidence-checklist"></div>
@@ -1340,10 +1338,10 @@ body{background:#140a0c}
       <!-- STEP IV: DESCRIBE -->
       <div id="cy-step-4" style="display:none">
       <div class="card">
-        <div class="ct"><div class="ci">IV</div><span id="cy-s4-title">Describe the Incident</span></div>
-        <label id="cy-offender-lbl">Offender's username / profile URL</label>
+        <div class="ct"><div class="ci">IV</div><span id="cy-s4-title">Describir el incidente</span></div>
+        <label id="cy-offender-lbl">Usuario / URL del perfil del agresor</label>
         <input type="text" id="cy-offender" placeholder="@usuario o https://..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:12px">
-        <label id="cy-desc-lbl">What happened?</label>
+        <label id="cy-desc-lbl">¿Qué pasó?</label>
         <textarea id="cy-desc" oninput="cyDescDebounce()" placeholder="Describa lo ocurrido..." style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:.87rem;font-family:'Inter',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:110px;transition:border-color .2s"></textarea>
         <div id="cy-safety-banner" style="display:none;margin-top:12px;background:rgba(240,87,106,.16);border:1.5px solid #c8102e;border-radius:10px;padding:12px 14px">
           <div style="font-size:.8rem;font-weight:700;color:#c8102e;margin-bottom:4px">🚨 Si está en peligro inmediato, llame al 112 ahora</div>
@@ -1362,15 +1360,15 @@ body{background:#140a0c}
       <div id="cy-step-5" style="display:none">
       <div class="card">
         <div class="ct"><div class="ci">V</div><span id="cy-s5-title">Urgency &amp; Your Info</span></div>
-        <label id="cy-urg-lbl">Urgency</label>
+        <label id="cy-urg-lbl">Urgencia</label>
         <div id="cy-urg-ai-note" style="display:none;font-size:.68rem;color:var(--blue);margin-bottom:6px">🤖 Asya lo ha sugerido según su descripción; cámbielo si no es correcto.</div>
         <div style="display:flex;gap:8px;margin-bottom:12px">
-          <div class="cy-urg" tabindex="0" role="button" onclick="selCyUrg(this,'low')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;background:var(--surface);color:var(--sub);transition:all .2s" id="cy-urg-low">Low</div>
-          <div class="cy-urg" tabindex="0" role="button" onclick="selCyUrg(this,'medium')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--yellow);background:var(--badge-gold-bg);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;color:var(--badge-gold-text);transition:all .2s" id="cy-urg-med">Medium</div>
-          <div class="cy-urg cy-urg-hi" tabindex="0" role="button" onclick="selCyUrg(this,'high')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;color:var(--sub);transition:all .2s" id="cy-urg-hi-btn">🚨 <span id="cy-urg-hi-lbl">High</span></div>
+          <div class="cy-urg" tabindex="0" role="button" onclick="selCyUrg(this,'low')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;background:var(--surface);color:var(--sub);transition:all .2s" id="cy-urg-low">Baja</div>
+          <div class="cy-urg" tabindex="0" role="button" onclick="selCyUrg(this,'medium')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--yellow);background:var(--badge-gold-bg);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;color:var(--badge-gold-text);transition:all .2s" id="cy-urg-med">Media</div>
+          <div class="cy-urg cy-urg-hi" tabindex="0" role="button" onclick="selCyUrg(this,'high')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);font-size:.72rem;font-weight:600;cursor:pointer;text-align:center;color:var(--sub);transition:all .2s" id="cy-urg-hi-btn">🚨 <span id="cy-urg-hi-lbl">Alta</span></div>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--off)">
-          <div><div style="font-size:.85rem;color:var(--text);font-weight:500" id="cy-anon-lbl">Anonymous report</div><div style="font-size:.72rem;color:var(--muted)" id="cy-anon-sub">Your identity will not be shared</div></div>
+          <div><div style="font-size:.85rem;color:var(--text);font-weight:500" id="cy-anon-lbl">Reporte anónimo</div><div style="font-size:.72rem;color:var(--muted)" id="cy-anon-sub">Su identidad no será compartida</div></div>
           <div class="tog on" tabindex="0" role="button" id="cy-anon-tog" onclick="toggleCyAnon()"></div>
         </div>
         <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--off)">
@@ -1389,7 +1387,7 @@ body{background:#140a0c}
 
       <!-- AUTHORITIES -->
       <div id="cy-auth-box" style="background:var(--off);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:12px">
-        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:var(--text);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px" id="cy-auth-title">🏛️ Relevant Authorities &amp; Law</div>
+        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:var(--text);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px" id="cy-auth-title">🏛️ Autoridades españolas competentes</div>
         <div id="cy-law-pills" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
           <div style="display:inline-flex;align-items:center;gap:6px;background:var(--ice);border:1px solid rgba(133,26,160,.15);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:var(--blue);line-height:1.4">⚖️ Código Penal art. 172 ter — Acoso</div>
           <div style="display:inline-flex;align-items:center;gap:6px;background:var(--ice);border:1px solid rgba(133,26,160,.15);border-radius:8px;padding:7px 11px;font-size:.68rem;font-weight:600;color:var(--blue);line-height:1.4">⚖️ Código Penal art. 510 — Delitos de odio</div>
@@ -1413,27 +1411,25 @@ body{background:#140a0c}
            on-device so partner platforms can block it, without ever uploading
            the image itself). Toggled in updateCyberLaw(). -->
       <div id="cy-stopncii-box" style="display:none;background:rgba(200,16,46,.06);border:1px solid rgba(200,16,46,.25);border-radius:11px;padding:14px;margin-bottom:12px">
-        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:var(--crimson,#c8102e);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px" id="stopncii-title">🛡️ Prevent Further Sharing</div>
-        <div style="font-size:.76rem;color:var(--sub);line-height:1.55;margin-bottom:10px" id="stopncii-text">If this involves an intimate image, StopNCII.org can create a private fingerprint of it that partner platforms (Instagram, Facebook, TikTok, Reddit, and more) use to block it — the image itself is never uploaded.</div>
-        <a href="https://stopncii.org" target="_blank" rel="noopener" style="display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--crimson,#c8102e);border-radius:8px;padding:9px 16px;text-decoration:none;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.3px" id="stopncii-btn">Go to StopNCII.org →</a>
+        <div style="font-family:'Cinzel',serif;font-size:.65rem;font-weight:700;color:var(--crimson,#c8102e);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px" id="stopncii-title">🛡️ Evitar Más Difusión</div>
+        <div style="font-size:.76rem;color:var(--sub);line-height:1.55;margin-bottom:10px" id="stopncii-text">Si se trata de una imagen íntima, StopNCII.org puede crear una huella privada de ella que las plataformas asociadas (Instagram, Facebook, TikTok, Reddit y más) usan para bloquearla — la imagen en sí nunca se sube.</div>
+        <a href="https://stopncii.org" target="_blank" rel="noopener" style="display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--crimson,#c8102e);border-radius:8px;padding:9px 16px;text-decoration:none;font-family:'Cinzel',serif;text-transform:uppercase;letter-spacing:.3px" id="stopncii-btn">Ir a StopNCII.org →</a>
       </div>
 
-      <div style="font-size:.72rem;color:var(--sub);background:var(--off);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.55" id="cy-warning">
-        ⚠️ Submitting false reports is a criminal offence. Evidence you upload will only be shared with the relevant Canadian authority. We do not contact the offender directly.
-      </div>
+      <div style="font-size:.72rem;color:var(--sub);background:var(--off);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.55" id="cy-warning">⚠️ Presentar denuncias falsas es delito (art. 456 CP). Sus pruebas solo se comparten con la autoridad competente. No contactamos con el agresor.</div>
 
       <div class="cf-turnstile" data-sitekey="0x4AAAAAAD0YTkgBQCsboEB8" data-callback="_tsTokenCyber" data-error-callback="_tsErrorCyber" data-theme="dark" style="display:flex;justify-content:center;margin-bottom:10px"></div>
-      <button onclick="doSubmitCyber()" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:15px;font-size:.88rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,16,46,.3);letter-spacing:1px" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Submit Cyber Crime Report</span></button>
+      <button onclick="doSubmitCyber()" style="width:100%;background:linear-gradient(135deg,#c8102e,#8b0a1f);color:white;border:none;border-radius:var(--radius);padding:15px;font-size:.88rem;font-weight:700;font-family:'Cinzel',serif;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(200,16,46,.3);letter-spacing:1px" id="cy-sub-btn">🛡️ <span id="cy-sub-lbl">Enviar reporte</span></button>
 
       <!-- SUCCESS -->
       <div id="cy-success" style="display:none;text-align:center;padding:40px 20px">
         <div style="font-size:3rem;margin-bottom:16px">🛡️</div>
-        <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px" id="cy-suc-title">Report Submitted</div>
-        <div style="font-size:.83rem;color:var(--sub);margin-bottom:20px" id="cy-suc-sub">Your cyber crime report has been received. Contact the relevant Canadian authority below to file an official report — we're not able to do that on your behalf.</div>
+        <div style="font-family:'Cinzel',serif;text-transform:uppercase;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:8px" id="cy-suc-title">Reporte enviado</div>
+        <div style="font-size:.83rem;color:var(--sub);margin-bottom:20px" id="cy-suc-sub">Hemos recibido su reporte. Para que sea oficial, presente la denuncia ante la Policía Nacional o la Guardia Civil: nosotros no podemos hacerlo en su nombre.</div>
         <div style="background:var(--ice);border:1.5px solid var(--border);border-radius:10px;padding:14px 20px;display:inline-block;font-family:'Cinzel',serif;text-transform:uppercase;font-size:1rem;font-weight:700;color:var(--blue);letter-spacing:2px;margin-bottom:20px" id="cy-ref-disp"></div>
         <div id="cy-email-status" style="display:none;font-size:.72rem;color:var(--muted);margin-bottom:16px"></div>
         <br>
-        <button onclick="resetCyberForm()" style="background:var(--ice);color:var(--blue);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 24px;font-size:.88rem;font-weight:600;cursor:pointer" id="cy-another-btn">Submit Another</button>
+        <button onclick="resetCyberForm()" style="background:var(--ice);color:var(--blue);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 24px;font-size:.88rem;font-weight:600;cursor:pointer" id="cy-another-btn">Nuevo reporte</button>
       </div>
       </div>
 
@@ -1443,8 +1439,8 @@ body{background:#140a0c}
     <div id="view-verify" style="display:none">
       <div class="vfy-container">
         <div class="vfy-header">
-          <h2 id="vfy-title">Güvenli Belge Doğrulama Merkezi</h2>
-          <p id="vfy-sub">Şüpheli e-posta veya belgelerinizi yükleyin. Analiz cihazınızda gerçekleşir, sunucuda hiçbir veri depolanmaz.</p>
+          <h2 id="vfy-title">Centro Seguro de Verificación de Documentos</h2>
+          <p id="vfy-sub">Suba su correo electrónico o documento sospechoso. El análisis ocurre en su dispositivo — no se almacenan datos en el servidor.</p>
         </div>
 
         <div class="vfy-note-wrap">
@@ -1462,19 +1458,19 @@ body{background:#140a0c}
               <circle cx="30" cy="30" r="9" stroke="#cfb0e8" stroke-width="1.8"/>
               <line x1="36.5" y1="36.5" x2="43" y2="43" stroke="#cfb0e8" stroke-width="2" stroke-linecap="round"/>
             </svg>
-            <h3 id="vfy-drop-title">Belgeyi Buraya Sürükleyin veya Seçin</h3>
-            <p style="color:#A0AABF;font-size:.85em" id="vfy-drop-sub">PNG, JPG veya PDF · Analiz Claude AI ile yapılır</p>
+            <h3 id="vfy-drop-title">Arrastre y suelte o seleccione un documento</h3>
+            <p style="color:#A0AABF;font-size:.85em" id="vfy-drop-sub">PNG, JPG o PDF · Análisis impulsado por Claude AI</p>
           </div>
         </div>
         <input type="file" id="vfy-file-input" accept="image/*,application/pdf" style="display:none" onchange="vfyHandleFile(this)">
 
         <div class="vfy-ai-status" id="vfy-feedback">
-          <div class="vfy-ai-title" id="vfy-ai-title">Asya & Claude AI Analiz Raporu</div>
+          <div class="vfy-ai-title" id="vfy-ai-title">Informe de análisis de Asya y Claude AI</div>
           <div id="vfy-text">Belge taranıyor... Lütfen bekleyin.</div>
         </div>
 
         <button class="vfy-action-btn" id="vfy-legal-action-btn" onclick="createLegalPetition(_vfyFile?_vfyFile.name:'belge', '')">
-          <span id="vfy-action-lbl">Bilgi Edinme Hakkı Kanunu Kapsamında Kuruma Teyit Sor</span>
+          <span id="vfy-action-lbl">Solicitar confirmación a la institución bajo la Ley de Acceso a la Información</span>
         </button>
         <button class="vfy-action-btn" id="vfy-transfer-btn" style="background:linear-gradient(155deg,#9e3dff,#a61cc9);margin-top:8px" onclick="transferToComplaint()">📋 Bu bulguyu şikayet formuna aktar</button>
       </div>
@@ -2416,7 +2412,7 @@ const V = (function(){
       vfy_error:"An error occurred during analysis. Please try again.",vfy_timeout:"Analysis timed out — the server took too long to respond. Please try again.",vfy_advice:"Advice:",vfy_reselect:"Tap again to choose another document",vfy_petition_drafting:"Asya is drafting your request...",l_vfy_link:"🔍 Received a suspicious document? Check it now →",cooldown_msg:"⚠ Please wait {m}m {s}s before submitting another complaint.",del_prompt:"Want to delete this complaint? Enter the email you used when filing it.",del_email_ph:"your@email.com",del_btn:"Delete My Complaint",del_need_email:"Please enter your email to confirm.",del_confirm:"This will permanently delete your complaint. Are you sure?",del_deleting:"Deleting...",del_success:"✅ Deleted.",del_fail:"Could not delete — email did not match this complaint.",mng_email_prompt:"Manage this complaint — enter the email you used when filing it.",mng_status_label:"Update status:",mng_updating:"Updating...",mng_success:"✅ Status updated.",mng_reply_label:"Institution's reply (paste it here):",mng_reply_ph:"Paste the institution's reply email...",mng_reply_btn:"Save Reply",mng_reply_success:"✅ Reply saved.",tl_reply_lbl:"✉ Institution Replied",verdict_badge:"VERDICT",verdict_title:"Asya Legal Verdict",verdict_subtitle:"Claude Sonnet · AI draft — verify before sending",verdict_law:"Applicable Law",verdict_sanctions:"Possible Sanctions",verdict_deadline:"Response Deadline",verdict_email_draft:"Draft Complaint Email",verdict_copy_btn:"Copy Email",verdict_copied:"Copied!",verdict_disclaimer:"AI-generated from your input — this is not legal advice. Verify the law and deadline before relying on them.",ctype_legal_note:"This goes to our <b>Open Case Feed</b> for signed-in partner lawyers only — it is not published to the public feed. If you'd like a lawyer to review your case and discuss representing you, this is how they'll find it.",ctype_access_label:"Access to Information Request",ctype_access_desc:"Request records or information from an institution",ctype_access_note:"This request is processed under Access to Information / Freedom of Information law — a different legal process than a complaint. Institutions are usually required to respond within a set number of days, and you don't need to give a reason for the request. A real name and contact are required so the institution can respond to you.",stopncii_title:"🛡️ Prevent Further Sharing",stopncii_text:"If this involves an intimate image, StopNCII.org can create a private fingerprint of it that partner platforms (Instagram, Facebook, TikTok, Reddit, and more) use to block it — the image itself is never uploaded.",stopncii_btn:"Go to StopNCII.org →",alert_high_text:"This looks serious — you may have a legal claim.",alert_medium_text:"This may qualify as a legal-rights matter.",alert_legal_btn:"Legal Rights",pool_suggest_title:"Asya thinks this may be a legal-rights case",pool_suggest_text:"Based on the facts, a lawyer may be able to pursue this on your behalf. Tap below to send it to the Case Pool.",pool_suggest_btn:"Send to Case Pool",pool_suggest_switched:"Switched",legal_track_badge:"Legal Track — Case Pool",ctype_notice_label:"Notify Institution",ctype_notice_desc:"Formally report the issue and request resolution",ctype_legal_label:"Assert Legal Rights",ctype_legal_desc:"Notify of legal action & compensation rights",ctype_section_label:"Complaint Type",cy_conf_subj:"Your ComplaintCA Reference — {ref}",cy_conf_intro:"Hi,\n\nYour cyber crime report has been received by ComplaintCA.",cy_conf_ref_line:"Reference: {ref}",cy_conf_type_line:"Type: {type}",cy_conf_urgency_line:"Urgency: {urgency}",cy_conf_notice:"ComplaintCA is not a police service and cannot file this report with an authority on your behalf. To make it official, please contact:",cy_conf_danger:"If you are in immediate danger, call 911 now.",cy_conf_keepref:"Keep this reference number — you can check its status anytime under \"Track\" on ComplaintCA.",cy_conf_privacy:"Your privacy: the details you submitted are stored only to let you track this report and are never shared without your consent. You can request deletion anytime.",cy_conf_emailed:"📧 A copy was emailed to {email}.",deadline_passed:"The typical response window for this complaint type has passed.",deadline_soon:"Only {n} days left in the typical response window.",deadline_escalate:"Consider escalating to: {name}.",lw_sug_tag:"Related legal help",lw_sug_serious_tag:"This may be a strong case",lw_sug_text:"Based on your complaint category, a specialist lawyer could help.",lw_sug_serious_text:"Given the priority and category of this complaint, we recommend speaking with a specialist lawyer.",lw_sug_btn:"Find a Specialist Lawyer",cat_ai_tag:"AI Suggestion",cat_ai_apply:"Apply",cat_ai_dismiss:"Dismiss",lw_panel_cta_t:"Are you a lawyer?",lw_panel_cta_s:"Browse the open case feed →",lwp_eyebrow:"⚖️ FOR LEGAL PROFESSIONALS",lwp_title:"The Case Pool",lwp_sub:"Browse anonymized complaints in real time. Full contact details are available to Partner Lawyers.",lwp_partner_text:"Want full contact details on these cases? Partner Lawyer access is available for a flat monthly fee — unrelated to case outcome.",lwp_partner_btn:"Become a Partner Lawyer",lwp_locked:"Contact details locked — Partner Lawyers only",lwp_record:"Case record",lwp_facts:"I · The facts",lwp_simh:"II · Similar cases",lwp_filed:"Filed {t}",lwp_all:"All categories",lwp_notices:"Other complaints (notices)",lwp_cats:"Education|Telecom / Internet|Privacy|Harassment|Unpaid Wages|Wrongful Dismissal|Repairs|Malpractice|Delays|Benefits|Immigration|Police|Condo / Strata|Environment|Utility|Student Loans|Other",lwp_prec:"II · Similar decisions",lwp_pot:"III · Potential",lwp_joint:"IV · Joint action",lwp_loading:"ASYA is searching CanLII…",lwp_nodec:"No verified similar decisions found.",lwp_ratio:"{w} of {k} decisions favoured the complainant",lwp_few:"Not enough decided cases to estimate.",lwp_disc:"An estimate from similar published decisions — not a guarantee, not legal advice.",lwp_jyes:"Suitable for a joint action",lwp_jno:"Not suitable for a joint action",lwp_jwhy_yes:"{n} similar complaints in the pool, and precedents lean in favour.",lwp_jwhy_no:"Needs similar complaints in the pool and favourable precedents.",lwp_err:"Could not load decisions. Try again later.",lwp_signin:"Sign in to see similar decisions.",lwp_o:"Won|Lost|Mixed|Unclear",lwp_ledger_l:"Open Cases",lwp_stats_title:"Similar Cases by Category",lwp_similar:"{n} similar cases in this pool",lwp_updates_title:"📅 This Month's Legal Updates",lwp_updates_sub:"Law changes and key developments relevant to open cases, compiled for Partner Lawyers.",lwp_updates_none:"No updates published yet.",sup_eyebrow:"Support & Safety",sup_title:"You Are Not Alone",sup_lede:"Describing what happened can be difficult and may bring up <b>distress or trauma</b>. If you'd like to continue, that choice is entirely yours — but please read this first.",sup_danger_t:"In immediate danger?",sup_danger_s:"ComplaintCA isn't monitored in real time — police can respond now.",sup_danger_btn:"Call 911",sup_res_label:"Free Confidential Support",sup_recommend:"🩺 <b>Our recommendation:</b> talk to a doctor or counsellor before filing.",sup_back:"← Go Back & Get Support",sup_continue:"I Understand — Continue",sup_privacy:"🔒 You can file <b>anonymously</b>, and you control what you share. You can stop at any point."
     },
     tr:{
-      ey:"Kanada Resmi Şikayet Platformu",
+      ey:"Kanada Şikayet Platformu",
       nw:"Dosya",tr:"Takip",lw:"Avukat",cy:"Siber",fd:"Havuz",
       cy_sub:"Hakaret, tehdit ve kimlik hırsızlığını bildirin. Kanıtlarınızı yükleyin — size bir referans numarası ve başvurmanız gereken Kanada kurumunu e-posta ile göndereceğiz.",
       cy_s1:"Suç türü nedir?",cy_s2:"Nerede gerçekleşti?",cy_s3:"Kanıt Yükle",cy_s4:"Olayı Açıkla",
@@ -2505,7 +2501,7 @@ const V = (function(){
       vfy_error:"Analiz sırasında bir hata oluştu. Lütfen tekrar deneyin.",vfy_timeout:"Analiz zaman aşımına uğradı — sunucu çok uzun sürede yanıt verdi. Lütfen tekrar deneyin.",vfy_advice:"Tavsiye:",vfy_reselect:"Başka belge seçmek için tekrar tıklayın",vfy_petition_drafting:"Asya talebinizi hazırlıyor...",l_vfy_link:"🔍 Şüpheli bir belge mi aldınız? Hemen kontrol edin →",cooldown_msg:"⚠ Yeni bir şikayet göndermeden önce lütfen {m} dk {s} sn bekleyin.",del_prompt:"Bu şikayeti silmek mi istiyorsun? Gönderirken kullandığın e-postayı gir.",del_email_ph:"eposta@adresin.com",del_btn:"Şikayetimi Sil",del_need_email:"Onaylamak için lütfen e-postanı gir.",del_confirm:"Bu işlem şikayetini kalıcı olarak silecek. Emin misin?",del_deleting:"Siliniyor...",del_success:"✅ Silindi.",del_fail:"Silinemedi — e-posta bu şikayetle eşleşmiyor.",mng_email_prompt:"Bu şikayeti yönet — gönderirken kullandığın e-postayı gir.",mng_status_label:"Durumu güncelle:",mng_updating:"Güncelleniyor...",mng_success:"✅ Durum güncellendi.",mng_reply_label:"Kurumdan gelen yanıt (buraya yapıştırın):",mng_reply_ph:"Kurumun yanıt e-postasını buraya yapıştırın...",mng_reply_btn:"Yanıtı Kaydet",mng_reply_success:"✅ Yanıt kaydedildi.",tl_reply_lbl:"✉ Kurum Yanıtladı",verdict_badge:"KARAR",verdict_title:"Asya Hukuki Değerlendirme",verdict_subtitle:"Claude Sonnet · AI taslağı — göndermeden önce doğrula",verdict_law:"İlgili Kanun",verdict_sanctions:"Olası Yaptırımlar",verdict_deadline:"Yanıt Süresi",verdict_email_draft:"Şikayet Maili Taslağı",verdict_copy_btn:"Maili Kopyala",verdict_copied:"Kopyalandı!",verdict_disclaimer:"Girdiğiniz bilgilerden yapay zeka tarafından oluşturuldu — bu hukuki tavsiye değildir. Güvenmeden önce kanunu ve süreyi doğrulayın.",ctype_legal_note:"Bu, sadece giriş yapmış partner avukatların gördüğü <b>Açık Dava Akışı</b>'na gider — genel akışta yayınlanmaz. Bir avukatın davanızı incelemesini ve sizi temsil etmeyi görüşmesini istiyorsanız, sizi böyle bulacaklar.",ctype_access_label:"Bilgi Edinme Talebi",ctype_access_desc:"Bir kurumdan belge veya bilgi talep edin",ctype_access_note:"Bu talep, şikayetten farklı bir hukuki süreç olan Bilgi Edinme Hakkı kanunu kapsamında işleme alınır. Kurumlar genellikle belirli bir gün içinde yanıt vermek zorundadır ve talep için gerekçe belirtmenize gerek yoktur. Kurumun size yanıt verebilmesi için gerçek ad ve iletişim bilgisi zorunludur.",stopncii_title:"🛡️ Daha Fazla Yayılmasını Önle",stopncii_text:"Bu bir mahrem görselse, StopNCII.org görüntünün gizli bir dijital izini oluşturur; Instagram, Facebook, TikTok, Reddit gibi ortak platformlar bunu kullanarak görüntüyü engeller — görselin kendisi hiçbir yere yüklenmez.",stopncii_btn:"StopNCII.org'a Git →",alert_high_text:"Bu ciddi görünüyor — hukuki bir talebiniz olabilir.",alert_medium_text:"Bu bir hukuki hak talebi olabilir.",alert_legal_btn:"Hukuki Hak",pool_suggest_title:"Asya bunun hukuki bir dava olabileceğini düşünüyor",pool_suggest_text:"Bu bilgilere göre bir avukat sizin adınıza bu davayı takip edebilir. Dava Havuzuna göndermek için aşağıya dokunun.",pool_suggest_btn:"Dava Havuzuna Gönder",pool_suggest_switched:"Değiştirildi",legal_track_badge:"Hukuki Takip — Dava Havuzu",ctype_notice_label:"Kurumu Bilgilendir",ctype_notice_desc:"Sorunu resmi olarak bildir ve çözüm talep et",ctype_legal_label:"Hukuki Hak Talep Et",ctype_legal_desc:"Hukuki işlem ve tazminat hakkını bildir",ctype_section_label:"Şikayet Türü",cy_conf_subj:"ComplaintCA Referansınız — {ref}",cy_conf_intro:"Merhaba,\n\nSiber suç bildiriminiz ComplaintCA tarafından alındı.",cy_conf_ref_line:"Referans: {ref}",cy_conf_type_line:"Tür: {type}",cy_conf_urgency_line:"Aciliyet: {urgency}",cy_conf_notice:"ComplaintCA bir polis servisi değildir ve bu bildirimi sizin adınıza bir yetkiliye iletemez. Resmi hale getirmek için lütfen şu kurumlarla iletişime geçin:",cy_conf_danger:"Acil bir tehlikedeyseniz hemen 911'i arayın.",cy_conf_keepref:"Bu referans numarasını saklayın — ComplaintCA'da \"Track\" (Takip) altından her zaman durumunu kontrol edebilirsiniz.",cy_conf_privacy:"Gizliliğiniz: gönderdiğiniz bilgiler yalnızca bu bildirimi takip edebilmeniz için saklanır ve izniniz olmadan asla paylaşılmaz. İstediğiniz zaman silinmesini talep edebilirsiniz.",cy_conf_emailed:"📧 Bir kopyası {email} adresine e-postayla gönderildi.",deadline_passed:"Bu tür şikayetler için tipik yanıt süresi doldu.",deadline_soon:"Tipik yanıt süresinden sadece {n} gün kaldı.",deadline_escalate:"Şuraya yükseltmeyi düşün: {name}.",lw_sug_tag:"İlgili hukuki yardım",lw_sug_serious_tag:"Bu güçlü bir dava olabilir",lw_sug_text:"Şikayet kategorine göre, uzman bir avukat yardımcı olabilir.",lw_sug_serious_text:"Bu şikayetin önceliği ve kategorisine göre, uzman bir avukatla görüşmeni öneririz.",lw_sug_btn:"Uzman Avukat Bul",cat_ai_tag:"AI Önerisi",cat_ai_apply:"Uygula",cat_ai_dismiss:"Vazgeç",lw_panel_cta_t:"Avukat mısın?",lw_panel_cta_s:"Açık dava akışına göz at →",lwp_eyebrow:"⚖️ HUKUK PROFESYONELLERİ İÇİN",lwp_title:"Dava Havuzu",lwp_sub:"Anonimleştirilmiş şikayetleri gerçek zamanlı gör. Tam iletişim bilgileri Partner Avukatlara açık.",lwp_partner_text:"Bu davalarda tam iletişim bilgisi mi istiyorsun? Partner Avukat erişimi, dava sonucundan bağımsız, sabit aylık ücretle sunulur.",lwp_partner_btn:"Partner Avukat Ol",lwp_locked:"İletişim bilgisi kilitli — sadece Partner Avukatlar",lwp_record:"Dava kaydı",lwp_facts:"I · Olaylar",lwp_simh:"II · Benzer davalar",lwp_filed:"Başvuru: {t}",lwp_all:"Tüm kategoriler",lwp_notices:"Diğer şikayetler (bildirimler)",lwp_cats:"Eğitim|Telekom / İnternet|Gizlilik|Taciz|Ödenmeyen Maaş|Haksız Fesih|Onarım|Tıbbi Hata|Gecikme|Sosyal Yardım|Göçmenlik|Polis|Kat Mülkiyeti|Çevre|Elektrik / Su|Öğrenim Kredisi|Diğer",lwp_prec:"II · Benzer kararlar",lwp_pot:"III · Potansiyel",lwp_joint:"IV · Ortak dava",lwp_loading:"ASYA CanLII'de arıyor…",lwp_nodec:"Doğrulanmış benzer karar bulunamadı.",lwp_ratio:"{k} karardan {w} tanesi şikâyetçi lehine",lwp_few:"Tahmin için yeterli karar yok.",lwp_disc:"Benzer yayımlanmış kararlardan bir tahmin — garanti değil, hukuki tavsiye değil.",lwp_jyes:"Ortak davaya uygun",lwp_jno:"Ortak davaya uygun değil",lwp_jwhy_yes:"Havuzda {n} benzer şikâyet var ve emsaller lehte.",lwp_jwhy_no:"Havuzda benzer şikâyet ve lehte emsal gerekir.",lwp_err:"Kararlar yüklenemedi. Sonra tekrar deneyin.",lwp_signin:"Benzer kararları görmek için giriş yapın.",lwp_o:"Kazandı|Kaybetti|Kısmen|Belirsiz",lwp_ledger_l:"Açık Dava",lwp_stats_title:"Kategoriye Göre Benzer Davalar",lwp_similar:"Bu havuzda {n} benzer dava",lwp_updates_title:"📅 Bu Ayın Mevzuat Güncellemeleri",lwp_updates_sub:"Açık davalarla ilgili kanun değişiklikleri ve önemli gelişmeler, Partner Avukatlar için derlenir.",lwp_updates_none:"Henüz güncelleme yayınlanmadı.",sup_eyebrow:"Destek ve Güvenlik",sup_title:"Yalnız Değilsin",sup_lede:"Yaşadıklarını anlatmak zor olabilir ve <b>üzüntü veya travmayı</b> tetikleyebilir. Devam etmek istersen bu tamamen senin kararın — ama lütfen önce bunu oku.",sup_danger_t:"Acil tehlikede misin?",sup_danger_s:"ComplaintCA gerçek zamanlı izlenmiyor — polis hemen yardım edebilir.",sup_danger_btn:"911'i Ara",sup_res_label:"Ücretsiz Gizli Destek",sup_recommend:"🩺 <b>Önerimiz:</b> şikayeti göndermeden önce bir doktor veya danışmanla konuş.",sup_back:"← Geri Dön ve Destek Al",sup_continue:"Anladım — Devam Et",sup_privacy:"🔒 <b>Anonim</b> gönderebilirsin ve neyi paylaşacağını sen belirlersin. İstediğin an durabilirsin."
     },
     fr:{
-      ey:"Plateforme officielle de plaintes au Canada",
+      ey:"Plateforme de plaintes au Canada",
       nw:"Déposer",tr:"Suivre",lw:"Avocat",cy:"Cyber",fd:"Bassin",
       cy_sub:"Signalez le harcèlement, les menaces et l'usurpation d'identité. Téléversez vos preuves.",
       cy_s1:"Type d'infraction?",cy_s2:"Où cela s'est-il passé?",cy_s3:"Téléverser des preuves",cy_s4:"Décrire l'incident",
@@ -2550,7 +2546,7 @@ const V = (function(){
       vfy_error:"Une erreur s'est produite pendant l'analyse. Veuillez réessayer.",vfy_timeout:"L'analyse a expiré — le serveur a mis trop de temps à répondre. Veuillez réessayer.",vfy_advice:"Conseil :",vfy_reselect:"Appuyez à nouveau pour choisir un autre document",vfy_petition_drafting:"Asya rédige votre demande...",l_vfy_link:"🔍 Vous avez reçu un document suspect ? Vérifiez-le maintenant →",cooldown_msg:"⚠ Veuillez patienter {m} min {s} s avant de soumettre une autre plainte.",del_prompt:"Voulez-vous supprimer cette plainte ? Entrez l'e-mail utilisé lors du dépôt.",del_email_ph:"votre@email.com",del_btn:"Supprimer ma plainte",del_need_email:"Veuillez entrer votre e-mail pour confirmer.",del_confirm:"Cette action supprimera définitivement votre plainte. Êtes-vous sûr ?",del_deleting:"Suppression...",del_success:"✅ Supprimée.",del_fail:"Échec — l'e-mail ne correspond pas à cette plainte.",mng_email_prompt:"Gérez cette plainte — entrez l'e-mail utilisé lors du dépôt.",mng_status_label:"Mettre à jour le statut :",mng_updating:"Mise à jour...",mng_success:"✅ Statut mis à jour.",mng_reply_label:"Réponse de l'institution (collez-la ici) :",mng_reply_ph:"Collez le texte de la réponse de l'institution...",mng_reply_btn:"Enregistrer la réponse",mng_reply_success:"✅ Réponse enregistrée.",tl_reply_lbl:"✉ L'institution a répondu",verdict_badge:"VERDICT",verdict_title:"Verdict Juridique d'Asya",verdict_subtitle:"Claude Sonnet · Brouillon IA — à vérifier avant l'envoi",verdict_law:"Loi Applicable",verdict_sanctions:"Sanctions Possibles",verdict_deadline:"Délai de Réponse",verdict_email_draft:"Brouillon de Plainte",verdict_copy_btn:"Copier l'e-mail",verdict_copied:"Copié !",verdict_disclaimer:"Généré par IA à partir de vos informations — ce n'est pas un avis juridique. Vérifiez la loi et le délai avant de vous y fier.",ctype_legal_note:"Ceci va dans notre <b>Flux de Dossiers Ouverts</b>, réservé aux avocats partenaires connectés — non publié dans le flux public. Si vous souhaitez qu'un avocat examine votre dossier et discute de vous représenter, c'est ainsi qu'il vous trouvera.",ctype_access_label:"Demande d'Accès à l'Information",ctype_access_desc:"Demander des documents ou renseignements à une institution",ctype_access_note:"Cette demande est traitée en vertu de la législation sur l'accès à l'information — un processus juridique distinct d'une plainte. Les institutions doivent généralement répondre dans un délai fixe, et vous n'avez pas à justifier votre demande. Un nom réel et des coordonnées sont requis pour que l'institution puisse vous répondre.",stopncii_title:"🛡️ Empêcher la Diffusion",stopncii_text:"S'il s'agit d'une image intime, StopNCII.org peut créer une empreinte privée de celle-ci que les plateformes partenaires (Instagram, Facebook, TikTok, Reddit, etc.) utilisent pour la bloquer — l'image elle-même n'est jamais téléversée.",stopncii_btn:"Aller sur StopNCII.org →",alert_high_text:"Cela semble sérieux — vous pourriez avoir une réclamation légale.",alert_medium_text:"Cela pourrait constituer une question de droits juridiques.",alert_legal_btn:"Droits Juridiques",pool_suggest_title:"Asya pense que ceci pourrait être un dossier juridique",pool_suggest_text:"D'après les faits, un avocat pourrait poursuivre cette affaire en votre nom. Appuyez ci-dessous pour l'envoyer au Bassin des Dossiers.",pool_suggest_btn:"Envoyer au Bassin des Dossiers",pool_suggest_switched:"Basculé",legal_track_badge:"Suivi Juridique — Bassin des Dossiers",ctype_notice_label:"Notifier l'Institution",ctype_notice_desc:"Signaler formellement le problème et demander une résolution",ctype_legal_label:"Faire Valoir des Droits Légaux",ctype_legal_desc:"Signaler une action légale et des droits à compensation",ctype_section_label:"Type de Plainte",cy_conf_subj:"Votre référence ComplaintCA — {ref}",cy_conf_intro:"Bonjour,\n\nVotre signalement de cybercriminalité a été reçu par ComplaintCA.",cy_conf_ref_line:"Référence : {ref}",cy_conf_type_line:"Type : {type}",cy_conf_urgency_line:"Urgence : {urgency}",cy_conf_notice:"ComplaintCA n'est pas un service de police et ne peut pas déposer ce signalement auprès d'une autorité en votre nom. Pour le rendre officiel, veuillez contacter :",cy_conf_danger:"Si vous êtes en danger immédiat, appelez le 911 maintenant.",cy_conf_keepref:"Conservez ce numéro de référence — vous pouvez vérifier son statut à tout moment sous « Suivi » sur ComplaintCA.",cy_conf_privacy:"Votre vie privée : les détails que vous avez soumis sont conservés uniquement pour vous permettre de suivre ce signalement et ne sont jamais partagés sans votre consentement. Vous pouvez demander leur suppression à tout moment.",cy_conf_emailed:"📧 Une copie a été envoyée par e-mail à {email}.",deadline_passed:"Le délai de réponse habituel pour ce type de plainte est dépassé.",deadline_soon:"Il ne reste que {n} jours dans le délai habituel.",deadline_escalate:"Envisagez d'escalader vers : {name}.",lw_sug_tag:"Aide juridique connexe",lw_sug_serious_tag:"Cela pourrait être un dossier solide",lw_sug_text:"Selon la catégorie de votre plainte, un avocat spécialisé pourrait vous aider.",lw_sug_serious_text:"Compte tenu de la priorité et de la catégorie de cette plainte, nous recommandons de consulter un avocat spécialisé.",lw_sug_btn:"Trouver un avocat spécialisé",cat_ai_tag:"Suggestion IA",cat_ai_apply:"Appliquer",cat_ai_dismiss:"Ignorer",lw_panel_cta_t:"Êtes-vous avocat ?",lw_panel_cta_s:"Parcourir le flux de dossiers ouverts →",lwp_eyebrow:"⚖️ POUR LES PROFESSIONNELS DU DROIT",lwp_title:"Le Bassin des Dossiers",lwp_sub:"Parcourez les plaintes anonymisées en temps réel. Les coordonnées complètes sont réservées aux avocats partenaires.",lwp_partner_text:"Vous voulez les coordonnées complètes de ces dossiers ? L'accès Avocat Partenaire est disponible pour des frais mensuels fixes — indépendant du résultat du dossier.",lwp_partner_btn:"Devenir Avocat Partenaire",lwp_locked:"Coordonnées verrouillées — Avocats partenaires uniquement",lwp_record:"Dossier",lwp_facts:"I · Les faits",lwp_simh:"II · Cas similaires",lwp_filed:"Déposée {t}",lwp_all:"Toutes les catégories",lwp_notices:"Autres plaintes (avis)",lwp_cats:"Éducation|Télécom / Internet|Vie privée|Harcèlement|Salaire impayé|Congédiement injustifié|Réparations|Faute médicale|Délais|Prestations|Immigration|Police|Copropriété|Environnement|Services publics|Prêts étudiants|Autre",lwp_prec:"II · Décisions similaires",lwp_pot:"III · Potentiel",lwp_joint:"IV · Action collective",lwp_loading:"ASYA cherche sur CanLII…",lwp_nodec:"Aucune décision similaire vérifiée.",lwp_ratio:"{w} décisions sur {k} favorables au plaignant",lwp_few:"Pas assez de décisions pour estimer.",lwp_disc:"Une estimation tirée de décisions publiées — pas une garantie ni un avis juridique.",lwp_jyes:"Convient à une action collective",lwp_jno:"Ne convient pas à une action collective",lwp_jwhy_yes:"{n} plaintes similaires dans le bassin, et la jurisprudence est favorable.",lwp_jwhy_no:"Il faut des plaintes similaires et une jurisprudence favorable.",lwp_err:"Impossible de charger les décisions. Réessayez plus tard.",lwp_signin:"Connectez-vous pour voir les décisions similaires.",lwp_o:"Gagné|Perdu|Partiel|Incertain",lwp_ledger_l:"Dossiers Ouverts",lwp_stats_title:"Dossiers Similaires par Catégorie",lwp_similar:"{n} dossiers similaires dans ce bassin",lwp_updates_title:"📅 Mises à Jour Juridiques de ce Mois",lwp_updates_sub:"Changements législatifs et développements clés pertinents pour les dossiers ouverts, compilés pour les avocats partenaires.",lwp_updates_none:"Aucune mise à jour publiée pour l'instant.",sup_eyebrow:"Soutien et sécurité",sup_title:"Vous n'êtes pas seul(e)",sup_lede:"Raconter ce qui s'est passé peut être difficile et raviver une <b>détresse ou un traumatisme</b>. Si vous souhaitez continuer, ce choix vous appartient — mais veuillez d'abord lire ceci.",sup_danger_t:"En danger immédiat ?",sup_danger_s:"ComplaintCA n'est pas surveillé en temps réel — la police peut intervenir immédiatement.",sup_danger_btn:"Appeler le 911",sup_res_label:"Soutien gratuit et confidentiel",sup_recommend:"🩺 <b>Notre recommandation :</b> parlez à un médecin ou à un conseiller avant de déposer.",sup_back:"← Revenir et obtenir du soutien",sup_continue:"Je comprends — Continuer",sup_privacy:"🔒 Vous pouvez déposer de façon <b>anonyme</b>, et vous contrôlez ce que vous partagez. Vous pouvez arrêter à tout moment."
     },
     zh:{
-      ey:"加拿大官方投诉平台",
+      ey:"加拿大投诉平台",
       nw:"投诉",tr:"追踪",lw:"律师",cy:"网络",fd:"案件库",
       cy_sub:"举报骚扰、威胁和身份盗窃。上传证据 — 我们会通过邮件发给您参考编号和应联系的加拿大机构。",
       cy_s1:"犯罪类型？",cy_s2:"发生在哪里？",cy_s3:"上传证据",cy_s4:"描述事件",
@@ -2597,7 +2593,7 @@ const V = (function(){
     es:{
       notify_subj:"El estado de su queja se ha actualizado — {ref}",notify_body:"Hola:\n\nEl estado de su queja {ref} es ahora: {status}.\n\n🔗 Véala directamente: {link}\n\nComplaint CA España (complaintca.ca/es)",conf_subj:"Su referencia de Complaint CA España — {ref}",conf_body:"Hola:\n\nHemos recibido su queja en Complaint CA España.\n\nReferencia: {ref}\nAsunto: {title}\n\nGuarde esta referencia: le avisaremos por correo cada vez que cambie el estado.\n\n🔗 Siga su queja: {link}\n\nComplaint CA España (complaintca.ca/es)",legal_title:"ACEPTO PLENA RESPONSABILIDAD LEGAL.",legal_see:"(Ver Acuerdo)",legal_body:"Al enviar, confirmo que la información que facilito es veraz y que no presento una denuncia falsa o malintencionada.<br><br>Complaint CA España es una plataforma intermediaria, no un despacho de abogados. Ofrece herramientas e información —no asesoramiento ni representación legal— y no garantiza ningún resultado.<br><br>Entiendo que mi queja se procesa, incluso mediante sistemas automáticos y de IA, únicamente para gestionar este asunto. Mis datos personales nunca se comparten con un abogado ni con terceros salvo que yo elija expresamente ser contactado, y puedo solicitar su supresión en cualquier momento (RGPD).<br><br>Toda la responsabilidad legal y penal derivada del contenido que envío es exclusivamente mía.",rq_q:"¿Ha respondido la institución?",rq_yes:"Sí, han respondido",rq_no:"Todavía no",rq_snoozed:"De acuerdo, volveremos a preguntar dentro de 7 días.",rq_email:"Su correo (el que usó al presentar la queja)",rq_note:"¿Qué le han dicho? (opcional)",rq_save:"Guardar",rq_cancel:"Cancelar",rq_default_note:"La institución ha respondido.",rq_saved:"Guardado. Gracias.",rq_bad:"Ese correo no coincide con esta queja.",lw_eyebrow:"ASISTENCIA JURÍDICA",auth_ref:"N.º de referencia",auth_signin:"Iniciar sesión",auth_account:"Mi cuenta",or_sep:"— o —",si_google:"Entrar con Google",auth_register:"Registrarse",trk_card_t:"Seguir por referencia",trk_ref_lbl:"Número de referencia",si_title:"Iniciar sesión",si_email:"Correo electrónico",si_pass:"Contraseña",si_btn:"Entrar",su_title:"Crear cuenta",su_name:"Nombre completo",su_email:"Correo electrónico",su_pass:"Contraseña",su_min:"Mín. 6 caracteres",su_btn:"Crear cuenta gratis",su_free:"Gratis para siempre · Sin tarjeta",my_complaints:"Mis quejas",mv_card_t:"Contacte con sus representantes",mv_card_s:"Si su queja no se resuelve, puede elevarla a los diputados de su provincia o al Defensor del Pueblo.",mv_card_btn:"🔎 Buscar representantes",feed_card_t:"Quejas recientes (en directo)",feed_loading:"Cargando...",feed_none:"Todavía no hay quejas.",feed_none_sub:"Sea el primero: presente una queja y aparecerá aquí en tiempo real.",feed_error:"No se pudo cargar el listado.",feed_footer:"Últimas 20 quejas · Actualización en directo",feed_default_title:"Queja",mv_title:"Encuentre a sus representantes",mv_sub:"Diputados y senadores de su provincia",mv_addr_lbl:"Su provincia",mv_addr_ph:"p. ej. Sevilla",mv_go:"Buscar",mv_hint:"En España los diputados se eligen por provincia. Elija la suya para ver sus diputados en el Congreso, o acuda al Defensor del Pueblo.",mv_searching1:"🔎 Buscando provincia...",mv_searching2:"🏛️ Buscando representantes...",mv_err_short:"Escriba el nombre de su provincia.",mv_err_geocode:"Provincia no encontrada. Revise cómo la ha escrito.",mv_err_reps:"No se encontraron representantes. Inténtelo de nuevo.",mv_err_none:"No se encontraron representantes para esta provincia.",mv_lvl_fed:"Estatal · Congreso",mv_lvl_prov:"Autonómico · Parlamento",mv_lvl_local:"Local",mv_email_btn:"✉️ Redactar correo",mv_profile:"Abrir web oficial",mv_email_subj:"Elevación de queja",mv_email_dear:"Estimado/a",mv_email_ref:"Le escribo en relación con una queja formal que he presentado (Referencia:",mv_email_noref:"Le escribo para trasladarle una queja como representante elegido de mi provincia.",mv_email_body:"[Describa aquí su problema]",mv_email_req:"Como ciudadano/a de su circunscripción, le solicito respetuosamente su ayuda en este asunto.",mv_email_sincerely:"Atentamente,",mv_quote:"\"La justicia es la fuente de todas las demás virtudes.\"",hss:"Presente quejas contra ayuntamientos, empresas o caseros — con IA, de forma anónima y totalmente documentada.",l_mv_btn:"🏛️ Buscar mis representantes",suc_save_note:"Guarde su número de referencia para seguir el estado de su queja en la sección <strong style=\"color:var(--text)\">\"Rastrear mi queja\"</strong>.",suc_mv_btn:"🏛️ Enviar a mis representantes",feed_live:"EN DIRECTO",feed_tab_title:"Quejas recientes",feed_tab_sub:"Tiempo real · Actualización en directo",feed_new_btn:"+ Presentar queja",feed_last10:"Mostrando las últimas 10 quejas",feed_private:"Las quejas se mantienen privadas para proteger a quienes las presentan.",sup_eyebrow:"Apoyo y seguridad",sup_title:"No está solo/a",sup_lede:"Describir lo ocurrido puede ser difícil y provocar <b>angustia o trauma</b>. Si desea continuar, la decisión es totalmente suya, pero lea esto primero.",sup_danger_t:"¿Está en peligro inmediato?",sup_danger_s:"Complaint CA España no se supervisa en tiempo real; la policía puede actuar ahora.",sup_danger_btn:"Llamar al 112",sup_res_label:"Apoyo gratuito y confidencial",sup_recommend:"🩺 <b>Nuestra recomendación:</b> hable con un médico o psicólogo antes de presentar la queja.",sup_back:"← Volver y buscar apoyo",sup_continue:"Lo entiendo — Continuar",sup_privacy:"🔒 Puede presentar la queja de forma <b>anónima</b> y usted decide qué comparte. Puede detenerse en cualquier momento.",
 
-      ey:"Plataforma Oficial de Quejas de España",
+      ey:"Plataforma de Quejas de España",
       nw:"Presentar",tr:"Rastrear",lw:"Abogado",cy:"Cibercrim.",fd:"Bolsa",
       cy_sub:"Reporte acoso, amenazas y robo de identidad. Suba sus pruebas: le enviaremos un número de referencia y la autoridad española a la que acudir.",
       cy_s1:"¿Tipo de delito?",cy_s2:"¿Dónde ocurrió?",cy_s3:"Subir evidencia",cy_s4:"Describir el incidente",
@@ -2642,7 +2638,7 @@ const V = (function(){
       vfy_error:"Ocurrió un error durante el análisis. Inténtelo de nuevo.",vfy_timeout:"El análisis agotó el tiempo de espera — el servidor tardó demasiado en responder. Inténtelo de nuevo.",vfy_advice:"Consejo:",vfy_reselect:"Toque de nuevo para elegir otro documento",vfy_petition_drafting:"Asya está redactando su solicitud...",l_vfy_link:"🔍 ¿Recibió un documento sospechoso? Verifíquelo ahora →",cooldown_msg:"⚠ Espere {m} min {s} s antes de enviar otra queja.",del_prompt:"¿Desea eliminar esta queja? Ingrese el correo que usó al presentarla.",del_email_ph:"su@correo.com",del_btn:"Eliminar Mi Queja",del_need_email:"Ingrese su correo para confirmar.",del_confirm:"Esto eliminará permanentemente su queja. ¿Está seguro?",del_deleting:"Eliminando...",del_success:"✅ Eliminada.",del_fail:"No se pudo eliminar — el correo no coincide con esta queja.",mng_email_prompt:"Gestione esta queja — ingrese el correo usado al presentarla.",mng_status_label:"Actualizar estado:",mng_updating:"Actualizando...",mng_success:"✅ Estado actualizado.",mng_reply_label:"Respuesta de la institución (péguela aquí):",mng_reply_ph:"Pegue el texto de la respuesta de la institución...",mng_reply_btn:"Guardar Respuesta",mng_reply_success:"✅ Respuesta guardada.",tl_reply_lbl:"✉ La institución respondió",verdict_badge:"VEREDICTO",verdict_title:"Veredicto Legal de Asya",verdict_subtitle:"Claude Sonnet · Borrador de IA — verifique antes de enviar",verdict_law:"Ley Aplicable",verdict_sanctions:"Posibles Sanciones",verdict_deadline:"Plazo de Respuesta",verdict_email_draft:"Borrador de Queja por Correo",verdict_copy_btn:"Copiar Correo",verdict_copied:"¡Copiado!",verdict_disclaimer:"Generado por IA a partir de su información — esto no es asesoramiento legal. Verifique la ley y el plazo antes de confiar en ellos.",ctype_legal_note:"Le mostraremos <b>abogados gratuitos y ONG</b> de su comunidad autónoma según su caso. Sus datos no se comparten con nadie salvo que usted lo decida.",ctype_access_label:"Solicitud de Acceso a la Información",ctype_access_desc:"Solicitar documentos o información a una institución",ctype_access_note:"Esta solicitud se procesa bajo la ley de Acceso a la Información / Libertad de Información — un proceso legal distinto de una queja. Las instituciones generalmente deben responder dentro de un plazo determinado, y no necesita dar un motivo para la solicitud. Se requiere un nombre real y datos de contacto para que la institución pueda responderle.",stopncii_title:"🛡️ Evitar Más Difusión",stopncii_text:"Si se trata de una imagen íntima, StopNCII.org puede crear una huella privada de ella que las plataformas asociadas (Instagram, Facebook, TikTok, Reddit y más) usan para bloquearla — la imagen en sí nunca se sube.",stopncii_btn:"Ir a StopNCII.org →",alert_high_text:"Esto parece serio — puede tener una reclamación legal.",alert_medium_text:"Esto podría calificar como un asunto de derechos legales.",alert_legal_btn:"Derechos Legales",pool_suggest_title:"Asya cree que esto podría ser un caso legal",pool_suggest_text:"Según los hechos, un abogado podría perseguir esto en su nombre. Toque abajo para enviarlo a la Bolsa de Casos.",pool_suggest_btn:"Enviar a la Bolsa de Casos",pool_suggest_switched:"Cambiado",legal_track_badge:"Vía Legal — Bolsa de Casos",ctype_notice_label:"Notificar a la Institución",ctype_notice_desc:"Reportar formalmente el problema y solicitar una resolución",ctype_legal_label:"Reclamar Derechos Legales",ctype_legal_desc:"Notificar acción legal y derechos de compensación",ctype_section_label:"Tipo de Queja",cy_conf_subj:"Su Referencia de Complaint CA España — {ref}",cy_conf_intro:"Hola,\n\nSu informe de ciberdelito ha sido recibido por Complaint CA España.",cy_conf_ref_line:"Referencia: {ref}",cy_conf_type_line:"Tipo: {type}",cy_conf_urgency_line:"Urgencia: {urgency}",cy_conf_notice:"Complaint CA España no es un servicio de policía y no puede presentar este informe ante una autoridad en su nombre. Para hacerlo oficial, comuníquese con:",cy_conf_danger:"Si está en peligro inmediato, llame al 112 ahora.",cy_conf_keepref:"Guarde este número de referencia — puede consultar su estado en cualquier momento en \"Track\" (Seguimiento) en Complaint CA España.",cy_conf_privacy:"Su privacidad: los detalles que envió se almacenan únicamente para permitirle seguir este informe y nunca se comparten sin su consentimiento. Puede solicitar su eliminación en cualquier momento.",cy_conf_emailed:"📧 Se envió una copia por correo electrónico a {email}.",deadline_passed:"El plazo típico de respuesta para este tipo de queja ha pasado.",deadline_soon:"Solo quedan {n} días en el plazo típico de respuesta.",deadline_escalate:"Considere escalar a: {name}.",lw_title:"Encontrar Abogado Gratis en España",lw_sub:"Justicia gratuita, Defensores del Pueblo y ONG por comunidad autónoma.",lw_step1:"Comunidad Autónoma",lw_step2:"Área",lw_visit:"Visitar",lw_none:"No hay recursos para esta selección.",ar_tenant_t:"Vivienda / Alquiler",ar_tenant_s:"Desahucios, hipotecas",ar_employment_t:"Laboral",ar_employment_s:"Despidos, salarios",ar_humanrights_t:"Derechos Humanos",ar_humanrights_s:"Discriminación, Defensor",ar_immigration_t:"Extranjería",ar_immigration_s:"Asilo, residencia",ar_criminal_t:"Penal",ar_criminal_s:"Víctimas, defensa",ar_family_t:"Familia",ar_family_s:"Violencia, menores",ar_consumer_t:"Consumo",ar_consumer_s:"Bancos, compras",lw_sug_tag:"Ayuda legal relacionada",lw_sug_serious_tag:"Esto podría ser un caso sólido",lw_sug_text:"Según la categoría de su queja, un abogado especialista podría ayudar.",lw_sug_serious_text:"Dada la prioridad y categoría de esta queja, recomendamos hablar con un abogado especialista.",lw_sug_btn:"Buscar Abogado Especialista",cat_ai_tag:"Sugerencia de IA",cat_ai_apply:"Aplicar",cat_ai_dismiss:"Descartar",lw_panel_cta_t:"¿Es usted abogado?",lw_panel_cta_s:"Explore el feed de casos abiertos →",lwp_eyebrow:"⚖️ PARA PROFESIONALES LEGALES",lwp_title:"La Bolsa de Casos",lwp_sub:"Explore quejas anonimizadas en tiempo real. Los detalles de contacto completos están disponibles para Abogados Socios.",lwp_partner_text:"¿Desea los detalles de contacto completos de estos casos? El acceso de Abogado Socio está disponible por una tarifa mensual fija — sin relación con el resultado del caso.",lwp_partner_btn:"Conviértase en Abogado Socio",lwp_locked:"Datos de contacto bloqueados — solo Abogados Socios",lwp_record:"Expediente",lwp_facts:"I · Los hechos",lwp_simh:"II · Casos similares",lwp_filed:"Presentada {t}",lwp_all:"Todas las categorías",lwp_notices:"Otras quejas (avisos)",lwp_cats:"Educación|Telecom / Internet|Privacidad|Acoso|Salarios impagos|Despido injustificado|Reparaciones|Negligencia médica|Retrasos|Prestaciones|Inmigración|Policía|Condominio|Medio ambiente|Servicios públicos|Préstamos estudiantiles|Otro",lwp_prec:"II · Decisiones similares",lwp_pot:"III · Potencial",lwp_joint:"IV · Acción conjunta",lwp_loading:"ASYA está buscando en CanLII…",lwp_nodec:"No se encontraron decisiones similares verificadas.",lwp_ratio:"{w} de {k} decisiones a favor del demandante",lwp_few:"No hay suficientes decisiones para estimar.",lwp_disc:"Una estimación basada en decisiones publicadas — no es garantía ni asesoría legal.",lwp_jyes:"Apto para una acción conjunta",lwp_jno:"No apto para una acción conjunta",lwp_jwhy_yes:"{n} quejas similares en la bolsa y los precedentes son favorables.",lwp_jwhy_no:"Se necesitan quejas similares y precedentes favorables.",lwp_err:"No se pudieron cargar las decisiones. Inténtelo más tarde.",lwp_signin:"Inicie sesión para ver decisiones similares.",lwp_o:"Ganó|Perdió|Parcial|Incierto",lwp_ledger_l:"Casos Abiertos",lwp_stats_title:"Casos Similares por Categoría",lwp_similar:"{n} casos similares en este grupo",lwp_updates_title:"📅 Actualizaciones Legales de Este Mes",lwp_updates_sub:"Cambios legales y novedades relevantes para los casos abiertos, recopilados para Abogados Socios.",lwp_updates_none:"Aún no se han publicado actualizaciones."
     },
     ar:{
-      ey:"منصة الشكاوى الرسمية في كندا",
+      ey:"منصة الشكاوى في كندا",
       nw:"تقديم",tr:"تتبع",lw:"محامي",cy:"جرائم",fd:"قضايا",
       cy_sub:"أبلغ عن التحرش والتهديدات وسرقة الهوية. ارفع أدلتك.",
       cy_s1:"نوع الجريمة؟",cy_s2:"أين حدث؟",cy_s3:"رفع الأدلة",cy_s4:"وصف الحادثة",
@@ -2687,7 +2683,7 @@ const V = (function(){
       vfy_error:"حدث خطأ أثناء التحليل. يرجى المحاولة مرة أخرى.",vfy_timeout:"انتهت مهلة التحليل — استغرق الخادم وقتًا طويلاً للاستجابة. يرجى المحاولة مرة أخرى.",vfy_advice:"نصيحة:",vfy_reselect:"انقر مرة أخرى لاختيار مستند آخر",vfy_petition_drafting:"Asya تقوم بصياغة طلبك...",l_vfy_link:"🔍 هل تلقيت مستندًا مشبوهًا؟ تحقق منه الآن ←",cooldown_msg:"⚠ يرجى الانتظار {m} د {s} ث قبل إرسال شكوى أخرى.",del_prompt:"هل تريد حذف هذه الشكوى؟ أدخل البريد الإلكتروني الذي استخدمته عند التقديم.",del_email_ph:"your@email.com",del_btn:"حذف شكواي",del_need_email:"يرجى إدخال بريدك الإلكتروني للتأكيد.",del_confirm:"سيؤدي هذا إلى حذف شكواك نهائيًا. هل أنت متأكد؟",del_deleting:"جاري الحذف...",del_success:"✅ تم الحذف.",del_fail:"تعذر الحذف — البريد الإلكتروني لا يطابق هذه الشكوى.",mng_email_prompt:"إدارة هذه الشكوى — أدخل البريد الإلكتروني الذي استخدمته عند التقديم.",mng_status_label:"تحديث الحالة:",mng_updating:"جاري التحديث...",mng_success:"✅ تم تحديث الحالة.",mng_reply_label:"رد الجهة (الصقه هنا):",mng_reply_ph:"الصق نص رد الجهة هنا...",mng_reply_btn:"حفظ الرد",mng_reply_success:"✅ تم حفظ الرد.",tl_reply_lbl:"✉ ردت الجهة",verdict_badge:"الحكم",verdict_title:"حكم Asya القانوني",verdict_subtitle:"Claude Sonnet · مسودة بالذكاء الاصطناعي — تحقق قبل الإرسال",verdict_law:"القانون المعمول به",verdict_sanctions:"العقوبات المحتملة",verdict_deadline:"مهلة الاستجابة",verdict_email_draft:"مسودة بريد الشكوى",verdict_copy_btn:"نسخ البريد",verdict_copied:"تم النسخ!",verdict_disclaimer:"تم إنشاؤه بواسطة الذكاء الاصطناعي من معلوماتك — هذه ليست استشارة قانونية. تحقق من القانون والمهلة قبل الاعتماد عليها.",ctype_legal_note:"سيتم إرسال هذا إلى <b>قائمة القضايا المفتوحة</b> الخاصة بنا، للمحامين الشركاء المسجلين فقط — لن يُنشر في القائمة العامة. إذا كنت ترغب في أن يراجع محامٍ قضيتك ويناقش تمثيلك، فهكذا سيجدونك.",ctype_access_label:"طلب الحصول على معلومات",ctype_access_desc:"طلب سجلات أو معلومات من جهة",ctype_access_note:"تتم معالجة هذا الطلب بموجب قانون الحصول على المعلومات / حرية المعلومات — وهو إجراء قانوني مختلف عن الشكوى. عادةً ما يتعين على الجهات الرد خلال عدد محدد من الأيام، ولست بحاجة لذكر سبب الطلب. يلزم تقديم اسم حقيقي وبيانات تواصل حتى تتمكن الجهة من الرد عليك.",stopncii_title:"🛡️ منع المزيد من الانتشار",stopncii_text:"إذا كانت هذه صورة حميمة، يمكن لموقع StopNCII.org إنشاء بصمة خاصة لها تستخدمها المنصات الشريكة (Instagram وFacebook وTikTok وReddit وغيرها) لحظرها — لا يتم رفع الصورة نفسها أبدًا.",stopncii_btn:"الذهاب إلى StopNCII.org ←",alert_high_text:"يبدو هذا خطيرًا — قد يكون لديك مطالبة قانونية.",alert_medium_text:"قد يكون هذا مسألة حقوق قانونية.",alert_legal_btn:"الحقوق القانونية",pool_suggest_title:"تعتقد Asya أن هذه قد تكون قضية قانونية",pool_suggest_text:"بناءً على الوقائع، قد يتمكن محامٍ من متابعة هذا نيابة عنك. اضغط أدناه لإرسالها إلى تجمع القضايا.",pool_suggest_btn:"إرسال إلى تجمع القضايا",pool_suggest_switched:"تم التبديل",legal_track_badge:"مسار قانوني — تجمع القضايا",ctype_notice_label:"إبلاغ الجهة",ctype_notice_desc:"الإبلاغ رسميًا عن المشكلة وطلب الحل",ctype_legal_label:"المطالبة بالحقوق القانونية",ctype_legal_desc:"الإخطار بإجراء قانوني وحقوق التعويض",ctype_section_label:"نوع الشكوى",cy_conf_subj:"رقمك المرجعي في ComplaintCA — {ref}",cy_conf_intro:"مرحبًا،\n\nتم استلام بلاغ الجريمة الإلكترونية الخاص بك من قبل ComplaintCA.",cy_conf_ref_line:"الرقم المرجعي: {ref}",cy_conf_type_line:"النوع: {type}",cy_conf_urgency_line:"درجة الإلحاح: {urgency}",cy_conf_notice:"ComplaintCA ليست جهة شرطة ولا يمكنها تقديم هذا البلاغ إلى جهة رسمية نيابة عنك. لجعله رسميًا، يرجى الاتصال بـ:",cy_conf_danger:"إذا كنت في خطر مباشر، اتصل بالرقم 911 الآن.",cy_conf_keepref:"احتفظ بهذا الرقم المرجعي — يمكنك التحقق من حالته في أي وقت ضمن \"Track\" (التتبع) في ComplaintCA.",cy_conf_privacy:"خصوصيتك: يتم تخزين التفاصيل التي أرسلتها فقط لتمكينك من متابعة هذا البلاغ ولن تتم مشاركتها أبدًا دون موافقتك. يمكنك طلب حذفها في أي وقت.",cy_conf_emailed:"📧 تم إرسال نسخة عبر البريد الإلكتروني إلى {email}.",deadline_passed:"انتهت مدة الاستجابة المعتادة لهذا النوع من الشكاوى.",deadline_soon:"تبقى {n} يومًا فقط في مدة الاستجابة المعتادة.",deadline_escalate:"فكر في التصعيد إلى: {name}.",lw_sug_tag:"مساعدة قانونية ذات صلة",lw_sug_serious_tag:"قد تكون هذه قضية قوية",lw_sug_text:"بناءً على فئة شكواك، يمكن أن يساعدك محامٍ متخصص.",lw_sug_serious_text:"نظرًا لأولوية وفئة هذه الشكوى، نوصي بالتحدث مع محامٍ متخصص.",lw_sug_btn:"ابحث عن محامٍ متخصص",cat_ai_tag:"اقتراح الذكاء الاصطناعي",cat_ai_apply:"تطبيق",cat_ai_dismiss:"تجاهل",lw_panel_cta_t:"هل أنت محامٍ؟",lw_panel_cta_s:"تصفح قائمة القضايا المفتوحة ←",lwp_eyebrow:"⚖️ للمهنيين القانونيين",lwp_title:"تجمع القضايا",lwp_sub:"تصفح الشكاوى المجهولة في الوقت الفعلي. تفاصيل الاتصال الكاملة متاحة للمحامين الشركاء.",lwp_partner_text:"هل تريد تفاصيل الاتصال الكاملة لهذه القضايا؟ الوصول كمحامٍ شريك متاح برسوم شهرية ثابتة — بغض النظر عن نتيجة القضية.",lwp_partner_btn:"كن محاميًا شريكًا",lwp_locked:"تفاصيل الاتصال مقفلة — للمحامين الشركاء فقط",lwp_record:"سجل القضية",lwp_facts:"I · الوقائع",lwp_simh:"II · قضايا مماثلة",lwp_filed:"قُدّمت {t}",lwp_all:"جميع الفئات",lwp_notices:"شكاوى أخرى (إشعارات)",lwp_cats:"التعليم|الاتصالات / الإنترنت|الخصوصية|التحرش|أجور غير مدفوعة|فصل تعسفي|الإصلاحات|خطأ طبي|التأخير|الإعانات|الهجرة|الشرطة|الشقق المشتركة|البيئة|المرافق|قروض الطلاب|أخرى",lwp_prec:"II · قرارات مماثلة",lwp_pot:"III · الإمكانية",lwp_joint:"IV · دعوى مشتركة",lwp_loading:"ASYA تبحث في CanLII…",lwp_nodec:"لم يتم العثور على قرارات مماثلة موثقة.",lwp_ratio:"{w} من {k} قرارات لصالح المشتكي",lwp_few:"لا توجد قرارات كافية للتقدير.",lwp_disc:"تقدير من قرارات منشورة مماثلة — ليس ضمانًا ولا استشارة قانونية.",lwp_jyes:"مناسبة لدعوى مشتركة",lwp_jno:"غير مناسبة لدعوى مشتركة",lwp_jwhy_yes:"{n} شكاوى مماثلة في المجمع والسوابق مواتية.",lwp_jwhy_no:"يتطلب شكاوى مماثلة وسوابق مواتية.",lwp_err:"تعذر تحميل القرارات. حاول لاحقًا.",lwp_signin:"سجّل الدخول لرؤية القرارات المماثلة.",lwp_o:"ربح|خسر|جزئي|غير واضح",lwp_ledger_l:"قضايا مفتوحة",lwp_stats_title:"قضايا مماثلة حسب الفئة",lwp_similar:"{n} قضايا مماثلة في هذه المجموعة",lwp_updates_title:"📅 التحديثات القانونية لهذا الشهر",lwp_updates_sub:"تغييرات قانونية وتطورات رئيسية ذات صلة بالقضايا المفتوحة، مجمّعة للمحامين الشركاء.",lwp_updates_none:"لم يتم نشر أي تحديثات بعد."
     },
     pa:{
-      ey:"ਕੈਨੇਡਾ ਦਾ ਅਧਿਕਾਰਤ ਸ਼ਿਕਾਇਤ ਪਲੇਟਫਾਰਮ",
+      ey:"ਕੈਨੇਡਾ ਦਾ ਸ਼ਿਕਾਇਤ ਪਲੇਟਫਾਰਮ",
       nw:"ਦਰਜ",tr:"ਟਰੈਕ",lw:"ਵਕੀਲ",cy:"ਸਾਈਬਰ",fd:"ਕੇਸ",
       cy_sub:"ਪਰੇਸ਼ਾਨੀ, ਧਮਕੀਆਂ ਅਤੇ ਪਛਾਣ ਚੋਰੀ ਦੀ ਰਿਪੋਰਟ ਕਰੋ।",
       cy_s1:"ਅਪਰਾਧ ਦੀ ਕਿਸਮ?",cy_s2:"ਕਿੱਥੇ ਹੋਇਆ?",cy_s3:"ਸਬੂਤ ਅਪਲੋਡ ਕਰੋ",cy_s4:"ਘਟਨਾ ਦੱਸੋ",
@@ -5924,25 +5920,25 @@ if('serviceWorker' in navigator){
     <div style="background:linear-gradient(135deg,#520f47,#851aa0);padding:16px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0">
       <div style="font-size:1.4rem">🏛️</div>
       <div style="flex:1">
-        <div id="mv-modal-title" style="font-family:Cinzel,serif;text-transform:uppercase;font-weight:700;color:#fff;font-size:1rem;letter-spacing:.5px">Milletvekili Bul</div>
-        <div id="mv-modal-sub" style="font-size:.68rem;color:rgba(255,255,255,.6);margin-top:1px">Adresinizle temsilcinizi bulun</div>
+        <div id="mv-modal-title" style="font-family:Cinzel,serif;text-transform:uppercase;font-weight:700;color:#fff;font-size:1rem;letter-spacing:.5px">Encuentre a sus representantes</div>
+        <div id="mv-modal-sub" style="font-size:.68rem;color:rgba(255,255,255,.6);margin-top:1px">Diputados y senadores de su provincia</div>
       </div>
       <button onclick="mvClose()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:.85rem">✕</button>
     </div>
     <div style="background:linear-gradient(135deg,#4f135e,#851aa0);padding:12px 18px;text-align:center;border-bottom:1px solid rgba(207,177,231,.25)">
-      <div id="mv-quote" style="font-family:Cinzel,serif;text-transform:uppercase;color:#fff;font-size:.82rem;font-style:italic;line-height:1.4">"Adalet, diğer tüm erdemlerin kaynağıdır."</div>
+      <div id="mv-quote" style="font-family:Cinzel,serif;text-transform:uppercase;color:#fff;font-size:.82rem;font-style:italic;line-height:1.4">"La justicia es la fuente de todas las demás virtudes."</div>
       <div style="font-family:Cinzel,serif;text-transform:uppercase;color:#cfb1e7;font-size:.62rem;font-weight:600;letter-spacing:1.5px;margin-top:5px">— MARCUS AURELIUS</div>
     </div>
     <div style="padding:16px 18px;flex:1;overflow-y:auto">
-      <label id="mv-addr-lbl" style="font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:6px">Adresiniz</label>
+      <label id="mv-addr-lbl" style="font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:6px">Su provincia</label>
      <div style="display:flex;gap:8px">
             <div style="position:relative;flex:1">
               <input type="text" id="mv-postal" placeholder="örn. 123 Queen St W, Toronto, ON" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:.95rem;outline:none;margin-bottom:0" oninput="_mvLocDebounce()" onkeydown="if(event.key==='Enter')mvSearch()">
               <div class="loc-dropdown" id="mv-dropdown"></div>
             </div>
-            <button onclick="mvSearch()" id="mv-go" style="background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:700;font-size:.85rem;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px">Bul</button>
+            <button onclick="mvSearch()" id="mv-go" style="background:linear-gradient(135deg,#851aa0,#520f47);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:700;font-size:.85rem;cursor:pointer;font-family:Cinzel,serif;text-transform:uppercase;letter-spacing:.5px">Buscar</button>
           </div>
-      <div id="mv-hint" style="font-size:.68rem;color:var(--muted);margin-top:6px">Cadde, şehir ve eyaleti yazın. Federal (MP) ve eyalet (MPP/MLA) temsilcileriniz listelenir.</div>
+      <div id="mv-hint" style="font-size:.68rem;color:var(--muted);margin-top:6px">En España los diputados se eligen por provincia. Elija la suya para ver sus diputados en el Congreso, o acuda al Defensor del Pueblo.</div>
       <div id="mv-results" style="margin-top:16px"></div>
     </div>
   </div>
@@ -5990,18 +5986,18 @@ if('serviceWorker' in navigator){
   <div class="sup-page">
     <div class="sup-banner">
       <div class="sup-badge">🤝</div>
-      <div class="sup-eyebrow" id="sup-eyebrow">Support &amp; Safety</div>
-      <h1 class="sup-title" id="sup-title">You Are Not Alone</h1>
+      <div class="sup-eyebrow" id="sup-eyebrow">Apoyo y seguridad</div>
+      <h2 class="sup-title" id="sup-title">No está solo/a</h2>
       <p class="sup-lede" id="sup-lede">Describing what happened can be difficult and may bring up <b>distress or trauma</b>. If you'd like to continue, that choice is entirely yours — but please read this first.<span class="sup-reco" id="sup-recommend">🩺 <b>Our recommendation:</b> talk to a doctor or counsellor before filing.</span></p>
     </div>
     <div class="sup-flow">
       <a class="sup-danger" href="tel:112">
         <span style="font-size:1rem">🚨</span>
-        <div><div class="sd-t" id="sup-danger-t">In immediate danger?</div><div class="sd-s" id="sup-danger-s">ComplaintCA isn't monitored in real time — police can respond now.</div></div>
-        <span class="sd-call" id="sup-danger-btn">Call 911</span>
+        <div><div class="sd-t" id="sup-danger-t">¿Está en peligro inmediato?</div><div class="sd-s" id="sup-danger-s">Complaint CA España no se supervisa en tiempo real; la policía puede actuar ahora.</div></div>
+        <span class="sd-call" id="sup-danger-btn">Llamar al 112</span>
       </a>
       <div class="sup-card">
-        <div class="sup-card-h"><div class="sup-ci">💬</div><span class="sup-h-t" id="sup-res-label">Free Confidential Support</span><span class="sup-h-s">24/7</span></div>
+        <div class="sup-card-h"><div class="sup-ci">💬</div><span class="sup-h-t" id="sup-res-label">Apoyo gratuito y confidencial</span><span class="sup-h-s">24/7</span></div>
         <a class="sup-row" href="tel:024"><span class="sr-ic">☎️</span><div><div class="sr-name">024 — Atención a la conducta suicida</div><div class="sr-desc">Gratuito · toda España</div></div><span class="sr-num">024</span></a>
         <a class="sup-row" href="tel:016"><span class="sr-ic">🌸</span><div><div class="sr-name">016 — Violencia de género</div><div class="sr-desc">No deja rastro en la factura · WhatsApp 600 000 016</div></div><span class="sr-num">016</span></a>
         <a class="sup-row" href="tel:900202010"><span class="sr-ic">📞</span><div><div class="sr-name">Fundación ANAR</div><div class="sr-desc">Niños, adolescentes y familias</div></div><span class="sr-num">900 20 20 10</span></a>
@@ -6010,10 +6006,10 @@ if('serviceWorker' in navigator){
       </div>
     </div>
     <div class="sup-actions">
-      <button class="sup-btn sup-btn-primary" id="sup-back-btn" onclick="_supportBack()">← Go Back &amp; Get Support</button>
-      <button class="sup-btn sup-btn-ghost" id="sup-continue-btn" onclick="_supportContinue()">I Understand — Continue</button>
+      <button class="sup-btn sup-btn-primary" id="sup-back-btn" onclick="_supportBack()">← Volver y buscar apoyo</button>
+      <button class="sup-btn sup-btn-ghost" id="sup-continue-btn" onclick="_supportContinue()">Lo entiendo — Continuar</button>
     </div>
-    <div class="sup-privacy" id="sup-privacy">🔒 You can file <b>anonymously</b>, and you control what you share. You can stop at any point.</div>
+    <div class="sup-privacy" id="sup-privacy">🔒 Puede presentar la queja de forma <b>anónima</b> y usted decide qué comparte. Puede detenerse en cualquier momento.</div>
   </div>
 </div>
 
