@@ -36,3 +36,10 @@ test('trimHistory keeps the task and the newest turns, starting with user', () =
   assert.equal(r.at(-1).content, '19');
   assert.ok(userTurn('', null, '').includes('go'));
 });
+
+test('sites: last two host labels, links from mail', async () => {
+  const { siteOf, linkSites } = await import('./core.js');
+  assert.equal(siteOf('https://www.ccts-cprst.ca/x'), 'ccts-cprst.ca');
+  assert.equal(siteOf('nope'), '');
+  assert.deepEqual(linkSites([{ links: ['https://a.adsterra.com/v?x', 'https://evil.example/c'] }]), ['adsterra.com', 'evil.example']);
+});

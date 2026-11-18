@@ -62,6 +62,16 @@ export function makePassword(rand = n => crypto.getRandomValues(new Uint32Array(
   return out.join('');
 }
 
+// "site" = the last two labels of the host (ccts-cprst.ca, adsterra.com).
+export function siteOf(u) {
+  try { return new URL(u).hostname.toLowerCase().split('.').slice(-2).join('.'); } catch (e) { return ''; }
+}
+export function linkSites(messages) {
+  const out = new Set();
+  for (const m of messages || []) for (const l of m.links || []) { const s = siteOf(l); if (s) out.add(s); }
+  return [...out];
+}
+
 export function userTurn(task, page, note) {
   const parts = [];
   if (task) parts.push('GÖREV: ' + task);

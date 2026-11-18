@@ -15,7 +15,7 @@ import http from 'node:http';
 import { timingSafeEqual } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { PROXY, MAX_STEPS, SYSTEM_CLOUD, userTurn, parseReply, trimHistory, isFinalButton,
-  isSensitive, isPasswordField, makePassword, readPage, fillFields, clickEl } from '../extension/core.js';
+  isSensitive, isPasswordField, makePassword, readPage, fillFields, clickEl, siteOf, linkSites } from '../extension/core.js';
 
 const TOKEN = process.env.AGENT_TOKEN || '';
 const CLAUDE = process.env.AGENT_PROXY || PROXY; // tests point this at a mock
@@ -24,7 +24,7 @@ const ORIGINS = ['https://complaintca.ca', 'https://www.complaintca.ca'];
 const VIEW = { width: 390, height: 760 };
 const IDLE_MS = 10 * 60 * 1000;
 
-let browser = null, page = null, job = null, running = false, stopped = false;
+let browser = null, page = null, job = null, running = false, stopped = false, starting = false;
 let events = [], seq = 0, lastSeen = Date.now(), lastShot = null, shotAt = 0;
 
 function tell(type, text) {
@@ -55,10 +55,11 @@ async function settle(ms = 15000) {
   await page.waitForTimeout(900);
 }
 
-async function snapshot() {
+async function snapshot(job) {
   if (!page || page.url() === 'about:blank') return null;
   const p = await page.evaluate(readPage).catch(() => null);
   if (!p) return null;
+  job.sites.add(siteOf(p.url));
   job.sensitive = p.fields.filter(f => isSensitive(f) && !isPasswordField(f)).map(f => f.id);
   job.pwFields = p.fields.filter(isPasswordField).map(f => f.id);
   p.fields.forEach(f => { if (isSensitive(f)) { f.value = isPasswordField(f) ? (f.value ? '(dolu)' : '') : '(gizli, dokunma)'; f.sensitive = true; } });
@@ -80,52 +81,71 @@ async function askClaude(turns) {
 
 // The owner's Gmail, through the Apps Script web app in cloud-agent/gmail.gs.
 async function readMail(q) {
-  if (!process.env.MAIL_URL || !process.env.MAIL_KEY) return 'MAİL: bağlantı kurulu değil.';
+  const said = text => ({ text, sites: [] });
+  if (!process.env.MAIL_URL || !process.env.MAIL_KEY) return said('MAİL: bağlantı kurulu değil.');
   try {
     const u = process.env.MAIL_URL + '?key=' + encodeURIComponent(process.env.MAIL_KEY) + '&q=' + encodeURIComponent(q);
     const r = await fetch(u, { redirect: 'follow' });
     const d = await r.json();
-    if (!d.ok) return 'MAİL: okunamadı (' + (d.error || r.status) + ')';
-    if (!d.messages.length) return 'MAİL: "' + q + '" için mail yok (henüz gelmemiş olabilir).';
-    return 'MAİL SONUCU:\n' + JSON.stringify(d.messages).slice(0, 6000);
-  } catch (e) { return 'MAİL: okunamadı (' + e.message + ')'; }
+    if (!d.ok) return said('MAİL: okunamadı (' + (d.error || r.status) + ')');
+    if (!d.messages.length) return said('MAİL: "' + q + '" için mail yok (henüz gelmemiş olabilir).');
+    return { text: 'MAİL SONUCU:\n' + JSON.stringify(d.messages).slice(0, 6000), sites: linkSites(d.messages) };
+  } catch (e) { return said('MAİL: okunamadı (' + e.message + ')'); }
 }
 
 async function run(note) {
-  if (running || !job) return;
-  running = true; stopped = false;
+  if (!job) return;
+  if (running) { job.pending = [job.pending, note].filter(Boolean).join('\n'); return; }
+  const j = job; // /stop clears `job`; this run keeps its own and quits
+  const alive = () => !stopped && job === j;
+  running = true;
   let extra = note || '';
   try {
-    for (let step = 0; step < MAX_STEPS && !stopped; step++) {
-      const snap = await snapshot();
-      job.turns.push({ role: 'user', content: userTurn(job.turns.length ? '' : job.task, snap, extra) });
+    for (let step = 0; step < MAX_STEPS && alive(); step++) {
+      const snap = await snapshot(j);
+      if (j.pending) { extra = [extra, j.pending].filter(Boolean).join('\n'); j.pending = ''; }
+      j.turns.push({ role: 'user', content: userTurn(j.turns.length ? '' : j.task, snap, extra) });
       extra = '';
-      job.turns = trimHistory(job.turns);
-      const text = await askClaude(job.turns);
-      job.turns.push({ role: 'assistant', content: text });
-      if (stopped) break;
+      j.turns = trimHistory(j.turns);
+      const text = await askClaude(j.turns);
+      j.turns.push({ role: 'assistant', content: text });
+      if (!alive()) break;
       const a = parseReply(text);
       if (a.say) tell('log', a.say);
 
-      if (a.go) { await page.goto(a.go, { timeout: 30000 }).catch(e => tell('log', 'Sayfa açılamadı: ' + e.message.split('\n')[0])); await settle(); continue; }
+      if (a.go) {
+        // Once mail has been read, a page could try to make the agent carry a
+        // code or link elsewhere: then only sites already in play are allowed.
+        if (j.mailRead && !j.sites.has(siteOf(a.go))) { j.offer = a.go; tell('ask', siteOf(a.go) + ' adresine gitmek istiyorum: ' + a.go + '\nGideyim mi? ("evet" yaz)'); break; }
+        await page.goto(a.go, { timeout: 30000 }).catch(e => tell('log', 'Sayfa açılamadı: ' + e.message.split('\n')[0]));
+        await settle(); continue;
+      }
       if (!snap) { tell('ask', a.ask || 'Hangi sayfada çalışayım? Linki yaz.'); break; }
 
-      const fill = a.fill.filter(f => !job.sensitive.includes(f.id) && !job.pwFields.includes(f.id));
-      const pw = a.password.filter(id => job.pwFields.includes(id));
+      const fill = a.fill.filter(f => !j.sensitive.includes(f.id) && !j.pwFields.includes(f.id));
+      const pw = a.password.filter(id => j.pwFields.includes(id));
       if (pw.length) {
-        job.password = job.password || makePassword();
-        fill.push(...pw.map(id => ({ id, value: job.password })));
-        tell('secret', 'Bu site için şifre: ' + job.password + '\nKaydet (Google Şifre Yöneticisi). Bir daha göstermem.');
+        if (!j.password) {
+          j.password = makePassword();
+          tell('secret', 'Bu site için şifre: ' + j.password + '\nKaydet (Google Şifre Yöneticisi). Bir daha göstermem.');
+        }
+        fill.push(...pw.map(id => ({ id, value: j.password })));
       }
       if (fill.length) {
         const miss = await page.evaluate(fillFields, fill).catch(() => []);
         tell('log', fill.length + ' alan dolduruldu.' + (miss && miss.length ? ' Sorun: ' + miss.join(', ') : ''));
       }
-      if (a.mail) { tell('log', 'Mailine bakıyorum: ' + a.mail); extra = await readMail(a.mail); continue; }
+      if (a.mail) {
+        tell('log', 'Mailine bakıyorum: ' + a.mail);
+        const m = await readMail(a.mail);
+        j.mailRead = true;
+        m.sites.forEach(x => j.sites.add(x));
+        extra = m.text; continue;
+      }
       if (a.ask) { tell('ask', a.ask); break; }
       if (a.done) { tell('done', 'Kutular doldu ✅ Canlı ekrandan kontrol et, onay tuşuna sen bas.'); break; }
       if (a.click) {
-        const label = job.buttons[a.click] || '';
+        const label = j.buttons[a.click] || '';
         if (isFinalButton(label)) { tell('done', '"' + label + '" tuşuna ben basmam. Kontrol et, canlı ekrandan sen bas. ✅'); break; }
         await page.evaluate(clickEl, a.click).catch(() => {});
         await settle(6000);
@@ -135,11 +155,13 @@ async function run(note) {
       if (step === MAX_STEPS - 1) tell('ask', 'Çok adım oldu, durdum. "devam" yazarsan sürdürürüm.');
     }
   } catch (e) {
-    if (job.turns.length && job.turns.at(-1).role === 'user') job.turns.pop();
-    tell('error', 'Hata: ' + (e && e.message || e));
+    if (j.turns.length && j.turns.at(-1).role === 'user') j.turns.pop();
+    if (alive()) tell('error', 'Hata: ' + (e && e.message || e));
   } finally {
     running = false;
   }
+  // An answer that arrived while the agent was busy: go on with it.
+  if (alive() && j.pending) { const n = j.pending; j.pending = ''; run(n); }
 }
 
 async function shot() {
@@ -187,27 +209,36 @@ export const server = http.createServer(async (req, res) => {
     }
     if (req.method === 'GET' && url.pathname === '/events') {
       const since = Number(url.searchParams.get('since') || 0);
-      return json(200, { events: events.filter(e => e.n > since), busy: running, url: page ? page.url() : '' });
+      const out = events.filter(e => e.n > since);
+      events = events.filter(e => !(e.type === 'secret' && e.n > since)); // a password is handed over once
+      return json(200, { events: out, busy: running, url: page ? page.url() : '' });
     }
     if (req.method !== 'POST') return json(405, { error: 'method' });
     const b = await body(req);
     if (url.pathname === '/start') {
-      if (running) return json(409, { error: 'busy' });
+      if (running || starting) return json(409, { error: 'busy' });
       const task = String(b.task || '').trim().slice(0, 4000);
       if (!task) return json(400, { error: 'task' });
-      await launch();
-      job = { task, turns: [], sensitive: [], pwFields: [], buttons: {}, password: null };
-      const link = (task.match(/https:\/\/[^\s<>"')]+/i) || [])[0];
-      tell('log', 'Başladım.');
-      if (link) { await page.goto(link, { timeout: 30000 }).catch(e => tell('log', 'Sayfa açılamadı: ' + e.message.split('\n')[0])); await settle(); }
+      starting = true;
+      try {
+        await launch();
+        job = { task, turns: [], sensitive: [], pwFields: [], buttons: {}, password: null, pending: '', mailRead: false, sites: new Set(linkSites([{ links: task.match(/https:\/\/[^\s<>"')]+/gi) || [] }])) };
+        const link = (task.match(/https:\/\/[^\s<>"')]+/i) || [])[0];
+        stopped = false;
+        tell('log', 'Başladım.');
+        if (link) { await page.goto(link, { timeout: 30000 }).catch(e => tell('log', 'Sayfa açılamadı: ' + e.message.split('\n')[0])); await settle(); }
+      } finally { starting = false; }
       run('');
       return json(200, { ok: true });
     }
     if (url.pathname === '/reply') {
       const text = String(b.text || '').trim().slice(0, 2000);
       if (!job || !text) return json(400, { error: 'nojob' });
+      if (job.offer && /^(evet|e|ok|tamam|git|yes)\b/i.test(text)) { job.sites.add(siteOf(job.offer)); }
+      job.offer = null;
+      const queued = running;
       run(text);
-      return json(200, { ok: true });
+      return json(200, { ok: true, queued });
     }
     if (url.pathname === '/tap') {
       if (!page) return json(400, { error: 'nopage' });
@@ -241,6 +272,7 @@ export const server = http.createServer(async (req, res) => {
 });
 
 if (process.argv[1] && process.argv[1].endsWith('server.mjs')) {
+  process.on('unhandledRejection', e => console.error('unhandled:', e && e.message));
   server.listen(PORT, () => console.log('dias-ajan on', PORT));
   // Nobody watching for a while: close Chrome and exit (the sandbox also has its own timeout).
   setInterval(() => { if (Date.now() - lastSeen > IDLE_MS) { console.log('idle, exiting'); process.exit(0); } }, 30000).unref();

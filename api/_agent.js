@@ -35,6 +35,7 @@ export function bootScript() {
 }
 
 const read = p => readFileSync(join(process.cwd(), p));
+export const snapshotGone = e => [404, 410].includes(e && e.status) || /snapshot/i.test(String(e && e.message));
 export const NAME_RE = /^dias-ajan-[a-f0-9]{8}$/;
 
 async function vercel(path, token, teamId, opts = {}) {
@@ -42,7 +43,7 @@ async function vercel(path, token, teamId, opts = {}) {
     ...opts, headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
   });
   const d = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(`sandbox ${r.status}: ${(d.error && (d.error.message || d.error.code)) || ''}`.trim());
+  if (!r.ok) { const e = new Error(`sandbox ${r.status}: ${(d.error && (d.error.message || d.error.code)) || ''}`.trim()); e.status = r.status; throw e; }
   return d;
 }
 
@@ -81,7 +82,11 @@ export async function agentApi(req, res) {
     let created;
     // Snapshots expire (30 days): then start clean and let the boot script install.
     try { created = await create(snap ? { type: 'snapshot', snapshotId: snap } : null); }
-    catch (e) { if (!snap) throw e; console.error('agent snapshot failed:', e.message); snap = null; created = await create(null); }
+    catch (e) {
+      // Only a missing/expired snapshot earns a second try; quota or outages do not.
+      if (!snap || !snapshotGone(e)) throw e;
+      console.error('agent snapshot failed:', e.message); snap = null; created = await create(null);
+    }
     const sid = created.session && created.session.id;
     const route = (created.routes || []).find(r => r.port === 3000);
     if (!sid || !route) throw new Error('sandbox: no session');

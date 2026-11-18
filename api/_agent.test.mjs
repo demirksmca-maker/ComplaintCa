@@ -34,3 +34,11 @@ test('owner key required; no OIDC means 503', async () => {
   assert.equal(r.code, 400);
   delete process.env.SHIELD_KEY;
 });
+
+test('only a missing snapshot earns a clean retry', async () => {
+  const { snapshotGone } = await import('./_agent.js');
+  assert.ok(snapshotGone({ status: 404, message: 'sandbox 404:' }));
+  assert.ok(snapshotGone({ status: 400, message: 'sandbox 400: snapshot not found' }));
+  assert.ok(!snapshotGone({ status: 429, message: 'sandbox 429: rate limited' }));
+  assert.ok(!snapshotGone({ status: 500, message: 'sandbox 500:' }));
+});

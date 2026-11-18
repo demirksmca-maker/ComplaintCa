@@ -217,8 +217,10 @@
     document.body.classList.toggle('cloud', on);
     if (!on) { $('shot').removeAttribute('src'); $('liveWait').hidden = false; $('liveMsg').textContent = ''; }
   }
+  var evGen = 0;
   async function pollEvents() {
-    while (cloud) {
+    var gen = ++evGen;
+    while (cloud && gen === evGen) {
       var c = cloud;
       try {
         var r = await fetch(c.url + '/events?k=' + c.token + '&since=' + c.since, { cache: 'no-store' });
@@ -235,10 +237,11 @@
       await wait(1500);
     }
   }
+  var shotGen = 0;
   function pollShot() {
-    var img = $('shot');
+    var img = $('shot'), gen = ++shotGen; // a restart ends the previous loop
     function next() {
-      if (!cloud) return;
+      if (!cloud || gen !== shotGen) return;
       if (document.hidden) return setTimeout(next, 1500);
       img.src = cloud.url + '/shot?k=' + cloud.token + '&t=' + Date.now();
     }
@@ -248,8 +251,12 @@
   }
   $('shot').addEventListener('click', function (e) {
     if (!cloud) return;
-    var r = this.getBoundingClientRect();
-    call('/tap', { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }).catch(function () {});
+    // object-fit: contain can letterbox the picture inside the box.
+    var r = this.getBoundingClientRect(), nw = this.naturalWidth || r.width, nh = this.naturalHeight || r.height;
+    var k = Math.min(r.width / nw, r.height / nh), w = nw * k, h = nh * k;
+    var x = (e.clientX - r.left - (r.width - w) / 2) / w, y = (e.clientY - r.top - (r.height - h) / 2) / h;
+    if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    call('/tap', { x: x, y: y }).catch(function () {});
   });
   $('liveType').addEventListener('keydown', function (e) {
     if (e.key !== 'Enter' || !cloud) return;
@@ -271,12 +278,13 @@
   function agentSend() {
     var text = $('text').value.trim();
     if (!text || cloudBusy) return;
-    if (agentOn && !cloud) toAgent(agentAsking ? { type: 'reply', text: text } : { type: 'start', task: text });
-    else if (cloud) call('/reply', { text: text }).catch(function (e) { botSay('error', 'Gönderilemedi: ' + e.message); });
-    else cloudStart(text);
-    log.push({ me: true, text: (agentAsking || cloud ? '' : agentOn ? '🤖 ' : '☁️ ') + text, t: Date.now() });
-    agentAsking = false; label(); $('agentbar').hidden = false;
+    var ext = agentOn && !cloud, reply = agentAsking || !!cloud;
+    log.push({ me: true, text: (reply ? '' : ext ? '🤖 ' : '☁️ ') + text, t: Date.now() });
     save(log); $('text').value = ''; sync(); render();
+    if (ext) { toAgent(agentAsking ? { type: 'reply', text: text } : { type: 'start', task: text }); $('agentbar').hidden = false; }
+    else if (cloud) call('/reply', { text: text }).then(function (d) { if (d.queued) botSay('log', 'Not aldım, bu adım bitince bakacağım.'); }).catch(function (e) { botSay('error', 'Gönderilemedi: ' + e.message); });
+    else cloudStart(text);
+    agentAsking = false; label();
   }
   $('agent').addEventListener('click', agentSend);
   toAgent({ type: 'ping' });
