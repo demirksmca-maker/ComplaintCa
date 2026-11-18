@@ -83,7 +83,7 @@
       var r = await fetch('/api/agent', { method: 'POST', headers: { 'x-shield-key': key, 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'start' }) });
       var d = await r.json().catch(function () { return {}; });
       if (!r.ok) throw new Error(d.error === 'forbidden' ? 'Anahtar yanlış.' : d.error === 'cooldown' ? 'Çok deneme oldu, 10 dk bekle.' : d.error === 'no_oidc' ? 'Vercel OIDC kapalı.' : (d.error || r.status));
-      cloud = { id: d.id, url: d.url, token: d.token, expires: d.expires, since: 0 }; keep(CLOUD_KEY, cloud); label();
+      cloud = { id: d.id, url: d.url, token: d.token, expires: Date.now() + (d.ttl || 40 * 60000), since: 0 }; keep(CLOUD_KEY, cloud); label();
       var c = cloud, up = false;
       for (var i = 0; i < 75 && !up && cloud === c; i++) {
         try { up = (await fetch(c.url + '/health', { cache: 'no-store' })).ok; } catch (e) { /* booting */ }
