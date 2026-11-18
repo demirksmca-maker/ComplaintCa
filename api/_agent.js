@@ -102,7 +102,7 @@ export async function agentApi(req, res) {
         }
       })
     });
-    return res.status(200).json({ id: name, url: route.url, token, expires: Date.now() + LIFE_MS, warm: !!snap });
+    return res.status(200).json({ id: name, url: route.url, token, ttl: LIFE_MS, expires: Date.now() + LIFE_MS, warm: !!snap });
   } catch (e) {
     console.error('agent error:', e && e.message);
     return res.status(502).json({ error: String(e && e.message || e).slice(0, 200) });
