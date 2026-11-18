@@ -43,7 +43,7 @@ function withArticle(html, loc, date) {
     inLanguage: 'en-CA',
     image: ORIGIN + '/og-image.png',
     dateModified: date,
-    author: org,
+    author: { '@type': 'Person', name: 'Kasım Demir', url: ORIGIN + '/about.html#author' },
     publisher: { ...org, logo: { '@type': 'ImageObject', url: ORIGIN + '/icons/icon-512.png' } },
   };
   const block = `<script type="application/ld+json">\n${JSON.stringify(article, null, 2)}\n</script>\n`;
