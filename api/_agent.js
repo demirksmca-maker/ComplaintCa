@@ -70,15 +70,18 @@ export async function agentApi(req, res) {
 
     const name = 'dias-ajan-' + randomBytes(4).toString('hex');
     const token = randomBytes(24).toString('hex');
-    const snap = process.env.AGENT_SNAPSHOT;
-    const created = await vercel('/v2/sandboxes', oidc, claims.teamId, {
+    let snap = process.env.AGENT_SNAPSHOT;
+    const create = source => vercel('/v2/sandboxes', oidc, claims.teamId, {
       method: 'POST',
       body: JSON.stringify({
         projectId: claims.projectId, name, persistent: false, runtime: 'node24', region: 'iad1',
-        ports: [3000], timeout: LIFE_MS, resources: { vcpus: 2, memory: 4096 },
-        ...(snap ? { source: { type: 'snapshot', snapshotId: snap } } : {})
+        ports: [3000], timeout: LIFE_MS, resources: { vcpus: 2, memory: 4096 }, ...(source ? { source } : {})
       })
     });
+    let created;
+    // Snapshots expire (30 days): then start clean and let the boot script install.
+    try { created = await create(snap ? { type: 'snapshot', snapshotId: snap } : null); }
+    catch (e) { if (!snap) throw e; console.error('agent snapshot failed:', e.message); snap = null; created = await create(null); }
     const sid = created.session && created.session.id;
     const route = (created.routes || []).find(r => r.port === 3000);
     if (!sid || !route) throw new Error('sandbox: no session');
