@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)demo' ':(exclude)CLAUDE.md'",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)demo' ':(exclude)CLAUDE.md' ':(exclude)extension'",
   "redirects": [
     {
       "source": "/(guides|blog|business|weekly)/([a-z0-9-]+)",

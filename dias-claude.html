@@ -46,6 +46,11 @@
   .bar small{color:var(--mute);font-size:.72rem}
   .send{background:linear-gradient(135deg,#cfb0e8,#cfb1e7);color:#520f47;font-weight:700;padding:9px 18px}
   .send:disabled{opacity:.45;cursor:default}
+  .agent{background:linear-gradient(135deg,#3ddc97,#2bb47a);color:#08291b;font-weight:700;padding:9px 14px}
+  .agent:disabled{opacity:.45;cursor:default}
+  .acts{display:flex;gap:8px}
+  .msg.bot{align-self:flex-start;border-radius:14px 14px 14px 4px;font-size:.9rem;border-color:#2bb47a}
+  .msg.bot.ask{border-color:var(--gold)}
   .clear{background:none;color:var(--mute);font-size:.72rem;text-decoration:underline;padding:0}
 
   .bar-nav{flex:none;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));max-width:480px;width:100%;margin:0 auto;border-top:1px solid #842a9a;background:#2a0825;padding:6px 8px max(6px,env(safe-area-inset-bottom));font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif}
@@ -69,8 +74,8 @@
   <form class="card composer" id="form">
     <textarea id="text" placeholder="Claude'a ne yapmasını istiyorsun? Örn: Huni sekmesine haftalık özet ekle, testleri çalıştır, canlıya al." aria-label="Mesaj"></textarea>
     <div class="bar">
-      <small>Ctrl / ⌘ + Enter ile gönder · <button type="button" class="clear" id="clear">geçmişi temizle</button></small>
-      <button type="submit" class="send" id="send" disabled>Gönder</button>
+      <small>Ctrl / ⌘ + Enter ile gönder · <button type="button" class="clear" id="clear">geçmişi temizle</button><span id="agentbar" hidden> · <button type="button" class="clear" id="stop">ajanı durdur</button></span></small>
+      <span class="acts"><button type="button" class="agent" id="agent" hidden disabled>🤖 Tarayıcıda yap</button><button type="submit" class="send" id="send" disabled>Gönder</button></span>
     </div>
   </form>
 
@@ -99,7 +104,7 @@
 
   function render() {
     $('log').innerHTML = log.length ? log.map(function (m) {
-      return '<div class="msg ' + (m.me ? 'me' : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + '</time></div>';
+      return '<div class="msg ' + (m.me ? 'me' : m.bot ? 'bot card' + (m.ask ? ' ask' : '') : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + '</time></div>';
     }).join('') : '<div class="welcome"><b>Merhaba 👋 Ne yapalım?</b><p>Yaz, gönder; mesajın kopyalanır ve Claude Code açılır. Orada yapıştırınca Claude kodda, GitHub\'da ve Vercel\'de işi yapar.</p>' +
       '<div class="chips">' + IDEAS.map(function (x) { return '<button type="button">' + esc(x) + '</button>'; }).join('') + '</div></div>';
     Array.prototype.forEach.call(document.querySelectorAll('.chips button'), function (b) {
@@ -107,7 +112,35 @@
     });
     $('log').scrollTop = $('log').scrollHeight;
   }
-  function sync() { $('send').disabled = !$('text').value.trim(); }
+  function sync() { var empty = !$('text').value.trim(); $('send').disabled = empty; $('agent').disabled = empty; }
+
+  // Dias Ajan: the Chrome extension (extension/ in the repo) announces itself
+  // through its bridge; tasks then run in this browser instead of Claude Code.
+  var agentOn = false, agentAsking = false;
+  function toAgent(msg) { window.postMessage({ dias: 'to-agent', msg: msg }, location.origin); }
+  window.addEventListener('message', function (e) {
+    if (e.source !== window || e.origin !== location.origin || !e.data || e.data.dias !== 'from-agent') return;
+    var m = e.data.msg || {};
+    if (m.type === 'hello') { agentOn = true; $('agent').hidden = false; return; }
+    if (!m.text) return;
+    agentAsking = m.type === 'ask';
+    $('agentbar').hidden = m.type === 'done' && /durdu/.test(m.text);
+    $('agent').textContent = agentAsking ? '🤖 Ajana cevap ver' : '🤖 Tarayıcıda yap';
+    log.push({ bot: true, ask: m.type === 'ask', text: '🤖 ' + m.text, t: Date.now() });
+    save(log); render();
+  });
+  function agentSend() {
+    var text = $('text').value.trim();
+    if (!text || !agentOn) return;
+    var reply = agentAsking;
+    toAgent(reply ? { type: 'reply', text: text } : { type: 'start', task: text });
+    log.push({ me: true, text: (reply ? '' : '🤖 ') + text, t: Date.now() });
+    agentAsking = false; $('agent').textContent = '🤖 Tarayıcıda yap'; $('agentbar').hidden = false;
+    save(log); $('text').value = ''; sync(); render();
+  }
+  $('agent').addEventListener('click', agentSend);
+  toAgent({ type: 'ping' });
+  $('stop').addEventListener('click', function () { toAgent({ type: 'stop' }); });
 
   function send() {
     var text = $('text').value.trim();

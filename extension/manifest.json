@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Dias Ajan",
+  "version": "0.1.0",
+  "description": "Dias Panel'den gelen işle resmi şikayet formlarını senin Chrome'unda doldurur. Gönder'e sen basarsın.",
+  "permissions": ["tabs", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "content_scripts": [{
+    "matches": ["https://complaintca.ca/dias-claude.html*", "https://www.complaintca.ca/dias-claude.html*"],
+    "js": ["bridge.js"],
+    "run_at": "document_start"
+  }],
+  "action": { "default_title": "Dias Ajan" }
+}
