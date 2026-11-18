@@ -8,3 +8,4 @@ android-twa/
 *.apk
 *.aab
 scripts/twa-build/node_modules/
+social/videos/.frames-*/
