@@ -115,6 +115,27 @@
           "phone": "1-800-668-6868", "rows": ["Text CONNECT to 686868", "Free · 24/7 · Confidential"] },
         { "type": "brand", "at": 43, "tagline": "School problem? We show you who to contact.", "cta": "Free · Anonymous option" }
       ]
+    },
+    {
+      "id": "v15-flight-delay",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "yellow",
+      "musicStart": 0.05,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Flight alert",
+          "messages": ["Your flight is delayed ⏱️", "New time: 11:40 PM", "Delayed again: 3:15 AM", "Your flight is cancelled."],
+          "seen": "Gate 41 · 2:58 AM", "line": "Holiday trip? Stuck at the gate." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "bad luck.", "strikeAt": 13, "after": "You may be owed cash.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Big airline's fault?",
+          "words": ["3h late: $400", "6h late: $700", "9h+ late: $1,000", "Cancelled? Rebook or refund."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Keep your boarding pass & receipts.", "Claim from the airline, in writing.", "Do it within 1 year."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "No fix in 30 days?", "name": "Canadian Transportation Agency",
+          "phone": "File for free", "rows": ["otc-cta.gc.ca", "Big backlog: file early"] },
+        { "type": "brand", "at": 37, "tagline": "Flight trouble? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
     }
   ]
 }
