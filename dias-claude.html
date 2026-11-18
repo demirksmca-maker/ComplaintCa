@@ -51,6 +51,25 @@
   .acts{display:flex;gap:8px}
   .msg.bot{align-self:flex-start;border-radius:14px 14px 14px 4px;font-size:.9rem;border-color:#2bb47a}
   .msg.bot.ask{border-color:var(--gold)}
+  .msg.bot.secret{border-color:var(--gold);background:#3a2a0a;user-select:all}
+  .live{flex:none;display:flex;flex-direction:column;gap:6px;padding:8px;margin-bottom:8px}
+  .live-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.75rem;color:var(--mute)}
+  .live-head b{color:#ff6b6e;letter-spacing:.5px}
+  .live-view{position:relative;height:min(46vh,460px);display:flex;justify-content:center;background:#12030f;border-radius:10px;overflow:hidden}
+  .live-view img{height:100%;width:auto;max-width:100%;object-fit:contain;cursor:pointer;touch-action:manipulation}
+  .live-wait{position:absolute;inset:0;display:grid;place-items:center;color:var(--mute);font-size:.85rem;text-align:center;padding:16px}
+  .live-tools{display:flex;gap:6px;flex-wrap:wrap}
+  .live-tools input{flex:1;min-width:0;background:transparent;border:1px solid var(--line);border-radius:10px;color:var(--ink);font:inherit;font-size:.85rem;padding:7px 9px}
+  .live-tools button{background:var(--card);border:1px solid var(--line);padding:6px 10px;font-size:.8rem}
+  .live-tools .kill{border-color:#e5484d;color:#ff8a8d;font-weight:700}
+  .live[hidden],.live-wait[hidden]{display:none}
+  .live-msg{font-size:.85rem;padding:7px 10px;border:1px solid #2bb47a;border-radius:10px;white-space:pre-wrap;max-height:5.5em;overflow-y:auto}
+  .live-msg.ask,.live-msg.secret{border-color:var(--gold)}
+  .live-msg.secret{user-select:all}
+  .live-msg:empty{display:none}
+  .acts button{white-space:nowrap}
+  body.cloud .composer textarea{min-height:52px}
+  @media (max-height:760px){.live-view{height:min(38vh,400px)}}
   .clear{background:none;color:var(--mute);font-size:.72rem;text-decoration:underline;padding:0}
 
   .bar-nav{flex:none;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));max-width:480px;width:100%;margin:0 auto;border-top:1px solid #842a9a;background:#2a0825;padding:6px 8px max(6px,env(safe-area-inset-bottom));font-family:-apple-system,'Segoe UI',Roboto,Inter,sans-serif}
@@ -71,11 +90,25 @@
 
   <section class="log" id="log" aria-live="polite"></section>
 
+  <section class="card live" id="live" hidden aria-label="Bulut tarayıcı canlı ekran">
+    <div class="live-head"><span><b>● CANLI</b> · <span id="liveUrl">bulut Chrome</span></span><span id="liveLeft"></span></div>
+    <div class="live-view"><img id="shot" alt="Bulut tarayıcının ekranı; dokunduğun yere tıklanır"><div class="live-wait" id="liveWait">☁️ Bulut Chrome açılıyor…</div></div>
+    <div class="live-msg" id="liveMsg" aria-live="polite"></div>
+    <div class="live-tools">
+      <input id="liveType" placeholder="Sayfaya yaz (dokunduğun kutuya)" aria-label="Sayfaya yaz" autocomplete="off">
+      <button type="button" data-key="Enter" aria-label="Enter">↵</button>
+      <button type="button" data-key="Backspace" aria-label="Sil">⌫</button>
+      <button type="button" data-dy="-500" aria-label="Yukarı kaydır">▲</button>
+      <button type="button" data-dy="500" aria-label="Aşağı kaydır">▼</button>
+      <button type="button" class="kill" id="liveStop">■ Dur</button>
+    </div>
+  </section>
+
   <form class="card composer" id="form">
     <textarea id="text" placeholder="Claude'a ne yapmasını istiyorsun? Örn: Huni sekmesine haftalık özet ekle, testleri çalıştır, canlıya al." aria-label="Mesaj"></textarea>
     <div class="bar">
       <small>Ctrl / ⌘ + Enter ile gönder · <button type="button" class="clear" id="clear">geçmişi temizle</button><span id="agentbar" hidden> · <button type="button" class="clear" id="stop">ajanı durdur</button></span></small>
-      <span class="acts"><button type="button" class="agent" id="agent" hidden disabled>🤖 Tarayıcıda yap</button><button type="submit" class="send" id="send" disabled>Gönder</button></span>
+      <span class="acts"><button type="button" class="agent" id="agent" disabled>☁️ Bulutta yap</button><button type="submit" class="send" id="send" disabled>Gönder</button></span>
     </div>
   </form>
 
@@ -97,14 +130,15 @@
   var $ = function (id) { return document.getElementById(id); };
   // History stays in this browser only; it is a convenience, not a record.
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
-  function save(list) { try { localStorage.setItem(KEY, JSON.stringify(list.slice(-100))); } catch (e) { /* private mode */ } }
+  // Generated passwords (m.secret) are shown but never written to storage.
+  function save(list) { try { localStorage.setItem(KEY, JSON.stringify(list.filter(function (m) { return !m.secret; }).slice(-100))); } catch (e) { /* private mode */ } }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function when(t) { return new Date(t).toLocaleString('tr-TR', { timeZone: 'America/Toronto', dateStyle: 'short', timeStyle: 'short' }); }
   var log = load();
 
   function render() {
     $('log').innerHTML = log.length ? log.map(function (m) {
-      return '<div class="msg ' + (m.me ? 'me' : m.bot ? 'bot card' + (m.ask ? ' ask' : '') : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + '</time></div>';
+      return '<div class="msg ' + (m.me ? 'me' : m.bot ? 'bot card' + (m.ask ? ' ask' : '') + (m.secret ? ' secret' : '') : 'sys card') + '">' + esc(m.text) + '<time>' + esc(when(m.t)) + '</time></div>';
     }).join('') : '<div class="welcome"><b>Merhaba 👋 Ne yapalım?</b><p>Yaz, gönder; mesajın kopyalanır ve Claude Code açılır. Orada yapıştırınca Claude kodda, GitHub\'da ve Vercel\'de işi yapar.</p>' +
       '<div class="chips">' + IDEAS.map(function (x) { return '<button type="button">' + esc(x) + '</button>'; }).join('') + '</div></div>';
     Array.prototype.forEach.call(document.querySelectorAll('.chips button'), function (b) {
@@ -114,33 +148,142 @@
   }
   function sync() { var empty = !$('text').value.trim(); $('send').disabled = empty; $('agent').disabled = empty; }
 
-  // Dias Ajan: the Chrome extension (extension/ in the repo) announces itself
-  // through its bridge; tasks then run in this browser instead of Claude Code.
-  var agentOn = false, agentAsking = false;
+  // Dias Ajan. Two ways to run the same agent:
+  //  - the Chrome extension (extension/) on a computer: announces itself through its bridge;
+  //  - the cloud: /api/agent starts a Chrome in a Vercel Sandbox, watched here live (phone).
+  var agentOn = false, agentAsking = false, cloud = null, cloudBusy = false, CLOUD_KEY = 'diasCloud';
+  function label() {
+    $('agent').textContent = agentAsking ? '🤖 Ajana cevap ver' : cloud ? '☁️ Ajana yaz' : agentOn ? '🤖 Tarayıcıda yap' : '☁️ Bulutta yap';
+  }
+  function botSay(type, text) {
+    agentAsking = type === 'ask';
+    if (type === 'done' && /durdu/.test(text)) $('agentbar').hidden = true;
+    log.push({ bot: true, ask: type === 'ask', secret: type === 'secret', text: (type === 'secret' ? '🔑 ' : '🤖 ') + text, t: Date.now() });
+    // On a phone the live view leaves little room for the list: the latest note shows under it.
+    $('liveMsg').textContent = (type === 'secret' ? '🔑 ' : '🤖 ') + text;
+    $('liveMsg').className = 'live-msg ' + (type === 'ask' || type === 'secret' ? type : '');
+    save(log); render(); label();
+  }
   function toAgent(msg) { window.postMessage({ dias: 'to-agent', msg: msg }, location.origin); }
   window.addEventListener('message', function (e) {
     if (e.source !== window || e.origin !== location.origin || !e.data || e.data.dias !== 'from-agent') return;
     var m = e.data.msg || {};
-    if (m.type === 'hello') { agentOn = true; $('agent').hidden = false; return; }
-    if (!m.text) return;
-    agentAsking = m.type === 'ask';
-    $('agentbar').hidden = m.type === 'done' && /durdu/.test(m.text);
-    $('agent').textContent = agentAsking ? '🤖 Ajana cevap ver' : '🤖 Tarayıcıda yap';
-    log.push({ bot: true, ask: m.type === 'ask', text: '🤖 ' + m.text, t: Date.now() });
-    save(log); render();
+    if (m.type === 'hello') { if (!cloud) { agentOn = true; label(); } return; }
+    if (m.text) botSay(m.type, m.text);
   });
+
+  function shieldKey() { try { return localStorage.getItem('shieldKey') || ''; } catch (e) { return ''; } }
+  function keepCloud() { try { cloud ? localStorage.setItem(CLOUD_KEY, JSON.stringify(cloud)) : localStorage.removeItem(CLOUD_KEY); } catch (e) { /* private mode */ } }
+  function call(path, body) {
+    return fetch(cloud.url + path + '?k=' + cloud.token, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body || {}) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.error || r.status); return d; }); });
+  }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  async function cloudUp() {
+    for (var i = 0; i < 75; i++) {
+      try { var r = await fetch(cloud.url + '/health', { cache: 'no-store' }); if (r.ok) return true; } catch (e) { /* still booting */ }
+      await wait(2000);
+    }
+    return false;
+  }
+  async function cloudStart(task) {
+    var key = shieldKey();
+    if (!key) return botSay('error', 'Önce Dias Panel\'e (Genel sekmesi) anahtarınla giriş yap, sonra tekrar dene.');
+    cloudBusy = true; showLive(true); $('liveWait').textContent = '☁️ Bulut Chrome açılıyor… (ilk açılış 1 dakikayı bulabilir)';
+    try {
+      var r = await fetch('/api/agent', { method: 'POST', headers: { 'x-shield-key': key, 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'start' }) });
+      var d = await r.json().catch(function () { return {}; });
+      if (!r.ok) throw new Error(d.error === 'forbidden' ? 'Anahtar yanlış.' : d.error === 'cooldown' ? 'Çok deneme oldu, 10 dk bekle.' : (d.error || r.status));
+      cloud = { id: d.id, url: d.url, token: d.token, expires: d.expires, since: 0 }; keepCloud();
+      if (!(await cloudUp())) throw new Error('Bulut Chrome açılmadı, tekrar dene.');
+      await call('/start', { task: task });
+      $('agentbar').hidden = false;
+      pollEvents(); pollShot();
+    } catch (e) {
+      botSay('error', 'Bulut açılamadı: ' + e.message);
+      cloudStop(true);
+    }
+    cloudBusy = false;
+  }
+  async function cloudStop(quiet) {
+    var c = cloud; cloud = null; keepCloud(); showLive(false); label();
+    if (!c) return;
+    try { await fetch(c.url + '/stop?k=' + c.token, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: '{}' }); } catch (e) { /* already gone */ }
+    try { await fetch('/api/agent', { method: 'POST', headers: { 'x-shield-key': shieldKey(), 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'stop', id: c.id }) }); } catch (e) { /* stops itself at timeout */ }
+    if (!quiet) botSay('done', 'Bulut Chrome kapandı.');
+  }
+  function showLive(on) {
+    $('live').hidden = !on;
+    document.body.classList.toggle('cloud', on);
+    if (!on) { $('shot').removeAttribute('src'); $('liveWait').hidden = false; $('liveMsg').textContent = ''; }
+  }
+  async function pollEvents() {
+    while (cloud) {
+      var c = cloud;
+      try {
+        var r = await fetch(c.url + '/events?k=' + c.token + '&since=' + c.since, { cache: 'no-store' });
+        if (r.ok) {
+          var d = await r.json();
+          (d.events || []).forEach(function (ev) { c.since = Math.max(c.since, ev.n); botSay(ev.type, ev.text); });
+          if (d.url) $('liveUrl').textContent = d.url.replace(/^https?:\/\//, '').slice(0, 40);
+          keepCloud();
+        }
+      } catch (e) { /* network blip */ }
+      var left = Math.round((c.expires - Date.now()) / 60000);
+      $('liveLeft').textContent = left > 0 ? left + ' dk kaldı' : '';
+      if (left <= 0) { botSay('done', 'Süre doldu, bulut Chrome kapandı.'); cloudStop(true); break; }
+      await wait(1500);
+    }
+  }
+  function pollShot() {
+    var img = $('shot');
+    function next() {
+      if (!cloud) return;
+      if (document.hidden) return setTimeout(next, 1500);
+      img.src = cloud.url + '/shot?k=' + cloud.token + '&t=' + Date.now();
+    }
+    img.onload = function () { $('liveWait').hidden = true; setTimeout(next, 700); };
+    img.onerror = function () { setTimeout(next, 1500); };
+    next();
+  }
+  $('shot').addEventListener('click', function (e) {
+    if (!cloud) return;
+    var r = this.getBoundingClientRect();
+    call('/tap', { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height }).catch(function () {});
+  });
+  $('liveType').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !cloud) return;
+    e.preventDefault();
+    var t = this.value; this.value = '';
+    if (t) call('/type', { text: t }).catch(function () {});
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.live-tools [data-key], .live-tools [data-dy]'), function (b) {
+    b.addEventListener('click', function () {
+      if (!cloud) return;
+      if (b.dataset.key) {
+        var t = $('liveType').value; $('liveType').value = '';
+        (t ? call('/type', { text: t }) : Promise.resolve()).then(function () { return call('/type', { key: b.dataset.key }); }).catch(function () {});
+      } else call('/scroll', { dy: Number(b.dataset.dy) }).catch(function () {});
+    });
+  });
+  $('liveStop').addEventListener('click', function () { cloudStop(); });
+
   function agentSend() {
     var text = $('text').value.trim();
-    if (!text || !agentOn) return;
-    var reply = agentAsking;
-    toAgent(reply ? { type: 'reply', text: text } : { type: 'start', task: text });
-    log.push({ me: true, text: (reply ? '' : '🤖 ') + text, t: Date.now() });
-    agentAsking = false; $('agent').textContent = '🤖 Tarayıcıda yap'; $('agentbar').hidden = false;
+    if (!text || cloudBusy) return;
+    if (agentOn && !cloud) toAgent(agentAsking ? { type: 'reply', text: text } : { type: 'start', task: text });
+    else if (cloud) call('/reply', { text: text }).catch(function (e) { botSay('error', 'Gönderilemedi: ' + e.message); });
+    else cloudStart(text);
+    log.push({ me: true, text: (agentAsking || cloud ? '' : agentOn ? '🤖 ' : '☁️ ') + text, t: Date.now() });
+    agentAsking = false; label(); $('agentbar').hidden = false;
     save(log); $('text').value = ''; sync(); render();
   }
   $('agent').addEventListener('click', agentSend);
   toAgent({ type: 'ping' });
-  $('stop').addEventListener('click', function () { toAgent({ type: 'stop' }); });
+  $('stop').addEventListener('click', function () { if (cloud) cloudStop(); else toAgent({ type: 'stop' }); });
+  // A reload while the cloud Chrome is still running picks it up again.
+  try { cloud = JSON.parse(localStorage.getItem(CLOUD_KEY) || 'null'); } catch (e) { cloud = null; }
+  if (cloud && cloud.expires > Date.now()) { showLive(true); $('agentbar').hidden = false; pollEvents(); pollShot(); label(); } else { cloud = null; keepCloud(); }
 
   function send() {
     var text = $('text').value.trim();

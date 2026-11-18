@@ -2,7 +2,7 @@
 // it through bridge.js. It opens the form in a tab of the owner's own Chrome,
 // reads the page, asks Claude (through /api/claude-proxy) what to type, fills
 // the fields and stops before the final send: the owner presses it himself.
-import { PROXY, MAX_STEPS, SYSTEM, userTurn, parseReply, trimHistory, isFinalButton, isSensitive } from './core.js';
+import { PROXY, MAX_STEPS, SYSTEM, userTurn, parseReply, trimHistory, isFinalButton, isSensitive, readPage, fillFields, clickEl } from './core.js';
 
 const ports = new Set();
 let running = false, stopped = false;
@@ -15,66 +15,6 @@ function tell(type, text) {
 async function getJob() { return (await chrome.storage.session.get('job')).job || null; }
 async function setJob(job) { await chrome.storage.session.set({ job }); }
 
-// --- functions injected into the form page (must be self-contained) ---
-function readPage() {
-  window.__diasN = window.__diasN || 0;
-  const tag = el => el.dataset.diasId || (el.dataset.diasId = 'd' + (++window.__diasN));
-  const shown = el => { const r = el.getBoundingClientRect(), s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
-  const clean = s => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 120);
-  const labelOf = el => clean((el.labels && el.labels[0] && el.labels[0].innerText) || el.getAttribute('aria-label') ||
-    el.placeholder || (el.closest('label') && el.closest('label').innerText) || el.title || el.name || el.id);
-  const fields = [], buttons = [];
-  document.querySelectorAll('input, select, textarea').forEach(el => {
-    const type = (el.type || el.tagName).toLowerCase();
-    if (['hidden', 'submit', 'button', 'image', 'reset'].includes(type) || !shown(el) || el.disabled) return;
-    const f = { id: tag(el), type, label: labelOf(el), name: el.name || '', autocomplete: el.autocomplete || '', required: el.required };
-    if (type === 'checkbox' || type === 'radio') f.checked = el.checked;
-    else if (el.tagName === 'SELECT') { f.value = el.value; f.options = [...el.options].slice(0, 40).map(o => clean(o.text)); }
-    else f.value = String(el.value || '').slice(0, 300);
-    fields.push(f);
-  });
-  document.querySelectorAll('button, input[type=submit], input[type=button], [role=button], a.btn, a.button').forEach(el => {
-    if (!shown(el) || el.disabled) return;
-    const text = clean(el.innerText || el.value || el.getAttribute('aria-label'));
-    if (text) buttons.push({ id: tag(el), text });
-  });
-  return { url: location.href, title: document.title, fields: fields.slice(0, 80), buttons: buttons.slice(0, 40),
-    text: String(document.body ? document.body.innerText : '').replace(/\s+/g, ' ').slice(0, 3500) };
-}
-
-function fillFields(list) {
-  const out = [];
-  for (const { id, value } of list) {
-    const el = document.querySelector('[data-dias-id="' + id + '"]');
-    if (!el) { out.push(id + ': yok'); continue; }
-    const type = (el.type || '').toLowerCase();
-    if (type === 'checkbox' || type === 'radio') {
-      const want = !/^(false|0|no|hayır|)$/i.test(value.trim());
-      if (el.checked !== want) el.click();
-    } else if (el.tagName === 'SELECT') {
-      const v = value.toLowerCase();
-      const opt = [...el.options].find(o => o.value.toLowerCase() === v || o.text.trim().toLowerCase() === v) ||
-        [...el.options].find(o => o.text.toLowerCase().includes(v));
-      if (!opt) { out.push(id + ': seçenek yok'); continue; }
-      el.value = opt.value;
-    } else {
-      const proto = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
-      // The native setter, so React/Vue forms see the change too.
-      Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, value);
-    }
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-    el.dispatchEvent(new Event('change', { bubbles: true }));
-    el.style.outline = '2px solid #3ddc97';
-  }
-  return out;
-}
-
-function clickEl(id) {
-  const el = document.querySelector('[data-dias-id="' + id + '"]');
-  if (el) el.click();
-  return !!el;
-}
-// ---
 
 async function inPage(tabId, func, args = []) {
   const [r] = await chrome.scripting.executeScript({ target: { tabId }, func, args });
