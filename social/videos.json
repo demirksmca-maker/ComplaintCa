@@ -136,6 +136,300 @@
           "phone": "File for free", "rows": ["otc-cta.gc.ca", "Big backlog: file early"] },
         { "type": "brand", "at": 37, "tagline": "Flight trouble? We show you who to contact.", "cta": "Free · Anonymous option" }
       ]
+    },
+    {
+      "id": "v16-telecom",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "blue",
+      "musicStart": 2.16,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Your provider",
+          "messages": ["Your bill: $187.40", "Includes: roaming fees", "Your promo ended.", "Price change: +$25/mo"],
+          "seen": "Seen 9:12 PM", "line": "Bill shock? Again." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "fine print.", "strikeAt": 13, "after": "You can fight it.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Phone, internet, TV?",
+          "words": ["Wrong bill.", "Hidden fees.", "Broken promo.", "Cut off unfairly."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Call your provider. Log every call.", "Get their final answer in writing.", "Keep your bills and contract."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Still not fixed?", "name": "CCTS · Telecom & TV",
+          "phone": "Free complaint", "rows": ["Independent, not your provider", "53,195 complaints last year"] },
+        { "type": "brand", "at": 37, "tagline": "Bill problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v17-insurance",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "green",
+      "musicStart": 6.41,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Your insurer",
+          "messages": ["We reviewed your claim.", "Claim denied.", "This is not covered.", "Final letter attached."],
+          "seen": "Seen 4:05 PM", "line": "Claim denied?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not always", "strike": "the final word.", "strikeAt": 13, "after": "You can appeal free.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Know who handles it",
+          "words": ["Car & home: GIO", "Life & health: OLHI", "Both are free.", "Both are independent."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Use your insurer's complaint process.", "Get its final position letter.", "Send it to GIO or OLHI."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "No letter after 90 days?", "name": "OLHI · Life & health",
+          "phone": "Free review", "rows": ["Aims to finish within 120 days", "Car or home? Go to GIO"] },
+        { "type": "brand", "at": 37, "tagline": "Insurance problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v18-parcel",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "yellow",
+      "musicStart": 10.64,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Tracking",
+          "messages": ["Out for delivery 📦", "Delivery attempted", "Notice card left", "No update for 9 days"],
+          "seen": "Seen 7:30 PM", "line": "Where's my parcel?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "lost in the mail.", "strikeAt": 13, "after": "You can appeal.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "The Ombudsman handles",
+          "words": ["Lost mail.", "Damaged parcels.", "Late delivery.", "Missing scan."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Check the expected date & address.", "Open a ticket with Customer Service.", "Keep the ticket number."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Ticket closed. Still no fix?", "name": "Canada Post Ombudsman",
+          "phone": "Free appeal", "rows": ["Include your ticket number", "Follow-up in 5-10 business days"] },
+        { "type": "brand", "at": 37, "tagline": "Mail problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v19-car-dealer",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "red",
+      "musicStart": 14.87,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Dealer",
+          "messages": ["She runs perfect 👍", "No accidents, promise.", "All sales final.", "Not our problem now."],
+          "seen": "Seen 6:41 PM", "line": "Bought a lemon?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "buyer beware.", "strikeAt": 13, "after": "Dealers have rules.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Who handles dealers",
+          "words": ["Ontario: OMVIC", "BC: VSA", "Alberta: AMVIC", "Mechanic? Consumer office."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Complain to the dealer in writing.", "Then file with the regulator.", "Want money back? Small claims."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Need a refund?", "name": "Small claims court",
+          "phone": "No lawyer needed", "rows": ["Regulators can discipline dealers", "Courts can order payment"] },
+        { "type": "brand", "at": 37, "tagline": "Car trouble? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v20-debt-collector",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "blue",
+      "musicStart": 19.11,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Unknown caller",
+          "messages": ["Missed call · 6:52 AM", "We know where you work.", "Pay today, or else.", "We told your sister."],
+          "seen": "Seen 7:03 AM", "line": "Collector crossing the line?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "collecting.", "strikeAt": 13, "after": "They have rules too.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Generally not allowed",
+          "words": ["Very early calls.", "Calling work after “no”.", "Empty threats.", "Telling others."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Ask for their name & licence number.", "Log every call.", "In writing: “mail only, please.”"] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Broke the rules?", "name": "Provincial consumer office",
+          "phone": "Report them", "rows": ["Ontario: Consumer Protection Ontario", "Check the licence first"] },
+        { "type": "brand", "at": 37, "tagline": "Debt stress? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v21-chargeback",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "green",
+      "musicStart": 23.34,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Online store",
+          "messages": ["Order confirmed ✅", "Shipped! 🚚", "Tracking not found", "This page no longer exists."],
+          "seen": "Seen 10:17 PM", "line": "Paid. Never arrived." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "money gone.", "strikeAt": 13, "after": "Ask for it back.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "How you paid matters",
+          "words": ["Credit card: chargeback", "PayPal: open a dispute", "e-Transfer: call bank now", "Gift card: very hard"] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Contact the seller in writing first.", "Credit card? Ask for a chargeback.", "Act fast: often 90-120 days."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Was it a scam?", "name": "Canadian Anti-Fraud Centre",
+          "phone": "1-888-495-8501", "rows": ["Also tell your bank", "And your provincial consumer office"] },
+        { "type": "brand", "at": 37, "tagline": "Shopping problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v22-privacy",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "yellow",
+      "musicStart": 27.58,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Security notice",
+          "messages": ["We had a data breach.", "Your email was exposed.", "Your phone number too.", "We take privacy seriously."],
+          "seen": "Seen 8:26 AM", "line": "Your data. Leaked." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "a glitch.", "strikeAt": 13, "after": "You have rights.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "You can ask",
+          "words": ["What data they hold.", "Who saw it.", "Was it reported?", "What they'll fix."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Write to their privacy officer.", "Save the breach notice.", "Change passwords. Watch your bank."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "No real answer?", "name": "Privacy Commissioner of Canada",
+          "phone": "Free complaint", "rows": ["BC, AB, QC: provincial commissioner", "Public bodies: provincial too"] },
+        { "type": "brand", "at": 37, "tagline": "Privacy problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v23-healthcare",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "red",
+      "musicStart": 31.85,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "ER waiting room",
+          "messages": ["Wait time: 9 hours", "Your file is missing.", "Nobody explained anything.", "Discharged. No answers."],
+          "seen": "Seen 3:14 AM", "line": "Bad care? Speak up." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "a long day.", "strikeAt": 13, "after": "You can complain.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Know where to go",
+          "words": ["Hospital: patient relations", "Doctor: the College", "Health care is provincial.", "Write it all down."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Raise it with the hospital first.", "Note dates, names, what happened.", "Doctor's conduct? Go to the College."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Ontario, still stuck?", "name": "Patient Ombudsman",
+          "phone": "1-888-321-0339", "rows": ["Hospitals & long-term care", "Doctor? CPSO 1-800-268-7096"] },
+        { "type": "brand", "at": 37, "tagline": "Health care problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v24-small-claims",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "blue",
+      "musicStart": 36.09,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Contractor",
+          "messages": ["Starting Monday 👍", "Need a $3,000 deposit.", "Running late this week.", "(no reply for 6 weeks)"],
+          "seen": "Seen 5:50 PM", "line": "Took the money. Vanished." },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "a lost cause.", "strikeAt": 13, "after": "Take them to court.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Small claims limits",
+          "words": ["Ontario: $50,000", "Alberta: $100,000", "BC: up to $35,000", "Quebec: $15,000"] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Send a demand letter: 10-day deadline.", "Keep a copy. Save your proof.", "No payment? File your claim."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Need a lawyer?", "name": "Small claims court",
+          "phone": "Usually not", "rows": ["Built for people on their own", "Quebec: lawyers can't represent you"] },
+        { "type": "brand", "at": 37, "tagline": "Owed money? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v25-student-loan",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "green",
+      "musicStart": 40.31,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Loan account",
+          "messages": ["Payment overdue ⚠️", "Balance: $14,212", "Your payment wasn't applied.", "On hold: 2 hours"],
+          "seen": "Seen 11:02 AM", "line": "Loan mix-up?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "your fault.", "strikeAt": 13, "after": "Get it in writing.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Watch for",
+          "words": ["Wrong balance.", "Payment not applied.", "Lost forms.", "Endless hold."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Message the NSLSC in your online account.", "Save statements & every message.", "Still stuck? Escalate to Service Canada."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Still stuck?", "name": "Your MP's office",
+          "phone": "Can step in", "rows": ["They can ask about your file", "Quebec loans? Contact AFE"] },
+        { "type": "brand", "at": 37, "tagline": "Student loan problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v26-utility",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "yellow",
+      "musicStart": 44.53,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Your utility",
+          "messages": ["Your bill: $612.88 ⚡", "Based on an estimate", "Pay by Friday.", "Disconnection notice."],
+          "seen": "Seen 9:48 PM", "line": "Bill doesn't add up?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not just", "strike": "winter.", "strikeAt": 13, "after": "Challenge it.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Who handles it",
+          "words": ["Ontario: OEB", "BC: BCUC", "Alberta: AUC", "Quebec: Régie de l'énergie"] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Complain to your utility first.", "Keep bills, readings & dates.", "Get their answer in writing."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Still unfair?", "name": "Your energy regulator",
+          "phone": "Next step", "rows": ["They want proof you tried first", "Find yours on ComplaintCA"] },
+        { "type": "brand", "at": 37, "tagline": "Utility problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v27-workers-comp",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "red",
+      "musicStart": 48.72,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Claim update",
+          "messages": ["Claim received.", "More info needed.", "Decision: denied.", "Benefits ended."],
+          "seen": "Seen 2:20 PM", "line": "Hurt at work. Claim denied?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not", "strike": "the end.", "strikeAt": 13, "after": "Appeal it.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Ontario path",
+          "words": ["Object to WSIB.", "Get the final decision.", "Appeal to WSIAT.", "Within 6 months."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Get the decision in writing.", "Collect medical notes & records.", "Watch the deadline. Don't wait."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Other provinces?", "name": "Same idea, new names",
+          "phone": "Check deadlines", "rows": ["BC: Review Division, then WCAT", "Quebec: CNESST review in 30 days"] },
+        { "type": "brand", "at": 37, "tagline": "Work injury? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v28-scam-sent",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "blue",
+      "musicStart": 52.83,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Unknown",
+          "messages": ["Your account is locked 🔒", "Verify now or lose access", "Send the code we texted.", "10 minutes left!"],
+          "seen": "Seen 1:37 PM", "line": "Already sent money?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not", "strike": "too late.", "strikeAt": 13, "after": "Act now.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "The first hour",
+          "words": ["Call your bank.", "Stop the payment.", "Change passwords.", "Save everything."] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Bank or card: call right away.", "Report it to the Anti-Fraud Centre.", "File a police report."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "You're not alone.", "name": "Canadian Anti-Fraud Centre",
+          "phone": "1-888-495-8501", "rows": ["Phone or online, not email", "Then tell local police"] },
+        { "type": "brand", "at": 37, "tagline": "Scammed? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
+    },
+    {
+      "id": "v29-landlord",
+      "template": "scenes",
+      "dur": 30,
+      "accent": "green",
+      "musicStart": 57.06,
+      "clear": [[0, 0], [15, 0], [21, 0.35], [28, 0.7], [29, 1], [36, 1], [37, 0.55]],
+      "scenes": [
+        { "type": "chat", "at": 0, "until": 10, "scatter": 6, "from": "Landlord",
+          "messages": ["I'll fix it next week.", "It's just a little mould.", "Heat is fine on my side.", "Not my problem."],
+          "seen": "Seen 11:58 PM", "line": "Landlord ignoring repairs?" },
+        { "type": "title", "at": 10, "until": 16, "pre": "It's not", "strike": "normal.", "strikeAt": 13, "after": "File it.", "afterAt": 14 },
+        { "type": "slams", "at": 16, "until": 22, "kicker": "Who handles it",
+          "words": ["Ontario: LTB", "BC: RTB", "Alberta: RTDRS", "Quebec: TAL"] },
+        { "type": "steps", "at": 22, "until": 29, "every": 2, "kicker": "What to do",
+          "items": ["Ask for repairs in writing.", "Photos, dates, every message.", "Ontario: file within 1 year."] },
+        { "type": "help", "at": 29, "until": 37, "headline": "Ontario tenant?", "name": "Landlord and Tenant Board",
+          "phone": "1-888-332-3234", "rows": ["Can award up to $50,000", "Hearing wait: 9-12+ months"] },
+        { "type": "brand", "at": 37, "tagline": "Housing problem? We show you who to contact.", "cta": "Free · Anonymous option" }
+      ]
     }
   ]
 }
