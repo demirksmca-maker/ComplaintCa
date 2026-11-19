@@ -1,6 +1,6 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 
-// GET /rapor (rewritten to /api/route?rapor=1). The Dias Panel report for
+// GET /rapor (rewritten to /api/rapor). The Dias Panel report for
 // one invited reader, behind HTTP Basic Auth; never indexed or cached.
 // Only the SHA-256 of "user:password" is kept here.
 const PASS_HASH = 'ba127f4df10f7e93f6ad8845ef99e4441c7925a013ccf03e5cfd5593f11e76c5';

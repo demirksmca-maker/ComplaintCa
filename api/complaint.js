@@ -28,6 +28,7 @@ import { mailSecret, checkPass } from './_mailcode.js';
 import emailCode from './_email-code.js';
 import replyView from './_reply-view.js';
 import myAccount from './_my.js';
+import turnstileApi from './_verify-turnstile.js';
 import { fsAdmin } from './_gauth.js';
 
 const FIREBASE_PROJECT = 'ajan-d6070';
@@ -36,7 +37,7 @@ const FIREBASE_PROJECT = 'ajan-d6070';
 const FIREBASE_API_KEY = process.env.FIREBASE_WEB_API_KEY || 'AIzaSyDtK_bODD77BICh9O1DfhPMf2ENOcwWx8g';
 
 async function verifyTurnstile(token, ip) {
-  if (!process.env.TURNSTILE_SECRET_KEY) return true; // same fail-open as api/verify-turnstile.js until configured
+  if (!process.env.TURNSTILE_SECRET_KEY) return true; // same fail-open as api/_verify-turnstile.js until configured
   if (!token) return false;
   const params = new URLSearchParams({ secret: process.env.TURNSTILE_SECRET_KEY, response: token });
   if (ip && ip !== 'unknown') params.append('remoteip', ip);
@@ -103,6 +104,7 @@ async function sendEmail(toEmail, toName, subject, body, replyTo) {
 export default async function handler(req, res) {
   // /api/email-code is rewritten here (one function instead of two, see vercel.json).
   if (/[?&]mailcode=1\b/.test(req.url || '') || (req.query && req.query.mailcode === '1')) return emailCode(req, res);
+  if (/[?&]turnstile=1\b/.test(req.url || '') || (req.query && req.query.turnstile === '1')) return turnstileApi(req, res);
   if (/[?&]replyview=1\b/.test(req.url || '') || (req.query && req.query.replyview === '1')) return replyView(req, res);
   if (/[?&]my=1\b/.test(req.url || '') || (req.query && req.query.my === '1')) return myAccount(req, res);
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });

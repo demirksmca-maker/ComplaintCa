@@ -1,1 +1,9 @@
 CLAUDE.md
+# Not served by the site (only used by GitHub Actions / local scripts).
+# Keep social/videos: social-post.mjs and Instagram fetch them from the live site.
+assets/store-graphics/
+assets/brand/smoke-theme.mp3
+*.test.mjs
+eval/
+scripts/
+test/

@@ -71,11 +71,15 @@
     },
     {
       "source": "/rapor",
-      "destination": "/api/route?rapor=1"
+      "destination": "/api/rapor"
     },
     {
       "source": "/api/blog-rating",
       "destination": "/api/route?blograting=1"
+    },
+    {
+      "source": "/api/verify-turnstile",
+      "destination": "/api/complaint?turnstile=1"
     },
     {
       "source": "/api/my",

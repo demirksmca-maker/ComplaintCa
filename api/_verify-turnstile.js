@@ -1,5 +1,7 @@
 import { isRateLimited } from './_rateLimit.js';
 
+// POST /api/verify-turnstile (rewritten to /api/complaint?turnstile=1, one
+// function instead of two: Vercel Hobby allows 12).
 // Verifies a Cloudflare Turnstile token server-side before a complaint is
 // allowed to submit. Get a real site key + secret key from
 // dash.cloudflare.com -> Turnstile (free, no DNS/domain transfer needed):
@@ -25,7 +27,7 @@ export default async function handler(req, res) {
     }
 
     if (!process.env.TURNSTILE_SECRET_KEY) {
-      return res.status(200).json({ success: true, note: 'Turnstile not configured yet — see api/verify-turnstile.js' });
+      return res.status(200).json({ success: true, note: 'Turnstile not configured yet — see api/_verify-turnstile.js' });
     }
 
     const params = new URLSearchParams();
