@@ -37,15 +37,16 @@
 
 <link rel="manifest" href="/es/manifest.json">
 <link rel="apple-touch-icon" href="/icons/icon-180.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
+<link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Complaint CA">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Space+Grotesk:wght@700&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Space+Grotesk:wght@700&family=Cinzel+Decorative:wght@700&family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"></noscript>
 <style>
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -171,11 +172,11 @@ html[data-restoring-tab] #pg-app .amain{visibility:hidden}
 .topbar-inner{position:relative}
 .topbar .logo-btn,.topbar .back-btn{display:none!important}
 .topbar-right{margin-left:auto}
-.topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;white-space:nowrap}
-.topbar-emblem{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;background:transparent;border-radius:50%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
-.topbar-word,.topbar-ca{filter:drop-shadow(0 1px 0 #340c2d) drop-shadow(0 2px 2px rgba(0,0,0,.6)) drop-shadow(0 0 8px rgba(207,176,232,.45));font-size:1.15rem;background:linear-gradient(180deg,#e5d4f3 0%,#cfb0e8 22%,#cfb0e8 48%,#4b1b71 52%,#cfb0e8 70%,#cfb0e8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.topbar-ca{font-size:1.4rem;font-family:'Cinzel',serif;font-weight:900;letter-spacing:2px;line-height:1}
-.topbar-title .lang-dd-btn{padding:2px 2px 2px 0;gap:3px}
+.topbar-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+.topbar-emblem{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:38px;height:38px;background:transparent;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.topbar-word,.topbar-ca{display:inline-block;font-size:1.35rem;line-height:1;color:#f3eefa;-webkit-text-fill-color:currentColor;filter:drop-shadow(0 2px 6px rgba(20,8,40,.6))}
+.topbar-ca{font-family:'Space Grotesk',Inter,sans-serif;font-weight:700;letter-spacing:-.3px;color:#ff5a5a}
+.topbar-title .lang-dd-btn{padding:0;border:0;gap:3px}
 .topbar-caret{margin-top:4px}
 .topbar-title .lang-dd-menu{right:auto;left:50%;transform:translateX(-50%);letter-spacing:0;font-weight:400}
 
@@ -701,7 +702,7 @@ body{background:#140a0c}
         <span class="logo-text" style="font-family:'Cinzel',serif;font-size:.8rem;font-weight:600;letter-spacing:.3px;font-kerning:none;font-feature-settings:'kern' 0;line-height:1;white-space:nowrap">Complaint<span style="color:#ff5a5a;-webkit-text-fill-color:#ff5a5a;background:none">CA</span></span>
       </span>
     </button>
-    <img class="topbar-emblem" src="/assets/emblem-ruby.webp" alt="" width="36" height="36">
+    <img class="topbar-emblem" src="/assets/brand/logo.svg" alt="" width="38" height="38">
     <div class="topbar-title"><span class="topbar-word">Complaint</span>
       <div class="lang-dd" id="lang-dd">
         <button class="lang-dd-btn" onclick="toggleLangDD()" id="lang-dd-btn" aria-label="Idioma / Language">

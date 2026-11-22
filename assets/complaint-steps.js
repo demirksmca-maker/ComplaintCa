@@ -305,7 +305,7 @@
       '<button type="button" class="cs-go" data-act="send" disabled>File Complaint <span class="cs-ca notranslate" translate="no">CA</span></button>' +
       '<p class="cs-note">Location, what happened and your email are needed. You review everything before it is sent.</p></div>' +
       '<div class="cs-scrim" data-act="close"></div>' +
-      '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><img class="cs-seal" src="/assets/emblem-clear.webp" alt="" width="84" height="84" decoding="async"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
+      '<section class="cs-sheet" role="dialog" aria-modal="true" aria-labelledby="cs-sh-t"><img class="cs-seal" src="/assets/brand/logo.svg" alt="" width="84" height="84" decoding="async"><button type="button" class="cs-x" data-act="close" aria-label="Close">×</button>' +
       '<div class="cs-sh-h"><span class="cs-sh-i"></span><b id="cs-sh-t"></b></div><div class="cs-sh-o" aria-hidden="true"><i></i>✦<i></i></div>' +
       '<div class="cs-sh-b"></div><button type="button" class="cs-save" data-act="save">Save</button></section>' +
       '<div class="as" role="dialog" aria-modal="true" aria-label="ASYA">' + FLAG + '<div class="as-dim"></div><div class="as-in">' +

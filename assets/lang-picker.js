@@ -121,7 +121,7 @@
   function build(){
     root = document.createElement('div'); root.id = 'cc-lang'; root.className = 'notranslate'; root.setAttribute('translate', 'no');
     root.setAttribute('role', 'dialog'); root.setAttribute('aria-modal', 'true'); root.setAttribute('aria-labelledby', 'cc-lang-t');
-    root.innerHTML = '<div class="cc-card"><div class="cc-hero"><img src="/assets/emblem-clear.webp" alt="" width="400" height="400" decoding="async"></div>' +
+    root.innerHTML = '<div class="cc-card"><div class="cc-hero"><img src="/assets/brand/logo.svg" alt="" width="400" height="400" decoding="async"></div>' +
       '<h2 class="cc-title" id="cc-lang-t">Choose Your Language</h2><nav class="cc-bars">' +
       SITE.map(function(l){ return bar(l[0], l[1], l[2]); }).join('') + GT.map(function(l){ return bar(l[0], l[1], l[2], 1); }).join('') +
       '<button type="button" class="cc-bar cc-info cc-more" data-l="more"><span class="cc-med">' + GLOBE + '</span><span class="cc-txt"><b>More Languages</b><small>100+ languages · by Google</small></span><span class="cc-arr" aria-hidden="true">›</span></button>' +
