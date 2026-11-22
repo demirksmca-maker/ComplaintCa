@@ -52,6 +52,19 @@ h2{font:700 16px/1.3 'Space Grotesk',sans-serif;margin:0 0 4px}
 .ico img{width:56px;height:56px;border-radius:14px;display:block}
 .ico.new{background:linear-gradient(135deg,#9a4de8,#ff5ea8);display:flex;align-items:center;justify-content:center}
 .ico.me{box-shadow:0 0 0 2px #ff8fc4}
+/* AI answer */
+.ai{background:#fff;border-radius:14px;padding:14px;color:#202124;font-family:Arial,Helvetica,sans-serif}
+.ai-h{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#5f6368;margin-bottom:8px}
+.ai p{font-size:14px;line-height:1.55;margin:0 0 10px}
+.ai sup{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#f1f3f4;border:1px solid #dadce0;vertical-align:middle;margin-left:3px;overflow:hidden}
+.ai sup img{width:11px;height:11px}
+.src{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:8px;border:1px solid #dadce0;border-radius:12px;padding:8px 10px;font-size:12.5px;max-width:100%}
+.chip img{width:18px;height:18px;flex:none}
+.chip b{display:block;font-weight:600;color:#202124}
+.chip span{color:#5f6368;font-size:11.5px}
+.chip.other{opacity:.55}
+.chip i{width:18px;height:18px;border-radius:50%;background:#dadce0;flex:none}
 </style>
 </head>
 <body>
@@ -82,7 +95,24 @@ h2{font:700 16px/1.3 'Space Grotesk',sans-serif;margin:0 0 4px}
 </section>
 
 <section class="box">
-<h2>2. Tarayıcı sekmesi</h2>
+<h2>2. Yapay zeka araması</h2>
+<p class="note">Google AI Mode, ChatGPT ve Perplexity gibi cevaplarda kaynak olarak gösterilen site ikonu. Aynı küçük ikon (favicon) kullanılır.</p>
+<div class="tag">Şimdi</div>
+<div class="ai">
+<div class="ai-h"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8a5cf6" aria-hidden="true"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg>Yapay zeka cevabı</div>
+<p>To file a complaint in Canada, contact the business first, then take it to the right regulator or ombudsman for your province.<sup><img src="/icons/icon-192.png" alt=""></sup></p>
+<div class="src"><div class="chip"><img src="/icons/icon-192.png" alt=""><div><b>ComplaintCA</b><span>complaintca.ca</span></div></div><div class="chip other"><i></i><div><b>Diğer kaynak</b><span>example.ca</span></div></div></div>
+</div>
+<div class="tag new">Yeni</div>
+<div class="ai">
+<div class="ai-h"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8a5cf6" aria-hidden="true"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg>Yapay zeka cevabı</div>
+<p>To file a complaint in Canada, contact the business first, then take it to the right regulator or ombudsman for your province.<sup><svg class="mk" width="12" height="11" aria-hidden="true"><use href="#mk"/></svg></sup></p>
+<div class="src"><div class="chip"><svg class="mk" width="19" height="18" aria-hidden="true"><use href="#mk"/></svg><div><b>ComplaintCA</b><span>complaintca.ca</span></div></div><div class="chip other"><i></i><div><b>Diğer kaynak</b><span>example.ca</span></div></div></div>
+</div>
+</section>
+
+<section class="box">
+<h2>3. Tarayıcı sekmesi</h2>
 <p class="note">Bilgisayarda ve telefonda sekmenin başındaki ikon.</p>
 <div class="tag">Şimdi</div>
 <div class="tabs"><div class="tab"><img src="/icons/icon-192.png" alt=""><span>ComplaintCA — Canada's Complaint Platform</span></div><div class="addr">complaintca.ca</div></div>
@@ -91,7 +121,7 @@ h2{font:700 16px/1.3 'Space Grotesk',sans-serif;margin:0 0 4px}
 </section>
 
 <section class="box">
-<h2>3. Ana sayfa üst bar</h2>
+<h2>4. Ana sayfa üst bar</h2>
 <p class="note">Yeni halde sağdaki EN düğmesi yok; dil menüsü kırmızı "CA"ya basınca açılır.</p>
 <div class="tag">Şimdi</div>
 <div class="bar"><img class="bar-l" src="/assets/emblem-ruby.webp" alt="" width="38" height="38"><span class="bar-c old-word">COMPLAINT<b>CA</b></span><span class="bar-r"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#e6bf5e" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4 7h16M4 17h16"/></svg>EN</span></div>
@@ -100,7 +130,7 @@ h2{font:700 16px/1.3 'Space Grotesk',sans-serif;margin:0 0 4px}
 </section>
 
 <section class="box">
-<h2>4. Telefon ana ekranı</h2>
+<h2>5. Telefon ana ekranı</h2>
 <p class="note">Siteyi ana ekrana ekleyenlerde görünen uygulama ikonu.</p>
 <div class="tag">Şimdi</div>
 <div class="home">
