@@ -44,7 +44,7 @@
       if (typeof gtag === 'function') {
         gtag('event', 'article_rating', { rating: n, value: n, page_path: path, page_title: document.title });
       }
-      // Also counted (no personal data) for the "rated today" line on the home page.
+      // Also counted (no personal data) in Firestore; the owner gets an email for each rating.
       try {
         fetch('/api/blog-rating', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ path: path, rating: n }) }).catch(function(){});
       } catch (e) {}

@@ -5914,18 +5914,15 @@ async function doLogout(){
 </script>
 <script defer src="/assets/site-footer.js"></script>
 <script>
-// Home strip: how many readers rated blog posts today (from /api/blog-rating). Hidden until someone has.
+// Home strip: a static invitation to rate the blog. It shows no score or count, so it never
+// presents a rating to visitors (the owner still gets each rating by email and in GA4).
 (function(){
   var el=document.getElementById('hub-rate'); if(!el) return;
-  var d=null;
   window._ccRenderRate=function(){
-    // No ratings yet today: invite readers instead of hiding the strip.
-    el.innerHTML=(d&&d.count&&d.avg)
-      ?'<span class="st">★</span> <b>'+d.count+'</b> '+'rated today'+' · <b>'+Number(d.avg).toFixed(1)+'</b>/5'
-      :'<span class="st">★</span> '+'Rate our blog';
+    el.innerHTML='<span class="st">★★★★★</span> Rate our blog';
     el.hidden=false;
   };
-  fetch('/api/blog-rating').then(function(r){return r.ok?r.json():null;}).then(function(j){d=j;window._ccRenderRate();}).catch(function(){window._ccRenderRate();});
+  window._ccRenderRate();
 })();
 </script>
 </body>
