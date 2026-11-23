@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { isRateLimited } from './_rateLimit.js';
 import { FS, fsAdmin } from './_gauth.js';
 import { SENDER, buildBrandedHtml } from './send-email.js';
@@ -6,6 +7,28 @@ import { SENDER, buildBrandedHtml } from './send-email.js';
 // blogRatings/{YYYY-MM-DD}: count, sum, r1..r5. No personal data is kept.
 //   POST { path, rating }  -> adds one rating
 //   GET                    -> today's { date, count, avg }
+// One counted rating per IP per 30 days. Repeats get a normal 200 but are not counted or mailed,
+// so a single visitor cannot rate every day. Only a short hash of the IP is kept, in Redis, and it expires.
+const REPEAT_SECONDS = 30 * 24 * 3600;
+export const raterKey = ip => 'blograte:seen:' + createHash('sha256').update(String(ip)).digest('hex').slice(0, 20);
+
+// true = this IP already rated in the last 30 days. Without Redis, or if it fails, every rating counts.
+async function alreadyRated(ip) {
+  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+  if (!url || !token) return false;
+  try {
+    const r = await fetch(`${url}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([['SET', raterKey(ip), '1', 'NX', 'EX', REPEAT_SECONDS]])
+    });
+    if (!r.ok) return false;
+    const d = await r.json();
+    return !!(d && d[0] && d[0].result === null);
+  } catch { return false; }
+}
+
 const PATH_RE = /^\/blog\/[a-z0-9-]{1,120}(\.html)?$/;
 
 export function today(now = new Date()) {
@@ -69,6 +92,7 @@ export async function blogRating(req, res) {
   }
   const ok = validRating(req.body);
   if (!ok) return res.status(400).json({ error: 'Bad rating' });
+  if (await alreadyRated(ip)) return res.status(200).json({ ok: true });
 
   const inc = n => ({ integerValue: String(n) });
   const body = { writes: [{ transform: { document: docName, fieldTransforms: [

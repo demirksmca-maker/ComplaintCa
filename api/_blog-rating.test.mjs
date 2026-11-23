@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { today, validRating, summary, ratingMail } from './_blog-rating.js';
+import { today, validRating, summary, ratingMail, raterKey } from './_blog-rating.js';
 
 test('today uses Toronto date', () => {
   // 03:00 UTC on Oct 17 is still Oct 16 in Toronto.
@@ -28,4 +28,12 @@ test('ratingMail shows stars and page link', () => {
   const m = ratingMail({ rating: 4, path: '/blog/report-a-teacher-canada.html' });
   assert.equal(m.subject, 'New blog rating: 4/5 ★★★★☆');
   assert.match(m.body, /https:\/\/www\.complaintca\.ca\/blog\/report-a-teacher-canada\.html/);
+});
+
+test('raterKey hashes the IP and never stores it raw', () => {
+  const k = raterKey('203.0.113.7');
+  assert.match(k, /^blograte:seen:[0-9a-f]{20}$/);
+  assert.ok(!k.includes('203.0.113.7'));
+  assert.equal(k, raterKey('203.0.113.7'));
+  assert.notEqual(k, raterKey('203.0.113.8'));
 });
