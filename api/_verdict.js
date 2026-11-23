@@ -73,10 +73,10 @@ export async function runVerdict(input) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 2400, system: p.system, messages: [{ role: 'user', content: p.user }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-5-5', max_tokens: 2400, thinking: { type: 'between_tools' }, system: p.system, messages: [{ role: 'user', content: p.user }] }),
   });
   const d = await r.json();
-  if (d.error) return null;
+  if (d.error || d.stop_reason === 'refusal') return null;
   const full = (d.content || []).map(c => c.text || '').join('').trim();
   if (!full) return null;
   return parseVerdict(full, p);

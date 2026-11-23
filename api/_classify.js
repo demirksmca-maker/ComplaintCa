@@ -21,10 +21,10 @@ async function claude(sys, user) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 300, temperature: 0, system: sys, messages: [{ role: 'user', content: user }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-5-5', max_tokens: 300, thinking: { type: 'between_tools' }, system: sys, messages: [{ role: 'user', content: user }] }),
   });
   const d = await r.json();
-  if (d.error) return null;
+  if (d.error || d.stop_reason === 'refusal') return null;
   return (d.content || []).map(c => c.text || '').join('').trim();
 }
 

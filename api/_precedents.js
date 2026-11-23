@@ -137,12 +137,12 @@ async function claudeSearch(c) {
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20250929', max_tokens: 2000,
+    body: JSON.stringify({ model: 'claude-sonnet-5-5', max_tokens: 2000, thinking: { type: 'between_tools' },
       tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 4, allowed_domains: ['canlii.org'] }],
       messages: [{ role: 'user', content: prompt(c) }] })
   });
   const d = await r.json();
-  if (!r.ok || !Array.isArray(d.content)) throw new Error('claude: ' + ((d.error && d.error.message) || r.status));
+  if (!r.ok || d.stop_reason === 'refusal' || !Array.isArray(d.content)) throw new Error('claude: ' + ((d.error && d.error.message) || r.status));
   const text = d.content.filter(b => b.type === 'text').map(b => b.text).join('\n');
   return { list: parseList(text), found: foundUrls(d.content.filter(b => b.type === 'web_search_tool_result')) };
 }
