@@ -26,9 +26,39 @@
   </url>
   <url>
     <loc>https://www.complaintca.ca/blog/</loc>
-    <lastmod>2026-11-16</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/cibc-complaint-canada.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/ei-claim-delay-complaint-canada.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/wsib-claim-denied-appeal-ontario.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/condo-board-complaint-ontario-cat.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/blog/moving-company-holding-belongings-canada.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.complaintca.ca/blog/rogers-complaint-canada.html</loc>
@@ -632,7 +662,7 @@
   </url>
   <url>
     <loc>https://www.complaintca.ca/es/blog/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -771,6 +801,36 @@
   <url>
     <loc>https://www.complaintca.ca/es/blog/garantia-legal-3-anos-producto-defectuoso.html</loc>
     <lastmod>2026-11-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/es/blog/recurrir-multa-dgt-plazos-alegaciones.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/es/blog/correos-paquete-perdido-reclamar.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/es/blog/renfe-retraso-indemnizacion-reclamar.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/es/blog/devolucion-renta-no-llega-hacienda.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.complaintca.ca/es/blog/baja-gimnasio-permanencia.html</loc>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
